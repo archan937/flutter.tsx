@@ -95,8 +95,9 @@ bun run typecheck | format | lint | test | test:coverage
 
 - [x] 1. Monorepo skeleton with enforced quality gates
 - [x] 2. This CLAUDE.md
-- [ ] 2b. Verbatim import of the v1 docs site (layout/styling/animations/logos preserved
-      exactly; unpublished baseline — content regenerates from verified reality later)
+- [x] 2b. Verbatim import of the v1 docs site → `docs/` (layout/styling/animations/logos
+      preserved exactly; unpublished baseline — content regenerates from verified
+      reality later; generator port lands with step 7, deploy with step 30)
 - [ ] 3. SDK downloader — `fsx install` → `~/.fsx/flutter`, pinned version (TS)
 - [ ] 4. SDK extractor — Dart analyzer over SDK source → `ref/api.json` (Dart)
 - [ ] 5. `api.json` schema + validating loader (TS)
