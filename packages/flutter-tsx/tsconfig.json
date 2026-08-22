@@ -19,9 +19,10 @@
     "noEmit": true,
     "paths": {
       "@src/*": ["./src/*"],
-      "@test/*": ["./test/*"]
+      "@test/*": ["./test/*"],
+      "@scripts/*": ["./scripts/*"]
     }
   },
-  "include": ["bin/**/*", "src/**/*", "test/**/*"],
+  "include": ["bin/**/*", "scripts/**/*", "src/**/*", "test/**/*"],
   "exclude": ["node_modules", "dist"]
 }

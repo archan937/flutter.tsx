@@ -85,9 +85,19 @@ points at its subfolder.
 
 ## Code Conventions
 
-- **Path aliases, never parent-relative imports**: `@src/*` and `@test/*` (declared in
-  each package's tsconfig `paths`; Bun resolves them natively). Same-directory
-  `./sibling` imports are fine; `../..` traversals are not.
+- **Path aliases, never parent-relative imports**: `@src/*`, `@test/*`, `@scripts/*`
+  (declared in each package's tsconfig `paths`; Bun resolves them natively).
+  Same-directory `./sibling` imports are fine; `../..` traversals are not.
+- **Exact full-block assertions only — TS and Dart alike.** Never partial
+  `contains`/`toContain` checks against output: assert the complete expected value
+  (full string, full list, full JSON document — formatting both sides with the same
+  formatter when needed). Expected values from third-party sources (Flutter SDK docs,
+  signatures) are probed from reality first, then pinned exactly. Where output embeds
+  genuinely third-party payloads (tar stderr) the owned structure is asserted with an
+  anchored full-match regex.
+- Effective Dart throughout the extractor: snake_case files, one concern per file
+  under `lib/src/`, thin `bin/`, no 1–2-character names, comments only for
+  constraints code cannot express.
 - **No raw control bytes in source** — ANSI sequences are written as explicit escapes
   (`\u001B[2K`), and emitted only when stdout is a TTY.
 - Effect-style deps are injected (see `InstallDeps`): orchestrators stay pure and fully
@@ -106,6 +116,9 @@ bun run typecheck | format | lint | test | test:coverage
 
 # in packages/flutter-tsx:
 bun bin/fsx.ts install             # download pinned Flutter SDK → ~/.fsx/flutter
+bun run extract                    # SDK source → ref/api.json (runs flutter
+                                   # update-packages first when needed)
+bun run quality:extractor          # dart format + analyze + tests + 100% coverage gate
 ```
 
 ## Rewrite Roadmap (only checked items exist)
@@ -117,8 +130,19 @@ bun bin/fsx.ts install             # download pinned Flutter SDK → ~/.fsx/flut
       reality later; generator port lands with step 7, deploy with step 30)
 - [x] 3. SDK downloader — `fsx install` → `~/.fsx/flutter`, pinned Flutter 3.47.1,
       sha256-verified, idempotent via `~/.fsx/sdk-manifest.json` (TS; proven by a real
-      2.1 GB install + `flutter --version`)
-- [ ] 4. SDK extractor — Dart analyzer over SDK source → `ref/api.json` (Dart)
+      2.1 GB install + `flutter --version`). Automated e2e in `e2e/test/install.test.ts`:
+      runs the real CLI as a subprocess against a local release server
+      (`FSX_RELEASES_URL` override) — install, exact CLI output, manifest, idempotent
+      rerun, tampered-checksum rejection; plus an opt-in real-network variant
+      (`FSX_E2E_REAL=1`) for pre-release runs.
+- [x] 4. SDK extractor — Dart analyzer over SDK source → `ref/api.json` (Dart package
+      `extractor/`, analyzer 14): 1547 entities (543 widgets incl. named
+      constructors, 835 classes, 169 enums, 11570 static constants incl.
+      Icons/Colors/Curves), full dartdoc + per-param field docs + defaults +
+      supertypes; byte-deterministic (no timestamps), gated by ground-truth tests
+      against the real SDK and a 100%-line Dart coverage gate. Requires
+      `flutter update-packages` once (auto-run by `bun run extract`) so `dart:ui`
+      types (VoidCallback) resolve.
 - [ ] 5. `api.json` schema + validating loader (TS)
 - [ ] 6. Slot-semantics derivation → `ref/derived/slots.json` (TS)
 - [ ] 7. TS type generator → `src/generated/` (every widget prop typed); regenerate

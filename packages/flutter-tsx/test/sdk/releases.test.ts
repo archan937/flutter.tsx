@@ -2,6 +2,7 @@ import { describe, expect, test } from 'bun:test';
 
 import {
   archiveUrl,
+  OFFICIAL_RELEASES_BASE_URL,
   parseReleasesIndex,
   releasesIndexUrl,
   selectRelease,
@@ -49,11 +50,18 @@ const rawIndex = {
 };
 
 describe('releasesIndexUrl', () => {
-  test('points at the official index for the given OS', () => {
+  test('points at the official index for the given OS by default', () => {
+    expect(OFFICIAL_RELEASES_BASE_URL).toBe(BASE_URL);
     expect(releasesIndexUrl('macos')).toBe(`${BASE_URL}/releases_macos.json`);
     expect(releasesIndexUrl('linux')).toBe(`${BASE_URL}/releases_linux.json`);
     expect(releasesIndexUrl('windows')).toBe(
       `${BASE_URL}/releases_windows.json`,
+    );
+  });
+
+  test('honors a base URL override', () => {
+    expect(releasesIndexUrl('macos', 'http://localhost:4242')).toBe(
+      'http://localhost:4242/releases_macos.json',
     );
   });
 });

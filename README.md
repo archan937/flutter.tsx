@@ -125,6 +125,12 @@ Every package exposes the same scripts: `typecheck`, `format`, `lint`, `test`,
 `test:coverage`, and `quality`. The discipline of this codebase: every documented
 snippet is a test fixture, and nothing is claimed that a test does not prove.
 
+## Contact
+
+For support, remarks, and requests: [pm_engel@icloud.com](mailto:pm_engel@icloud.com)
+
 ## License
 
-[MIT](LICENSE)
+Copyright (c) 2026 Paul Engel, released under the [MIT License](LICENSE)
+
+http://github.com/archan937 — [pm_engel@icloud.com](mailto:pm_engel@icloud.com) (see also: https://github.com/archan937/dust)

@@ -13,6 +13,7 @@ export interface InstallDeps {
   paths: FsxPaths;
   target: ReleaseTarget;
   pinnedVersion: string;
+  releasesBaseUrl: string;
   fetchJson: (url: string) => Promise<unknown>;
   download: (
     url: string,
@@ -55,7 +56,7 @@ export const installSdk = async (deps: InstallDeps): Promise<InstallResult> => {
     `Resolving Flutter ${pinnedVersion} for ${target.os}-${target.arch}…`,
   );
   const index = parseReleasesIndex(
-    await deps.fetchJson(releasesIndexUrl(target.os)),
+    await deps.fetchJson(releasesIndexUrl(target.os, deps.releasesBaseUrl)),
   );
   const release = selectRelease(index, {
     version: pinnedVersion,

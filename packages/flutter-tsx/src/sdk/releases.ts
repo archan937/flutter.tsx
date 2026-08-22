@@ -18,8 +18,13 @@ export interface ReleaseQuery {
   arch: string;
 }
 
-export const releasesIndexUrl = (os: ReleaseOs): string =>
-  `https://storage.googleapis.com/flutter_infra_release/releases/releases_${os}.json`;
+export const OFFICIAL_RELEASES_BASE_URL =
+  'https://storage.googleapis.com/flutter_infra_release/releases';
+
+export const releasesIndexUrl = (
+  os: ReleaseOs,
+  baseUrl: string = OFFICIAL_RELEASES_BASE_URL,
+): string => `${baseUrl}/releases_${os}.json`;
 
 const parseRelease = (raw: unknown, position: number): FlutterRelease => {
   if (typeof raw !== 'object' || raw === null) {

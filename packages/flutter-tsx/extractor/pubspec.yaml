@@ -1,0 +1,21 @@
+name: flutter_tsx_extractor
+description: >-
+  Extracts the Flutter widget API (constructors, parameter types, enums,
+  dartdoc) from the installed Flutter SDK source via package:analyzer,
+  producing the deterministic ref/api.json that all Flutter.tsx type
+  generation derives from.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.13.0
+
+dependencies:
+  analyzer: ^14.1.0
+  args: ^2.7.0
+  path: ^1.9.0
+
+dev_dependencies:
+  coverage: ^1.15.0
+  lints: ^6.1.0
+  test: ^1.29.0

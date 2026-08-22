@@ -38,7 +38,9 @@
     "lint": "eslint .",
     "test": "bun test",
     "test:coverage": "bun test --coverage",
-    "quality": "bun run typecheck && bun run format && bun run lint && bun run test:coverage"
+    "extract": "bun scripts/extract-api.ts",
+    "quality:extractor": "bun scripts/extractor-quality.ts",
+    "quality": "bun run typecheck && bun run format && bun run lint && bun run test:coverage && bun run quality:extractor"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

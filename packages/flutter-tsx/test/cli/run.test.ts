@@ -23,19 +23,28 @@ const captureIo = (): CapturedIo => {
   };
 };
 
+const EXPECTED_USAGE = [
+  'Usage: fsx <command>',
+  '',
+  'Commands:',
+  '  install   Download the pinned Flutter SDK to ~/.fsx/flutter',
+].join('\n');
+
 describe('runCli', () => {
   test('prints usage and fails when no command is given', async () => {
     const io = captureIo();
 
     expect(await runCli([], io, {})).toBe(1);
-    expect(io.errLines.join('\n')).toContain('Usage: fsx <command>');
+    expect(io.errLines).toEqual([EXPECTED_USAGE]);
   });
 
   test('rejects unknown commands', async () => {
     const io = captureIo();
 
     expect(await runCli(['frobnicate'], io, {})).toBe(1);
-    expect(io.errLines.join('\n')).toContain('Unknown command: frobnicate');
+    expect(io.errLines).toEqual([
+      `Unknown command: frobnicate\n\n${EXPECTED_USAGE}`,
+    ]);
   });
 
   test('runs a known command and returns 0', async () => {

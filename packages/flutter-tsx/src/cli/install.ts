@@ -17,6 +17,7 @@ import {
   writeManifest,
 } from '@src/sdk/manifest';
 import { resolveReleaseTarget } from '@src/sdk/platform';
+import { OFFICIAL_RELEASES_BASE_URL } from '@src/sdk/releases';
 import { FLUTTER_VERSION } from '@src/sdk/version';
 
 const MEGABYTE = 1024 * 1024;
@@ -52,6 +53,7 @@ export const runInstallCommand = async (
     paths: resolveFsxPaths(process.env, homedir()),
     target: resolveReleaseTarget(process.platform, process.arch),
     pinnedVersion: FLUTTER_VERSION,
+    releasesBaseUrl: process.env.FSX_RELEASES_URL ?? OFFICIAL_RELEASES_BASE_URL,
     fetchJson,
     download,
     extract,

@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 
-import { FLUTTER_TSX_VERSION } from '@src/index';
+import { FLUTTER_TSX_VERSION, FLUTTER_VERSION } from '@src/index';
 
 describe('public API surface', () => {
   test('exposes the package version, in sync with package.json', async () => {
@@ -10,5 +10,9 @@ describe('public API surface', () => {
     };
 
     expect(FLUTTER_TSX_VERSION).toBe(manifest.version);
+  });
+
+  test('exposes the pinned Flutter version', () => {
+    expect(FLUTTER_VERSION).toBe('3.47.1');
   });
 });

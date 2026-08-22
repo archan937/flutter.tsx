@@ -31,7 +31,7 @@ export default defineConfig(
           groups: [
             ['^\\u0000'],
             ['^node:'],
-            ['^@?(?!(src|test))\\w'],
+            ['^@?(?!(scripts|src|test))\\w'],
             ['^'],
             ['^\\.'],
           ],

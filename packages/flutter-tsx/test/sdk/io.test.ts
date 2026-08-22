@@ -62,7 +62,9 @@ describe('fetchJson', () => {
   });
 
   test('throws on a non-OK response', () => {
-    expect(fetchJson(`${server.url.origin}/nope`)).rejects.toThrow('HTTP 404');
+    expect(fetchJson(`${server.url.origin}/nope`)).rejects.toThrow(
+      new Error(`request failed: ${server.url.origin}/nope → HTTP 404`),
+    );
   });
 });
 
@@ -82,7 +84,9 @@ describe('download', () => {
 
     expect(sha256).toBe(PAYLOAD_SHA256);
     expect(await Bun.file(destination).text()).toBe(PAYLOAD);
-    expect(progress.length).toBeGreaterThan(0);
+    expect(new Set(progress.map((entry) => entry.total))).toEqual(
+      new Set([PAYLOAD.length]),
+    );
     expect(progress.at(-1)).toEqual({
       received: PAYLOAD.length,
       total: PAYLOAD.length,
@@ -103,7 +107,7 @@ describe('download', () => {
     );
 
     expect(sha256).toBe(PAYLOAD_SHA256);
-    expect(totals.every((total) => total === null)).toBe(true);
+    expect(new Set(totals)).toEqual(new Set([null]));
   });
 
   test('works without a progress callback and throws on HTTP errors', async () => {
@@ -117,7 +121,9 @@ describe('download', () => {
 
     expect(
       download(`${server.url.origin}/nope`, join(dir, 'error.bin')),
-    ).rejects.toThrow('HTTP 404');
+    ).rejects.toThrow(
+      new Error(`download failed: ${server.url.origin}/nope → HTTP 404`),
+    );
   });
 });
 
@@ -139,11 +145,11 @@ describe('extract', () => {
     ).toBe('hello');
   });
 
-  test('throws with tar stderr on failure', async () => {
+  test('throws with the tar exit code and its stderr on failure', async () => {
     const dir = await tempDir();
 
     expect(extract(join(dir, 'missing.tar'), join(dir, 'out'))).rejects.toThrow(
-      'extraction failed',
+      /^extraction failed \(tar exit \d+\): .+$/s,
     );
   });
 });

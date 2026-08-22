@@ -1,0 +1,147 @@
+import 'package:analyzer/dart/element/element.dart';
+
+import 'api_model.dart';
+import 'type_encoder.dart';
+
+EntityModel? mapClass(ClassElement classElement, String libraryLabel) {
+  final name = classElement.name ?? '';
+  if (name.isEmpty || name.startsWith('_')) {
+    return null;
+  }
+
+  final constants = _mapConstants(classElement);
+  if (classElement.isAbstract && constants.isEmpty) {
+    return null;
+  }
+
+  final constructors = classElement.isAbstract
+      ? const <ConstructorModel>[]
+      : _mapConstructors(classElement);
+  final supertypes = _publicSupertypeNames(classElement);
+  final doc = classElement.documentationComment ?? '';
+
+  if (supertypes.contains('Widget')) {
+    return WidgetEntity(
+      name: name,
+      library: libraryLabel,
+      doc: doc,
+      supertypes: supertypes,
+      constructors: constructors,
+      constants: constants,
+    );
+  }
+  return ClassEntity(
+    name: name,
+    library: libraryLabel,
+    doc: doc,
+    supertypes: supertypes,
+    constructors: constructors,
+    constants: constants,
+  );
+}
+
+EnumEntity? mapEnum(EnumElement enumElement, String libraryLabel) {
+  final name = enumElement.name ?? '';
+  if (name.isEmpty || name.startsWith('_')) {
+    return null;
+  }
+
+  final values = enumElement.constants
+      .map(
+        (constant) => EnumValueModel(
+          name: constant.name ?? '',
+          doc: constant.documentationComment ?? '',
+        ),
+      )
+      .where((value) => value.name.isNotEmpty)
+      .toList();
+
+  return EnumEntity(
+    name: name,
+    library: libraryLabel,
+    doc: enumElement.documentationComment ?? '',
+    values: values,
+  );
+}
+
+List<ConstructorModel> _mapConstructors(ClassElement classElement) {
+  final constructors = classElement.constructors
+      .where((constructor) => constructor.isPublic)
+      .map(
+        (constructor) => ConstructorModel(
+          name: _constructorName(constructor),
+          doc: constructor.documentationComment ?? '',
+          params: constructor.formalParameters
+              .map((param) => _mapParam(classElement, param))
+              .toList(),
+        ),
+      )
+      .toList();
+
+  constructors.sort((first, second) => first.name.compareTo(second.name));
+  return constructors;
+}
+
+String _constructorName(ConstructorElement constructor) {
+  final name = constructor.name ?? '';
+  return name == 'new' ? '' : name;
+}
+
+ParamModel _mapParam(ClassElement classElement, FormalParameterElement param) {
+  final paramName = param.name ?? '';
+  return ParamModel(
+    name: paramName,
+    type: encodeType(param.type),
+    display: param.type.getDisplayString(),
+    isNamed: param.isNamed,
+    isRequired: param.isRequired,
+    defaultValue: param.defaultValueCode,
+    doc: _backingFieldDoc(classElement, paramName),
+    isDeprecated: param.metadata.hasDeprecated,
+  );
+}
+
+String _backingFieldDoc(ClassElement classElement, String paramName) {
+  final owners = [
+    classElement,
+    ...classElement.allSupertypes.map((supertype) => supertype.element),
+  ];
+  for (final owner in owners) {
+    final doc = owner.getField(paramName)?.documentationComment;
+    if (doc != null) {
+      return doc;
+    }
+  }
+  return '';
+}
+
+List<ConstantModel> _mapConstants(ClassElement classElement) {
+  final constants = classElement.fields
+      .where(
+        (field) =>
+            field.isStatic &&
+            field.isConst &&
+            field.isPublic &&
+            (field.name ?? '').isNotEmpty,
+      )
+      .map(
+        (field) => ConstantModel(
+          name: field.name ?? '',
+          type: encodeType(field.type),
+          display: field.type.getDisplayString(),
+          doc: field.documentationComment ?? '',
+        ),
+      )
+      .toList();
+
+  constants.sort((first, second) => first.name.compareTo(second.name));
+  return constants;
+}
+
+List<String> _publicSupertypeNames(ClassElement classElement) {
+  return classElement.allSupertypes
+      .map((supertype) => supertype.element.name)
+      .whereType<String>()
+      .where((name) => name != 'Object' && !name.startsWith('_'))
+      .toList();
+}

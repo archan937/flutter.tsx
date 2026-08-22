@@ -56,6 +56,7 @@ describe('runInstallCommand', () => {
       },
       target: { os: 'macos', arch: 'arm64' },
       pinnedVersion: '3.47.1',
+      releasesBaseUrl: 'https://example.test',
       fetchJson: () =>
         Promise.resolve({
           base_url: 'https://example.test',
@@ -92,7 +93,12 @@ describe('runInstallCommand', () => {
 
     await runInstallCommand(overrides);
 
-    expect(reported.some((line) => line.includes('3.47.1'))).toBe(true);
+    expect(reported).toEqual([
+      'Resolving Flutter 3.47.1 for macos-arm64…',
+      'Downloading https://example.test/stable/macos/flutter.zip…',
+      'Extracting…',
+      'Flutter 3.47.1 installed at /fsx/flutter',
+    ]);
     expect(progressed).toEqual([[10, 100]]);
   });
 });

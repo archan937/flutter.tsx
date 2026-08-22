@@ -32,11 +32,14 @@ describe('resolveReleaseTarget', () => {
   });
 
   test('rejects platforms Flutter does not ship archives for', () => {
+    const supportMatrix =
+      'Flutter ships SDK archives for macOS (x64/arm64), Linux (x64), and ' +
+      'Windows (x64).';
     expect(() => resolveReleaseTarget('linux', 'arm64')).toThrow(
-      'Unsupported platform: linux-arm64',
+      new Error(`Unsupported platform: linux-arm64. ${supportMatrix}`),
     );
     expect(() => resolveReleaseTarget('freebsd', 'x64')).toThrow(
-      'Unsupported platform: freebsd-x64',
+      new Error(`Unsupported platform: freebsd-x64. ${supportMatrix}`),
     );
   });
 });

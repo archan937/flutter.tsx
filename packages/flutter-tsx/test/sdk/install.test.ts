@@ -25,6 +25,7 @@ const releasesPayload = {
 interface Recorded {
   deps: InstallDeps;
   reported: string[];
+  fetched: string[];
   downloads: string[];
   replaced: { source: string; destination: string }[];
   written: SdkManifest[];
@@ -32,6 +33,7 @@ interface Recorded {
 
 const record = (overrides: Partial<InstallDeps> = {}): Recorded => {
   const reported: string[] = [];
+  const fetched: string[] = [];
   const downloads: string[] = [];
   const replaced: { source: string; destination: string }[] = [];
   const written: SdkManifest[] = [];
@@ -45,7 +47,11 @@ const record = (overrides: Partial<InstallDeps> = {}): Recorded => {
     },
     target: { os: 'macos', arch: 'arm64' },
     pinnedVersion: '3.47.1',
-    fetchJson: () => Promise.resolve(releasesPayload),
+    releasesBaseUrl: BASE_URL,
+    fetchJson: (url) => {
+      fetched.push(url);
+      return Promise.resolve(releasesPayload);
+    },
     download: (url) => {
       downloads.push(url);
       return Promise.resolve({ sha256: SHA256 });
@@ -70,7 +76,7 @@ const record = (overrides: Partial<InstallDeps> = {}): Recorded => {
     ...overrides,
   };
 
-  return { deps, reported, downloads, replaced, written };
+  return { deps, reported, fetched, downloads, replaced, written };
 };
 
 const installedManifest: SdkManifest = {
@@ -82,11 +88,12 @@ const installedManifest: SdkManifest = {
 
 describe('installSdk', () => {
   test('performs a fresh install end to end', async () => {
-    const { deps, reported, downloads, replaced, written } = record();
+    const { deps, reported, fetched, downloads, replaced, written } = record();
 
     const result = await installSdk(deps);
 
     expect(result).toEqual({ status: 'installed', version: '3.47.1' });
+    expect(fetched).toEqual([`${BASE_URL}/releases_macos.json`]);
     expect(downloads).toEqual([`${BASE_URL}/${ARCHIVE}`]);
     expect(replaced).toEqual([
       {
@@ -102,11 +109,16 @@ describe('installSdk', () => {
         installedAt: '2026-08-23T00:00:00.000Z',
       },
     ]);
-    expect(reported.length).toBeGreaterThan(0);
+    expect(reported).toEqual([
+      'Resolving Flutter 3.47.1 for macos-arm64…',
+      `Downloading ${BASE_URL}/${ARCHIVE}…`,
+      'Extracting…',
+      'Flutter 3.47.1 installed at /fsx/flutter',
+    ]);
   });
 
   test('short-circuits when the pinned version is already installed', async () => {
-    const { deps, downloads } = record({
+    const { deps, downloads, reported } = record({
       readManifest: () => Promise.resolve(installedManifest),
     });
 
@@ -114,6 +126,9 @@ describe('installSdk', () => {
 
     expect(result).toEqual({ status: 'already-installed', version: '3.47.1' });
     expect(downloads).toEqual([]);
+    expect(reported).toEqual([
+      'Flutter 3.47.1 already installed at /fsx/flutter',
+    ]);
   });
 
   test('reinstalls when the manifest records a different version', async () => {
