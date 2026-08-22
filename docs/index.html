@@ -1,0 +1,1448 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flutter.tsx — write Flutter in TSX</title>
+    <meta
+      name="description"
+      content="Write cross-platform Flutter apps in TypeScript + JSX. Compiles to idiomatic Dart. Ship everywhere."
+    />
+    <link rel="icon" type="image/png" href="./icon.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        /* Brand: React cyan flowing into Flutter blue, violet for state/hooks */
+        --react: #61dafb;
+        --flutter: #54a4ff;
+        --violet: #a78bfa;
+        --amber: #f5d761;
+
+        --bg: #07090f;
+        --panel: rgba(20, 26, 38, 0.62);
+        --panel-solid: #11151f;
+        --line: rgba(120, 150, 200, 0.16);
+        --line-soft: rgba(120, 150, 200, 0.09);
+
+        --text: #e8eef7;
+        --muted: #9aa6bb;
+        --dim: #6f7c93;
+
+        --grad: linear-gradient(115deg, #61dafb 0%, #54a4ff 48%, #a78bfa 100%);
+        --grad-soft: linear-gradient(115deg, #61dafb 0%, #8bb6ff 100%);
+
+        --display: 'Bricolage Grotesque', system-ui, sans-serif;
+        --body: 'Hanken Grotesk', system-ui, sans-serif;
+        --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: var(--body);
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+        position: relative;
+      }
+
+      /* ── Atmosphere: blueprint grid + brand glows + grain ── */
+      .bg-layer {
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        pointer-events: none;
+      }
+      .bg-grid {
+        background-image:
+          linear-gradient(var(--line-soft) 1px, transparent 1px),
+          linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+        background-size: 56px 56px;
+        background-position: center top;
+        mask-image: radial-gradient(
+          120% 90% at 50% 0%,
+          #000 35%,
+          transparent 78%
+        );
+        -webkit-mask-image: radial-gradient(
+          120% 90% at 50% 0%,
+          #000 35%,
+          transparent 78%
+        );
+      }
+      .bg-glow {
+        background:
+          radial-gradient(
+            900px 520px at 50% -160px,
+            rgba(97, 218, 251, 0.18),
+            transparent 70%
+          ),
+          radial-gradient(
+            820px 520px at 88% 4%,
+            rgba(167, 139, 250, 0.14),
+            transparent 66%
+          ),
+          radial-gradient(
+            760px 600px at 8% 22%,
+            rgba(84, 164, 255, 0.12),
+            transparent 68%
+          );
+      }
+      .bg-grain {
+        z-index: -1;
+        opacity: 0.04;
+        mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      }
+
+      .wrap {
+        width: 100%;
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* ── Nav ── */
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        background: linear-gradient(
+          180deg,
+          rgba(7, 9, 15, 0.86),
+          rgba(7, 9, 15, 0.4)
+        );
+        border-bottom: 1px solid var(--line-soft);
+      }
+      .nav-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 64px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        font-family: var(--mono);
+        font-weight: 700;
+        font-size: 1rem;
+        letter-spacing: -0.02em;
+        color: var(--text);
+        text-decoration: none;
+      }
+      .brand .mark {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        object-fit: cover;
+        display: block;
+        border: 1px solid rgba(97, 218, 251, 0.4);
+        box-shadow:
+          0 0 9px rgba(167, 139, 250, 0.3),
+          0 3px 12px rgba(167, 139, 250, 0.16);
+      }
+      .brand b {
+        background: var(--grad);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 700;
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .nav-links a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        padding: 8px 14px;
+        border-radius: 8px;
+        transition:
+          color 0.16s,
+          background 0.16s;
+      }
+      .nav-links a:hover {
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .nav-links a.ghbtn {
+        border: 1px solid var(--line);
+      }
+      .nav-links a.ghstars {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid var(--line);
+        font-family: var(--mono);
+        font-size: 0.82rem;
+        font-weight: 600;
+      }
+      .nav-links a.ghstars svg {
+        color: var(--amber);
+      }
+      .nav-links a.ghstars:hover {
+        border-color: rgba(245, 215, 97, 0.45);
+      }
+      @media (max-width: 620px) {
+        .nav-links a.dim-mobile {
+          display: none;
+        }
+      }
+
+      /* ── Hero ── */
+      header {
+        text-align: center;
+        padding: 92px 0 30px;
+      }
+      .hero-mark {
+        width: 124px;
+        height: 124px;
+        border-radius: 28px;
+        object-fit: cover;
+        display: block;
+        margin: 34px auto 34px;
+        border: 1px solid rgba(97, 218, 251, 0.35);
+        box-shadow: 0 16px 38px rgba(167, 139, 250, 0.26);
+      }
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: var(--mono);
+        font-size: 0.74rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--react);
+        padding: 6px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(97, 218, 251, 0.28);
+        background: rgba(97, 218, 251, 0.07);
+        margin-bottom: 36px;
+      }
+      .eyebrow .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--react);
+        box-shadow: 0 0 10px var(--react);
+        animation: pulse 2s var(--ease) infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.45;
+          transform: scale(0.8);
+        }
+      }
+
+      header h1 {
+        font-family: var(--display);
+        font-size: clamp(3.1rem, 9vw, 6rem);
+        font-weight: 800;
+        line-height: 0.98;
+        letter-spacing: -0.045em;
+        margin-bottom: 22px;
+      }
+      header h1 .grad {
+        background: var(--grad);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shimmer 7s linear infinite;
+      }
+      @keyframes shimmer {
+        to {
+          background-position: 200% center;
+        }
+      }
+      header p.lead {
+        font-size: clamp(1.1rem, 2.4vw, 1.4rem);
+        color: var(--muted);
+        max-width: 620px;
+        margin: 0 auto;
+        line-height: 1.55;
+      }
+      header p.lead b {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        justify-content: center;
+        margin-top: 38px;
+      }
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 15px 26px;
+        border-radius: 11px;
+        font-family: var(--body);
+        font-weight: 700;
+        font-size: 0.98rem;
+        text-decoration: none;
+        border: 1px solid transparent;
+        transition:
+          transform 0.16s var(--ease),
+          box-shadow 0.2s,
+          opacity 0.16s;
+      }
+      .cta.primary {
+        background: var(--grad);
+        color: #05111d;
+        box-shadow:
+          0 10px 34px rgba(84, 164, 255, 0.34),
+          0 0 0 1px rgba(255, 255, 255, 0.12) inset;
+      }
+      .cta.primary:hover {
+        transform: translateY(-2px);
+        box-shadow:
+          0 16px 44px rgba(84, 164, 255, 0.46),
+          0 0 0 1px rgba(255, 255, 255, 0.18) inset;
+      }
+      .cta.npm {
+        background: rgba(255, 255, 255, 0.03);
+        border-color: var(--line);
+        color: var(--text);
+        font-family: var(--mono);
+        font-weight: 500;
+        cursor: pointer;
+      }
+      .cta.npm:hover {
+        border-color: rgba(120, 150, 200, 0.4);
+        background: rgba(255, 255, 255, 0.06);
+      }
+      .cta.npm .prompt {
+        color: var(--dim);
+      }
+      .cta.npm .copy-ico {
+        opacity: 0.6;
+      }
+      .cta.npm.copied {
+        color: var(--react);
+        border-color: rgba(97, 218, 251, 0.4);
+      }
+
+      /* ── Code showcase ── */
+      .showcase {
+        margin: 56px auto 0;
+      }
+      .compile-bar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        margin-bottom: 18px;
+        color: var(--dim);
+        font-family: var(--mono);
+        font-size: 0.8rem;
+      }
+      .toggle {
+        display: inline-flex;
+        padding: 4px;
+        border-radius: 11px;
+        background: rgba(10, 13, 20, 0.7);
+        border: 1px solid var(--line);
+      }
+      .toggle button {
+        appearance: none;
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-family: var(--mono);
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        color: var(--muted);
+        padding: 8px 18px;
+        border-radius: 8px;
+        transition:
+          color 0.16s,
+          background 0.2s var(--ease);
+      }
+      .toggle button.active {
+        color: #06121f;
+        background: var(--grad-soft);
+      }
+      .toggle button.active[data-tab='dart'] {
+        background: linear-gradient(115deg, #54a4ff, #a78bfa);
+      }
+      .arrow {
+        color: var(--flutter);
+        animation: nudge 1.8s ease-in-out infinite;
+      }
+      @keyframes nudge {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        50% {
+          transform: translateX(4px);
+        }
+      }
+
+      .showcase-grid {
+        display: block;
+      }
+      .code-block {
+        position: relative;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        background: rgba(13, 17, 26, 0.82);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        box-shadow:
+          0 30px 80px -30px rgba(0, 0, 0, 0.8),
+          0 0 0 1px rgba(97, 218, 251, 0.05);
+      }
+      .code-block::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        padding: 1px;
+        border-radius: 16px;
+        background: linear-gradient(
+          160deg,
+          rgba(97, 218, 251, 0.4),
+          transparent 40%
+        );
+        -webkit-mask:
+          linear-gradient(#000 0 0) content-box,
+          linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+      }
+      .window-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--line-soft);
+        background: rgba(255, 255, 255, 0.015);
+      }
+      .window-bar .lights {
+        display: flex;
+        gap: 7px;
+      }
+      .window-bar .lights i {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: block;
+      }
+      .window-bar .lights i:nth-child(1) {
+        background: #ff5f57;
+      }
+      .window-bar .lights i:nth-child(2) {
+        background: #febc2e;
+      }
+      .window-bar .lights i:nth-child(3) {
+        background: #28c840;
+      }
+      .window-bar .fname {
+        margin-left: 8px;
+        font-family: var(--mono);
+        font-size: 0.78rem;
+        color: var(--dim);
+      }
+
+      .tab-panel {
+        display: none;
+      }
+      .tab-panel.active {
+        display: block;
+        animation: fade 0.35s var(--ease);
+      }
+      @keyframes fade {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      pre {
+        padding: 26px 24px;
+        font-family: var(--mono);
+        font-size: 0.85rem;
+        line-height: 1.75;
+        overflow-x: auto;
+        tab-size: 2;
+      }
+      pre::-webkit-scrollbar {
+        height: 8px;
+      }
+      pre::-webkit-scrollbar-thumb {
+        background: var(--line);
+        border-radius: 8px;
+      }
+
+      .kw,
+      .dart-kw {
+        color: #ff7b9c;
+      }
+      .fn,
+      .dart-ann {
+        color: #d2a8ff;
+      }
+      .str,
+      .dart-str {
+        color: #9ce0ff;
+      }
+      .cmt,
+      .dart-cmt {
+        color: var(--dim);
+        font-style: italic;
+      }
+      .tag {
+        color: #7ee7b0;
+      }
+      .attr,
+      .dart-num {
+        color: #79c0ff;
+      }
+      .dart-cls {
+        color: #ffb877;
+      }
+
+      /* ── Stats ── */
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 14px;
+        margin: 64px auto 0;
+      }
+      @media (max-width: 760px) {
+        .stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      .stat {
+        background: var(--panel);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 24px 18px;
+        text-align: center;
+        transition:
+          transform 0.18s var(--ease),
+          border-color 0.18s,
+          box-shadow 0.18s;
+      }
+      .stat:hover {
+        transform: translateY(-4px);
+        border-color: rgba(97, 218, 251, 0.4);
+        box-shadow: 0 14px 36px rgba(84, 164, 255, 0.14);
+      }
+      .stat-value {
+        font-family: var(--display);
+        font-size: 2.25rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        background: var(--grad);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        line-height: 1;
+      }
+      .stat-label {
+        font-size: 0.78rem;
+        color: var(--muted);
+        margin-top: 10px;
+        font-weight: 500;
+      }
+
+      /* ── Why section ── */
+      .why {
+        padding: 110px 0 40px;
+      }
+      .section-head {
+        text-align: center;
+        margin-bottom: 14px;
+      }
+      .section-kicker {
+        font-family: var(--mono);
+        font-size: 0.74rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--dim);
+      }
+      .why h2 {
+        font-family: var(--display);
+        font-size: clamp(2.1rem, 5vw, 3rem);
+        font-weight: 800;
+        text-align: center;
+        letter-spacing: -0.03em;
+        margin: 6px 0 18px;
+      }
+      .why h2 .grad {
+        background: var(--grad);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .why-lead {
+        text-align: center;
+        color: var(--text);
+        line-height: 1.5;
+        max-width: 700px;
+        margin: 0 auto 46px;
+        font-size: clamp(1.15rem, 2.4vw, 1.45rem);
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+      .why-prose {
+        max-width: 760px;
+        margin: 0 auto 56px;
+      }
+      .why-prose p {
+        color: #c2cde0;
+        line-height: 1.85;
+        font-size: 1.02rem;
+        margin-bottom: 20px;
+      }
+      .why-prose strong {
+        color: #fff;
+        font-weight: 700;
+      }
+      .fw {
+        color: #9ce0ff;
+        background: rgba(97, 218, 251, 0.12);
+        font-family: var(--mono);
+        font-size: 0.92em;
+        font-weight: 500;
+        padding: 0.06em 0.36em;
+        border-radius: 5px;
+        box-decoration-break: clone;
+        -webkit-box-decoration-break: clone;
+      }
+      .hl {
+        color: var(--amber);
+        background: rgba(245, 215, 97, 0.12);
+        font-weight: 600;
+        padding: 0.06em 0.36em;
+        border-radius: 5px;
+        box-decoration-break: clone;
+        -webkit-box-decoration-break: clone;
+      }
+      .why-prose code {
+        font-family: var(--mono);
+        font-size: 0.88em;
+        background: rgba(255, 255, 255, 0.06);
+        padding: 0.1em 0.4em;
+        border-radius: 5px;
+        color: var(--react);
+      }
+
+      /* ── Comparison table ── */
+      .cmp-title {
+        text-align: center;
+        font-family: var(--display);
+        font-size: 1.4rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--text);
+        margin-bottom: 22px;
+      }
+      .cmp-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        margin-bottom: 18px;
+        box-shadow: 0 20px 60px -24px rgba(0, 0, 0, 0.7);
+        background: rgba(13, 17, 26, 0.6);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+      .cmp {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+        min-width: 680px;
+      }
+      .cmp th,
+      .cmp td {
+        padding: 15px 18px;
+        text-align: left;
+        border-bottom: 1px solid var(--line-soft);
+        vertical-align: top;
+        line-height: 1.45;
+      }
+      .cmp tbody tr:last-child td {
+        border-bottom: none;
+      }
+      .cmp tbody tr {
+        transition: background 0.14s ease;
+      }
+      .cmp tbody tr:hover td {
+        background: rgba(255, 255, 255, 0.025);
+      }
+      .cmp tbody tr:hover .col-fsx {
+        background: rgba(97, 218, 251, 0.16);
+      }
+      .cmp thead th {
+        background: rgba(255, 255, 255, 0.02);
+        font-family: var(--body);
+        font-weight: 700;
+        font-size: 0.95rem;
+      }
+      .cmp tbody td:first-child,
+      .cmp thead th:first-child {
+        color: var(--muted);
+        font-weight: 600;
+        width: 22%;
+      }
+      .cmp .col-fsx {
+        background: rgba(97, 218, 251, 0.08);
+        border-left: 1px solid rgba(97, 218, 251, 0.4);
+        border-right: 1px solid rgba(97, 218, 251, 0.4);
+      }
+      .cmp thead .col-fsx {
+        background: var(--grad);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        border-top: 2px solid var(--react);
+        border-radius: 10px 10px 0 0;
+      }
+      .cmp tbody tr:last-child .col-fsx {
+        border-bottom: 1px solid rgba(97, 218, 251, 0.4);
+        border-radius: 0 0 10px 10px;
+      }
+      .g {
+        font-weight: 700;
+        margin-right: 6px;
+      }
+      .yes {
+        color: #3fd07a;
+      }
+      .meh {
+        color: #e0b341;
+      }
+      .no {
+        color: #ff6b6b;
+      }
+      .cmp-note {
+        text-align: center;
+        color: var(--dim);
+        font-size: 0.82rem;
+        margin-bottom: 64px;
+      }
+
+      /* ── Feature grid ── */
+      .why-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      @media (max-width: 820px) {
+        .why-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 560px) {
+        .why-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .feature {
+        position: relative;
+        background: var(--panel);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 26px 24px;
+        overflow: hidden;
+        transition:
+          transform 0.18s var(--ease),
+          border-color 0.18s,
+          box-shadow 0.18s;
+      }
+      .feature::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--grad);
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+      .feature:hover {
+        transform: translateY(-4px);
+        border-color: rgba(97, 218, 251, 0.35);
+        box-shadow: 0 16px 40px rgba(84, 164, 255, 0.12);
+      }
+      .feature:hover::after {
+        opacity: 1;
+      }
+      .feature .ico {
+        width: 42px;
+        height: 42px;
+        border-radius: 11px;
+        display: grid;
+        place-items: center;
+        margin-bottom: 16px;
+        font-family: var(--mono);
+        font-size: 1.1rem;
+        background: rgba(97, 218, 251, 0.1);
+        border: 1px solid rgba(97, 218, 251, 0.22);
+        color: var(--react);
+      }
+      .feature h3 {
+        font-family: var(--display);
+        color: var(--text);
+        font-size: 1.12rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        margin-bottom: 8px;
+      }
+      .feature p {
+        color: var(--muted);
+        font-size: 0.94rem;
+        line-height: 1.6;
+      }
+
+      /* ── Footer ── */
+      footer {
+        text-align: center;
+        padding: 60px 0 70px;
+        border-top: 1px solid var(--line-soft);
+        margin-top: 80px;
+      }
+      footer .fbrand {
+        font-family: var(--mono);
+        font-weight: 700;
+        font-size: 1.05rem;
+        color: var(--text);
+      }
+      footer .fbrand b {
+        color: var(--react);
+      }
+      footer p {
+        color: var(--dim);
+        font-size: 0.9rem;
+        margin-top: 12px;
+      }
+      footer a {
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.16s;
+      }
+      footer a:hover {
+        color: var(--react);
+      }
+
+      /* ── Scroll reveal ── */
+      .reveal {
+        opacity: 0;
+        transform: translateY(24px);
+        transition:
+          opacity 0.7s var(--ease),
+          transform 0.7s var(--ease);
+      }
+      .reveal.in {
+        opacity: 1;
+        transform: none;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation: none !important;
+          transition: none !important;
+        }
+        .reveal {
+          opacity: 1;
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-layer bg-grid"></div>
+    <div class="bg-layer bg-glow"></div>
+    <div class="bg-layer bg-grain"></div>
+
+    <nav>
+      <div class="wrap nav-inner">
+        <a class="brand" href="#top">
+          <img
+            class="mark"
+            src="./icon.png"
+            alt="flutter.tsx logo"
+            width="30"
+            height="30"
+          />
+          <span>flutter<b>.tsx</b></span>
+        </a>
+        <div class="nav-links">
+          <a class="dim-mobile" href="#why">Why</a>
+          <a href="./api-reference.html">API Reference</a>
+          <a
+            class="ghstars"
+            href="https://github.com/archan937/flutter-tsx/stargazers"
+            target="_blank"
+            rel="noopener"
+            aria-label="Star flutter-tsx on GitHub"
+          >
+            <svg
+              viewBox="0 0 16 16"
+              width="14"
+              height="14"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                d="M8 .25l2.06 4.17 4.6.67-3.33 3.24.79 4.59L8 11.42l-4.12 2.16.79-4.59L1.34 5.09l4.6-.67z"
+              />
+            </svg>
+            <span id="gh-stars">Star</span>
+          </a>
+          <a
+            class="ghbtn"
+            href="https://github.com/archan937/flutter-tsx"
+            target="_blank"
+            rel="noopener"
+            >GitHub ↗</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <main class="wrap" id="top">
+      <header>
+        <span class="eyebrow reveal"
+          ><span class="dot"></span> TSX in · Dart out · Flutter 3.44.0</span
+        >
+        <h1 class="reveal">
+          <span class="grad">Write Flutter<br />in TSX.</span>
+        </h1>
+        <img
+          class="hero-mark reveal"
+          src="./icon.png"
+          alt="Flutter.tsx logo"
+          width="124"
+          height="124"
+        />
+        <p class="lead reveal">
+          Build cross-platform
+          <b>Flutter apps in TypeScript&nbsp;+&nbsp;JSX</b>. Compile to
+          idiomatic Dart. Ship everywhere — from one source.
+        </p>
+        <div class="cta-row reveal">
+          <a class="cta primary" href="./api-reference.html"
+            >Browse the API Reference →</a
+          >
+          <button
+            class="cta npm"
+            id="npm"
+            data-cmd="npm create flutter-tsx@latest"
+          >
+            <span class="prompt">$</span>
+            <span class="cmd">npm create flutter-tsx@latest</span>
+            <span class="copy-ico" aria-hidden="true">⧉</span>
+          </button>
+        </div>
+      </header>
+
+      <section class="showcase reveal">
+        <div class="compile-bar">
+          <span>Counter.tsx</span>
+          <span class="arrow">⟶</span>
+          <span>idiomatic Dart · Flutter 3.44.0</span>
+        </div>
+
+        <div class="toggle" role="tablist" id="toggle">
+          <button class="active" data-tab="tsx" role="tab" aria-selected="true">
+            TSX
+          </button>
+          <button data-tab="dart" role="tab" aria-selected="false">DART</button>
+        </div>
+
+        <div class="code-block" style="margin-top: 16px">
+          <div class="window-bar">
+            <span class="lights"><i></i><i></i><i></i></span>
+            <span class="fname" id="fname">src/Counter.tsx</span>
+          </div>
+
+          <div class="tab-panel active" data-panel="tsx">
+            <pre><span class="cmt">// src/Counter.tsx</span>
+<span class="kw">import</span> { MaterialApp, Scaffold, AppBar, Center, ElevatedButton } <span class="kw">from</span> <span class="str">'flutter-tsx'</span>;
+<span class="kw">import</span> { useState } <span class="kw">from</span> <span class="str">'flutter-tsx'</span>;
+
+<span class="kw">export const</span> <span class="fn">Counter</span> = () => {
+  <span class="kw">const</span> [count, setCount] = <span class="fn">useState</span>(<span class="attr">0</span>);
+  <span class="kw">return</span> (
+    &lt;<span class="tag">MaterialApp</span> <span class="attr">title</span>=<span class="str">"Counter"</span>&gt;
+      &lt;<span class="tag">Scaffold</span>&gt;
+        &lt;<span class="tag">AppBar</span> <span class="attr">title</span>=<span class="str">"Counter"</span> /&gt;
+        &lt;<span class="tag">Center</span>&gt;
+          &lt;<span class="tag">ElevatedButton</span> <span class="attr">onClick</span>={() => <span class="fn">setCount</span>(count + <span class="attr">1</span>)}&gt;
+            {<span class="str">'Count: '</span> + count}
+          &lt;/<span class="tag">ElevatedButton</span>&gt;
+        &lt;/<span class="tag">Center</span>&gt;
+      &lt;/<span class="tag">Scaffold</span>&gt;
+    &lt;/<span class="tag">MaterialApp</span>&gt;
+  );
+};</pre>
+          </div>
+
+          <div class="tab-panel" data-panel="dart">
+            <pre><span class="dart-cmt">// GENERATED — do not edit. Source: Counter.tsx</span>
+<span class="kw">import</span> <span class="str">'package:flutter/material.dart'</span>;
+
+<span class="dart-kw">class</span> <span class="dart-cls">Counter</span> <span class="dart-kw">extends</span> <span class="dart-cls">StatefulWidget</span> {
+  <span class="dart-kw">const</span> Counter({<span class="dart-kw">super</span>.key});
+  <span class="dart-ann">@override</span>
+  <span class="dart-cls">State</span>&lt;<span class="dart-cls">Counter</span>&gt; createState() => <span class="dart-cls">_CounterState</span>();
+}
+
+<span class="dart-kw">class</span> <span class="dart-cls">_CounterState</span> <span class="dart-kw">extends</span> <span class="dart-cls">State</span>&lt;<span class="dart-cls">Counter</span>&gt; {
+  <span class="dart-kw">int</span> count = <span class="dart-num">0</span>;
+  <span class="dart-ann">@override</span>
+  <span class="dart-cls">Widget</span> build(<span class="dart-cls">BuildContext</span> context) {
+    <span class="dart-kw">return</span> <span class="dart-cls">MaterialApp</span>(
+      title: <span class="dart-str">'Counter'</span>,
+      home: <span class="dart-cls">Scaffold</span>(
+        appBar: <span class="dart-cls">AppBar</span>(title: <span class="dart-str">'Counter'</span>),
+        body: <span class="dart-cls">Center</span>(
+          child: <span class="dart-cls">ElevatedButton</span>(
+            onPressed: () { setState(() { count = count + <span class="dart-num">1</span>; }); },
+            child: <span class="dart-str">'Count: '</span> + count,
+          ),
+        ),
+      ),
+    );
+  }
+}</pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats reveal" aria-label="By the numbers">
+        <div class="stat">
+          <div class="stat-value" data-count="542">0</div>
+          <div class="stat-label">Flutter Widgets</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" data-count="38">0</div>
+          <div class="stat-label">Native Plugins</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" data-count="12">0</div>
+          <div class="stat-label">Hooks &amp; Core APIs</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" data-count="147">0</div>
+          <div class="stat-label">Enums</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" data-count="770">0</div>
+          <div class="stat-label">Types</div>
+        </div>
+      </section>
+
+      <section class="why" id="why">
+        <div class="section-head reveal">
+          <span class="section-kicker">The pitch</span>
+        </div>
+        <h2 class="reveal">Why <span class="grad">Flutter.tsx</span>?</h2>
+        <p class="why-lead reveal">
+          The developer experience of React Native. The engine, stability, and
+          native power of Flutter. You no longer have to choose.
+        </p>
+
+        <div class="why-prose reveal">
+          <p>
+            Cross-platform has always forced a trade-off.
+            <span class="fw">React&nbsp;Native</span> gives you the syntax the
+            whole industry already knows —
+            <span class="hl">JSX and hooks</span> — but it ships your UI over a
+            JavaScript bridge, leans on a patchwork of community-maintained
+            native modules, and asks you to chase a steady stream of breaking
+            upgrades. <span class="fw">Flutter</span> answers all of that with
+            <span class="hl">a GPU-rendered engine</span>, pixel-perfect
+            consistency, and
+            <span class="hl">the backing of a full-time Google team</span> — but
+            the price of admission is learning Dart and an unfamiliar ecosystem.
+          </p>
+          <p>
+            <span class="fw">Flutter.tsx</span> removes the trade-off. You
+            <span class="hl">write your app in plain TSX</span> — the same
+            components, props, and hooks you already use in
+            <span class="fw">React</span> — and it
+            <span class="hl">compiles to idiomatic Dart</span> that runs
+            directly on <span class="hl">Google's Flutter engine</span>. There
+            is
+            <span class="hl">no bridge and no embedded JavaScript runtime</span
+            >: the output is exactly what a seasoned Flutter engineer would
+            write by hand, so you
+            <span class="hl"
+              >get Flutter's performance with React's ergonomics</span
+            >.
+          </p>
+          <p>
+            And because
+            <span class="hl">you build on top of Flutter</span> rather than
+            reinventing it, the hard parts stay solved for you. Google ships the
+            SDK churn upstream and fsx absorbs it under the hood —
+            <span class="hl">no breaking upgrades to chase</span>. Camera,
+            photos, audio, maps, storage and auth are
+            <span class="hl">typed first-party hooks</span> — not a gamble on an
+            unmaintained npm package. And
+            <span class="hl"
+              >ESLint, Prettier, and end-to-end TypeScript types</span
+            >
+            are wired in from <code>fsx init</code>: every one of the 542
+            widgets is fully typed, so it's autocomplete and red squiggles,
+            never guesswork.
+          </p>
+        </div>
+
+        <p class="cmp-title reveal">React Native vs. Flutter vs. Flutter.tsx</p>
+        <div class="cmp-wrap reveal">
+          <table class="cmp">
+            <thead>
+              <tr>
+                <th>&nbsp;</th>
+                <th>React Native</th>
+                <th>Flutter</th>
+                <th class="col-fsx">Flutter.tsx</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>UI language</td>
+                <td><span class="g yes">✓</span>TypeScript + JSX</td>
+                <td><span class="g no">✗</span>Dart (a new language)</td>
+                <td class="col-fsx">
+                  <span class="g yes">✓</span>TypeScript + JSX (TSX)
+                </td>
+              </tr>
+              <tr>
+                <td>Learning curve</td>
+                <td>
+                  <span class="g yes">✓</span>Low — React knowledge transfers
+                </td>
+                <td>
+                  <span class="g meh">~</span>Steep — new language &amp; idioms
+                </td>
+                <td class="col-fsx">
+                  <span class="g yes">✓</span>Low — write React, ship Flutter
+                </td>
+              </tr>
+              <tr>
+                <td>Rendering model</td>
+                <td><span class="g meh">~</span>JS bridge → native widgets</td>
+                <td>
+                  <span class="g yes">✓</span>Own GPU engine (Skia/Impeller)
+                </td>
+                <td class="col-fsx">
+                  <span class="g yes">✓</span>Flutter engine — no bridge
+                </td>
+              </tr>
+              <tr>
+                <td>Runtime performance</td>
+                <td><span class="g meh">~</span>JS thread + bridge overhead</td>
+                <td><span class="g yes">✓</span>AOT-compiled, 60/120 fps</td>
+                <td class="col-fsx">
+                  <span class="g yes">✓</span>Identical — idiomatic Dart, AOT
+                </td>
+              </tr>
+              <tr>
+                <td>SDK stability</td>
+                <td>
+                  <span class="g no">✗</span>Frequent churn; you chase upgrades
+                </td>
+                <td><span class="g yes">✓</span>Google-managed, stable</td>
+                <td class="col-fsx">
+                  <span class="g yes">✓</span>Google-managed — absorbed for you
+                </td>
+              </tr>
+              <tr>
+                <td>Native capabilities</td>
+                <td>
+                  <span class="g meh">~</span>Community packages, varied upkeep
+                </td>
+                <td>
+                  <span class="g yes">✓</span>First-party + vetted plugins
+                </td>
+                <td class="col-fsx">
+                  <span class="g yes">✓</span>Typed first-party hooks
+                </td>
+              </tr>
+              <tr>
+                <td>Tooling (lint / format / types)</td>
+                <td>
+                  <span class="g meh">~</span>Assemble yourself; config drift
+                </td>
+                <td><span class="g yes">✓</span>Dart analyzer + dartfmt</td>
+                <td class="col-fsx">
+                  <span class="g yes">✓</span>ESLint + Prettier + full TS,
+                  preconfigured
+                </td>
+              </tr>
+              <tr>
+                <td>UI consistency across OSes</td>
+                <td><span class="g meh">~</span>Platform widgets differ</td>
+                <td><span class="g yes">✓</span>Pixel-identical everywhere</td>
+                <td class="col-fsx">
+                  <span class="g yes">✓</span>Pixel-identical everywhere
+                </td>
+              </tr>
+              <tr>
+                <td>Targets</td>
+                <td>
+                  <span class="g meh">~</span>iOS / Android (web &amp; desktop
+                  partial)
+                </td>
+                <td>
+                  <span class="g yes">✓</span>iOS · Android · web · macOS ·
+                  Windows · Linux
+                </td>
+                <td class="col-fsx">
+                  <span class="g yes">✓</span>All six, from one TSX source
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="cmp-note">
+          <span class="yes">✓</span> strength ·
+          <span class="meh">~</span> caveat · <span class="no">✗</span> weakness
+        </p>
+
+        <div class="why-grid">
+          <div class="feature reveal">
+            <div class="ico">&lt;/&gt;</div>
+            <h3>Syntax you already know</h3>
+            <p>
+              Plain TSX + hooks — the most mainstream UI syntax there is. If you
+              write React, you're productive on day one. The Dart is generated
+              for you.
+            </p>
+          </div>
+          <div class="feature reveal">
+            <div class="ico">✓</div>
+            <h3>Real tooling, on by default</h3>
+            <p>
+              ESLint, Prettier, and end-to-end TypeScript types come standard.
+              Every widget prop is typed — autocomplete and red squiggles, not
+              guesswork.
+            </p>
+          </div>
+          <div class="feature reveal">
+            <div class="ico">▲</div>
+            <h3>Stands on Google's Flutter</h3>
+            <p>
+              Flutter is built and maintained by Google. Breaking SDK changes
+              are absorbed under the hood — you write components, not migration
+              scripts.
+            </p>
+          </div>
+          <div class="feature reveal">
+            <div class="ico">⚡</div>
+            <h3>First-party native power</h3>
+            <p>
+              Camera, photos, audio, maps, storage, auth — typed hooks mapping
+              to maintained plugins. No stitching together unvetted community
+              packages.
+            </p>
+          </div>
+          <div class="feature reveal">
+            <div class="ico">◆</div>
+            <h3>Idiomatic Dart, zero runtime</h3>
+            <p>
+              Output is exactly what a Flutter dev would hand-write. No JS
+              bridge, no embedded engine — pure Flutter performance on every
+              target.
+            </p>
+          </div>
+          <div class="feature reveal">
+            <div class="ico">⬡</div>
+            <h3>One codebase, six targets</h3>
+            <p>
+              iOS, Android, web, macOS, Windows, and Linux — from a single TSX
+              source.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <div class="fbrand">flutter<b>.tsx</b></div>
+        <p>
+          <a href="./api-reference.html">API Reference</a> ·
+          <a
+            href="https://github.com/archan937/flutter-tsx"
+            target="_blank"
+            rel="noopener"
+            >GitHub</a
+          >
+          · MIT License
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      // ── Tabs ──
+      (function () {
+        const toggle = document.getElementById('toggle');
+        const fname = document.getElementById('fname');
+        const names = { tsx: 'src/Counter.tsx', dart: 'Counter.g.dart' };
+        toggle.addEventListener('click', function (e) {
+          const btn = e.target.closest('button');
+          if (!btn) return;
+          const tab = btn.dataset.tab;
+          toggle.querySelectorAll('button').forEach(function (b) {
+            const on = b.dataset.tab === tab;
+            b.classList.toggle('active', on);
+            b.setAttribute('aria-selected', String(on));
+          });
+          document.querySelectorAll('.tab-panel').forEach(function (p) {
+            p.classList.toggle('active', p.dataset.panel === tab);
+          });
+          if (fname) fname.textContent = names[tab];
+        });
+      })();
+
+      // ── Live GitHub star count ──
+      (function () {
+        const el = document.getElementById('gh-stars');
+        if (!el) return;
+        fetch('https://api.github.com/repos/archan937/flutter-tsx')
+          .then(function (r) {
+            return r.ok ? r.json() : null;
+          })
+          .then(function (d) {
+            if (d && typeof d.stargazers_count === 'number') {
+              el.textContent = d.stargazers_count.toLocaleString();
+            }
+          })
+          .catch(function () {});
+      })();
+
+      // ── Copy npm command ──
+      (function () {
+        const btn = document.getElementById('npm');
+        const cmdEl = btn.querySelector('.cmd');
+        const original = cmdEl.textContent;
+        btn.addEventListener('click', function () {
+          const text = btn.dataset.cmd;
+          const done = function () {
+            btn.classList.add('copied');
+            cmdEl.textContent = 'copied to clipboard ✓';
+            setTimeout(function () {
+              btn.classList.remove('copied');
+              cmdEl.textContent = original;
+            }, 1600);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done).catch(done);
+          } else {
+            done();
+          }
+        });
+      })();
+
+      // ── Scroll reveal ──
+      (function () {
+        const els = document.querySelectorAll('.reveal');
+        const io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (en) {
+              if (en.isIntersecting) {
+                en.target.classList.add('in');
+                io.unobserve(en.target);
+              }
+            });
+          },
+          { threshold: 0.12 },
+        );
+        els.forEach(function (el, i) {
+          el.style.transitionDelay = Math.min(i * 50, 300) + 'ms';
+          io.observe(el);
+        });
+      })();
+
+      // ── Count-up stats ──
+      (function () {
+        const nums = document.querySelectorAll('[data-count]');
+        const animate = function (el) {
+          const target = parseInt(el.dataset.count, 10);
+          const dur = 1100;
+          const start = performance.now();
+          const step = function (now) {
+            const t = Math.min((now - start) / dur, 1);
+            const eased = 1 - Math.pow(1 - t, 3);
+            el.textContent = Math.round(target * eased).toLocaleString();
+            if (t < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        };
+        const io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (en) {
+              if (en.isIntersecting) {
+                animate(en.target);
+                io.unobserve(en.target);
+              }
+            });
+          },
+          { threshold: 0.5 },
+        );
+        nums.forEach(function (n) {
+          io.observe(n);
+        });
+      })();
+    </script>
+  </body>
+</html>
