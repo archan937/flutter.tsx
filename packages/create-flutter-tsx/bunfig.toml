@@ -1,0 +1,4 @@
+[test]
+timeout = 30000
+coverageThreshold = 1.0
+coverageSkipTestFiles = true

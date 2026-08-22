@@ -1,0 +1,52 @@
+{
+  "name": "create-flutter-tsx",
+  "version": "1.0.0-alpha.0",
+  "private": true,
+  "description": "Scaffold a new Flutter.tsx project — write Flutter apps in TypeScript + JSX.",
+  "keywords": [
+    "flutter",
+    "dart",
+    "tsx",
+    "jsx",
+    "typescript",
+    "cross-platform",
+    "scaffold",
+    "create",
+    "bun"
+  ],
+  "homepage": "https://github.com/archan937/flutter.tsx/tree/master/packages/create-flutter-tsx#readme",
+  "bugs": {
+    "url": "https://github.com/archan937/flutter.tsx/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/archan937/flutter.tsx.git",
+    "directory": "packages/create-flutter-tsx"
+  },
+  "license": "MIT",
+  "author": "Paul Engel",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc",
+    "format": "prettier --write .",
+    "lint": "eslint .",
+    "test": "bun test",
+    "test:coverage": "bun test --coverage",
+    "quality": "bun run typecheck && bun run format && bun run lint && bun run test:coverage"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/bun": "^1.4.0",
+    "eslint": "^10.9.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.6",
+    "eslint-plugin-simple-import-sort": "^14.0.0",
+    "globals": "^17.11.0",
+    "prettier": "^3.9.6",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.67.0"
+  }
+}

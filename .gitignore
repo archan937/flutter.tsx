@@ -1,0 +1,13 @@
+# local-only reference material
+memory/
+
+# local harness settings
+.claude/settings.local.json
+
+# dependencies & build artifacts
+node_modules/
+dist/
+coverage/
+
+# OS noise
+.DS_Store

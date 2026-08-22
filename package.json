@@ -1,0 +1,5 @@
+{
+  "name": "flutter.tsx",
+  "private": true,
+  "workspaces": ["packages/*", "e2e"]
+}
