@@ -79,6 +79,20 @@ points at its subfolder.
 - **Cross-package linking uses Bun workspaces** (true symlinks, never stale). Verified
   alternatives are worse: `link:../path` fails to install; `file:../path` makes stale
   copies.
+- **Bun tracks un-awaited `expect().rejects` assertions** (verified: a slow rejection
+  with a wrong message still fails the test) — so no `await` on `rejects` chains; the
+  typed-`void` signature is honest.
+
+## Code Conventions
+
+- **Path aliases, never parent-relative imports**: `@src/*` and `@test/*` (declared in
+  each package's tsconfig `paths`; Bun resolves them natively). Same-directory
+  `./sibling` imports are fine; `../..` traversals are not.
+- **No raw control bytes in source** — ANSI sequences are written as explicit escapes
+  (`\u001B[2K`), and emitted only when stdout is a TTY.
+- Effect-style deps are injected (see `InstallDeps`): orchestrators stay pure and fully
+  unit-testable; the real I/O lives in one module (`src/sdk/io.ts`) tested against a
+  local `Bun.serve` — unit tests never touch the network.
 
 ## Commands
 
@@ -89,6 +103,9 @@ bun run --filter '*' quality      # quality gate across all workspaces, from the
 # per package (packages/*, e2e):
 bun run quality                    # typecheck + format + lint + test with coverage
 bun run typecheck | format | lint | test | test:coverage
+
+# in packages/flutter-tsx:
+bun bin/fsx.ts install             # download pinned Flutter SDK → ~/.fsx/flutter
 ```
 
 ## Rewrite Roadmap (only checked items exist)
@@ -98,7 +115,9 @@ bun run typecheck | format | lint | test | test:coverage
 - [x] 2b. Verbatim import of the v1 docs site → `docs/` (layout/styling/animations/logos
       preserved exactly; unpublished baseline — content regenerates from verified
       reality later; generator port lands with step 7, deploy with step 30)
-- [ ] 3. SDK downloader — `fsx install` → `~/.fsx/flutter`, pinned version (TS)
+- [x] 3. SDK downloader — `fsx install` → `~/.fsx/flutter`, pinned Flutter 3.47.1,
+      sha256-verified, idempotent via `~/.fsx/sdk-manifest.json` (TS; proven by a real
+      2.1 GB install + `flutter --version`)
 - [ ] 4. SDK extractor — Dart analyzer over SDK source → `ref/api.json` (Dart)
 - [ ] 5. `api.json` schema + validating loader (TS)
 - [ ] 6. Slot-semantics derivation → `ref/derived/slots.json` (TS)

@@ -26,6 +26,9 @@
   "license": "MIT",
   "author": "Paul Engel",
   "type": "module",
+  "bin": {
+    "fsx": "./bin/fsx.ts"
+  },
   "exports": {
     ".": "./src/index.ts"
   },

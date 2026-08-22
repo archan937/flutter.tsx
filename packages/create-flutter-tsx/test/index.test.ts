@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 
-import { CREATE_FLUTTER_TSX_VERSION } from '../src/index';
+import { CREATE_FLUTTER_TSX_VERSION } from '@src/index';
 
 describe('public API surface', () => {
   test('exposes the package version, in sync with package.json', async () => {

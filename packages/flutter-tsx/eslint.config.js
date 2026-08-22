@@ -31,7 +31,7 @@ export default defineConfig(
           groups: [
             ['^\\u0000'],
             ['^node:'],
-            ['^@?(?!(src))\\w'],
+            ['^@?(?!(src|test))\\w'],
             ['^'],
             ['^\\.'],
           ],
@@ -42,6 +42,10 @@ export default defineConfig(
   {
     rules: {
       '@typescript-eslint/explicit-function-return-type': 'error',
+      '@typescript-eslint/restrict-template-expressions': [
+        'error',
+        { allowNumber: true },
+      ],
       '@typescript-eslint/max-params': ['error', { max: 3 }],
       '@typescript-eslint/no-unused-expressions': [
         'error',
