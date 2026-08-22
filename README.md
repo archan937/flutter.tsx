@@ -7,6 +7,9 @@ know. Flutter provides the stable, truly cross-platform runtime. Flutter.tsx bri
 two: you write TSX, the compiler emits the Dart a senior Flutter developer would have
 written by hand.
 
+> 🚧 **Not usable yet.** Flutter.tsx is being rewritten from the ground up (see
+> [Status](#status)); the snippet below is the rewrite's target, not a working example.
+
 ```tsx
 import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
 import { useCamera } from 'flutter-tsx/plugins';
@@ -29,9 +32,10 @@ export const CameraScreen = () => {
 };
 ```
 
-This is not a stylistic sample — it is **conformance fixture #1** of the compiler test
-suite. Native camera access, React state, an async event handler, and conditional
-rendering in twenty lines: every Flutter.tsx API is held to this level of ergonomics.
+This is **conformance fixture #1** of the compiler test suite. Native camera access,
+React state, an async event handler, and conditional rendering in twenty lines: every
+Flutter.tsx API is held to this level of ergonomics, and 1.0 ships only when CI
+transpiles this file, `dart analyze`s the output, and builds it as a real Flutter app.
 
 ## Why
 
