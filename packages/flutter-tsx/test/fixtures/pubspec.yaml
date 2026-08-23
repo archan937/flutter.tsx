@@ -1,0 +1,19 @@
+name: fixtures
+description: >-
+  Golden fixtures for the Flutter.tsx compiler: every expected.dart in this
+  package must be dart-format-stable and analyze clean with flutter_lints —
+  the same gates the compiler output is held to.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.13.0
+  flutter: '>=3.47.0'
+
+dependencies:
+  camera: ^0.12.0
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_lints: ^6.0.0

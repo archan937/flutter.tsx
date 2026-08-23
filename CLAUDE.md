@@ -111,6 +111,15 @@ proof.** E2E is the real sign-off. Concretely:
 - **Assertions are exact full blocks everywhere** — goldens, sweeps, e2e output,
   error messages. Never `contains`-style checks (format both sides with the same
   formatter when needed).
+- **Input-language totality (no unknown-unknowns):** everything a user can type is
+  the union of three finite, closed sets — (1) TypeScript's own `SyntaxKind` enum
+  (~360 node kinds), (2) the built-in stdlib member surface per receiver type
+  (Array/String/Map/Set/Promise/…), (3) our own exports. The compiler must classify
+  every member of all three as supported (trait + golden), forbidden (numbered
+  TSX error), or contextual — enforced by a generated, freshness-gated coverage
+  ledger and by the compiler's default case throwing a numbered diagnostic.
+  Unhandled input can only ever produce a loud precise error, never silent wrong
+  Dart. The ledger lands with step 11's front end.
 
 ## Code Conventions
 
@@ -221,13 +230,39 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       "✓ typechecked" badge + verification explainer. String/number children are
       valid anywhere a widget fits (compiler wraps in Text — DX contract). Widgets
       owning static constants carry them on the component (`Checkbox.width`).
-- [ ] 9. Golden test runner (diff vs `expected.dart` + `dart format` + `dart analyze`);
-      camera snippet checked in red as fixture #1
+- [x] 9. Golden runner live; **conformance fixture #1 is checked in RED**
+      (`test.failing` — the suite stays green, and Bun forces the flip the moment a
+      fixture unexpectedly passes). `test/fixtures/` is a real Dart package
+      (flutter + camera ^0.12.0 + flutter_lints 6): every committed `expected.dart`
+      is proven dart-format-stable and analyze-clean on every run, so the runner's
+      byte-equality against a golden transitively proves format + analyze for
+      compiler output. `01-camera-screen/expected.dart` is the hand-written codegen
+      spec: StatefulWidget lowering, CameraController lifecycle (initState/dispose,
+      mounted guard), async handler → method + setState, `taken &&` →
+      collection-if, string child → const Text. `src/compiler/transpile.ts` exists
+      as the honest not-implemented entry (throws, message pinned by test).
 - [ ] 10. E2E harness — scaffold → install → transpile → `flutter build web`
-- [ ] 11–21. The compiler: front end (TS checker) → IR → Dart AST → emitter, one
-      feature per step, each ending in a green golden fixture; diagnostics with
-      file/line + fix hints
+- [ ] 11–21. The compiler core: front end (TS checker) → IR → Dart AST → emitter, one
+      trait per step, each ending in a green golden fixture; diagnostics with
+      file/line + fix hints. Traits: JSX→constructor · slots (child/children/
+      named/text) · props/positional · string-children→Text · enum/constant props ·
+      value-type prop transforms (color/padding/TextStyle…) · sync+async handlers ·
+      useState→StatefulWidget · useEffect→lifecycle · conditionals · lists ·
+      composition · Fragment + key semantics · **the TSX Strict Mode expression
+      language** (if/switch/for-of/while/try-catch, map/filter/reduce→map/where/fold,
+      `?.`/`??`, template literals, functions with default/rest/destructured params) ·
+      **user-defined types→Dart** (type→class, interface→abstract class, enums,
+      generics, tuples→records) · **multi-file modules** (user imports across files) ·
+      app entry (`runApp` + MaterialApp wiring) · **TSX1001–3002 forbidden-feature
+      error codes** (vision §11 — the full audited input-language inventory,
+      2026-08-23; nothing from the vision docs is dropped silently)
 - [ ] 22–24. Plugins: codegen data, `useCamera` end to end (fixture #1 fully green —
       the trust milestone), then one plugin at a time
+- [ ] 24b. High-level abstractions from the vision (each gated by its own golden +
+      e2e before being documented): `useAsync`/`Query`→FutureBuilder ·
+      `useStream`→StreamBuilder · `createStore`/`useStore`→ChangeNotifier+Provider ·
+      `useNavigation`/`<Router>`→GoRouter · `Modal` · `TabView` · `<Animated>` ·
+      gesture props (onTap/onLongPress→GestureDetector wrap) · `fetch()`→Dart HTTP
+      (mapping choice, e.g. package:http, is an open design decision for Paul)
 - [ ] 25–28. `fsx` CLI (init/dev/build/doctor) + `create-flutter-tsx` scaffolder
 - [ ] 29–31. CI pipeline, docs from fixtures + site deploy, 1.0 publish (Paul triggers)
