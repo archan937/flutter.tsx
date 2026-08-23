@@ -1,4 +1,4 @@
-import type { ApiSnapshot, ParamModel, TypeNode } from '@src/api/model';
+import type { ApiSnapshot, ParamModel, TypeNode } from '../api/model';
 
 export interface ChildrenSlot {
   param: string;

@@ -2,19 +2,24 @@ import { describe, expect, test } from 'bun:test';
 
 import { loadApiSnapshot } from '@src/api/load';
 import { deriveSlots } from '@src/derive/slots';
+import { formatTs } from '@src/generate/format';
 import { buildSitePage } from '@src/site/from-snapshot';
+import { emitExampleProbe } from '@src/site/probe';
 import { buildApiReferenceHtml } from '@src/site/render';
 
-describe('committed docs/api-reference.html', () => {
-  test('is byte-identical to a fresh render of the current snapshot', async () => {
+describe('committed generated docs', () => {
+  test('docs/api-reference.html and the example probe are byte-identical to a fresh render', async () => {
     const snapshot = await loadApiSnapshot();
-    const fresh = buildApiReferenceHtml(
-      buildSitePage(snapshot, deriveSlots(snapshot)),
-    );
+    const page = buildSitePage(snapshot, deriveSlots(snapshot));
 
-    const committed = await Bun.file(
+    const committedHtml = await Bun.file(
       new URL('../../../../docs/api-reference.html', import.meta.url),
     ).text();
-    expect(committed).toBe(fresh);
+    expect(committedHtml).toBe(buildApiReferenceHtml(page));
+
+    const committedProbe = await Bun.file(
+      new URL('__generated__/examples.typecheck.tsx', import.meta.url),
+    ).text();
+    expect(committedProbe).toBe(await formatTs(emitExampleProbe(page)));
   }, 60000);
 });

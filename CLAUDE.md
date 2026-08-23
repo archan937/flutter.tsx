@@ -114,9 +114,11 @@ proof.** E2E is the real sign-off. Concretely:
 
 ## Code Conventions
 
-- **Path aliases, never parent-relative imports**: `@src/*`, `@test/*`, `@scripts/*`
-  (declared in each package's tsconfig `paths`; Bun resolves them natively).
-  Same-directory `./sibling` imports are fine; `../..` traversals are not.
+- **Path aliases in tests/tooling; relative imports in shipped code.** `@src/*`,
+  `@test/*`, `@scripts/*` (tsconfig `paths`, Bun-native) are used in `test/` and
+  `scripts/` only. Files under `src/` are consumed by other packages' compilers,
+  where the aliases cannot resolve — shipped code uses shallow relative imports
+  (this is a package-boundary constraint, proven by the e2e typecheck).
 - **Exact full-block assertions only — TS and Dart alike.** Never partial
   `contains`/`toContain` checks against output: assert the complete expected value
   (full string, full list, full JSON document — formatting both sides with the same
@@ -208,7 +210,17 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       transforms (step 15); synthesized-example typecheck gate lands with step 8's
       JSX wiring; the landing page stays untouched until step 30. Freshness-gated
       byte-for-byte in the test suite (the no-stale-docs rule, mechanized).
-- [ ] 8. Runtime surface — jsx-runtime, hook declarations, `flutter-tsx/plugins`
+- [x] 8. Runtime surface: jsx-runtime + jsx-dev-runtime (automatic JSX, typed JSX
+      namespace, Fragment, key), useState/useEffect compile-target stubs, typed
+      `flutter-tsx/plugins` with `useCamera` (conformance target; codegen at 22–24),
+      public `index.ts`. **The camera snippet typechecks as a real fixture**
+      (`test/fixtures/01-camera-screen/input.tsx`, package self-reference imports) —
+      and immediately caught a generator precedence bug (`() => void | null`).
+      All 349 complete API-reference examples compile via a generated probe
+      (`test/site/__generated__/`, freshness-gated); the reference now shows a
+      "✓ typechecked" badge + verification explainer. String/number children are
+      valid anywhere a widget fits (compiler wraps in Text — DX contract). Widgets
+      owning static constants carry them on the component (`Checkbox.width`).
 - [ ] 9. Golden test runner (diff vs `expected.dart` + `dart format` + `dart analyze`);
       camera snippet checked in red as fixture #1
 - [ ] 10. E2E harness — scaffold → install → transpile → `flutter build web`

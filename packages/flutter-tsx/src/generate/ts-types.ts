@@ -1,4 +1,4 @@
-import type { FunctionParam, TypeNode } from '@src/api/model';
+import type { FunctionParam, TypeNode } from '../api/model';
 
 const SCALAR_TS_TYPES: Record<string, string> = {
   String: 'string',
@@ -45,8 +45,10 @@ export const tsTypeOf = (node: TypeNode): string => {
     case 'enum':
     case 'named':
       return node.name;
-    case 'nullable':
-      return `${tsTypeOf(node.inner)} | null`;
+    case 'nullable': {
+      const inner = tsTypeOf(node.inner);
+      return inner.includes('=>') ? `(${inner}) | null` : `${inner} | null`;
+    }
     case 'list':
     case 'set':
       return `${wrapped(node.item)}[]`;

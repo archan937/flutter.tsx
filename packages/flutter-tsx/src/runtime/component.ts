@@ -1,4 +1,4 @@
-import type { FlutterComponent, WidgetNode } from '@src/runtime/types';
+import type { FlutterComponent, WidgetNode } from './types';
 
 export const declareWidget = <TProps extends object>(
   widgetName: string,

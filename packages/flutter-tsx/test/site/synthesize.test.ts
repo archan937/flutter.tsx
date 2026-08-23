@@ -119,6 +119,40 @@ describe('synthesizeTsx', () => {
     });
   });
 
+  test('map values with non-record keys are incomplete', () => {
+    const params = [
+      param('shortcuts', {
+        kind: 'map',
+        key: { kind: 'named', name: 'ShortcutActivator' },
+        value: { kind: 'named', name: 'Intent' },
+      }),
+    ];
+
+    expect(
+      synthesizeTsx({ widgetName: 'Keys', params, slots: noSlots, context }),
+    ).toEqual({
+      tsx: '<Keys shortcuts={…} />',
+      complete: false,
+    });
+  });
+
+  test('record-keyed map values become empty objects', () => {
+    const params = [
+      param('labels', {
+        kind: 'map',
+        key: { kind: 'scalar', name: 'String' },
+        value: { kind: 'scalar', name: 'int' },
+      }),
+    ];
+
+    expect(
+      synthesizeTsx({ widgetName: 'Tags', params, slots: noSlots, context }),
+    ).toEqual({
+      tsx: '<Tags labels={{}} />',
+      complete: true,
+    });
+  });
+
   test('marks unresolvable required values as incomplete placeholders', () => {
     const params = [param('painter', { kind: 'named', name: 'CustomPainter' })];
 

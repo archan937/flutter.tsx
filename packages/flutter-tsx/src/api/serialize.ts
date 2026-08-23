@@ -5,7 +5,7 @@ import type {
   Entity,
   ParamModel,
   TypeNode,
-} from '@src/api/model';
+} from './model';
 
 const typeNodeToJson = (node: TypeNode): Record<string, unknown> => {
   switch (node.kind) {

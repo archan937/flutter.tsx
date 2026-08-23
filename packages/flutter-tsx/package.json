@@ -30,7 +30,10 @@
     "fsx": "./bin/fsx.ts"
   },
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./jsx-runtime": "./src/runtime/jsx-runtime.ts",
+    "./jsx-dev-runtime": "./src/runtime/jsx-dev-runtime.ts",
+    "./plugins": "./src/runtime/plugins.ts"
   },
   "scripts": {
     "typecheck": "tsc",

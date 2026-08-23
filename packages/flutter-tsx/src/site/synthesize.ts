@@ -1,6 +1,6 @@
-import type { ParamModel, TypeNode } from '@src/api/model';
-import type { WidgetSlots } from '@src/derive/slots';
-import { jsxPropName } from '@src/generate/renames';
+import type { ParamModel, TypeNode } from '../api/model';
+import type { WidgetSlots } from '../derive/slots';
+import { jsxPropName } from '../generate/renames';
 
 export interface SynthesisContext {
   enumValues: Record<string, string>;
@@ -45,7 +45,9 @@ const attrValue = (
     case 'set':
       return '{[]}';
     case 'map':
-      return '{{}}';
+      return type.key.kind === 'scalar' && type.key.name !== 'bool'
+        ? '{{}}'
+        : null;
     default:
       return null;
   }

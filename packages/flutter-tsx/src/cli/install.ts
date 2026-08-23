@@ -1,6 +1,6 @@
 import { homedir } from 'node:os';
 
-import { type InstallDeps, installSdk } from '@src/sdk/install';
+import { type InstallDeps, installSdk } from '../sdk/install';
 import {
   download,
   ensureDir,
@@ -10,15 +10,11 @@ import {
   pathExists,
   remove,
   replaceDir,
-} from '@src/sdk/io';
-import {
-  readManifest,
-  resolveFsxPaths,
-  writeManifest,
-} from '@src/sdk/manifest';
-import { resolveReleaseTarget } from '@src/sdk/platform';
-import { OFFICIAL_RELEASES_BASE_URL } from '@src/sdk/releases';
-import { FLUTTER_VERSION } from '@src/sdk/version';
+} from '../sdk/io';
+import { readManifest, resolveFsxPaths, writeManifest } from '../sdk/manifest';
+import { resolveReleaseTarget } from '../sdk/platform';
+import { OFFICIAL_RELEASES_BASE_URL } from '../sdk/releases';
+import { FLUTTER_VERSION } from '../sdk/version';
 
 const MEGABYTE = 1024 * 1024;
 

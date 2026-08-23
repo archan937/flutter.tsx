@@ -1,5 +1,5 @@
-import type { ApiSnapshot } from '@src/api/model';
-import { parseApiSnapshot } from '@src/api/parse';
+import type { ApiSnapshot } from './model';
+import { parseApiSnapshot } from './parse';
 
 const defaultSnapshotUrl = new URL('../../ref/api.json', import.meta.url);
 

@@ -38,6 +38,15 @@ describe('tsTypeOf', () => {
     );
   });
 
+  test('nullable parenthesizes function types', () => {
+    expect(
+      tsTypeOf({
+        kind: 'nullable',
+        inner: { kind: 'function', returnType: { kind: 'void' }, params: [] },
+      }),
+    ).toBe('(() => void) | null');
+  });
+
   test('collections', () => {
     expect(tsTypeOf({ kind: 'list', item: { kind: 'widget' } })).toBe(
       'FlutterElement[]',

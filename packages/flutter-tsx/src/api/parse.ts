@@ -10,7 +10,7 @@ import {
   SCALAR_NAMES,
   type ScalarName,
   type TypeNode,
-} from '@src/api/model';
+} from './model';
 
 const fail = (path: string, problem: string): never => {
   throw new Error(`api.json: ${path}: ${problem}`);

@@ -1,6 +1,6 @@
-import type { ParamModel, TypeNode } from '@src/api/model';
-import type { ChildrenSlot, WidgetSlots } from '@src/derive/slots';
-import { tsTypeOf } from '@src/generate/ts-types';
+import type { ParamModel, TypeNode } from '../api/model';
+import type { ChildrenSlot, WidgetSlots } from '../derive/slots';
+import { tsTypeOf } from './ts-types';
 
 export const CHILDREN_TS_TYPES: Record<ChildrenSlot['kind'], string> = {
   widgetList: 'FlutterChildren',

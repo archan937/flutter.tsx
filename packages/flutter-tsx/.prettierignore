@@ -6,3 +6,4 @@ extractor/.dart_tool/
 extractor/coverage/
 src/generated/
 test/site/__fixtures__/
+test/site/__generated__/

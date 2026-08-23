@@ -1,8 +1,8 @@
 import prettier from 'prettier';
 
-import { loadApiSnapshot } from '@src/api/load';
-import { deriveSlots } from '@src/derive/slots';
-import { emitConstantsFile, emitWidgetsFile } from '@src/generate/emit';
+import { loadApiSnapshot } from '../api/load';
+import { deriveSlots } from '../derive/slots';
+import { emitConstantsFile, emitGeneratedIndex, emitWidgetsFile } from './emit';
 
 export interface GeneratedFile {
   relativePath: string;
@@ -30,6 +30,10 @@ export const generateAll = async (): Promise<GeneratedFile[]> => {
     {
       relativePath: 'src/generated/constants.ts',
       content: await format(emitConstantsFile(snapshot)),
+    },
+    {
+      relativePath: 'src/generated/index.ts',
+      content: await format(emitGeneratedIndex(snapshot)),
     },
   ];
 };

@@ -3,12 +3,12 @@ import type {
   ConstructorModel,
   ParamModel,
   WidgetEntity,
-} from '@src/api/model';
-import type { SlotMap, WidgetSlots } from '@src/derive/slots';
-import { CHILDREN_TS_TYPES, propTsType } from '@src/generate/prop-type';
-import { jsxPropName } from '@src/generate/renames';
-import type { SitePage, SiteProp, SiteWidget } from '@src/site/model';
-import { type SynthesisContext, synthesizeTsx } from '@src/site/synthesize';
+} from '../api/model';
+import type { SlotMap, WidgetSlots } from '../derive/slots';
+import { CHILDREN_TS_TYPES, propTsType } from '../generate/prop-type';
+import { jsxPropName } from '../generate/renames';
+import type { SitePage, SiteProp, SiteWidget } from './model';
+import { type SynthesisContext, synthesizeTsx } from './synthesize';
 
 const EMPTY_SLOTS: WidgetSlots = { children: null, slots: [] };
 

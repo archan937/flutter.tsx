@@ -5,12 +5,12 @@ import type {
   ParamModel,
   TypeNode,
   WidgetEntity,
-} from '@src/api/model';
-import type { ChildrenSlot, SlotMap, WidgetSlots } from '@src/derive/slots';
-import { dartdocToJsdoc } from '@src/generate/doc';
-import { CHILDREN_TS_TYPES, propTsType } from '@src/generate/prop-type';
-import { jsxPropName } from '@src/generate/renames';
-import { tsTypeOf } from '@src/generate/ts-types';
+} from '../api/model';
+import type { ChildrenSlot, SlotMap, WidgetSlots } from '../derive/slots';
+import { dartdocToJsdoc } from './doc';
+import { CHILDREN_TS_TYPES, propTsType } from './prop-type';
+import { jsxPropName } from './renames';
+import { tsTypeOf } from './ts-types';
 
 const EMPTY_SLOTS: WidgetSlots = { children: null, slots: [] };
 
@@ -115,11 +115,28 @@ const widgetBlocks = (
     `${docPrefix}export interface ${widget.name}Props {\n` +
     `${lines.join('\n')}\n}`;
   const component =
-    `${docPrefix}export const ${widget.name}: ` +
-    `FlutterComponent<${widget.name}Props> =\n` +
-    `  declareWidget<${widget.name}Props>('${widget.name}');`;
+    widget.constants.length === 0
+      ? `${docPrefix}export const ${widget.name}: ` +
+        `FlutterComponent<${widget.name}Props> =\n` +
+        `  declareWidget<${widget.name}Props>('${widget.name}');`
+      : `${docPrefix}export const ${widget.name} = Object.assign(\n` +
+        `  declareWidget<${widget.name}Props>('${widget.name}'),\n` +
+        `  declareConstants<{\n` +
+        widget.constants
+          .map((constant) => indentBlock(constantMember(constant, EMPTY_NAMES)))
+          .join('\n') +
+        `\n  }>('${widget.name}'),\n` +
+        ');';
   return [propsInterface, component];
 };
+
+const EMPTY_NAMES: ReadonlySet<string> = new Set();
+
+const indentBlock = (block: string): string =>
+  block
+    .split('\n')
+    .map((line) => `  ${line}`)
+    .join('\n');
 
 const brandInterface = (
   name: string,
@@ -194,14 +211,15 @@ export const emitWidgetsFile = (
 
   const blocks: string[] = [
     header(snapshot.meta.frameworkVersion),
-    "import { declareWidget } from '@src/runtime/component';\n" +
+    "import { declareWidget } from '../runtime/component';\n" +
+      "import { declareConstants } from '../runtime/constants';\n" +
       'import type {\n' +
       '  FlutterChild,\n' +
       '  FlutterChildren,\n' +
       '  FlutterComponent,\n' +
       '  FlutterElement,\n' +
       '  TextChildren,\n' +
-      "} from '@src/runtime/types';",
+      "} from '../runtime/types';",
   ];
 
   for (const entity of snapshot.entities) {
@@ -219,9 +237,34 @@ export const emitWidgetsFile = (
   return `${blocks.join('\n\n')}\n`;
 };
 
+const constantNamespaceEntities = (snapshot: ApiSnapshot): string[] =>
+  snapshot.entities
+    .filter(
+      (entity) =>
+        entity.kind !== 'enum' &&
+        entity.constants.length > 0 &&
+        !(
+          entity.kind === 'widget' &&
+          entity.constructors.some((constructor) => constructor.name === '')
+        ),
+    )
+    .map((entity) => entity.name);
+
+export const emitGeneratedIndex = (snapshot: ApiSnapshot): string => {
+  const names = constantNamespaceEntities(snapshot).join(', ');
+  return `${[
+    header(snapshot.meta.frameworkVersion),
+    "export * from './widgets';",
+    `export { ${names} } from './constants';`,
+  ].join('\n\n')}\n`;
+};
+
 export const emitConstantsFile = (snapshot: ApiSnapshot): string => {
-  const namespaces = snapshot.entities.filter(
-    (entity) => entity.kind !== 'enum' && entity.constants.length > 0,
+  // Component-rendered widgets carry their statics on the component itself
+  // (Object.assign in widgets.ts) to avoid export collisions.
+  const namespaceNames = new Set(constantNamespaceEntities(snapshot));
+  const namespaces = snapshot.entities.filter((entity) =>
+    namespaceNames.has(entity.name),
   );
 
   const generatedNames = new Set<string>();
@@ -235,7 +278,7 @@ export const emitConstantsFile = (snapshot: ApiSnapshot): string => {
 
   const blocks: string[] = [
     header(snapshot.meta.frameworkVersion),
-    "import { declareConstants } from '@src/runtime/constants';\n" +
+    "import { declareConstants } from '../runtime/constants';\n" +
       "import type * as widgetTypes from './widgets';",
   ];
 

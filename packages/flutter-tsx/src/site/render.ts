@@ -1,4 +1,4 @@
-import type { SiteEnum, SitePage, SiteProp, SiteWidget } from '@src/site/model';
+import type { SiteEnum, SitePage, SiteProp, SiteWidget } from './model';
 
 export const escapeHtml = (raw: string): string =>
   raw
@@ -49,8 +49,11 @@ export const widgetSection = (widget: SiteWidget): string => {
   const summary = cleanDoc(widget.doc, { firstParagraphOnly: true });
   const table = propTable(widget.props);
 
+  const verifiedBadge = widget.exampleComplete
+    ? '<a class="badge badge-pkg" href="#verification">✓ typechecked</a>'
+    : '';
   return `<article class="widget" id="${widget.name}" data-name="${widget.name}">
-<h3>${escapeHtml(widget.name)}<span class="badge badge-lib">${escapeHtml(widget.library)}</span></h3>
+<h3>${escapeHtml(widget.name)}<span class="badge badge-lib">${escapeHtml(widget.library)}</span>${verifiedBadge}</h3>
 ${summary ? `<p class="doc">${escapeHtml(summary)}</p>` : ''}
 ${table}
 <div class="tabs">
@@ -158,6 +161,11 @@ ${navList(page.enums.map((entry) => entry.name))}
 </details>`;
 };
 
+const verificationSection = `<article class="widget" id="verification" data-name="verification">
+<h3>✓ typechecked — what the badge means</h3>
+<p class="doc">Every example carrying the badge is generated into a probe module and compiled by the TypeScript compiler against the published <code>flutter-tsx</code> package surface on every CI run. Examples showing a <code>{…}</code> placeholder need a value kind that prop transforms will make expressible; they are excluded from the probe and carry no badge until then.</p>
+</article>`;
+
 export const pageContent = (page: SitePage): string => {
   const widgetSections = [...byLibrary(page.widgets).entries()]
     .map(
@@ -169,7 +177,7 @@ export const pageContent = (page: SitePage): string => {
   const enumSections = `<h2 id="enums">Enums</h2>\n${page.enums
     .map(enumSection)
     .join('\n')}`;
-  return `${widgetSections}\n${enumSections}`;
+  return `<h2 id="about-verification">Verification</h2>\n${verificationSection}\n${widgetSections}\n${enumSections}`;
 };
 
 export const pageShell = (

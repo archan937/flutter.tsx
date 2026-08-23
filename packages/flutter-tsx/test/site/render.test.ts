@@ -89,7 +89,7 @@ describe('widgetSection', () => {
   test('renders the complete card', () => {
     expect(widgetSection(frame)).toBe(
       `<article class="widget" id="Frame" data-name="Frame">
-<h3>Frame<span class="badge badge-lib">widgets</span></h3>
+<h3>Frame<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A frame around a child.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -167,6 +167,19 @@ describe('navHtml', () => {
 <li data-name="TestAlign"><a href="#TestAlign">TestAlign</a></li>
 </ul>
 </details>`,
+    );
+  });
+});
+
+describe('widgetSection without a verified example', () => {
+  test('carries no badge', () => {
+    const incomplete = { ...frame, exampleComplete: false };
+    expect(widgetSection(incomplete)).not.toBe(widgetSection(frame));
+    expect(widgetSection(incomplete)).toBe(
+      widgetSection(frame).replace(
+        '<a class="badge badge-pkg" href="#verification">✓ typechecked</a>',
+        '',
+      ),
     );
   });
 });
