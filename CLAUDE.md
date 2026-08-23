@@ -199,8 +199,15 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       gate). Extraction expanded to ALL 14 Flutter barrels + dart:ui (1897 entities);
       caught + fixed: the Image widget was shadowed by dart:ui's Image class (widgets
       now win name collisions), and dangling enum refs fail generation loudly.
-- [ ] 7b. Port the v1 API-reference/site generator and regenerate
-      `docs/api-reference.html` from the v2 data (layout byte-preserved)
+- [x] 7b. API-reference generator ported (`src/site/`, `bun run docs`) and
+      `docs/api-reference.html` regenerated from v2 data: 539 widgets (typed props
+      tables, synthesized TSX examples, real extracted Dart constructor signatures)
+      + 217 enums. Shell proven byte-identical to v1 (CSS diff-exact; JS exact modulo
+      the repo rename). Honest content only: no Dart-transpilation output until the
+      compiler exists; 185 examples carry a visible `{…}` placeholder until prop
+      transforms (step 15); synthesized-example typecheck gate lands with step 8's
+      JSX wiring; the landing page stays untouched until step 30. Freshness-gated
+      byte-for-byte in the test suite (the no-stale-docs rule, mechanized).
 - [ ] 8. Runtime surface — jsx-runtime, hook declarations, `flutter-tsx/plugins`
 - [ ] 9. Golden test runner (diff vs `expected.dart` + `dart format` + `dart analyze`);
       camera snippet checked in red as fixture #1
