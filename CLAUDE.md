@@ -143,7 +143,13 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       against the real SDK and a 100%-line Dart coverage gate. Requires
       `flutter update-packages` once (auto-run by `bun run extract`) so `dart:ui`
       types (VoidCallback) resolve.
-- [ ] 5. `api.json` schema + validating loader (TS)
+- [x] 5. `api.json` schema + validating loader (TS) — `src/api/`: typed model
+      (discriminated unions for entities and type nodes), validating parser with
+      path-precise errors, canonical serializer, loader. Proven by a lossless
+      full-file roundtrip: `serialize(parse(api.json))` is byte-identical to the
+      committed 15 MB snapshot. `ref/` is prettier-ignored — the extractor is the
+      sole formatting authority (prettier corrupting `.dart_tool`/`ref` caused a
+      real hang + reformat; both now ignored).
 - [ ] 6. Slot-semantics derivation → `ref/derived/slots.json` (TS)
 - [ ] 7. TS type generator → `src/generated/` (every widget prop typed); regenerate
       API reference after this
