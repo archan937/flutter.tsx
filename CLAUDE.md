@@ -249,7 +249,14 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       (`test/golden/sweep.test.ts`, ≥349 complete examples transpile + analyze).
       Harness scaffolds via `flutter create` for now; switches to the
       create-flutter-tsx template at steps 25–28.
-- [ ] 11–21. The compiler core: front end (TS checker) → IR → Dart AST → emitter, one
+- [x] 11. Compiler front end (`src/compiler/front-end.ts` + `diagnostics.ts`):
+      ts.Program + checker over in-memory TSX; discovers exported arrow components;
+      extracts useState bindings (value/setter/initial + Dart type inferred from the
+      initial value: int/double/String/bool), plugin hooks (import-tracked from
+      `flutter-tsx/plugins`), handlers (async-aware), useEffect calls, and the JSX
+      root. Numbered diagnostics with file:line:column (TSX0100/0102/0103), pinned
+      exactly. Camera fixture analysis asserted in full.
+- [ ] 12–21. The compiler core: IR → Dart AST → emitter, one
       trait per step, each ending in a green golden fixture; diagnostics with
       file/line + fix hints. Traits: JSX→constructor · slots (child/children/
       named/text) · props/positional · string-children→Text · enum/constant props ·
