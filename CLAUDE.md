@@ -241,7 +241,14 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       mounted guard), async handler → method + setState, `taken &&` →
       collection-if, string child → const Text. `src/compiler/transpile.ts` exists
       as the honest not-implemented entry (throws, message pinned by test).
-- [ ] 10. E2E harness — scaffold → install → transpile → `flutter build web`
+- [x] 10. E2E harness + sweep — gap #3 closed. GREEN: fixture #1's certified golden
+      builds as a real Flutter web app (`e2e/test/build-golden.test.ts`:
+      `flutter create` → `pub add camera` → `flutter build web`, ~16 s). RED
+      (`test.failing`, flips when the compiler lands): the same pipeline from
+      `input.tsx` (`build-from-tsx.test.ts`) and the 543-widget analyze sweep
+      (`test/golden/sweep.test.ts`, ≥349 complete examples transpile + analyze).
+      Harness scaffolds via `flutter create` for now; switches to the
+      create-flutter-tsx template at steps 25–28.
 - [ ] 11–21. The compiler core: front end (TS checker) → IR → Dart AST → emitter, one
       trait per step, each ending in a green golden fixture; diagnostics with
       file/line + fix hints. Traits: JSX→constructor · slots (child/children/

@@ -3,3 +3,4 @@ dist/
 coverage/
 .DS_Store
 test/fixtures/.dart_tool/
+test/fixtures/sweep/
