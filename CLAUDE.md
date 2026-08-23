@@ -256,7 +256,13 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       `flutter-tsx/plugins`), handlers (async-aware), useEffect calls, and the JSX
       root. Numbered diagnostics with file:line:column (TSX0100/0102/0103), pinned
       exactly. Camera fixture analysis asserted in full.
-- [ ] 12–21. The compiler core: IR → Dart AST → emitter, one
+- [x] 12. Flutter IR + JSX→IR lowering (`src/compiler/ir.ts` + `lower.ts`): plain-data
+      widget tree with slot-resolved arguments. Lowers attrs (string/number/boolean/
+      enum-validated/handlerRef/stateRef/raw), children per slot kind (text content,
+      single child, lists with `&&` → collection-if, auto Text-wrapping, state refs),
+      stateless/stateful classification. Diagnostics TSX0201–0204 pinned exactly.
+      Camera fixture IR asserted in full.
+- [ ] 13–21. The compiler core: Dart AST → emitter, one
       trait per step, each ending in a green golden fixture; diagnostics with
       file/line + fix hints. Traits: JSX→constructor · slots (child/children/
       named/text) · props/positional · string-children→Text · enum/constant props ·
