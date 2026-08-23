@@ -4,3 +4,4 @@ coverage/
 ref/
 extractor/.dart_tool/
 extractor/coverage/
+src/generated/

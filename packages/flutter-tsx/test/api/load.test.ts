@@ -13,7 +13,7 @@ describe('loadApiSnapshot against the committed ref/api.json', () => {
       dartSdkVersion: '3.13.1',
       frameworkRevision: '6655482ec06e547f90abf8ae7590466f4415978d',
     });
-    expect(snapshot.entities).toHaveLength(1547);
+    expect(snapshot.entities).toHaveLength(1897);
     expect(snapshot.hierarchy.PreferredSizeWidget).toEqual([
       'Widget',
       'DiagnosticableTree',

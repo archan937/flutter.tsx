@@ -114,6 +114,52 @@ void main() {
       ]);
     });
 
+    test('dart:ui extracts engine enums and classes', () async {
+      final home = Platform.environment['HOME'];
+      final flutterRoot =
+          Platform.environment['FSX_FLUTTER_ROOT'] ??
+          path.join(home ?? '', '.fsx', 'flutter');
+      final uiSnapshot = await extractFlutterApi(
+        layout: SdkLayout.resolve(flutterRoot),
+        libraries: const ['dart:ui'],
+      );
+      final uiByName = {
+        for (final entity in uiSnapshot.entities) entity.name: entity,
+      };
+
+      final boxHeightStyle = uiByName['BoxHeightStyle'] as EnumEntity;
+      expect(boxHeightStyle.library, 'ui');
+      expect(boxHeightStyle.values.map((value) => value.name), [
+        'tight',
+        'max',
+        'includeLineSpacingMiddle',
+        'includeLineSpacingTop',
+        'includeLineSpacingBottom',
+        'strut',
+      ]);
+      expect((uiByName['Color'] as ClassEntity?)?.library, 'ui');
+    });
+
+    test(
+      'the Image widget wins the name collision with dart:ui Image',
+      () async {
+        final home = Platform.environment['HOME'];
+        final flutterRoot =
+            Platform.environment['FSX_FLUTTER_ROOT'] ??
+            path.join(home ?? '', '.fsx', 'flutter');
+        final snapshot = await extractFlutterApi(
+          layout: SdkLayout.resolve(flutterRoot),
+          libraries: const ['dart:ui', 'widgets'],
+        );
+        final image = snapshot.entities.singleWhere(
+          (entity) => entity.name == 'Image',
+        );
+
+        expect(image.kind, 'widget');
+        expect(image.library, 'widgets');
+      },
+    );
+
     test('hierarchy covers abstract widget interfaces and non-widgets', () {
       expect(hierarchy['PreferredSizeWidget'], [
         'Widget',

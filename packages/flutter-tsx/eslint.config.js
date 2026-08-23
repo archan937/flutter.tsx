@@ -7,7 +7,16 @@ import tseslint from 'typescript-eslint';
 
 export default defineConfig(
   { files: ['**/*.ts'] },
-  { ignores: ['eslint.config.js', 'dist/', 'node_modules/', 'coverage/'] },
+  {
+    ignores: [
+      'eslint.config.js',
+      'dist/',
+      'node_modules/',
+      'coverage/',
+      // Machine-written, gated by tsc + the generated-freshness test.
+      'src/generated/',
+    ],
+  },
   {
     languageOptions: {
       globals: { ...globals.node, Bun: 'readonly' },
@@ -37,6 +46,14 @@ export default defineConfig(
           ],
         },
       ],
+    },
+  },
+  {
+    // Cast-style factory: the type parameter IS the API (callers pin the
+    // namespace shape), which this rule cannot see.
+    files: ['src/runtime/constants.ts'],
+    rules: {
+      '@typescript-eslint/no-unnecessary-type-parameters': 'off',
     },
   },
   {

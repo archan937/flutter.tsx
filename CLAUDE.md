@@ -83,6 +83,35 @@ points at its subfolder.
   with a wrong message still fails the test) — so no `await` on `rejects` chains; the
   typed-`void` signature is honest.
 
+## Guarantee Model (the no-facade contract)
+
+**Nothing is claimed, documented, or called "supported" without a green end-to-end
+proof.** E2E is the real sign-off. Concretely:
+
+- **Traits, not widgets, get hand-written proofs.** The compiler is data-driven, so
+  golden + e2e fixtures cover 100% of *traits* (~15: children-list, single child,
+  text content, named/typed slots, positional params, enum props, constant props,
+  value-type props, sync/async callbacks, state, effects, conditionals, lists,
+  composition) plus combination fixtures (the camera snippet). A trait proven for
+  Column is proven for Row — same code path.
+- **The exhaustive net is generated, not hand-written:** one minimal TSX usage per
+  widget, auto-generated from its own types, transpiled for ALL 543 widgets and
+  `dart analyze`d in CI. Depth from trait fixtures, breadth from the sweep.
+- **Plugins are sampled by breed** (device-hardware+permissions, storage-like,
+  controller-like, service/auth-like, navigation): 1–2 full e2e per breed
+  (hardware breeds in the opt-in real-device pre-release gate), every other
+  plugin's codegen template mechanically verified; anything without its e2e is
+  marked experimental, never "supported".
+- **Docs are fixtures, structurally:** doc builds *include* fixture source files
+  verbatim — a snippet cannot appear anywhere unless CI transpiled, analyzed, and
+  built it as a real project.
+- **Sign-off ladder (CI, every commit):** analyze sweep (all widgets) → golden
+  diffs (all traits) → `flutter build web` (all doc fixtures) → `flutter run` +
+  scripted interaction (flagship fixtures); real-device gate before any publish.
+- **Assertions are exact full blocks everywhere** — goldens, sweeps, e2e output,
+  error messages. Never `contains`-style checks (format both sides with the same
+  formatter when needed).
+
 ## Code Conventions
 
 - **Path aliases, never parent-relative imports**: `@src/*`, `@test/*`, `@scripts/*`
@@ -119,6 +148,7 @@ bun bin/fsx.ts install             # download pinned Flutter SDK → ~/.fsx/flut
 bun run extract                    # SDK source → ref/api.json (runs flutter
                                    # update-packages first when needed)
 bun run derive                     # api.json → ref/derived/slots.json
+bun run generate                   # api.json + slots → src/generated/*.ts
 bun run verify:api                 # prove committed api.json == fresh extraction
 bun run quality:extractor          # dart format + analyze + tests + 100% coverage gate
 ```
@@ -160,8 +190,17 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       covered; Scaffold/AppBar surfaces pinned exactly against the real SDK; committed
       slots.json is freshness-gated by a test, and `bun run verify:api` proves the
       committed api.json matches a fresh extraction byte-for-byte (CI gate at step 29).
-- [ ] 7. TS type generator → `src/generated/` (every widget prop typed); regenerate
-      API reference after this
+- [x] 7. TS type generator → `src/generated/` (`bun run generate`, freshness-gated):
+      `widgets.ts` (3.2 MB) + `constants.ts` (2.4 MB) — all 543 widgets as typed
+      components with per-prop dartdoc JSDoc, slot-aware `children` typing, enums as
+      literal unions, hierarchy-branded opaque class types (Colors.red: MaterialColor
+      assignable to Color), Icons/Colors/Curves namespaces, onPressed/onTap → onClick.
+      Compile-time proofs in `test/generate/type-safety.typecheck.ts` (@ts-expect-error
+      gate). Extraction expanded to ALL 14 Flutter barrels + dart:ui (1897 entities);
+      caught + fixed: the Image widget was shadowed by dart:ui's Image class (widgets
+      now win name collisions), and dangling enum refs fail generation loudly.
+- [ ] 7b. Port the v1 API-reference/site generator and regenerate
+      `docs/api-reference.html` from the v2 data (layout byte-preserved)
 - [ ] 8. Runtime surface — jsx-runtime, hook declarations, `flutter-tsx/plugins`
 - [ ] 9. Golden test runner (diff vs `expected.dart` + `dart format` + `dart analyze`);
       camera snippet checked in red as fixture #1

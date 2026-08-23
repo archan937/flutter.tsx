@@ -1,0 +1,352 @@
+import { describe, expect, test } from 'bun:test';
+
+import type { ApiSnapshot } from '@src/api/model';
+import type { SlotMap } from '@src/derive/slots';
+import { emitConstantsFile, emitWidgetsFile } from '@src/generate/emit';
+
+const snapshot: ApiSnapshot = {
+  meta: {
+    frameworkVersion: '3.47.1',
+    dartSdkVersion: '3.13.1',
+    frameworkRevision: 'abc123',
+  },
+  hierarchy: {
+    BadgeLike: ['Widget'],
+    Color: [],
+    MaterialColor: ['Color'],
+    Frame: ['StatelessWidget', 'Widget'],
+    Greeting: ['StatelessWidget', 'Widget'],
+  },
+  entities: [
+    {
+      kind: 'widget',
+      name: 'Frame',
+      library: 'widgets',
+      doc: '/// A frame around a child.',
+      supertypes: ['StatelessWidget', 'Widget'],
+      constructors: [
+        {
+          name: '',
+          doc: '/// Creates a frame.',
+          params: [
+            {
+              name: 'key',
+              type: { kind: 'nullable', inner: { kind: 'named', name: 'Key' } },
+              display: 'Key?',
+              named: true,
+              required: false,
+              defaultValue: null,
+              doc: '',
+              deprecated: false,
+            },
+            {
+              name: 'child',
+              type: { kind: 'nullable', inner: { kind: 'widget' } },
+              display: 'Widget?',
+              named: true,
+              required: false,
+              defaultValue: null,
+              doc: '/// The framed child.',
+              deprecated: false,
+            },
+            {
+              name: 'color',
+              type: {
+                kind: 'nullable',
+                inner: { kind: 'named', name: 'Color' },
+              },
+              display: 'Color?',
+              named: true,
+              required: false,
+              defaultValue: null,
+              doc: '/// The fill color.',
+              deprecated: false,
+            },
+            {
+              name: 'alignment',
+              type: { kind: 'enum', name: 'TestAlign' },
+              display: 'TestAlign',
+              named: true,
+              required: true,
+              defaultValue: null,
+              doc: '',
+              deprecated: false,
+            },
+            {
+              name: 'onPressed',
+              type: {
+                kind: 'nullable',
+                inner: {
+                  kind: 'function',
+                  returnType: { kind: 'void' },
+                  params: [],
+                },
+              },
+              display: 'VoidCallback?',
+              named: true,
+              required: false,
+              defaultValue: null,
+              doc: '/// Called when the frame is pressed.',
+              deprecated: false,
+            },
+            {
+              name: 'badge',
+              type: {
+                kind: 'nullable',
+                inner: { kind: 'named', name: 'BadgeLike' },
+              },
+              display: 'BadgeLike?',
+              named: true,
+              required: false,
+              defaultValue: null,
+              doc: '/// The badge shown on the frame.',
+              deprecated: false,
+            },
+            {
+              name: 'legacy',
+              type: {
+                kind: 'nullable',
+                inner: { kind: 'scalar', name: 'String' },
+              },
+              display: 'String?',
+              named: true,
+              required: false,
+              defaultValue: null,
+              doc: '/// The old label.',
+              deprecated: true,
+            },
+          ],
+        },
+      ],
+      constants: [],
+    },
+    {
+      kind: 'widget',
+      name: 'Greeting',
+      library: 'widgets',
+      doc: '/// Shows a greeting.',
+      supertypes: ['StatelessWidget', 'Widget'],
+      constructors: [
+        {
+          name: '',
+          doc: '',
+          params: [
+            {
+              name: 'data',
+              type: { kind: 'scalar', name: 'String' },
+              display: 'String',
+              named: false,
+              required: true,
+              defaultValue: null,
+              doc: '/// The greeting text.',
+              deprecated: false,
+            },
+            {
+              name: 'maxLines',
+              type: {
+                kind: 'nullable',
+                inner: { kind: 'scalar', name: 'int' },
+              },
+              display: 'int?',
+              named: true,
+              required: false,
+              defaultValue: null,
+              doc: '',
+              deprecated: false,
+            },
+          ],
+        },
+      ],
+      constants: [],
+    },
+    {
+      kind: 'class',
+      name: 'TestPalette',
+      library: 'material',
+      doc: '/// Well-known colors.',
+      supertypes: [],
+      constructors: [],
+      constants: [
+        {
+          name: 'main',
+          type: { kind: 'named', name: 'MaterialColor' },
+          display: 'MaterialColor',
+          doc: '/// The main color.',
+        },
+      ],
+    },
+    {
+      kind: 'enum',
+      name: 'TestAlign',
+      library: 'painting',
+      doc: '/// How to align.',
+      values: [
+        { name: 'start', doc: '/// At the start.' },
+        { name: 'end', doc: '/// At the end.' },
+      ],
+    },
+  ],
+};
+
+const slots: SlotMap = {
+  Frame: {
+    children: { param: 'child', kind: 'widget' },
+    slots: [{ param: 'badge', accepts: 'BadgeLike', mode: 'single' }],
+  },
+  Greeting: { children: { param: 'data', kind: 'text' }, slots: [] },
+};
+
+describe('emitWidgetsFile', () => {
+  test('emits the complete widgets module', () => {
+    const expected = `// GENERATED by \`bun run generate\` from ref/api.json — do not edit.
+// Flutter 3.47.1
+
+import { declareWidget } from '@src/runtime/component';
+import type {
+  FlutterChild,
+  FlutterChildren,
+  FlutterComponent,
+  FlutterElement,
+  TextChildren,
+} from '@src/runtime/types';
+
+/**
+ * How to align.
+ */
+export type TestAlign = 'start' | 'end';
+
+export interface BadgeLike {
+  readonly __fsxBrand?: { readonly BadgeLike: true; readonly Widget: true };
+}
+
+export interface Color {
+  readonly __fsxBrand?: { readonly Color: true };
+}
+
+export interface Key {
+  readonly __fsxBrand?: { readonly Key: true };
+}
+
+export interface MaterialColor {
+  readonly __fsxBrand?: { readonly Color: true; readonly MaterialColor: true };
+}
+
+/**
+ * A frame around a child.
+ */
+export interface FrameProps {
+  /**
+   * The framed child.
+   */
+  children?: FlutterChild;
+  /**
+   * The fill color.
+   */
+  color?: Color;
+  alignment: TestAlign;
+  /**
+   * Called when the frame is pressed.
+   */
+  onClick?: () => void;
+  /**
+   * The badge shown on the frame.
+   */
+  badge?: FlutterChild;
+  /**
+   * The old label.
+   *
+   * @deprecated
+   */
+  legacy?: string;
+}
+
+/**
+ * A frame around a child.
+ */
+export const Frame: FlutterComponent<FrameProps> =
+  declareWidget<FrameProps>('Frame');
+
+/**
+ * Shows a greeting.
+ */
+export interface GreetingProps {
+  /**
+   * The greeting text.
+   */
+  children: TextChildren;
+  maxLines?: number;
+}
+
+/**
+ * Shows a greeting.
+ */
+export const Greeting: FlutterComponent<GreetingProps> =
+  declareWidget<GreetingProps>('Greeting');
+`;
+
+    expect(emitWidgetsFile(snapshot, slots)).toBe(expected);
+  });
+});
+
+describe('emitWidgetsFile guards', () => {
+  test('fails loudly when a referenced enum was not extracted', () => {
+    const broken: ApiSnapshot = {
+      ...snapshot,
+      entities: snapshot.entities.map((entity) =>
+        entity.name === 'Frame' && entity.kind === 'widget'
+          ? {
+              ...entity,
+              constructors: [
+                {
+                  name: '',
+                  doc: '',
+                  params: [
+                    {
+                      name: 'behavior',
+                      type: { kind: 'enum', name: 'MissingEnum' },
+                      display: 'MissingEnum',
+                      named: true,
+                      required: true,
+                      defaultValue: null,
+                      doc: '',
+                      deprecated: false,
+                    },
+                  ],
+                },
+              ],
+            }
+          : entity,
+      ),
+    };
+
+    expect(() => emitWidgetsFile(broken, slots)).toThrow(
+      new Error(
+        'generated widgets: enum "MissingEnum" is referenced but not ' +
+          'extracted — extend defaultFlutterLibraries in the extractor.',
+      ),
+    );
+  });
+});
+
+describe('emitConstantsFile', () => {
+  test('emits constant namespaces importing their value types', () => {
+    const expected = `// GENERATED by \`bun run generate\` from ref/api.json — do not edit.
+// Flutter 3.47.1
+
+import { declareConstants } from '@src/runtime/constants';
+import type * as widgetTypes from './widgets';
+
+/**
+ * Well-known colors.
+ */
+export const TestPalette = declareConstants<{
+  /**
+   * The main color.
+   */
+  readonly main: widgetTypes.MaterialColor;
+}>('TestPalette');
+`;
+
+    expect(emitConstantsFile(snapshot)).toBe(expected);
+  });
+});
