@@ -195,8 +195,13 @@ class EnumEntity extends EntityModel {
 }
 
 class ApiSnapshot {
-  const ApiSnapshot({required this.meta, required this.entities});
+  const ApiSnapshot({
+    required this.meta,
+    required this.hierarchy,
+    required this.entities,
+  });
 
   final SdkMeta meta;
+  final Map<String, List<String>> hierarchy;
   final List<EntityModel> entities;
 }

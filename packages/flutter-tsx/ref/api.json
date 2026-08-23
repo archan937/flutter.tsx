@@ -4,6 +4,7313 @@
     "dartSdkVersion": "3.13.1",
     "frameworkRevision": "6655482ec06e547f90abf8ae7590466f4415978d"
   },
+  "hierarchy": {
+    "AboutDialog": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AboutListTile": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AbsorbPointer": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AbstractLayoutBuilder": [
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AbstractNode": [],
+    "Accumulator": [],
+    "Action": [
+      "Diagnosticable"
+    ],
+    "ActionChip": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "ChipAttributes",
+      "TappableChipAttributes",
+      "DisabledChipAttributes"
+    ],
+    "ActionDispatcher": [
+      "Diagnosticable"
+    ],
+    "ActionIconTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ActionIconThemeData": [
+      "Diagnosticable"
+    ],
+    "ActionListener": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Actions": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ActivateAction": [
+      "Action",
+      "Diagnosticable"
+    ],
+    "ActivateIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "Adaptation": [],
+    "AdaptiveTextSelectionToolbar": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AggregatedTimedBlock": [],
+    "AggregatedTimings": [],
+    "AlertDialog": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Align": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AlignTransition": [
+      "AnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Alignment": [
+      "AlignmentGeometry"
+    ],
+    "AlignmentDirectional": [
+      "AlignmentGeometry"
+    ],
+    "AlignmentGeometry": [],
+    "AlignmentGeometryTween": [
+      "Tween",
+      "Animatable"
+    ],
+    "AlignmentTween": [
+      "Tween",
+      "Animatable"
+    ],
+    "AlwaysScrollableScrollPhysics": [
+      "ScrollPhysics"
+    ],
+    "AlwaysStoppedAnimation": [
+      "Animation",
+      "Listenable",
+      "ValueListenable"
+    ],
+    "AndroidMotionEvent": [],
+    "AndroidPointerCoords": [],
+    "AndroidPointerProperties": [],
+    "AndroidView": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AndroidViewController": [
+      "PlatformViewController"
+    ],
+    "AndroidViewSurface": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Animatable": [],
+    "AnimatedAlign": [
+      "ImplicitlyAnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AnimatedBuilder": [
+      "ListenableBuilder",
+      "AnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AnimatedContainer": [
+      "ImplicitlyAnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AnimatedCrossFade": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AnimatedDefaultTextStyle": [
+      "ImplicitlyAnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AnimatedFractionallySizedBox": [
+      "ImplicitlyAnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AnimatedGrid": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AnimatedGridState": [
+      "State",
+      "Diagnosticable",
+      "TickerProviderStateMixin",
+      "TickerProvider"
+    ],
+    "AnimatedIcon": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AnimatedIconData": [],
+    "AnimatedIcons": [],
+    "AnimatedList": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AnimatedListState": [
+      "State",
+      "Diagnosticable",
+      "TickerProviderStateMixin",
+      "TickerProvider"
+    ],
+    "AnimatedModalBarrier": [
+      "AnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AnimatedOpacity": [
+      "ImplicitlyAnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AnimatedPadding": [
+      "ImplicitlyAnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AnimatedPhysicalModel": [
+      "ImplicitlyAnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AnimatedPositioned": [
+      "ImplicitlyAnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AnimatedPositionedDirectional": [
+      "ImplicitlyAnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AnimatedRotation": [
+      "ImplicitlyAnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AnimatedScale": [
+      "ImplicitlyAnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AnimatedSize": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AnimatedSlide": [
+      "ImplicitlyAnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AnimatedSwitcher": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AnimatedTheme": [
+      "ImplicitlyAnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AnimatedWidget": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AnimatedWidgetBaseState": [
+      "ImplicitlyAnimatedWidgetState",
+      "State",
+      "Diagnosticable",
+      "SingleTickerProviderStateMixin",
+      "TickerProvider"
+    ],
+    "Animation": [
+      "Listenable",
+      "ValueListenable"
+    ],
+    "AnimationController": [
+      "Animation",
+      "Listenable",
+      "ValueListenable",
+      "AnimationEagerListenerMixin",
+      "AnimationLocalListenersMixin",
+      "AnimationLocalStatusListenersMixin"
+    ],
+    "AnimationEagerListenerMixin": [],
+    "AnimationLazyListenerMixin": [],
+    "AnimationLocalListenersMixin": [],
+    "AnimationLocalStatusListenersMixin": [],
+    "AnimationMax": [
+      "CompoundAnimation",
+      "Animation",
+      "Listenable",
+      "ValueListenable",
+      "AnimationLazyListenerMixin",
+      "AnimationLocalListenersMixin",
+      "AnimationLocalStatusListenersMixin"
+    ],
+    "AnimationMean": [
+      "CompoundAnimation",
+      "Animation",
+      "Listenable",
+      "ValueListenable",
+      "AnimationLazyListenerMixin",
+      "AnimationLocalListenersMixin",
+      "AnimationLocalStatusListenersMixin"
+    ],
+    "AnimationMin": [
+      "CompoundAnimation",
+      "Animation",
+      "Listenable",
+      "ValueListenable",
+      "AnimationLazyListenerMixin",
+      "AnimationLocalListenersMixin",
+      "AnimationLocalStatusListenersMixin"
+    ],
+    "AnimationStyle": [
+      "Diagnosticable"
+    ],
+    "AnimationWithParentMixin": [],
+    "AnnotatedRegion": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AppBar": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "PreferredSizeWidget"
+    ],
+    "AppBarTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AppBarThemeData": [
+      "Diagnosticable"
+    ],
+    "AppKitView": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AppKitViewController": [
+      "DarwinPlatformViewController"
+    ],
+    "AppLifecycleListener": [
+      "WidgetsBindingObserver",
+      "Diagnosticable"
+    ],
+    "ApplicationSwitcherDescription": [],
+    "AspectRatio": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AssetBundle": [],
+    "AssetBundleImageKey": [],
+    "AssetBundleImageProvider": [
+      "ImageProvider"
+    ],
+    "AssetImage": [
+      "AssetBundleImageProvider",
+      "ImageProvider"
+    ],
+    "AssetManifest": [],
+    "AssetMetadata": [],
+    "AsyncSnapshot": [],
+    "Autocomplete": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AutocompleteFirstOptionIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "AutocompleteHighlightedOption": [
+      "InheritedNotifier",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AutocompleteLastOptionIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "AutocompleteNextOptionIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "AutocompleteNextPageOptionIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "AutocompletePreviousOptionIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "AutocompletePreviousPageOptionIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "AutofillClient": [],
+    "AutofillConfiguration": [],
+    "AutofillGroup": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AutofillGroupState": [
+      "State",
+      "Diagnosticable",
+      "AutofillScopeMixin",
+      "AutofillScope"
+    ],
+    "AutofillHints": [],
+    "AutofillScope": [],
+    "AutofillScopeMixin": [
+      "AutofillScope"
+    ],
+    "AutomaticKeepAlive": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "AutomaticKeepAliveClientMixin": [
+      "State",
+      "Diagnosticable"
+    ],
+    "AutomaticNotchedShape": [
+      "NotchedShape"
+    ],
+    "BackButton": [
+      "IconButton",
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "BackButtonDispatcher": [],
+    "BackButtonIcon": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "BackButtonListener": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "BackdropFilter": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "BackdropGroup": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "BackdropKey": [],
+    "BackgroundIsolateBinaryMessenger": [
+      "BinaryMessenger"
+    ],
+    "Badge": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "BadgeTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "BadgeThemeData": [
+      "Diagnosticable"
+    ],
+    "BallisticScrollActivity": [
+      "ScrollActivity"
+    ],
+    "Banner": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "BannerPainter": [
+      "CustomPainter",
+      "Listenable"
+    ],
+    "BaseRangeSliderTrackShape": [],
+    "BaseSliderTrackShape": [],
+    "Baseline": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "BasicMessageChannel": [],
+    "BeveledRectangleBorder": [
+      "OutlinedBorder",
+      "ShapeBorder"
+    ],
+    "BinaryCodec": [
+      "MessageCodec"
+    ],
+    "BinaryMessenger": [],
+    "BindingBase": [],
+    "BitField": [],
+    "BlockSemantics": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Border": [
+      "BoxBorder",
+      "ShapeBorder"
+    ],
+    "BorderDirectional": [
+      "BoxBorder",
+      "ShapeBorder"
+    ],
+    "BorderRadius": [
+      "BorderRadiusGeometry"
+    ],
+    "BorderRadiusDirectional": [
+      "BorderRadiusGeometry"
+    ],
+    "BorderRadiusGeometry": [],
+    "BorderRadiusTween": [
+      "Tween",
+      "Animatable"
+    ],
+    "BorderSide": [
+      "Diagnosticable"
+    ],
+    "BorderTween": [
+      "Tween",
+      "Animatable"
+    ],
+    "BottomAppBar": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "BottomAppBarTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "BottomAppBarThemeData": [
+      "Diagnosticable"
+    ],
+    "BottomNavigationBar": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "BottomNavigationBarItem": [],
+    "BottomNavigationBarTheme": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "BottomNavigationBarThemeData": [
+      "Diagnosticable"
+    ],
+    "BottomSheet": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "BottomSheetThemeData": [
+      "Diagnosticable"
+    ],
+    "BouncingScrollPhysics": [
+      "ScrollPhysics"
+    ],
+    "BouncingScrollSimulation": [
+      "Simulation"
+    ],
+    "BoundedFrictionSimulation": [
+      "FrictionSimulation",
+      "Simulation"
+    ],
+    "BoxBorder": [
+      "ShapeBorder"
+    ],
+    "BoxConstraints": [
+      "Constraints"
+    ],
+    "BoxConstraintsTween": [
+      "Tween",
+      "Animatable"
+    ],
+    "BoxDecoration": [
+      "Decoration",
+      "Diagnosticable"
+    ],
+    "BoxPainter": [],
+    "BoxScrollView": [
+      "ScrollView",
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "BoxShadow": [
+      "Shadow"
+    ],
+    "BrowserContextMenu": [],
+    "BuildContext": [],
+    "BuildOwner": [],
+    "BuildScope": [],
+    "Builder": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ButtonActivateIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "ButtonBar": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ButtonBarTheme": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ButtonBarThemeData": [
+      "Diagnosticable"
+    ],
+    "ButtonSegment": [],
+    "ButtonStyle": [
+      "Diagnosticable"
+    ],
+    "ButtonStyleButton": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ButtonTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ButtonThemeData": [
+      "Diagnosticable"
+    ],
+    "ByteData": [
+      "TypedData"
+    ],
+    "CachingAssetBundle": [
+      "AssetBundle"
+    ],
+    "CachingIterable": [
+      "Iterable"
+    ],
+    "CalendarDatePicker": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CalendarDelegate": [],
+    "CallbackAction": [
+      "Action",
+      "Diagnosticable"
+    ],
+    "CallbackShortcuts": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Canvas": [],
+    "CapturedThemes": [],
+    "Card": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CardTheme": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CardThemeData": [
+      "Diagnosticable"
+    ],
+    "CarouselController": [
+      "ScrollController",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "CarouselScrollPhysics": [
+      "ScrollPhysics"
+    ],
+    "CarouselView": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CarouselViewTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CarouselViewThemeData": [
+      "Diagnosticable"
+    ],
+    "Category": [],
+    "CatmullRomCurve": [
+      "Curve",
+      "ParametricCurve"
+    ],
+    "CatmullRomSpline": [
+      "Curve2D",
+      "ParametricCurve"
+    ],
+    "Center": [
+      "Align",
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ChangeNotifier": [
+      "Listenable"
+    ],
+    "ChannelBuffers": [],
+    "CharacterActivator": [
+      "ShortcutActivator",
+      "Diagnosticable",
+      "MenuSerializableShortcut"
+    ],
+    "CharacterBoundary": [
+      "TextBoundary"
+    ],
+    "CharacterRange": [
+      "Iterator"
+    ],
+    "Characters": [
+      "Iterable"
+    ],
+    "Checkbox": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CheckboxListTile": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CheckboxMenuButton": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CheckboxTheme": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CheckboxThemeData": [
+      "Diagnosticable"
+    ],
+    "CheckedModeBanner": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CheckedPopupMenuItem": [
+      "PopupMenuItem",
+      "PopupMenuEntry",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CheckmarkableChipAttributes": [],
+    "ChildBackButtonDispatcher": [
+      "BackButtonDispatcher"
+    ],
+    "ChildVicinity": [
+      "Comparable"
+    ],
+    "Chip": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "ChipAttributes",
+      "DeletableChipAttributes"
+    ],
+    "ChipAnimationStyle": [],
+    "ChipAttributes": [],
+    "ChipTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ChipThemeData": [
+      "Diagnosticable"
+    ],
+    "ChoiceChip": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "ChipAttributes",
+      "SelectableChipAttributes",
+      "CheckmarkableChipAttributes",
+      "DisabledChipAttributes"
+    ],
+    "CircleAvatar": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CircleBorder": [
+      "OutlinedBorder",
+      "ShapeBorder"
+    ],
+    "CircularNotchedRectangle": [
+      "NotchedShape"
+    ],
+    "CircularProgressIndicator": [
+      "ProgressIndicator",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ClampedSimulation": [
+      "Simulation"
+    ],
+    "ClampingScrollPhysics": [
+      "ScrollPhysics"
+    ],
+    "ClampingScrollSimulation": [
+      "Simulation"
+    ],
+    "ClipContext": [],
+    "ClipOval": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ClipPath": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ClipRRect": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ClipRSuperellipse": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ClipRect": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Clipboard": [],
+    "ClipboardData": [],
+    "ClipboardStatusNotifier": [
+      "ValueNotifier",
+      "ChangeNotifier",
+      "Listenable",
+      "ValueListenable",
+      "WidgetsBindingObserver"
+    ],
+    "CloseButton": [
+      "IconButton",
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CloseButtonIcon": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Color": [],
+    "ColorFilter": [
+      "ImageFilter"
+    ],
+    "ColorFiltered": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ColorProperty": [
+      "DiagnosticsProperty",
+      "DiagnosticsNode"
+    ],
+    "ColorScheme": [
+      "Diagnosticable"
+    ],
+    "ColorSwatch": [
+      "Color"
+    ],
+    "ColorTween": [
+      "Tween",
+      "Animatable"
+    ],
+    "ColoredBox": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Colors": [],
+    "Column": [
+      "Flex",
+      "MultiChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ComponentElement": [
+      "Element",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "BuildContext"
+    ],
+    "CompositedTransformFollower": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CompositedTransformTarget": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CompoundAnimation": [
+      "Animation",
+      "Listenable",
+      "ValueListenable",
+      "AnimationLazyListenerMixin",
+      "AnimationLocalListenersMixin",
+      "AnimationLocalStatusListenersMixin"
+    ],
+    "ConstantTween": [
+      "Tween",
+      "Animatable"
+    ],
+    "ConstrainedBox": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ConstrainedLayoutBuilder": [
+      "AbstractLayoutBuilder",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ConstraintsTransformBox": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Container": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ContentInsertionConfiguration": [],
+    "ContextAction": [
+      "Action",
+      "Diagnosticable"
+    ],
+    "ContextMenuButtonItem": [],
+    "ContextMenuController": [],
+    "ContinuousRectangleBorder": [
+      "OutlinedBorder",
+      "ShapeBorder"
+    ],
+    "ControlsDetails": [],
+    "CopySelectionTextIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "Cubic": [
+      "Curve",
+      "ParametricCurve"
+    ],
+    "CupertinoActionSheet": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoActionSheetAction": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoActivityIndicator": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoAdaptiveTextSelectionToolbar": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoAlertDialog": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoApp": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoBasedMaterialThemeData": [],
+    "CupertinoButton": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoCheckbox": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoColors": [],
+    "CupertinoContextMenu": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoContextMenuAction": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoDatePicker": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoDesktopTextSelectionControls": [
+      "TextSelectionControls"
+    ],
+    "CupertinoDesktopTextSelectionToolbar": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoDesktopTextSelectionToolbarButton": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoDialogAction": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoDialogRoute": [
+      "RawDialogRoute",
+      "PopupRoute",
+      "ModalRoute",
+      "TransitionRoute",
+      "OverlayRoute",
+      "Route",
+      "PredictiveBackRoute",
+      "LocalHistoryRoute"
+    ],
+    "CupertinoDynamicColor": [
+      "Color",
+      "Diagnosticable"
+    ],
+    "CupertinoExpansionTile": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoFocusHalo": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoFormRow": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoFormSection": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoFullscreenDialogTransition": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoIconThemeData": [
+      "IconThemeData",
+      "Diagnosticable"
+    ],
+    "CupertinoIcons": [],
+    "CupertinoLinearActivityIndicator": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoListSection": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoListTile": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoListTileChevron": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoLocalizations": [],
+    "CupertinoMagnifier": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoMenuAnchor": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoMenuDivider": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "CupertinoMenuEntry"
+    ],
+    "CupertinoMenuEntry": [],
+    "CupertinoMenuItem": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "CupertinoMenuEntry"
+    ],
+    "CupertinoModalPopupRoute": [
+      "PopupRoute",
+      "ModalRoute",
+      "TransitionRoute",
+      "OverlayRoute",
+      "Route",
+      "PredictiveBackRoute",
+      "LocalHistoryRoute"
+    ],
+    "CupertinoNavigationBar": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "ObstructingPreferredSizeWidget",
+      "PreferredSizeWidget"
+    ],
+    "CupertinoNavigationBarBackButton": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoPage": [
+      "Page",
+      "RouteSettings"
+    ],
+    "CupertinoPageRoute": [
+      "PageRoute",
+      "ModalRoute",
+      "TransitionRoute",
+      "OverlayRoute",
+      "Route",
+      "PredictiveBackRoute",
+      "LocalHistoryRoute",
+      "CupertinoRouteTransitionMixin"
+    ],
+    "CupertinoPageScaffold": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoPageScaffoldBackgroundColor": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoPageTransition": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoPageTransitionsBuilder": [
+      "PageTransitionsBuilder"
+    ],
+    "CupertinoPicker": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoPickerDefaultSelectionOverlay": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoPopupSurface": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoRadio": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoRouteTransitionMixin": [
+      "PageRoute",
+      "ModalRoute",
+      "TransitionRoute",
+      "OverlayRoute",
+      "Route",
+      "PredictiveBackRoute",
+      "LocalHistoryRoute"
+    ],
+    "CupertinoScrollBehavior": [
+      "ScrollBehavior"
+    ],
+    "CupertinoScrollbar": [
+      "RawScrollbar",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoSearchTextField": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoSegmentedControl": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoSheetRoute": [
+      "PageRoute",
+      "ModalRoute",
+      "TransitionRoute",
+      "OverlayRoute",
+      "Route",
+      "PredictiveBackRoute",
+      "LocalHistoryRoute"
+    ],
+    "CupertinoSheetTransition": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoSlider": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoSlidingSegmentedControl": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoSliverNavigationBar": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoSliverRefreshControl": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoSpellCheckSuggestionsToolbar": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoSwitch": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoTabBar": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "PreferredSizeWidget"
+    ],
+    "CupertinoTabController": [
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "CupertinoTabScaffold": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoTabView": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoTextField": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoTextFormFieldRow": [
+      "FormField",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoTextMagnifier": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoTextSelectionControls": [
+      "TextSelectionControls"
+    ],
+    "CupertinoTextSelectionHandleControls": [
+      "CupertinoTextSelectionControls",
+      "TextSelectionControls",
+      "TextSelectionHandleControls"
+    ],
+    "CupertinoTextSelectionToolbar": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoTextSelectionToolbarButton": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoTextThemeData": [
+      "Diagnosticable"
+    ],
+    "CupertinoTheme": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoThemeData": [
+      "NoDefaultCupertinoThemeData",
+      "Diagnosticable"
+    ],
+    "CupertinoThumbPainter": [],
+    "CupertinoTimerPicker": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CupertinoUserInterfaceLevel": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Curve": [
+      "ParametricCurve"
+    ],
+    "Curve2D": [
+      "ParametricCurve"
+    ],
+    "Curve2DSample": [],
+    "CurveTween": [
+      "Animatable"
+    ],
+    "CurvedAnimation": [
+      "Animation",
+      "Listenable",
+      "ValueListenable",
+      "AnimationWithParentMixin"
+    ],
+    "Curves": [],
+    "CustomClipper": [
+      "Listenable"
+    ],
+    "CustomMultiChildLayout": [
+      "MultiChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CustomPaint": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CustomPainter": [
+      "Listenable"
+    ],
+    "CustomPainterSemantics": [],
+    "CustomScrollView": [
+      "ScrollView",
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "CustomSingleChildLayout": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DarwinPlatformViewController": [],
+    "DataCell": [],
+    "DataColumn": [],
+    "DataRow": [],
+    "DataTable": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DataTableSource": [
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "DataTableTheme": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DataTableThemeData": [
+      "Diagnosticable"
+    ],
+    "DatePickerDialog": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DatePickerTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DatePickerThemeData": [
+      "Diagnosticable"
+    ],
+    "DateRangePickerDialog": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DateTimeRange": [],
+    "DateUtils": [],
+    "DebugCreator": [],
+    "DecoratedBox": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DecoratedBoxTransition": [
+      "AnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DecoratedSliver": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Decoration": [
+      "Diagnosticable"
+    ],
+    "DecorationImage": [],
+    "DecorationImagePainter": [],
+    "DecorationTween": [
+      "Tween",
+      "Animatable"
+    ],
+    "DefaultAssetBundle": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DefaultCupertinoLocalizations": [
+      "CupertinoLocalizations"
+    ],
+    "DefaultMaterialLocalizations": [
+      "MaterialLocalizations"
+    ],
+    "DefaultPlatformMenuDelegate": [
+      "PlatformMenuDelegate"
+    ],
+    "DefaultProcessTextService": [
+      "ProcessTextService"
+    ],
+    "DefaultSelectionStyle": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DefaultSpellCheckService": [
+      "SpellCheckService"
+    ],
+    "DefaultTabController": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DefaultTextEditingShortcuts": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DefaultTextHeightBehavior": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DefaultTextStyle": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DefaultTextStyleTransition": [
+      "AnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DefaultTransitionDelegate": [
+      "TransitionDelegate"
+    ],
+    "DefaultWidgetsLocalizations": [
+      "WidgetsLocalizations"
+    ],
+    "DeferredComponent": [],
+    "DeletableChipAttributes": [],
+    "DeleteCharacterIntent": [
+      "DirectionalTextEditingIntent",
+      "Intent",
+      "Diagnosticable"
+    ],
+    "DeleteToLineBreakIntent": [
+      "DirectionalTextEditingIntent",
+      "Intent",
+      "Diagnosticable"
+    ],
+    "DeleteToNextWordBoundaryIntent": [
+      "DirectionalTextEditingIntent",
+      "Intent",
+      "Diagnosticable"
+    ],
+    "DeltaTextInputClient": [
+      "TextInputClient"
+    ],
+    "DesktopTextSelectionControls": [
+      "TextSelectionControls"
+    ],
+    "DesktopTextSelectionToolbar": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DesktopTextSelectionToolbarButton": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DesktopTextSelectionToolbarLayoutDelegate": [
+      "SingleChildLayoutDelegate"
+    ],
+    "DevToolsDeepLinkProperty": [
+      "DiagnosticsProperty",
+      "DiagnosticsNode"
+    ],
+    "DeviceOrientationBuilder": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DiagnosticPropertiesBuilder": [],
+    "Diagnosticable": [],
+    "DiagnosticableNode": [
+      "DiagnosticsNode"
+    ],
+    "DiagnosticableTree": [
+      "Diagnosticable"
+    ],
+    "DiagnosticableTreeMixin": [
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DiagnosticableTreeNode": [
+      "DiagnosticableNode",
+      "DiagnosticsNode"
+    ],
+    "DiagnosticsBlock": [
+      "DiagnosticsNode"
+    ],
+    "DiagnosticsNode": [],
+    "DiagnosticsProperty": [
+      "DiagnosticsNode"
+    ],
+    "DiagnosticsSerializationDelegate": [],
+    "DiagnosticsStackTrace": [
+      "DiagnosticsBlock",
+      "DiagnosticsNode"
+    ],
+    "Dialog": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DialogRoute": [
+      "RawDialogRoute",
+      "PopupRoute",
+      "ModalRoute",
+      "TransitionRoute",
+      "OverlayRoute",
+      "Route",
+      "PredictiveBackRoute",
+      "LocalHistoryRoute"
+    ],
+    "DialogTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DialogThemeData": [
+      "Diagnosticable"
+    ],
+    "DirectionalCaretMovementIntent": [
+      "DirectionalTextEditingIntent",
+      "Intent",
+      "Diagnosticable"
+    ],
+    "DirectionalFocusAction": [
+      "Action",
+      "Diagnosticable"
+    ],
+    "DirectionalFocusIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "DirectionalFocusTraversalPolicyMixin": [
+      "FocusTraversalPolicy",
+      "Diagnosticable"
+    ],
+    "DirectionalTextEditingIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "Directionality": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DisableWidgetInspectorScope": [
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DisabledChipAttributes": [],
+    "DismissAction": [
+      "Action",
+      "Diagnosticable"
+    ],
+    "DismissIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "DismissMenuAction": [
+      "DismissAction",
+      "Action",
+      "Diagnosticable"
+    ],
+    "DismissUpdateDetails": [],
+    "Dismissible": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DisplayFeatureSubScreen": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DisposableBuildContext": [],
+    "Divider": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DividerTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DividerThemeData": [
+      "Diagnosticable"
+    ],
+    "DoNothingAction": [
+      "Action",
+      "Diagnosticable"
+    ],
+    "DoNothingAndStopPropagationIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "DoNothingAndStopPropagationTextIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "DoNothingIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "DocumentBoundary": [
+      "TextBoundary"
+    ],
+    "DocumentationIcon": [],
+    "DoubleProperty": [
+      "DiagnosticsProperty",
+      "DiagnosticsNode"
+    ],
+    "DragBoundary": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DragBoundaryDelegate": [],
+    "DragDownDetails": [
+      "PositionedGestureDetails",
+      "Diagnosticable"
+    ],
+    "DragEndDetails": [
+      "PositionedGestureDetails",
+      "Diagnosticable"
+    ],
+    "DragScrollActivity": [
+      "ScrollActivity"
+    ],
+    "DragStartDetails": [
+      "PositionedGestureDetails",
+      "Diagnosticable"
+    ],
+    "DragTarget": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DragTargetDetails": [],
+    "DragUpdateDetails": [
+      "PositionedGestureDetails",
+      "Diagnosticable"
+    ],
+    "Draggable": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DraggableDetails": [],
+    "DraggableScrollableActuator": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DraggableScrollableController": [
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "DraggableScrollableNotification": [
+      "Notification",
+      "ViewportNotificationMixin"
+    ],
+    "DraggableScrollableSheet": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Drawer": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DrawerButton": [
+      "IconButton",
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DrawerButtonIcon": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DrawerController": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DrawerControllerState": [
+      "State",
+      "Diagnosticable",
+      "SingleTickerProviderStateMixin",
+      "TickerProvider"
+    ],
+    "DrawerHeader": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DrawerTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DrawerThemeData": [
+      "Diagnosticable"
+    ],
+    "DrivenScrollActivity": [
+      "ScrollActivity"
+    ],
+    "DropRangeSliderValueIndicatorShape": [
+      "RangeSliderValueIndicatorShape"
+    ],
+    "DropSliderValueIndicatorShape": [
+      "SliderComponentShape"
+    ],
+    "DropdownButton": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DropdownButtonFormField": [
+      "FormField",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DropdownButtonHideUnderline": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DropdownMenu": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DropdownMenuEntry": [],
+    "DropdownMenuFormField": [
+      "FormField",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DropdownMenuItem": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DropdownMenuTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "DropdownMenuThemeData": [
+      "Diagnosticable"
+    ],
+    "DualTransitionBuilder": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Durations": [],
+    "Easing": [],
+    "EdgeDraggingAutoScroller": [],
+    "EdgeInsets": [
+      "EdgeInsetsGeometry"
+    ],
+    "EdgeInsetsDirectional": [
+      "EdgeInsetsGeometry"
+    ],
+    "EdgeInsetsGeometry": [],
+    "EdgeInsetsGeometryTween": [
+      "Tween",
+      "Animatable"
+    ],
+    "EdgeInsetsTween": [
+      "Tween",
+      "Animatable"
+    ],
+    "EditableText": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "EditableTextState": [
+      "State",
+      "Diagnosticable",
+      "AutofillClient",
+      "AutomaticKeepAliveClientMixin",
+      "WidgetsBindingObserver",
+      "TickerProviderStateMixin",
+      "TickerProvider",
+      "TextSelectionDelegate",
+      "TextInputClient"
+    ],
+    "EditableTextTapOutsideIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "EditableTextTapUpOutsideIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "ElasticInCurve": [
+      "Curve",
+      "ParametricCurve"
+    ],
+    "ElasticInOutCurve": [
+      "Curve",
+      "ParametricCurve"
+    ],
+    "ElasticOutCurve": [
+      "Curve",
+      "ParametricCurve"
+    ],
+    "Element": [
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "BuildContext"
+    ],
+    "ElevatedButton": [
+      "ButtonStyleButton",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ElevatedButtonTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ElevatedButtonThemeData": [
+      "Diagnosticable"
+    ],
+    "ElevationOverlay": [],
+    "EmptyTextSelectionControls": [
+      "TextSelectionControls"
+    ],
+    "EnableWidgetInspectorScope": [
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "EndDrawerButton": [
+      "IconButton",
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "EndDrawerButtonIcon": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Endian": [],
+    "EnumProperty": [
+      "DiagnosticsProperty",
+      "DiagnosticsNode"
+    ],
+    "ErrorDescription": [
+      "DiagnosticsProperty",
+      "DiagnosticsNode"
+    ],
+    "ErrorHint": [
+      "DiagnosticsProperty",
+      "DiagnosticsNode"
+    ],
+    "ErrorSpacer": [
+      "DiagnosticsProperty",
+      "DiagnosticsNode"
+    ],
+    "ErrorSummary": [
+      "DiagnosticsProperty",
+      "DiagnosticsNode"
+    ],
+    "ErrorToConsoleDumper": [],
+    "ErrorWidget": [
+      "LeafRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "EventChannel": [],
+    "ExactAssetImage": [
+      "AssetBundleImageProvider",
+      "ImageProvider"
+    ],
+    "ExcludeFocus": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ExcludeFocusTraversal": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ExcludeSemantics": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ExpandIcon": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ExpandSelectionToDocumentBoundaryIntent": [
+      "DirectionalCaretMovementIntent",
+      "DirectionalTextEditingIntent",
+      "Intent",
+      "Diagnosticable"
+    ],
+    "ExpandSelectionToLineBreakIntent": [
+      "DirectionalCaretMovementIntent",
+      "DirectionalTextEditingIntent",
+      "Intent",
+      "Diagnosticable"
+    ],
+    "Expanded": [
+      "Flexible",
+      "ParentDataWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Expansible": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ExpansibleController": [
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "ExpansionPanel": [],
+    "ExpansionPanelList": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ExpansionPanelRadio": [
+      "ExpansionPanel"
+    ],
+    "ExpansionTile": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ExpansionTileTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ExpansionTileThemeData": [
+      "Diagnosticable"
+    ],
+    "ExpensiveAndroidViewController": [
+      "AndroidViewController",
+      "PlatformViewController"
+    ],
+    "ExtendSelectionByCharacterIntent": [
+      "DirectionalCaretMovementIntent",
+      "DirectionalTextEditingIntent",
+      "Intent",
+      "Diagnosticable"
+    ],
+    "ExtendSelectionToDocumentBoundaryIntent": [
+      "DirectionalCaretMovementIntent",
+      "DirectionalTextEditingIntent",
+      "Intent",
+      "Diagnosticable"
+    ],
+    "ExtendSelectionToLineBreakIntent": [
+      "DirectionalCaretMovementIntent",
+      "DirectionalTextEditingIntent",
+      "Intent",
+      "Diagnosticable"
+    ],
+    "ExtendSelectionToNextParagraphBoundaryIntent": [
+      "DirectionalCaretMovementIntent",
+      "DirectionalTextEditingIntent",
+      "Intent",
+      "Diagnosticable"
+    ],
+    "ExtendSelectionToNextParagraphBoundaryOrCaretLocationIntent": [
+      "DirectionalCaretMovementIntent",
+      "DirectionalTextEditingIntent",
+      "Intent",
+      "Diagnosticable"
+    ],
+    "ExtendSelectionToNextWordBoundaryIntent": [
+      "DirectionalCaretMovementIntent",
+      "DirectionalTextEditingIntent",
+      "Intent",
+      "Diagnosticable"
+    ],
+    "ExtendSelectionToNextWordBoundaryOrCaretLocationIntent": [
+      "DirectionalCaretMovementIntent",
+      "DirectionalTextEditingIntent",
+      "Intent",
+      "Diagnosticable"
+    ],
+    "ExtendSelectionVerticallyToAdjacentLineIntent": [
+      "DirectionalCaretMovementIntent",
+      "DirectionalTextEditingIntent",
+      "Intent",
+      "Diagnosticable"
+    ],
+    "ExtendSelectionVerticallyToAdjacentPageIntent": [
+      "DirectionalCaretMovementIntent",
+      "DirectionalTextEditingIntent",
+      "Intent",
+      "Diagnosticable"
+    ],
+    "FabCenterOffsetX": [
+      "StandardFabLocation",
+      "FloatingActionButtonLocation"
+    ],
+    "FabContainedOffsetY": [
+      "StandardFabLocation",
+      "FloatingActionButtonLocation"
+    ],
+    "FabDockedOffsetY": [
+      "StandardFabLocation",
+      "FloatingActionButtonLocation"
+    ],
+    "FabEndOffsetX": [
+      "StandardFabLocation",
+      "FloatingActionButtonLocation"
+    ],
+    "FabFloatOffsetY": [
+      "StandardFabLocation",
+      "FloatingActionButtonLocation"
+    ],
+    "FabMiniOffsetAdjustment": [
+      "StandardFabLocation",
+      "FloatingActionButtonLocation"
+    ],
+    "FabStartOffsetX": [
+      "StandardFabLocation",
+      "FloatingActionButtonLocation"
+    ],
+    "FabTopOffsetY": [
+      "StandardFabLocation",
+      "FloatingActionButtonLocation"
+    ],
+    "Factory": [],
+    "FadeForwardsPageTransitionsBuilder": [
+      "PageTransitionsBuilder"
+    ],
+    "FadeInImage": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "FadeTransition": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "FadeUpwardsPageTransitionsBuilder": [
+      "PageTransitionsBuilder"
+    ],
+    "Feedback": [],
+    "FileImage": [
+      "ImageProvider"
+    ],
+    "FilledButton": [
+      "ButtonStyleButton",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "FilledButtonTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "FilledButtonThemeData": [
+      "Diagnosticable"
+    ],
+    "FilterChip": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "ChipAttributes",
+      "DeletableChipAttributes",
+      "SelectableChipAttributes",
+      "CheckmarkableChipAttributes",
+      "DisabledChipAttributes"
+    ],
+    "FilteringTextInputFormatter": [
+      "TextInputFormatter"
+    ],
+    "FittedBox": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "FittedSizes": [],
+    "FixedColumnWidth": [
+      "TableColumnWidth"
+    ],
+    "FixedExtentMetrics": [
+      "FixedScrollMetrics",
+      "ScrollMetrics"
+    ],
+    "FixedExtentScrollController": [
+      "ScrollController",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "FixedExtentScrollPhysics": [
+      "ScrollPhysics"
+    ],
+    "FixedScrollMetrics": [
+      "ScrollMetrics"
+    ],
+    "FlagProperty": [
+      "DiagnosticsProperty",
+      "DiagnosticsNode"
+    ],
+    "FlagsSummary": [
+      "DiagnosticsProperty",
+      "DiagnosticsNode"
+    ],
+    "Flex": [
+      "MultiChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "FlexColumnWidth": [
+      "TableColumnWidth"
+    ],
+    "Flexible": [
+      "ParentDataWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "FlexibleSpaceBar": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "FlexibleSpaceBarSettings": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "FlippedCurve": [
+      "Curve",
+      "ParametricCurve"
+    ],
+    "FlippedTweenSequence": [
+      "TweenSequence",
+      "Animatable"
+    ],
+    "Float32List": [
+      "TypedDataList",
+      "TypedData",
+      "List",
+      "Iterable",
+      "EfficientLengthIterable",
+      "HideEfficientLengthIterable"
+    ],
+    "Float64List": [
+      "TypedDataList",
+      "TypedData",
+      "List",
+      "Iterable",
+      "EfficientLengthIterable",
+      "HideEfficientLengthIterable"
+    ],
+    "FloatingActionButton": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "FloatingActionButtonAnimator": [],
+    "FloatingActionButtonLocation": [],
+    "FloatingActionButtonTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "FloatingActionButtonThemeData": [
+      "Diagnosticable"
+    ],
+    "FloatingLabelAlignment": [],
+    "Flow": [
+      "MultiChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "FlowDelegate": [],
+    "FlowPaintingContext": [],
+    "FlutterError": [
+      "Error",
+      "AssertionError",
+      "DiagnosticableTreeMixin",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "FlutterErrorDetails": [
+      "Diagnosticable"
+    ],
+    "FlutterLogo": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "FlutterLogoDecoration": [
+      "Decoration",
+      "Diagnosticable"
+    ],
+    "FlutterMemoryAllocations": [],
+    "FlutterTimeline": [],
+    "FlutterVersion": [],
+    "Focus": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "FocusAttachment": [],
+    "FocusManager": [
+      "DiagnosticableTreeMixin",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "FocusNode": [
+      "DiagnosticableTreeMixin",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "FocusOrder": [
+      "Comparable",
+      "Diagnosticable"
+    ],
+    "FocusScope": [
+      "Focus",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "FocusScopeNode": [
+      "FocusNode",
+      "DiagnosticableTreeMixin",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "FocusTraversalGroup": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "FocusTraversalOrder": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "FocusTraversalPolicy": [
+      "Diagnosticable"
+    ],
+    "FocusableActionDetector": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "FontFeature": [],
+    "FontLoader": [],
+    "FontVariation": [],
+    "FontWeight": [],
+    "ForcePressDetails": [
+      "PositionedGestureDetails",
+      "Diagnosticable"
+    ],
+    "Form": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "FormField": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "FormFieldState": [
+      "State",
+      "Diagnosticable",
+      "RestorationMixin"
+    ],
+    "FormState": [
+      "State",
+      "Diagnosticable"
+    ],
+    "FractionColumnWidth": [
+      "TableColumnWidth"
+    ],
+    "FractionalOffset": [
+      "Alignment",
+      "AlignmentGeometry"
+    ],
+    "FractionalOffsetTween": [
+      "Tween",
+      "Animatable"
+    ],
+    "FractionalTranslation": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "FractionallySizedBox": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "FrictionSimulation": [
+      "Simulation"
+    ],
+    "FutureBuilder": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "GLFWKeyHelper": [
+      "KeyHelper"
+    ],
+    "GappedRangeSliderTrackShape": [
+      "RangeSliderTrackShape",
+      "BaseRangeSliderTrackShape"
+    ],
+    "GappedSliderTrackShape": [
+      "SliderTrackShape",
+      "BaseSliderTrackShape"
+    ],
+    "GestureDetector": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "GestureRecognizerFactory": [],
+    "GestureRecognizerFactoryWithHandlers": [
+      "GestureRecognizerFactory"
+    ],
+    "GlobalKey": [
+      "Key"
+    ],
+    "GlobalObjectKey": [
+      "GlobalKey",
+      "Key"
+    ],
+    "GlowingOverscrollIndicator": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "GlyphInfo": [],
+    "Gradient": [],
+    "GradientRotation": [
+      "GradientTransform"
+    ],
+    "GradientTransform": [],
+    "GravitySimulation": [
+      "Simulation"
+    ],
+    "GregorianCalendarDelegate": [
+      "CalendarDelegate"
+    ],
+    "GridPaper": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "GridTile": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "GridTileBar": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "GridView": [
+      "BoxScrollView",
+      "ScrollView",
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "GtkKeyHelper": [
+      "KeyHelper"
+    ],
+    "HSLColor": [],
+    "HSVColor": [],
+    "HandleRangeSliderThumbShape": [
+      "RangeSliderThumbShape"
+    ],
+    "HandleThumbShape": [
+      "SliderComponentShape"
+    ],
+    "HapticFeedback": [],
+    "HardwareKeyboard": [],
+    "HashedObserverList": [
+      "Iterable"
+    ],
+    "Hero": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "HeroController": [
+      "NavigatorObserver"
+    ],
+    "HeroControllerScope": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "HeroMode": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "HoldScrollActivity": [
+      "ScrollActivity",
+      "ScrollHoldController"
+    ],
+    "HtmlElementView": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "HttpClientResponse": [
+      "Stream"
+    ],
+    "HybridAndroidViewController": [
+      "AndroidViewController",
+      "PlatformViewController"
+    ],
+    "IOSSystemContextMenuItem": [],
+    "IOSSystemContextMenuItemCopy": [
+      "IOSSystemContextMenuItem"
+    ],
+    "IOSSystemContextMenuItemCustom": [
+      "IOSSystemContextMenuItem",
+      "Diagnosticable"
+    ],
+    "IOSSystemContextMenuItemCut": [
+      "IOSSystemContextMenuItem"
+    ],
+    "IOSSystemContextMenuItemData": [],
+    "IOSSystemContextMenuItemDataCopy": [
+      "IOSSystemContextMenuItemData"
+    ],
+    "IOSSystemContextMenuItemDataCustom": [
+      "IOSSystemContextMenuItemData",
+      "Diagnosticable"
+    ],
+    "IOSSystemContextMenuItemDataCut": [
+      "IOSSystemContextMenuItemData"
+    ],
+    "IOSSystemContextMenuItemDataLiveText": [
+      "IOSSystemContextMenuItemData"
+    ],
+    "IOSSystemContextMenuItemDataLookUp": [
+      "IOSSystemContextMenuItemData",
+      "Diagnosticable"
+    ],
+    "IOSSystemContextMenuItemDataPaste": [
+      "IOSSystemContextMenuItemData"
+    ],
+    "IOSSystemContextMenuItemDataSearchWeb": [
+      "IOSSystemContextMenuItemData",
+      "Diagnosticable"
+    ],
+    "IOSSystemContextMenuItemDataSelectAll": [
+      "IOSSystemContextMenuItemData"
+    ],
+    "IOSSystemContextMenuItemDataShare": [
+      "IOSSystemContextMenuItemData",
+      "Diagnosticable"
+    ],
+    "IOSSystemContextMenuItemLiveText": [
+      "IOSSystemContextMenuItem"
+    ],
+    "IOSSystemContextMenuItemLookUp": [
+      "IOSSystemContextMenuItem",
+      "Diagnosticable"
+    ],
+    "IOSSystemContextMenuItemPaste": [
+      "IOSSystemContextMenuItem"
+    ],
+    "IOSSystemContextMenuItemSearchWeb": [
+      "IOSSystemContextMenuItem",
+      "Diagnosticable"
+    ],
+    "IOSSystemContextMenuItemSelectAll": [
+      "IOSSystemContextMenuItem"
+    ],
+    "IOSSystemContextMenuItemShare": [
+      "IOSSystemContextMenuItem",
+      "Diagnosticable"
+    ],
+    "Icon": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "IconButton": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "IconButtonTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "IconButtonThemeData": [
+      "Diagnosticable"
+    ],
+    "IconData": [],
+    "IconDataProperty": [
+      "DiagnosticsProperty",
+      "DiagnosticsNode"
+    ],
+    "IconTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "IconThemeData": [
+      "Diagnosticable"
+    ],
+    "Icons": [],
+    "IdleScrollActivity": [
+      "ScrollActivity"
+    ],
+    "IgnoreBaseline": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "IgnorePointer": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Image": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ImageCache": [],
+    "ImageCacheStatus": [],
+    "ImageChunkEvent": [
+      "Diagnosticable"
+    ],
+    "ImageConfiguration": [],
+    "ImageFilterConfig": [],
+    "ImageFiltered": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ImageIcon": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ImageInfo": [],
+    "ImageProvider": [],
+    "ImageShader": [
+      "Shader"
+    ],
+    "ImageSizeInfo": [],
+    "ImageStream": [
+      "Diagnosticable"
+    ],
+    "ImageStreamCompleter": [
+      "Diagnosticable"
+    ],
+    "ImageStreamCompleterHandle": [],
+    "ImageStreamListener": [],
+    "ImmutableBuffer": [],
+    "ImplicitlyAnimatedWidget": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ImplicitlyAnimatedWidgetState": [
+      "State",
+      "Diagnosticable",
+      "SingleTickerProviderStateMixin",
+      "TickerProvider"
+    ],
+    "IndexedSemantics": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "IndexedSlot": [],
+    "IndexedStack": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "InheritedCupertinoTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "InheritedElement": [
+      "ProxyElement",
+      "ComponentElement",
+      "Element",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "BuildContext"
+    ],
+    "InheritedModel": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "InheritedModelElement": [
+      "InheritedElement",
+      "ProxyElement",
+      "ComponentElement",
+      "Element",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "BuildContext"
+    ],
+    "InheritedNotifier": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "InheritedTheme": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "InheritedWidget": [
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Ink": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "InkDecoration": [
+      "InkFeature"
+    ],
+    "InkFeature": [],
+    "InkHighlight": [
+      "InteractiveInkFeature",
+      "InkFeature"
+    ],
+    "InkResponse": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "InkRipple": [
+      "InteractiveInkFeature",
+      "InkFeature"
+    ],
+    "InkSparkle": [
+      "InteractiveInkFeature",
+      "InkFeature"
+    ],
+    "InkSplash": [
+      "InteractiveInkFeature",
+      "InkFeature"
+    ],
+    "InkWell": [
+      "InkResponse",
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "InlineSpan": [
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "InlineSpanSemanticsInformation": [],
+    "InputBorder": [
+      "ShapeBorder"
+    ],
+    "InputChip": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "ChipAttributes",
+      "DeletableChipAttributes",
+      "SelectableChipAttributes",
+      "CheckmarkableChipAttributes",
+      "DisabledChipAttributes",
+      "TappableChipAttributes"
+    ],
+    "InputDatePickerFormField": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "InputDecoration": [],
+    "InputDecorationTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "InputDecorationThemeData": [
+      "Diagnosticable"
+    ],
+    "InputDecorator": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "InspectorButton": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "InspectorReferenceData": [],
+    "InspectorSelection": [
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "InspectorSerializationDelegate": [
+      "DiagnosticsSerializationDelegate"
+    ],
+    "Int32List": [
+      "TypedDataList",
+      "TypedData",
+      "List",
+      "Iterable",
+      "EfficientLengthIterable",
+      "HideEfficientLengthIterable"
+    ],
+    "Int64List": [
+      "TypedDataList",
+      "TypedData",
+      "List",
+      "Iterable",
+      "EfficientLengthIterable",
+      "HideEfficientLengthIterable"
+    ],
+    "IntProperty": [
+      "DiagnosticsProperty",
+      "DiagnosticsNode"
+    ],
+    "IntTween": [
+      "Tween",
+      "Animatable"
+    ],
+    "Intent": [
+      "Diagnosticable"
+    ],
+    "InteractiveInkFeature": [
+      "InkFeature"
+    ],
+    "InteractiveInkFeatureFactory": [],
+    "InteractiveViewer": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Interval": [
+      "Curve",
+      "ParametricCurve"
+    ],
+    "IntrinsicColumnWidth": [
+      "TableColumnWidth"
+    ],
+    "IntrinsicHeight": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "IntrinsicWidth": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "IterableProperty": [
+      "DiagnosticsProperty",
+      "DiagnosticsNode"
+    ],
+    "JSONMessageCodec": [
+      "MessageCodec"
+    ],
+    "JSONMethodCodec": [
+      "MethodCodec"
+    ],
+    "KeepAlive": [
+      "ParentDataWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "KeepAliveHandle": [
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "KeepAliveNotification": [
+      "Notification"
+    ],
+    "Key": [],
+    "KeyData": [],
+    "KeyDownEvent": [
+      "KeyEvent",
+      "Diagnosticable"
+    ],
+    "KeyEvent": [
+      "Diagnosticable"
+    ],
+    "KeyEventManager": [],
+    "KeyHelper": [],
+    "KeyMessage": [],
+    "KeyRepeatEvent": [
+      "KeyEvent",
+      "Diagnosticable"
+    ],
+    "KeySet": [],
+    "KeyUpEvent": [
+      "KeyEvent",
+      "Diagnosticable"
+    ],
+    "KeyboardInsertedContent": [],
+    "KeyboardKey": [
+      "Diagnosticable"
+    ],
+    "KeyboardListener": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "KeyedSubtree": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "LabeledGlobalKey": [
+      "GlobalKey",
+      "Key"
+    ],
+    "LayerLink": [],
+    "LayoutBuilder": [
+      "ConstrainedLayoutBuilder",
+      "AbstractLayoutBuilder",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "LayoutChangedNotification": [
+      "Notification"
+    ],
+    "LayoutId": [
+      "ParentDataWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "LeafRenderObjectElement": [
+      "RenderObjectElement",
+      "Element",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "BuildContext"
+    ],
+    "LeafRenderObjectWidget": [
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "LengthLimitingTextInputFormatter": [
+      "TextInputFormatter"
+    ],
+    "LexicalFocusOrder": [
+      "FocusOrder",
+      "Comparable",
+      "Diagnosticable"
+    ],
+    "LicenseEntry": [],
+    "LicenseEntryWithLineBreaks": [
+      "LicenseEntry"
+    ],
+    "LicensePage": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "LicenseParagraph": [],
+    "LicenseRegistry": [],
+    "LimitedBox": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "LineBoundary": [
+      "TextBoundary"
+    ],
+    "LineMetrics": [],
+    "LinearBorder": [
+      "OutlinedBorder",
+      "ShapeBorder"
+    ],
+    "LinearBorderEdge": [],
+    "LinearGradient": [
+      "Gradient"
+    ],
+    "LinearProgressIndicator": [
+      "ProgressIndicator",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ListBody": [
+      "MultiChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ListTile": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ListTileTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ListTileThemeData": [
+      "Diagnosticable"
+    ],
+    "ListView": [
+      "BoxScrollView",
+      "ScrollView",
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ListWheelChildBuilderDelegate": [
+      "ListWheelChildDelegate"
+    ],
+    "ListWheelChildDelegate": [],
+    "ListWheelChildListDelegate": [
+      "ListWheelChildDelegate"
+    ],
+    "ListWheelChildLoopingListDelegate": [
+      "ListWheelChildDelegate"
+    ],
+    "ListWheelElement": [
+      "RenderObjectElement",
+      "Element",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "BuildContext",
+      "ListWheelChildManager"
+    ],
+    "ListWheelScrollView": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ListWheelViewport": [
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Listenable": [],
+    "ListenableBuilder": [
+      "AnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Listener": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "LiveText": [],
+    "LiveTextInputStatusNotifier": [
+      "ValueNotifier",
+      "ChangeNotifier",
+      "Listenable",
+      "ValueListenable",
+      "WidgetsBindingObserver"
+    ],
+    "LocalHistoryEntry": [],
+    "LocalHistoryRoute": [
+      "Route"
+    ],
+    "LocalKey": [
+      "Key"
+    ],
+    "Locale": [],
+    "Localizations": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "LocalizationsDelegate": [],
+    "LocalizationsResolver": [
+      "ChangeNotifier",
+      "Listenable",
+      "WidgetsBindingObserver"
+    ],
+    "LogicalKeySet": [
+      "KeySet",
+      "ShortcutActivator",
+      "Diagnosticable"
+    ],
+    "LogicalKeyboardKey": [
+      "KeyboardKey",
+      "Diagnosticable"
+    ],
+    "LongPressDraggable": [
+      "Draggable",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "LongPressEndDetails": [
+      "PositionedGestureDetails",
+      "Diagnosticable"
+    ],
+    "LongPressMoveUpdateDetails": [
+      "PositionedGestureDetails",
+      "Diagnosticable"
+    ],
+    "LongPressStartDetails": [
+      "PositionedGestureDetails",
+      "Diagnosticable"
+    ],
+    "LookupBoundary": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Magnifier": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "MagnifierController": [],
+    "MagnifierDecoration": [],
+    "MagnifierInfo": [],
+    "MaskFilter": [],
+    "Material": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "MaterialAccentColor": [
+      "ColorSwatch",
+      "Color"
+    ],
+    "MaterialApp": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "MaterialBanner": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "MaterialBannerTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "MaterialBannerThemeData": [
+      "Diagnosticable"
+    ],
+    "MaterialBasedCupertinoThemeData": [
+      "CupertinoThemeData",
+      "NoDefaultCupertinoThemeData",
+      "Diagnosticable"
+    ],
+    "MaterialButton": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "MaterialColor": [
+      "ColorSwatch",
+      "Color"
+    ],
+    "MaterialGap": [
+      "MergeableMaterialItem"
+    ],
+    "MaterialInkController": [],
+    "MaterialLocalizations": [],
+    "MaterialPage": [
+      "Page",
+      "RouteSettings"
+    ],
+    "MaterialPageRoute": [
+      "PageRoute",
+      "ModalRoute",
+      "TransitionRoute",
+      "OverlayRoute",
+      "Route",
+      "PredictiveBackRoute",
+      "LocalHistoryRoute",
+      "MaterialRouteTransitionMixin"
+    ],
+    "MaterialPointArcTween": [
+      "Tween",
+      "Animatable"
+    ],
+    "MaterialRectArcTween": [
+      "RectTween",
+      "Tween",
+      "Animatable"
+    ],
+    "MaterialRectCenterArcTween": [
+      "RectTween",
+      "Tween",
+      "Animatable"
+    ],
+    "MaterialRouteTransitionMixin": [
+      "PageRoute",
+      "ModalRoute",
+      "TransitionRoute",
+      "OverlayRoute",
+      "Route",
+      "PredictiveBackRoute",
+      "LocalHistoryRoute"
+    ],
+    "MaterialScrollBehavior": [
+      "ScrollBehavior"
+    ],
+    "MaterialSlice": [
+      "MergeableMaterialItem"
+    ],
+    "MaterialStateMixin": [
+      "State",
+      "Diagnosticable"
+    ],
+    "MaterialStateOutlineInputBorder": [
+      "OutlineInputBorder",
+      "InputBorder",
+      "ShapeBorder",
+      "WidgetStateProperty"
+    ],
+    "MaterialStateUnderlineInputBorder": [
+      "UnderlineInputBorder",
+      "InputBorder",
+      "ShapeBorder",
+      "WidgetStateProperty"
+    ],
+    "MaterialTextSelectionControls": [
+      "TextSelectionControls"
+    ],
+    "MaterialTextSelectionHandleControls": [
+      "MaterialTextSelectionControls",
+      "TextSelectionControls",
+      "TextSelectionHandleControls"
+    ],
+    "Matrix4": [],
+    "Matrix4Tween": [
+      "Tween",
+      "Animatable"
+    ],
+    "MatrixTransition": [
+      "AnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "MatrixUtils": [],
+    "MaxColumnWidth": [
+      "TableColumnWidth"
+    ],
+    "MediaQuery": [
+      "InheritedModel",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "MediaQueryData": [],
+    "MemoryImage": [
+      "ImageProvider"
+    ],
+    "MenuAcceleratorCallbackBinding": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "MenuAcceleratorLabel": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "MenuAnchor": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "MenuBar": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "MenuBarTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "MenuBarThemeData": [
+      "MenuThemeData",
+      "Diagnosticable"
+    ],
+    "MenuButtonTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "MenuButtonThemeData": [
+      "Diagnosticable"
+    ],
+    "MenuController": [],
+    "MenuItemButton": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "MenuSerializableShortcut": [
+      "ShortcutActivator"
+    ],
+    "MenuStyle": [
+      "Diagnosticable"
+    ],
+    "MenuTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "MenuThemeData": [
+      "Diagnosticable"
+    ],
+    "MergeSemantics": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "MergeableMaterial": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "MergeableMaterialItem": [],
+    "MessageCodec": [],
+    "MessageProperty": [
+      "DiagnosticsProperty",
+      "DiagnosticsNode"
+    ],
+    "MetaData": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "MethodCall": [],
+    "MethodChannel": [],
+    "MethodCodec": [],
+    "MinColumnWidth": [
+      "TableColumnWidth"
+    ],
+    "MissingPluginException": [
+      "Exception"
+    ],
+    "ModalBarrier": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ModalBottomSheetRoute": [
+      "PopupRoute",
+      "ModalRoute",
+      "TransitionRoute",
+      "OverlayRoute",
+      "Route",
+      "PredictiveBackRoute",
+      "LocalHistoryRoute"
+    ],
+    "ModalRoute": [
+      "TransitionRoute",
+      "OverlayRoute",
+      "Route",
+      "PredictiveBackRoute",
+      "LocalHistoryRoute"
+    ],
+    "MouseCursor": [
+      "Diagnosticable"
+    ],
+    "MouseCursorManager": [],
+    "MouseCursorSession": [],
+    "MouseRegion": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "MouseTrackerAnnotation": [
+      "Diagnosticable"
+    ],
+    "MultiChildLayoutDelegate": [],
+    "MultiChildRenderObjectElement": [
+      "RenderObjectElement",
+      "Element",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "BuildContext"
+    ],
+    "MultiChildRenderObjectWidget": [
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "MultiFrameImageStreamCompleter": [
+      "ImageStreamCompleter",
+      "Diagnosticable"
+    ],
+    "MultiSelectableSelectionContainerDelegate": [
+      "SelectionContainerDelegate",
+      "SelectionHandler",
+      "ValueListenable",
+      "Listenable",
+      "SelectionRegistrar",
+      "ChangeNotifier"
+    ],
+    "NavigationBar": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "NavigationBarTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "NavigationBarThemeData": [
+      "Diagnosticable"
+    ],
+    "NavigationDestination": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "NavigationDrawer": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "NavigationDrawerDestination": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "NavigationDrawerTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "NavigationDrawerThemeData": [
+      "Diagnosticable"
+    ],
+    "NavigationIndicator": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "NavigationNotification": [
+      "Notification"
+    ],
+    "NavigationRail": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "NavigationRailDestination": [],
+    "NavigationRailTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "NavigationRailThemeData": [
+      "Diagnosticable"
+    ],
+    "NavigationToolbar": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Navigator": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "NavigatorObserver": [],
+    "NavigatorPopHandler": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "NavigatorState": [
+      "State",
+      "Diagnosticable",
+      "TickerProviderStateMixin",
+      "TickerProvider",
+      "RestorationMixin"
+    ],
+    "NestedScrollView": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "NestedScrollViewState": [
+      "State",
+      "Diagnosticable"
+    ],
+    "NestedScrollViewViewport": [
+      "Viewport",
+      "MultiChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "NetworkAssetBundle": [
+      "AssetBundle"
+    ],
+    "NetworkImage": [
+      "ImageProvider"
+    ],
+    "NetworkImageLoadException": [
+      "Exception"
+    ],
+    "NeverScrollableScrollPhysics": [
+      "ScrollPhysics"
+    ],
+    "NextFocusAction": [
+      "Action",
+      "Diagnosticable"
+    ],
+    "NextFocusIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "NoDefaultCupertinoThemeData": [],
+    "NoSplash": [
+      "InteractiveInkFeature",
+      "InkFeature"
+    ],
+    "NotchedShape": [],
+    "NotifiableElementMixin": [
+      "Element",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "BuildContext"
+    ],
+    "Notification": [],
+    "NotificationListener": [
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "NumericFocusOrder": [
+      "FocusOrder",
+      "Comparable",
+      "Diagnosticable"
+    ],
+    "ObjectCreated": [
+      "ObjectEvent"
+    ],
+    "ObjectDisposed": [
+      "ObjectEvent"
+    ],
+    "ObjectEvent": [],
+    "ObjectFlagProperty": [
+      "DiagnosticsProperty",
+      "DiagnosticsNode"
+    ],
+    "ObjectKey": [
+      "LocalKey",
+      "Key"
+    ],
+    "ObserverList": [
+      "Iterable"
+    ],
+    "ObstructingPreferredSizeWidget": [
+      "PreferredSizeWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Offset": [
+      "OffsetBase"
+    ],
+    "Offstage": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "OneFrameImageStreamCompleter": [
+      "ImageStreamCompleter",
+      "Diagnosticable"
+    ],
+    "Opacity": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "OpenUpwardsPageTransitionsBuilder": [
+      "PageTransitionsBuilder"
+    ],
+    "OptionalMethodChannel": [
+      "MethodChannel"
+    ],
+    "OrderedTraversalPolicy": [
+      "FocusTraversalPolicy",
+      "Diagnosticable",
+      "DirectionalFocusTraversalPolicyMixin"
+    ],
+    "OrientationBuilder": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "OutlineInputBorder": [
+      "InputBorder",
+      "ShapeBorder"
+    ],
+    "OutlinedBorder": [
+      "ShapeBorder"
+    ],
+    "OutlinedButton": [
+      "ButtonStyleButton",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "OutlinedButtonTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "OutlinedButtonThemeData": [
+      "Diagnosticable"
+    ],
+    "OvalBorder": [
+      "CircleBorder",
+      "OutlinedBorder",
+      "ShapeBorder"
+    ],
+    "OverflowBar": [
+      "MultiChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "OverflowBox": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Overlay": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "OverlayEntry": [
+      "Listenable"
+    ],
+    "OverlayPortal": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "OverlayPortalController": [],
+    "OverlayRoute": [
+      "Route"
+    ],
+    "OverlayState": [
+      "State",
+      "Diagnosticable",
+      "TickerProviderStateMixin",
+      "TickerProvider"
+    ],
+    "OverscrollIndicatorNotification": [
+      "Notification",
+      "ViewportNotificationMixin"
+    ],
+    "OverscrollNotification": [
+      "ScrollNotification",
+      "LayoutChangedNotification",
+      "Notification",
+      "ViewportNotificationMixin"
+    ],
+    "Padding": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "PaddleRangeSliderValueIndicatorShape": [
+      "RangeSliderValueIndicatorShape"
+    ],
+    "PaddleSliderValueIndicatorShape": [
+      "SliderComponentShape"
+    ],
+    "Page": [
+      "RouteSettings"
+    ],
+    "PageController": [
+      "ScrollController",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "PageMetrics": [
+      "FixedScrollMetrics",
+      "ScrollMetrics"
+    ],
+    "PageRoute": [
+      "ModalRoute",
+      "TransitionRoute",
+      "OverlayRoute",
+      "Route",
+      "PredictiveBackRoute",
+      "LocalHistoryRoute"
+    ],
+    "PageRouteBuilder": [
+      "PageRoute",
+      "ModalRoute",
+      "TransitionRoute",
+      "OverlayRoute",
+      "Route",
+      "PredictiveBackRoute",
+      "LocalHistoryRoute"
+    ],
+    "PageScrollPhysics": [
+      "ScrollPhysics"
+    ],
+    "PageStorage": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "PageStorageBucket": [],
+    "PageStorageKey": [
+      "ValueKey",
+      "LocalKey",
+      "Key"
+    ],
+    "PageTransitionsBuilder": [],
+    "PageTransitionsTheme": [
+      "Diagnosticable"
+    ],
+    "PageView": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "PaginatedDataTable": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "PaginatedDataTableState": [
+      "State",
+      "Diagnosticable"
+    ],
+    "Paint": [],
+    "PaintingBinding": [
+      "BindingBase",
+      "ServicesBinding",
+      "SchedulerBinding"
+    ],
+    "PaintingContext": [
+      "ClipContext"
+    ],
+    "ParagraphBoundary": [
+      "TextBoundary"
+    ],
+    "ParametricCurve": [],
+    "ParentDataElement": [
+      "ProxyElement",
+      "ComponentElement",
+      "Element",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "BuildContext"
+    ],
+    "ParentDataWidget": [
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "PartialStackFrame": [],
+    "PasteTextIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "Path": [],
+    "PercentProperty": [
+      "DoubleProperty",
+      "DiagnosticsProperty",
+      "DiagnosticsNode"
+    ],
+    "PerformanceOverlay": [
+      "LeafRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "PersistentBottomSheetController": [
+      "ScaffoldFeatureController"
+    ],
+    "PersistentHashMap": [],
+    "PhysicalKeyboardKey": [
+      "KeyboardKey",
+      "Diagnosticable"
+    ],
+    "PhysicalModel": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "PhysicalShape": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "PinnedHeaderSliver": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Placeholder": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "PlaceholderDimensions": [],
+    "PlaceholderSpan": [
+      "InlineSpan",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "PlatformAdaptiveIcons": [
+      "Icons"
+    ],
+    "PlatformAssetBundle": [
+      "CachingAssetBundle",
+      "AssetBundle"
+    ],
+    "PlatformDispatcher": [],
+    "PlatformException": [
+      "Exception"
+    ],
+    "PlatformMenu": [
+      "PlatformMenuItem",
+      "Diagnosticable",
+      "DiagnosticableTreeMixin",
+      "DiagnosticableTree"
+    ],
+    "PlatformMenuBar": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "DiagnosticableTreeMixin"
+    ],
+    "PlatformMenuDelegate": [],
+    "PlatformMenuItem": [
+      "Diagnosticable"
+    ],
+    "PlatformMenuItemGroup": [
+      "PlatformMenuItem",
+      "Diagnosticable"
+    ],
+    "PlatformProvidedMenuItem": [
+      "PlatformMenuItem",
+      "Diagnosticable"
+    ],
+    "PlatformRouteInformationProvider": [
+      "RouteInformationProvider",
+      "ValueListenable",
+      "Listenable",
+      "WidgetsBindingObserver",
+      "ChangeNotifier"
+    ],
+    "PlatformSelectableRegionContextMenu": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "PlatformViewController": [],
+    "PlatformViewCreationParams": [],
+    "PlatformViewLink": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "PlatformViewSurface": [
+      "LeafRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "PlatformViewsRegistry": [],
+    "PlatformViewsService": [],
+    "PointerCancelEvent": [
+      "PointerEvent",
+      "Diagnosticable"
+    ],
+    "PointerDownEvent": [
+      "PointerEvent",
+      "Diagnosticable"
+    ],
+    "PointerEnterEvent": [
+      "PointerEvent",
+      "Diagnosticable"
+    ],
+    "PointerEvent": [
+      "Diagnosticable"
+    ],
+    "PointerExitEvent": [
+      "PointerEvent",
+      "Diagnosticable"
+    ],
+    "PointerHoverEvent": [
+      "PointerEvent",
+      "Diagnosticable"
+    ],
+    "PointerMoveEvent": [
+      "PointerEvent",
+      "Diagnosticable"
+    ],
+    "PointerUpEvent": [
+      "PointerEvent",
+      "Diagnosticable"
+    ],
+    "PopEntry": [],
+    "PopNavigatorRouterDelegateMixin": [
+      "RouterDelegate",
+      "Listenable"
+    ],
+    "PopScope": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "PopupMenuButton": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "PopupMenuButtonState": [
+      "State",
+      "Diagnosticable"
+    ],
+    "PopupMenuDivider": [
+      "PopupMenuEntry",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "PopupMenuEntry": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "PopupMenuItem": [
+      "PopupMenuEntry",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "PopupMenuItemState": [
+      "State",
+      "Diagnosticable"
+    ],
+    "PopupMenuTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "PopupMenuThemeData": [
+      "Diagnosticable"
+    ],
+    "PopupRoute": [
+      "ModalRoute",
+      "TransitionRoute",
+      "OverlayRoute",
+      "Route",
+      "PredictiveBackRoute",
+      "LocalHistoryRoute"
+    ],
+    "Positioned": [
+      "ParentDataWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "PositionedDirectional": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "PositionedTransition": [
+      "AnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "PredictiveBackEvent": [],
+    "PredictiveBackFullscreenPageTransitionsBuilder": [
+      "PageTransitionsBuilder"
+    ],
+    "PredictiveBackPageTransitionsBuilder": [
+      "PageTransitionsBuilder"
+    ],
+    "PredictiveBackRoute": [],
+    "PreferredSize": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "PreferredSizeWidget"
+    ],
+    "PreferredSizeWidget": [
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "PreviousFocusAction": [
+      "Action",
+      "Diagnosticable"
+    ],
+    "PreviousFocusIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "PrimaryScrollController": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "PrioritizedAction": [
+      "ContextAction",
+      "Action",
+      "Diagnosticable"
+    ],
+    "PrioritizedIntents": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "ProcessTextAction": [],
+    "ProcessTextService": [],
+    "ProgressIndicator": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ProgressIndicatorTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ProgressIndicatorThemeData": [
+      "Diagnosticable"
+    ],
+    "ProxyAnimation": [
+      "Animation",
+      "Listenable",
+      "ValueListenable",
+      "AnimationLazyListenerMixin",
+      "AnimationLocalListenersMixin",
+      "AnimationLocalStatusListenersMixin"
+    ],
+    "ProxyElement": [
+      "ComponentElement",
+      "Element",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "BuildContext"
+    ],
+    "ProxyWidget": [
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RRect": [],
+    "RSTransform": [],
+    "RSuperellipse": [],
+    "RadialGradient": [
+      "Gradient"
+    ],
+    "Radio": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RadioClient": [],
+    "RadioGroup": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RadioGroupRegistry": [],
+    "RadioListTile": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RadioMenuButton": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RadioTheme": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RadioThemeData": [
+      "Diagnosticable"
+    ],
+    "Radius": [],
+    "RangeLabels": [],
+    "RangeMaintainingScrollPhysics": [
+      "ScrollPhysics"
+    ],
+    "RangeSlider": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RangeSliderThumbShape": [],
+    "RangeSliderTickMarkShape": [],
+    "RangeSliderTrackShape": [],
+    "RangeSliderValueIndicatorShape": [],
+    "RangeValues": [],
+    "RawAutocomplete": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RawChip": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "ChipAttributes",
+      "DeletableChipAttributes",
+      "SelectableChipAttributes",
+      "CheckmarkableChipAttributes",
+      "DisabledChipAttributes",
+      "TappableChipAttributes"
+    ],
+    "RawDialogRoute": [
+      "PopupRoute",
+      "ModalRoute",
+      "TransitionRoute",
+      "OverlayRoute",
+      "Route",
+      "PredictiveBackRoute",
+      "LocalHistoryRoute"
+    ],
+    "RawFloatingCursorPoint": [],
+    "RawGestureDetector": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RawGestureDetectorState": [
+      "State",
+      "Diagnosticable"
+    ],
+    "RawImage": [
+      "LeafRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RawKeyDownEvent": [
+      "RawKeyEvent",
+      "Diagnosticable"
+    ],
+    "RawKeyEvent": [
+      "Diagnosticable"
+    ],
+    "RawKeyEventData": [
+      "Diagnosticable"
+    ],
+    "RawKeyEventDataAndroid": [
+      "RawKeyEventData",
+      "Diagnosticable"
+    ],
+    "RawKeyEventDataFuchsia": [
+      "RawKeyEventData",
+      "Diagnosticable"
+    ],
+    "RawKeyEventDataIos": [
+      "RawKeyEventData",
+      "Diagnosticable"
+    ],
+    "RawKeyEventDataLinux": [
+      "RawKeyEventData",
+      "Diagnosticable"
+    ],
+    "RawKeyEventDataMacOs": [
+      "RawKeyEventData",
+      "Diagnosticable"
+    ],
+    "RawKeyEventDataWeb": [
+      "RawKeyEventData",
+      "Diagnosticable"
+    ],
+    "RawKeyEventDataWindows": [
+      "RawKeyEventData",
+      "Diagnosticable"
+    ],
+    "RawKeyUpEvent": [
+      "RawKeyEvent",
+      "Diagnosticable"
+    ],
+    "RawKeyboard": [],
+    "RawKeyboardListener": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RawMagnifier": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RawMaterialButton": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RawMenuAnchor": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RawMenuAnchorGroup": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RawMenuOverlayInfo": [],
+    "RawRadio": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RawScrollbar": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RawScrollbarState": [
+      "State",
+      "Diagnosticable",
+      "TickerProviderStateMixin",
+      "TickerProvider"
+    ],
+    "RawTooltip": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RawTooltipState": [
+      "State",
+      "Diagnosticable",
+      "SingleTickerProviderStateMixin",
+      "TickerProvider"
+    ],
+    "RawView": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ReadBuffer": [],
+    "ReadingOrderTraversalPolicy": [
+      "FocusTraversalPolicy",
+      "Diagnosticable",
+      "DirectionalFocusTraversalPolicyMixin"
+    ],
+    "Rect": [],
+    "RectTween": [
+      "Tween",
+      "Animatable"
+    ],
+    "RectangularRangeSliderTrackShape": [
+      "RangeSliderTrackShape",
+      "BaseRangeSliderTrackShape"
+    ],
+    "RectangularRangeSliderValueIndicatorShape": [
+      "RangeSliderValueIndicatorShape"
+    ],
+    "RectangularSliderTrackShape": [
+      "SliderTrackShape",
+      "BaseSliderTrackShape"
+    ],
+    "RectangularSliderValueIndicatorShape": [
+      "SliderComponentShape"
+    ],
+    "RedoTextIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "RefreshIndicator": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RefreshIndicatorState": [
+      "State",
+      "Diagnosticable",
+      "TickerProviderStateMixin",
+      "TickerProvider"
+    ],
+    "RefreshProgressIndicator": [
+      "CircularProgressIndicator",
+      "ProgressIndicator",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RelativePositionedTransition": [
+      "AnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RelativeRect": [],
+    "RelativeRectTween": [
+      "Tween",
+      "Animatable"
+    ],
+    "RenderAbstractLayoutBuilderMixin": [
+      "RenderObjectWithChildMixin",
+      "RenderObject",
+      "HitTestTarget",
+      "DiagnosticableTreeMixin",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "RenderObjectWithLayoutCallbackMixin"
+    ],
+    "RenderBox": [
+      "RenderObject",
+      "HitTestTarget",
+      "DiagnosticableTreeMixin",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RenderNestedScrollViewViewport": [
+      "RenderViewport",
+      "RenderViewportBase",
+      "RenderBox",
+      "RenderObject",
+      "HitTestTarget",
+      "DiagnosticableTreeMixin",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "RenderAbstractViewport",
+      "ContainerRenderObjectMixin"
+    ],
+    "RenderObject": [
+      "HitTestTarget",
+      "DiagnosticableTreeMixin",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RenderObjectElement": [
+      "Element",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "BuildContext"
+    ],
+    "RenderObjectToWidgetAdapter": [
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RenderObjectToWidgetElement": [
+      "RenderTreeRootElement",
+      "RenderObjectElement",
+      "Element",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "BuildContext",
+      "RootElementMixin"
+    ],
+    "RenderObjectWidget": [
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RenderSemanticsGestureHandler": [
+      "RenderProxyBoxWithHitTestBehavior",
+      "RenderProxyBox",
+      "RenderBox",
+      "RenderObject",
+      "HitTestTarget",
+      "DiagnosticableTreeMixin",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "RenderObjectWithChildMixin",
+      "RenderProxyBoxMixin"
+    ],
+    "RenderSliverOverlapAbsorber": [
+      "RenderSliver",
+      "RenderObject",
+      "HitTestTarget",
+      "DiagnosticableTreeMixin",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "RenderObjectWithChildMixin"
+    ],
+    "RenderSliverOverlapInjector": [
+      "RenderSliver",
+      "RenderObject",
+      "HitTestTarget",
+      "DiagnosticableTreeMixin",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RenderTapRegion": [
+      "RenderProxyBoxWithHitTestBehavior",
+      "RenderProxyBox",
+      "RenderBox",
+      "RenderObject",
+      "HitTestTarget",
+      "DiagnosticableTreeMixin",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "RenderObjectWithChildMixin",
+      "RenderProxyBoxMixin"
+    ],
+    "RenderTapRegionSurface": [
+      "RenderProxyBoxWithHitTestBehavior",
+      "RenderProxyBox",
+      "RenderBox",
+      "RenderObject",
+      "HitTestTarget",
+      "DiagnosticableTreeMixin",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "RenderObjectWithChildMixin",
+      "RenderProxyBoxMixin",
+      "TapRegionRegistry"
+    ],
+    "RenderTreeRootElement": [
+      "RenderObjectElement",
+      "Element",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "BuildContext"
+    ],
+    "RenderTwoDimensionalViewport": [
+      "RenderBox",
+      "RenderObject",
+      "HitTestTarget",
+      "DiagnosticableTreeMixin",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "RenderAbstractViewport"
+    ],
+    "ReorderableDelayedDragStartListener": [
+      "ReorderableDragStartListener",
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ReorderableDragStartListener": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ReorderableList": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ReorderableListState": [
+      "State",
+      "Diagnosticable"
+    ],
+    "ReorderableListView": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RepaintBoundary": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RepeatingAnimationBuilder": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RepetitiveStackFrameFilter": [
+      "StackFilter"
+    ],
+    "ReplaceTextIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "RequestFocusAction": [
+      "Action",
+      "Diagnosticable"
+    ],
+    "RequestFocusIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "ResizeImage": [
+      "ImageProvider"
+    ],
+    "ResizeImageKey": [],
+    "RestorableBool": [
+      "RestorableValue",
+      "RestorableProperty",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "RestorableBoolN": [
+      "RestorableValue",
+      "RestorableProperty",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "RestorableChangeNotifier": [
+      "RestorableListenable",
+      "RestorableProperty",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "RestorableCupertinoTabController": [
+      "RestorableChangeNotifier",
+      "RestorableListenable",
+      "RestorableProperty",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "RestorableDateTime": [
+      "RestorableValue",
+      "RestorableProperty",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "RestorableDateTimeN": [
+      "RestorableValue",
+      "RestorableProperty",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "RestorableDouble": [
+      "RestorableNum",
+      "RestorableValue",
+      "RestorableProperty",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "RestorableDoubleN": [
+      "RestorableNumN",
+      "RestorableValue",
+      "RestorableProperty",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "RestorableEnum": [
+      "RestorableValue",
+      "RestorableProperty",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "RestorableEnumN": [
+      "RestorableValue",
+      "RestorableProperty",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "RestorableInt": [
+      "RestorableNum",
+      "RestorableValue",
+      "RestorableProperty",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "RestorableIntN": [
+      "RestorableNumN",
+      "RestorableValue",
+      "RestorableProperty",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "RestorableListenable": [
+      "RestorableProperty",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "RestorableNum": [
+      "RestorableValue",
+      "RestorableProperty",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "RestorableNumN": [
+      "RestorableValue",
+      "RestorableProperty",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "RestorableProperty": [
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "RestorableRouteFuture": [
+      "RestorableProperty",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "RestorableString": [
+      "RestorableValue",
+      "RestorableProperty",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "RestorableStringN": [
+      "RestorableValue",
+      "RestorableProperty",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "RestorableTextEditingController": [
+      "RestorableChangeNotifier",
+      "RestorableListenable",
+      "RestorableProperty",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "RestorableTimeOfDay": [
+      "RestorableValue",
+      "RestorableProperty",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "RestorableValue": [
+      "RestorableProperty",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "RestorationBucket": [],
+    "RestorationManager": [
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "RestorationMixin": [
+      "State",
+      "Diagnosticable"
+    ],
+    "RestorationScope": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ReverseAnimation": [
+      "Animation",
+      "Listenable",
+      "ValueListenable",
+      "AnimationLazyListenerMixin",
+      "AnimationLocalStatusListenersMixin"
+    ],
+    "ReverseTween": [
+      "Tween",
+      "Animatable"
+    ],
+    "RichText": [
+      "MultiChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RootBackButtonDispatcher": [
+      "BackButtonDispatcher",
+      "WidgetsBindingObserver"
+    ],
+    "RootElement": [
+      "Element",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "BuildContext",
+      "RootElementMixin"
+    ],
+    "RootElementMixin": [
+      "Element",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "BuildContext"
+    ],
+    "RootIsolateToken": [],
+    "RootRenderObjectElement": [
+      "RenderObjectElement",
+      "Element",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "BuildContext",
+      "RootElementMixin"
+    ],
+    "RootRestorationScope": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RootWidget": [
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RotatedBox": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RotationTransition": [
+      "MatrixTransition",
+      "AnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RoundRangeSliderThumbShape": [
+      "RangeSliderThumbShape"
+    ],
+    "RoundRangeSliderTickMarkShape": [
+      "RangeSliderTickMarkShape"
+    ],
+    "RoundSliderOverlayShape": [
+      "SliderComponentShape"
+    ],
+    "RoundSliderThumbShape": [
+      "SliderComponentShape"
+    ],
+    "RoundSliderTickMarkShape": [
+      "SliderTickMarkShape"
+    ],
+    "RoundedRectRangeSliderTrackShape": [
+      "RangeSliderTrackShape",
+      "BaseRangeSliderTrackShape"
+    ],
+    "RoundedRectRangeSliderValueIndicatorShape": [
+      "RangeSliderValueIndicatorShape"
+    ],
+    "RoundedRectSliderTrackShape": [
+      "SliderTrackShape",
+      "BaseSliderTrackShape"
+    ],
+    "RoundedRectSliderValueIndicatorShape": [
+      "SliderComponentShape"
+    ],
+    "RoundedRectangleBorder": [
+      "OutlinedBorder",
+      "ShapeBorder"
+    ],
+    "RoundedSuperellipseBorder": [
+      "OutlinedBorder",
+      "ShapeBorder"
+    ],
+    "Route": [],
+    "RouteAware": [],
+    "RouteInformation": [],
+    "RouteInformationParser": [],
+    "RouteInformationProvider": [
+      "ValueListenable",
+      "Listenable"
+    ],
+    "RouteObserver": [
+      "NavigatorObserver"
+    ],
+    "RouteSettings": [],
+    "RouteTransitionRecord": [],
+    "Router": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "RouterConfig": [],
+    "RouterDelegate": [
+      "Listenable"
+    ],
+    "Row": [
+      "Flex",
+      "MultiChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SafeArea": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SawTooth": [
+      "Curve",
+      "ParametricCurve"
+    ],
+    "Scaffold": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ScaffoldFeatureController": [],
+    "ScaffoldGeometry": [],
+    "ScaffoldMessenger": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ScaffoldMessengerState": [
+      "State",
+      "Diagnosticable",
+      "TickerProviderStateMixin",
+      "TickerProvider"
+    ],
+    "ScaffoldPrelayoutGeometry": [],
+    "ScaffoldState": [
+      "State",
+      "Diagnosticable",
+      "TickerProviderStateMixin",
+      "TickerProvider",
+      "RestorationMixin",
+      "WidgetsBindingObserver"
+    ],
+    "ScaleEndDetails": [
+      "Diagnosticable"
+    ],
+    "ScaleStartDetails": [
+      "Diagnosticable"
+    ],
+    "ScaleTransition": [
+      "MatrixTransition",
+      "AnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ScaleUpdateDetails": [
+      "Diagnosticable"
+    ],
+    "ScribbleClient": [],
+    "Scribe": [],
+    "ScrollAction": [
+      "ContextAction",
+      "Action",
+      "Diagnosticable"
+    ],
+    "ScrollActivity": [],
+    "ScrollActivityDelegate": [],
+    "ScrollAwareImageProvider": [
+      "ImageProvider"
+    ],
+    "ScrollBehavior": [],
+    "ScrollConfiguration": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ScrollContext": [],
+    "ScrollController": [
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "ScrollDragController": [
+      "Drag"
+    ],
+    "ScrollEndNotification": [
+      "ScrollNotification",
+      "LayoutChangedNotification",
+      "Notification",
+      "ViewportNotificationMixin"
+    ],
+    "ScrollHoldController": [],
+    "ScrollIncrementDetails": [],
+    "ScrollIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "ScrollMetrics": [],
+    "ScrollMetricsNotification": [
+      "Notification",
+      "ViewportNotificationMixin"
+    ],
+    "ScrollNotification": [
+      "LayoutChangedNotification",
+      "Notification",
+      "ViewportNotificationMixin"
+    ],
+    "ScrollNotificationObserver": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ScrollNotificationObserverState": [
+      "State",
+      "Diagnosticable"
+    ],
+    "ScrollPhysics": [],
+    "ScrollPosition": [
+      "ViewportOffset",
+      "ChangeNotifier",
+      "Listenable",
+      "ScrollMetrics"
+    ],
+    "ScrollPositionWithSingleContext": [
+      "ScrollPosition",
+      "ViewportOffset",
+      "ChangeNotifier",
+      "Listenable",
+      "ScrollMetrics",
+      "ScrollActivityDelegate"
+    ],
+    "ScrollSpringSimulation": [
+      "SpringSimulation",
+      "Simulation"
+    ],
+    "ScrollStartNotification": [
+      "ScrollNotification",
+      "LayoutChangedNotification",
+      "Notification",
+      "ViewportNotificationMixin"
+    ],
+    "ScrollToDocumentBoundaryIntent": [
+      "DirectionalTextEditingIntent",
+      "Intent",
+      "Diagnosticable"
+    ],
+    "ScrollUpdateNotification": [
+      "ScrollNotification",
+      "LayoutChangedNotification",
+      "Notification",
+      "ViewportNotificationMixin"
+    ],
+    "ScrollView": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Scrollable": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ScrollableDetails": [],
+    "ScrollableState": [
+      "State",
+      "Diagnosticable",
+      "ScrollContext",
+      "TickerProviderStateMixin",
+      "TickerProvider",
+      "RestorationMixin"
+    ],
+    "Scrollbar": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ScrollbarPainter": [
+      "ChangeNotifier",
+      "Listenable",
+      "CustomPainter"
+    ],
+    "ScrollbarTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ScrollbarThemeData": [
+      "Diagnosticable"
+    ],
+    "SearchAnchor": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SearchBar": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SearchBarTheme": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SearchBarThemeData": [
+      "Diagnosticable"
+    ],
+    "SearchController": [
+      "TextEditingController",
+      "ValueNotifier",
+      "ChangeNotifier",
+      "Listenable",
+      "ValueListenable"
+    ],
+    "SearchDelegate": [],
+    "SearchViewTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SearchViewThemeData": [
+      "Diagnosticable"
+    ],
+    "SegmentedButton": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SegmentedButtonState": [
+      "State",
+      "Diagnosticable"
+    ],
+    "SegmentedButtonTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SegmentedButtonThemeData": [
+      "Diagnosticable"
+    ],
+    "SelectAction": [
+      "Action",
+      "Diagnosticable"
+    ],
+    "SelectAllTextIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "SelectIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "SelectableChipAttributes": [],
+    "SelectableRegion": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SelectableRegionSelectionStatusScope": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SelectableRegionState": [
+      "State",
+      "Diagnosticable",
+      "SelectionRegistrar",
+      "TextSelectionDelegate"
+    ],
+    "SelectableText": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SelectionArea": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SelectionAreaState": [
+      "State",
+      "Diagnosticable"
+    ],
+    "SelectionContainer": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SelectionContainerDelegate": [
+      "SelectionHandler",
+      "ValueListenable",
+      "Listenable",
+      "SelectionRegistrar"
+    ],
+    "SelectionDetails": [],
+    "SelectionListener": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SelectionListenerNotifier": [
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "SelectionOverlay": [],
+    "SelectionRect": [],
+    "SelectionRegistrarScope": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Semantics": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SemanticsDebugger": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SemanticsGestureDelegate": [],
+    "SensitiveContent": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SensitiveContentHost": [],
+    "SensitiveContentService": [],
+    "ServicesBinding": [
+      "BindingBase",
+      "SchedulerBinding"
+    ],
+    "Shader": [],
+    "ShaderMask": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ShaderWarmUp": [],
+    "Shadow": [],
+    "ShapeBorder": [],
+    "ShapeBorderClipper": [
+      "CustomClipper",
+      "Listenable"
+    ],
+    "ShapeBorderTween": [
+      "Tween",
+      "Animatable"
+    ],
+    "ShapeDecoration": [
+      "Decoration",
+      "Diagnosticable"
+    ],
+    "ShapedInputBorder": [
+      "InputBorder",
+      "ShapeBorder"
+    ],
+    "SharedAppData": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ShortcutActivator": [],
+    "ShortcutManager": [
+      "Diagnosticable",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "ShortcutMapProperty": [
+      "DiagnosticsProperty",
+      "DiagnosticsNode"
+    ],
+    "ShortcutRegistrar": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ShortcutRegistry": [
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "ShortcutRegistryEntry": [],
+    "ShortcutSerialization": [],
+    "Shortcuts": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ShrinkWrappingViewport": [
+      "MultiChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SimpleDialog": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SimpleDialogOption": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Simulation": [],
+    "SingleActivator": [
+      "ShortcutActivator",
+      "Diagnosticable",
+      "MenuSerializableShortcut"
+    ],
+    "SingleChildLayoutDelegate": [],
+    "SingleChildRenderObjectElement": [
+      "RenderObjectElement",
+      "Element",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "BuildContext"
+    ],
+    "SingleChildRenderObjectWidget": [
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SingleChildScrollView": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SingleTickerProviderStateMixin": [
+      "State",
+      "Diagnosticable",
+      "TickerProvider"
+    ],
+    "SingletonFlutterWindow": [
+      "FlutterView"
+    ],
+    "Size": [
+      "OffsetBase"
+    ],
+    "SizeChangedLayoutNotification": [
+      "LayoutChangedNotification",
+      "Notification"
+    ],
+    "SizeChangedLayoutNotifier": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SizeTransition": [
+      "AnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SizeTween": [
+      "Tween",
+      "Animatable"
+    ],
+    "SizedBox": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SizedOverflowBox": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SlideTransition": [
+      "AnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Slider": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliderComponentShape": [],
+    "SliderTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliderThemeData": [
+      "Diagnosticable"
+    ],
+    "SliderTickMarkShape": [],
+    "SliderTrackShape": [],
+    "SliverAnimatedGrid": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverAnimatedGridState": [
+      "State",
+      "Diagnosticable",
+      "TickerProviderStateMixin",
+      "TickerProvider"
+    ],
+    "SliverAnimatedList": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverAnimatedListState": [
+      "State",
+      "Diagnosticable",
+      "TickerProviderStateMixin",
+      "TickerProvider"
+    ],
+    "SliverAnimatedOpacity": [
+      "ImplicitlyAnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverAppBar": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverChildBuilderDelegate": [
+      "SliverChildDelegate"
+    ],
+    "SliverChildDelegate": [],
+    "SliverChildListDelegate": [
+      "SliverChildDelegate"
+    ],
+    "SliverConstrainedCrossAxis": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverCrossAxisExpanded": [
+      "ParentDataWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverCrossAxisGroup": [
+      "MultiChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverEnsureSemantics": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverFadeTransition": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverFillRemaining": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverFillViewport": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverFixedExtentList": [
+      "SliverMultiBoxAdaptorWidget",
+      "SliverWithKeepAliveWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverFloatingHeader": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverGrid": [
+      "SliverMultiBoxAdaptorWidget",
+      "SliverWithKeepAliveWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverGridDelegate": [],
+    "SliverGridDelegateWithFixedCrossAxisCount": [
+      "SliverGridDelegate"
+    ],
+    "SliverGridDelegateWithMaxCrossAxisExtent": [
+      "SliverGridDelegate"
+    ],
+    "SliverIgnorePointer": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverLayoutBuilder": [
+      "ConstrainedLayoutBuilder",
+      "AbstractLayoutBuilder",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverList": [
+      "SliverMultiBoxAdaptorWidget",
+      "SliverWithKeepAliveWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverMainAxisGroup": [
+      "MultiChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverMultiBoxAdaptorElement": [
+      "RenderObjectElement",
+      "Element",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "BuildContext",
+      "RenderSliverBoxChildManager"
+    ],
+    "SliverMultiBoxAdaptorWidget": [
+      "SliverWithKeepAliveWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverOffstage": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverOpacity": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverOverlapAbsorber": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverOverlapAbsorberHandle": [
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "SliverOverlapInjector": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverPadding": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverPersistentHeader": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverPersistentHeaderDelegate": [],
+    "SliverPrototypeExtentList": [
+      "SliverMultiBoxAdaptorWidget",
+      "SliverWithKeepAliveWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverReorderableList": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverReorderableListState": [
+      "State",
+      "Diagnosticable",
+      "TickerProviderStateMixin",
+      "TickerProvider"
+    ],
+    "SliverResizingHeader": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverSafeArea": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverSemantics": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverToBoxAdapter": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverVariedExtentList": [
+      "SliverMultiBoxAdaptorWidget",
+      "SliverWithKeepAliveWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverVisibility": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SliverWithKeepAliveWidget": [
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SlottedContainerRenderObjectMixin": [
+      "RenderObject",
+      "HitTestTarget",
+      "DiagnosticableTreeMixin",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SlottedMultiChildRenderObjectWidget": [
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "SlottedMultiChildRenderObjectWidgetMixin"
+    ],
+    "SlottedMultiChildRenderObjectWidgetMixin": [
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SlottedRenderObjectElement": [
+      "RenderObjectElement",
+      "Element",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "BuildContext"
+    ],
+    "SnackBar": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SnackBarAction": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SnackBarTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SnackBarThemeData": [
+      "Diagnosticable"
+    ],
+    "SnapshotController": [
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "SnapshotPainter": [
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "SnapshotWidget": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Spacer": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SpellCheckConfiguration": [],
+    "SpellCheckResults": [],
+    "SpellCheckService": [],
+    "SpellCheckSuggestionsToolbar": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SpellCheckSuggestionsToolbarLayoutDelegate": [
+      "SingleChildLayoutDelegate"
+    ],
+    "Split": [
+      "Curve",
+      "ParametricCurve"
+    ],
+    "SpringDescription": [],
+    "SpringSimulation": [
+      "Simulation"
+    ],
+    "Stack": [
+      "MultiChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "StackFilter": [],
+    "StackFrame": [],
+    "StadiumBorder": [
+      "OutlinedBorder",
+      "ShapeBorder"
+    ],
+    "StandardFabLocation": [
+      "FloatingActionButtonLocation"
+    ],
+    "StandardMessageCodec": [
+      "MessageCodec"
+    ],
+    "StandardMethodCodec": [
+      "MethodCodec"
+    ],
+    "StarBorder": [
+      "OutlinedBorder",
+      "ShapeBorder"
+    ],
+    "State": [
+      "Diagnosticable"
+    ],
+    "StatefulBuilder": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "StatefulElement": [
+      "ComponentElement",
+      "Element",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "BuildContext"
+    ],
+    "StatefulWidget": [
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "StatelessElement": [
+      "ComponentElement",
+      "Element",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "BuildContext"
+    ],
+    "StatelessWidget": [
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "StaticSelectionContainerDelegate": [
+      "MultiSelectableSelectionContainerDelegate",
+      "SelectionContainerDelegate",
+      "SelectionHandler",
+      "ValueListenable",
+      "Listenable",
+      "SelectionRegistrar",
+      "ChangeNotifier"
+    ],
+    "StatusTransitionWidget": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Step": [],
+    "StepStyle": [
+      "Diagnosticable"
+    ],
+    "StepTween": [
+      "Tween",
+      "Animatable"
+    ],
+    "Stepper": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "StreamBuilder": [
+      "StreamBuilderBase",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "StreamBuilderBase": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "StretchEffect": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "StretchingOverscrollIndicator": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "StringCodec": [
+      "MessageCodec"
+    ],
+    "StringProperty": [
+      "DiagnosticsProperty",
+      "DiagnosticsNode"
+    ],
+    "StrutStyle": [
+      "Diagnosticable"
+    ],
+    "SubmenuButton": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SuggestionSpan": [],
+    "Summary": [],
+    "SurfaceAndroidViewController": [
+      "AndroidViewController",
+      "PlatformViewController"
+    ],
+    "SweepGradient": [
+      "Gradient"
+    ],
+    "Switch": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SwitchListTile": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SwitchTheme": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SwitchThemeData": [
+      "Diagnosticable"
+    ],
+    "SynchronousFuture": [
+      "Future"
+    ],
+    "SystemChannels": [],
+    "SystemChrome": [],
+    "SystemContextMenu": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "SystemContextMenuClient": [],
+    "SystemContextMenuController": [
+      "SystemContextMenuClient",
+      "Diagnosticable"
+    ],
+    "SystemMouseCursor": [
+      "MouseCursor",
+      "Diagnosticable"
+    ],
+    "SystemMouseCursors": [],
+    "SystemNavigator": [],
+    "SystemSound": [],
+    "SystemTextScaler": [
+      "TextScaler"
+    ],
+    "SystemUiOverlayStyle": [
+      "Diagnosticable"
+    ],
+    "Tab": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "PreferredSizeWidget"
+    ],
+    "TabBar": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "PreferredSizeWidget"
+    ],
+    "TabBarScrollController": [
+      "ScrollController",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "TabBarTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TabBarThemeData": [
+      "Diagnosticable"
+    ],
+    "TabBarView": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TabController": [
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "TabPageSelector": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TabPageSelectorIndicator": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Table": [
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TableBorder": [],
+    "TableCell": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TableColumnWidth": [],
+    "TableRow": [],
+    "TableRowInkWell": [
+      "InkResponse",
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TapDownDetails": [
+      "PositionedGestureDetails",
+      "Diagnosticable"
+    ],
+    "TapRegion": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TapRegionRegistry": [],
+    "TapRegionSurface": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TapUpDetails": [
+      "PositionedGestureDetails",
+      "Diagnosticable"
+    ],
+    "TappableChipAttributes": [],
+    "Text": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TextAlignVertical": [],
+    "TextBoundary": [],
+    "TextBox": [],
+    "TextButton": [
+      "ButtonStyleButton",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TextButtonTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TextButtonThemeData": [
+      "Diagnosticable"
+    ],
+    "TextDecoration": [],
+    "TextEditingController": [
+      "ValueNotifier",
+      "ChangeNotifier",
+      "Listenable",
+      "ValueListenable"
+    ],
+    "TextEditingDelta": [
+      "Diagnosticable"
+    ],
+    "TextEditingDeltaDeletion": [
+      "TextEditingDelta",
+      "Diagnosticable"
+    ],
+    "TextEditingDeltaInsertion": [
+      "TextEditingDelta",
+      "Diagnosticable"
+    ],
+    "TextEditingDeltaNonTextUpdate": [
+      "TextEditingDelta",
+      "Diagnosticable"
+    ],
+    "TextEditingDeltaReplacement": [
+      "TextEditingDelta",
+      "Diagnosticable"
+    ],
+    "TextEditingValue": [],
+    "TextField": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TextFieldTapRegion": [
+      "TapRegion",
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TextFormField": [
+      "FormField",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TextHeightBehavior": [],
+    "TextInput": [],
+    "TextInputClient": [],
+    "TextInputConfiguration": [],
+    "TextInputConnection": [],
+    "TextInputControl": [],
+    "TextInputFormatter": [],
+    "TextInputStyle": [
+      "Diagnosticable"
+    ],
+    "TextInputType": [],
+    "TextLayoutMetrics": [],
+    "TextMagnifier": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TextMagnifierConfiguration": [],
+    "TextPainter": [],
+    "TextPosition": [],
+    "TextRange": [],
+    "TextScaler": [],
+    "TextSelection": [
+      "TextRange"
+    ],
+    "TextSelectionControls": [],
+    "TextSelectionDelegate": [],
+    "TextSelectionGestureDetector": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TextSelectionGestureDetectorBuilder": [],
+    "TextSelectionGestureDetectorBuilderDelegate": [],
+    "TextSelectionHandleControls": [
+      "TextSelectionControls"
+    ],
+    "TextSelectionOverlay": [],
+    "TextSelectionPoint": [],
+    "TextSelectionTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TextSelectionThemeData": [
+      "Diagnosticable"
+    ],
+    "TextSelectionToolbar": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TextSelectionToolbarAnchors": [],
+    "TextSelectionToolbarLayoutDelegate": [
+      "SingleChildLayoutDelegate"
+    ],
+    "TextSelectionToolbarTextButton": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TextSpan": [
+      "InlineSpan",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "HitTestTarget",
+      "MouseTrackerAnnotation"
+    ],
+    "TextStyle": [
+      "Diagnosticable"
+    ],
+    "TextStyleTween": [
+      "Tween",
+      "Animatable"
+    ],
+    "TextTheme": [
+      "Diagnosticable"
+    ],
+    "TextTreeConfiguration": [],
+    "TextTreeRenderer": [],
+    "Texture": [
+      "LeafRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TextureAndroidViewController": [
+      "AndroidViewController",
+      "PlatformViewController"
+    ],
+    "Theme": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ThemeData": [
+      "Diagnosticable"
+    ],
+    "ThemeDataTween": [
+      "Tween",
+      "Animatable"
+    ],
+    "ThemeExtension": [],
+    "ThreePointCubic": [
+      "Curve",
+      "ParametricCurve"
+    ],
+    "Threshold": [
+      "Curve",
+      "ParametricCurve"
+    ],
+    "TickerCanceled": [
+      "Exception"
+    ],
+    "TickerFuture": [
+      "Future"
+    ],
+    "TickerMode": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TickerModeData": [],
+    "TickerProvider": [],
+    "TickerProviderStateMixin": [
+      "State",
+      "Diagnosticable",
+      "TickerProvider"
+    ],
+    "TimeOfDay": [
+      "Comparable"
+    ],
+    "TimePickerDialog": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TimePickerTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TimePickerThemeData": [
+      "Diagnosticable"
+    ],
+    "TimedBlock": [],
+    "Title": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ToggleButtons": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ToggleButtonsTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ToggleButtonsThemeData": [
+      "Diagnosticable"
+    ],
+    "ToggleablePainter": [
+      "ChangeNotifier",
+      "Listenable",
+      "CustomPainter"
+    ],
+    "ToggleableStateMixin": [
+      "TickerProviderStateMixin",
+      "State",
+      "Diagnosticable",
+      "TickerProvider"
+    ],
+    "Tolerance": [],
+    "ToolbarItemsParentData": [
+      "ContainerBoxParentData",
+      "BoxParentData",
+      "ParentData",
+      "ContainerParentDataMixin"
+    ],
+    "ToolbarOptions": [],
+    "Tooltip": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TooltipPositionContext": [],
+    "TooltipState": [
+      "State",
+      "Diagnosticable",
+      "SingleTickerProviderStateMixin",
+      "TickerProvider"
+    ],
+    "TooltipTheme": [
+      "InheritedTheme",
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TooltipThemeData": [
+      "Diagnosticable"
+    ],
+    "TooltipVisibility": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TrackingScrollController": [
+      "ScrollController",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "TrainHoppingAnimation": [
+      "Animation",
+      "Listenable",
+      "ValueListenable",
+      "AnimationEagerListenerMixin",
+      "AnimationLocalListenersMixin",
+      "AnimationLocalStatusListenersMixin"
+    ],
+    "Transform": [
+      "SingleChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TransformProperty": [
+      "DiagnosticsProperty",
+      "DiagnosticsNode"
+    ],
+    "TransformationController": [
+      "ValueNotifier",
+      "ChangeNotifier",
+      "Listenable",
+      "ValueListenable"
+    ],
+    "TransitionDelegate": [],
+    "TransitionRoute": [
+      "OverlayRoute",
+      "Route",
+      "PredictiveBackRoute"
+    ],
+    "TransposeCharactersIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "TreeSliver": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TreeSliverController": [],
+    "TreeSliverNode": [],
+    "TreeSliverStateMixin": [],
+    "Tween": [
+      "Animatable"
+    ],
+    "TweenAnimationBuilder": [
+      "ImplicitlyAnimatedWidget",
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TweenSequence": [
+      "Animatable"
+    ],
+    "TweenSequenceItem": [],
+    "TwoDimensionalChildBuilderDelegate": [
+      "TwoDimensionalChildDelegate",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "TwoDimensionalChildDelegate": [
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "TwoDimensionalChildListDelegate": [
+      "TwoDimensionalChildDelegate",
+      "ChangeNotifier",
+      "Listenable"
+    ],
+    "TwoDimensionalChildManager": [],
+    "TwoDimensionalScrollView": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TwoDimensionalScrollable": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TwoDimensionalScrollableState": [
+      "State",
+      "Diagnosticable"
+    ],
+    "TwoDimensionalViewport": [
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "TwoDimensionalViewportParentData": [
+      "ParentData",
+      "KeepAliveParentDataMixin"
+    ],
+    "Typography": [
+      "Diagnosticable"
+    ],
+    "UiKitView": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "UiKitViewController": [
+      "DarwinPlatformViewController"
+    ],
+    "Uint8List": [
+      "TypedDataList",
+      "TypedData",
+      "List",
+      "Iterable",
+      "EfficientLengthIterable",
+      "HideEfficientLengthIterable"
+    ],
+    "UnconstrainedBox": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "UnderlineInputBorder": [
+      "InputBorder",
+      "ShapeBorder"
+    ],
+    "UnderlineTabIndicator": [
+      "Decoration",
+      "Diagnosticable"
+    ],
+    "UndoHistory": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "UndoHistoryController": [
+      "ValueNotifier",
+      "ChangeNotifier",
+      "Listenable",
+      "ValueListenable"
+    ],
+    "UndoHistoryState": [
+      "State",
+      "Diagnosticable",
+      "UndoManagerClient"
+    ],
+    "UndoHistoryValue": [],
+    "UndoManager": [],
+    "UndoManagerClient": [],
+    "UndoTextIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "Unicode": [],
+    "UniqueKey": [
+      "LocalKey",
+      "Key"
+    ],
+    "UniqueWidget": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "UnmanagedRestorationScope": [
+      "InheritedWidget",
+      "ProxyWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "UpdateSelectionIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "UserAccountsDrawerHeader": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "UserScrollNotification": [
+      "ScrollNotification",
+      "LayoutChangedNotification",
+      "Notification",
+      "ViewportNotificationMixin"
+    ],
+    "ValueKey": [
+      "LocalKey",
+      "Key"
+    ],
+    "ValueListenable": [
+      "Listenable"
+    ],
+    "ValueListenableBuilder": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ValueNotifier": [
+      "ChangeNotifier",
+      "Listenable",
+      "ValueListenable"
+    ],
+    "Velocity": [],
+    "VerticalDivider": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "View": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ViewAnchor": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ViewCollection": [
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "Viewport": [
+      "MultiChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ViewportElementMixin": [
+      "NotifiableElementMixin",
+      "Element",
+      "DiagnosticableTree",
+      "Diagnosticable",
+      "BuildContext"
+    ],
+    "ViewportNotificationMixin": [
+      "Notification"
+    ],
+    "Visibility": [
+      "StatelessWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "VisualDensity": [
+      "Diagnosticable"
+    ],
+    "VoidCallbackAction": [
+      "Action",
+      "Diagnosticable"
+    ],
+    "VoidCallbackIntent": [
+      "Intent",
+      "Diagnosticable"
+    ],
+    "WeakMap": [],
+    "Widget": [
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "WidgetInspector": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "WidgetInspectorService": [],
+    "WidgetOrderTraversalPolicy": [
+      "FocusTraversalPolicy",
+      "Diagnosticable",
+      "DirectionalFocusTraversalPolicyMixin"
+    ],
+    "WidgetSpan": [
+      "PlaceholderSpan",
+      "InlineSpan",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "WidgetStateBorderSide": [
+      "BorderSide",
+      "Diagnosticable",
+      "WidgetStateProperty"
+    ],
+    "WidgetStateColor": [
+      "Color",
+      "WidgetStateProperty"
+    ],
+    "WidgetStateInputBorder": [
+      "InputBorder",
+      "ShapeBorder",
+      "WidgetStateProperty"
+    ],
+    "WidgetStateMapper": [
+      "WidgetStateProperty",
+      "Diagnosticable"
+    ],
+    "WidgetStateMouseCursor": [
+      "MouseCursor",
+      "Diagnosticable",
+      "WidgetStateProperty"
+    ],
+    "WidgetStateOutlinedBorder": [
+      "OutlinedBorder",
+      "ShapeBorder",
+      "WidgetStateProperty"
+    ],
+    "WidgetStateProperty": [],
+    "WidgetStatePropertyAll": [
+      "WidgetStateProperty"
+    ],
+    "WidgetStateTextStyle": [
+      "TextStyle",
+      "Diagnosticable",
+      "WidgetStateProperty"
+    ],
+    "WidgetStatesConstraint": [],
+    "WidgetStatesController": [
+      "ValueNotifier",
+      "ChangeNotifier",
+      "Listenable",
+      "ValueListenable"
+    ],
+    "WidgetToRenderBoxAdapter": [
+      "LeafRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "WidgetsApp": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "WidgetsBinding": [
+      "BindingBase",
+      "ServicesBinding",
+      "SchedulerBinding",
+      "GestureBinding",
+      "HitTestable",
+      "HitTestDispatcher",
+      "HitTestTarget",
+      "RendererBinding",
+      "SemanticsBinding"
+    ],
+    "WidgetsBindingObserver": [],
+    "WidgetsFlutterBinding": [
+      "BindingBase",
+      "GestureBinding",
+      "HitTestable",
+      "HitTestDispatcher",
+      "HitTestTarget",
+      "SchedulerBinding",
+      "ServicesBinding",
+      "PaintingBinding",
+      "SemanticsBinding",
+      "RendererBinding",
+      "WidgetsBinding"
+    ],
+    "WidgetsLocalizations": [],
+    "WillPopScope": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "WordBoundary": [
+      "TextBoundary"
+    ],
+    "Wrap": [
+      "MultiChildRenderObjectWidget",
+      "RenderObjectWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "WriteBuffer": [],
+    "YearPicker": [
+      "StatefulWidget",
+      "Widget",
+      "DiagnosticableTree",
+      "Diagnosticable"
+    ],
+    "ZoomPageTransitionsBuilder": [
+      "PageTransitionsBuilder"
+    ]
+  },
   "entities": [
     {
       "kind": "widget",

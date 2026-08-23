@@ -9,6 +9,7 @@ import 'package:test/test.dart';
 
 void main() {
   late Map<String, EntityModel> byName;
+  late Map<String, List<String>> hierarchy;
 
   setUpAll(() async {
     final home = Platform.environment['HOME'];
@@ -28,6 +29,7 @@ void main() {
       },
     );
     byName = {for (final entity in snapshot.entities) entity.name: entity};
+    hierarchy = snapshot.hierarchy;
 
     expect(reportedLibraries, ['widgets', 'material']);
     expect(reportedEntityCount, snapshot.entities.length);
@@ -109,6 +111,19 @@ void main() {
         'DiagnosticableTree',
         'Diagnosticable',
         'PreferredSizeWidget',
+      ]);
+    });
+
+    test('hierarchy covers abstract widget interfaces and non-widgets', () {
+      expect(hierarchy['PreferredSizeWidget'], [
+        'Widget',
+        'DiagnosticableTree',
+        'Diagnosticable',
+      ]);
+      expect(hierarchy['StatelessWidget'], [
+        'Widget',
+        'DiagnosticableTree',
+        'Diagnosticable',
       ]);
     });
 

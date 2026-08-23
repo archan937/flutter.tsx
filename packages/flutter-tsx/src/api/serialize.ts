@@ -94,12 +94,18 @@ const entityToJson = (entity: Entity): Record<string, unknown> => {
 };
 
 export const serializeApiSnapshot = (snapshot: ApiSnapshot): string => {
+  const hierarchy: Record<string, string[]> = {};
+  for (const name of Object.keys(snapshot.hierarchy).sort()) {
+    hierarchy[name] = snapshot.hierarchy[name] ?? [];
+  }
+
   const document = {
     meta: {
       frameworkVersion: snapshot.meta.frameworkVersion,
       dartSdkVersion: snapshot.meta.dartSdkVersion,
       frameworkRevision: snapshot.meta.frameworkRevision,
     },
+    hierarchy,
     entities: snapshot.entities.map(entityToJson),
   };
   return `${JSON.stringify(document, null, 2)}\n`;

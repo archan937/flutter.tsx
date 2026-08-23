@@ -118,6 +118,8 @@ bun run typecheck | format | lint | test | test:coverage
 bun bin/fsx.ts install             # download pinned Flutter SDK → ~/.fsx/flutter
 bun run extract                    # SDK source → ref/api.json (runs flutter
                                    # update-packages first when needed)
+bun run derive                     # api.json → ref/derived/slots.json
+bun run verify:api                 # prove committed api.json == fresh extraction
 bun run quality:extractor          # dart format + analyze + tests + 100% coverage gate
 ```
 
@@ -150,7 +152,14 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       committed 15 MB snapshot. `ref/` is prettier-ignored — the extractor is the
       sole formatting authority (prettier corrupting `.dart_tool`/`ref` caused a
       real hang + reformat; both now ignored).
-- [ ] 6. Slot-semantics derivation → `ref/derived/slots.json` (TS)
+- [x] 6. Slot-semantics derivation → `ref/derived/slots.json` (TS, `src/derive/slots.ts`):
+      per-widget children slot (`children` list / single `child` / positional-String
+      text content) + named widget slots matched by type through the new `hierarchy`
+      section (all public classes AND mixins → supertypes, extracted from the SDK —
+      how `AppBar` maps to Scaffold's `appBar: PreferredSizeWidget`). All 543 widgets
+      covered; Scaffold/AppBar surfaces pinned exactly against the real SDK; committed
+      slots.json is freshness-gated by a test, and `bun run verify:api` proves the
+      committed api.json matches a fresh extraction byte-for-byte (CI gate at step 29).
 - [ ] 7. TS type generator → `src/generated/` (every widget prop typed); regenerate
       API reference after this
 - [ ] 8. Runtime surface — jsx-runtime, hook declarations, `flutter-tsx/plugins`

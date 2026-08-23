@@ -85,7 +85,10 @@ export interface EnumEntity extends EntityBase {
 
 export type Entity = WidgetEntity | ClassEntity | EnumEntity;
 
+export type Hierarchy = Record<string, string[]>;
+
 export interface ApiSnapshot {
   meta: SdkMeta;
+  hierarchy: Hierarchy;
   entities: Entity[];
 }

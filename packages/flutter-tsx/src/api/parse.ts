@@ -5,6 +5,7 @@ import {
   type Entity,
   type EnumValue,
   type FunctionParam,
+  type Hierarchy,
   type ParamModel,
   SCALAR_NAMES,
   type ScalarName,
@@ -183,6 +184,17 @@ const parseEntity = (value: unknown, path: string): Entity => {
   }
 };
 
+const parseHierarchy = (value: unknown): Hierarchy => {
+  const record = asObject(value, 'hierarchy');
+  const hierarchy: Hierarchy = {};
+  for (const [name, supertypes] of Object.entries(record)) {
+    hierarchy[name] = asArray(supertypes, `hierarchy.${name}`).map(
+      (supertype, index) => asString(supertype, `hierarchy.${name}[${index}]`),
+    );
+  }
+  return hierarchy;
+};
+
 export const parseApiSnapshot = (value: unknown): ApiSnapshot => {
   const record = asObject(value, 'root');
   const meta = asObject(record.meta, 'meta');
@@ -198,6 +210,7 @@ export const parseApiSnapshot = (value: unknown): ApiSnapshot => {
         'meta.frameworkRevision',
       ),
     },
+    hierarchy: parseHierarchy(record.hierarchy),
     entities: asArray(record.entities, 'entities').map((entity, index) =>
       parseEntity(entity, `entities[${index}]`),
     ),

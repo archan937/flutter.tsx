@@ -6,9 +6,14 @@ import 'api_model.dart';
 String encodeSnapshot(ApiSnapshot snapshot) {
   final sortedEntities = [...snapshot.entities]
     ..sort((first, second) => first.name.compareTo(second.name));
+  final sortedNames = snapshot.hierarchy.keys.toList()..sort();
+  final sortedHierarchy = {
+    for (final name in sortedNames) name: snapshot.hierarchy[name],
+  };
 
   final document = {
     'meta': snapshot.meta.toJson(),
+    'hierarchy': sortedHierarchy,
     'entities': sortedEntities.map((entity) => entity.toJson()).toList(),
   };
   return '${const JsonEncoder.withIndent('  ').convert(document)}\n';

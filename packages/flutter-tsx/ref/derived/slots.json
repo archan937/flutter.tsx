@@ -1,0 +1,4458 @@
+{
+  "meta": {
+    "frameworkVersion": "3.47.1"
+  },
+  "widgets": {
+    "AboutDialog": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": [
+        {
+          "param": "applicationIcon",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "AboutListTile": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": [
+        {
+          "param": "aboutBoxChildren",
+          "accepts": "Widget",
+          "mode": "multi"
+        },
+        {
+          "param": "applicationIcon",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "icon",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "AbsorbPointer": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ActionChip": {
+      "children": null,
+      "slots": [
+        {
+          "param": "avatar",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "label",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "ActionIconTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ActionListener": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Actions": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "AdaptiveTextSelectionToolbar": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": []
+    },
+    "AlertDialog": {
+      "children": null,
+      "slots": [
+        {
+          "param": "actions",
+          "accepts": "Widget",
+          "mode": "multi"
+        },
+        {
+          "param": "content",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "icon",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "title",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "Align": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "AlignTransition": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "AndroidView": {
+      "children": null,
+      "slots": []
+    },
+    "AndroidViewSurface": {
+      "children": null,
+      "slots": []
+    },
+    "AnimatedAlign": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "AnimatedBuilder": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "AnimatedContainer": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "AnimatedCrossFade": {
+      "children": null,
+      "slots": [
+        {
+          "param": "firstChild",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "secondChild",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "AnimatedDefaultTextStyle": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "AnimatedFractionallySizedBox": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "AnimatedGrid": {
+      "children": null,
+      "slots": []
+    },
+    "AnimatedIcon": {
+      "children": null,
+      "slots": []
+    },
+    "AnimatedList": {
+      "children": null,
+      "slots": []
+    },
+    "AnimatedModalBarrier": {
+      "children": null,
+      "slots": []
+    },
+    "AnimatedOpacity": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "AnimatedPadding": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "AnimatedPhysicalModel": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "AnimatedPositioned": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "AnimatedPositionedDirectional": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "AnimatedRotation": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "AnimatedScale": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "AnimatedSize": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "AnimatedSlide": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "AnimatedSwitcher": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "AnimatedTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "AnnotatedRegion": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "AppBar": {
+      "children": null,
+      "slots": [
+        {
+          "param": "actions",
+          "accepts": "Widget",
+          "mode": "multi"
+        },
+        {
+          "param": "bottom",
+          "accepts": "PreferredSizeWidget",
+          "mode": "single"
+        },
+        {
+          "param": "flexibleSpace",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "leading",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "title",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "AppBarTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "AppKitView": {
+      "children": null,
+      "slots": []
+    },
+    "AspectRatio": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Autocomplete": {
+      "children": null,
+      "slots": []
+    },
+    "AutocompleteHighlightedOption": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "AutofillGroup": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "AutomaticKeepAlive": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "BackButton": {
+      "children": null,
+      "slots": []
+    },
+    "BackButtonIcon": {
+      "children": null,
+      "slots": []
+    },
+    "BackButtonListener": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "BackdropFilter": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "BackdropGroup": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Badge": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": [
+        {
+          "param": "label",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "BadgeTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Banner": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Baseline": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "BlockSemantics": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "BottomAppBar": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "BottomAppBarTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "BottomNavigationBar": {
+      "children": null,
+      "slots": []
+    },
+    "BottomNavigationBarTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "BottomSheet": {
+      "children": null,
+      "slots": []
+    },
+    "Builder": {
+      "children": null,
+      "slots": []
+    },
+    "ButtonBar": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": []
+    },
+    "ButtonBarTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ButtonTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "CalendarDatePicker": {
+      "children": null,
+      "slots": []
+    },
+    "CallbackShortcuts": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Card": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "CardTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "CarouselView": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": []
+    },
+    "CarouselViewTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Center": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Checkbox": {
+      "children": null,
+      "slots": []
+    },
+    "CheckboxListTile": {
+      "children": null,
+      "slots": [
+        {
+          "param": "secondary",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "subtitle",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "title",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "CheckboxMenuButton": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": [
+        {
+          "param": "trailingIcon",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "CheckboxTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "CheckedModeBanner": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "CheckedPopupMenuItem": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Chip": {
+      "children": null,
+      "slots": [
+        {
+          "param": "avatar",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "deleteIcon",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "label",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "ChipTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ChoiceChip": {
+      "children": null,
+      "slots": [
+        {
+          "param": "avatar",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "label",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "CircleAvatar": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "CircularProgressIndicator": {
+      "children": null,
+      "slots": []
+    },
+    "ClipOval": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ClipPath": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ClipRRect": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ClipRSuperellipse": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ClipRect": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "CloseButton": {
+      "children": null,
+      "slots": []
+    },
+    "CloseButtonIcon": {
+      "children": null,
+      "slots": []
+    },
+    "ColorFiltered": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ColoredBox": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Column": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": []
+    },
+    "CompositedTransformFollower": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "CompositedTransformTarget": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ConstrainedBox": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ConstraintsTransformBox": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Container": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "CupertinoActionSheet": {
+      "children": null,
+      "slots": [
+        {
+          "param": "actions",
+          "accepts": "Widget",
+          "mode": "multi"
+        },
+        {
+          "param": "cancelButton",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "message",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "title",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "CupertinoActionSheetAction": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "CupertinoActivityIndicator": {
+      "children": null,
+      "slots": []
+    },
+    "CupertinoAdaptiveTextSelectionToolbar": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": []
+    },
+    "CupertinoAlertDialog": {
+      "children": null,
+      "slots": [
+        {
+          "param": "actions",
+          "accepts": "Widget",
+          "mode": "multi"
+        },
+        {
+          "param": "content",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "title",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "CupertinoApp": {
+      "children": null,
+      "slots": [
+        {
+          "param": "home",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "CupertinoButton": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "CupertinoCheckbox": {
+      "children": null,
+      "slots": []
+    },
+    "CupertinoContextMenu": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": [
+        {
+          "param": "actions",
+          "accepts": "Widget",
+          "mode": "multi"
+        }
+      ]
+    },
+    "CupertinoContextMenuAction": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "CupertinoDatePicker": {
+      "children": null,
+      "slots": []
+    },
+    "CupertinoDesktopTextSelectionToolbar": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": []
+    },
+    "CupertinoDesktopTextSelectionToolbarButton": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "CupertinoDialogAction": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "CupertinoExpansionTile": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": [
+        {
+          "param": "title",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "CupertinoFocusHalo": {
+      "children": null,
+      "slots": []
+    },
+    "CupertinoFormRow": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": [
+        {
+          "param": "error",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "helper",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "prefix",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "CupertinoFormSection": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": [
+        {
+          "param": "footer",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "header",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "CupertinoFullscreenDialogTransition": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "CupertinoLinearActivityIndicator": {
+      "children": null,
+      "slots": []
+    },
+    "CupertinoListSection": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": [
+        {
+          "param": "footer",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "header",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "CupertinoListTile": {
+      "children": null,
+      "slots": [
+        {
+          "param": "additionalInfo",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "leading",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "subtitle",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "title",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "trailing",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "CupertinoListTileChevron": {
+      "children": null,
+      "slots": []
+    },
+    "CupertinoMagnifier": {
+      "children": null,
+      "slots": []
+    },
+    "CupertinoMenuAnchor": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": [
+        {
+          "param": "menuChildren",
+          "accepts": "Widget",
+          "mode": "multi"
+        }
+      ]
+    },
+    "CupertinoMenuDivider": {
+      "children": null,
+      "slots": []
+    },
+    "CupertinoMenuItem": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": [
+        {
+          "param": "leading",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "subtitle",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "trailing",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "CupertinoNavigationBar": {
+      "children": null,
+      "slots": [
+        {
+          "param": "bottom",
+          "accepts": "PreferredSizeWidget",
+          "mode": "single"
+        },
+        {
+          "param": "leading",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "middle",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "trailing",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "CupertinoNavigationBarBackButton": {
+      "children": null,
+      "slots": []
+    },
+    "CupertinoPageScaffold": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": [
+        {
+          "param": "navigationBar",
+          "accepts": "ObstructingPreferredSizeWidget",
+          "mode": "single"
+        }
+      ]
+    },
+    "CupertinoPageScaffoldBackgroundColor": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "CupertinoPageTransition": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "CupertinoPicker": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": [
+        {
+          "param": "selectionOverlay",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "CupertinoPickerDefaultSelectionOverlay": {
+      "children": null,
+      "slots": []
+    },
+    "CupertinoPopupSurface": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "CupertinoRadio": {
+      "children": null,
+      "slots": []
+    },
+    "CupertinoScrollbar": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "CupertinoSearchTextField": {
+      "children": null,
+      "slots": [
+        {
+          "param": "prefixIcon",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "suffixIcon",
+          "accepts": "Icon",
+          "mode": "single"
+        }
+      ]
+    },
+    "CupertinoSegmentedControl": {
+      "children": null,
+      "slots": []
+    },
+    "CupertinoSheetTransition": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "CupertinoSlider": {
+      "children": null,
+      "slots": []
+    },
+    "CupertinoSlidingSegmentedControl": {
+      "children": null,
+      "slots": []
+    },
+    "CupertinoSliverNavigationBar": {
+      "children": null,
+      "slots": [
+        {
+          "param": "bottom",
+          "accepts": "PreferredSizeWidget",
+          "mode": "single"
+        },
+        {
+          "param": "largeTitle",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "leading",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "middle",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "trailing",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "CupertinoSliverRefreshControl": {
+      "children": null,
+      "slots": []
+    },
+    "CupertinoSpellCheckSuggestionsToolbar": {
+      "children": null,
+      "slots": []
+    },
+    "CupertinoSwitch": {
+      "children": null,
+      "slots": []
+    },
+    "CupertinoTabBar": {
+      "children": null,
+      "slots": []
+    },
+    "CupertinoTabScaffold": {
+      "children": null,
+      "slots": [
+        {
+          "param": "tabBar",
+          "accepts": "CupertinoTabBar",
+          "mode": "single"
+        }
+      ]
+    },
+    "CupertinoTabView": {
+      "children": null,
+      "slots": []
+    },
+    "CupertinoTextField": {
+      "children": null,
+      "slots": [
+        {
+          "param": "prefix",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "suffix",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "CupertinoTextFormFieldRow": {
+      "children": null,
+      "slots": [
+        {
+          "param": "prefix",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "CupertinoTextMagnifier": {
+      "children": null,
+      "slots": []
+    },
+    "CupertinoTextSelectionToolbar": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": []
+    },
+    "CupertinoTextSelectionToolbarButton": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "CupertinoTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "CupertinoTimerPicker": {
+      "children": null,
+      "slots": []
+    },
+    "CupertinoUserInterfaceLevel": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "CustomMultiChildLayout": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": []
+    },
+    "CustomPaint": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "CustomScrollView": {
+      "children": null,
+      "slots": [
+        {
+          "param": "slivers",
+          "accepts": "Widget",
+          "mode": "multi"
+        }
+      ]
+    },
+    "CustomSingleChildLayout": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "DataTable": {
+      "children": null,
+      "slots": []
+    },
+    "DataTableTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "DatePickerDialog": {
+      "children": null,
+      "slots": [
+        {
+          "param": "switchToCalendarEntryModeIcon",
+          "accepts": "Icon",
+          "mode": "single"
+        },
+        {
+          "param": "switchToInputEntryModeIcon",
+          "accepts": "Icon",
+          "mode": "single"
+        }
+      ]
+    },
+    "DatePickerTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "DateRangePickerDialog": {
+      "children": null,
+      "slots": [
+        {
+          "param": "switchToCalendarEntryModeIcon",
+          "accepts": "Icon",
+          "mode": "single"
+        },
+        {
+          "param": "switchToInputEntryModeIcon",
+          "accepts": "Icon",
+          "mode": "single"
+        }
+      ]
+    },
+    "DecoratedBox": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "DecoratedBoxTransition": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "DecoratedSliver": {
+      "children": null,
+      "slots": [
+        {
+          "param": "sliver",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "DefaultAssetBundle": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "DefaultSelectionStyle": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "DefaultTabController": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "DefaultTextEditingShortcuts": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "DefaultTextHeightBehavior": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "DefaultTextStyle": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "DefaultTextStyleTransition": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "DesktopTextSelectionToolbar": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": []
+    },
+    "DesktopTextSelectionToolbarButton": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "DeviceOrientationBuilder": {
+      "children": null,
+      "slots": []
+    },
+    "Dialog": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "DialogTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Directionality": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "DisableWidgetInspectorScope": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Dismissible": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": [
+        {
+          "param": "background",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "secondaryBackground",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "DisplayFeatureSubScreen": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Divider": {
+      "children": null,
+      "slots": []
+    },
+    "DividerTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "DragBoundary": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "DragTarget": {
+      "children": null,
+      "slots": []
+    },
+    "Draggable": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": [
+        {
+          "param": "childWhenDragging",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "feedback",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "DraggableScrollableActuator": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "DraggableScrollableSheet": {
+      "children": null,
+      "slots": []
+    },
+    "Drawer": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "DrawerButton": {
+      "children": null,
+      "slots": []
+    },
+    "DrawerButtonIcon": {
+      "children": null,
+      "slots": []
+    },
+    "DrawerController": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "DrawerHeader": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "DrawerTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "DropdownButton": {
+      "children": null,
+      "slots": [
+        {
+          "param": "disabledHint",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "hint",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "icon",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "items",
+          "accepts": "DropdownMenuItem",
+          "mode": "multi"
+        },
+        {
+          "param": "underline",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "DropdownButtonFormField": {
+      "children": null,
+      "slots": [
+        {
+          "param": "disabledHint",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "hint",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "icon",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "items",
+          "accepts": "DropdownMenuItem",
+          "mode": "multi"
+        }
+      ]
+    },
+    "DropdownButtonHideUnderline": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "DropdownMenu": {
+      "children": null,
+      "slots": [
+        {
+          "param": "label",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "leadingIcon",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "selectedTrailingIcon",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "trailingIcon",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "DropdownMenuFormField": {
+      "children": null,
+      "slots": [
+        {
+          "param": "label",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "leadingIcon",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "selectedTrailingIcon",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "trailingIcon",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "DropdownMenuItem": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "DropdownMenuTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "DualTransitionBuilder": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "EditableText": {
+      "children": null,
+      "slots": []
+    },
+    "ElevatedButton": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ElevatedButtonTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "EnableWidgetInspectorScope": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "EndDrawerButton": {
+      "children": null,
+      "slots": []
+    },
+    "EndDrawerButtonIcon": {
+      "children": null,
+      "slots": []
+    },
+    "ErrorWidget": {
+      "children": null,
+      "slots": []
+    },
+    "ExcludeFocus": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ExcludeFocusTraversal": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ExcludeSemantics": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ExpandIcon": {
+      "children": null,
+      "slots": []
+    },
+    "Expanded": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Expansible": {
+      "children": null,
+      "slots": []
+    },
+    "ExpansionPanelList": {
+      "children": null,
+      "slots": []
+    },
+    "ExpansionTile": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": [
+        {
+          "param": "leading",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "subtitle",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "title",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "trailing",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "ExpansionTileTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "FadeInImage": {
+      "children": null,
+      "slots": []
+    },
+    "FadeTransition": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "FilledButton": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "FilledButtonTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "FilterChip": {
+      "children": null,
+      "slots": [
+        {
+          "param": "avatar",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "deleteIcon",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "label",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "FittedBox": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Flex": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": []
+    },
+    "Flexible": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "FlexibleSpaceBar": {
+      "children": null,
+      "slots": [
+        {
+          "param": "background",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "title",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "FlexibleSpaceBarSettings": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "FloatingActionButton": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "FloatingActionButtonTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Flow": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": []
+    },
+    "FlutterLogo": {
+      "children": null,
+      "slots": []
+    },
+    "Focus": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "FocusScope": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "FocusTraversalGroup": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "FocusTraversalOrder": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "FocusableActionDetector": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Form": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "FormField": {
+      "children": null,
+      "slots": []
+    },
+    "FractionalTranslation": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "FractionallySizedBox": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "FutureBuilder": {
+      "children": null,
+      "slots": []
+    },
+    "GestureDetector": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "GlowingOverscrollIndicator": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "GridPaper": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "GridTile": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": [
+        {
+          "param": "footer",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "header",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "GridTileBar": {
+      "children": null,
+      "slots": [
+        {
+          "param": "leading",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "subtitle",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "title",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "trailing",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "GridView": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": []
+    },
+    "Hero": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "HeroControllerScope": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "HeroMode": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "HtmlElementView": {
+      "children": null,
+      "slots": []
+    },
+    "Icon": {
+      "children": null,
+      "slots": []
+    },
+    "IconButton": {
+      "children": null,
+      "slots": [
+        {
+          "param": "icon",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "selectedIcon",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "IconButtonTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "IconTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "IgnoreBaseline": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "IgnorePointer": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Image": {
+      "children": null,
+      "slots": []
+    },
+    "ImageFiltered": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ImageIcon": {
+      "children": null,
+      "slots": []
+    },
+    "IndexedSemantics": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "IndexedStack": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": []
+    },
+    "InheritedCupertinoTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": [
+        {
+          "param": "theme",
+          "accepts": "CupertinoTheme",
+          "mode": "single"
+        }
+      ]
+    },
+    "Ink": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "InkResponse": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "InkWell": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "InputChip": {
+      "children": null,
+      "slots": [
+        {
+          "param": "avatar",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "deleteIcon",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "label",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "InputDatePickerFormField": {
+      "children": null,
+      "slots": []
+    },
+    "InputDecorationTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "InputDecorator": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "InspectorButton": {
+      "children": null,
+      "slots": []
+    },
+    "InteractiveViewer": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "IntrinsicHeight": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "IntrinsicWidth": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "KeepAlive": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "KeyboardListener": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "KeyedSubtree": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "LayoutBuilder": {
+      "children": null,
+      "slots": []
+    },
+    "LayoutId": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "LicensePage": {
+      "children": null,
+      "slots": [
+        {
+          "param": "applicationIcon",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "LimitedBox": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "LinearProgressIndicator": {
+      "children": null,
+      "slots": []
+    },
+    "ListBody": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": []
+    },
+    "ListTile": {
+      "children": null,
+      "slots": [
+        {
+          "param": "leading",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "subtitle",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "title",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "trailing",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "ListTileTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ListView": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": [
+        {
+          "param": "prototypeItem",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "ListWheelScrollView": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": []
+    },
+    "ListWheelViewport": {
+      "children": null,
+      "slots": []
+    },
+    "ListenableBuilder": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Listener": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Localizations": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "LongPressDraggable": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": [
+        {
+          "param": "childWhenDragging",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "feedback",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "LookupBoundary": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Magnifier": {
+      "children": null,
+      "slots": []
+    },
+    "Material": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "MaterialApp": {
+      "children": null,
+      "slots": [
+        {
+          "param": "home",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "MaterialBanner": {
+      "children": null,
+      "slots": [
+        {
+          "param": "actions",
+          "accepts": "Widget",
+          "mode": "multi"
+        },
+        {
+          "param": "content",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "leading",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "MaterialBannerTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "MaterialButton": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "MatrixTransition": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "MediaQuery": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "MenuAcceleratorCallbackBinding": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "MenuAcceleratorLabel": {
+      "children": {
+        "param": "label",
+        "kind": "text"
+      },
+      "slots": []
+    },
+    "MenuAnchor": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": [
+        {
+          "param": "menuChildren",
+          "accepts": "Widget",
+          "mode": "multi"
+        }
+      ]
+    },
+    "MenuBar": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": []
+    },
+    "MenuBarTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "MenuButtonTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "MenuItemButton": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": [
+        {
+          "param": "leadingIcon",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "trailingIcon",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "MenuTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "MergeSemantics": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "MergeableMaterial": {
+      "children": null,
+      "slots": []
+    },
+    "MetaData": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ModalBarrier": {
+      "children": null,
+      "slots": []
+    },
+    "MouseRegion": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "NavigationBar": {
+      "children": null,
+      "slots": [
+        {
+          "param": "destinations",
+          "accepts": "Widget",
+          "mode": "multi"
+        }
+      ]
+    },
+    "NavigationBarTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "NavigationDestination": {
+      "children": null,
+      "slots": [
+        {
+          "param": "icon",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "selectedIcon",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "NavigationDrawer": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": [
+        {
+          "param": "footer",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "header",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "NavigationDrawerDestination": {
+      "children": null,
+      "slots": [
+        {
+          "param": "icon",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "label",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "selectedIcon",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "NavigationDrawerTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "NavigationIndicator": {
+      "children": null,
+      "slots": []
+    },
+    "NavigationRail": {
+      "children": null,
+      "slots": [
+        {
+          "param": "leading",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "trailing",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "NavigationRailTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "NavigationToolbar": {
+      "children": null,
+      "slots": [
+        {
+          "param": "leading",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "middle",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "trailing",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "Navigator": {
+      "children": null,
+      "slots": []
+    },
+    "NavigatorPopHandler": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "NestedScrollView": {
+      "children": null,
+      "slots": [
+        {
+          "param": "body",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "NestedScrollViewViewport": {
+      "children": null,
+      "slots": [
+        {
+          "param": "slivers",
+          "accepts": "Widget",
+          "mode": "multi"
+        }
+      ]
+    },
+    "NotificationListener": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Offstage": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Opacity": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "OrientationBuilder": {
+      "children": null,
+      "slots": []
+    },
+    "OutlinedButton": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "OutlinedButtonTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "OverflowBar": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": []
+    },
+    "OverflowBox": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Overlay": {
+      "children": null,
+      "slots": []
+    },
+    "OverlayPortal": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Padding": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "PageStorage": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "PageView": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": []
+    },
+    "PaginatedDataTable": {
+      "children": null,
+      "slots": [
+        {
+          "param": "actions",
+          "accepts": "Widget",
+          "mode": "multi"
+        },
+        {
+          "param": "header",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "PerformanceOverlay": {
+      "children": null,
+      "slots": []
+    },
+    "PhysicalModel": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "PhysicalShape": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "PinnedHeaderSliver": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Placeholder": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "PlatformMenuBar": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "PlatformSelectableRegionContextMenu": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "PlatformViewLink": {
+      "children": null,
+      "slots": []
+    },
+    "PlatformViewSurface": {
+      "children": null,
+      "slots": []
+    },
+    "PopScope": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "PopupMenuButton": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": [
+        {
+          "param": "icon",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "PopupMenuDivider": {
+      "children": null,
+      "slots": []
+    },
+    "PopupMenuItem": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "PopupMenuTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Positioned": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "PositionedDirectional": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "PositionedTransition": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "PreferredSize": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "PrimaryScrollController": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ProgressIndicatorTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Radio": {
+      "children": null,
+      "slots": []
+    },
+    "RadioGroup": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "RadioListTile": {
+      "children": null,
+      "slots": [
+        {
+          "param": "secondary",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "subtitle",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "title",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "RadioMenuButton": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": [
+        {
+          "param": "trailingIcon",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "RadioTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "RangeSlider": {
+      "children": null,
+      "slots": []
+    },
+    "RawAutocomplete": {
+      "children": null,
+      "slots": []
+    },
+    "RawChip": {
+      "children": null,
+      "slots": [
+        {
+          "param": "avatar",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "deleteIcon",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "label",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "RawGestureDetector": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "RawImage": {
+      "children": null,
+      "slots": [
+        {
+          "param": "image",
+          "accepts": "Image",
+          "mode": "single"
+        }
+      ]
+    },
+    "RawKeyboardListener": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "RawMagnifier": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "RawMaterialButton": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "RawMenuAnchor": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "RawMenuAnchorGroup": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "RawRadio": {
+      "children": null,
+      "slots": []
+    },
+    "RawScrollbar": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "RawTooltip": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "RawView": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "RefreshIndicator": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "RefreshProgressIndicator": {
+      "children": null,
+      "slots": []
+    },
+    "RelativePositionedTransition": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "RenderObjectToWidgetAdapter": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ReorderableDelayedDragStartListener": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ReorderableDragStartListener": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ReorderableList": {
+      "children": null,
+      "slots": [
+        {
+          "param": "prototypeItem",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "ReorderableListView": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": [
+        {
+          "param": "footer",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "header",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "prototypeItem",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "RepaintBoundary": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "RepeatingAnimationBuilder": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "RestorationScope": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "RichText": {
+      "children": null,
+      "slots": []
+    },
+    "RootRestorationScope": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "RootWidget": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "RotatedBox": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "RotationTransition": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Router": {
+      "children": null,
+      "slots": []
+    },
+    "Row": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": []
+    },
+    "SafeArea": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Scaffold": {
+      "children": null,
+      "slots": [
+        {
+          "param": "appBar",
+          "accepts": "PreferredSizeWidget",
+          "mode": "single"
+        },
+        {
+          "param": "body",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "bottomNavigationBar",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "bottomSheet",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "drawer",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "endDrawer",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "floatingActionButton",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "persistentFooterButtons",
+          "accepts": "Widget",
+          "mode": "multi"
+        }
+      ]
+    },
+    "ScaffoldMessenger": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ScaleTransition": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ScrollConfiguration": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ScrollNotificationObserver": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Scrollable": {
+      "children": null,
+      "slots": []
+    },
+    "Scrollbar": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ScrollbarTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "SearchAnchor": {
+      "children": null,
+      "slots": [
+        {
+          "param": "viewLeading",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "viewTrailing",
+          "accepts": "Widget",
+          "mode": "multi"
+        }
+      ]
+    },
+    "SearchBar": {
+      "children": null,
+      "slots": [
+        {
+          "param": "leading",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "trailing",
+          "accepts": "Widget",
+          "mode": "multi"
+        }
+      ]
+    },
+    "SearchBarTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "SearchViewTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "SegmentedButton": {
+      "children": null,
+      "slots": [
+        {
+          "param": "selectedIcon",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "SegmentedButtonTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "SelectableRegion": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "SelectableRegionSelectionStatusScope": {
+      "children": null,
+      "slots": []
+    },
+    "SelectableText": {
+      "children": {
+        "param": "data",
+        "kind": "text"
+      },
+      "slots": []
+    },
+    "SelectionArea": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "SelectionContainer": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "SelectionListener": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "SelectionRegistrarScope": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Semantics": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "SemanticsDebugger": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "SensitiveContent": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ShaderMask": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "SharedAppData": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ShortcutRegistrar": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Shortcuts": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ShrinkWrappingViewport": {
+      "children": null,
+      "slots": [
+        {
+          "param": "slivers",
+          "accepts": "Widget",
+          "mode": "multi"
+        }
+      ]
+    },
+    "SimpleDialog": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": [
+        {
+          "param": "title",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "SimpleDialogOption": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "SingleChildScrollView": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "SizeChangedLayoutNotifier": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "SizeTransition": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "SizedBox": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "SizedOverflowBox": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "SlideTransition": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Slider": {
+      "children": null,
+      "slots": []
+    },
+    "SliderTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "SliverAnimatedGrid": {
+      "children": null,
+      "slots": []
+    },
+    "SliverAnimatedList": {
+      "children": null,
+      "slots": []
+    },
+    "SliverAnimatedOpacity": {
+      "children": null,
+      "slots": [
+        {
+          "param": "sliver",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "SliverAppBar": {
+      "children": null,
+      "slots": [
+        {
+          "param": "actions",
+          "accepts": "Widget",
+          "mode": "multi"
+        },
+        {
+          "param": "bottom",
+          "accepts": "PreferredSizeWidget",
+          "mode": "single"
+        },
+        {
+          "param": "flexibleSpace",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "leading",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "title",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "SliverConstrainedCrossAxis": {
+      "children": null,
+      "slots": [
+        {
+          "param": "sliver",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "SliverCrossAxisExpanded": {
+      "children": null,
+      "slots": [
+        {
+          "param": "sliver",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "SliverCrossAxisGroup": {
+      "children": null,
+      "slots": [
+        {
+          "param": "slivers",
+          "accepts": "Widget",
+          "mode": "multi"
+        }
+      ]
+    },
+    "SliverEnsureSemantics": {
+      "children": null,
+      "slots": [
+        {
+          "param": "sliver",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "SliverFadeTransition": {
+      "children": null,
+      "slots": [
+        {
+          "param": "sliver",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "SliverFillRemaining": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "SliverFillViewport": {
+      "children": null,
+      "slots": []
+    },
+    "SliverFixedExtentList": {
+      "children": null,
+      "slots": []
+    },
+    "SliverFloatingHeader": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "SliverGrid": {
+      "children": null,
+      "slots": []
+    },
+    "SliverIgnorePointer": {
+      "children": null,
+      "slots": [
+        {
+          "param": "sliver",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "SliverLayoutBuilder": {
+      "children": null,
+      "slots": []
+    },
+    "SliverList": {
+      "children": null,
+      "slots": []
+    },
+    "SliverMainAxisGroup": {
+      "children": null,
+      "slots": [
+        {
+          "param": "slivers",
+          "accepts": "Widget",
+          "mode": "multi"
+        }
+      ]
+    },
+    "SliverOffstage": {
+      "children": null,
+      "slots": [
+        {
+          "param": "sliver",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "SliverOpacity": {
+      "children": null,
+      "slots": [
+        {
+          "param": "sliver",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "SliverOverlapAbsorber": {
+      "children": null,
+      "slots": [
+        {
+          "param": "sliver",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "SliverOverlapInjector": {
+      "children": null,
+      "slots": [
+        {
+          "param": "sliver",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "SliverPadding": {
+      "children": null,
+      "slots": [
+        {
+          "param": "sliver",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "SliverPersistentHeader": {
+      "children": null,
+      "slots": []
+    },
+    "SliverPrototypeExtentList": {
+      "children": null,
+      "slots": [
+        {
+          "param": "prototypeItem",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "SliverReorderableList": {
+      "children": null,
+      "slots": [
+        {
+          "param": "prototypeItem",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "SliverResizingHeader": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": [
+        {
+          "param": "maxExtentPrototype",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "minExtentPrototype",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "SliverSafeArea": {
+      "children": null,
+      "slots": [
+        {
+          "param": "sliver",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "SliverSemantics": {
+      "children": null,
+      "slots": [
+        {
+          "param": "sliver",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "SliverToBoxAdapter": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "SliverVariedExtentList": {
+      "children": null,
+      "slots": []
+    },
+    "SliverVisibility": {
+      "children": null,
+      "slots": [
+        {
+          "param": "replacementSliver",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "sliver",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "SnackBar": {
+      "children": null,
+      "slots": [
+        {
+          "param": "action",
+          "accepts": "SnackBarAction",
+          "mode": "single"
+        },
+        {
+          "param": "content",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "SnackBarAction": {
+      "children": null,
+      "slots": []
+    },
+    "SnackBarTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "SnapshotWidget": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Spacer": {
+      "children": null,
+      "slots": []
+    },
+    "SpellCheckSuggestionsToolbar": {
+      "children": null,
+      "slots": []
+    },
+    "Stack": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": []
+    },
+    "StatefulBuilder": {
+      "children": null,
+      "slots": []
+    },
+    "Stepper": {
+      "children": null,
+      "slots": []
+    },
+    "StreamBuilder": {
+      "children": null,
+      "slots": []
+    },
+    "StretchEffect": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "StretchingOverscrollIndicator": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "SubmenuButton": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": [
+        {
+          "param": "leadingIcon",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "menuChildren",
+          "accepts": "Widget",
+          "mode": "multi"
+        },
+        {
+          "param": "trailingIcon",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "Switch": {
+      "children": null,
+      "slots": []
+    },
+    "SwitchListTile": {
+      "children": null,
+      "slots": [
+        {
+          "param": "secondary",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "subtitle",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "title",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "SwitchTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "SystemContextMenu": {
+      "children": null,
+      "slots": []
+    },
+    "Tab": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": [
+        {
+          "param": "icon",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "TabBar": {
+      "children": null,
+      "slots": [
+        {
+          "param": "tabs",
+          "accepts": "Widget",
+          "mode": "multi"
+        }
+      ]
+    },
+    "TabBarTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "TabBarView": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": []
+    },
+    "TabPageSelector": {
+      "children": null,
+      "slots": []
+    },
+    "TabPageSelectorIndicator": {
+      "children": null,
+      "slots": []
+    },
+    "Table": {
+      "children": null,
+      "slots": []
+    },
+    "TableCell": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "TableRowInkWell": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "TapRegion": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "TapRegionSurface": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Text": {
+      "children": {
+        "param": "data",
+        "kind": "text"
+      },
+      "slots": []
+    },
+    "TextButton": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "TextButtonTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "TextField": {
+      "children": null,
+      "slots": []
+    },
+    "TextFieldTapRegion": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "TextFormField": {
+      "children": null,
+      "slots": []
+    },
+    "TextMagnifier": {
+      "children": null,
+      "slots": []
+    },
+    "TextSelectionGestureDetector": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "TextSelectionTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "TextSelectionToolbar": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": []
+    },
+    "TextSelectionToolbarTextButton": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Texture": {
+      "children": null,
+      "slots": []
+    },
+    "Theme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "TickerMode": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "TimePickerDialog": {
+      "children": null,
+      "slots": [
+        {
+          "param": "switchToInputEntryModeIcon",
+          "accepts": "Icon",
+          "mode": "single"
+        },
+        {
+          "param": "switchToTimerEntryModeIcon",
+          "accepts": "Icon",
+          "mode": "single"
+        }
+      ]
+    },
+    "TimePickerTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Title": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ToggleButtons": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": []
+    },
+    "ToggleButtonsTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Tooltip": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "TooltipTheme": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "TooltipVisibility": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Transform": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "TreeSliver": {
+      "children": null,
+      "slots": []
+    },
+    "TweenAnimationBuilder": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "TwoDimensionalScrollable": {
+      "children": null,
+      "slots": []
+    },
+    "UiKitView": {
+      "children": null,
+      "slots": []
+    },
+    "UnconstrainedBox": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "UndoHistory": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "UnmanagedRestorationScope": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "UserAccountsDrawerHeader": {
+      "children": null,
+      "slots": [
+        {
+          "param": "accountEmail",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "accountName",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "currentAccountPicture",
+          "accepts": "Widget",
+          "mode": "single"
+        },
+        {
+          "param": "otherAccountsPictures",
+          "accepts": "Widget",
+          "mode": "multi"
+        }
+      ]
+    },
+    "ValueListenableBuilder": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "VerticalDivider": {
+      "children": null,
+      "slots": []
+    },
+    "View": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "ViewAnchor": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": [
+        {
+          "param": "view",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "ViewCollection": {
+      "children": null,
+      "slots": [
+        {
+          "param": "views",
+          "accepts": "Widget",
+          "mode": "multi"
+        }
+      ]
+    },
+    "Viewport": {
+      "children": null,
+      "slots": [
+        {
+          "param": "slivers",
+          "accepts": "Widget",
+          "mode": "multi"
+        }
+      ]
+    },
+    "Visibility": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": [
+        {
+          "param": "replacement",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "WidgetInspector": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "WidgetToRenderBoxAdapter": {
+      "children": null,
+      "slots": []
+    },
+    "WidgetsApp": {
+      "children": null,
+      "slots": [
+        {
+          "param": "home",
+          "accepts": "Widget",
+          "mode": "single"
+        }
+      ]
+    },
+    "WillPopScope": {
+      "children": {
+        "param": "child",
+        "kind": "widget"
+      },
+      "slots": []
+    },
+    "Wrap": {
+      "children": {
+        "param": "children",
+        "kind": "widgetList"
+      },
+      "slots": []
+    },
+    "YearPicker": {
+      "children": null,
+      "slots": []
+    }
+  }
+}

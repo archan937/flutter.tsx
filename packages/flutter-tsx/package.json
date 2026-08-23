@@ -39,6 +39,8 @@
     "test": "bun test",
     "test:coverage": "bun test --coverage",
     "extract": "bun scripts/extract-api.ts",
+    "derive": "bun scripts/derive-slots.ts",
+    "verify:api": "bun scripts/verify-api.ts",
     "quality:extractor": "bun scripts/extractor-quality.ts",
     "quality": "bun run typecheck && bun run format && bun run lint && bun run test:coverage && bun run quality:extractor"
   },

@@ -9,8 +9,12 @@ void main() {
   late WidgetEntity wrapper;
   late EnumEntity alignment;
 
+  late Map<String, List<String>> hierarchy;
+
   setUpAll(() async {
-    entities = await extractFixtureEntities();
+    final extraction = await extractFixtureEntities();
+    hierarchy = extraction.hierarchy;
+    entities = extraction.entities;
     testWidget = entities.whereType<WidgetEntity>().singleWhere(
       (entity) => entity.name == 'TestWidget',
     );
@@ -154,6 +158,23 @@ void main() {
 
     test('widgets without static constants carry an empty list', () {
       expect(testWidget.constants, isEmpty);
+    });
+  });
+
+  group('hierarchy', () {
+    test('maps every public class, including abstract ones, to its public '
+        'supertypes', () {
+      expect(hierarchy, {
+        'AbstractWidget': ['StatelessWidget', 'Widget'],
+        'NotAWidget': <String>[],
+        'PreferredSizeLike': ['Widget'],
+        'StatelessWidget': ['Widget'],
+        'Tappable': ['Widget'],
+        'TestPalette': <String>[],
+        'TestWidget': ['StatelessWidget', 'Widget'],
+        'Widget': <String>[],
+        'Wrapper': ['StatelessWidget', 'Widget'],
+      });
     });
   });
 

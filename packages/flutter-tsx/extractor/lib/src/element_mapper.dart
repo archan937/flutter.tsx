@@ -17,7 +17,7 @@ EntityModel? mapClass(ClassElement classElement, String libraryLabel) {
   final constructors = classElement.isAbstract
       ? const <ConstructorModel>[]
       : _mapConstructors(classElement);
-  final supertypes = _publicSupertypeNames(classElement);
+  final supertypes = publicSupertypeNames(classElement);
   final doc = classElement.documentationComment ?? '';
 
   if (supertypes.contains('Widget')) {
@@ -138,8 +138,8 @@ List<ConstantModel> _mapConstants(ClassElement classElement) {
   return constants;
 }
 
-List<String> _publicSupertypeNames(ClassElement classElement) {
-  return classElement.allSupertypes
+List<String> publicSupertypeNames(InterfaceElement interfaceElement) {
+  return interfaceElement.allSupertypes
       .map((supertype) => supertype.element.name)
       .whereType<String>()
       .where((name) => name != 'Object' && !name.startsWith('_'))

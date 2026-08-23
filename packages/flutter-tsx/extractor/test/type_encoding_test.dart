@@ -7,8 +7,8 @@ void main() {
   late WidgetEntity testWidget;
 
   setUpAll(() async {
-    final entities = await extractFixtureEntities();
-    testWidget = entities.whereType<WidgetEntity>().singleWhere(
+    final extraction = await extractFixtureEntities();
+    testWidget = extraction.entities.whereType<WidgetEntity>().singleWhere(
       (entity) => entity.name == 'TestWidget',
     );
   });

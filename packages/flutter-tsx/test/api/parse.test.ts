@@ -51,10 +51,15 @@ const enumEntity = {
   values: [{ name: 'horizontal', doc: '/// Sideways.' }],
 };
 
-const document = { meta, entities: [widgetEntity, enumEntity] };
+const document = {
+  meta,
+  hierarchy: { Align: ['Widget'], Widget: [] },
+  entities: [widgetEntity, enumEntity],
+};
 
 const withEntity = (entity: object): object => ({
   meta,
+  hierarchy: {},
   entities: [entity],
 });
 
@@ -62,6 +67,7 @@ describe('parseApiSnapshot', () => {
   test('parses a complete document into the exact typed model', () => {
     const expected: ApiSnapshot = {
       meta,
+      hierarchy: { Align: ['Widget'], Widget: [] },
       entities: [
         {
           kind: 'widget',
@@ -174,9 +180,31 @@ describe('parseApiSnapshot', () => {
     });
 
     test('non-array entities', () => {
-      expect(() => parseApiSnapshot({ meta, entities: 'nope' })).toThrow(
-        new Error('api.json: entities: expected an array'),
+      expect(() =>
+        parseApiSnapshot({ meta, hierarchy: {}, entities: 'nope' }),
+      ).toThrow(new Error('api.json: entities: expected an array'));
+    });
+
+    test('missing hierarchy', () => {
+      expect(() => parseApiSnapshot({ meta, entities: [] })).toThrow(
+        new Error('api.json: hierarchy: expected an object'),
       );
+    });
+
+    test('non-array hierarchy entry', () => {
+      expect(() =>
+        parseApiSnapshot({
+          meta,
+          hierarchy: { Align: 'Widget' },
+          entities: [],
+        }),
+      ).toThrow(new Error('api.json: hierarchy.Align: expected an array'));
+    });
+
+    test('non-string hierarchy supertype', () => {
+      expect(() =>
+        parseApiSnapshot({ meta, hierarchy: { Align: [1] }, entities: [] }),
+      ).toThrow(new Error('api.json: hierarchy.Align[0]: expected a string'));
     });
 
     test('unknown entity kind', () => {

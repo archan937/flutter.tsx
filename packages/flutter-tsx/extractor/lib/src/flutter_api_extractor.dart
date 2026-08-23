@@ -21,6 +21,7 @@ Future<ApiSnapshot> extractFlutterApi({
   void Function(String library, int entityCount)? onLibraryExtracted,
 }) async {
   final entities = <EntityModel>[];
+  final hierarchy = <String, List<String>>{};
   final seenNames = <String>{};
 
   for (final library in libraries) {
@@ -34,12 +35,19 @@ Future<ApiSnapshot> extractFlutterApi({
       libraryLabel: library,
     );
 
-    final fresh = extracted
+    for (final entry in extracted.hierarchy.entries) {
+      hierarchy.putIfAbsent(entry.key, () => entry.value);
+    }
+    final fresh = extracted.entities
         .where((entity) => seenNames.add(entity.name))
         .toList();
     entities.addAll(fresh);
     onLibraryExtracted?.call(library, fresh.length);
   }
 
-  return ApiSnapshot(meta: layout.meta, entities: entities);
+  return ApiSnapshot(
+    meta: layout.meta,
+    hierarchy: hierarchy,
+    entities: entities,
+  );
 }

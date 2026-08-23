@@ -46,6 +46,12 @@ abstract class AbstractWidget extends StatelessWidget {
   const AbstractWidget();
 }
 
+abstract class PreferredSizeLike implements Widget {
+  const PreferredSizeLike();
+}
+
+mixin Tappable on Widget {}
+
 class _PrivateWidget extends StatelessWidget {
   const _PrivateWidget();
 }

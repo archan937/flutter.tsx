@@ -9,6 +9,7 @@ const snapshot: ApiSnapshot = {
     dartSdkVersion: '3.13.1',
     frameworkRevision: 'abc123',
   },
+  hierarchy: { Zeta: [], Alpha: ['Base'] },
   entities: [
     {
       kind: 'class',
@@ -36,6 +37,12 @@ describe('serializeApiSnapshot', () => {
     "frameworkVersion": "3.47.1",
     "dartSdkVersion": "3.13.1",
     "frameworkRevision": "abc123"
+  },
+  "hierarchy": {
+    "Alpha": [
+      "Base"
+    ],
+    "Zeta": []
   },
   "entities": [
     {

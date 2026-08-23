@@ -15,6 +15,10 @@ void main() {
         dartSdkVersion: '3.13.1',
         frameworkRevision: 'abc123',
       ),
+      hierarchy: const {
+        'Zeta': <String>[],
+        'Alpha': ['Base'],
+      },
       entities: [
         EnumEntity(
           name: 'Zeta',
@@ -40,6 +44,12 @@ void main() {
     "frameworkVersion": "3.47.1",
     "dartSdkVersion": "3.13.1",
     "frameworkRevision": "abc123"
+  },
+  "hierarchy": {
+    "Alpha": [
+      "Base"
+    ],
+    "Zeta": []
   },
   "entities": [
     {
@@ -83,6 +93,7 @@ void main() {
             dartSdkVersion: '3.13.1',
             frameworkRevision: 'abc123',
           ),
+          hierarchy: const {},
           entities: const [],
         );
 
@@ -147,14 +158,14 @@ void main() {
       final first = await extractFixtureEntitiesFresh();
       final second = await extractFixtureEntitiesFresh();
 
-      final firstJson = jsonEncode(
-        first.map((entity) => entity.toJson()).toList(),
-      );
-      final secondJson = jsonEncode(
-        second.map((entity) => entity.toJson()).toList(),
-      );
+      String encode(LibraryExtraction extraction) => jsonEncode({
+        'hierarchy': extraction.hierarchy,
+        'entities': extraction.entities
+            .map((entity) => entity.toJson())
+            .toList(),
+      });
 
-      expect(firstJson, secondJson);
+      expect(encode(first), encode(second));
     });
   });
 }

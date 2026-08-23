@@ -8,7 +8,14 @@ import 'package:path/path.dart' as path;
 import 'api_model.dart';
 import 'element_mapper.dart';
 
-Future<List<EntityModel>> extractLibrary({
+class LibraryExtraction {
+  const LibraryExtraction({required this.entities, required this.hierarchy});
+
+  final List<EntityModel> entities;
+  final Map<String, List<String>> hierarchy;
+}
+
+Future<LibraryExtraction> extractLibrary({
   required String libraryUri,
   required List<String> includedPaths,
   required String libraryLabel,
@@ -35,12 +42,19 @@ Future<List<EntityModel>> extractLibrary({
   }
 
   final entities = <EntityModel>[];
+  final hierarchy = <String, List<String>>{};
   final seenNames = <String>{};
 
   for (final element in result.element.exportNamespace.definedNames2.values) {
     final elementName = element.name ?? '';
     if (elementName.isEmpty || !seenNames.add(elementName)) {
       continue;
+    }
+
+    if (element is ClassElement || element is MixinElement) {
+      hierarchy[elementName] = publicSupertypeNames(
+        element as InterfaceElement,
+      );
     }
 
     final entity = switch (element) {
@@ -54,5 +68,5 @@ Future<List<EntityModel>> extractLibrary({
   }
 
   entities.sort((first, second) => first.name.compareTo(second.name));
-  return entities;
+  return LibraryExtraction(entities: entities, hierarchy: hierarchy);
 }
