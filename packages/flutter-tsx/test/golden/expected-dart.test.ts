@@ -19,6 +19,7 @@ describe('committed golden expected.dart files', () => {
     expect(fixtures.map((fixture) => fixture.id)).toEqual([
       '01-camera-screen',
       '02-hello-column',
+      '03-styled-container',
     ]);
   });
 

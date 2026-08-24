@@ -19,6 +19,7 @@ const widgetEntity = {
     {
       name: '',
       doc: '/// Creates.',
+      const: true,
       params: [
         {
           name: 'child',
@@ -79,6 +80,7 @@ describe('parseApiSnapshot', () => {
             {
               name: '',
               doc: '/// Creates.',
+              isConst: true,
               params: [
                 {
                   name: 'child',
@@ -223,11 +225,23 @@ describe('parseApiSnapshot', () => {
       );
     });
 
+    test('non-boolean constructor const flag', () => {
+      const constructors = [{ name: '', doc: '', const: 'yes', params: [] }];
+      expect(() =>
+        parseApiSnapshot(withEntity({ ...widgetEntity, constructors })),
+      ).toThrow(
+        new Error(
+          'api.json: entities[0].constructors[0].const: expected a boolean',
+        ),
+      );
+    });
+
     test('non-boolean param flag', () => {
       const constructors = [
         {
           name: '',
           doc: '',
+          const: true,
           params: [
             {
               name: 'child',
@@ -257,6 +271,7 @@ describe('parseApiSnapshot', () => {
         {
           name: '',
           doc: '',
+          const: true,
           params: [
             {
               name: 'count',

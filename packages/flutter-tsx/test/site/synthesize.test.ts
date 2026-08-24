@@ -22,7 +22,20 @@ const param = (
 
 const context: SynthesisContext = {
   enumValues: { TestAlign: 'start' },
-  constantsByType: { IconData: 'Icons.add' },
+  forms: {
+    constantMembers: new Map([['IconData', new Map([['add', 'Icons']])]]),
+    constructibles: new Map([
+      [
+        'Ornament',
+        [
+          param('tint', {
+            kind: 'nullable',
+            inner: { kind: 'named', name: 'Color' },
+          }),
+        ],
+      ],
+    ]),
+  },
 };
 
 const noSlots: WidgetSlots = { children: null, slots: [] };
@@ -64,8 +77,12 @@ describe('synthesizeTsx', () => {
     });
   });
 
-  test('resolves required class values through known constants', () => {
-    const params = [param('icon', { kind: 'named', name: 'IconData' })];
+  test('resolves required class values through their value forms', () => {
+    const params = [
+      param('icon', { kind: 'named', name: 'IconData' }),
+      param('padding', { kind: 'named', name: 'EdgeInsetsGeometry' }),
+      param('ornament', { kind: 'named', name: 'Ornament' }),
+    ];
 
     expect(
       synthesizeTsx({
@@ -75,7 +92,7 @@ describe('synthesizeTsx', () => {
         context,
       }),
     ).toEqual({
-      tsx: '<Icon icon={Icons.add} />',
+      tsx: '<Icon icon="add" padding={8} ornament={{}} />',
       complete: true,
     });
   });

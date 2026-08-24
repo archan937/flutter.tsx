@@ -3070,6 +3070,13 @@ export interface BottomNavigationBarThemeData {
   };
 }
 
+export interface BoxBorder {
+  readonly __fsxBrand?: {
+    readonly BoxBorder: true;
+    readonly ShapeBorder: true;
+  };
+}
+
 export interface BoxConstraints {
   readonly __fsxBrand?: {
     readonly BoxConstraints: true;
@@ -3240,6 +3247,13 @@ export interface CupertinoTabController {
   };
 }
 
+export interface CupertinoTextThemeData {
+  readonly __fsxBrand?: {
+    readonly CupertinoTextThemeData: true;
+    readonly Diagnosticable: true;
+  };
+}
+
 export interface CupertinoTheme {
   readonly __fsxBrand?: {
     readonly CupertinoTheme: true;
@@ -3332,6 +3346,14 @@ export interface Decoration {
   };
 }
 
+export interface DecorationImage {
+  readonly __fsxBrand?: { readonly DecorationImage: true };
+}
+
+export interface DeviceGestureSettings {
+  readonly __fsxBrand?: { readonly DeviceGestureSettings: true };
+}
+
 export interface DialogThemeData {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -3341,6 +3363,10 @@ export interface DialogThemeData {
 
 export interface DismissUpdateDetails {
   readonly __fsxBrand?: { readonly DismissUpdateDetails: true };
+}
+
+export interface DisplayFeature {
+  readonly __fsxBrand?: { readonly DisplayFeature: true };
 }
 
 export interface DividerThemeData {
@@ -3624,6 +3650,14 @@ export interface FocusTraversalPolicy {
   };
 }
 
+export interface FontFeature {
+  readonly __fsxBrand?: { readonly FontFeature: true };
+}
+
+export interface FontVariation {
+  readonly __fsxBrand?: { readonly FontVariation: true };
+}
+
 export interface FontWeight {
   readonly __fsxBrand?: { readonly FontWeight: true };
 }
@@ -3663,6 +3697,10 @@ export interface GestureRecognizerFactory {
 
 export interface GlobalKey {
   readonly __fsxBrand?: { readonly GlobalKey: true; readonly Key: true };
+}
+
+export interface Gradient {
+  readonly __fsxBrand?: { readonly Gradient: true; readonly Shader: true };
 }
 
 export interface HeroController {
@@ -3814,6 +3852,10 @@ export interface ListWheelChildDelegate {
 
 export interface Listenable {
   readonly __fsxBrand?: { readonly Listenable: true };
+}
+
+export interface LocalKey {
+  readonly __fsxBrand?: { readonly Key: true; readonly LocalKey: true };
 }
 
 export interface Locale {
@@ -4104,6 +4146,10 @@ export interface PageStorageBucket {
   readonly __fsxBrand?: { readonly PageStorageBucket: true };
 }
 
+export interface Paint {
+  readonly __fsxBrand?: { readonly Paint: true };
+}
+
 export interface PartialStackFrame {
   readonly __fsxBrand?: { readonly PartialStackFrame: true };
 }
@@ -4294,6 +4340,22 @@ export interface Radius {
 
 export interface RangeLabels {
   readonly __fsxBrand?: { readonly RangeLabels: true };
+}
+
+export interface RangeSliderThumbShape {
+  readonly __fsxBrand?: { readonly RangeSliderThumbShape: true };
+}
+
+export interface RangeSliderTickMarkShape {
+  readonly __fsxBrand?: { readonly RangeSliderTickMarkShape: true };
+}
+
+export interface RangeSliderTrackShape {
+  readonly __fsxBrand?: { readonly RangeSliderTrackShape: true };
+}
+
+export interface RangeSliderValueIndicatorShape {
+  readonly __fsxBrand?: { readonly RangeSliderValueIndicatorShape: true };
 }
 
 export interface RangeValues {
@@ -4568,11 +4630,23 @@ export interface Size {
   readonly __fsxBrand?: { readonly OffsetBase: true; readonly Size: true };
 }
 
+export interface SliderComponentShape {
+  readonly __fsxBrand?: { readonly SliderComponentShape: true };
+}
+
 export interface SliderThemeData {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
     readonly SliderThemeData: true;
   };
+}
+
+export interface SliderTickMarkShape {
+  readonly __fsxBrand?: { readonly SliderTickMarkShape: true };
+}
+
+export interface SliderTrackShape {
+  readonly __fsxBrand?: { readonly SliderTrackShape: true };
 }
 
 export interface SliverChildDelegate {
@@ -4650,6 +4724,10 @@ export interface SpellCheckConfiguration {
   readonly __fsxBrand?: { readonly SpellCheckConfiguration: true };
 }
 
+export interface SpellCheckService {
+  readonly __fsxBrand?: { readonly SpellCheckService: true };
+}
+
 export interface StackFrame {
   readonly __fsxBrand?: { readonly StackFrame: true };
 }
@@ -4667,7 +4745,10 @@ export interface Stream {
 }
 
 export interface StrutStyle {
-  readonly __fsxBrand?: { readonly StrutStyle: true };
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly StrutStyle: true;
+  };
 }
 
 export interface SwitchThemeData {
@@ -4864,7 +4945,10 @@ export interface TextSelectionToolbarAnchors {
 }
 
 export interface TextStyle {
-  readonly __fsxBrand?: { readonly TextStyle: true };
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly TextStyle: true;
+  };
 }
 
 export interface TextTheme {
@@ -5061,6 +5145,18938 @@ export interface WidgetStatesController {
     readonly WidgetStatesController: true;
   };
 }
+
+export interface ActionIconThemeDataObject {
+  /**
+   * Overrides [BackButtonIcon]'s icon.
+   *
+   * If [backButtonIconBuilder] is null, then [BackButtonIcon]
+   * fallbacks to the platform's default back button icon.
+   */
+  backButtonIconBuilder?: (context: BuildContext) => FlutterElement;
+  /**
+   * Overrides [CloseButtonIcon]'s icon.
+   *
+   * If [closeButtonIconBuilder] is null, then [CloseButtonIcon]
+   * fallbacks to the platform's default close button icon.
+   */
+  closeButtonIconBuilder?: (context: BuildContext) => FlutterElement;
+  /**
+   * Overrides [DrawerButtonIcon]'s icon.
+   *
+   * If [drawerButtonIconBuilder] is null, then [DrawerButtonIcon]
+   * fallbacks to the platform's default drawer button icon.
+   */
+  drawerButtonIconBuilder?: (context: BuildContext) => FlutterElement;
+  /**
+   * Overrides [EndDrawerButtonIcon]'s icon.
+   *
+   * If [endDrawerButtonIconBuilder] is null, then [EndDrawerButtonIcon]
+   * fallbacks to the platform's default end drawer button icon.
+   */
+  endDrawerButtonIconBuilder?: (context: BuildContext) => FlutterElement;
+}
+
+export type ActionIconThemeDataValue =
+  ActionIconThemeData | ActionIconThemeDataObject;
+
+export type AlignmentValue =
+  | Alignment
+  | 'bottomCenter'
+  | 'bottomLeft'
+  | 'bottomRight'
+  | 'center'
+  | 'centerLeft'
+  | 'centerRight'
+  | 'topCenter'
+  | 'topLeft'
+  | 'topRight';
+
+export type AlignmentDirectionalValue =
+  | AlignmentDirectional
+  | 'bottomCenter'
+  | 'bottomEnd'
+  | 'bottomStart'
+  | 'center'
+  | 'centerEnd'
+  | 'centerStart'
+  | 'topCenter'
+  | 'topEnd'
+  | 'topStart';
+
+export type AlignmentGeometryValue =
+  | AlignmentGeometry
+  | 'bottomCenter'
+  | 'bottomEnd'
+  | 'bottomLeft'
+  | 'bottomRight'
+  | 'bottomStart'
+  | 'center'
+  | 'centerEnd'
+  | 'centerLeft'
+  | 'centerRight'
+  | 'centerStart'
+  | 'topCenter'
+  | 'topEnd'
+  | 'topLeft'
+  | 'topRight'
+  | 'topStart';
+
+export type AnimatedIconDataValue =
+  | AnimatedIconData
+  | 'add_event'
+  | 'arrow_menu'
+  | 'close_menu'
+  | 'ellipsis_search'
+  | 'event_add'
+  | 'home_menu'
+  | 'list_view'
+  | 'menu_arrow'
+  | 'menu_close'
+  | 'menu_home'
+  | 'pause_play'
+  | 'play_pause'
+  | 'search_ellipsis'
+  | 'view_list';
+
+export interface AnimationStyleObject {
+  /**
+   * When specified, the animation will use this curve.
+   */
+  curve?: CurveValue;
+  /**
+   * When specified, the animation will use this duration.
+   */
+  duration?: DurationValue;
+  /**
+   * When specified, the reverse animation will use this curve.
+   */
+  reverseCurve?: CurveValue;
+  /**
+   * When specified, the reverse animation will use this duration.
+   */
+  reverseDuration?: DurationValue;
+}
+
+export type AnimationStyleValue =
+  AnimationStyle | AnimationStyleObject | 'noAnimation';
+
+export interface AppBarThemeDataObject {
+  /**
+   * Overrides the default value of [AppBar.backgroundColor].
+   */
+  backgroundColor?: ColorValue;
+  /**
+   * Overrides the default value of [AppBar.foregroundColor].
+   */
+  foregroundColor?: ColorValue;
+  /**
+   * @deprecated
+   */
+  color?: ColorValue;
+  /**
+   * Overrides the default value of [AppBar.elevation].
+   */
+  elevation?: number;
+  /**
+   * Overrides the default value of [AppBar.scrolledUnderElevation].
+   */
+  scrolledUnderElevation?: number;
+  /**
+   * Overrides the default value of [AppBar.shadowColor].
+   */
+  shadowColor?: ColorValue;
+  /**
+   * Overrides the default value of [AppBar.surfaceTintColor].
+   */
+  surfaceTintColor?: ColorValue;
+  /**
+   * Overrides the default value of [AppBar.shape].
+   */
+  shape?: ShapeBorderValue;
+  /**
+   * Overrides the default value of [AppBar.iconTheme].
+   */
+  iconTheme?: IconThemeDataValue;
+  /**
+   * Overrides the default value of [AppBar.actionsIconTheme].
+   */
+  actionsIconTheme?: IconThemeDataValue;
+  /**
+   * Overrides the default value of [AppBar.centerTitle].
+   */
+  centerTitle?: boolean;
+  /**
+   * Overrides the default value of [AppBar.titleSpacing].
+   */
+  titleSpacing?: number;
+  /**
+   * Overrides the default value of [AppBar.leadingWidth].
+   */
+  leadingWidth?: number;
+  /**
+   * Overrides the default value of [AppBar.toolbarHeight].
+   */
+  toolbarHeight?: number;
+  /**
+   * Overrides the default value of [AppBar.toolbarTextStyle].
+   */
+  toolbarTextStyle?: TextStyleValue;
+  /**
+   * Overrides the default value of [AppBar.titleTextStyle].
+   */
+  titleTextStyle?: TextStyleValue;
+  /**
+   * Overrides the default value of [AppBar.systemOverlayStyle].
+   */
+  systemOverlayStyle?: SystemUiOverlayStyleValue;
+  /**
+   * Overrides the default value of [AppBar.actionsPadding].
+   */
+  actionsPadding?: EdgeInsetsGeometryValue;
+}
+
+export type AppBarThemeDataValue = AppBarThemeData | AppBarThemeDataObject;
+
+export interface BadgeThemeDataObject {
+  /**
+   * Overrides the default value for [Badge.backgroundColor].
+   */
+  backgroundColor?: ColorValue;
+  /**
+   * Overrides the default value for [Badge.textColor].
+   */
+  textColor?: ColorValue;
+  /**
+   * Overrides the default value for [Badge.smallSize].
+   */
+  smallSize?: number;
+  /**
+   * Overrides the default value for [Badge.largeSize].
+   */
+  largeSize?: number;
+  /**
+   * Overrides the default value for [Badge.textStyle].
+   */
+  textStyle?: TextStyleValue;
+  /**
+   * Overrides the default value for [Badge.padding].
+   */
+  padding?: EdgeInsetsGeometryValue;
+  /**
+   * Overrides the default value for [Badge.alignment].
+   */
+  alignment?: AlignmentGeometryValue;
+  /**
+   * Overrides the default value for [Badge.offset].
+   */
+  offset?: OffsetValue;
+}
+
+export type BadgeThemeDataValue = BadgeThemeData | BadgeThemeDataObject;
+
+export interface BorderObject {
+  top?: BorderSideValue;
+  /**
+   * The right side of this border.
+   */
+  right?: BorderSideValue;
+  bottom?: BorderSideValue;
+  /**
+   * The left side of this border.
+   */
+  left?: BorderSideValue;
+}
+
+export type BorderValue = Border | BorderObject;
+
+export type BorderRadiusValue = BorderRadius | 'zero';
+
+export type BorderRadiusGeometryValue = BorderRadiusGeometry | 'zero';
+
+export interface BorderSideObject {
+  /**
+   * The color of this side of the border.
+   */
+  color?: ColorValue;
+  /**
+   * The width of this side of the border, in logical pixels.
+   *
+   * Setting width to 0.0 will result in a hairline border. This means that
+   * the border will have the width of one physical pixel. Hairline
+   * rendering takes shortcuts when the path overlaps a pixel more than once.
+   * This means that it will render faster than otherwise, but it might
+   * double-hit pixels, giving it a slightly darker/lighter result.
+   *
+   * To omit the border entirely, set the [style] to [BorderStyle.none].
+   */
+  width?: number;
+  /**
+   * The style of this side of the border.
+   *
+   * To omit a side, set [style] to [BorderStyle.none]. This skips
+   * painting the border, but the border still has a [width].
+   */
+  style?: BorderStyle;
+  /**
+   * The relative position of the stroke on a [BorderSide] in an
+   * [OutlinedBorder] or [Border].
+   *
+   * Values typically range from -1.0 ([strokeAlignInside], inside border,
+   * default) to 1.0 ([strokeAlignOutside], outside border), without any
+   * bound constraints (e.g., a value of -2.0 is not typical, but allowed).
+   * A value of 0 ([strokeAlignCenter]) will center the border on the edge
+   * of the widget.
+   *
+   * When set to [strokeAlignInside], the stroke is drawn completely inside
+   * the widget. For [strokeAlignCenter] and [strokeAlignOutside], a property
+   * such as [Container.clipBehavior] can be used in an outside widget to clip
+   * it. If [Container.decoration] has a border, the container may incorporate
+   * [width] as additional padding:
+   * - [strokeAlignInside] provides padding with full [width].
+   * - [strokeAlignCenter] provides padding with half [width].
+   * - [strokeAlignOutside] provides zero padding, as stroke is drawn entirely outside.
+   *
+   * This property is not honored by [toPaint] (because the [Paint] object
+   * cannot represent it); it is intended that classes that use [BorderSide]
+   * objects implement this property when painting borders by suitably
+   * inflating or deflating their regions.
+   *
+   * This example shows an animation of how [strokeAlign] affects the drawing
+   * when applied to borders of various shapes.
+   *
+   * ** See code in examples/api/lib/painting/borders/border_side.stroke_align.0.dart **
+   */
+  strokeAlign?: number;
+}
+
+export type BorderSideValue = BorderSide | BorderSideObject | 'none';
+
+export interface BottomAppBarThemeDataObject {
+  /**
+   * Overrides the default value for [BottomAppBar.color].
+   */
+  color?: ColorValue;
+  /**
+   * Overrides the default value for [BottomAppBar.elevation].
+   */
+  elevation?: number;
+  /**
+   * Overrides the default value for [BottomAppBar.shape].
+   */
+  shape?: NotchedShape;
+  /**
+   * Overrides the default value for [BottomAppBar.height].
+   */
+  height?: number;
+  /**
+   * Overrides the default value for [BottomAppBar.surfaceTintColor].
+   *
+   * If null, [BottomAppBar] will not display an overlay color.
+   *
+   * See [Material.surfaceTintColor] for more details.
+   */
+  surfaceTintColor?: ColorValue;
+  /**
+   * Overrides the default value for [BottomAppBar.shadowColor].
+   */
+  shadowColor?: ColorValue;
+  /**
+   * Overrides the default value for [BottomAppBar.padding].
+   */
+  padding?: EdgeInsetsGeometryValue;
+}
+
+export type BottomAppBarThemeDataValue =
+  BottomAppBarThemeData | BottomAppBarThemeDataObject;
+
+export interface BottomNavigationBarThemeDataObject {
+  /**
+   * The color of the [BottomNavigationBar] itself.
+   *
+   * See [BottomNavigationBar.backgroundColor].
+   */
+  backgroundColor?: ColorValue;
+  /**
+   * The z-coordinate of the [BottomNavigationBar].
+   *
+   * See [BottomNavigationBar.elevation].
+   */
+  elevation?: number;
+  /**
+   * The size, opacity, and color of the icon in the currently selected
+   * [BottomNavigationBarItem.icon].
+   *
+   * If [BottomNavigationBar.selectedIconTheme] is non-null on the widget,
+   * the whole [IconThemeData] from the widget will be used over this
+   * [selectedIconTheme].
+   *
+   * See [BottomNavigationBar.selectedIconTheme].
+   */
+  selectedIconTheme?: IconThemeDataValue;
+  /**
+   * The size, opacity, and color of the icon in the currently unselected
+   * [BottomNavigationBarItem.icon]s.
+   *
+   * If [BottomNavigationBar.unselectedIconTheme] is non-null on the widget,
+   * the whole [IconThemeData] from the widget will be used over this
+   * [unselectedIconTheme].
+   *
+   * See [BottomNavigationBar.unselectedIconTheme].
+   */
+  unselectedIconTheme?: IconThemeDataValue;
+  /**
+   * The color of the selected [BottomNavigationBarItem.icon] and
+   * [BottomNavigationBarItem.label].
+   *
+   * See [BottomNavigationBar.selectedItemColor].
+   */
+  selectedItemColor?: ColorValue;
+  /**
+   * The color of the unselected [BottomNavigationBarItem.icon] and
+   * [BottomNavigationBarItem.label]s.
+   *
+   * See [BottomNavigationBar.unselectedItemColor].
+   */
+  unselectedItemColor?: ColorValue;
+  /**
+   * The [TextStyle] of the [BottomNavigationBarItem] labels when they are
+   * selected.
+   *
+   * See [BottomNavigationBar.selectedLabelStyle].
+   */
+  selectedLabelStyle?: TextStyleValue;
+  /**
+   * The [TextStyle] of the [BottomNavigationBarItem] labels when they are not
+   * selected.
+   *
+   * See [BottomNavigationBar.unselectedLabelStyle].
+   */
+  unselectedLabelStyle?: TextStyleValue;
+  /**
+   * Whether the labels are shown for the selected [BottomNavigationBarItem].
+   *
+   * See [BottomNavigationBar.showSelectedLabels].
+   */
+  showSelectedLabels?: boolean;
+  /**
+   * Whether the labels are shown for the unselected [BottomNavigationBarItem]s.
+   *
+   * See [BottomNavigationBar.showUnselectedLabels].
+   */
+  showUnselectedLabels?: boolean;
+  /**
+   * Defines the layout and behavior of a [BottomNavigationBar].
+   *
+   * See [BottomNavigationBar.type].
+   */
+  type?: BottomNavigationBarType;
+  /**
+   * If specified, defines the feedback property for [BottomNavigationBar].
+   *
+   * If [BottomNavigationBar.enableFeedback] is provided, [enableFeedback] is ignored.
+   */
+  enableFeedback?: boolean;
+  /**
+   * If non-null, overrides the [BottomNavigationBar.landscapeLayout] property.
+   */
+  landscapeLayout?: BottomNavigationBarLandscapeLayout;
+  /**
+   * If specified, overrides the default value of [BottomNavigationBar.mouseCursor].
+   */
+  mouseCursor?: WidgetStatePropertyValue;
+}
+
+export type BottomNavigationBarThemeDataValue =
+  BottomNavigationBarThemeData | BottomNavigationBarThemeDataObject;
+
+export interface BoxConstraintsObject {
+  /**
+   * The minimum width that satisfies the constraints.
+   */
+  minWidth?: number;
+  /**
+   * The maximum width that satisfies the constraints.
+   *
+   * Might be [double.infinity].
+   */
+  maxWidth?: number;
+  /**
+   * The minimum height that satisfies the constraints.
+   */
+  minHeight?: number;
+  /**
+   * The maximum height that satisfies the constraints.
+   *
+   * Might be [double.infinity].
+   */
+  maxHeight?: number;
+}
+
+export type BoxConstraintsValue = BoxConstraints | BoxConstraintsObject;
+
+export interface BoxDecorationObject {
+  /**
+   * The color to fill in the background of the box.
+   *
+   * The color is filled into the [shape] of the box (e.g., either a rectangle,
+   * potentially with a [borderRadius], or a circle).
+   *
+   * This is ignored if [gradient] is non-null.
+   *
+   * The [color] is drawn under the [image].
+   */
+  color?: ColorValue;
+  /**
+   * An image to paint above the background [color] or [gradient].
+   *
+   * If [shape] is [BoxShape.circle] then the image is clipped to the circle's
+   * boundary; if [borderRadius] is non-null then the image is clipped to the
+   * given radii.
+   */
+  image?: DecorationImage;
+  /**
+   * A border to draw above the background [color], [gradient], or [image].
+   *
+   * Follows the [shape] and [borderRadius].
+   *
+   * Use [Border] objects to describe borders that do not depend on the reading
+   * direction.
+   *
+   * Use [BoxBorder] objects to describe borders that should flip their left
+   * and right edges based on whether the text is being read left-to-right or
+   * right-to-left.
+   */
+  border?: BoxBorder;
+  /**
+   * If non-null, the corners of this box are rounded by this [BorderRadius].
+   *
+   * Applies only to boxes with rectangular shapes; ignored if [shape] is not
+   * [BoxShape.rectangle].
+   */
+  borderRadius?: BorderRadiusGeometryValue;
+  /**
+   * A list of shadows cast by this box behind the box.
+   *
+   * The shadow follows the [shape] of the box.
+   *
+   * See also:
+   *
+   *  * [kElevationToShadow], for some predefined shadows used in Material
+   *    Design.
+   *  * [PhysicalModel], a widget for showing shadows.
+   */
+  boxShadow?: BoxShadow[];
+  /**
+   * A gradient to use when filling the box.
+   *
+   * If this is specified, [color] has no effect.
+   *
+   * The [gradient] is drawn under the [image].
+   */
+  gradient?: Gradient;
+  /**
+   * The blend mode applied to the [color] or [gradient] background of the box.
+   *
+   * If no [backgroundBlendMode] is provided then the default painting blend
+   * mode is used.
+   *
+   * If no [color] or [gradient] is provided then the blend mode has no impact.
+   */
+  backgroundBlendMode?: BlendMode;
+  /**
+   * The shape to fill the background [color], [gradient], and [image] into and
+   * to cast as the [boxShadow].
+   *
+   * If this is [BoxShape.circle] then [borderRadius] is ignored.
+   *
+   * The [shape] cannot be interpolated; animating between two [BoxDecoration]s
+   * with different [shape]s will result in a discontinuity in the rendering.
+   * To interpolate between two shapes, consider using [ShapeDecoration] and
+   * different [ShapeBorder]s; in particular, [CircleBorder] instead of
+   * [BoxShape.circle] and [RoundedRectangleBorder] instead of
+   * [BoxShape.rectangle].
+   */
+  shape?: BoxShape;
+}
+
+export type BoxDecorationValue = BoxDecoration | BoxDecorationObject;
+
+export interface BoxShadowObject {
+  /**
+   * Color that the shadow will be drawn with.
+   *
+   * The shadows are shapes composited directly over the base canvas, and do not
+   * represent optical occlusion.
+   */
+  color?: ColorValue;
+  /**
+   * The displacement of the shadow from the casting element.
+   *
+   * Positive x/y offsets will shift the shadow to the right and down, while
+   * negative offsets shift the shadow to the left and up. The offsets are
+   * relative to the position of the element that is casting it.
+   */
+  offset?: OffsetValue;
+  /**
+   * The standard deviation of the Gaussian to convolve with the shadow's shape.
+   */
+  blurRadius?: number;
+  /**
+   * The amount the box should be inflated prior to applying the blur.
+   */
+  spreadRadius?: number;
+  /**
+   * The [BlurStyle] to use for this shadow.
+   *
+   * Defaults to [BlurStyle.normal].
+   *
+   * When [debugDisableShadows] is true, [toPaint] ignores the [blurStyle] and
+   * acts as if [BlurStyle.normal] was used.
+   */
+  blurStyle?: BlurStyle;
+}
+
+export type BoxShadowValue = BoxShadow | BoxShadowObject;
+
+export interface ButtonBarThemeDataObject {
+  /**
+   * How the children should be placed along the horizontal axis.
+   */
+  alignment?: MainAxisAlignment;
+  /**
+   * How much horizontal space is available. See [Row.mainAxisSize].
+   */
+  mainAxisSize?: MainAxisSize;
+  /**
+   * Defines a [ButtonBar] button's base colors, and the defaults for
+   * the button's minimum size, internal padding, and shape.
+   *
+   * This will override the surrounding [ButtonThemeData.textTheme] setting
+   * for buttons contained in the [ButtonBar].
+   *
+   * Despite the name, this property is not a [TextTheme], its value is not a
+   * collection of [TextStyle]s.
+   */
+  buttonTextTheme?: ButtonTextTheme;
+  /**
+   * The minimum width for [ButtonBar] buttons.
+   *
+   * This will override the surrounding [ButtonThemeData.minWidth] setting
+   * for buttons contained in the [ButtonBar].
+   *
+   * The actual horizontal space allocated for a button's child is
+   * at least this value less the theme's horizontal [ButtonThemeData.padding].
+   */
+  buttonMinWidth?: number;
+  /**
+   * The minimum height for [ButtonBar] buttons.
+   *
+   * This will override the surrounding [ButtonThemeData.height] setting
+   * for buttons contained in the [ButtonBar].
+   */
+  buttonHeight?: number;
+  /**
+   * Padding for a [ButtonBar] button's child (typically the button's label).
+   *
+   * This will override the surrounding [ButtonThemeData.padding] setting
+   * for buttons contained in the [ButtonBar].
+   */
+  buttonPadding?: EdgeInsetsGeometryValue;
+  /**
+   * If true, then a [DropdownButton] menu's width will match the [ButtonBar]
+   * button's width.
+   *
+   * If false, then the dropdown's menu will be wider than
+   * its button. In either case the dropdown button will line up the leading
+   * edge of the menu's value with the leading edge of the values
+   * displayed by the menu items.
+   *
+   * This will override the surrounding [ButtonThemeData.alignedDropdown] setting
+   * for buttons contained in the [ButtonBar].
+   *
+   * This property only affects [DropdownButton] contained in a [ButtonBar]
+   * and its menu.
+   */
+  buttonAlignedDropdown?: boolean;
+  /**
+   * Defines whether a [ButtonBar] should size itself with a minimum size
+   * constraint or with padding.
+   */
+  layoutBehavior?: ButtonBarLayoutBehavior;
+  /**
+   * Defines the vertical direction of a [ButtonBar]'s children if it
+   * overflows.
+   *
+   * If the [ButtonBar]'s children do not fit into a single row, then they
+   * are arranged in a column. The first action is at the top of the
+   * column if this property is set to [VerticalDirection.down], since it
+   * "starts" at the top and "ends" at the bottom. On the other hand,
+   * the first action will be at the bottom of the column if this
+   * property is set to [VerticalDirection.up], since it "starts" at the
+   * bottom and "ends" at the top.
+   */
+  overflowDirection?: VerticalDirection;
+}
+
+export type ButtonBarThemeDataValue =
+  ButtonBarThemeData | ButtonBarThemeDataObject;
+
+export interface ButtonStyleObject {
+  /**
+   * The style for a button's [Text] widget descendants.
+   *
+   * The color of the [textStyle] is typically not used directly, the
+   * [foregroundColor] is used instead.
+   */
+  textStyle?: WidgetStatePropertyValue;
+  /**
+   * The button's background fill color.
+   */
+  backgroundColor?: WidgetStatePropertyValue;
+  /**
+   * The color for the button's [Text] widget descendants.
+   *
+   * This color is typically used instead of the color of the [textStyle]. All
+   * of the components that compute defaults from [ButtonStyle] values
+   * compute a default [foregroundColor] and use that instead of the
+   * [textStyle]'s color.
+   */
+  foregroundColor?: WidgetStatePropertyValue;
+  /**
+   * The highlight color that's typically used to indicate that
+   * the button is focused, hovered, or pressed.
+   */
+  overlayColor?: WidgetStatePropertyValue;
+  /**
+   * The shadow color of the button's [Material].
+   *
+   * The material's elevation shadow can be difficult to see for
+   * dark themes, so by default the button classes add a
+   * semi-transparent overlay to indicate elevation. See
+   * [ThemeData.applyElevationOverlayColor].
+   */
+  shadowColor?: WidgetStatePropertyValue;
+  /**
+   * The surface tint color of the button's [Material].
+   *
+   * See [Material.surfaceTintColor] for more details.
+   */
+  surfaceTintColor?: WidgetStatePropertyValue;
+  /**
+   * The elevation of the button's [Material].
+   */
+  elevation?: WidgetStatePropertyValue;
+  /**
+   * The padding between the button's boundary and its child.
+   *
+   * The vertical aspect of the default or user-specified padding is adjusted
+   * automatically based on [visualDensity].
+   *
+   * When the visual density is [VisualDensity.compact], the top and bottom insets
+   * are reduced by 8 pixels or set to 0 pixels if the result of the reduced padding
+   * is negative. For example: the visual density defaults to [VisualDensity.compact]
+   * on desktop and web, so if the provided padding is 16 pixels on the top and bottom,
+   * it will be reduced to 8 pixels on the top and bottom. If the provided padding
+   * is 4 pixels, the result will be no padding on the top and bottom.
+   *
+   * When the visual density is [VisualDensity.comfortable], the top and bottom insets
+   * are reduced by 4 pixels or set to 0 pixels if the result of the reduced padding
+   * is negative.
+   *
+   * When the visual density is [VisualDensity.standard] the top and bottom insets
+   * are not changed. The visual density defaults to [VisualDensity.standard] on mobile.
+   *
+   * See [ThemeData.visualDensity] for more details.
+   */
+  padding?: WidgetStatePropertyValue;
+  /**
+   * The minimum size of the button itself before applying [visualDensity].
+   *
+   * The size of the rectangle the button lies within may be larger
+   * per [tapTargetSize].
+   *
+   * This value must be less than or equal to [maximumSize].
+   *
+   * The minimum size is adjusted automatically based on [visualDensity].
+   *
+   * When visual density is [VisualDensity.compact], the minimum size is
+   * reduced by 8 pixels on both dimensions.
+   *
+   * When visual density is [VisualDensity.comfortable], the minimum size is
+   * [minimumSize] reduced by 4 pixels on both dimensions.
+   *
+   * When visual density is [VisualDensity.standard], the minimum size is
+   * [minimumSize].
+   */
+  minimumSize?: WidgetStatePropertyValue;
+  /**
+   * The button's size.
+   *
+   * This size is still constrained by the style's [minimumSize]
+   * and [maximumSize]. Fixed size dimensions whose value is
+   * [double.infinity] are ignored.
+   *
+   * The size of the rectangle the button lies within may be larger
+   * per [tapTargetSize].
+   *
+   * To specify buttons with a fixed width and the default height use
+   * `fixedSize: Size.fromWidth(320)`. Similarly, to specify a fixed
+   * height and the default width use `fixedSize: Size.fromHeight(100)`.
+   */
+  fixedSize?: WidgetStatePropertyValue;
+  /**
+   * The maximum size of the button itself.
+   *
+   * A [Size.infinite] or null value for this property means that
+   * the button's maximum size is not constrained.
+   *
+   * This value must be greater than or equal to [minimumSize].
+   */
+  maximumSize?: WidgetStatePropertyValue;
+  /**
+   * The icon's color inside of the button.
+   */
+  iconColor?: WidgetStatePropertyValue;
+  /**
+   * The icon's size inside of the button.
+   */
+  iconSize?: WidgetStatePropertyValue;
+  /**
+   * The alignment of the button's icon.
+   *
+   * This property is supported for the following button types:
+   *
+   *  * [ElevatedButton.icon].
+   *  * [FilledButton.icon].
+   *  * [FilledButton.tonalIcon].
+   *  * [OutlinedButton.icon].
+   *  * [TextButton.icon].
+   *
+   * See also:
+   *
+   *  * [IconAlignment], for more information about the different icon
+   *    alignments.
+   */
+  iconAlignment?: IconAlignment;
+  /**
+   * The color and weight of the button's outline.
+   *
+   * This value is combined with [shape] to create a shape decorated
+   * with an outline.
+   */
+  side?: WidgetStatePropertyValue;
+  /**
+   * The shape of the button's underlying [Material].
+   *
+   * This shape is combined with [side] to create a shape decorated
+   * with an outline.
+   */
+  shape?: WidgetStatePropertyValue;
+  /**
+   * The cursor for a mouse pointer when it enters or is hovering over
+   * this button's [InkWell].
+   */
+  mouseCursor?: WidgetStatePropertyValue;
+  /**
+   * Defines how compact the button's layout will be.
+   *
+   *
+   * See also:
+   *
+   *  * [ThemeData.visualDensity], which specifies the [visualDensity] for all widgets
+   *    within a [Theme].
+   */
+  visualDensity?: VisualDensityValue;
+  /**
+   * Configures the minimum size of the area within which the button may be pressed.
+   *
+   * If the [tapTargetSize] is larger than [minimumSize], the button will include
+   * a transparent margin that responds to taps.
+   *
+   * Always defaults to [ThemeData.materialTapTargetSize].
+   */
+  tapTargetSize?: MaterialTapTargetSize;
+  /**
+   * Defines the duration of animated changes for [shape] and [elevation].
+   *
+   * Typically the component default value is [kThemeChangeDuration].
+   */
+  animationDuration?: DurationValue;
+  /**
+   * Whether detected gestures should provide acoustic and/or haptic feedback.
+   *
+   * For example, on Android a tap will produce a clicking sound and a
+   * long-press will produce a short vibration, when feedback is enabled.
+   *
+   * Typically the component default value is true.
+   *
+   * See also:
+   *
+   *  * [Feedback] for providing platform-specific feedback to certain actions.
+   */
+  enableFeedback?: boolean;
+  /**
+   * The alignment of the button's child.
+   *
+   * Typically buttons are sized to be just big enough to contain the child and its
+   * padding. If the button's size is constrained to a fixed size, for example by
+   * enclosing it with a [SizedBox], this property defines how the child is aligned
+   * within the available space.
+   *
+   * Always defaults to [Alignment.center].
+   */
+  alignment?: AlignmentGeometryValue;
+  /**
+   * Creates the [InkWell] splash factory, which defines the appearance of
+   * "ink" splashes that occur in response to taps.
+   *
+   * Use [NoSplash.splashFactory] to defeat ink splash rendering. For example:
+   * ```dart
+   * ElevatedButton(
+   *   style: ElevatedButton.styleFrom(
+   *     splashFactory: NoSplash.splashFactory,
+   *   ),
+   *   onPressed: () { },
+   *   child: const Text('No Splash'),
+   * )
+   * ```
+   */
+  splashFactory?: InteractiveInkFeatureFactoryValue;
+  /**
+   * Creates a widget that becomes the child of the button's [Material]
+   * and whose child is the rest of the button, including the button's
+   * `child` parameter.
+   *
+   * The widget created by [backgroundBuilder] is constrained to be
+   * the same size as the overall button and will appear behind the
+   * button's child. The widget created by [foregroundBuilder] is
+   * constrained to be the same size as the button's child, i.e. it's
+   * inset by [ButtonStyle.padding] and aligned by the button's
+   * [ButtonStyle.alignment].
+   *
+   * By default the returned widget is clipped to the Material's [ButtonStyle.shape].
+   *
+   * See also:
+   *
+   *  * [foregroundBuilder], to create a widget that's as big as the button's
+   *    child and is layered behind the child.
+   *  * [ButtonStyleButton.clipBehavior], for more information about
+   *    configuring clipping.
+   */
+  backgroundBuilder?: (
+    context: BuildContext,
+    states: WidgetState[],
+    child: FlutterElement | null,
+  ) => FlutterElement;
+  /**
+   * Creates a Widget that contains the button's child parameter which is used
+   * instead of the button's child.
+   *
+   * The returned widget is clipped by the button's
+   * [ButtonStyle.shape], inset by the button's [ButtonStyle.padding]
+   * and aligned by the button's [ButtonStyle.alignment].
+   *
+   * See also:
+   *
+   *  * [backgroundBuilder], to create a widget that's as big as the button and
+   *    is layered behind the button's child.
+   *  * [ButtonStyleButton.clipBehavior], for more information about
+   *    configuring clipping.
+   */
+  foregroundBuilder?: (
+    context: BuildContext,
+    states: WidgetState[],
+    child: FlutterElement | null,
+  ) => FlutterElement;
+}
+
+export type ButtonStyleValue = ButtonStyle | ButtonStyleObject;
+
+export interface CardThemeDataObject {
+  /**
+   * Overrides the default value for [Card.clipBehavior].
+   */
+  clipBehavior?: Clip;
+  /**
+   * Overrides the default value for [Card.color].
+   */
+  color?: ColorValue;
+  /**
+   * Overrides the default value for [Card.shadowColor].
+   */
+  shadowColor?: ColorValue;
+  /**
+   * Overrides the default value for [Card.surfaceTintColor].
+   */
+  surfaceTintColor?: ColorValue;
+  /**
+   * Overrides the default value for [Card.elevation].
+   */
+  elevation?: number;
+  /**
+   * Overrides the default value for [Card.margin].
+   */
+  margin?: EdgeInsetsGeometryValue;
+  /**
+   * Overrides the default value for [Card.shape].
+   */
+  shape?: ShapeBorderValue;
+}
+
+export type CardThemeDataValue = CardThemeData | CardThemeDataObject;
+
+export interface CarouselViewThemeDataObject {
+  /**
+   * The z-coordinate of each carousel item.
+   *
+   * This controls the size of the shadow below the carousel.
+   *
+   * Overrides the default value for [CarouselView.elevation].
+   */
+  elevation?: number;
+  /**
+   * The background color for each carousel item.
+   *
+   * Overrides the default value for [CarouselView.backgroundColor].
+   */
+  backgroundColor?: ColorValue;
+  /**
+   * The highlight color to indicate the carousel items are in pressed, hovered
+   * or focused states.
+   *
+   * Overrides the default value for [CarouselView.overlayColor].
+   */
+  overlayColor?: WidgetStatePropertyValue;
+  /**
+   * The shape of the carousel item's [Material].
+   *
+   * Overrides the default value for [CarouselView.shape].
+   */
+  shape?: OutlinedBorderValue;
+  /**
+   * The amount of space to surround each carousel item with.
+   *
+   * Overrides the default value for [CarouselView.padding].
+   */
+  padding?: EdgeInsetsValue;
+  /**
+   * The clip behavior for each carousel item.
+   *
+   * The item content will be clipped (or not) according to this option.
+   * Refer to the [Clip] enum for more details on the different clip options.
+   *
+   * Overrides the default value for [CarouselView.itemClipBehavior].
+   */
+  itemClipBehavior?: Clip;
+}
+
+export type CarouselViewThemeDataValue =
+  CarouselViewThemeData | CarouselViewThemeDataObject;
+
+export interface CheckboxThemeDataObject {
+  /**
+   * If specified, overrides the default value of [Checkbox.mouseCursor].
+   */
+  mouseCursor?: WidgetStatePropertyValue;
+  /**
+   * If specified, overrides the default value of [Checkbox.fillColor].
+   */
+  fillColor?: WidgetStatePropertyValue;
+  /**
+   * Resolves in the following states:
+   *  * [WidgetState.selected].
+   *  * [WidgetState.hovered].
+   *  * [WidgetState.focused].
+   *  * [WidgetState.disabled].
+   *
+   * If specified, overrides the default value of [Checkbox.checkColor].
+   */
+  checkColor?: WidgetStatePropertyValue;
+  /**
+   * If specified, overrides the default value of [Checkbox.overlayColor].
+   */
+  overlayColor?: WidgetStatePropertyValue;
+  /**
+   * If specified, overrides the default value of [Checkbox.splashRadius].
+   */
+  splashRadius?: number;
+  /**
+   * If specified, overrides the default value of
+   * [Checkbox.materialTapTargetSize].
+   */
+  materialTapTargetSize?: MaterialTapTargetSize;
+  /**
+   * If specified, overrides the default value of [Checkbox.visualDensity].
+   */
+  visualDensity?: VisualDensityValue;
+  /**
+   * If specified, overrides the default value of [Checkbox.shape].
+   */
+  shape?: OutlinedBorderValue;
+  /**
+   * If specified, overrides the default value of [Checkbox.side].
+   */
+  side?: BorderSideValue;
+}
+
+export type CheckboxThemeDataValue =
+  CheckboxThemeData | CheckboxThemeDataObject;
+
+export interface ChipThemeDataObject {
+  /**
+   * Overrides the default for [ChipAttributes.color].
+   *
+   * This property applies to [ActionChip], [Chip], [ChoiceChip],
+   * [FilterChip], [InputChip], [RawChip].
+   */
+  color?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default for [ChipAttributes.backgroundColor]
+   * which is used for unselected, enabled chip backgrounds.
+   *
+   * This property applies to [ActionChip], [Chip], [ChoiceChip],
+   * [FilterChip], [InputChip], [RawChip].
+   */
+  backgroundColor?: ColorValue;
+  /**
+   * Overrides the default for [DeletableChipAttributes.deleteIconColor].
+   *
+   * This property applies to [Chip], [InputChip], [RawChip].
+   */
+  deleteIconColor?: ColorValue;
+  /**
+   * Overrides the default for
+   * [DisabledChipAttributes.disabledColor], the background color
+   * which indicates that the chip is not enabled.
+   *
+   * This property applies to [ActionChip], [ChoiceChip],
+   * [FilterChip], [InputChip], and [RawChip].
+   */
+  disabledColor?: ColorValue;
+  /**
+   * Overrides the default for
+   * [SelectableChipAttributes.selectedColor], the background color
+   * that indicates that the chip is selected.
+   *
+   * This property applies to [ChoiceChip], [FilterChip],
+   * [InputChip], [RawChip].
+   */
+  selectedColor?: ColorValue;
+  /**
+   * Overrides the default for [ChoiceChip.selectedColor], the
+   * background color that indicates that the chip is selected.
+   */
+  secondarySelectedColor?: ColorValue;
+  /**
+   * Overrides the default for [ChipAttributes.shadowColor], the
+   * Color of the chip's shadow when its elevation is greater than 0.
+   *
+   * This property applies to [ActionChip], [Chip], [ChoiceChip],
+   * [FilterChip], [InputChip], [RawChip].
+   */
+  shadowColor?: ColorValue;
+  /**
+   * Overrides the default for [ChipAttributes.surfaceTintColor], the
+   * Color of the chip's surface tint overlay when its elevation is
+   * greater than 0.
+   *
+   * This property applies to [ActionChip], [Chip], [ChoiceChip],
+   * [FilterChip], [InputChip], [RawChip].
+   */
+  surfaceTintColor?: ColorValue;
+  /**
+   * Overrides the default for
+   * [SelectableChipAttributes.selectedShadowColor], the Color of the
+   * chip's shadow when its elevation is greater than 0 and the chip
+   * is selected.
+   *
+   * This property applies to [ChoiceChip], [FilterChip],
+   * [InputChip], [RawChip].
+   */
+  selectedShadowColor?: ColorValue;
+  /**
+   * Overrides the default for
+   * [CheckmarkableChipAttributes.showCheckmark], which indicates if
+   * a check mark should be shown.
+   *
+   * This property applies to [FilterChip], [InputChip], [RawChip].
+   */
+  showCheckmark?: boolean;
+  /**
+   * Overrides the default for
+   * [CheckmarkableChipAttributes.checkmarkColor].
+   *
+   * This property applies to [FilterChip], [InputChip], [RawChip].
+   */
+  checkmarkColor?: ColorValue;
+  /**
+   * Overrides the default for [ChipAttributes.labelPadding],
+   * the padding around the chip's label widget.
+   *
+   * This property applies to [ActionChip], [Chip], [ChoiceChip],
+   * [FilterChip], [InputChip], [RawChip].
+   */
+  labelPadding?: EdgeInsetsGeometryValue;
+  /**
+   * Overrides the default for [ChipAttributes.padding],
+   * the padding between the contents of the chip and the outside [shape].
+   *
+   * This property applies to [ActionChip], [Chip], [ChoiceChip],
+   * [FilterChip], [InputChip], [RawChip].
+   */
+  padding?: EdgeInsetsGeometryValue;
+  /**
+   * Overrides the default for [ChipAttributes.side],
+   * the color and weight of the chip's outline.
+   *
+   * This value is combined with [shape] to create a shape decorated with an
+   * outline. If it is a [WidgetStateBorderSide],
+   * [WidgetStateProperty.resolve] is used for the following
+   * [WidgetState]s:
+   *
+   *  * [WidgetState.disabled].
+   *  * [WidgetState.selected].
+   *  * [WidgetState.hovered].
+   *  * [WidgetState.focused].
+   *  * [WidgetState.pressed].
+   *
+   * This property applies to [ActionChip], [Chip], [ChoiceChip],
+   * [FilterChip], [InputChip], [RawChip].
+   */
+  side?: BorderSideValue;
+  /**
+   * Overrides the default for [ChipAttributes.shape],
+   * the shape of border to draw around the chip.
+   *
+   * This shape is combined with [side] to create a shape decorated with an
+   * outline. If it is a [WidgetStateOutlinedBorder],
+   * [WidgetStateProperty.resolve] is used for the following
+   * [WidgetState]s:
+   *
+   *  * [WidgetState.disabled].
+   *  * [WidgetState.selected].
+   *  * [WidgetState.hovered].
+   *  * [WidgetState.focused].
+   *  * [WidgetState.pressed].
+   *
+   * This property applies to [ActionChip], [Chip], [ChoiceChip],
+   * [FilterChip], [InputChip], [RawChip].
+   */
+  shape?: OutlinedBorderValue;
+  /**
+   * Overrides the default for [ChipAttributes.labelStyle],
+   * the style of the [DefaultTextStyle] that contains the
+   * chip's label.
+   *
+   * This only has an effect on label widgets that respect the
+   * [DefaultTextStyle], such as [Text].
+   *
+   * This property applies to [ActionChip], [Chip],
+   * [FilterChip], [InputChip], [RawChip].
+   */
+  labelStyle?: TextStyleValue;
+  /**
+   * Overrides the default for [ChoiceChip.labelStyle],
+   * the style of the [DefaultTextStyle] that contains the
+   * chip's label.
+   *
+   * This only has an effect on label widgets that respect the
+   * [DefaultTextStyle], such as [Text].
+   */
+  secondaryLabelStyle?: TextStyleValue;
+  /**
+   * Overrides the default value for all chips which affects various base
+   * material color choices in the chip rendering.
+   */
+  brightness?: Brightness;
+  /**
+   * Overrides the default for [ChipAttributes.elevation],
+   * the elevation of the chip's [Material].
+   *
+   * This property applies to [ActionChip], [Chip], [ChoiceChip],
+   * [FilterChip], [InputChip], [RawChip].
+   */
+  elevation?: number;
+  /**
+   * Overrides the default for [TappableChipAttributes.pressElevation],
+   * the elevation of the chip's [Material] during a "press" or tap down.
+   *
+   * This property applies to [ActionChip], [InputChip], [RawChip].
+   */
+  pressElevation?: number;
+  /**
+   * Overrides the default for [ChipAttributes.iconTheme],
+   * the theme used for all icons in the chip.
+   *
+   * This property applies to [ActionChip], [Chip], [ChoiceChip],
+   * [FilterChip], [InputChip], [RawChip].
+   */
+  iconTheme?: IconThemeDataValue;
+  /**
+   * Overrides the default for [ChipAttributes.avatarBoxConstraints],
+   * the size constraints for the avatar widget.
+   *
+   * This property applies to [ActionChip], [Chip], [ChoiceChip],
+   * [FilterChip], [InputChip], [RawChip].
+   */
+  avatarBoxConstraints?: BoxConstraintsValue;
+  /**
+   * Overrides the default for [DeletableChipAttributes.deleteIconBoxConstraints].
+   * the size constraints for the delete icon widget.
+   *
+   * This property applies to [Chip], [FilterChip], [InputChip], [RawChip].
+   */
+  deleteIconBoxConstraints?: BoxConstraintsValue;
+}
+
+export type ChipThemeDataValue = ChipThemeData | ChipThemeDataObject;
+
+export type ColorValue =
+  | Color
+  | `#${string}`
+  | 'activeBlue'
+  | 'activeGreen'
+  | 'activeOrange'
+  | 'amber'
+  | 'amberAccent'
+  | 'black'
+  | 'black12'
+  | 'black26'
+  | 'black38'
+  | 'black45'
+  | 'black54'
+  | 'black87'
+  | 'blue'
+  | 'blueAccent'
+  | 'blueGrey'
+  | 'brown'
+  | 'cyan'
+  | 'cyanAccent'
+  | 'darkBackgroundGray'
+  | 'deepOrange'
+  | 'deepOrangeAccent'
+  | 'deepPurple'
+  | 'deepPurpleAccent'
+  | 'defaultColor'
+  | 'destructiveRed'
+  | 'extraLightBackgroundGray'
+  | 'green'
+  | 'greenAccent'
+  | 'grey'
+  | 'inactiveGray'
+  | 'indigo'
+  | 'indigoAccent'
+  | 'kBackgroundColor'
+  | 'kDefaultColor'
+  | 'kMisspelledSelectionColor'
+  | 'label'
+  | 'lightBackgroundGray'
+  | 'lightBlue'
+  | 'lightBlueAccent'
+  | 'lightGreen'
+  | 'lightGreenAccent'
+  | 'lime'
+  | 'limeAccent'
+  | 'link'
+  | 'opaqueSeparator'
+  | 'orange'
+  | 'orangeAccent'
+  | 'pink'
+  | 'pinkAccent'
+  | 'placeholderText'
+  | 'purple'
+  | 'purpleAccent'
+  | 'quaternaryLabel'
+  | 'quaternarySystemFill'
+  | 'red'
+  | 'redAccent'
+  | 'secondaryLabel'
+  | 'secondarySystemBackground'
+  | 'secondarySystemFill'
+  | 'secondarySystemGroupedBackground'
+  | 'separator'
+  | 'systemBackground'
+  | 'systemBlue'
+  | 'systemBrown'
+  | 'systemCyan'
+  | 'systemFill'
+  | 'systemGreen'
+  | 'systemGrey'
+  | 'systemGrey2'
+  | 'systemGrey3'
+  | 'systemGrey4'
+  | 'systemGrey5'
+  | 'systemGrey6'
+  | 'systemGroupedBackground'
+  | 'systemIndigo'
+  | 'systemMint'
+  | 'systemOrange'
+  | 'systemPink'
+  | 'systemPurple'
+  | 'systemRed'
+  | 'systemTeal'
+  | 'systemYellow'
+  | 'teal'
+  | 'tealAccent'
+  | 'tertiaryLabel'
+  | 'tertiarySystemBackground'
+  | 'tertiarySystemFill'
+  | 'tertiarySystemGroupedBackground'
+  | 'transparent'
+  | 'white'
+  | 'white10'
+  | 'white12'
+  | 'white24'
+  | 'white30'
+  | 'white38'
+  | 'white54'
+  | 'white60'
+  | 'white70'
+  | 'yellow'
+  | 'yellowAccent';
+
+export interface CupertinoTextThemeDataObject {
+  primaryColor?: ColorValue;
+  textStyle?: TextStyleValue;
+  actionTextStyle?: TextStyleValue;
+  actionSmallTextStyle?: TextStyleValue;
+  tabLabelTextStyle?: TextStyleValue;
+  navTitleTextStyle?: TextStyleValue;
+  navLargeTitleTextStyle?: TextStyleValue;
+  navActionTextStyle?: TextStyleValue;
+  pickerTextStyle?: TextStyleValue;
+  dateTimePickerTextStyle?: TextStyleValue;
+}
+
+export type CupertinoTextThemeDataValue =
+  CupertinoTextThemeData | CupertinoTextThemeDataObject;
+
+export interface CupertinoThemeDataObject {
+  /**
+   * The brightness override for Cupertino descendants.
+   *
+   * Defaults to null. If a non-null [Brightness] is specified, the value will
+   * take precedence over the ambient [MediaQueryData.platformBrightness], when
+   * determining the brightness of descendant Cupertino widgets.
+   *
+   * If coming from a Material [Theme] and unspecified, [brightness] will be
+   * derived from the Material [ThemeData]'s [brightness].
+   *
+   * See also:
+   *
+   *  * [MaterialBasedCupertinoThemeData], a [CupertinoThemeData] that defers
+   *    [brightness] to its Material [Theme] parent if it's unspecified.
+   *
+   *  * [CupertinoTheme.brightnessOf], a method used to retrieve the overall
+   *    [Brightness] from a [BuildContext], for Cupertino widgets.
+   */
+  brightness?: Brightness;
+  /**
+   * A color used on interactive elements of the theme.
+   *
+   * This color is generally used on text and icons in buttons and tappable
+   * elements. Defaults to [CupertinoColors.activeBlue].
+   *
+   * If coming from a Material [Theme] and unspecified, [primaryColor] will be
+   * derived from the Material [ThemeData]'s `colorScheme.primary`. However, in
+   * iOS styling, the [primaryColor] is more sparsely used than in Material
+   * Design where the [primaryColor] can appear on non-interactive surfaces like
+   * the [AppBar] background, [TextField] borders etc.
+   *
+   * See also:
+   *
+   *  * [MaterialBasedCupertinoThemeData], a [CupertinoThemeData] that defers
+   *    [primaryColor] to its Material [Theme] parent if it's unspecified.
+   */
+  primaryColor?: ColorValue;
+  /**
+   * A color that must be easy to see when rendered on a [primaryColor] background.
+   *
+   * For example, this color is used for a [CupertinoButton]'s text and icons
+   * when the button's background is [primaryColor].
+   *
+   * If coming from a Material [Theme] and unspecified, [primaryContrastingColor]
+   * will be derived from the Material [ThemeData]'s `colorScheme.onPrimary`.
+   *
+   * See also:
+   *
+   *  * [MaterialBasedCupertinoThemeData], a [CupertinoThemeData] that defers
+   *    [primaryContrastingColor] to its Material [Theme] parent if it's unspecified.
+   */
+  primaryContrastingColor?: ColorValue;
+  /**
+   * Text styles used by Cupertino widgets.
+   *
+   * Derived from [primaryColor] if unspecified.
+   */
+  textTheme?: CupertinoTextThemeDataValue;
+  /**
+   * Background color of the top nav bar and bottom tab bar.
+   *
+   * Defaults to a light gray in light mode, or a dark translucent gray color in
+   * dark mode.
+   */
+  barBackgroundColor?: ColorValue;
+  /**
+   * Background color of the scaffold.
+   *
+   * Defaults to [CupertinoColors.systemBackground].
+   */
+  scaffoldBackgroundColor?: ColorValue;
+  /**
+   * The color of the selection handles on the text field.
+   *
+   * Defaults to [CupertinoColors.systemBlue].
+   */
+  selectionHandleColor?: ColorValue;
+  /**
+   * Flag to apply this theme to all descendant Cupertino widgets.
+   *
+   * Certain Cupertino widgets previously didn't use theming, matching past
+   * versions of iOS. For example, [CupertinoSwitch]s always used
+   * [CupertinoColors.systemGreen] when active.
+   *
+   * Today, however, these widgets can indeed be themed on iOS. Moreover on
+   * macOS, the accent color is reflected in these widgets. Turning this flag
+   * on ensures that descendant Cupertino widgets will be themed accordingly.
+   *
+   * This flag currently applies to the following widgets:
+   * - [CupertinoSwitch] & [Switch.adaptive]
+   *
+   * Defaults to false.
+   */
+  applyThemeToAll?: boolean;
+}
+
+export type CupertinoThemeDataValue =
+  CupertinoThemeData | CupertinoThemeDataObject;
+
+export type CurveValue =
+  | Curve
+  | 'bounceIn'
+  | 'bounceInOut'
+  | 'bounceOut'
+  | 'decelerate'
+  | 'defaultAnimationCurve'
+  | 'ease'
+  | 'easeIn'
+  | 'easeInBack'
+  | 'easeInCirc'
+  | 'easeInCubic'
+  | 'easeInExpo'
+  | 'easeInOut'
+  | 'easeInOutBack'
+  | 'easeInOutCirc'
+  | 'easeInOutCubic'
+  | 'easeInOutCubicEmphasized'
+  | 'easeInOutExpo'
+  | 'easeInOutQuad'
+  | 'easeInOutQuart'
+  | 'easeInOutQuint'
+  | 'easeInOutSine'
+  | 'easeInQuad'
+  | 'easeInQuart'
+  | 'easeInQuint'
+  | 'easeInSine'
+  | 'easeInToLinear'
+  | 'easeOut'
+  | 'easeOutBack'
+  | 'easeOutCirc'
+  | 'easeOutCubic'
+  | 'easeOutExpo'
+  | 'easeOutQuad'
+  | 'easeOutQuart'
+  | 'easeOutQuint'
+  | 'easeOutSine'
+  | 'elasticIn'
+  | 'elasticInOut'
+  | 'elasticOut'
+  | 'emphasizedAccelerate'
+  | 'emphasizedDecelerate'
+  | 'fastEaseInToSlowEaseOut'
+  | 'fastLinearToSlowEaseIn'
+  | 'fastOutSlowIn'
+  | 'legacy'
+  | 'legacyAccelerate'
+  | 'legacyDecelerate'
+  | 'linear'
+  | 'linearToEaseOut'
+  | 'slowMiddle'
+  | 'standard'
+  | 'standardAccelerate'
+  | 'standardDecelerate';
+
+export interface DataTableThemeDataObject {
+  decoration?: Decoration;
+  dataRowColor?: WidgetStatePropertyValue;
+  /**
+   * @deprecated
+   */
+  dataRowHeight?: number;
+  dataRowMinHeight?: number;
+  dataRowMaxHeight?: number;
+  dataTextStyle?: TextStyleValue;
+  headingRowColor?: WidgetStatePropertyValue;
+  headingRowHeight?: number;
+  headingTextStyle?: TextStyleValue;
+  horizontalMargin?: number;
+  columnSpacing?: number;
+  dividerThickness?: number;
+  checkboxHorizontalMargin?: number;
+  /**
+   * If specified, overrides the default value of [DataColumn.mouseCursor].
+   */
+  headingCellCursor?: WidgetStatePropertyValue;
+  /**
+   * If specified, overrides the default value of [DataRow.mouseCursor].
+   */
+  dataRowCursor?: WidgetStatePropertyValue;
+  /**
+   * If specified, overrides the default value of [DataColumn.headingRowAlignment].
+   */
+  headingRowAlignment?: MainAxisAlignment;
+}
+
+export type DataTableThemeDataValue =
+  DataTableThemeData | DataTableThemeDataObject;
+
+export interface DatePickerThemeDataObject {
+  /**
+   * Overrides the default value of [Dialog.backgroundColor].
+   */
+  backgroundColor?: ColorValue;
+  /**
+   * Overrides the default value of [Dialog.elevation].
+   *
+   * See also:
+   *   [Material.elevation], which explains how elevation is related to a component's shadow.
+   */
+  elevation?: number;
+  /**
+   * Overrides the default value of [Dialog.shadowColor].
+   *
+   * See also:
+   *   [Material.shadowColor], which explains how the shadow is rendered.
+   */
+  shadowColor?: ColorValue;
+  /**
+   * Overrides the default value of [Dialog.surfaceTintColor].
+   *
+   * See also:
+   *   [Material.surfaceTintColor], which explains how this color is related to
+   *   [elevation] and [backgroundColor].
+   */
+  surfaceTintColor?: ColorValue;
+  /**
+   * Overrides the default value of [Dialog.shape].
+   *
+   * If [elevation] is greater than zero then a shadow is shown and the shadow's
+   * shape mirrors the shape of the dialog.
+   */
+  shape?: ShapeBorderValue;
+  /**
+   * Overrides the header's default background fill color.
+   *
+   * The dialog's header displays the currently selected date.
+   */
+  headerBackgroundColor?: ColorValue;
+  /**
+   * Overrides the header's default color used for text labels and icons.
+   *
+   * The dialog's header displays the currently selected date.
+   *
+   * This is used instead of the [TextStyle.color] property of [headerHeadlineStyle]
+   * and [headerHelpStyle].
+   */
+  headerForegroundColor?: ColorValue;
+  /**
+   * Overrides the header's default headline text style.
+   *
+   * The dialog's header displays the currently selected date.
+   *
+   * The [TextStyle.color] of the [headerHeadlineStyle] is not used,
+   * [headerForegroundColor] is used instead.
+   */
+  headerHeadlineStyle?: TextStyleValue;
+  /**
+   * Overrides the header's default help text style.
+   *
+   * The help text (also referred to as "supporting text" in the Material
+   * spec) is usually a prompt to the user at the top of the header
+   * (i.e. 'Select date').
+   *
+   * The [TextStyle.color] of the [headerHelpStyle] is not used,
+   * [headerForegroundColor] is used instead.
+   *
+   * See also:
+   *   [DatePickerDialog.helpText], which specifies the help text.
+   */
+  headerHelpStyle?: TextStyleValue;
+  /**
+   * Overrides the default text style used for the row of weekday
+   * labels at the top of the date picker grid.
+   */
+  weekdayStyle?: TextStyleValue;
+  /**
+   * Overrides the default text style used for each individual day
+   * label in the grid of the date picker.
+   *
+   * The [TextStyle.color] of the [dayStyle] is not used,
+   * [dayForegroundColor] is used instead.
+   */
+  dayStyle?: TextStyleValue;
+  /**
+   * Overrides the default color used to paint the day labels in the
+   * grid of the date picker.
+   *
+   * This will be used instead of the color provided in [dayStyle].
+   *
+   * This supports different colors based on the [WidgetState]s of
+   * the day button, such as `WidgetState.selected`, `WidgetState.hovered`,
+   * `WidgetState.focused`, and `WidgetState.disabled`.
+   *
+   * ```dart
+   * dayBackgroundColor: WidgetStateProperty.resolveWith((Set<WidgetState> states) {
+   *   if (states.contains(WidgetState.selected)) {
+   *     return Theme.of(context).colorScheme.primary;
+   *   }
+   *   return null; // Use the default color.
+   * })
+   * ```
+   *
+   * See also:
+   *   * [dayOverlayColor] which applies an overlay over the day labels depending on the [WidgetState].
+   */
+  dayForegroundColor?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default color used to paint the background of the
+   * day labels in the grid of the date picker.
+   *
+   * This supports different colors based on the [WidgetState]s of
+   * the day button, such as `WidgetState.selected`, `WidgetState.hovered`,
+   * `WidgetState.focused`, and `WidgetState.disabled`.
+   *
+   * ```dart
+   * dayBackgroundColor: WidgetStateProperty.resolveWith((Set<WidgetState> states) {
+   *   if (states.contains(WidgetState.selected)) {
+   *     return Theme.of(context).colorScheme.primary;
+   *   }
+   *   return null; // Use the default color.
+   * })
+   * ```
+   * See also:
+   *   * [dayOverlayColor] which applies an overlay over the day labels depending on the [WidgetState].
+   */
+  dayBackgroundColor?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default highlight color that's typically used to
+   * indicate that a day in the grid is focused, hovered, or pressed.
+   *
+   * This supports different colors based on the [WidgetState]s of
+   * the day button. The overlay color is usually used with an opacity to
+   * create hover, focus, and press effects.
+   *
+   * ```dart
+   * dayOverlayColor: WidgetStateProperty.resolveWith((Set<WidgetState> states) {
+   *   if (states.contains(WidgetState.pressed)) {
+   *     return Colors.blue.withValues(alpha: 0.12);
+   *   }
+   *   if (states.contains(WidgetState.hovered)) {
+   *     return Colors.blue.withValues(alpha: 0.08);
+   *   }
+   *   if (states.contains(WidgetState.focused)) {
+   *     return Colors.blue.withValues(alpha: 0.12);
+   *   }
+   *   return null; // Use the default color.
+   * })
+   * ```
+   */
+  dayOverlayColor?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default shape used to paint the shape decoration of the
+   * day labels in the grid of the date picker.
+   *
+   * If the selected day is the current day, the provided shape with the
+   * value of [todayBackgroundColor] is used to paint the shape decoration of
+   * the day label and the value of [todayBorder] and [todayForegroundColor] is
+   * used to paint the border.
+   *
+   * If the selected day is not the current day, the provided shape with the
+   * value of [dayBackgroundColor] is used to paint the shape decoration of
+   * the day label.
+   *
+   * This sample demonstrates how to customize the day selector shape decoration
+   * using the [dayShape], [todayForegroundColor], [todayBackgroundColor], and
+   * [todayBorder] properties.
+   *
+   * ** See code in examples/api/lib/material/date_picker/date_picker_theme_day_shape.0.dart **
+   */
+  dayShape?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default color used to paint the
+   * [DatePickerDialog.currentDate] label in the grid of the dialog's
+   * [CalendarDatePicker] and the corresponding year in the dialog's
+   * [YearPicker].
+   *
+   * This will be used instead of the [TextStyle.color] provided in [dayStyle].
+   *
+   * This sample demonstrates how to customize the day selector shape decoration
+   * using the [dayShape], [todayForegroundColor], [todayBackgroundColor], and
+   * [todayBorder] properties.
+   *
+   * ** See code in examples/api/lib/material/date_picker/date_picker_theme_day_shape.0.dart **
+   */
+  todayForegroundColor?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default color used to paint the background of the
+   * [DatePickerDialog.currentDate] label in the grid of the date picker.
+   */
+  todayBackgroundColor?: WidgetStatePropertyValue;
+  /**
+   * Overrides the border used to paint the
+   * [DatePickerDialog.currentDate] label in the grid of the date
+   * picker.
+   *
+   * If the border side's [BorderSide.color] is transparent (has 0 opacity),
+   * [todayForegroundColor] is used instead. Otherwise, the border's color
+   * is used as specified. To omit the border entirely,
+   * set [todayBorder] to [BorderSide.none].
+   *
+   * This sample demonstrates how to customize the day selector shape decoration
+   * using the [dayShape], [todayForegroundColor], [todayBackgroundColor], and
+   * [todayBorder] properties.
+   *
+   * ** See code in examples/api/lib/material/date_picker/date_picker_theme_day_shape.0.dart **
+   */
+  todayBorder?: BorderSideValue;
+  /**
+   * Overrides the default text style used to paint each of the year
+   * entries in the year selector of the date picker.
+   *
+   * The [TextStyle.color] of the [yearStyle] is not used,
+   * [yearForegroundColor] is used instead.
+   */
+  yearStyle?: TextStyleValue;
+  /**
+   * Overrides the default color used to paint the year labels in the year
+   * selector of the date picker.
+   *
+   * This will be used instead of the color provided in [yearStyle].
+   */
+  yearForegroundColor?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default color used to paint the background of the
+   * year labels in the year selector of the of the date picker.
+   */
+  yearBackgroundColor?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default highlight color that's typically used to
+   * indicate that a year in the year selector is focused, hovered,
+   * or pressed.
+   */
+  yearOverlayColor?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default shape used to paint the shape decoration of the
+   * year labels in the list of the year picker.
+   *
+   * If the selected year is the current year, the provided shape with the
+   * value of [todayBackgroundColor] is used to paint the shape decoration of
+   * the year label and the value of [todayBorder] and [todayForegroundColor] is
+   * used to paint the border.
+   *
+   * If the selected year is not the current year, the provided shape with the
+   * value of [yearBackgroundColor] is used to paint the shape decoration of
+   * the year label.
+   */
+  yearShape?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default [Scaffold.backgroundColor] for
+   * [DateRangePickerDialog].
+   */
+  rangePickerBackgroundColor?: ColorValue;
+  /**
+   * Overrides the default elevation of the full screen
+   * [DateRangePickerDialog].
+   *
+   * See also:
+   *   [Material.elevation], which explains how elevation is related to a component's shadow.
+   */
+  rangePickerElevation?: number;
+  /**
+   * Overrides the color of the shadow painted below a full screen
+   * [DateRangePickerDialog].
+   *
+   * See also:
+   *   [Material.shadowColor], which explains how the shadow is rendered.
+   */
+  rangePickerShadowColor?: ColorValue;
+  /**
+   * Overrides the default color of the surface tint overlay applied
+   * to the [backgroundColor] of a full screen
+   * [DateRangePickerDialog]'s to indicate elevation.
+   *
+   * This is not recommended for use. [Material 3 spec](https://m3.material.io/styles/color/the-color-system/color-roles)
+   * introduced a set of tone-based surfaces and surface containers in its [ColorScheme],
+   * which provide more flexibility. The intention is to eventually remove surface tint color from
+   * the framework.
+   *
+   * See also:
+   *   [Material.surfaceTintColor], which explains how this color is related to
+   *   [elevation].
+   */
+  rangePickerSurfaceTintColor?: ColorValue;
+  /**
+   * Overrides the default overall shape of a full screen
+   * [DateRangePickerDialog].
+   *
+   * If [elevation] is greater than zero then a shadow is shown and the shadow's
+   * shape mirrors the shape of the dialog.
+   *
+   *   [Material.surfaceTintColor], which explains how this color is related to
+   *   [elevation].
+   */
+  rangePickerShape?: ShapeBorderValue;
+  /**
+   * Overrides the default background fill color for [DateRangePickerDialog].
+   *
+   * The dialog's header displays the currently selected date range.
+   */
+  rangePickerHeaderBackgroundColor?: ColorValue;
+  /**
+   * Overrides the default color used for text labels and icons in
+   * the header of a full screen [DateRangePickerDialog]
+   *
+   * The dialog's header displays the currently selected date range.
+   *
+   * This is used instead of any colors provided by
+   * [rangePickerHeaderHeadlineStyle] or [rangePickerHeaderHelpStyle].
+   */
+  rangePickerHeaderForegroundColor?: ColorValue;
+  /**
+   * Overrides the default text style used for the headline text in
+   * the header of a full screen [DateRangePickerDialog].
+   *
+   * The dialog's header displays the currently selected date range.
+   *
+   * The [TextStyle.color] of [rangePickerHeaderHeadlineStyle] is not used,
+   * [rangePickerHeaderForegroundColor] is used instead.
+   */
+  rangePickerHeaderHeadlineStyle?: TextStyleValue;
+  /**
+   * Overrides the default text style used for the help text of the
+   * header of a full screen [DateRangePickerDialog].
+   *
+   * The help text (also referred to as "supporting text" in the Material
+   * spec) is usually a prompt to the user at the top of the header
+   * (i.e. 'Select date').
+   *
+   * The [TextStyle.color] of the [rangePickerHeaderHelpStyle] is not used,
+   * [rangePickerHeaderForegroundColor] is used instead.
+   *
+   * See also:
+   *   [DateRangePickerDialog.helpText], which specifies the help text.
+   */
+  rangePickerHeaderHelpStyle?: TextStyleValue;
+  /**
+   * Overrides the default background color used to paint days
+   * selected between the start and end dates in a
+   * [DateRangePickerDialog].
+   */
+  rangeSelectionBackgroundColor?: ColorValue;
+  /**
+   * Overrides the default highlight color that's typically used to
+   * indicate that a date in the selected range of a
+   * [DateRangePickerDialog] is focused, hovered, or pressed.
+   */
+  rangeSelectionOverlayColor?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default color used to paint the horizontal divider
+   * below the header text when dialog is in portrait orientation
+   * and vertical divider when the dialog is in landscape orientation.
+   */
+  dividerColor?: ColorValue;
+  inputDecorationTheme?: Object;
+  /**
+   * Overrides the default style of the cancel button of a [DatePickerDialog].
+   */
+  cancelButtonStyle?: ButtonStyleValue;
+  /**
+   * Overrides the default style of the confirm (OK) button of a [DatePickerDialog].
+   */
+  confirmButtonStyle?: ButtonStyleValue;
+  /**
+   * An optional [locale] argument can be used to set the locale for the date
+   * picker. It defaults to the ambient locale provided by [Localizations].
+   */
+  locale?: Locale;
+  /**
+   * Overrides the default text style used for the text of toggle mode button.
+   *
+   * If no [TextStyle.color] is given, [subHeaderForegroundColor] will be used.
+   */
+  toggleButtonTextStyle?: TextStyleValue;
+  /**
+   * Overrides the default color used for text labels and icons of sub header foreground.
+   *
+   * This is used in [TextStyle.color] property of [toggleButtonTextStyle] if no color is given.
+   */
+  subHeaderForegroundColor?: ColorValue;
+}
+
+export type DatePickerThemeDataValue =
+  DatePickerThemeData | DatePickerThemeDataObject;
+
+export interface DeviceGestureSettingsObject {
+  /**
+   * The touch slop value in logical pixels, or `null` if it was not set.
+   */
+  touchSlop?: number;
+}
+
+export type DeviceGestureSettingsValue =
+  DeviceGestureSettings | DeviceGestureSettingsObject;
+
+export interface DialogThemeDataObject {
+  /**
+   * Overrides the default value for [Dialog.backgroundColor].
+   */
+  backgroundColor?: ColorValue;
+  /**
+   * Overrides the default value for [Dialog.elevation].
+   */
+  elevation?: number;
+  /**
+   * Overrides the default value for [Dialog.shadowColor].
+   */
+  shadowColor?: ColorValue;
+  /**
+   * Overrides the default value for [Dialog.surfaceTintColor].
+   */
+  surfaceTintColor?: ColorValue;
+  /**
+   * Overrides the default value for [Dialog.shape].
+   */
+  shape?: ShapeBorderValue;
+  /**
+   * Overrides the default value for [Dialog.alignment].
+   */
+  alignment?: AlignmentGeometryValue;
+  /**
+   * Used to configure the [IconTheme] for the [AlertDialog.icon] widget.
+   */
+  iconColor?: ColorValue;
+  /**
+   * Overrides the default value for [DefaultTextStyle] for [SimpleDialog.title] and
+   * [AlertDialog.title].
+   */
+  titleTextStyle?: TextStyleValue;
+  /**
+   * Overrides the default value for [DefaultTextStyle] for [SimpleDialog.children] and
+   * [AlertDialog.content].
+   */
+  contentTextStyle?: TextStyleValue;
+  /**
+   * Overrides the default value for [AlertDialog.actionsPadding].
+   */
+  actionsPadding?: EdgeInsetsGeometryValue;
+  /**
+   * Overrides the default value for [barrierColor] in [showDialog].
+   */
+  barrierColor?: ColorValue;
+  /**
+   * Overrides the default value for [Dialog.insetPadding].
+   */
+  insetPadding?: EdgeInsetsValue;
+  /**
+   * Overrides the default value of [Dialog.clipBehavior].
+   */
+  clipBehavior?: Clip;
+  /**
+   * Constrains the size of the [Dialog].
+   *
+   * If null, the bottom sheet's size will be unconstrained.
+   */
+  constraints?: BoxConstraintsValue;
+}
+
+export type DialogThemeDataValue = DialogThemeData | DialogThemeDataObject;
+
+export interface DividerThemeDataObject {
+  /**
+   * The color of [Divider]s and [VerticalDivider]s, also
+   * used between [ListTile]s, between rows in [DataTable]s, and so forth.
+   */
+  color?: ColorValue;
+  /**
+   * The [Divider]'s height or the [VerticalDivider]'s width.
+   *
+   * This represents the amount of horizontal or vertical space the divider
+   * takes up.
+   */
+  space?: number;
+  /**
+   * The thickness of the line drawn within the divider.
+   */
+  thickness?: number;
+  /**
+   * The amount of empty space at the leading edge of [Divider] or top edge of
+   * [VerticalDivider].
+   */
+  indent?: number;
+  /**
+   * The amount of empty space at the trailing edge of [Divider] or bottom edge
+   * of [VerticalDivider].
+   */
+  endIndent?: number;
+  /**
+   * The border radius applied to the [Divider] or [VerticalDivider].
+   *
+   * If non-null, this radius will be used to round the corners of the divider.
+   */
+  radius?: BorderRadiusGeometryValue;
+}
+
+export type DividerThemeDataValue = DividerThemeData | DividerThemeDataObject;
+
+export interface DrawerThemeDataObject {
+  /**
+   * Overrides the default value of [Drawer.backgroundColor].
+   */
+  backgroundColor?: ColorValue;
+  /**
+   * Overrides the default value of [DrawerController.scrimColor].
+   */
+  scrimColor?: ColorValue;
+  /**
+   * Overrides the default value of [Drawer.elevation].
+   */
+  elevation?: number;
+  /**
+   * Overrides the default value for [Drawer.shadowColor].
+   */
+  shadowColor?: ColorValue;
+  /**
+   * Overrides the default value for [Drawer.surfaceTintColor].
+   */
+  surfaceTintColor?: ColorValue;
+  /**
+   * Overrides the default value of [Drawer.shape].
+   */
+  shape?: ShapeBorderValue;
+  /**
+   * Overrides the default value of [Drawer.shape] for an end drawer.
+   */
+  endShape?: ShapeBorderValue;
+  /**
+   * Overrides the default value of [Drawer.width].
+   */
+  width?: number;
+  /**
+   * Overrides the default value of [Drawer.clipBehavior].
+   */
+  clipBehavior?: Clip;
+}
+
+export type DrawerThemeDataValue = DrawerThemeData | DrawerThemeDataObject;
+
+export interface DropdownMenuThemeDataObject {
+  /**
+   * Overrides the default value for [DropdownMenu.textStyle].
+   */
+  textStyle?: TextStyleValue;
+  inputDecorationTheme?: Object;
+  /**
+   * Overrides the menu's default style in a [DropdownMenu].
+   *
+   * Any values not set in the [MenuStyle] will use the menu default for that
+   * property.
+   */
+  menuStyle?: MenuStyleValue;
+  /**
+   * The color used for disabled DropdownMenu.
+   * This color is applied to the text of the selected item on TextField.
+   */
+  disabledColor?: ColorValue;
+}
+
+export type DropdownMenuThemeDataValue =
+  DropdownMenuThemeData | DropdownMenuThemeDataObject;
+
+export type DurationValue =
+  | Duration
+  | 'defaultAnimationDuration'
+  | 'extralong1'
+  | 'extralong2'
+  | 'extralong3'
+  | 'extralong4'
+  | 'fadeDuration'
+  | 'jumpBetweenLinesAnimationDuration'
+  | 'long1'
+  | 'long2'
+  | 'long3'
+  | 'long4'
+  | 'medium1'
+  | 'medium2'
+  | 'medium3'
+  | 'medium4'
+  | 'momentumRetainStationaryDurationThreshold'
+  | 'motionStoppedDurationThreshold'
+  | 'short1'
+  | 'short2'
+  | 'short3'
+  | 'short4';
+
+export type EdgeInsetsValue =
+  | EdgeInsets
+  | number
+  | { horizontal?: number; vertical?: number }
+  | { left?: number; top?: number; right?: number; bottom?: number }
+  | 'zero';
+
+export type EdgeInsetsDirectionalValue = EdgeInsetsDirectional | 'zero';
+
+export type EdgeInsetsGeometryValue =
+  | EdgeInsetsGeometry
+  | number
+  | { horizontal?: number; vertical?: number }
+  | { left?: number; top?: number; right?: number; bottom?: number }
+  | 'infinity'
+  | 'zero';
+
+export interface ElevatedButtonThemeDataObject {
+  /**
+   * Overrides for [ElevatedButton]'s default style.
+   *
+   * Non-null properties or non-null resolved [WidgetStateProperty]
+   * values override the [ButtonStyle] returned by
+   * [ElevatedButton.defaultStyleOf].
+   *
+   * If [style] is null, then this theme doesn't override anything.
+   */
+  style?: ButtonStyleValue;
+}
+
+export type ElevatedButtonThemeDataValue =
+  ElevatedButtonThemeData | ElevatedButtonThemeDataObject;
+
+export interface ExpansionTileThemeDataObject {
+  /**
+   * Overrides the default value of [ExpansionTile.backgroundColor].
+   */
+  backgroundColor?: ColorValue;
+  /**
+   * Overrides the default value of [ExpansionTile.collapsedBackgroundColor].
+   */
+  collapsedBackgroundColor?: ColorValue;
+  /**
+   * Overrides the default value of [ExpansionTile.tilePadding].
+   */
+  tilePadding?: EdgeInsetsGeometryValue;
+  /**
+   * Overrides the default value of [ExpansionTile.expandedAlignment].
+   */
+  expandedAlignment?: AlignmentGeometryValue;
+  /**
+   * Overrides the default value of [ExpansionTile.childrenPadding].
+   */
+  childrenPadding?: EdgeInsetsGeometryValue;
+  /**
+   * Overrides the default value of [ExpansionTile.iconColor].
+   */
+  iconColor?: ColorValue;
+  /**
+   * Overrides the default value of [ExpansionTile.collapsedIconColor].
+   */
+  collapsedIconColor?: ColorValue;
+  /**
+   * Overrides the default value of [ExpansionTile.textColor].
+   */
+  textColor?: ColorValue;
+  /**
+   * Overrides the default value of [ExpansionTile.collapsedTextColor].
+   */
+  collapsedTextColor?: ColorValue;
+  /**
+   * Overrides the default value of [ExpansionTile.shape].
+   */
+  shape?: ShapeBorderValue;
+  /**
+   * Overrides the default value of [ExpansionTile.collapsedShape].
+   */
+  collapsedShape?: ShapeBorderValue;
+  /**
+   * Overrides the default value of [ExpansionTile.clipBehavior].
+   */
+  clipBehavior?: Clip;
+  /**
+   * Overrides the default value of [ExpansionTile.expansionAnimationStyle].
+   */
+  expansionAnimationStyle?: AnimationStyleValue;
+}
+
+export type ExpansionTileThemeDataValue =
+  ExpansionTileThemeData | ExpansionTileThemeDataObject;
+
+export interface FilledButtonThemeDataObject {
+  /**
+   * Overrides for [FilledButton]'s default style.
+   *
+   * Non-null properties or non-null resolved [WidgetStateProperty]
+   * values override the [ButtonStyle] returned by
+   * [FilledButton.defaultStyleOf].
+   *
+   * If [style] is null, then this theme doesn't override anything.
+   */
+  style?: ButtonStyleValue;
+}
+
+export type FilledButtonThemeDataValue =
+  FilledButtonThemeData | FilledButtonThemeDataObject;
+
+export type FloatingActionButtonAnimatorValue =
+  FloatingActionButtonAnimator | 'noAnimation' | 'scaling';
+
+export type FloatingActionButtonLocationValue =
+  | FloatingActionButtonLocation
+  | 'centerDocked'
+  | 'centerFloat'
+  | 'centerTop'
+  | 'endContained'
+  | 'endDocked'
+  | 'endFloat'
+  | 'endTop'
+  | 'miniCenterDocked'
+  | 'miniCenterFloat'
+  | 'miniCenterTop'
+  | 'miniEndDocked'
+  | 'miniEndFloat'
+  | 'miniEndTop'
+  | 'miniStartDocked'
+  | 'miniStartFloat'
+  | 'miniStartTop'
+  | 'startDocked'
+  | 'startFloat'
+  | 'startTop';
+
+export interface FloatingActionButtonThemeDataObject {
+  /**
+   * Color to be used for the unselected, enabled [FloatingActionButton]'s
+   * foreground.
+   */
+  foregroundColor?: ColorValue;
+  /**
+   * Color to be used for the unselected, enabled [FloatingActionButton]'s
+   * background.
+   */
+  backgroundColor?: ColorValue;
+  /**
+   * The color to use for filling the button when the button has input focus.
+   */
+  focusColor?: ColorValue;
+  /**
+   * The color to use for filling the button when the button has a pointer
+   * hovering over it.
+   */
+  hoverColor?: ColorValue;
+  /**
+   * The splash color for this [FloatingActionButton]'s [InkWell].
+   */
+  splashColor?: ColorValue;
+  /**
+   * The z-coordinate to be used for the unselected, enabled
+   * [FloatingActionButton]'s elevation foreground.
+   */
+  elevation?: number;
+  /**
+   * The z-coordinate at which to place this button relative to its parent when
+   * the button has the input focus.
+   *
+   * This controls the size of the shadow below the floating action button.
+   */
+  focusElevation?: number;
+  /**
+   * The z-coordinate at which to place this button relative to its parent when
+   * the button is enabled and has a pointer hovering over it.
+   *
+   * This controls the size of the shadow below the floating action button.
+   */
+  hoverElevation?: number;
+  /**
+   * The z-coordinate to be used for the disabled [FloatingActionButton]'s
+   * elevation foreground.
+   */
+  disabledElevation?: number;
+  /**
+   * The z-coordinate to be used for the selected, enabled
+   * [FloatingActionButton]'s elevation foreground.
+   */
+  highlightElevation?: number;
+  /**
+   * The shape to be used for the floating action button's [Material].
+   */
+  shape?: ShapeBorderValue;
+  /**
+   * If specified, defines the feedback property for [FloatingActionButton].
+   *
+   * If [FloatingActionButton.enableFeedback] is provided, [enableFeedback] is
+   * ignored.
+   */
+  enableFeedback?: boolean;
+  /**
+   * Overrides the default icon size for the [FloatingActionButton];
+   */
+  iconSize?: number;
+  /**
+   * Overrides the default size constraints for the [FloatingActionButton].
+   */
+  sizeConstraints?: BoxConstraintsValue;
+  /**
+   * Overrides the default size constraints for [FloatingActionButton.small].
+   */
+  smallSizeConstraints?: BoxConstraintsValue;
+  /**
+   * Overrides the default size constraints for [FloatingActionButton.large].
+   */
+  largeSizeConstraints?: BoxConstraintsValue;
+  /**
+   * Overrides the default size constraints for [FloatingActionButton.extended].
+   */
+  extendedSizeConstraints?: BoxConstraintsValue;
+  /**
+   * The spacing between the icon and the label for an extended
+   * [FloatingActionButton].
+   */
+  extendedIconLabelSpacing?: number;
+  /**
+   * The padding for an extended [FloatingActionButton]'s content.
+   */
+  extendedPadding?: EdgeInsetsGeometryValue;
+  /**
+   * The text style for an extended [FloatingActionButton]'s label.
+   */
+  extendedTextStyle?: TextStyleValue;
+  /**
+   * If specified, overrides the default value of [FloatingActionButton.mouseCursor].
+   */
+  mouseCursor?: WidgetStatePropertyValue;
+}
+
+export type FloatingActionButtonThemeDataValue =
+  FloatingActionButtonThemeData | FloatingActionButtonThemeDataObject;
+
+export type FloatingLabelAlignmentValue =
+  FloatingLabelAlignment | 'center' | 'start';
+
+export type FontWeightValue =
+  | FontWeight
+  | 'bold'
+  | 'normal'
+  | 'w100'
+  | 'w200'
+  | 'w300'
+  | 'w400'
+  | 'w500'
+  | 'w600'
+  | 'w700'
+  | 'w800'
+  | 'w900';
+
+export interface IconButtonThemeDataObject {
+  /**
+   * Overrides for [IconButton]'s default style if [ThemeData.useMaterial3]
+   * is set to true.
+   *
+   * Non-null properties or non-null resolved [WidgetStateProperty]
+   * values override the default [ButtonStyle] in [IconButton].
+   *
+   * If [style] is null, then this theme doesn't override anything.
+   */
+  style?: ButtonStyleValue;
+}
+
+export type IconButtonThemeDataValue =
+  IconButtonThemeData | IconButtonThemeDataObject;
+
+export type IconDataValue =
+  | IconData
+  | 'abc'
+  | 'abc_outlined'
+  | 'abc_rounded'
+  | 'abc_sharp'
+  | 'ac_unit'
+  | 'ac_unit_outlined'
+  | 'ac_unit_rounded'
+  | 'ac_unit_sharp'
+  | 'access_alarm'
+  | 'access_alarm_outlined'
+  | 'access_alarm_rounded'
+  | 'access_alarm_sharp'
+  | 'access_alarms'
+  | 'access_alarms_outlined'
+  | 'access_alarms_rounded'
+  | 'access_alarms_sharp'
+  | 'access_time'
+  | 'access_time_filled'
+  | 'access_time_filled_outlined'
+  | 'access_time_filled_rounded'
+  | 'access_time_filled_sharp'
+  | 'access_time_outlined'
+  | 'access_time_rounded'
+  | 'access_time_sharp'
+  | 'accessibility'
+  | 'accessibility_new'
+  | 'accessibility_new_outlined'
+  | 'accessibility_new_rounded'
+  | 'accessibility_new_sharp'
+  | 'accessibility_outlined'
+  | 'accessibility_rounded'
+  | 'accessibility_sharp'
+  | 'accessible'
+  | 'accessible_forward'
+  | 'accessible_forward_outlined'
+  | 'accessible_forward_rounded'
+  | 'accessible_forward_sharp'
+  | 'accessible_outlined'
+  | 'accessible_rounded'
+  | 'accessible_sharp'
+  | 'account_balance'
+  | 'account_balance_outlined'
+  | 'account_balance_rounded'
+  | 'account_balance_sharp'
+  | 'account_balance_wallet'
+  | 'account_balance_wallet_outlined'
+  | 'account_balance_wallet_rounded'
+  | 'account_balance_wallet_sharp'
+  | 'account_box'
+  | 'account_box_outlined'
+  | 'account_box_rounded'
+  | 'account_box_sharp'
+  | 'account_circle'
+  | 'account_circle_outlined'
+  | 'account_circle_rounded'
+  | 'account_circle_sharp'
+  | 'account_tree'
+  | 'account_tree_outlined'
+  | 'account_tree_rounded'
+  | 'account_tree_sharp'
+  | 'ad_units'
+  | 'ad_units_outlined'
+  | 'ad_units_rounded'
+  | 'ad_units_sharp'
+  | 'adb'
+  | 'adb_outlined'
+  | 'adb_rounded'
+  | 'adb_sharp'
+  | 'add'
+  | 'add_a_photo'
+  | 'add_a_photo_outlined'
+  | 'add_a_photo_rounded'
+  | 'add_a_photo_sharp'
+  | 'add_alarm'
+  | 'add_alarm_outlined'
+  | 'add_alarm_rounded'
+  | 'add_alarm_sharp'
+  | 'add_alert'
+  | 'add_alert_outlined'
+  | 'add_alert_rounded'
+  | 'add_alert_sharp'
+  | 'add_box'
+  | 'add_box_outlined'
+  | 'add_box_rounded'
+  | 'add_box_sharp'
+  | 'add_business'
+  | 'add_business_outlined'
+  | 'add_business_rounded'
+  | 'add_business_sharp'
+  | 'add_call'
+  | 'add_card'
+  | 'add_card_outlined'
+  | 'add_card_rounded'
+  | 'add_card_sharp'
+  | 'add_chart'
+  | 'add_chart_outlined'
+  | 'add_chart_rounded'
+  | 'add_chart_sharp'
+  | 'add_circle'
+  | 'add_circle_outline'
+  | 'add_circle_outline_outlined'
+  | 'add_circle_outline_rounded'
+  | 'add_circle_outline_sharp'
+  | 'add_circle_outlined'
+  | 'add_circle_rounded'
+  | 'add_circle_sharp'
+  | 'add_circled'
+  | 'add_circled_solid'
+  | 'add_comment'
+  | 'add_comment_outlined'
+  | 'add_comment_rounded'
+  | 'add_comment_sharp'
+  | 'add_home'
+  | 'add_home_outlined'
+  | 'add_home_rounded'
+  | 'add_home_sharp'
+  | 'add_home_work'
+  | 'add_home_work_outlined'
+  | 'add_home_work_rounded'
+  | 'add_home_work_sharp'
+  | 'add_ic_call'
+  | 'add_ic_call_outlined'
+  | 'add_ic_call_rounded'
+  | 'add_ic_call_sharp'
+  | 'add_link'
+  | 'add_link_outlined'
+  | 'add_link_rounded'
+  | 'add_link_sharp'
+  | 'add_location'
+  | 'add_location_alt'
+  | 'add_location_alt_outlined'
+  | 'add_location_alt_rounded'
+  | 'add_location_alt_sharp'
+  | 'add_location_outlined'
+  | 'add_location_rounded'
+  | 'add_location_sharp'
+  | 'add_moderator'
+  | 'add_moderator_outlined'
+  | 'add_moderator_rounded'
+  | 'add_moderator_sharp'
+  | 'add_outlined'
+  | 'add_photo_alternate'
+  | 'add_photo_alternate_outlined'
+  | 'add_photo_alternate_rounded'
+  | 'add_photo_alternate_sharp'
+  | 'add_reaction'
+  | 'add_reaction_outlined'
+  | 'add_reaction_rounded'
+  | 'add_reaction_sharp'
+  | 'add_road'
+  | 'add_road_outlined'
+  | 'add_road_rounded'
+  | 'add_road_sharp'
+  | 'add_rounded'
+  | 'add_sharp'
+  | 'add_shopping_cart'
+  | 'add_shopping_cart_outlined'
+  | 'add_shopping_cart_rounded'
+  | 'add_shopping_cart_sharp'
+  | 'add_task'
+  | 'add_task_outlined'
+  | 'add_task_rounded'
+  | 'add_task_sharp'
+  | 'add_to_drive'
+  | 'add_to_drive_outlined'
+  | 'add_to_drive_rounded'
+  | 'add_to_drive_sharp'
+  | 'add_to_home_screen'
+  | 'add_to_home_screen_outlined'
+  | 'add_to_home_screen_rounded'
+  | 'add_to_home_screen_sharp'
+  | 'add_to_photos'
+  | 'add_to_photos_outlined'
+  | 'add_to_photos_rounded'
+  | 'add_to_photos_sharp'
+  | 'add_to_queue'
+  | 'add_to_queue_outlined'
+  | 'add_to_queue_rounded'
+  | 'add_to_queue_sharp'
+  | 'addchart'
+  | 'addchart_outlined'
+  | 'addchart_rounded'
+  | 'addchart_sharp'
+  | 'adf_scanner'
+  | 'adf_scanner_outlined'
+  | 'adf_scanner_rounded'
+  | 'adf_scanner_sharp'
+  | 'adjust'
+  | 'adjust_outlined'
+  | 'adjust_rounded'
+  | 'adjust_sharp'
+  | 'admin_panel_settings'
+  | 'admin_panel_settings_outlined'
+  | 'admin_panel_settings_rounded'
+  | 'admin_panel_settings_sharp'
+  | 'adobe'
+  | 'adobe_outlined'
+  | 'adobe_rounded'
+  | 'adobe_sharp'
+  | 'ads_click'
+  | 'ads_click_outlined'
+  | 'ads_click_rounded'
+  | 'ads_click_sharp'
+  | 'agriculture'
+  | 'agriculture_outlined'
+  | 'agriculture_rounded'
+  | 'agriculture_sharp'
+  | 'air'
+  | 'air_outlined'
+  | 'air_rounded'
+  | 'air_sharp'
+  | 'airline_seat_flat'
+  | 'airline_seat_flat_angled'
+  | 'airline_seat_flat_angled_outlined'
+  | 'airline_seat_flat_angled_rounded'
+  | 'airline_seat_flat_angled_sharp'
+  | 'airline_seat_flat_outlined'
+  | 'airline_seat_flat_rounded'
+  | 'airline_seat_flat_sharp'
+  | 'airline_seat_individual_suite'
+  | 'airline_seat_individual_suite_outlined'
+  | 'airline_seat_individual_suite_rounded'
+  | 'airline_seat_individual_suite_sharp'
+  | 'airline_seat_legroom_extra'
+  | 'airline_seat_legroom_extra_outlined'
+  | 'airline_seat_legroom_extra_rounded'
+  | 'airline_seat_legroom_extra_sharp'
+  | 'airline_seat_legroom_normal'
+  | 'airline_seat_legroom_normal_outlined'
+  | 'airline_seat_legroom_normal_rounded'
+  | 'airline_seat_legroom_normal_sharp'
+  | 'airline_seat_legroom_reduced'
+  | 'airline_seat_legroom_reduced_outlined'
+  | 'airline_seat_legroom_reduced_rounded'
+  | 'airline_seat_legroom_reduced_sharp'
+  | 'airline_seat_recline_extra'
+  | 'airline_seat_recline_extra_outlined'
+  | 'airline_seat_recline_extra_rounded'
+  | 'airline_seat_recline_extra_sharp'
+  | 'airline_seat_recline_normal'
+  | 'airline_seat_recline_normal_outlined'
+  | 'airline_seat_recline_normal_rounded'
+  | 'airline_seat_recline_normal_sharp'
+  | 'airline_stops'
+  | 'airline_stops_outlined'
+  | 'airline_stops_rounded'
+  | 'airline_stops_sharp'
+  | 'airlines'
+  | 'airlines_outlined'
+  | 'airlines_rounded'
+  | 'airlines_sharp'
+  | 'airplane'
+  | 'airplane_ticket'
+  | 'airplane_ticket_outlined'
+  | 'airplane_ticket_rounded'
+  | 'airplane_ticket_sharp'
+  | 'airplanemode_active'
+  | 'airplanemode_active_outlined'
+  | 'airplanemode_active_rounded'
+  | 'airplanemode_active_sharp'
+  | 'airplanemode_inactive'
+  | 'airplanemode_inactive_outlined'
+  | 'airplanemode_inactive_rounded'
+  | 'airplanemode_inactive_sharp'
+  | 'airplanemode_off'
+  | 'airplanemode_off_outlined'
+  | 'airplanemode_off_rounded'
+  | 'airplanemode_off_sharp'
+  | 'airplanemode_on'
+  | 'airplanemode_on_outlined'
+  | 'airplanemode_on_rounded'
+  | 'airplanemode_on_sharp'
+  | 'airplay'
+  | 'airplay_outlined'
+  | 'airplay_rounded'
+  | 'airplay_sharp'
+  | 'airport_shuttle'
+  | 'airport_shuttle_outlined'
+  | 'airport_shuttle_rounded'
+  | 'airport_shuttle_sharp'
+  | 'alarm'
+  | 'alarm_add'
+  | 'alarm_add_outlined'
+  | 'alarm_add_rounded'
+  | 'alarm_add_sharp'
+  | 'alarm_fill'
+  | 'alarm_off'
+  | 'alarm_off_outlined'
+  | 'alarm_off_rounded'
+  | 'alarm_off_sharp'
+  | 'alarm_on'
+  | 'alarm_on_outlined'
+  | 'alarm_on_rounded'
+  | 'alarm_on_sharp'
+  | 'alarm_outlined'
+  | 'alarm_rounded'
+  | 'alarm_sharp'
+  | 'album'
+  | 'album_outlined'
+  | 'album_rounded'
+  | 'album_sharp'
+  | 'align_horizontal_center'
+  | 'align_horizontal_center_outlined'
+  | 'align_horizontal_center_rounded'
+  | 'align_horizontal_center_sharp'
+  | 'align_horizontal_left'
+  | 'align_horizontal_left_outlined'
+  | 'align_horizontal_left_rounded'
+  | 'align_horizontal_left_sharp'
+  | 'align_horizontal_right'
+  | 'align_horizontal_right_outlined'
+  | 'align_horizontal_right_rounded'
+  | 'align_horizontal_right_sharp'
+  | 'align_vertical_bottom'
+  | 'align_vertical_bottom_outlined'
+  | 'align_vertical_bottom_rounded'
+  | 'align_vertical_bottom_sharp'
+  | 'align_vertical_center'
+  | 'align_vertical_center_outlined'
+  | 'align_vertical_center_rounded'
+  | 'align_vertical_center_sharp'
+  | 'align_vertical_top'
+  | 'align_vertical_top_outlined'
+  | 'align_vertical_top_rounded'
+  | 'align_vertical_top_sharp'
+  | 'all_inbox'
+  | 'all_inbox_outlined'
+  | 'all_inbox_rounded'
+  | 'all_inbox_sharp'
+  | 'all_inclusive'
+  | 'all_inclusive_outlined'
+  | 'all_inclusive_rounded'
+  | 'all_inclusive_sharp'
+  | 'all_out'
+  | 'all_out_outlined'
+  | 'all_out_rounded'
+  | 'all_out_sharp'
+  | 'alt'
+  | 'alt_route'
+  | 'alt_route_outlined'
+  | 'alt_route_rounded'
+  | 'alt_route_sharp'
+  | 'alternate_email'
+  | 'alternate_email_outlined'
+  | 'alternate_email_rounded'
+  | 'alternate_email_sharp'
+  | 'amp_stories'
+  | 'amp_stories_outlined'
+  | 'amp_stories_rounded'
+  | 'amp_stories_sharp'
+  | 'analytics'
+  | 'analytics_outlined'
+  | 'analytics_rounded'
+  | 'analytics_sharp'
+  | 'anchor'
+  | 'anchor_outlined'
+  | 'anchor_rounded'
+  | 'anchor_sharp'
+  | 'android'
+  | 'android_outlined'
+  | 'android_rounded'
+  | 'android_sharp'
+  | 'animation'
+  | 'animation_outlined'
+  | 'animation_rounded'
+  | 'animation_sharp'
+  | 'announcement'
+  | 'announcement_outlined'
+  | 'announcement_rounded'
+  | 'announcement_sharp'
+  | 'ant'
+  | 'ant_circle'
+  | 'ant_circle_fill'
+  | 'ant_fill'
+  | 'antenna_radiowaves_left_right'
+  | 'aod'
+  | 'aod_outlined'
+  | 'aod_rounded'
+  | 'aod_sharp'
+  | 'apartment'
+  | 'apartment_outlined'
+  | 'apartment_rounded'
+  | 'apartment_sharp'
+  | 'api'
+  | 'api_outlined'
+  | 'api_rounded'
+  | 'api_sharp'
+  | 'app'
+  | 'app_badge'
+  | 'app_badge_fill'
+  | 'app_blocking'
+  | 'app_blocking_outlined'
+  | 'app_blocking_rounded'
+  | 'app_blocking_sharp'
+  | 'app_fill'
+  | 'app_registration'
+  | 'app_registration_outlined'
+  | 'app_registration_rounded'
+  | 'app_registration_sharp'
+  | 'app_settings_alt'
+  | 'app_settings_alt_outlined'
+  | 'app_settings_alt_rounded'
+  | 'app_settings_alt_sharp'
+  | 'app_shortcut'
+  | 'app_shortcut_outlined'
+  | 'app_shortcut_rounded'
+  | 'app_shortcut_sharp'
+  | 'apple'
+  | 'apple_outlined'
+  | 'apple_rounded'
+  | 'apple_sharp'
+  | 'approval'
+  | 'approval_outlined'
+  | 'approval_rounded'
+  | 'approval_sharp'
+  | 'apps'
+  | 'apps_outage'
+  | 'apps_outage_outlined'
+  | 'apps_outage_rounded'
+  | 'apps_outage_sharp'
+  | 'apps_outlined'
+  | 'apps_rounded'
+  | 'apps_sharp'
+  | 'architecture'
+  | 'architecture_outlined'
+  | 'architecture_rounded'
+  | 'architecture_sharp'
+  | 'archive'
+  | 'archive_outlined'
+  | 'archive_rounded'
+  | 'archive_sharp'
+  | 'archivebox'
+  | 'archivebox_fill'
+  | 'area_chart'
+  | 'area_chart_outlined'
+  | 'area_chart_rounded'
+  | 'area_chart_sharp'
+  | 'arrow_2_circlepath'
+  | 'arrow_2_circlepath_circle'
+  | 'arrow_2_circlepath_circle_fill'
+  | 'arrow_2_squarepath'
+  | 'arrow_3_trianglepath'
+  | 'arrow_back'
+  | 'arrow_back_ios'
+  | 'arrow_back_ios_new'
+  | 'arrow_back_ios_new_outlined'
+  | 'arrow_back_ios_new_rounded'
+  | 'arrow_back_ios_new_sharp'
+  | 'arrow_back_ios_outlined'
+  | 'arrow_back_ios_rounded'
+  | 'arrow_back_ios_sharp'
+  | 'arrow_back_outlined'
+  | 'arrow_back_rounded'
+  | 'arrow_back_sharp'
+  | 'arrow_branch'
+  | 'arrow_circle_down'
+  | 'arrow_circle_down_outlined'
+  | 'arrow_circle_down_rounded'
+  | 'arrow_circle_down_sharp'
+  | 'arrow_circle_left'
+  | 'arrow_circle_left_outlined'
+  | 'arrow_circle_left_rounded'
+  | 'arrow_circle_left_sharp'
+  | 'arrow_circle_right'
+  | 'arrow_circle_right_outlined'
+  | 'arrow_circle_right_rounded'
+  | 'arrow_circle_right_sharp'
+  | 'arrow_circle_up'
+  | 'arrow_circle_up_outlined'
+  | 'arrow_circle_up_rounded'
+  | 'arrow_circle_up_sharp'
+  | 'arrow_clockwise'
+  | 'arrow_clockwise_circle'
+  | 'arrow_clockwise_circle_fill'
+  | 'arrow_counterclockwise'
+  | 'arrow_counterclockwise_circle'
+  | 'arrow_counterclockwise_circle_fill'
+  | 'arrow_down'
+  | 'arrow_down_circle'
+  | 'arrow_down_circle_fill'
+  | 'arrow_down_doc'
+  | 'arrow_down_doc_fill'
+  | 'arrow_down_left'
+  | 'arrow_down_left_circle'
+  | 'arrow_down_left_circle_fill'
+  | 'arrow_down_left_square'
+  | 'arrow_down_left_square_fill'
+  | 'arrow_down_right'
+  | 'arrow_down_right_arrow_up_left'
+  | 'arrow_down_right_circle'
+  | 'arrow_down_right_circle_fill'
+  | 'arrow_down_right_square'
+  | 'arrow_down_right_square_fill'
+  | 'arrow_down_square'
+  | 'arrow_down_square_fill'
+  | 'arrow_down_to_line'
+  | 'arrow_down_to_line_alt'
+  | 'arrow_downward'
+  | 'arrow_downward_outlined'
+  | 'arrow_downward_rounded'
+  | 'arrow_downward_sharp'
+  | 'arrow_drop_down'
+  | 'arrow_drop_down_circle'
+  | 'arrow_drop_down_circle_outlined'
+  | 'arrow_drop_down_circle_rounded'
+  | 'arrow_drop_down_circle_sharp'
+  | 'arrow_drop_down_outlined'
+  | 'arrow_drop_down_rounded'
+  | 'arrow_drop_down_sharp'
+  | 'arrow_drop_up'
+  | 'arrow_drop_up_outlined'
+  | 'arrow_drop_up_rounded'
+  | 'arrow_drop_up_sharp'
+  | 'arrow_forward'
+  | 'arrow_forward_ios'
+  | 'arrow_forward_ios_outlined'
+  | 'arrow_forward_ios_rounded'
+  | 'arrow_forward_ios_sharp'
+  | 'arrow_forward_outlined'
+  | 'arrow_forward_rounded'
+  | 'arrow_forward_sharp'
+  | 'arrow_left'
+  | 'arrow_left_circle'
+  | 'arrow_left_circle_fill'
+  | 'arrow_left_outlined'
+  | 'arrow_left_right'
+  | 'arrow_left_right_circle'
+  | 'arrow_left_right_circle_fill'
+  | 'arrow_left_right_square'
+  | 'arrow_left_right_square_fill'
+  | 'arrow_left_rounded'
+  | 'arrow_left_sharp'
+  | 'arrow_left_square'
+  | 'arrow_left_square_fill'
+  | 'arrow_left_to_line'
+  | 'arrow_left_to_line_alt'
+  | 'arrow_merge'
+  | 'arrow_outward'
+  | 'arrow_outward_outlined'
+  | 'arrow_outward_rounded'
+  | 'arrow_outward_sharp'
+  | 'arrow_right'
+  | 'arrow_right_alt'
+  | 'arrow_right_alt_outlined'
+  | 'arrow_right_alt_rounded'
+  | 'arrow_right_alt_sharp'
+  | 'arrow_right_arrow_left'
+  | 'arrow_right_arrow_left_circle'
+  | 'arrow_right_arrow_left_circle_fill'
+  | 'arrow_right_arrow_left_square'
+  | 'arrow_right_arrow_left_square_fill'
+  | 'arrow_right_circle'
+  | 'arrow_right_circle_fill'
+  | 'arrow_right_outlined'
+  | 'arrow_right_rounded'
+  | 'arrow_right_sharp'
+  | 'arrow_right_square'
+  | 'arrow_right_square_fill'
+  | 'arrow_right_to_line'
+  | 'arrow_right_to_line_alt'
+  | 'arrow_swap'
+  | 'arrow_turn_down_left'
+  | 'arrow_turn_down_right'
+  | 'arrow_turn_left_down'
+  | 'arrow_turn_left_up'
+  | 'arrow_turn_right_down'
+  | 'arrow_turn_right_up'
+  | 'arrow_turn_up_left'
+  | 'arrow_turn_up_right'
+  | 'arrow_up'
+  | 'arrow_up_arrow_down'
+  | 'arrow_up_arrow_down_circle'
+  | 'arrow_up_arrow_down_circle_fill'
+  | 'arrow_up_arrow_down_square'
+  | 'arrow_up_arrow_down_square_fill'
+  | 'arrow_up_bin'
+  | 'arrow_up_bin_fill'
+  | 'arrow_up_circle'
+  | 'arrow_up_circle_fill'
+  | 'arrow_up_doc'
+  | 'arrow_up_doc_fill'
+  | 'arrow_up_down'
+  | 'arrow_up_down_circle'
+  | 'arrow_up_down_circle_fill'
+  | 'arrow_up_down_square'
+  | 'arrow_up_down_square_fill'
+  | 'arrow_up_left'
+  | 'arrow_up_left_arrow_down_right'
+  | 'arrow_up_left_circle'
+  | 'arrow_up_left_circle_fill'
+  | 'arrow_up_left_square'
+  | 'arrow_up_left_square_fill'
+  | 'arrow_up_right'
+  | 'arrow_up_right_circle'
+  | 'arrow_up_right_circle_fill'
+  | 'arrow_up_right_diamond'
+  | 'arrow_up_right_diamond_fill'
+  | 'arrow_up_right_square'
+  | 'arrow_up_right_square_fill'
+  | 'arrow_up_square'
+  | 'arrow_up_square_fill'
+  | 'arrow_up_to_line'
+  | 'arrow_up_to_line_alt'
+  | 'arrow_upward'
+  | 'arrow_upward_outlined'
+  | 'arrow_upward_rounded'
+  | 'arrow_upward_sharp'
+  | 'arrow_uturn_down'
+  | 'arrow_uturn_down_circle'
+  | 'arrow_uturn_down_circle_fill'
+  | 'arrow_uturn_down_square'
+  | 'arrow_uturn_down_square_fill'
+  | 'arrow_uturn_left'
+  | 'arrow_uturn_left_circle'
+  | 'arrow_uturn_left_circle_fill'
+  | 'arrow_uturn_left_square'
+  | 'arrow_uturn_left_square_fill'
+  | 'arrow_uturn_right'
+  | 'arrow_uturn_right_circle'
+  | 'arrow_uturn_right_circle_fill'
+  | 'arrow_uturn_right_square'
+  | 'arrow_uturn_right_square_fill'
+  | 'arrow_uturn_up'
+  | 'arrow_uturn_up_circle'
+  | 'arrow_uturn_up_circle_fill'
+  | 'arrow_uturn_up_square'
+  | 'arrow_uturn_up_square_fill'
+  | 'arrowshape_turn_up_left'
+  | 'arrowshape_turn_up_left_2'
+  | 'arrowshape_turn_up_left_2_fill'
+  | 'arrowshape_turn_up_left_circle'
+  | 'arrowshape_turn_up_left_circle_fill'
+  | 'arrowshape_turn_up_left_fill'
+  | 'arrowshape_turn_up_right'
+  | 'arrowshape_turn_up_right_circle'
+  | 'arrowshape_turn_up_right_circle_fill'
+  | 'arrowshape_turn_up_right_fill'
+  | 'arrowtriangle_down'
+  | 'arrowtriangle_down_circle'
+  | 'arrowtriangle_down_circle_fill'
+  | 'arrowtriangle_down_fill'
+  | 'arrowtriangle_down_square'
+  | 'arrowtriangle_down_square_fill'
+  | 'arrowtriangle_left'
+  | 'arrowtriangle_left_circle'
+  | 'arrowtriangle_left_circle_fill'
+  | 'arrowtriangle_left_fill'
+  | 'arrowtriangle_left_square'
+  | 'arrowtriangle_left_square_fill'
+  | 'arrowtriangle_right'
+  | 'arrowtriangle_right_circle'
+  | 'arrowtriangle_right_circle_fill'
+  | 'arrowtriangle_right_fill'
+  | 'arrowtriangle_right_square'
+  | 'arrowtriangle_right_square_fill'
+  | 'arrowtriangle_up'
+  | 'arrowtriangle_up_circle'
+  | 'arrowtriangle_up_circle_fill'
+  | 'arrowtriangle_up_fill'
+  | 'arrowtriangle_up_square'
+  | 'arrowtriangle_up_square_fill'
+  | 'art_track'
+  | 'art_track_outlined'
+  | 'art_track_rounded'
+  | 'art_track_sharp'
+  | 'article'
+  | 'article_outlined'
+  | 'article_rounded'
+  | 'article_sharp'
+  | 'aspect_ratio'
+  | 'aspect_ratio_outlined'
+  | 'aspect_ratio_rounded'
+  | 'aspect_ratio_sharp'
+  | 'assessment'
+  | 'assessment_outlined'
+  | 'assessment_rounded'
+  | 'assessment_sharp'
+  | 'assignment'
+  | 'assignment_add'
+  | 'assignment_ind'
+  | 'assignment_ind_outlined'
+  | 'assignment_ind_rounded'
+  | 'assignment_ind_sharp'
+  | 'assignment_late'
+  | 'assignment_late_outlined'
+  | 'assignment_late_rounded'
+  | 'assignment_late_sharp'
+  | 'assignment_outlined'
+  | 'assignment_return'
+  | 'assignment_return_outlined'
+  | 'assignment_return_rounded'
+  | 'assignment_return_sharp'
+  | 'assignment_returned'
+  | 'assignment_returned_outlined'
+  | 'assignment_returned_rounded'
+  | 'assignment_returned_sharp'
+  | 'assignment_rounded'
+  | 'assignment_sharp'
+  | 'assignment_turned_in'
+  | 'assignment_turned_in_outlined'
+  | 'assignment_turned_in_rounded'
+  | 'assignment_turned_in_sharp'
+  | 'assist_walker'
+  | 'assist_walker_outlined'
+  | 'assist_walker_rounded'
+  | 'assist_walker_sharp'
+  | 'assistant'
+  | 'assistant_direction'
+  | 'assistant_direction_outlined'
+  | 'assistant_direction_rounded'
+  | 'assistant_direction_sharp'
+  | 'assistant_navigation'
+  | 'assistant_outlined'
+  | 'assistant_photo'
+  | 'assistant_photo_outlined'
+  | 'assistant_photo_rounded'
+  | 'assistant_photo_sharp'
+  | 'assistant_rounded'
+  | 'assistant_sharp'
+  | 'assured_workload'
+  | 'assured_workload_outlined'
+  | 'assured_workload_rounded'
+  | 'assured_workload_sharp'
+  | 'asterisk_circle'
+  | 'asterisk_circle_fill'
+  | 'at'
+  | 'at_badge_minus'
+  | 'at_badge_plus'
+  | 'at_circle'
+  | 'at_circle_fill'
+  | 'atm'
+  | 'atm_outlined'
+  | 'atm_rounded'
+  | 'atm_sharp'
+  | 'attach_email'
+  | 'attach_email_outlined'
+  | 'attach_email_rounded'
+  | 'attach_email_sharp'
+  | 'attach_file'
+  | 'attach_file_outlined'
+  | 'attach_file_rounded'
+  | 'attach_file_sharp'
+  | 'attach_money'
+  | 'attach_money_outlined'
+  | 'attach_money_rounded'
+  | 'attach_money_sharp'
+  | 'attachment'
+  | 'attachment_outlined'
+  | 'attachment_rounded'
+  | 'attachment_sharp'
+  | 'attractions'
+  | 'attractions_outlined'
+  | 'attractions_rounded'
+  | 'attractions_sharp'
+  | 'attribution'
+  | 'attribution_outlined'
+  | 'attribution_rounded'
+  | 'attribution_sharp'
+  | 'audio_file'
+  | 'audio_file_outlined'
+  | 'audio_file_rounded'
+  | 'audio_file_sharp'
+  | 'audiotrack'
+  | 'audiotrack_outlined'
+  | 'audiotrack_rounded'
+  | 'audiotrack_sharp'
+  | 'auto_awesome'
+  | 'auto_awesome_mosaic'
+  | 'auto_awesome_mosaic_outlined'
+  | 'auto_awesome_mosaic_rounded'
+  | 'auto_awesome_mosaic_sharp'
+  | 'auto_awesome_motion'
+  | 'auto_awesome_motion_outlined'
+  | 'auto_awesome_motion_rounded'
+  | 'auto_awesome_motion_sharp'
+  | 'auto_awesome_outlined'
+  | 'auto_awesome_rounded'
+  | 'auto_awesome_sharp'
+  | 'auto_delete'
+  | 'auto_delete_outlined'
+  | 'auto_delete_rounded'
+  | 'auto_delete_sharp'
+  | 'auto_fix_high'
+  | 'auto_fix_high_outlined'
+  | 'auto_fix_high_rounded'
+  | 'auto_fix_high_sharp'
+  | 'auto_fix_normal'
+  | 'auto_fix_normal_outlined'
+  | 'auto_fix_normal_rounded'
+  | 'auto_fix_normal_sharp'
+  | 'auto_fix_off'
+  | 'auto_fix_off_outlined'
+  | 'auto_fix_off_rounded'
+  | 'auto_fix_off_sharp'
+  | 'auto_graph'
+  | 'auto_graph_outlined'
+  | 'auto_graph_rounded'
+  | 'auto_graph_sharp'
+  | 'auto_mode'
+  | 'auto_mode_outlined'
+  | 'auto_mode_rounded'
+  | 'auto_mode_sharp'
+  | 'auto_stories'
+  | 'auto_stories_outlined'
+  | 'auto_stories_rounded'
+  | 'auto_stories_sharp'
+  | 'autofps_select'
+  | 'autofps_select_outlined'
+  | 'autofps_select_rounded'
+  | 'autofps_select_sharp'
+  | 'autorenew'
+  | 'autorenew_outlined'
+  | 'autorenew_rounded'
+  | 'autorenew_sharp'
+  | 'av_timer'
+  | 'av_timer_outlined'
+  | 'av_timer_rounded'
+  | 'av_timer_sharp'
+  | 'baby_changing_station'
+  | 'baby_changing_station_outlined'
+  | 'baby_changing_station_rounded'
+  | 'baby_changing_station_sharp'
+  | 'back'
+  | 'back_hand'
+  | 'back_hand_outlined'
+  | 'back_hand_rounded'
+  | 'back_hand_sharp'
+  | 'backpack'
+  | 'backpack_outlined'
+  | 'backpack_rounded'
+  | 'backpack_sharp'
+  | 'backspace'
+  | 'backspace_outlined'
+  | 'backspace_rounded'
+  | 'backspace_sharp'
+  | 'backup'
+  | 'backup_outlined'
+  | 'backup_rounded'
+  | 'backup_sharp'
+  | 'backup_table'
+  | 'backup_table_outlined'
+  | 'backup_table_rounded'
+  | 'backup_table_sharp'
+  | 'backward'
+  | 'backward_end'
+  | 'backward_end_alt'
+  | 'backward_end_alt_fill'
+  | 'backward_end_fill'
+  | 'backward_fill'
+  | 'badge'
+  | 'badge_outlined'
+  | 'badge_plus_radiowaves_right'
+  | 'badge_rounded'
+  | 'badge_sharp'
+  | 'bag'
+  | 'bag_badge_minus'
+  | 'bag_badge_plus'
+  | 'bag_fill'
+  | 'bag_fill_badge_minus'
+  | 'bag_fill_badge_plus'
+  | 'bakery_dining'
+  | 'bakery_dining_outlined'
+  | 'bakery_dining_rounded'
+  | 'bakery_dining_sharp'
+  | 'balance'
+  | 'balance_outlined'
+  | 'balance_rounded'
+  | 'balance_sharp'
+  | 'balcony'
+  | 'balcony_outlined'
+  | 'balcony_rounded'
+  | 'balcony_sharp'
+  | 'ballot'
+  | 'ballot_outlined'
+  | 'ballot_rounded'
+  | 'ballot_sharp'
+  | 'bandage'
+  | 'bandage_fill'
+  | 'bar_chart'
+  | 'bar_chart_outlined'
+  | 'bar_chart_rounded'
+  | 'bar_chart_sharp'
+  | 'barcode'
+  | 'barcode_reader'
+  | 'barcode_viewfinder'
+  | 'bars'
+  | 'batch_prediction'
+  | 'batch_prediction_outlined'
+  | 'batch_prediction_rounded'
+  | 'batch_prediction_sharp'
+  | 'bathroom'
+  | 'bathroom_outlined'
+  | 'bathroom_rounded'
+  | 'bathroom_sharp'
+  | 'bathtub'
+  | 'bathtub_outlined'
+  | 'bathtub_rounded'
+  | 'bathtub_sharp'
+  | 'battery_0'
+  | 'battery_0_bar'
+  | 'battery_0_bar_outlined'
+  | 'battery_0_bar_rounded'
+  | 'battery_0_bar_sharp'
+  | 'battery_1_bar'
+  | 'battery_1_bar_outlined'
+  | 'battery_1_bar_rounded'
+  | 'battery_1_bar_sharp'
+  | 'battery_100'
+  | 'battery_2_bar'
+  | 'battery_2_bar_outlined'
+  | 'battery_2_bar_rounded'
+  | 'battery_2_bar_sharp'
+  | 'battery_25'
+  | 'battery_25_percent'
+  | 'battery_3_bar'
+  | 'battery_3_bar_outlined'
+  | 'battery_3_bar_rounded'
+  | 'battery_3_bar_sharp'
+  | 'battery_4_bar'
+  | 'battery_4_bar_outlined'
+  | 'battery_4_bar_rounded'
+  | 'battery_4_bar_sharp'
+  | 'battery_5_bar'
+  | 'battery_5_bar_outlined'
+  | 'battery_5_bar_rounded'
+  | 'battery_5_bar_sharp'
+  | 'battery_6_bar'
+  | 'battery_6_bar_outlined'
+  | 'battery_6_bar_rounded'
+  | 'battery_6_bar_sharp'
+  | 'battery_75_percent'
+  | 'battery_alert'
+  | 'battery_alert_outlined'
+  | 'battery_alert_rounded'
+  | 'battery_alert_sharp'
+  | 'battery_charging'
+  | 'battery_charging_full'
+  | 'battery_charging_full_outlined'
+  | 'battery_charging_full_rounded'
+  | 'battery_charging_full_sharp'
+  | 'battery_empty'
+  | 'battery_full'
+  | 'battery_full_outlined'
+  | 'battery_full_rounded'
+  | 'battery_full_sharp'
+  | 'battery_saver'
+  | 'battery_saver_outlined'
+  | 'battery_saver_rounded'
+  | 'battery_saver_sharp'
+  | 'battery_std'
+  | 'battery_std_outlined'
+  | 'battery_std_rounded'
+  | 'battery_std_sharp'
+  | 'battery_unknown'
+  | 'battery_unknown_outlined'
+  | 'battery_unknown_rounded'
+  | 'battery_unknown_sharp'
+  | 'beach_access'
+  | 'beach_access_outlined'
+  | 'beach_access_rounded'
+  | 'beach_access_sharp'
+  | 'bed'
+  | 'bed_double'
+  | 'bed_double_fill'
+  | 'bed_outlined'
+  | 'bed_rounded'
+  | 'bed_sharp'
+  | 'bedroom_baby'
+  | 'bedroom_baby_outlined'
+  | 'bedroom_baby_rounded'
+  | 'bedroom_baby_sharp'
+  | 'bedroom_child'
+  | 'bedroom_child_outlined'
+  | 'bedroom_child_rounded'
+  | 'bedroom_child_sharp'
+  | 'bedroom_parent'
+  | 'bedroom_parent_outlined'
+  | 'bedroom_parent_rounded'
+  | 'bedroom_parent_sharp'
+  | 'bedtime'
+  | 'bedtime_off'
+  | 'bedtime_off_outlined'
+  | 'bedtime_off_rounded'
+  | 'bedtime_off_sharp'
+  | 'bedtime_outlined'
+  | 'bedtime_rounded'
+  | 'bedtime_sharp'
+  | 'beenhere'
+  | 'beenhere_outlined'
+  | 'beenhere_rounded'
+  | 'beenhere_sharp'
+  | 'bell'
+  | 'bell_circle'
+  | 'bell_circle_fill'
+  | 'bell_fill'
+  | 'bell_slash'
+  | 'bell_slash_fill'
+  | 'bell_solid'
+  | 'bento'
+  | 'bento_outlined'
+  | 'bento_rounded'
+  | 'bento_sharp'
+  | 'bike_scooter'
+  | 'bike_scooter_outlined'
+  | 'bike_scooter_rounded'
+  | 'bike_scooter_sharp'
+  | 'bin_xmark'
+  | 'bin_xmark_fill'
+  | 'biotech'
+  | 'biotech_outlined'
+  | 'biotech_rounded'
+  | 'biotech_sharp'
+  | 'bitcoin'
+  | 'bitcoin_circle'
+  | 'bitcoin_circle_fill'
+  | 'blender'
+  | 'blender_outlined'
+  | 'blender_rounded'
+  | 'blender_sharp'
+  | 'blind'
+  | 'blind_outlined'
+  | 'blind_rounded'
+  | 'blind_sharp'
+  | 'blinds'
+  | 'blinds_closed'
+  | 'blinds_closed_outlined'
+  | 'blinds_closed_rounded'
+  | 'blinds_closed_sharp'
+  | 'blinds_outlined'
+  | 'blinds_rounded'
+  | 'blinds_sharp'
+  | 'block'
+  | 'block_flipped'
+  | 'block_outlined'
+  | 'block_rounded'
+  | 'block_sharp'
+  | 'bloodtype'
+  | 'bloodtype_outlined'
+  | 'bloodtype_rounded'
+  | 'bloodtype_sharp'
+  | 'bluetooth'
+  | 'bluetooth_audio'
+  | 'bluetooth_audio_outlined'
+  | 'bluetooth_audio_rounded'
+  | 'bluetooth_audio_sharp'
+  | 'bluetooth_connected'
+  | 'bluetooth_connected_outlined'
+  | 'bluetooth_connected_rounded'
+  | 'bluetooth_connected_sharp'
+  | 'bluetooth_disabled'
+  | 'bluetooth_disabled_outlined'
+  | 'bluetooth_disabled_rounded'
+  | 'bluetooth_disabled_sharp'
+  | 'bluetooth_drive'
+  | 'bluetooth_drive_outlined'
+  | 'bluetooth_drive_rounded'
+  | 'bluetooth_drive_sharp'
+  | 'bluetooth_outlined'
+  | 'bluetooth_rounded'
+  | 'bluetooth_searching'
+  | 'bluetooth_searching_outlined'
+  | 'bluetooth_searching_rounded'
+  | 'bluetooth_searching_sharp'
+  | 'bluetooth_sharp'
+  | 'blur_circular'
+  | 'blur_circular_outlined'
+  | 'blur_circular_rounded'
+  | 'blur_circular_sharp'
+  | 'blur_linear'
+  | 'blur_linear_outlined'
+  | 'blur_linear_rounded'
+  | 'blur_linear_sharp'
+  | 'blur_off'
+  | 'blur_off_outlined'
+  | 'blur_off_rounded'
+  | 'blur_off_sharp'
+  | 'blur_on'
+  | 'blur_on_outlined'
+  | 'blur_on_rounded'
+  | 'blur_on_sharp'
+  | 'bold'
+  | 'bold_italic_underline'
+  | 'bold_underline'
+  | 'bolt'
+  | 'bolt_badge_a'
+  | 'bolt_badge_a_fill'
+  | 'bolt_circle'
+  | 'bolt_circle_fill'
+  | 'bolt_fill'
+  | 'bolt_horizontal'
+  | 'bolt_horizontal_circle'
+  | 'bolt_horizontal_circle_fill'
+  | 'bolt_horizontal_fill'
+  | 'bolt_outlined'
+  | 'bolt_rounded'
+  | 'bolt_sharp'
+  | 'bolt_slash'
+  | 'bolt_slash_fill'
+  | 'book'
+  | 'book_circle'
+  | 'book_circle_fill'
+  | 'book_fill'
+  | 'book_online'
+  | 'book_online_outlined'
+  | 'book_online_rounded'
+  | 'book_online_sharp'
+  | 'book_outlined'
+  | 'book_rounded'
+  | 'book_sharp'
+  | 'book_solid'
+  | 'bookmark'
+  | 'bookmark_add'
+  | 'bookmark_add_outlined'
+  | 'bookmark_add_rounded'
+  | 'bookmark_add_sharp'
+  | 'bookmark_added'
+  | 'bookmark_added_outlined'
+  | 'bookmark_added_rounded'
+  | 'bookmark_added_sharp'
+  | 'bookmark_border'
+  | 'bookmark_border_outlined'
+  | 'bookmark_border_rounded'
+  | 'bookmark_border_sharp'
+  | 'bookmark_fill'
+  | 'bookmark_outline'
+  | 'bookmark_outline_outlined'
+  | 'bookmark_outline_rounded'
+  | 'bookmark_outline_sharp'
+  | 'bookmark_outlined'
+  | 'bookmark_remove'
+  | 'bookmark_remove_outlined'
+  | 'bookmark_remove_rounded'
+  | 'bookmark_remove_sharp'
+  | 'bookmark_rounded'
+  | 'bookmark_sharp'
+  | 'bookmark_solid'
+  | 'bookmarks'
+  | 'bookmarks_outlined'
+  | 'bookmarks_rounded'
+  | 'bookmarks_sharp'
+  | 'border_all'
+  | 'border_all_outlined'
+  | 'border_all_rounded'
+  | 'border_all_sharp'
+  | 'border_bottom'
+  | 'border_bottom_outlined'
+  | 'border_bottom_rounded'
+  | 'border_bottom_sharp'
+  | 'border_clear'
+  | 'border_clear_outlined'
+  | 'border_clear_rounded'
+  | 'border_clear_sharp'
+  | 'border_color'
+  | 'border_color_outlined'
+  | 'border_color_rounded'
+  | 'border_color_sharp'
+  | 'border_horizontal'
+  | 'border_horizontal_outlined'
+  | 'border_horizontal_rounded'
+  | 'border_horizontal_sharp'
+  | 'border_inner'
+  | 'border_inner_outlined'
+  | 'border_inner_rounded'
+  | 'border_inner_sharp'
+  | 'border_left'
+  | 'border_left_outlined'
+  | 'border_left_rounded'
+  | 'border_left_sharp'
+  | 'border_outer'
+  | 'border_outer_outlined'
+  | 'border_outer_rounded'
+  | 'border_outer_sharp'
+  | 'border_right'
+  | 'border_right_outlined'
+  | 'border_right_rounded'
+  | 'border_right_sharp'
+  | 'border_style'
+  | 'border_style_outlined'
+  | 'border_style_rounded'
+  | 'border_style_sharp'
+  | 'border_top'
+  | 'border_top_outlined'
+  | 'border_top_rounded'
+  | 'border_top_sharp'
+  | 'border_vertical'
+  | 'border_vertical_outlined'
+  | 'border_vertical_rounded'
+  | 'border_vertical_sharp'
+  | 'boy'
+  | 'boy_outlined'
+  | 'boy_rounded'
+  | 'boy_sharp'
+  | 'branding_watermark'
+  | 'branding_watermark_outlined'
+  | 'branding_watermark_rounded'
+  | 'branding_watermark_sharp'
+  | 'breakfast_dining'
+  | 'breakfast_dining_outlined'
+  | 'breakfast_dining_rounded'
+  | 'breakfast_dining_sharp'
+  | 'briefcase'
+  | 'briefcase_fill'
+  | 'brightness'
+  | 'brightness_1'
+  | 'brightness_1_outlined'
+  | 'brightness_1_rounded'
+  | 'brightness_1_sharp'
+  | 'brightness_2'
+  | 'brightness_2_outlined'
+  | 'brightness_2_rounded'
+  | 'brightness_2_sharp'
+  | 'brightness_3'
+  | 'brightness_3_outlined'
+  | 'brightness_3_rounded'
+  | 'brightness_3_sharp'
+  | 'brightness_4'
+  | 'brightness_4_outlined'
+  | 'brightness_4_rounded'
+  | 'brightness_4_sharp'
+  | 'brightness_5'
+  | 'brightness_5_outlined'
+  | 'brightness_5_rounded'
+  | 'brightness_5_sharp'
+  | 'brightness_6'
+  | 'brightness_6_outlined'
+  | 'brightness_6_rounded'
+  | 'brightness_6_sharp'
+  | 'brightness_7'
+  | 'brightness_7_outlined'
+  | 'brightness_7_rounded'
+  | 'brightness_7_sharp'
+  | 'brightness_auto'
+  | 'brightness_auto_outlined'
+  | 'brightness_auto_rounded'
+  | 'brightness_auto_sharp'
+  | 'brightness_high'
+  | 'brightness_high_outlined'
+  | 'brightness_high_rounded'
+  | 'brightness_high_sharp'
+  | 'brightness_low'
+  | 'brightness_low_outlined'
+  | 'brightness_low_rounded'
+  | 'brightness_low_sharp'
+  | 'brightness_medium'
+  | 'brightness_medium_outlined'
+  | 'brightness_medium_rounded'
+  | 'brightness_medium_sharp'
+  | 'brightness_solid'
+  | 'broadcast_on_home'
+  | 'broadcast_on_home_outlined'
+  | 'broadcast_on_home_rounded'
+  | 'broadcast_on_home_sharp'
+  | 'broadcast_on_personal'
+  | 'broadcast_on_personal_outlined'
+  | 'broadcast_on_personal_rounded'
+  | 'broadcast_on_personal_sharp'
+  | 'broken_image'
+  | 'broken_image_outlined'
+  | 'broken_image_rounded'
+  | 'broken_image_sharp'
+  | 'browse_gallery'
+  | 'browse_gallery_outlined'
+  | 'browse_gallery_rounded'
+  | 'browse_gallery_sharp'
+  | 'browser_not_supported'
+  | 'browser_not_supported_outlined'
+  | 'browser_not_supported_rounded'
+  | 'browser_not_supported_sharp'
+  | 'browser_updated'
+  | 'browser_updated_outlined'
+  | 'browser_updated_rounded'
+  | 'browser_updated_sharp'
+  | 'brunch_dining'
+  | 'brunch_dining_outlined'
+  | 'brunch_dining_rounded'
+  | 'brunch_dining_sharp'
+  | 'brush'
+  | 'brush_outlined'
+  | 'brush_rounded'
+  | 'brush_sharp'
+  | 'bubble_chart'
+  | 'bubble_chart_outlined'
+  | 'bubble_chart_rounded'
+  | 'bubble_chart_sharp'
+  | 'bubble_left'
+  | 'bubble_left_bubble_right'
+  | 'bubble_left_bubble_right_fill'
+  | 'bubble_left_fill'
+  | 'bubble_middle_bottom'
+  | 'bubble_middle_bottom_fill'
+  | 'bubble_middle_top'
+  | 'bubble_middle_top_fill'
+  | 'bubble_right'
+  | 'bubble_right_fill'
+  | 'bug_report'
+  | 'bug_report_outlined'
+  | 'bug_report_rounded'
+  | 'bug_report_sharp'
+  | 'build'
+  | 'build_circle'
+  | 'build_circle_outlined'
+  | 'build_circle_rounded'
+  | 'build_circle_sharp'
+  | 'build_outlined'
+  | 'build_rounded'
+  | 'build_sharp'
+  | 'building_2_fill'
+  | 'bungalow'
+  | 'bungalow_outlined'
+  | 'bungalow_rounded'
+  | 'bungalow_sharp'
+  | 'burn'
+  | 'burst'
+  | 'burst_fill'
+  | 'burst_mode'
+  | 'burst_mode_outlined'
+  | 'burst_mode_rounded'
+  | 'burst_mode_sharp'
+  | 'bus'
+  | 'bus_alert'
+  | 'bus_alert_outlined'
+  | 'bus_alert_rounded'
+  | 'bus_alert_sharp'
+  | 'business'
+  | 'business_center'
+  | 'business_center_outlined'
+  | 'business_center_rounded'
+  | 'business_center_sharp'
+  | 'business_outlined'
+  | 'business_rounded'
+  | 'business_sharp'
+  | 'cabin'
+  | 'cabin_outlined'
+  | 'cabin_rounded'
+  | 'cabin_sharp'
+  | 'cable'
+  | 'cable_outlined'
+  | 'cable_rounded'
+  | 'cable_sharp'
+  | 'cached'
+  | 'cached_outlined'
+  | 'cached_rounded'
+  | 'cached_sharp'
+  | 'cake'
+  | 'cake_outlined'
+  | 'cake_rounded'
+  | 'cake_sharp'
+  | 'calculate'
+  | 'calculate_outlined'
+  | 'calculate_rounded'
+  | 'calculate_sharp'
+  | 'calendar'
+  | 'calendar_badge_minus'
+  | 'calendar_badge_plus'
+  | 'calendar_circle'
+  | 'calendar_circle_fill'
+  | 'calendar_month'
+  | 'calendar_month_outlined'
+  | 'calendar_month_rounded'
+  | 'calendar_month_sharp'
+  | 'calendar_today'
+  | 'calendar_today_outlined'
+  | 'calendar_today_rounded'
+  | 'calendar_today_sharp'
+  | 'calendar_view_day'
+  | 'calendar_view_day_outlined'
+  | 'calendar_view_day_rounded'
+  | 'calendar_view_day_sharp'
+  | 'calendar_view_month'
+  | 'calendar_view_month_outlined'
+  | 'calendar_view_month_rounded'
+  | 'calendar_view_month_sharp'
+  | 'calendar_view_week'
+  | 'calendar_view_week_outlined'
+  | 'calendar_view_week_rounded'
+  | 'calendar_view_week_sharp'
+  | 'call'
+  | 'call_end'
+  | 'call_end_outlined'
+  | 'call_end_rounded'
+  | 'call_end_sharp'
+  | 'call_made'
+  | 'call_made_outlined'
+  | 'call_made_rounded'
+  | 'call_made_sharp'
+  | 'call_merge'
+  | 'call_merge_outlined'
+  | 'call_merge_rounded'
+  | 'call_merge_sharp'
+  | 'call_missed'
+  | 'call_missed_outgoing'
+  | 'call_missed_outgoing_outlined'
+  | 'call_missed_outgoing_rounded'
+  | 'call_missed_outgoing_sharp'
+  | 'call_missed_outlined'
+  | 'call_missed_rounded'
+  | 'call_missed_sharp'
+  | 'call_outlined'
+  | 'call_received'
+  | 'call_received_outlined'
+  | 'call_received_rounded'
+  | 'call_received_sharp'
+  | 'call_rounded'
+  | 'call_sharp'
+  | 'call_split'
+  | 'call_split_outlined'
+  | 'call_split_rounded'
+  | 'call_split_sharp'
+  | 'call_to_action'
+  | 'call_to_action_outlined'
+  | 'call_to_action_rounded'
+  | 'call_to_action_sharp'
+  | 'camera'
+  | 'camera_alt'
+  | 'camera_alt_outlined'
+  | 'camera_alt_rounded'
+  | 'camera_alt_sharp'
+  | 'camera_circle'
+  | 'camera_circle_fill'
+  | 'camera_enhance'
+  | 'camera_enhance_outlined'
+  | 'camera_enhance_rounded'
+  | 'camera_enhance_sharp'
+  | 'camera_fill'
+  | 'camera_front'
+  | 'camera_front_outlined'
+  | 'camera_front_rounded'
+  | 'camera_front_sharp'
+  | 'camera_indoor'
+  | 'camera_indoor_outlined'
+  | 'camera_indoor_rounded'
+  | 'camera_indoor_sharp'
+  | 'camera_on_rectangle'
+  | 'camera_on_rectangle_fill'
+  | 'camera_outdoor'
+  | 'camera_outdoor_outlined'
+  | 'camera_outdoor_rounded'
+  | 'camera_outdoor_sharp'
+  | 'camera_outlined'
+  | 'camera_rear'
+  | 'camera_rear_outlined'
+  | 'camera_rear_rounded'
+  | 'camera_rear_sharp'
+  | 'camera_roll'
+  | 'camera_roll_outlined'
+  | 'camera_roll_rounded'
+  | 'camera_roll_sharp'
+  | 'camera_rotate'
+  | 'camera_rotate_fill'
+  | 'camera_rounded'
+  | 'camera_sharp'
+  | 'camera_viewfinder'
+  | 'cameraswitch'
+  | 'cameraswitch_outlined'
+  | 'cameraswitch_rounded'
+  | 'cameraswitch_sharp'
+  | 'campaign'
+  | 'campaign_outlined'
+  | 'campaign_rounded'
+  | 'campaign_sharp'
+  | 'cancel'
+  | 'cancel_outlined'
+  | 'cancel_presentation'
+  | 'cancel_presentation_outlined'
+  | 'cancel_presentation_rounded'
+  | 'cancel_presentation_sharp'
+  | 'cancel_rounded'
+  | 'cancel_schedule_send'
+  | 'cancel_schedule_send_outlined'
+  | 'cancel_schedule_send_rounded'
+  | 'cancel_schedule_send_sharp'
+  | 'cancel_sharp'
+  | 'candlestick_chart'
+  | 'candlestick_chart_outlined'
+  | 'candlestick_chart_rounded'
+  | 'candlestick_chart_sharp'
+  | 'capslock'
+  | 'capslock_fill'
+  | 'capsule'
+  | 'capsule_fill'
+  | 'captions_bubble'
+  | 'captions_bubble_fill'
+  | 'car'
+  | 'car_crash'
+  | 'car_crash_outlined'
+  | 'car_crash_rounded'
+  | 'car_crash_sharp'
+  | 'car_detailed'
+  | 'car_fill'
+  | 'car_rental'
+  | 'car_rental_outlined'
+  | 'car_rental_rounded'
+  | 'car_rental_sharp'
+  | 'car_repair'
+  | 'car_repair_outlined'
+  | 'car_repair_rounded'
+  | 'car_repair_sharp'
+  | 'card_giftcard'
+  | 'card_giftcard_outlined'
+  | 'card_giftcard_rounded'
+  | 'card_giftcard_sharp'
+  | 'card_membership'
+  | 'card_membership_outlined'
+  | 'card_membership_rounded'
+  | 'card_membership_sharp'
+  | 'card_travel'
+  | 'card_travel_outlined'
+  | 'card_travel_rounded'
+  | 'card_travel_sharp'
+  | 'carpenter'
+  | 'carpenter_outlined'
+  | 'carpenter_rounded'
+  | 'carpenter_sharp'
+  | 'cart'
+  | 'cart_badge_minus'
+  | 'cart_badge_plus'
+  | 'cart_fill'
+  | 'cart_fill_badge_minus'
+  | 'cart_fill_badge_plus'
+  | 'cases'
+  | 'cases_outlined'
+  | 'cases_rounded'
+  | 'cases_sharp'
+  | 'casino'
+  | 'casino_outlined'
+  | 'casino_rounded'
+  | 'casino_sharp'
+  | 'cast'
+  | 'cast_connected'
+  | 'cast_connected_outlined'
+  | 'cast_connected_rounded'
+  | 'cast_connected_sharp'
+  | 'cast_for_education'
+  | 'cast_for_education_outlined'
+  | 'cast_for_education_rounded'
+  | 'cast_for_education_sharp'
+  | 'cast_outlined'
+  | 'cast_rounded'
+  | 'cast_sharp'
+  | 'castle'
+  | 'castle_outlined'
+  | 'castle_rounded'
+  | 'castle_sharp'
+  | 'catching_pokemon'
+  | 'catching_pokemon_outlined'
+  | 'catching_pokemon_rounded'
+  | 'catching_pokemon_sharp'
+  | 'category'
+  | 'category_outlined'
+  | 'category_rounded'
+  | 'category_sharp'
+  | 'celebration'
+  | 'celebration_outlined'
+  | 'celebration_rounded'
+  | 'celebration_sharp'
+  | 'cell_tower'
+  | 'cell_tower_outlined'
+  | 'cell_tower_rounded'
+  | 'cell_tower_sharp'
+  | 'cell_wifi'
+  | 'cell_wifi_outlined'
+  | 'cell_wifi_rounded'
+  | 'cell_wifi_sharp'
+  | 'center_focus_strong'
+  | 'center_focus_strong_outlined'
+  | 'center_focus_strong_rounded'
+  | 'center_focus_strong_sharp'
+  | 'center_focus_weak'
+  | 'center_focus_weak_outlined'
+  | 'center_focus_weak_rounded'
+  | 'center_focus_weak_sharp'
+  | 'chair'
+  | 'chair_alt'
+  | 'chair_alt_outlined'
+  | 'chair_alt_rounded'
+  | 'chair_alt_sharp'
+  | 'chair_outlined'
+  | 'chair_rounded'
+  | 'chair_sharp'
+  | 'chalet'
+  | 'chalet_outlined'
+  | 'chalet_rounded'
+  | 'chalet_sharp'
+  | 'change_circle'
+  | 'change_circle_outlined'
+  | 'change_circle_rounded'
+  | 'change_circle_sharp'
+  | 'change_history'
+  | 'change_history_outlined'
+  | 'change_history_rounded'
+  | 'change_history_sharp'
+  | 'charging_station'
+  | 'charging_station_outlined'
+  | 'charging_station_rounded'
+  | 'charging_station_sharp'
+  | 'chart_bar'
+  | 'chart_bar_alt_fill'
+  | 'chart_bar_circle'
+  | 'chart_bar_circle_fill'
+  | 'chart_bar_fill'
+  | 'chart_bar_square'
+  | 'chart_bar_square_fill'
+  | 'chart_pie'
+  | 'chart_pie_fill'
+  | 'chat'
+  | 'chat_bubble'
+  | 'chat_bubble_2'
+  | 'chat_bubble_2_fill'
+  | 'chat_bubble_fill'
+  | 'chat_bubble_outline'
+  | 'chat_bubble_outline_outlined'
+  | 'chat_bubble_outline_rounded'
+  | 'chat_bubble_outline_sharp'
+  | 'chat_bubble_outlined'
+  | 'chat_bubble_rounded'
+  | 'chat_bubble_sharp'
+  | 'chat_bubble_text'
+  | 'chat_bubble_text_fill'
+  | 'chat_outlined'
+  | 'chat_rounded'
+  | 'chat_sharp'
+  | 'check'
+  | 'check_box'
+  | 'check_box_outline_blank'
+  | 'check_box_outline_blank_outlined'
+  | 'check_box_outline_blank_rounded'
+  | 'check_box_outline_blank_sharp'
+  | 'check_box_outlined'
+  | 'check_box_rounded'
+  | 'check_box_sharp'
+  | 'check_circle'
+  | 'check_circle_outline'
+  | 'check_circle_outline_outlined'
+  | 'check_circle_outline_rounded'
+  | 'check_circle_outline_sharp'
+  | 'check_circle_outlined'
+  | 'check_circle_rounded'
+  | 'check_circle_sharp'
+  | 'check_mark'
+  | 'check_mark_circled'
+  | 'check_mark_circled_solid'
+  | 'check_outlined'
+  | 'check_rounded'
+  | 'check_sharp'
+  | 'checklist'
+  | 'checklist_outlined'
+  | 'checklist_rounded'
+  | 'checklist_rtl'
+  | 'checklist_rtl_outlined'
+  | 'checklist_rtl_rounded'
+  | 'checklist_rtl_sharp'
+  | 'checklist_sharp'
+  | 'checkmark'
+  | 'checkmark_alt'
+  | 'checkmark_alt_circle'
+  | 'checkmark_alt_circle_fill'
+  | 'checkmark_circle'
+  | 'checkmark_circle_fill'
+  | 'checkmark_rectangle'
+  | 'checkmark_rectangle_fill'
+  | 'checkmark_seal'
+  | 'checkmark_seal_fill'
+  | 'checkmark_shield'
+  | 'checkmark_shield_fill'
+  | 'checkmark_square'
+  | 'checkmark_square_fill'
+  | 'checkroom'
+  | 'checkroom_outlined'
+  | 'checkroom_rounded'
+  | 'checkroom_sharp'
+  | 'chevron_back'
+  | 'chevron_compact_down'
+  | 'chevron_compact_left'
+  | 'chevron_compact_right'
+  | 'chevron_compact_up'
+  | 'chevron_down'
+  | 'chevron_down_circle'
+  | 'chevron_down_circle_fill'
+  | 'chevron_down_square'
+  | 'chevron_down_square_fill'
+  | 'chevron_forward'
+  | 'chevron_left'
+  | 'chevron_left_2'
+  | 'chevron_left_circle'
+  | 'chevron_left_circle_fill'
+  | 'chevron_left_outlined'
+  | 'chevron_left_rounded'
+  | 'chevron_left_sharp'
+  | 'chevron_left_slash_chevron_right'
+  | 'chevron_left_square'
+  | 'chevron_left_square_fill'
+  | 'chevron_right'
+  | 'chevron_right_2'
+  | 'chevron_right_circle'
+  | 'chevron_right_circle_fill'
+  | 'chevron_right_outlined'
+  | 'chevron_right_rounded'
+  | 'chevron_right_sharp'
+  | 'chevron_right_square'
+  | 'chevron_right_square_fill'
+  | 'chevron_up'
+  | 'chevron_up_chevron_down'
+  | 'chevron_up_circle'
+  | 'chevron_up_circle_fill'
+  | 'chevron_up_square'
+  | 'chevron_up_square_fill'
+  | 'child_care'
+  | 'child_care_outlined'
+  | 'child_care_rounded'
+  | 'child_care_sharp'
+  | 'child_friendly'
+  | 'child_friendly_outlined'
+  | 'child_friendly_rounded'
+  | 'child_friendly_sharp'
+  | 'chrome_reader_mode'
+  | 'chrome_reader_mode_outlined'
+  | 'chrome_reader_mode_rounded'
+  | 'chrome_reader_mode_sharp'
+  | 'church'
+  | 'church_outlined'
+  | 'church_rounded'
+  | 'church_sharp'
+  | 'circle'
+  | 'circle_bottomthird_split'
+  | 'circle_fill'
+  | 'circle_filled'
+  | 'circle_grid_3x3'
+  | 'circle_grid_3x3_fill'
+  | 'circle_grid_hex'
+  | 'circle_grid_hex_fill'
+  | 'circle_lefthalf_fill'
+  | 'circle_notifications'
+  | 'circle_notifications_outlined'
+  | 'circle_notifications_rounded'
+  | 'circle_notifications_sharp'
+  | 'circle_outlined'
+  | 'circle_righthalf_fill'
+  | 'circle_rounded'
+  | 'circle_sharp'
+  | 'class_'
+  | 'class_outlined'
+  | 'class_rounded'
+  | 'class_sharp'
+  | 'clean_hands'
+  | 'clean_hands_outlined'
+  | 'clean_hands_rounded'
+  | 'clean_hands_sharp'
+  | 'cleaning_services'
+  | 'cleaning_services_outlined'
+  | 'cleaning_services_rounded'
+  | 'cleaning_services_sharp'
+  | 'clear'
+  | 'clear_all'
+  | 'clear_all_outlined'
+  | 'clear_all_rounded'
+  | 'clear_all_sharp'
+  | 'clear_circled'
+  | 'clear_circled_solid'
+  | 'clear_fill'
+  | 'clear_outlined'
+  | 'clear_rounded'
+  | 'clear_sharp'
+  | 'clear_thick'
+  | 'clear_thick_circled'
+  | 'clock'
+  | 'clock_fill'
+  | 'clock_solid'
+  | 'close'
+  | 'close_fullscreen'
+  | 'close_fullscreen_outlined'
+  | 'close_fullscreen_rounded'
+  | 'close_fullscreen_sharp'
+  | 'close_outlined'
+  | 'close_rounded'
+  | 'close_sharp'
+  | 'closed_caption'
+  | 'closed_caption_disabled'
+  | 'closed_caption_disabled_outlined'
+  | 'closed_caption_disabled_rounded'
+  | 'closed_caption_disabled_sharp'
+  | 'closed_caption_off'
+  | 'closed_caption_off_outlined'
+  | 'closed_caption_off_rounded'
+  | 'closed_caption_off_sharp'
+  | 'closed_caption_outlined'
+  | 'closed_caption_rounded'
+  | 'closed_caption_sharp'
+  | 'cloud'
+  | 'cloud_bolt'
+  | 'cloud_bolt_fill'
+  | 'cloud_bolt_rain'
+  | 'cloud_bolt_rain_fill'
+  | 'cloud_circle'
+  | 'cloud_circle_outlined'
+  | 'cloud_circle_rounded'
+  | 'cloud_circle_sharp'
+  | 'cloud_done'
+  | 'cloud_done_outlined'
+  | 'cloud_done_rounded'
+  | 'cloud_done_sharp'
+  | 'cloud_download'
+  | 'cloud_download_fill'
+  | 'cloud_download_outlined'
+  | 'cloud_download_rounded'
+  | 'cloud_download_sharp'
+  | 'cloud_drizzle'
+  | 'cloud_drizzle_fill'
+  | 'cloud_fill'
+  | 'cloud_fog'
+  | 'cloud_fog_fill'
+  | 'cloud_hail'
+  | 'cloud_hail_fill'
+  | 'cloud_heavyrain'
+  | 'cloud_heavyrain_fill'
+  | 'cloud_moon'
+  | 'cloud_moon_bolt'
+  | 'cloud_moon_bolt_fill'
+  | 'cloud_moon_fill'
+  | 'cloud_moon_rain'
+  | 'cloud_moon_rain_fill'
+  | 'cloud_off'
+  | 'cloud_off_outlined'
+  | 'cloud_off_rounded'
+  | 'cloud_off_sharp'
+  | 'cloud_outlined'
+  | 'cloud_queue'
+  | 'cloud_queue_outlined'
+  | 'cloud_queue_rounded'
+  | 'cloud_queue_sharp'
+  | 'cloud_rain'
+  | 'cloud_rain_fill'
+  | 'cloud_rounded'
+  | 'cloud_sharp'
+  | 'cloud_sleet'
+  | 'cloud_sleet_fill'
+  | 'cloud_snow'
+  | 'cloud_snow_fill'
+  | 'cloud_sun'
+  | 'cloud_sun_bolt'
+  | 'cloud_sun_bolt_fill'
+  | 'cloud_sun_fill'
+  | 'cloud_sun_rain'
+  | 'cloud_sun_rain_fill'
+  | 'cloud_sync'
+  | 'cloud_sync_outlined'
+  | 'cloud_sync_rounded'
+  | 'cloud_sync_sharp'
+  | 'cloud_upload'
+  | 'cloud_upload_fill'
+  | 'cloud_upload_outlined'
+  | 'cloud_upload_rounded'
+  | 'cloud_upload_sharp'
+  | 'cloudy_snowing'
+  | 'co_present'
+  | 'co_present_outlined'
+  | 'co_present_rounded'
+  | 'co_present_sharp'
+  | 'co2'
+  | 'co2_outlined'
+  | 'co2_rounded'
+  | 'co2_sharp'
+  | 'code'
+  | 'code_off'
+  | 'code_off_outlined'
+  | 'code_off_rounded'
+  | 'code_off_sharp'
+  | 'code_outlined'
+  | 'code_rounded'
+  | 'code_sharp'
+  | 'coffee'
+  | 'coffee_maker'
+  | 'coffee_maker_outlined'
+  | 'coffee_maker_rounded'
+  | 'coffee_maker_sharp'
+  | 'coffee_outlined'
+  | 'coffee_rounded'
+  | 'coffee_sharp'
+  | 'collections'
+  | 'collections_bookmark'
+  | 'collections_bookmark_outlined'
+  | 'collections_bookmark_rounded'
+  | 'collections_bookmark_sharp'
+  | 'collections_outlined'
+  | 'collections_rounded'
+  | 'collections_sharp'
+  | 'collections_solid'
+  | 'color_filter'
+  | 'color_filter_fill'
+  | 'color_lens'
+  | 'color_lens_outlined'
+  | 'color_lens_rounded'
+  | 'color_lens_sharp'
+  | 'colorize'
+  | 'colorize_outlined'
+  | 'colorize_rounded'
+  | 'colorize_sharp'
+  | 'command'
+  | 'comment'
+  | 'comment_bank'
+  | 'comment_bank_outlined'
+  | 'comment_bank_rounded'
+  | 'comment_bank_sharp'
+  | 'comment_outlined'
+  | 'comment_rounded'
+  | 'comment_sharp'
+  | 'comments_disabled'
+  | 'comments_disabled_outlined'
+  | 'comments_disabled_rounded'
+  | 'comments_disabled_sharp'
+  | 'commit'
+  | 'commit_outlined'
+  | 'commit_rounded'
+  | 'commit_sharp'
+  | 'commute'
+  | 'commute_outlined'
+  | 'commute_rounded'
+  | 'commute_sharp'
+  | 'compare'
+  | 'compare_arrows'
+  | 'compare_arrows_outlined'
+  | 'compare_arrows_rounded'
+  | 'compare_arrows_sharp'
+  | 'compare_outlined'
+  | 'compare_rounded'
+  | 'compare_sharp'
+  | 'compass'
+  | 'compass_calibration'
+  | 'compass_calibration_outlined'
+  | 'compass_calibration_rounded'
+  | 'compass_calibration_sharp'
+  | 'compass_fill'
+  | 'compost'
+  | 'compost_outlined'
+  | 'compost_rounded'
+  | 'compost_sharp'
+  | 'compress'
+  | 'compress_outlined'
+  | 'compress_rounded'
+  | 'compress_sharp'
+  | 'computer'
+  | 'computer_outlined'
+  | 'computer_rounded'
+  | 'computer_sharp'
+  | 'confirmation_num'
+  | 'confirmation_num_outlined'
+  | 'confirmation_num_rounded'
+  | 'confirmation_num_sharp'
+  | 'confirmation_number'
+  | 'confirmation_number_outlined'
+  | 'confirmation_number_rounded'
+  | 'confirmation_number_sharp'
+  | 'connect_without_contact'
+  | 'connect_without_contact_outlined'
+  | 'connect_without_contact_rounded'
+  | 'connect_without_contact_sharp'
+  | 'connected_tv'
+  | 'connected_tv_outlined'
+  | 'connected_tv_rounded'
+  | 'connected_tv_sharp'
+  | 'connecting_airports'
+  | 'connecting_airports_outlined'
+  | 'connecting_airports_rounded'
+  | 'connecting_airports_sharp'
+  | 'construction'
+  | 'construction_outlined'
+  | 'construction_rounded'
+  | 'construction_sharp'
+  | 'contact_emergency'
+  | 'contact_emergency_outlined'
+  | 'contact_emergency_rounded'
+  | 'contact_emergency_sharp'
+  | 'contact_mail'
+  | 'contact_mail_outlined'
+  | 'contact_mail_rounded'
+  | 'contact_mail_sharp'
+  | 'contact_page'
+  | 'contact_page_outlined'
+  | 'contact_page_rounded'
+  | 'contact_page_sharp'
+  | 'contact_phone'
+  | 'contact_phone_outlined'
+  | 'contact_phone_rounded'
+  | 'contact_phone_sharp'
+  | 'contact_support'
+  | 'contact_support_outlined'
+  | 'contact_support_rounded'
+  | 'contact_support_sharp'
+  | 'contactless'
+  | 'contactless_outlined'
+  | 'contactless_rounded'
+  | 'contactless_sharp'
+  | 'contacts'
+  | 'contacts_outlined'
+  | 'contacts_rounded'
+  | 'contacts_sharp'
+  | 'content_copy'
+  | 'content_copy_outlined'
+  | 'content_copy_rounded'
+  | 'content_copy_sharp'
+  | 'content_cut'
+  | 'content_cut_outlined'
+  | 'content_cut_rounded'
+  | 'content_cut_sharp'
+  | 'content_paste'
+  | 'content_paste_go'
+  | 'content_paste_go_outlined'
+  | 'content_paste_go_rounded'
+  | 'content_paste_go_sharp'
+  | 'content_paste_off'
+  | 'content_paste_off_outlined'
+  | 'content_paste_off_rounded'
+  | 'content_paste_off_sharp'
+  | 'content_paste_outlined'
+  | 'content_paste_rounded'
+  | 'content_paste_search'
+  | 'content_paste_search_outlined'
+  | 'content_paste_search_rounded'
+  | 'content_paste_search_sharp'
+  | 'content_paste_sharp'
+  | 'contrast'
+  | 'contrast_outlined'
+  | 'contrast_rounded'
+  | 'contrast_sharp'
+  | 'control'
+  | 'control_camera'
+  | 'control_camera_outlined'
+  | 'control_camera_rounded'
+  | 'control_camera_sharp'
+  | 'control_point'
+  | 'control_point_duplicate'
+  | 'control_point_duplicate_outlined'
+  | 'control_point_duplicate_rounded'
+  | 'control_point_duplicate_sharp'
+  | 'control_point_outlined'
+  | 'control_point_rounded'
+  | 'control_point_sharp'
+  | 'conversation_bubble'
+  | 'conveyor_belt'
+  | 'cookie'
+  | 'cookie_outlined'
+  | 'cookie_rounded'
+  | 'cookie_sharp'
+  | 'copy'
+  | 'copy_all'
+  | 'copy_all_outlined'
+  | 'copy_all_rounded'
+  | 'copy_all_sharp'
+  | 'copy_outlined'
+  | 'copy_rounded'
+  | 'copy_sharp'
+  | 'copyright'
+  | 'copyright_outlined'
+  | 'copyright_rounded'
+  | 'copyright_sharp'
+  | 'coronavirus'
+  | 'coronavirus_outlined'
+  | 'coronavirus_rounded'
+  | 'coronavirus_sharp'
+  | 'corporate_fare'
+  | 'corporate_fare_outlined'
+  | 'corporate_fare_rounded'
+  | 'corporate_fare_sharp'
+  | 'cottage'
+  | 'cottage_outlined'
+  | 'cottage_rounded'
+  | 'cottage_sharp'
+  | 'countertops'
+  | 'countertops_outlined'
+  | 'countertops_rounded'
+  | 'countertops_sharp'
+  | 'create'
+  | 'create_new_folder'
+  | 'create_new_folder_outlined'
+  | 'create_new_folder_rounded'
+  | 'create_new_folder_sharp'
+  | 'create_outlined'
+  | 'create_rounded'
+  | 'create_sharp'
+  | 'create_solid'
+  | 'credit_card'
+  | 'credit_card_off'
+  | 'credit_card_off_outlined'
+  | 'credit_card_off_rounded'
+  | 'credit_card_off_sharp'
+  | 'credit_card_outlined'
+  | 'credit_card_rounded'
+  | 'credit_card_sharp'
+  | 'credit_score'
+  | 'credit_score_outlined'
+  | 'credit_score_rounded'
+  | 'credit_score_sharp'
+  | 'creditcard'
+  | 'creditcard_fill'
+  | 'crib'
+  | 'crib_outlined'
+  | 'crib_rounded'
+  | 'crib_sharp'
+  | 'crisis_alert'
+  | 'crisis_alert_outlined'
+  | 'crisis_alert_rounded'
+  | 'crisis_alert_sharp'
+  | 'crop'
+  | 'crop_16_9'
+  | 'crop_16_9_outlined'
+  | 'crop_16_9_rounded'
+  | 'crop_16_9_sharp'
+  | 'crop_3_2'
+  | 'crop_3_2_outlined'
+  | 'crop_3_2_rounded'
+  | 'crop_3_2_sharp'
+  | 'crop_5_4'
+  | 'crop_5_4_outlined'
+  | 'crop_5_4_rounded'
+  | 'crop_5_4_sharp'
+  | 'crop_7_5'
+  | 'crop_7_5_outlined'
+  | 'crop_7_5_rounded'
+  | 'crop_7_5_sharp'
+  | 'crop_din'
+  | 'crop_din_outlined'
+  | 'crop_din_rounded'
+  | 'crop_din_sharp'
+  | 'crop_free'
+  | 'crop_free_outlined'
+  | 'crop_free_rounded'
+  | 'crop_free_sharp'
+  | 'crop_landscape'
+  | 'crop_landscape_outlined'
+  | 'crop_landscape_rounded'
+  | 'crop_landscape_sharp'
+  | 'crop_original'
+  | 'crop_original_outlined'
+  | 'crop_original_rounded'
+  | 'crop_original_sharp'
+  | 'crop_outlined'
+  | 'crop_portrait'
+  | 'crop_portrait_outlined'
+  | 'crop_portrait_rounded'
+  | 'crop_portrait_sharp'
+  | 'crop_rotate'
+  | 'crop_rotate_outlined'
+  | 'crop_rotate_rounded'
+  | 'crop_rotate_sharp'
+  | 'crop_rounded'
+  | 'crop_sharp'
+  | 'crop_square'
+  | 'crop_square_outlined'
+  | 'crop_square_rounded'
+  | 'crop_square_sharp'
+  | 'cruelty_free'
+  | 'cruelty_free_outlined'
+  | 'cruelty_free_rounded'
+  | 'cruelty_free_sharp'
+  | 'css'
+  | 'css_outlined'
+  | 'css_rounded'
+  | 'css_sharp'
+  | 'cube'
+  | 'cube_box'
+  | 'cube_box_fill'
+  | 'cube_fill'
+  | 'currency_bitcoin'
+  | 'currency_bitcoin_outlined'
+  | 'currency_bitcoin_rounded'
+  | 'currency_bitcoin_sharp'
+  | 'currency_exchange'
+  | 'currency_exchange_outlined'
+  | 'currency_exchange_rounded'
+  | 'currency_exchange_sharp'
+  | 'currency_franc'
+  | 'currency_franc_outlined'
+  | 'currency_franc_rounded'
+  | 'currency_franc_sharp'
+  | 'currency_lira'
+  | 'currency_lira_outlined'
+  | 'currency_lira_rounded'
+  | 'currency_lira_sharp'
+  | 'currency_pound'
+  | 'currency_pound_outlined'
+  | 'currency_pound_rounded'
+  | 'currency_pound_sharp'
+  | 'currency_ruble'
+  | 'currency_ruble_outlined'
+  | 'currency_ruble_rounded'
+  | 'currency_ruble_sharp'
+  | 'currency_rupee'
+  | 'currency_rupee_outlined'
+  | 'currency_rupee_rounded'
+  | 'currency_rupee_sharp'
+  | 'currency_yen'
+  | 'currency_yen_outlined'
+  | 'currency_yen_rounded'
+  | 'currency_yen_sharp'
+  | 'currency_yuan'
+  | 'currency_yuan_outlined'
+  | 'currency_yuan_rounded'
+  | 'currency_yuan_sharp'
+  | 'cursor_rays'
+  | 'curtains'
+  | 'curtains_closed'
+  | 'curtains_closed_outlined'
+  | 'curtains_closed_rounded'
+  | 'curtains_closed_sharp'
+  | 'curtains_outlined'
+  | 'curtains_rounded'
+  | 'curtains_sharp'
+  | 'cut'
+  | 'cut_outlined'
+  | 'cut_rounded'
+  | 'cut_sharp'
+  | 'cyclone'
+  | 'cyclone_outlined'
+  | 'cyclone_rounded'
+  | 'cyclone_sharp'
+  | 'dangerous'
+  | 'dangerous_outlined'
+  | 'dangerous_rounded'
+  | 'dangerous_sharp'
+  | 'dark_mode'
+  | 'dark_mode_outlined'
+  | 'dark_mode_rounded'
+  | 'dark_mode_sharp'
+  | 'dashboard'
+  | 'dashboard_customize'
+  | 'dashboard_customize_outlined'
+  | 'dashboard_customize_rounded'
+  | 'dashboard_customize_sharp'
+  | 'dashboard_outlined'
+  | 'dashboard_rounded'
+  | 'dashboard_sharp'
+  | 'data_array'
+  | 'data_array_outlined'
+  | 'data_array_rounded'
+  | 'data_array_sharp'
+  | 'data_exploration'
+  | 'data_exploration_outlined'
+  | 'data_exploration_rounded'
+  | 'data_exploration_sharp'
+  | 'data_object'
+  | 'data_object_outlined'
+  | 'data_object_rounded'
+  | 'data_object_sharp'
+  | 'data_saver_off'
+  | 'data_saver_off_outlined'
+  | 'data_saver_off_rounded'
+  | 'data_saver_off_sharp'
+  | 'data_saver_on'
+  | 'data_saver_on_outlined'
+  | 'data_saver_on_rounded'
+  | 'data_saver_on_sharp'
+  | 'data_thresholding'
+  | 'data_thresholding_outlined'
+  | 'data_thresholding_rounded'
+  | 'data_thresholding_sharp'
+  | 'data_usage'
+  | 'data_usage_outlined'
+  | 'data_usage_rounded'
+  | 'data_usage_sharp'
+  | 'dataset'
+  | 'dataset_linked'
+  | 'dataset_linked_outlined'
+  | 'dataset_linked_rounded'
+  | 'dataset_linked_sharp'
+  | 'dataset_outlined'
+  | 'dataset_rounded'
+  | 'dataset_sharp'
+  | 'date_range'
+  | 'date_range_outlined'
+  | 'date_range_rounded'
+  | 'date_range_sharp'
+  | 'deblur'
+  | 'deblur_outlined'
+  | 'deblur_rounded'
+  | 'deblur_sharp'
+  | 'deck'
+  | 'deck_outlined'
+  | 'deck_rounded'
+  | 'deck_sharp'
+  | 'decrease_indent'
+  | 'decrease_quotelevel'
+  | 'dehaze'
+  | 'dehaze_outlined'
+  | 'dehaze_rounded'
+  | 'dehaze_sharp'
+  | 'delete'
+  | 'delete_forever'
+  | 'delete_forever_outlined'
+  | 'delete_forever_rounded'
+  | 'delete_forever_sharp'
+  | 'delete_left'
+  | 'delete_left_fill'
+  | 'delete_outline'
+  | 'delete_outline_outlined'
+  | 'delete_outline_rounded'
+  | 'delete_outline_sharp'
+  | 'delete_outlined'
+  | 'delete_right'
+  | 'delete_right_fill'
+  | 'delete_rounded'
+  | 'delete_sharp'
+  | 'delete_simple'
+  | 'delete_solid'
+  | 'delete_sweep'
+  | 'delete_sweep_outlined'
+  | 'delete_sweep_rounded'
+  | 'delete_sweep_sharp'
+  | 'delivery_dining'
+  | 'delivery_dining_outlined'
+  | 'delivery_dining_rounded'
+  | 'delivery_dining_sharp'
+  | 'density_large'
+  | 'density_large_outlined'
+  | 'density_large_rounded'
+  | 'density_large_sharp'
+  | 'density_medium'
+  | 'density_medium_outlined'
+  | 'density_medium_rounded'
+  | 'density_medium_sharp'
+  | 'density_small'
+  | 'density_small_outlined'
+  | 'density_small_rounded'
+  | 'density_small_sharp'
+  | 'departure_board'
+  | 'departure_board_outlined'
+  | 'departure_board_rounded'
+  | 'departure_board_sharp'
+  | 'description'
+  | 'description_outlined'
+  | 'description_rounded'
+  | 'description_sharp'
+  | 'deselect'
+  | 'deselect_outlined'
+  | 'deselect_rounded'
+  | 'deselect_sharp'
+  | 'design_services'
+  | 'design_services_outlined'
+  | 'design_services_rounded'
+  | 'design_services_sharp'
+  | 'desk'
+  | 'desk_outlined'
+  | 'desk_rounded'
+  | 'desk_sharp'
+  | 'desktop_access_disabled'
+  | 'desktop_access_disabled_outlined'
+  | 'desktop_access_disabled_rounded'
+  | 'desktop_access_disabled_sharp'
+  | 'desktop_mac'
+  | 'desktop_mac_outlined'
+  | 'desktop_mac_rounded'
+  | 'desktop_mac_sharp'
+  | 'desktop_windows'
+  | 'desktop_windows_outlined'
+  | 'desktop_windows_rounded'
+  | 'desktop_windows_sharp'
+  | 'desktopcomputer'
+  | 'details'
+  | 'details_outlined'
+  | 'details_rounded'
+  | 'details_sharp'
+  | 'developer_board'
+  | 'developer_board_off'
+  | 'developer_board_off_outlined'
+  | 'developer_board_off_rounded'
+  | 'developer_board_off_sharp'
+  | 'developer_board_outlined'
+  | 'developer_board_rounded'
+  | 'developer_board_sharp'
+  | 'developer_mode'
+  | 'developer_mode_outlined'
+  | 'developer_mode_rounded'
+  | 'developer_mode_sharp'
+  | 'device_desktop'
+  | 'device_hub'
+  | 'device_hub_outlined'
+  | 'device_hub_rounded'
+  | 'device_hub_sharp'
+  | 'device_laptop'
+  | 'device_phone_landscape'
+  | 'device_phone_portrait'
+  | 'device_thermostat'
+  | 'device_thermostat_outlined'
+  | 'device_thermostat_rounded'
+  | 'device_thermostat_sharp'
+  | 'device_unknown'
+  | 'device_unknown_outlined'
+  | 'device_unknown_rounded'
+  | 'device_unknown_sharp'
+  | 'devices'
+  | 'devices_fold'
+  | 'devices_fold_outlined'
+  | 'devices_fold_rounded'
+  | 'devices_fold_sharp'
+  | 'devices_other'
+  | 'devices_other_outlined'
+  | 'devices_other_rounded'
+  | 'devices_other_sharp'
+  | 'devices_outlined'
+  | 'devices_rounded'
+  | 'devices_sharp'
+  | 'dew_point'
+  | 'dial'
+  | 'dial_fill'
+  | 'dialer_sip'
+  | 'dialer_sip_outlined'
+  | 'dialer_sip_rounded'
+  | 'dialer_sip_sharp'
+  | 'dialpad'
+  | 'dialpad_outlined'
+  | 'dialpad_rounded'
+  | 'dialpad_sharp'
+  | 'diamond'
+  | 'diamond_outlined'
+  | 'diamond_rounded'
+  | 'diamond_sharp'
+  | 'difference'
+  | 'difference_outlined'
+  | 'difference_rounded'
+  | 'difference_sharp'
+  | 'dining'
+  | 'dining_outlined'
+  | 'dining_rounded'
+  | 'dining_sharp'
+  | 'dinner_dining'
+  | 'dinner_dining_outlined'
+  | 'dinner_dining_rounded'
+  | 'dinner_dining_sharp'
+  | 'directions'
+  | 'directions_bike'
+  | 'directions_bike_outlined'
+  | 'directions_bike_rounded'
+  | 'directions_bike_sharp'
+  | 'directions_boat'
+  | 'directions_boat_filled'
+  | 'directions_boat_filled_outlined'
+  | 'directions_boat_filled_rounded'
+  | 'directions_boat_filled_sharp'
+  | 'directions_boat_outlined'
+  | 'directions_boat_rounded'
+  | 'directions_boat_sharp'
+  | 'directions_bus'
+  | 'directions_bus_filled'
+  | 'directions_bus_filled_outlined'
+  | 'directions_bus_filled_rounded'
+  | 'directions_bus_filled_sharp'
+  | 'directions_bus_outlined'
+  | 'directions_bus_rounded'
+  | 'directions_bus_sharp'
+  | 'directions_car'
+  | 'directions_car_filled'
+  | 'directions_car_filled_outlined'
+  | 'directions_car_filled_rounded'
+  | 'directions_car_filled_sharp'
+  | 'directions_car_outlined'
+  | 'directions_car_rounded'
+  | 'directions_car_sharp'
+  | 'directions_ferry'
+  | 'directions_ferry_outlined'
+  | 'directions_ferry_rounded'
+  | 'directions_ferry_sharp'
+  | 'directions_off'
+  | 'directions_off_outlined'
+  | 'directions_off_rounded'
+  | 'directions_off_sharp'
+  | 'directions_outlined'
+  | 'directions_railway'
+  | 'directions_railway_filled'
+  | 'directions_railway_filled_outlined'
+  | 'directions_railway_filled_rounded'
+  | 'directions_railway_filled_sharp'
+  | 'directions_railway_outlined'
+  | 'directions_railway_rounded'
+  | 'directions_railway_sharp'
+  | 'directions_rounded'
+  | 'directions_run'
+  | 'directions_run_outlined'
+  | 'directions_run_rounded'
+  | 'directions_run_sharp'
+  | 'directions_sharp'
+  | 'directions_subway'
+  | 'directions_subway_filled'
+  | 'directions_subway_filled_outlined'
+  | 'directions_subway_filled_rounded'
+  | 'directions_subway_filled_sharp'
+  | 'directions_subway_outlined'
+  | 'directions_subway_rounded'
+  | 'directions_subway_sharp'
+  | 'directions_train'
+  | 'directions_train_outlined'
+  | 'directions_train_rounded'
+  | 'directions_train_sharp'
+  | 'directions_transit'
+  | 'directions_transit_filled'
+  | 'directions_transit_filled_outlined'
+  | 'directions_transit_filled_rounded'
+  | 'directions_transit_filled_sharp'
+  | 'directions_transit_outlined'
+  | 'directions_transit_rounded'
+  | 'directions_transit_sharp'
+  | 'directions_walk'
+  | 'directions_walk_outlined'
+  | 'directions_walk_rounded'
+  | 'directions_walk_sharp'
+  | 'dirty_lens'
+  | 'dirty_lens_outlined'
+  | 'dirty_lens_rounded'
+  | 'dirty_lens_sharp'
+  | 'disabled_by_default'
+  | 'disabled_by_default_outlined'
+  | 'disabled_by_default_rounded'
+  | 'disabled_by_default_sharp'
+  | 'disabled_visible'
+  | 'disabled_visible_outlined'
+  | 'disabled_visible_rounded'
+  | 'disabled_visible_sharp'
+  | 'disc_full'
+  | 'disc_full_outlined'
+  | 'disc_full_rounded'
+  | 'disc_full_sharp'
+  | 'discord'
+  | 'discord_outlined'
+  | 'discord_rounded'
+  | 'discord_sharp'
+  | 'discount'
+  | 'discount_outlined'
+  | 'discount_rounded'
+  | 'discount_sharp'
+  | 'display_settings'
+  | 'display_settings_outlined'
+  | 'display_settings_rounded'
+  | 'display_settings_sharp'
+  | 'diversity_1'
+  | 'diversity_1_outlined'
+  | 'diversity_1_rounded'
+  | 'diversity_1_sharp'
+  | 'diversity_2'
+  | 'diversity_2_outlined'
+  | 'diversity_2_rounded'
+  | 'diversity_2_sharp'
+  | 'diversity_3'
+  | 'diversity_3_outlined'
+  | 'diversity_3_rounded'
+  | 'diversity_3_sharp'
+  | 'divide'
+  | 'divide_circle'
+  | 'divide_circle_fill'
+  | 'divide_square'
+  | 'divide_square_fill'
+  | 'dnd_forwardslash'
+  | 'dnd_forwardslash_outlined'
+  | 'dnd_forwardslash_rounded'
+  | 'dnd_forwardslash_sharp'
+  | 'dns'
+  | 'dns_outlined'
+  | 'dns_rounded'
+  | 'dns_sharp'
+  | 'do_disturb'
+  | 'do_disturb_alt'
+  | 'do_disturb_alt_outlined'
+  | 'do_disturb_alt_rounded'
+  | 'do_disturb_alt_sharp'
+  | 'do_disturb_off'
+  | 'do_disturb_off_outlined'
+  | 'do_disturb_off_rounded'
+  | 'do_disturb_off_sharp'
+  | 'do_disturb_on'
+  | 'do_disturb_on_outlined'
+  | 'do_disturb_on_rounded'
+  | 'do_disturb_on_sharp'
+  | 'do_disturb_outlined'
+  | 'do_disturb_rounded'
+  | 'do_disturb_sharp'
+  | 'do_not_disturb'
+  | 'do_not_disturb_alt'
+  | 'do_not_disturb_alt_outlined'
+  | 'do_not_disturb_alt_rounded'
+  | 'do_not_disturb_alt_sharp'
+  | 'do_not_disturb_off'
+  | 'do_not_disturb_off_outlined'
+  | 'do_not_disturb_off_rounded'
+  | 'do_not_disturb_off_sharp'
+  | 'do_not_disturb_on'
+  | 'do_not_disturb_on_outlined'
+  | 'do_not_disturb_on_rounded'
+  | 'do_not_disturb_on_sharp'
+  | 'do_not_disturb_on_total_silence'
+  | 'do_not_disturb_on_total_silence_outlined'
+  | 'do_not_disturb_on_total_silence_rounded'
+  | 'do_not_disturb_on_total_silence_sharp'
+  | 'do_not_disturb_outlined'
+  | 'do_not_disturb_rounded'
+  | 'do_not_disturb_sharp'
+  | 'do_not_step'
+  | 'do_not_step_outlined'
+  | 'do_not_step_rounded'
+  | 'do_not_step_sharp'
+  | 'do_not_touch'
+  | 'do_not_touch_outlined'
+  | 'do_not_touch_rounded'
+  | 'do_not_touch_sharp'
+  | 'doc'
+  | 'doc_append'
+  | 'doc_chart'
+  | 'doc_chart_fill'
+  | 'doc_checkmark'
+  | 'doc_checkmark_fill'
+  | 'doc_circle'
+  | 'doc_circle_fill'
+  | 'doc_fill'
+  | 'doc_on_clipboard'
+  | 'doc_on_clipboard_fill'
+  | 'doc_on_doc'
+  | 'doc_on_doc_fill'
+  | 'doc_person'
+  | 'doc_person_fill'
+  | 'doc_plaintext'
+  | 'doc_richtext'
+  | 'doc_text'
+  | 'doc_text_fill'
+  | 'doc_text_search'
+  | 'doc_text_viewfinder'
+  | 'dock'
+  | 'dock_outlined'
+  | 'dock_rounded'
+  | 'dock_sharp'
+  | 'document_scanner'
+  | 'document_scanner_outlined'
+  | 'document_scanner_rounded'
+  | 'document_scanner_sharp'
+  | 'domain'
+  | 'domain_add'
+  | 'domain_add_outlined'
+  | 'domain_add_rounded'
+  | 'domain_add_sharp'
+  | 'domain_disabled'
+  | 'domain_disabled_outlined'
+  | 'domain_disabled_rounded'
+  | 'domain_disabled_sharp'
+  | 'domain_outlined'
+  | 'domain_rounded'
+  | 'domain_sharp'
+  | 'domain_verification'
+  | 'domain_verification_outlined'
+  | 'domain_verification_rounded'
+  | 'domain_verification_sharp'
+  | 'done'
+  | 'done_all'
+  | 'done_all_outlined'
+  | 'done_all_rounded'
+  | 'done_all_sharp'
+  | 'done_outline'
+  | 'done_outline_outlined'
+  | 'done_outline_rounded'
+  | 'done_outline_sharp'
+  | 'done_outlined'
+  | 'done_rounded'
+  | 'done_sharp'
+  | 'donut_large'
+  | 'donut_large_outlined'
+  | 'donut_large_rounded'
+  | 'donut_large_sharp'
+  | 'donut_small'
+  | 'donut_small_outlined'
+  | 'donut_small_rounded'
+  | 'donut_small_sharp'
+  | 'door_back_door'
+  | 'door_back_door_outlined'
+  | 'door_back_door_rounded'
+  | 'door_back_door_sharp'
+  | 'door_front_door'
+  | 'door_front_door_outlined'
+  | 'door_front_door_rounded'
+  | 'door_front_door_sharp'
+  | 'door_sliding'
+  | 'door_sliding_outlined'
+  | 'door_sliding_rounded'
+  | 'door_sliding_sharp'
+  | 'doorbell'
+  | 'doorbell_outlined'
+  | 'doorbell_rounded'
+  | 'doorbell_sharp'
+  | 'dot_radiowaves_left_right'
+  | 'dot_radiowaves_right'
+  | 'dot_square'
+  | 'dot_square_fill'
+  | 'double_arrow'
+  | 'double_arrow_outlined'
+  | 'double_arrow_rounded'
+  | 'double_arrow_sharp'
+  | 'double_music_note'
+  | 'down_arrow'
+  | 'downhill_skiing'
+  | 'downhill_skiing_outlined'
+  | 'downhill_skiing_rounded'
+  | 'downhill_skiing_sharp'
+  | 'download'
+  | 'download_circle'
+  | 'download_circle_fill'
+  | 'download_done'
+  | 'download_done_outlined'
+  | 'download_done_rounded'
+  | 'download_done_sharp'
+  | 'download_for_offline'
+  | 'download_for_offline_outlined'
+  | 'download_for_offline_rounded'
+  | 'download_for_offline_sharp'
+  | 'download_outlined'
+  | 'download_rounded'
+  | 'download_sharp'
+  | 'downloading'
+  | 'downloading_outlined'
+  | 'downloading_rounded'
+  | 'downloading_sharp'
+  | 'drafts'
+  | 'drafts_outlined'
+  | 'drafts_rounded'
+  | 'drafts_sharp'
+  | 'drag_handle'
+  | 'drag_handle_outlined'
+  | 'drag_handle_rounded'
+  | 'drag_handle_sharp'
+  | 'drag_indicator'
+  | 'drag_indicator_outlined'
+  | 'drag_indicator_rounded'
+  | 'drag_indicator_sharp'
+  | 'draw'
+  | 'draw_outlined'
+  | 'draw_rounded'
+  | 'draw_sharp'
+  | 'drive_eta'
+  | 'drive_eta_outlined'
+  | 'drive_eta_rounded'
+  | 'drive_eta_sharp'
+  | 'drive_file_move'
+  | 'drive_file_move_outline'
+  | 'drive_file_move_outlined'
+  | 'drive_file_move_rounded'
+  | 'drive_file_move_rtl'
+  | 'drive_file_move_rtl_outlined'
+  | 'drive_file_move_rtl_rounded'
+  | 'drive_file_move_rtl_sharp'
+  | 'drive_file_move_sharp'
+  | 'drive_file_rename_outline'
+  | 'drive_file_rename_outline_outlined'
+  | 'drive_file_rename_outline_rounded'
+  | 'drive_file_rename_outline_sharp'
+  | 'drive_folder_upload'
+  | 'drive_folder_upload_outlined'
+  | 'drive_folder_upload_rounded'
+  | 'drive_folder_upload_sharp'
+  | 'drop'
+  | 'drop_fill'
+  | 'drop_triangle'
+  | 'drop_triangle_fill'
+  | 'dry'
+  | 'dry_cleaning'
+  | 'dry_cleaning_outlined'
+  | 'dry_cleaning_rounded'
+  | 'dry_cleaning_sharp'
+  | 'dry_outlined'
+  | 'dry_rounded'
+  | 'dry_sharp'
+  | 'duo'
+  | 'duo_outlined'
+  | 'duo_rounded'
+  | 'duo_sharp'
+  | 'dvr'
+  | 'dvr_outlined'
+  | 'dvr_rounded'
+  | 'dvr_sharp'
+  | 'dynamic_feed'
+  | 'dynamic_feed_outlined'
+  | 'dynamic_feed_rounded'
+  | 'dynamic_feed_sharp'
+  | 'dynamic_form'
+  | 'dynamic_form_outlined'
+  | 'dynamic_form_rounded'
+  | 'dynamic_form_sharp'
+  | 'e_mobiledata'
+  | 'e_mobiledata_outlined'
+  | 'e_mobiledata_rounded'
+  | 'e_mobiledata_sharp'
+  | 'ear'
+  | 'earbuds'
+  | 'earbuds_battery'
+  | 'earbuds_battery_outlined'
+  | 'earbuds_battery_rounded'
+  | 'earbuds_battery_sharp'
+  | 'earbuds_outlined'
+  | 'earbuds_rounded'
+  | 'earbuds_sharp'
+  | 'east'
+  | 'east_outlined'
+  | 'east_rounded'
+  | 'east_sharp'
+  | 'eco'
+  | 'eco_outlined'
+  | 'eco_rounded'
+  | 'eco_sharp'
+  | 'edgesensor_high'
+  | 'edgesensor_high_outlined'
+  | 'edgesensor_high_rounded'
+  | 'edgesensor_high_sharp'
+  | 'edgesensor_low'
+  | 'edgesensor_low_outlined'
+  | 'edgesensor_low_rounded'
+  | 'edgesensor_low_sharp'
+  | 'edit'
+  | 'edit_attributes'
+  | 'edit_attributes_outlined'
+  | 'edit_attributes_rounded'
+  | 'edit_attributes_sharp'
+  | 'edit_calendar'
+  | 'edit_calendar_outlined'
+  | 'edit_calendar_rounded'
+  | 'edit_calendar_sharp'
+  | 'edit_document'
+  | 'edit_location'
+  | 'edit_location_alt'
+  | 'edit_location_alt_outlined'
+  | 'edit_location_alt_rounded'
+  | 'edit_location_alt_sharp'
+  | 'edit_location_outlined'
+  | 'edit_location_rounded'
+  | 'edit_location_sharp'
+  | 'edit_note'
+  | 'edit_note_outlined'
+  | 'edit_note_rounded'
+  | 'edit_note_sharp'
+  | 'edit_notifications'
+  | 'edit_notifications_outlined'
+  | 'edit_notifications_rounded'
+  | 'edit_notifications_sharp'
+  | 'edit_off'
+  | 'edit_off_outlined'
+  | 'edit_off_rounded'
+  | 'edit_off_sharp'
+  | 'edit_outlined'
+  | 'edit_road'
+  | 'edit_road_outlined'
+  | 'edit_road_rounded'
+  | 'edit_road_sharp'
+  | 'edit_rounded'
+  | 'edit_sharp'
+  | 'edit_square'
+  | 'egg'
+  | 'egg_alt'
+  | 'egg_alt_outlined'
+  | 'egg_alt_rounded'
+  | 'egg_alt_sharp'
+  | 'egg_outlined'
+  | 'egg_rounded'
+  | 'egg_sharp'
+  | 'eight_k'
+  | 'eight_k_outlined'
+  | 'eight_k_plus'
+  | 'eight_k_plus_outlined'
+  | 'eight_k_plus_rounded'
+  | 'eight_k_plus_sharp'
+  | 'eight_k_rounded'
+  | 'eight_k_sharp'
+  | 'eight_mp'
+  | 'eight_mp_outlined'
+  | 'eight_mp_rounded'
+  | 'eight_mp_sharp'
+  | 'eighteen_mp'
+  | 'eighteen_mp_outlined'
+  | 'eighteen_mp_rounded'
+  | 'eighteen_mp_sharp'
+  | 'eighteen_up_rating'
+  | 'eighteen_up_rating_outlined'
+  | 'eighteen_up_rating_rounded'
+  | 'eighteen_up_rating_sharp'
+  | 'eject'
+  | 'eject_fill'
+  | 'eject_outlined'
+  | 'eject_rounded'
+  | 'eject_sharp'
+  | 'elderly'
+  | 'elderly_outlined'
+  | 'elderly_rounded'
+  | 'elderly_sharp'
+  | 'elderly_woman'
+  | 'elderly_woman_outlined'
+  | 'elderly_woman_rounded'
+  | 'elderly_woman_sharp'
+  | 'electric_bike'
+  | 'electric_bike_outlined'
+  | 'electric_bike_rounded'
+  | 'electric_bike_sharp'
+  | 'electric_bolt'
+  | 'electric_bolt_outlined'
+  | 'electric_bolt_rounded'
+  | 'electric_bolt_sharp'
+  | 'electric_car'
+  | 'electric_car_outlined'
+  | 'electric_car_rounded'
+  | 'electric_car_sharp'
+  | 'electric_meter'
+  | 'electric_meter_outlined'
+  | 'electric_meter_rounded'
+  | 'electric_meter_sharp'
+  | 'electric_moped'
+  | 'electric_moped_outlined'
+  | 'electric_moped_rounded'
+  | 'electric_moped_sharp'
+  | 'electric_rickshaw'
+  | 'electric_rickshaw_outlined'
+  | 'electric_rickshaw_rounded'
+  | 'electric_rickshaw_sharp'
+  | 'electric_scooter'
+  | 'electric_scooter_outlined'
+  | 'electric_scooter_rounded'
+  | 'electric_scooter_sharp'
+  | 'electrical_services'
+  | 'electrical_services_outlined'
+  | 'electrical_services_rounded'
+  | 'electrical_services_sharp'
+  | 'elevator'
+  | 'elevator_outlined'
+  | 'elevator_rounded'
+  | 'elevator_sharp'
+  | 'eleven_mp'
+  | 'eleven_mp_outlined'
+  | 'eleven_mp_rounded'
+  | 'eleven_mp_sharp'
+  | 'ellipses_bubble'
+  | 'ellipses_bubble_fill'
+  | 'ellipsis'
+  | 'ellipsis_circle'
+  | 'ellipsis_circle_fill'
+  | 'ellipsis_vertical'
+  | 'ellipsis_vertical_circle'
+  | 'ellipsis_vertical_circle_fill'
+  | 'email'
+  | 'email_outlined'
+  | 'email_rounded'
+  | 'email_sharp'
+  | 'emergency'
+  | 'emergency_outlined'
+  | 'emergency_recording'
+  | 'emergency_recording_outlined'
+  | 'emergency_recording_rounded'
+  | 'emergency_recording_sharp'
+  | 'emergency_rounded'
+  | 'emergency_share'
+  | 'emergency_share_outlined'
+  | 'emergency_share_rounded'
+  | 'emergency_share_sharp'
+  | 'emergency_sharp'
+  | 'emoji_emotions'
+  | 'emoji_emotions_outlined'
+  | 'emoji_emotions_rounded'
+  | 'emoji_emotions_sharp'
+  | 'emoji_events'
+  | 'emoji_events_outlined'
+  | 'emoji_events_rounded'
+  | 'emoji_events_sharp'
+  | 'emoji_flags'
+  | 'emoji_flags_outlined'
+  | 'emoji_flags_rounded'
+  | 'emoji_flags_sharp'
+  | 'emoji_food_beverage'
+  | 'emoji_food_beverage_outlined'
+  | 'emoji_food_beverage_rounded'
+  | 'emoji_food_beverage_sharp'
+  | 'emoji_nature'
+  | 'emoji_nature_outlined'
+  | 'emoji_nature_rounded'
+  | 'emoji_nature_sharp'
+  | 'emoji_objects'
+  | 'emoji_objects_outlined'
+  | 'emoji_objects_rounded'
+  | 'emoji_objects_sharp'
+  | 'emoji_people'
+  | 'emoji_people_outlined'
+  | 'emoji_people_rounded'
+  | 'emoji_people_sharp'
+  | 'emoji_symbols'
+  | 'emoji_symbols_outlined'
+  | 'emoji_symbols_rounded'
+  | 'emoji_symbols_sharp'
+  | 'emoji_transportation'
+  | 'emoji_transportation_outlined'
+  | 'emoji_transportation_rounded'
+  | 'emoji_transportation_sharp'
+  | 'energy_savings_leaf'
+  | 'energy_savings_leaf_outlined'
+  | 'energy_savings_leaf_rounded'
+  | 'energy_savings_leaf_sharp'
+  | 'engineering'
+  | 'engineering_outlined'
+  | 'engineering_rounded'
+  | 'engineering_sharp'
+  | 'enhance_photo_translate'
+  | 'enhance_photo_translate_outlined'
+  | 'enhance_photo_translate_rounded'
+  | 'enhance_photo_translate_sharp'
+  | 'enhanced_encryption'
+  | 'enhanced_encryption_outlined'
+  | 'enhanced_encryption_rounded'
+  | 'enhanced_encryption_sharp'
+  | 'envelope'
+  | 'envelope_badge'
+  | 'envelope_badge_fill'
+  | 'envelope_circle'
+  | 'envelope_circle_fill'
+  | 'envelope_fill'
+  | 'envelope_open'
+  | 'envelope_open_fill'
+  | 'equal'
+  | 'equal_circle'
+  | 'equal_circle_fill'
+  | 'equal_square'
+  | 'equal_square_fill'
+  | 'equalizer'
+  | 'equalizer_outlined'
+  | 'equalizer_rounded'
+  | 'equalizer_sharp'
+  | 'error'
+  | 'error_outline'
+  | 'error_outline_outlined'
+  | 'error_outline_rounded'
+  | 'error_outline_sharp'
+  | 'error_outlined'
+  | 'error_rounded'
+  | 'error_sharp'
+  | 'escalator'
+  | 'escalator_outlined'
+  | 'escalator_rounded'
+  | 'escalator_sharp'
+  | 'escalator_warning'
+  | 'escalator_warning_outlined'
+  | 'escalator_warning_rounded'
+  | 'escalator_warning_sharp'
+  | 'escape'
+  | 'euro'
+  | 'euro_outlined'
+  | 'euro_rounded'
+  | 'euro_sharp'
+  | 'euro_symbol'
+  | 'euro_symbol_outlined'
+  | 'euro_symbol_rounded'
+  | 'euro_symbol_sharp'
+  | 'ev_station'
+  | 'ev_station_outlined'
+  | 'ev_station_rounded'
+  | 'ev_station_sharp'
+  | 'event'
+  | 'event_available'
+  | 'event_available_outlined'
+  | 'event_available_rounded'
+  | 'event_available_sharp'
+  | 'event_busy'
+  | 'event_busy_outlined'
+  | 'event_busy_rounded'
+  | 'event_busy_sharp'
+  | 'event_note'
+  | 'event_note_outlined'
+  | 'event_note_rounded'
+  | 'event_note_sharp'
+  | 'event_outlined'
+  | 'event_repeat'
+  | 'event_repeat_outlined'
+  | 'event_repeat_rounded'
+  | 'event_repeat_sharp'
+  | 'event_rounded'
+  | 'event_seat'
+  | 'event_seat_outlined'
+  | 'event_seat_rounded'
+  | 'event_seat_sharp'
+  | 'event_sharp'
+  | 'exclamationmark'
+  | 'exclamationmark_bubble'
+  | 'exclamationmark_bubble_fill'
+  | 'exclamationmark_circle'
+  | 'exclamationmark_circle_fill'
+  | 'exclamationmark_octagon'
+  | 'exclamationmark_octagon_fill'
+  | 'exclamationmark_shield'
+  | 'exclamationmark_shield_fill'
+  | 'exclamationmark_square'
+  | 'exclamationmark_square_fill'
+  | 'exclamationmark_triangle'
+  | 'exclamationmark_triangle_fill'
+  | 'exit_to_app'
+  | 'exit_to_app_outlined'
+  | 'exit_to_app_rounded'
+  | 'exit_to_app_sharp'
+  | 'expand'
+  | 'expand_circle_down'
+  | 'expand_circle_down_outlined'
+  | 'expand_circle_down_rounded'
+  | 'expand_circle_down_sharp'
+  | 'expand_less'
+  | 'expand_less_outlined'
+  | 'expand_less_rounded'
+  | 'expand_less_sharp'
+  | 'expand_more'
+  | 'expand_more_outlined'
+  | 'expand_more_rounded'
+  | 'expand_more_sharp'
+  | 'expand_outlined'
+  | 'expand_rounded'
+  | 'expand_sharp'
+  | 'explicit'
+  | 'explicit_outlined'
+  | 'explicit_rounded'
+  | 'explicit_sharp'
+  | 'explore'
+  | 'explore_off'
+  | 'explore_off_outlined'
+  | 'explore_off_rounded'
+  | 'explore_off_sharp'
+  | 'explore_outlined'
+  | 'explore_rounded'
+  | 'explore_sharp'
+  | 'exposure'
+  | 'exposure_minus_1'
+  | 'exposure_minus_1_outlined'
+  | 'exposure_minus_1_rounded'
+  | 'exposure_minus_1_sharp'
+  | 'exposure_minus_2'
+  | 'exposure_minus_2_outlined'
+  | 'exposure_minus_2_rounded'
+  | 'exposure_minus_2_sharp'
+  | 'exposure_neg_1'
+  | 'exposure_neg_1_outlined'
+  | 'exposure_neg_1_rounded'
+  | 'exposure_neg_1_sharp'
+  | 'exposure_neg_2'
+  | 'exposure_neg_2_outlined'
+  | 'exposure_neg_2_rounded'
+  | 'exposure_neg_2_sharp'
+  | 'exposure_outlined'
+  | 'exposure_plus_1'
+  | 'exposure_plus_1_outlined'
+  | 'exposure_plus_1_rounded'
+  | 'exposure_plus_1_sharp'
+  | 'exposure_plus_2'
+  | 'exposure_plus_2_outlined'
+  | 'exposure_plus_2_rounded'
+  | 'exposure_plus_2_sharp'
+  | 'exposure_rounded'
+  | 'exposure_sharp'
+  | 'exposure_zero'
+  | 'exposure_zero_outlined'
+  | 'exposure_zero_rounded'
+  | 'exposure_zero_sharp'
+  | 'extension'
+  | 'extension_off'
+  | 'extension_off_outlined'
+  | 'extension_off_rounded'
+  | 'extension_off_sharp'
+  | 'extension_outlined'
+  | 'extension_rounded'
+  | 'extension_sharp'
+  | 'eye'
+  | 'eye_fill'
+  | 'eye_slash'
+  | 'eye_slash_fill'
+  | 'eye_solid'
+  | 'eyedropper'
+  | 'eyedropper_full'
+  | 'eyedropper_halffull'
+  | 'eyeglasses'
+  | 'f_cursive'
+  | 'f_cursive_circle'
+  | 'f_cursive_circle_fill'
+  | 'face'
+  | 'face_2'
+  | 'face_2_outlined'
+  | 'face_2_rounded'
+  | 'face_2_sharp'
+  | 'face_3'
+  | 'face_3_outlined'
+  | 'face_3_rounded'
+  | 'face_3_sharp'
+  | 'face_4'
+  | 'face_4_outlined'
+  | 'face_4_rounded'
+  | 'face_4_sharp'
+  | 'face_5'
+  | 'face_5_outlined'
+  | 'face_5_rounded'
+  | 'face_5_sharp'
+  | 'face_6'
+  | 'face_6_outlined'
+  | 'face_6_rounded'
+  | 'face_6_sharp'
+  | 'face_outlined'
+  | 'face_retouching_natural'
+  | 'face_retouching_natural_outlined'
+  | 'face_retouching_natural_rounded'
+  | 'face_retouching_natural_sharp'
+  | 'face_retouching_off'
+  | 'face_retouching_off_outlined'
+  | 'face_retouching_off_rounded'
+  | 'face_retouching_off_sharp'
+  | 'face_rounded'
+  | 'face_sharp'
+  | 'face_unlock_outlined'
+  | 'face_unlock_rounded'
+  | 'face_unlock_sharp'
+  | 'facebook'
+  | 'facebook_outlined'
+  | 'facebook_rounded'
+  | 'facebook_sharp'
+  | 'fact_check'
+  | 'fact_check_outlined'
+  | 'fact_check_rounded'
+  | 'fact_check_sharp'
+  | 'factory'
+  | 'factory_outlined'
+  | 'factory_rounded'
+  | 'factory_sharp'
+  | 'family_restroom'
+  | 'family_restroom_outlined'
+  | 'family_restroom_rounded'
+  | 'family_restroom_sharp'
+  | 'fast_forward'
+  | 'fast_forward_outlined'
+  | 'fast_forward_rounded'
+  | 'fast_forward_sharp'
+  | 'fast_rewind'
+  | 'fast_rewind_outlined'
+  | 'fast_rewind_rounded'
+  | 'fast_rewind_sharp'
+  | 'fastfood'
+  | 'fastfood_outlined'
+  | 'fastfood_rounded'
+  | 'fastfood_sharp'
+  | 'favorite'
+  | 'favorite_border'
+  | 'favorite_border_outlined'
+  | 'favorite_border_rounded'
+  | 'favorite_border_sharp'
+  | 'favorite_outline'
+  | 'favorite_outline_outlined'
+  | 'favorite_outline_rounded'
+  | 'favorite_outline_sharp'
+  | 'favorite_outlined'
+  | 'favorite_rounded'
+  | 'favorite_sharp'
+  | 'fax'
+  | 'fax_outlined'
+  | 'fax_rounded'
+  | 'fax_sharp'
+  | 'featured_play_list'
+  | 'featured_play_list_outlined'
+  | 'featured_play_list_rounded'
+  | 'featured_play_list_sharp'
+  | 'featured_video'
+  | 'featured_video_outlined'
+  | 'featured_video_rounded'
+  | 'featured_video_sharp'
+  | 'feed'
+  | 'feed_outlined'
+  | 'feed_rounded'
+  | 'feed_sharp'
+  | 'feedback'
+  | 'feedback_outlined'
+  | 'feedback_rounded'
+  | 'feedback_sharp'
+  | 'female'
+  | 'female_outlined'
+  | 'female_rounded'
+  | 'female_sharp'
+  | 'fence'
+  | 'fence_outlined'
+  | 'fence_rounded'
+  | 'fence_sharp'
+  | 'festival'
+  | 'festival_outlined'
+  | 'festival_rounded'
+  | 'festival_sharp'
+  | 'fiber_dvr'
+  | 'fiber_dvr_outlined'
+  | 'fiber_dvr_rounded'
+  | 'fiber_dvr_sharp'
+  | 'fiber_manual_record'
+  | 'fiber_manual_record_outlined'
+  | 'fiber_manual_record_rounded'
+  | 'fiber_manual_record_sharp'
+  | 'fiber_new'
+  | 'fiber_new_outlined'
+  | 'fiber_new_rounded'
+  | 'fiber_new_sharp'
+  | 'fiber_pin'
+  | 'fiber_pin_outlined'
+  | 'fiber_pin_rounded'
+  | 'fiber_pin_sharp'
+  | 'fiber_smart_record'
+  | 'fiber_smart_record_outlined'
+  | 'fiber_smart_record_rounded'
+  | 'fiber_smart_record_sharp'
+  | 'fifteen_mp'
+  | 'fifteen_mp_outlined'
+  | 'fifteen_mp_rounded'
+  | 'fifteen_mp_sharp'
+  | 'file_copy'
+  | 'file_copy_outlined'
+  | 'file_copy_rounded'
+  | 'file_copy_sharp'
+  | 'file_download'
+  | 'file_download_done'
+  | 'file_download_done_outlined'
+  | 'file_download_done_rounded'
+  | 'file_download_done_sharp'
+  | 'file_download_off'
+  | 'file_download_off_outlined'
+  | 'file_download_off_rounded'
+  | 'file_download_off_sharp'
+  | 'file_download_outlined'
+  | 'file_download_rounded'
+  | 'file_download_sharp'
+  | 'file_open'
+  | 'file_open_outlined'
+  | 'file_open_rounded'
+  | 'file_open_sharp'
+  | 'file_present'
+  | 'file_present_outlined'
+  | 'file_present_rounded'
+  | 'file_present_sharp'
+  | 'file_upload'
+  | 'file_upload_off'
+  | 'file_upload_outlined'
+  | 'file_upload_rounded'
+  | 'file_upload_sharp'
+  | 'film'
+  | 'film_fill'
+  | 'filter'
+  | 'filter_1'
+  | 'filter_1_outlined'
+  | 'filter_1_rounded'
+  | 'filter_1_sharp'
+  | 'filter_2'
+  | 'filter_2_outlined'
+  | 'filter_2_rounded'
+  | 'filter_2_sharp'
+  | 'filter_3'
+  | 'filter_3_outlined'
+  | 'filter_3_rounded'
+  | 'filter_3_sharp'
+  | 'filter_4'
+  | 'filter_4_outlined'
+  | 'filter_4_rounded'
+  | 'filter_4_sharp'
+  | 'filter_5'
+  | 'filter_5_outlined'
+  | 'filter_5_rounded'
+  | 'filter_5_sharp'
+  | 'filter_6'
+  | 'filter_6_outlined'
+  | 'filter_6_rounded'
+  | 'filter_6_sharp'
+  | 'filter_7'
+  | 'filter_7_outlined'
+  | 'filter_7_rounded'
+  | 'filter_7_sharp'
+  | 'filter_8'
+  | 'filter_8_outlined'
+  | 'filter_8_rounded'
+  | 'filter_8_sharp'
+  | 'filter_9'
+  | 'filter_9_outlined'
+  | 'filter_9_plus'
+  | 'filter_9_plus_outlined'
+  | 'filter_9_plus_rounded'
+  | 'filter_9_plus_sharp'
+  | 'filter_9_rounded'
+  | 'filter_9_sharp'
+  | 'filter_alt'
+  | 'filter_alt_off'
+  | 'filter_alt_off_outlined'
+  | 'filter_alt_off_rounded'
+  | 'filter_alt_off_sharp'
+  | 'filter_alt_outlined'
+  | 'filter_alt_rounded'
+  | 'filter_alt_sharp'
+  | 'filter_b_and_w'
+  | 'filter_b_and_w_outlined'
+  | 'filter_b_and_w_rounded'
+  | 'filter_b_and_w_sharp'
+  | 'filter_center_focus'
+  | 'filter_center_focus_outlined'
+  | 'filter_center_focus_rounded'
+  | 'filter_center_focus_sharp'
+  | 'filter_drama'
+  | 'filter_drama_outlined'
+  | 'filter_drama_rounded'
+  | 'filter_drama_sharp'
+  | 'filter_frames'
+  | 'filter_frames_outlined'
+  | 'filter_frames_rounded'
+  | 'filter_frames_sharp'
+  | 'filter_hdr'
+  | 'filter_hdr_outlined'
+  | 'filter_hdr_rounded'
+  | 'filter_hdr_sharp'
+  | 'filter_list'
+  | 'filter_list_alt'
+  | 'filter_list_off'
+  | 'filter_list_off_outlined'
+  | 'filter_list_off_rounded'
+  | 'filter_list_off_sharp'
+  | 'filter_list_outlined'
+  | 'filter_list_rounded'
+  | 'filter_list_sharp'
+  | 'filter_none'
+  | 'filter_none_outlined'
+  | 'filter_none_rounded'
+  | 'filter_none_sharp'
+  | 'filter_outlined'
+  | 'filter_rounded'
+  | 'filter_sharp'
+  | 'filter_tilt_shift'
+  | 'filter_tilt_shift_outlined'
+  | 'filter_tilt_shift_rounded'
+  | 'filter_tilt_shift_sharp'
+  | 'filter_vintage'
+  | 'filter_vintage_outlined'
+  | 'filter_vintage_rounded'
+  | 'filter_vintage_sharp'
+  | 'find_in_page'
+  | 'find_in_page_outlined'
+  | 'find_in_page_rounded'
+  | 'find_in_page_sharp'
+  | 'find_replace'
+  | 'find_replace_outlined'
+  | 'find_replace_rounded'
+  | 'find_replace_sharp'
+  | 'fingerprint'
+  | 'fingerprint_outlined'
+  | 'fingerprint_rounded'
+  | 'fingerprint_sharp'
+  | 'fire_extinguisher'
+  | 'fire_extinguisher_outlined'
+  | 'fire_extinguisher_rounded'
+  | 'fire_extinguisher_sharp'
+  | 'fire_hydrant'
+  | 'fire_hydrant_alt'
+  | 'fire_hydrant_alt_outlined'
+  | 'fire_hydrant_alt_rounded'
+  | 'fire_hydrant_alt_sharp'
+  | 'fire_truck'
+  | 'fire_truck_outlined'
+  | 'fire_truck_rounded'
+  | 'fire_truck_sharp'
+  | 'fireplace'
+  | 'fireplace_outlined'
+  | 'fireplace_rounded'
+  | 'fireplace_sharp'
+  | 'first_page'
+  | 'first_page_outlined'
+  | 'first_page_rounded'
+  | 'first_page_sharp'
+  | 'fit_screen'
+  | 'fit_screen_outlined'
+  | 'fit_screen_rounded'
+  | 'fit_screen_sharp'
+  | 'fitbit'
+  | 'fitbit_outlined'
+  | 'fitbit_rounded'
+  | 'fitbit_sharp'
+  | 'fitness_center'
+  | 'fitness_center_outlined'
+  | 'fitness_center_rounded'
+  | 'fitness_center_sharp'
+  | 'five_g'
+  | 'five_g_outlined'
+  | 'five_g_rounded'
+  | 'five_g_sharp'
+  | 'five_k'
+  | 'five_k_outlined'
+  | 'five_k_plus'
+  | 'five_k_plus_outlined'
+  | 'five_k_plus_rounded'
+  | 'five_k_plus_sharp'
+  | 'five_k_rounded'
+  | 'five_k_sharp'
+  | 'five_mp'
+  | 'five_mp_outlined'
+  | 'five_mp_rounded'
+  | 'five_mp_sharp'
+  | 'flag'
+  | 'flag_circle'
+  | 'flag_circle_fill'
+  | 'flag_circle_outlined'
+  | 'flag_circle_rounded'
+  | 'flag_circle_sharp'
+  | 'flag_fill'
+  | 'flag_outlined'
+  | 'flag_rounded'
+  | 'flag_sharp'
+  | 'flag_slash'
+  | 'flag_slash_fill'
+  | 'flaky'
+  | 'flaky_outlined'
+  | 'flaky_rounded'
+  | 'flaky_sharp'
+  | 'flame'
+  | 'flame_fill'
+  | 'flare'
+  | 'flare_outlined'
+  | 'flare_rounded'
+  | 'flare_sharp'
+  | 'flash_auto'
+  | 'flash_auto_outlined'
+  | 'flash_auto_rounded'
+  | 'flash_auto_sharp'
+  | 'flash_off'
+  | 'flash_off_outlined'
+  | 'flash_off_rounded'
+  | 'flash_off_sharp'
+  | 'flash_on'
+  | 'flash_on_outlined'
+  | 'flash_on_rounded'
+  | 'flash_on_sharp'
+  | 'flashlight_off'
+  | 'flashlight_off_outlined'
+  | 'flashlight_off_rounded'
+  | 'flashlight_off_sharp'
+  | 'flashlight_on'
+  | 'flashlight_on_outlined'
+  | 'flashlight_on_rounded'
+  | 'flashlight_on_sharp'
+  | 'flatware'
+  | 'flatware_outlined'
+  | 'flatware_rounded'
+  | 'flatware_sharp'
+  | 'flight'
+  | 'flight_class'
+  | 'flight_class_outlined'
+  | 'flight_class_rounded'
+  | 'flight_class_sharp'
+  | 'flight_land'
+  | 'flight_land_outlined'
+  | 'flight_land_rounded'
+  | 'flight_land_sharp'
+  | 'flight_outlined'
+  | 'flight_rounded'
+  | 'flight_sharp'
+  | 'flight_takeoff'
+  | 'flight_takeoff_outlined'
+  | 'flight_takeoff_rounded'
+  | 'flight_takeoff_sharp'
+  | 'flip'
+  | 'flip_camera_android'
+  | 'flip_camera_android_outlined'
+  | 'flip_camera_android_rounded'
+  | 'flip_camera_android_sharp'
+  | 'flip_camera_ios'
+  | 'flip_camera_ios_outlined'
+  | 'flip_camera_ios_rounded'
+  | 'flip_camera_ios_sharp'
+  | 'flip_outlined'
+  | 'flip_rounded'
+  | 'flip_sharp'
+  | 'flip_to_back'
+  | 'flip_to_back_outlined'
+  | 'flip_to_back_rounded'
+  | 'flip_to_back_sharp'
+  | 'flip_to_front'
+  | 'flip_to_front_outlined'
+  | 'flip_to_front_rounded'
+  | 'flip_to_front_sharp'
+  | 'flood'
+  | 'flood_outlined'
+  | 'flood_rounded'
+  | 'flood_sharp'
+  | 'floppy_disk'
+  | 'flourescent'
+  | 'flourescent_outlined'
+  | 'flourescent_rounded'
+  | 'flourescent_sharp'
+  | 'flowchart'
+  | 'flowchart_fill'
+  | 'fluorescent'
+  | 'fluorescent_outlined'
+  | 'fluorescent_rounded'
+  | 'fluorescent_sharp'
+  | 'flutter_dash'
+  | 'flutter_dash_outlined'
+  | 'flutter_dash_rounded'
+  | 'flutter_dash_sharp'
+  | 'fmd_bad'
+  | 'fmd_bad_outlined'
+  | 'fmd_bad_rounded'
+  | 'fmd_bad_sharp'
+  | 'fmd_good'
+  | 'fmd_good_outlined'
+  | 'fmd_good_rounded'
+  | 'fmd_good_sharp'
+  | 'foggy'
+  | 'folder'
+  | 'folder_badge_minus'
+  | 'folder_badge_person_crop'
+  | 'folder_badge_plus'
+  | 'folder_circle'
+  | 'folder_circle_fill'
+  | 'folder_copy'
+  | 'folder_copy_outlined'
+  | 'folder_copy_rounded'
+  | 'folder_copy_sharp'
+  | 'folder_delete'
+  | 'folder_delete_outlined'
+  | 'folder_delete_rounded'
+  | 'folder_delete_sharp'
+  | 'folder_fill'
+  | 'folder_fill_badge_minus'
+  | 'folder_fill_badge_person_crop'
+  | 'folder_fill_badge_plus'
+  | 'folder_off'
+  | 'folder_off_outlined'
+  | 'folder_off_rounded'
+  | 'folder_off_sharp'
+  | 'folder_open'
+  | 'folder_open_outlined'
+  | 'folder_open_rounded'
+  | 'folder_open_sharp'
+  | 'folder_outlined'
+  | 'folder_rounded'
+  | 'folder_shared'
+  | 'folder_shared_outlined'
+  | 'folder_shared_rounded'
+  | 'folder_shared_sharp'
+  | 'folder_sharp'
+  | 'folder_solid'
+  | 'folder_special'
+  | 'folder_special_outlined'
+  | 'folder_special_rounded'
+  | 'folder_special_sharp'
+  | 'folder_zip'
+  | 'folder_zip_outlined'
+  | 'folder_zip_rounded'
+  | 'folder_zip_sharp'
+  | 'follow_the_signs'
+  | 'follow_the_signs_outlined'
+  | 'follow_the_signs_rounded'
+  | 'follow_the_signs_sharp'
+  | 'font_download'
+  | 'font_download_off'
+  | 'font_download_off_outlined'
+  | 'font_download_off_rounded'
+  | 'font_download_off_sharp'
+  | 'font_download_outlined'
+  | 'font_download_rounded'
+  | 'font_download_sharp'
+  | 'food_bank'
+  | 'food_bank_outlined'
+  | 'food_bank_rounded'
+  | 'food_bank_sharp'
+  | 'forest'
+  | 'forest_outlined'
+  | 'forest_rounded'
+  | 'forest_sharp'
+  | 'fork_left'
+  | 'fork_left_outlined'
+  | 'fork_left_rounded'
+  | 'fork_left_sharp'
+  | 'fork_right'
+  | 'fork_right_outlined'
+  | 'fork_right_rounded'
+  | 'fork_right_sharp'
+  | 'forklift'
+  | 'format_align_center'
+  | 'format_align_center_outlined'
+  | 'format_align_center_rounded'
+  | 'format_align_center_sharp'
+  | 'format_align_justify'
+  | 'format_align_justify_outlined'
+  | 'format_align_justify_rounded'
+  | 'format_align_justify_sharp'
+  | 'format_align_left'
+  | 'format_align_left_outlined'
+  | 'format_align_left_rounded'
+  | 'format_align_left_sharp'
+  | 'format_align_right'
+  | 'format_align_right_outlined'
+  | 'format_align_right_rounded'
+  | 'format_align_right_sharp'
+  | 'format_bold'
+  | 'format_bold_outlined'
+  | 'format_bold_rounded'
+  | 'format_bold_sharp'
+  | 'format_clear'
+  | 'format_clear_outlined'
+  | 'format_clear_rounded'
+  | 'format_clear_sharp'
+  | 'format_color_fill'
+  | 'format_color_fill_outlined'
+  | 'format_color_fill_rounded'
+  | 'format_color_fill_sharp'
+  | 'format_color_reset'
+  | 'format_color_reset_outlined'
+  | 'format_color_reset_rounded'
+  | 'format_color_reset_sharp'
+  | 'format_color_text'
+  | 'format_color_text_outlined'
+  | 'format_color_text_rounded'
+  | 'format_color_text_sharp'
+  | 'format_indent_decrease'
+  | 'format_indent_decrease_outlined'
+  | 'format_indent_decrease_rounded'
+  | 'format_indent_decrease_sharp'
+  | 'format_indent_increase'
+  | 'format_indent_increase_outlined'
+  | 'format_indent_increase_rounded'
+  | 'format_indent_increase_sharp'
+  | 'format_italic'
+  | 'format_italic_outlined'
+  | 'format_italic_rounded'
+  | 'format_italic_sharp'
+  | 'format_line_spacing'
+  | 'format_line_spacing_outlined'
+  | 'format_line_spacing_rounded'
+  | 'format_line_spacing_sharp'
+  | 'format_list_bulleted'
+  | 'format_list_bulleted_add'
+  | 'format_list_bulleted_outlined'
+  | 'format_list_bulleted_rounded'
+  | 'format_list_bulleted_sharp'
+  | 'format_list_numbered'
+  | 'format_list_numbered_outlined'
+  | 'format_list_numbered_rounded'
+  | 'format_list_numbered_rtl'
+  | 'format_list_numbered_rtl_outlined'
+  | 'format_list_numbered_rtl_rounded'
+  | 'format_list_numbered_rtl_sharp'
+  | 'format_list_numbered_sharp'
+  | 'format_overline'
+  | 'format_overline_outlined'
+  | 'format_overline_rounded'
+  | 'format_overline_sharp'
+  | 'format_paint'
+  | 'format_paint_outlined'
+  | 'format_paint_rounded'
+  | 'format_paint_sharp'
+  | 'format_quote'
+  | 'format_quote_outlined'
+  | 'format_quote_rounded'
+  | 'format_quote_sharp'
+  | 'format_shapes'
+  | 'format_shapes_outlined'
+  | 'format_shapes_rounded'
+  | 'format_shapes_sharp'
+  | 'format_size'
+  | 'format_size_outlined'
+  | 'format_size_rounded'
+  | 'format_size_sharp'
+  | 'format_strikethrough'
+  | 'format_strikethrough_outlined'
+  | 'format_strikethrough_rounded'
+  | 'format_strikethrough_sharp'
+  | 'format_textdirection_l_to_r'
+  | 'format_textdirection_l_to_r_outlined'
+  | 'format_textdirection_l_to_r_rounded'
+  | 'format_textdirection_l_to_r_sharp'
+  | 'format_textdirection_r_to_l'
+  | 'format_textdirection_r_to_l_outlined'
+  | 'format_textdirection_r_to_l_rounded'
+  | 'format_textdirection_r_to_l_sharp'
+  | 'format_underline'
+  | 'format_underline_outlined'
+  | 'format_underline_rounded'
+  | 'format_underline_sharp'
+  | 'format_underlined'
+  | 'format_underlined_outlined'
+  | 'format_underlined_rounded'
+  | 'format_underlined_sharp'
+  | 'fort'
+  | 'fort_outlined'
+  | 'fort_rounded'
+  | 'fort_sharp'
+  | 'forum'
+  | 'forum_outlined'
+  | 'forum_rounded'
+  | 'forum_sharp'
+  | 'forward'
+  | 'forward_10'
+  | 'forward_10_outlined'
+  | 'forward_10_rounded'
+  | 'forward_10_sharp'
+  | 'forward_30'
+  | 'forward_30_outlined'
+  | 'forward_30_rounded'
+  | 'forward_30_sharp'
+  | 'forward_5'
+  | 'forward_5_outlined'
+  | 'forward_5_rounded'
+  | 'forward_5_sharp'
+  | 'forward_end'
+  | 'forward_end_alt'
+  | 'forward_end_alt_fill'
+  | 'forward_end_fill'
+  | 'forward_fill'
+  | 'forward_outlined'
+  | 'forward_rounded'
+  | 'forward_sharp'
+  | 'forward_to_inbox'
+  | 'forward_to_inbox_outlined'
+  | 'forward_to_inbox_rounded'
+  | 'forward_to_inbox_sharp'
+  | 'foundation'
+  | 'foundation_outlined'
+  | 'foundation_rounded'
+  | 'foundation_sharp'
+  | 'four_g_mobiledata'
+  | 'four_g_mobiledata_outlined'
+  | 'four_g_mobiledata_rounded'
+  | 'four_g_mobiledata_sharp'
+  | 'four_g_plus_mobiledata'
+  | 'four_g_plus_mobiledata_outlined'
+  | 'four_g_plus_mobiledata_rounded'
+  | 'four_g_plus_mobiledata_sharp'
+  | 'four_k'
+  | 'four_k_outlined'
+  | 'four_k_plus'
+  | 'four_k_plus_outlined'
+  | 'four_k_plus_rounded'
+  | 'four_k_plus_sharp'
+  | 'four_k_rounded'
+  | 'four_k_sharp'
+  | 'four_mp'
+  | 'four_mp_outlined'
+  | 'four_mp_rounded'
+  | 'four_mp_sharp'
+  | 'fourteen_mp'
+  | 'fourteen_mp_outlined'
+  | 'fourteen_mp_rounded'
+  | 'fourteen_mp_sharp'
+  | 'free_breakfast'
+  | 'free_breakfast_outlined'
+  | 'free_breakfast_rounded'
+  | 'free_breakfast_sharp'
+  | 'free_cancellation'
+  | 'free_cancellation_outlined'
+  | 'free_cancellation_rounded'
+  | 'free_cancellation_sharp'
+  | 'front_hand'
+  | 'front_hand_outlined'
+  | 'front_hand_rounded'
+  | 'front_hand_sharp'
+  | 'front_loader'
+  | 'fullscreen'
+  | 'fullscreen_exit'
+  | 'fullscreen_exit_outlined'
+  | 'fullscreen_exit_rounded'
+  | 'fullscreen_exit_sharp'
+  | 'fullscreen_outlined'
+  | 'fullscreen_rounded'
+  | 'fullscreen_sharp'
+  | 'function'
+  | 'functions'
+  | 'functions_outlined'
+  | 'functions_rounded'
+  | 'functions_sharp'
+  | 'fx'
+  | 'g_mobiledata'
+  | 'g_mobiledata_outlined'
+  | 'g_mobiledata_rounded'
+  | 'g_mobiledata_sharp'
+  | 'g_translate'
+  | 'g_translate_outlined'
+  | 'g_translate_rounded'
+  | 'g_translate_sharp'
+  | 'game_controller'
+  | 'game_controller_solid'
+  | 'gamecontroller'
+  | 'gamecontroller_alt_fill'
+  | 'gamecontroller_fill'
+  | 'gamepad'
+  | 'gamepad_outlined'
+  | 'gamepad_rounded'
+  | 'gamepad_sharp'
+  | 'games'
+  | 'games_outlined'
+  | 'games_rounded'
+  | 'games_sharp'
+  | 'garage'
+  | 'garage_outlined'
+  | 'garage_rounded'
+  | 'garage_sharp'
+  | 'gas_meter'
+  | 'gas_meter_outlined'
+  | 'gas_meter_rounded'
+  | 'gas_meter_sharp'
+  | 'gauge'
+  | 'gauge_badge_minus'
+  | 'gauge_badge_plus'
+  | 'gavel'
+  | 'gavel_outlined'
+  | 'gavel_rounded'
+  | 'gavel_sharp'
+  | 'gear'
+  | 'gear_alt'
+  | 'gear_alt_fill'
+  | 'gear_big'
+  | 'gear_solid'
+  | 'generating_tokens'
+  | 'generating_tokens_outlined'
+  | 'generating_tokens_rounded'
+  | 'generating_tokens_sharp'
+  | 'gesture'
+  | 'gesture_outlined'
+  | 'gesture_rounded'
+  | 'gesture_sharp'
+  | 'get_app'
+  | 'get_app_outlined'
+  | 'get_app_rounded'
+  | 'get_app_sharp'
+  | 'gif'
+  | 'gif_box'
+  | 'gif_box_outlined'
+  | 'gif_box_rounded'
+  | 'gif_box_sharp'
+  | 'gif_outlined'
+  | 'gif_rounded'
+  | 'gif_sharp'
+  | 'gift'
+  | 'gift_alt'
+  | 'gift_alt_fill'
+  | 'gift_fill'
+  | 'girl'
+  | 'girl_outlined'
+  | 'girl_rounded'
+  | 'girl_sharp'
+  | 'gite'
+  | 'gite_outlined'
+  | 'gite_rounded'
+  | 'gite_sharp'
+  | 'globe'
+  | 'gobackward'
+  | 'gobackward_10'
+  | 'gobackward_15'
+  | 'gobackward_30'
+  | 'gobackward_45'
+  | 'gobackward_60'
+  | 'gobackward_75'
+  | 'gobackward_90'
+  | 'gobackward_minus'
+  | 'goforward'
+  | 'goforward_10'
+  | 'goforward_15'
+  | 'goforward_30'
+  | 'goforward_45'
+  | 'goforward_60'
+  | 'goforward_75'
+  | 'goforward_90'
+  | 'goforward_plus'
+  | 'golf_course'
+  | 'golf_course_outlined'
+  | 'golf_course_rounded'
+  | 'golf_course_sharp'
+  | 'gpp_bad'
+  | 'gpp_bad_outlined'
+  | 'gpp_bad_rounded'
+  | 'gpp_bad_sharp'
+  | 'gpp_good'
+  | 'gpp_good_outlined'
+  | 'gpp_good_rounded'
+  | 'gpp_good_sharp'
+  | 'gpp_maybe'
+  | 'gpp_maybe_outlined'
+  | 'gpp_maybe_rounded'
+  | 'gpp_maybe_sharp'
+  | 'gps_fixed'
+  | 'gps_fixed_outlined'
+  | 'gps_fixed_rounded'
+  | 'gps_fixed_sharp'
+  | 'gps_not_fixed'
+  | 'gps_not_fixed_outlined'
+  | 'gps_not_fixed_rounded'
+  | 'gps_not_fixed_sharp'
+  | 'gps_off'
+  | 'gps_off_outlined'
+  | 'gps_off_rounded'
+  | 'gps_off_sharp'
+  | 'grade'
+  | 'grade_outlined'
+  | 'grade_rounded'
+  | 'grade_sharp'
+  | 'gradient'
+  | 'gradient_outlined'
+  | 'gradient_rounded'
+  | 'gradient_sharp'
+  | 'grading'
+  | 'grading_outlined'
+  | 'grading_rounded'
+  | 'grading_sharp'
+  | 'grain'
+  | 'grain_outlined'
+  | 'grain_rounded'
+  | 'grain_sharp'
+  | 'graph_circle'
+  | 'graph_circle_fill'
+  | 'graph_square'
+  | 'graph_square_fill'
+  | 'graphic_eq'
+  | 'graphic_eq_outlined'
+  | 'graphic_eq_rounded'
+  | 'graphic_eq_sharp'
+  | 'grass'
+  | 'grass_outlined'
+  | 'grass_rounded'
+  | 'grass_sharp'
+  | 'greaterthan'
+  | 'greaterthan_circle'
+  | 'greaterthan_circle_fill'
+  | 'greaterthan_square'
+  | 'greaterthan_square_fill'
+  | 'grid'
+  | 'grid_3x3'
+  | 'grid_3x3_outlined'
+  | 'grid_3x3_rounded'
+  | 'grid_3x3_sharp'
+  | 'grid_4x4'
+  | 'grid_4x4_outlined'
+  | 'grid_4x4_rounded'
+  | 'grid_4x4_sharp'
+  | 'grid_circle'
+  | 'grid_circle_fill'
+  | 'grid_goldenratio'
+  | 'grid_goldenratio_outlined'
+  | 'grid_goldenratio_rounded'
+  | 'grid_goldenratio_sharp'
+  | 'grid_off'
+  | 'grid_off_outlined'
+  | 'grid_off_rounded'
+  | 'grid_off_sharp'
+  | 'grid_on'
+  | 'grid_on_outlined'
+  | 'grid_on_rounded'
+  | 'grid_on_sharp'
+  | 'grid_view'
+  | 'grid_view_outlined'
+  | 'grid_view_rounded'
+  | 'grid_view_sharp'
+  | 'group'
+  | 'group_add'
+  | 'group_add_outlined'
+  | 'group_add_rounded'
+  | 'group_add_sharp'
+  | 'group_off'
+  | 'group_off_outlined'
+  | 'group_off_rounded'
+  | 'group_off_sharp'
+  | 'group_outlined'
+  | 'group_remove'
+  | 'group_remove_outlined'
+  | 'group_remove_rounded'
+  | 'group_remove_sharp'
+  | 'group_rounded'
+  | 'group_sharp'
+  | 'group_solid'
+  | 'group_work'
+  | 'group_work_outlined'
+  | 'group_work_rounded'
+  | 'group_work_sharp'
+  | 'groups'
+  | 'groups_2'
+  | 'groups_2_outlined'
+  | 'groups_2_rounded'
+  | 'groups_2_sharp'
+  | 'groups_3'
+  | 'groups_3_outlined'
+  | 'groups_3_rounded'
+  | 'groups_3_sharp'
+  | 'groups_outlined'
+  | 'groups_rounded'
+  | 'groups_sharp'
+  | 'guitars'
+  | 'h_mobiledata'
+  | 'h_mobiledata_outlined'
+  | 'h_mobiledata_rounded'
+  | 'h_mobiledata_sharp'
+  | 'h_plus_mobiledata'
+  | 'h_plus_mobiledata_outlined'
+  | 'h_plus_mobiledata_rounded'
+  | 'h_plus_mobiledata_sharp'
+  | 'hail'
+  | 'hail_outlined'
+  | 'hail_rounded'
+  | 'hail_sharp'
+  | 'hammer'
+  | 'hammer_fill'
+  | 'hand_draw'
+  | 'hand_draw_fill'
+  | 'hand_point_left'
+  | 'hand_point_left_fill'
+  | 'hand_point_right'
+  | 'hand_point_right_fill'
+  | 'hand_raised'
+  | 'hand_raised_fill'
+  | 'hand_raised_slash'
+  | 'hand_raised_slash_fill'
+  | 'hand_thumbsdown'
+  | 'hand_thumbsdown_fill'
+  | 'hand_thumbsup'
+  | 'hand_thumbsup_fill'
+  | 'handshake'
+  | 'handshake_outlined'
+  | 'handshake_rounded'
+  | 'handshake_sharp'
+  | 'handyman'
+  | 'handyman_outlined'
+  | 'handyman_rounded'
+  | 'handyman_sharp'
+  | 'hardware'
+  | 'hardware_outlined'
+  | 'hardware_rounded'
+  | 'hardware_sharp'
+  | 'hare'
+  | 'hare_fill'
+  | 'hd'
+  | 'hd_outlined'
+  | 'hd_rounded'
+  | 'hd_sharp'
+  | 'hdr_auto'
+  | 'hdr_auto_outlined'
+  | 'hdr_auto_rounded'
+  | 'hdr_auto_select'
+  | 'hdr_auto_select_outlined'
+  | 'hdr_auto_select_rounded'
+  | 'hdr_auto_select_sharp'
+  | 'hdr_auto_sharp'
+  | 'hdr_enhanced_select'
+  | 'hdr_enhanced_select_outlined'
+  | 'hdr_enhanced_select_rounded'
+  | 'hdr_enhanced_select_sharp'
+  | 'hdr_off'
+  | 'hdr_off_outlined'
+  | 'hdr_off_rounded'
+  | 'hdr_off_select'
+  | 'hdr_off_select_outlined'
+  | 'hdr_off_select_rounded'
+  | 'hdr_off_select_sharp'
+  | 'hdr_off_sharp'
+  | 'hdr_on'
+  | 'hdr_on_outlined'
+  | 'hdr_on_rounded'
+  | 'hdr_on_select'
+  | 'hdr_on_select_outlined'
+  | 'hdr_on_select_rounded'
+  | 'hdr_on_select_sharp'
+  | 'hdr_on_sharp'
+  | 'hdr_plus'
+  | 'hdr_plus_outlined'
+  | 'hdr_plus_rounded'
+  | 'hdr_plus_sharp'
+  | 'hdr_strong'
+  | 'hdr_strong_outlined'
+  | 'hdr_strong_rounded'
+  | 'hdr_strong_sharp'
+  | 'hdr_weak'
+  | 'hdr_weak_outlined'
+  | 'hdr_weak_rounded'
+  | 'hdr_weak_sharp'
+  | 'headphones'
+  | 'headphones_battery'
+  | 'headphones_battery_outlined'
+  | 'headphones_battery_rounded'
+  | 'headphones_battery_sharp'
+  | 'headphones_outlined'
+  | 'headphones_rounded'
+  | 'headphones_sharp'
+  | 'headset'
+  | 'headset_mic'
+  | 'headset_mic_outlined'
+  | 'headset_mic_rounded'
+  | 'headset_mic_sharp'
+  | 'headset_off'
+  | 'headset_off_outlined'
+  | 'headset_off_rounded'
+  | 'headset_off_sharp'
+  | 'headset_outlined'
+  | 'headset_rounded'
+  | 'headset_sharp'
+  | 'healing'
+  | 'healing_outlined'
+  | 'healing_rounded'
+  | 'healing_sharp'
+  | 'health_and_safety'
+  | 'health_and_safety_outlined'
+  | 'health_and_safety_rounded'
+  | 'health_and_safety_sharp'
+  | 'hearing'
+  | 'hearing_disabled'
+  | 'hearing_disabled_outlined'
+  | 'hearing_disabled_rounded'
+  | 'hearing_disabled_sharp'
+  | 'hearing_outlined'
+  | 'hearing_rounded'
+  | 'hearing_sharp'
+  | 'heart'
+  | 'heart_broken'
+  | 'heart_broken_outlined'
+  | 'heart_broken_rounded'
+  | 'heart_broken_sharp'
+  | 'heart_circle'
+  | 'heart_circle_fill'
+  | 'heart_fill'
+  | 'heart_slash'
+  | 'heart_slash_circle'
+  | 'heart_slash_circle_fill'
+  | 'heart_slash_fill'
+  | 'heart_solid'
+  | 'heat_pump'
+  | 'heat_pump_outlined'
+  | 'heat_pump_rounded'
+  | 'heat_pump_sharp'
+  | 'height'
+  | 'height_outlined'
+  | 'height_rounded'
+  | 'height_sharp'
+  | 'helm'
+  | 'help'
+  | 'help_center'
+  | 'help_center_outlined'
+  | 'help_center_rounded'
+  | 'help_center_sharp'
+  | 'help_outline'
+  | 'help_outline_outlined'
+  | 'help_outline_rounded'
+  | 'help_outline_sharp'
+  | 'help_outlined'
+  | 'help_rounded'
+  | 'help_sharp'
+  | 'hevc'
+  | 'hevc_outlined'
+  | 'hevc_rounded'
+  | 'hevc_sharp'
+  | 'hexagon'
+  | 'hexagon_fill'
+  | 'hexagon_outlined'
+  | 'hexagon_rounded'
+  | 'hexagon_sharp'
+  | 'hide_image'
+  | 'hide_image_outlined'
+  | 'hide_image_rounded'
+  | 'hide_image_sharp'
+  | 'hide_source'
+  | 'hide_source_outlined'
+  | 'hide_source_rounded'
+  | 'hide_source_sharp'
+  | 'hifispeaker'
+  | 'hifispeaker_fill'
+  | 'high_quality'
+  | 'high_quality_outlined'
+  | 'high_quality_rounded'
+  | 'high_quality_sharp'
+  | 'highlight'
+  | 'highlight_alt'
+  | 'highlight_alt_outlined'
+  | 'highlight_alt_rounded'
+  | 'highlight_alt_sharp'
+  | 'highlight_off'
+  | 'highlight_off_outlined'
+  | 'highlight_off_rounded'
+  | 'highlight_off_sharp'
+  | 'highlight_outlined'
+  | 'highlight_remove'
+  | 'highlight_remove_outlined'
+  | 'highlight_remove_rounded'
+  | 'highlight_remove_sharp'
+  | 'highlight_rounded'
+  | 'highlight_sharp'
+  | 'hiking'
+  | 'hiking_outlined'
+  | 'hiking_rounded'
+  | 'hiking_sharp'
+  | 'history'
+  | 'history_edu'
+  | 'history_edu_outlined'
+  | 'history_edu_rounded'
+  | 'history_edu_sharp'
+  | 'history_outlined'
+  | 'history_rounded'
+  | 'history_sharp'
+  | 'history_toggle_off'
+  | 'history_toggle_off_outlined'
+  | 'history_toggle_off_rounded'
+  | 'history_toggle_off_sharp'
+  | 'hive'
+  | 'hive_outlined'
+  | 'hive_rounded'
+  | 'hive_sharp'
+  | 'hls'
+  | 'hls_off'
+  | 'hls_off_outlined'
+  | 'hls_off_rounded'
+  | 'hls_off_sharp'
+  | 'hls_outlined'
+  | 'hls_rounded'
+  | 'hls_sharp'
+  | 'holiday_village'
+  | 'holiday_village_outlined'
+  | 'holiday_village_rounded'
+  | 'holiday_village_sharp'
+  | 'home'
+  | 'home_filled'
+  | 'home_max'
+  | 'home_max_outlined'
+  | 'home_max_rounded'
+  | 'home_max_sharp'
+  | 'home_mini'
+  | 'home_mini_outlined'
+  | 'home_mini_rounded'
+  | 'home_mini_sharp'
+  | 'home_outlined'
+  | 'home_repair_service'
+  | 'home_repair_service_outlined'
+  | 'home_repair_service_rounded'
+  | 'home_repair_service_sharp'
+  | 'home_rounded'
+  | 'home_sharp'
+  | 'home_work'
+  | 'home_work_outlined'
+  | 'home_work_rounded'
+  | 'home_work_sharp'
+  | 'horizontal_distribute'
+  | 'horizontal_distribute_outlined'
+  | 'horizontal_distribute_rounded'
+  | 'horizontal_distribute_sharp'
+  | 'horizontal_rule'
+  | 'horizontal_rule_outlined'
+  | 'horizontal_rule_rounded'
+  | 'horizontal_rule_sharp'
+  | 'horizontal_split'
+  | 'horizontal_split_outlined'
+  | 'horizontal_split_rounded'
+  | 'horizontal_split_sharp'
+  | 'hot_tub'
+  | 'hot_tub_outlined'
+  | 'hot_tub_rounded'
+  | 'hot_tub_sharp'
+  | 'hotel'
+  | 'hotel_class'
+  | 'hotel_class_outlined'
+  | 'hotel_class_rounded'
+  | 'hotel_class_sharp'
+  | 'hotel_outlined'
+  | 'hotel_rounded'
+  | 'hotel_sharp'
+  | 'hourglass'
+  | 'hourglass_bottom'
+  | 'hourglass_bottom_outlined'
+  | 'hourglass_bottom_rounded'
+  | 'hourglass_bottom_sharp'
+  | 'hourglass_bottomhalf_fill'
+  | 'hourglass_disabled'
+  | 'hourglass_disabled_outlined'
+  | 'hourglass_disabled_rounded'
+  | 'hourglass_disabled_sharp'
+  | 'hourglass_empty'
+  | 'hourglass_empty_outlined'
+  | 'hourglass_empty_rounded'
+  | 'hourglass_empty_sharp'
+  | 'hourglass_full'
+  | 'hourglass_full_outlined'
+  | 'hourglass_full_rounded'
+  | 'hourglass_full_sharp'
+  | 'hourglass_top'
+  | 'hourglass_top_outlined'
+  | 'hourglass_top_rounded'
+  | 'hourglass_top_sharp'
+  | 'hourglass_tophalf_fill'
+  | 'house'
+  | 'house_alt'
+  | 'house_alt_fill'
+  | 'house_fill'
+  | 'house_outlined'
+  | 'house_rounded'
+  | 'house_sharp'
+  | 'house_siding'
+  | 'house_siding_outlined'
+  | 'house_siding_rounded'
+  | 'house_siding_sharp'
+  | 'houseboat'
+  | 'houseboat_outlined'
+  | 'houseboat_rounded'
+  | 'houseboat_sharp'
+  | 'how_to_reg'
+  | 'how_to_reg_outlined'
+  | 'how_to_reg_rounded'
+  | 'how_to_reg_sharp'
+  | 'how_to_vote'
+  | 'how_to_vote_outlined'
+  | 'how_to_vote_rounded'
+  | 'how_to_vote_sharp'
+  | 'html'
+  | 'html_outlined'
+  | 'html_rounded'
+  | 'html_sharp'
+  | 'http'
+  | 'http_outlined'
+  | 'http_rounded'
+  | 'http_sharp'
+  | 'https'
+  | 'https_outlined'
+  | 'https_rounded'
+  | 'https_sharp'
+  | 'hub'
+  | 'hub_outlined'
+  | 'hub_rounded'
+  | 'hub_sharp'
+  | 'hurricane'
+  | 'hvac'
+  | 'hvac_outlined'
+  | 'hvac_rounded'
+  | 'hvac_sharp'
+  | 'ice_skating'
+  | 'ice_skating_outlined'
+  | 'ice_skating_rounded'
+  | 'ice_skating_sharp'
+  | 'icecream'
+  | 'icecream_outlined'
+  | 'icecream_rounded'
+  | 'icecream_sharp'
+  | 'image'
+  | 'image_aspect_ratio'
+  | 'image_aspect_ratio_outlined'
+  | 'image_aspect_ratio_rounded'
+  | 'image_aspect_ratio_sharp'
+  | 'image_not_supported'
+  | 'image_not_supported_outlined'
+  | 'image_not_supported_rounded'
+  | 'image_not_supported_sharp'
+  | 'image_outlined'
+  | 'image_rounded'
+  | 'image_search'
+  | 'image_search_outlined'
+  | 'image_search_rounded'
+  | 'image_search_sharp'
+  | 'image_sharp'
+  | 'imagesearch_roller'
+  | 'imagesearch_roller_outlined'
+  | 'imagesearch_roller_rounded'
+  | 'imagesearch_roller_sharp'
+  | 'import_contacts'
+  | 'import_contacts_outlined'
+  | 'import_contacts_rounded'
+  | 'import_contacts_sharp'
+  | 'import_export'
+  | 'import_export_outlined'
+  | 'import_export_rounded'
+  | 'import_export_sharp'
+  | 'important_devices'
+  | 'important_devices_outlined'
+  | 'important_devices_rounded'
+  | 'important_devices_sharp'
+  | 'inbox'
+  | 'inbox_outlined'
+  | 'inbox_rounded'
+  | 'inbox_sharp'
+  | 'incomplete_circle'
+  | 'incomplete_circle_outlined'
+  | 'incomplete_circle_rounded'
+  | 'incomplete_circle_sharp'
+  | 'increase_indent'
+  | 'increase_quotelevel'
+  | 'indeterminate_check_box'
+  | 'indeterminate_check_box_outlined'
+  | 'indeterminate_check_box_rounded'
+  | 'indeterminate_check_box_sharp'
+  | 'infinite'
+  | 'info'
+  | 'info_circle'
+  | 'info_circle_fill'
+  | 'info_outline'
+  | 'info_outline_rounded'
+  | 'info_outline_sharp'
+  | 'info_outlined'
+  | 'info_rounded'
+  | 'info_sharp'
+  | 'input'
+  | 'input_outlined'
+  | 'input_rounded'
+  | 'input_sharp'
+  | 'insert_chart'
+  | 'insert_chart_outlined'
+  | 'insert_chart_outlined_outlined'
+  | 'insert_chart_outlined_rounded'
+  | 'insert_chart_outlined_sharp'
+  | 'insert_chart_rounded'
+  | 'insert_chart_sharp'
+  | 'insert_comment'
+  | 'insert_comment_outlined'
+  | 'insert_comment_rounded'
+  | 'insert_comment_sharp'
+  | 'insert_drive_file'
+  | 'insert_drive_file_outlined'
+  | 'insert_drive_file_rounded'
+  | 'insert_drive_file_sharp'
+  | 'insert_emoticon'
+  | 'insert_emoticon_outlined'
+  | 'insert_emoticon_rounded'
+  | 'insert_emoticon_sharp'
+  | 'insert_invitation'
+  | 'insert_invitation_outlined'
+  | 'insert_invitation_rounded'
+  | 'insert_invitation_sharp'
+  | 'insert_link'
+  | 'insert_link_outlined'
+  | 'insert_link_rounded'
+  | 'insert_link_sharp'
+  | 'insert_page_break'
+  | 'insert_page_break_outlined'
+  | 'insert_page_break_rounded'
+  | 'insert_page_break_sharp'
+  | 'insert_photo'
+  | 'insert_photo_outlined'
+  | 'insert_photo_rounded'
+  | 'insert_photo_sharp'
+  | 'insights'
+  | 'insights_outlined'
+  | 'insights_rounded'
+  | 'insights_sharp'
+  | 'install_desktop'
+  | 'install_desktop_outlined'
+  | 'install_desktop_rounded'
+  | 'install_desktop_sharp'
+  | 'install_mobile'
+  | 'install_mobile_outlined'
+  | 'install_mobile_rounded'
+  | 'install_mobile_sharp'
+  | 'integration_instructions'
+  | 'integration_instructions_outlined'
+  | 'integration_instructions_rounded'
+  | 'integration_instructions_sharp'
+  | 'interests'
+  | 'interests_outlined'
+  | 'interests_rounded'
+  | 'interests_sharp'
+  | 'interpreter_mode'
+  | 'interpreter_mode_outlined'
+  | 'interpreter_mode_rounded'
+  | 'interpreter_mode_sharp'
+  | 'inventory'
+  | 'inventory_2'
+  | 'inventory_2_outlined'
+  | 'inventory_2_rounded'
+  | 'inventory_2_sharp'
+  | 'inventory_outlined'
+  | 'inventory_rounded'
+  | 'inventory_sharp'
+  | 'invert_colors'
+  | 'invert_colors_off'
+  | 'invert_colors_off_outlined'
+  | 'invert_colors_off_rounded'
+  | 'invert_colors_off_sharp'
+  | 'invert_colors_on'
+  | 'invert_colors_on_outlined'
+  | 'invert_colors_on_rounded'
+  | 'invert_colors_on_sharp'
+  | 'invert_colors_outlined'
+  | 'invert_colors_rounded'
+  | 'invert_colors_sharp'
+  | 'ios_share'
+  | 'ios_share_outlined'
+  | 'ios_share_rounded'
+  | 'ios_share_sharp'
+  | 'iron'
+  | 'iron_outlined'
+  | 'iron_rounded'
+  | 'iron_sharp'
+  | 'iso'
+  | 'iso_outlined'
+  | 'iso_rounded'
+  | 'iso_sharp'
+  | 'italic'
+  | 'javascript'
+  | 'javascript_outlined'
+  | 'javascript_rounded'
+  | 'javascript_sharp'
+  | 'join_full'
+  | 'join_full_outlined'
+  | 'join_full_rounded'
+  | 'join_full_sharp'
+  | 'join_inner'
+  | 'join_inner_outlined'
+  | 'join_inner_rounded'
+  | 'join_inner_sharp'
+  | 'join_left'
+  | 'join_left_outlined'
+  | 'join_left_rounded'
+  | 'join_left_sharp'
+  | 'join_right'
+  | 'join_right_outlined'
+  | 'join_right_rounded'
+  | 'join_right_sharp'
+  | 'kayaking'
+  | 'kayaking_outlined'
+  | 'kayaking_rounded'
+  | 'kayaking_sharp'
+  | 'kebab_dining'
+  | 'kebab_dining_outlined'
+  | 'kebab_dining_rounded'
+  | 'kebab_dining_sharp'
+  | 'key'
+  | 'key_off'
+  | 'key_off_outlined'
+  | 'key_off_rounded'
+  | 'key_off_sharp'
+  | 'key_outlined'
+  | 'key_rounded'
+  | 'key_sharp'
+  | 'keyboard'
+  | 'keyboard_alt'
+  | 'keyboard_alt_outlined'
+  | 'keyboard_alt_rounded'
+  | 'keyboard_alt_sharp'
+  | 'keyboard_arrow_down'
+  | 'keyboard_arrow_down_outlined'
+  | 'keyboard_arrow_down_rounded'
+  | 'keyboard_arrow_down_sharp'
+  | 'keyboard_arrow_left'
+  | 'keyboard_arrow_left_outlined'
+  | 'keyboard_arrow_left_rounded'
+  | 'keyboard_arrow_left_sharp'
+  | 'keyboard_arrow_right'
+  | 'keyboard_arrow_right_outlined'
+  | 'keyboard_arrow_right_rounded'
+  | 'keyboard_arrow_right_sharp'
+  | 'keyboard_arrow_up'
+  | 'keyboard_arrow_up_outlined'
+  | 'keyboard_arrow_up_rounded'
+  | 'keyboard_arrow_up_sharp'
+  | 'keyboard_backspace'
+  | 'keyboard_backspace_outlined'
+  | 'keyboard_backspace_rounded'
+  | 'keyboard_backspace_sharp'
+  | 'keyboard_capslock'
+  | 'keyboard_capslock_outlined'
+  | 'keyboard_capslock_rounded'
+  | 'keyboard_capslock_sharp'
+  | 'keyboard_chevron_compact_down'
+  | 'keyboard_command_key'
+  | 'keyboard_command_key_outlined'
+  | 'keyboard_command_key_rounded'
+  | 'keyboard_command_key_sharp'
+  | 'keyboard_control'
+  | 'keyboard_control_key'
+  | 'keyboard_control_key_outlined'
+  | 'keyboard_control_key_rounded'
+  | 'keyboard_control_key_sharp'
+  | 'keyboard_control_outlined'
+  | 'keyboard_control_rounded'
+  | 'keyboard_control_sharp'
+  | 'keyboard_double_arrow_down'
+  | 'keyboard_double_arrow_down_outlined'
+  | 'keyboard_double_arrow_down_rounded'
+  | 'keyboard_double_arrow_down_sharp'
+  | 'keyboard_double_arrow_left'
+  | 'keyboard_double_arrow_left_outlined'
+  | 'keyboard_double_arrow_left_rounded'
+  | 'keyboard_double_arrow_left_sharp'
+  | 'keyboard_double_arrow_right'
+  | 'keyboard_double_arrow_right_outlined'
+  | 'keyboard_double_arrow_right_rounded'
+  | 'keyboard_double_arrow_right_sharp'
+  | 'keyboard_double_arrow_up'
+  | 'keyboard_double_arrow_up_outlined'
+  | 'keyboard_double_arrow_up_rounded'
+  | 'keyboard_double_arrow_up_sharp'
+  | 'keyboard_hide'
+  | 'keyboard_hide_outlined'
+  | 'keyboard_hide_rounded'
+  | 'keyboard_hide_sharp'
+  | 'keyboard_option_key'
+  | 'keyboard_option_key_outlined'
+  | 'keyboard_option_key_rounded'
+  | 'keyboard_option_key_sharp'
+  | 'keyboard_outlined'
+  | 'keyboard_return'
+  | 'keyboard_return_outlined'
+  | 'keyboard_return_rounded'
+  | 'keyboard_return_sharp'
+  | 'keyboard_rounded'
+  | 'keyboard_sharp'
+  | 'keyboard_tab'
+  | 'keyboard_tab_outlined'
+  | 'keyboard_tab_rounded'
+  | 'keyboard_tab_sharp'
+  | 'keyboard_voice'
+  | 'keyboard_voice_outlined'
+  | 'keyboard_voice_rounded'
+  | 'keyboard_voice_sharp'
+  | 'king_bed'
+  | 'king_bed_outlined'
+  | 'king_bed_rounded'
+  | 'king_bed_sharp'
+  | 'kitchen'
+  | 'kitchen_outlined'
+  | 'kitchen_rounded'
+  | 'kitchen_sharp'
+  | 'kitesurfing'
+  | 'kitesurfing_outlined'
+  | 'kitesurfing_rounded'
+  | 'kitesurfing_sharp'
+  | 'lab_flask'
+  | 'lab_flask_solid'
+  | 'label'
+  | 'label_important'
+  | 'label_important_outline'
+  | 'label_important_outline_rounded'
+  | 'label_important_outline_sharp'
+  | 'label_important_outlined'
+  | 'label_important_rounded'
+  | 'label_important_sharp'
+  | 'label_off'
+  | 'label_off_outlined'
+  | 'label_off_rounded'
+  | 'label_off_sharp'
+  | 'label_outline'
+  | 'label_outline_rounded'
+  | 'label_outline_sharp'
+  | 'label_outlined'
+  | 'label_rounded'
+  | 'label_sharp'
+  | 'lan'
+  | 'lan_outlined'
+  | 'lan_rounded'
+  | 'lan_sharp'
+  | 'landscape'
+  | 'landscape_outlined'
+  | 'landscape_rounded'
+  | 'landscape_sharp'
+  | 'landslide'
+  | 'landslide_outlined'
+  | 'landslide_rounded'
+  | 'landslide_sharp'
+  | 'language'
+  | 'language_outlined'
+  | 'language_rounded'
+  | 'language_sharp'
+  | 'laptop'
+  | 'laptop_chromebook'
+  | 'laptop_chromebook_outlined'
+  | 'laptop_chromebook_rounded'
+  | 'laptop_chromebook_sharp'
+  | 'laptop_mac'
+  | 'laptop_mac_outlined'
+  | 'laptop_mac_rounded'
+  | 'laptop_mac_sharp'
+  | 'laptop_outlined'
+  | 'laptop_rounded'
+  | 'laptop_sharp'
+  | 'laptop_windows'
+  | 'laptop_windows_outlined'
+  | 'laptop_windows_rounded'
+  | 'laptop_windows_sharp'
+  | 'largecircle_fill_circle'
+  | 'lasso'
+  | 'last_page'
+  | 'last_page_outlined'
+  | 'last_page_rounded'
+  | 'last_page_sharp'
+  | 'launch'
+  | 'launch_outlined'
+  | 'launch_rounded'
+  | 'launch_sharp'
+  | 'layers'
+  | 'layers_alt'
+  | 'layers_alt_fill'
+  | 'layers_clear'
+  | 'layers_clear_outlined'
+  | 'layers_clear_rounded'
+  | 'layers_clear_sharp'
+  | 'layers_fill'
+  | 'layers_outlined'
+  | 'layers_rounded'
+  | 'layers_sharp'
+  | 'leaderboard'
+  | 'leaderboard_outlined'
+  | 'leaderboard_rounded'
+  | 'leaderboard_sharp'
+  | 'leaf_arrow_circlepath'
+  | 'leak_add'
+  | 'leak_add_outlined'
+  | 'leak_add_rounded'
+  | 'leak_add_sharp'
+  | 'leak_remove'
+  | 'leak_remove_outlined'
+  | 'leak_remove_rounded'
+  | 'leak_remove_sharp'
+  | 'leave_bags_at_home'
+  | 'leave_bags_at_home_outlined'
+  | 'leave_bags_at_home_rounded'
+  | 'leave_bags_at_home_sharp'
+  | 'left_chevron'
+  | 'legend_toggle'
+  | 'legend_toggle_outlined'
+  | 'legend_toggle_rounded'
+  | 'legend_toggle_sharp'
+  | 'lens'
+  | 'lens_blur'
+  | 'lens_blur_outlined'
+  | 'lens_blur_rounded'
+  | 'lens_blur_sharp'
+  | 'lens_outlined'
+  | 'lens_rounded'
+  | 'lens_sharp'
+  | 'lessthan'
+  | 'lessthan_circle'
+  | 'lessthan_circle_fill'
+  | 'lessthan_square'
+  | 'lessthan_square_fill'
+  | 'library_add'
+  | 'library_add_check'
+  | 'library_add_check_outlined'
+  | 'library_add_check_rounded'
+  | 'library_add_check_sharp'
+  | 'library_add_outlined'
+  | 'library_add_rounded'
+  | 'library_add_sharp'
+  | 'library_books'
+  | 'library_books_outlined'
+  | 'library_books_rounded'
+  | 'library_books_sharp'
+  | 'library_music'
+  | 'library_music_outlined'
+  | 'library_music_rounded'
+  | 'library_music_sharp'
+  | 'light'
+  | 'light_max'
+  | 'light_min'
+  | 'light_mode'
+  | 'light_mode_outlined'
+  | 'light_mode_rounded'
+  | 'light_mode_sharp'
+  | 'light_outlined'
+  | 'light_rounded'
+  | 'light_sharp'
+  | 'lightbulb'
+  | 'lightbulb_circle'
+  | 'lightbulb_circle_outlined'
+  | 'lightbulb_circle_rounded'
+  | 'lightbulb_circle_sharp'
+  | 'lightbulb_fill'
+  | 'lightbulb_outline'
+  | 'lightbulb_outline_rounded'
+  | 'lightbulb_outline_sharp'
+  | 'lightbulb_outlined'
+  | 'lightbulb_rounded'
+  | 'lightbulb_sharp'
+  | 'lightbulb_slash'
+  | 'lightbulb_slash_fill'
+  | 'line_axis'
+  | 'line_axis_outlined'
+  | 'line_axis_rounded'
+  | 'line_axis_sharp'
+  | 'line_horizontal_3'
+  | 'line_horizontal_3_decrease'
+  | 'line_horizontal_3_decrease_circle'
+  | 'line_horizontal_3_decrease_circle_fill'
+  | 'line_style'
+  | 'line_style_outlined'
+  | 'line_style_rounded'
+  | 'line_style_sharp'
+  | 'line_weight'
+  | 'line_weight_outlined'
+  | 'line_weight_rounded'
+  | 'line_weight_sharp'
+  | 'linear_scale'
+  | 'linear_scale_outlined'
+  | 'linear_scale_rounded'
+  | 'linear_scale_sharp'
+  | 'link'
+  | 'link_circle'
+  | 'link_circle_fill'
+  | 'link_off'
+  | 'link_off_outlined'
+  | 'link_off_rounded'
+  | 'link_off_sharp'
+  | 'link_outlined'
+  | 'link_rounded'
+  | 'link_sharp'
+  | 'linked_camera'
+  | 'linked_camera_outlined'
+  | 'linked_camera_rounded'
+  | 'linked_camera_sharp'
+  | 'liquor'
+  | 'liquor_outlined'
+  | 'liquor_rounded'
+  | 'liquor_sharp'
+  | 'list'
+  | 'list_alt'
+  | 'list_alt_outlined'
+  | 'list_alt_rounded'
+  | 'list_alt_sharp'
+  | 'list_bullet'
+  | 'list_bullet_below_rectangle'
+  | 'list_bullet_indent'
+  | 'list_dash'
+  | 'list_number'
+  | 'list_number_rtl'
+  | 'list_outlined'
+  | 'list_rounded'
+  | 'list_sharp'
+  | 'live_help'
+  | 'live_help_outlined'
+  | 'live_help_rounded'
+  | 'live_help_sharp'
+  | 'live_tv'
+  | 'live_tv_outlined'
+  | 'live_tv_rounded'
+  | 'live_tv_sharp'
+  | 'living'
+  | 'living_outlined'
+  | 'living_rounded'
+  | 'living_sharp'
+  | 'local_activity'
+  | 'local_activity_outlined'
+  | 'local_activity_rounded'
+  | 'local_activity_sharp'
+  | 'local_airport'
+  | 'local_airport_outlined'
+  | 'local_airport_rounded'
+  | 'local_airport_sharp'
+  | 'local_atm'
+  | 'local_atm_outlined'
+  | 'local_atm_rounded'
+  | 'local_atm_sharp'
+  | 'local_attraction'
+  | 'local_attraction_outlined'
+  | 'local_attraction_rounded'
+  | 'local_attraction_sharp'
+  | 'local_bar'
+  | 'local_bar_outlined'
+  | 'local_bar_rounded'
+  | 'local_bar_sharp'
+  | 'local_cafe'
+  | 'local_cafe_outlined'
+  | 'local_cafe_rounded'
+  | 'local_cafe_sharp'
+  | 'local_car_wash'
+  | 'local_car_wash_outlined'
+  | 'local_car_wash_rounded'
+  | 'local_car_wash_sharp'
+  | 'local_convenience_store'
+  | 'local_convenience_store_outlined'
+  | 'local_convenience_store_rounded'
+  | 'local_convenience_store_sharp'
+  | 'local_dining'
+  | 'local_dining_outlined'
+  | 'local_dining_rounded'
+  | 'local_dining_sharp'
+  | 'local_drink'
+  | 'local_drink_outlined'
+  | 'local_drink_rounded'
+  | 'local_drink_sharp'
+  | 'local_fire_department'
+  | 'local_fire_department_outlined'
+  | 'local_fire_department_rounded'
+  | 'local_fire_department_sharp'
+  | 'local_florist'
+  | 'local_florist_outlined'
+  | 'local_florist_rounded'
+  | 'local_florist_sharp'
+  | 'local_gas_station'
+  | 'local_gas_station_outlined'
+  | 'local_gas_station_rounded'
+  | 'local_gas_station_sharp'
+  | 'local_grocery_store'
+  | 'local_grocery_store_outlined'
+  | 'local_grocery_store_rounded'
+  | 'local_grocery_store_sharp'
+  | 'local_hospital'
+  | 'local_hospital_outlined'
+  | 'local_hospital_rounded'
+  | 'local_hospital_sharp'
+  | 'local_hotel'
+  | 'local_hotel_outlined'
+  | 'local_hotel_rounded'
+  | 'local_hotel_sharp'
+  | 'local_laundry_service'
+  | 'local_laundry_service_outlined'
+  | 'local_laundry_service_rounded'
+  | 'local_laundry_service_sharp'
+  | 'local_library'
+  | 'local_library_outlined'
+  | 'local_library_rounded'
+  | 'local_library_sharp'
+  | 'local_mall'
+  | 'local_mall_outlined'
+  | 'local_mall_rounded'
+  | 'local_mall_sharp'
+  | 'local_movies'
+  | 'local_movies_outlined'
+  | 'local_movies_rounded'
+  | 'local_movies_sharp'
+  | 'local_offer'
+  | 'local_offer_outlined'
+  | 'local_offer_rounded'
+  | 'local_offer_sharp'
+  | 'local_parking'
+  | 'local_parking_outlined'
+  | 'local_parking_rounded'
+  | 'local_parking_sharp'
+  | 'local_pharmacy'
+  | 'local_pharmacy_outlined'
+  | 'local_pharmacy_rounded'
+  | 'local_pharmacy_sharp'
+  | 'local_phone'
+  | 'local_phone_outlined'
+  | 'local_phone_rounded'
+  | 'local_phone_sharp'
+  | 'local_pizza'
+  | 'local_pizza_outlined'
+  | 'local_pizza_rounded'
+  | 'local_pizza_sharp'
+  | 'local_play'
+  | 'local_play_outlined'
+  | 'local_play_rounded'
+  | 'local_play_sharp'
+  | 'local_police'
+  | 'local_police_outlined'
+  | 'local_police_rounded'
+  | 'local_police_sharp'
+  | 'local_post_office'
+  | 'local_post_office_outlined'
+  | 'local_post_office_rounded'
+  | 'local_post_office_sharp'
+  | 'local_print_shop'
+  | 'local_print_shop_outlined'
+  | 'local_print_shop_rounded'
+  | 'local_print_shop_sharp'
+  | 'local_printshop'
+  | 'local_printshop_outlined'
+  | 'local_printshop_rounded'
+  | 'local_printshop_sharp'
+  | 'local_restaurant'
+  | 'local_restaurant_outlined'
+  | 'local_restaurant_rounded'
+  | 'local_restaurant_sharp'
+  | 'local_see'
+  | 'local_see_outlined'
+  | 'local_see_rounded'
+  | 'local_see_sharp'
+  | 'local_shipping'
+  | 'local_shipping_outlined'
+  | 'local_shipping_rounded'
+  | 'local_shipping_sharp'
+  | 'local_taxi'
+  | 'local_taxi_outlined'
+  | 'local_taxi_rounded'
+  | 'local_taxi_sharp'
+  | 'location'
+  | 'location_circle'
+  | 'location_circle_fill'
+  | 'location_city'
+  | 'location_city_outlined'
+  | 'location_city_rounded'
+  | 'location_city_sharp'
+  | 'location_disabled'
+  | 'location_disabled_outlined'
+  | 'location_disabled_rounded'
+  | 'location_disabled_sharp'
+  | 'location_fill'
+  | 'location_history'
+  | 'location_history_outlined'
+  | 'location_history_rounded'
+  | 'location_history_sharp'
+  | 'location_north'
+  | 'location_north_fill'
+  | 'location_north_line'
+  | 'location_north_line_fill'
+  | 'location_off'
+  | 'location_off_outlined'
+  | 'location_off_rounded'
+  | 'location_off_sharp'
+  | 'location_on'
+  | 'location_on_outlined'
+  | 'location_on_rounded'
+  | 'location_on_sharp'
+  | 'location_pin'
+  | 'location_searching'
+  | 'location_searching_outlined'
+  | 'location_searching_rounded'
+  | 'location_searching_sharp'
+  | 'location_slash'
+  | 'location_slash_fill'
+  | 'location_solid'
+  | 'lock'
+  | 'lock_circle'
+  | 'lock_circle_fill'
+  | 'lock_clock'
+  | 'lock_clock_outlined'
+  | 'lock_clock_rounded'
+  | 'lock_clock_sharp'
+  | 'lock_fill'
+  | 'lock_open'
+  | 'lock_open_fill'
+  | 'lock_open_outlined'
+  | 'lock_open_rounded'
+  | 'lock_open_sharp'
+  | 'lock_outline'
+  | 'lock_outline_rounded'
+  | 'lock_outline_sharp'
+  | 'lock_outlined'
+  | 'lock_person'
+  | 'lock_person_outlined'
+  | 'lock_person_rounded'
+  | 'lock_person_sharp'
+  | 'lock_reset'
+  | 'lock_reset_outlined'
+  | 'lock_reset_rounded'
+  | 'lock_reset_sharp'
+  | 'lock_rotation'
+  | 'lock_rotation_open'
+  | 'lock_rounded'
+  | 'lock_sharp'
+  | 'lock_shield'
+  | 'lock_shield_fill'
+  | 'lock_slash'
+  | 'lock_slash_fill'
+  | 'login'
+  | 'login_outlined'
+  | 'login_rounded'
+  | 'login_sharp'
+  | 'logo_dev'
+  | 'logo_dev_outlined'
+  | 'logo_dev_rounded'
+  | 'logo_dev_sharp'
+  | 'logout'
+  | 'logout_outlined'
+  | 'logout_rounded'
+  | 'logout_sharp'
+  | 'looks'
+  | 'looks_3'
+  | 'looks_3_outlined'
+  | 'looks_3_rounded'
+  | 'looks_3_sharp'
+  | 'looks_4'
+  | 'looks_4_outlined'
+  | 'looks_4_rounded'
+  | 'looks_4_sharp'
+  | 'looks_5'
+  | 'looks_5_outlined'
+  | 'looks_5_rounded'
+  | 'looks_5_sharp'
+  | 'looks_6'
+  | 'looks_6_outlined'
+  | 'looks_6_rounded'
+  | 'looks_6_sharp'
+  | 'looks_one'
+  | 'looks_one_outlined'
+  | 'looks_one_rounded'
+  | 'looks_one_sharp'
+  | 'looks_outlined'
+  | 'looks_rounded'
+  | 'looks_sharp'
+  | 'looks_two'
+  | 'looks_two_outlined'
+  | 'looks_two_rounded'
+  | 'looks_two_sharp'
+  | 'loop'
+  | 'loop_outlined'
+  | 'loop_rounded'
+  | 'loop_sharp'
+  | 'loop_thick'
+  | 'loupe'
+  | 'loupe_outlined'
+  | 'loupe_rounded'
+  | 'loupe_sharp'
+  | 'low_priority'
+  | 'low_priority_outlined'
+  | 'low_priority_rounded'
+  | 'low_priority_sharp'
+  | 'loyalty'
+  | 'loyalty_outlined'
+  | 'loyalty_rounded'
+  | 'loyalty_sharp'
+  | 'lte_mobiledata'
+  | 'lte_mobiledata_outlined'
+  | 'lte_mobiledata_rounded'
+  | 'lte_mobiledata_sharp'
+  | 'lte_plus_mobiledata'
+  | 'lte_plus_mobiledata_outlined'
+  | 'lte_plus_mobiledata_rounded'
+  | 'lte_plus_mobiledata_sharp'
+  | 'luggage'
+  | 'luggage_outlined'
+  | 'luggage_rounded'
+  | 'luggage_sharp'
+  | 'lunch_dining'
+  | 'lunch_dining_outlined'
+  | 'lunch_dining_rounded'
+  | 'lunch_dining_sharp'
+  | 'lyrics'
+  | 'lyrics_outlined'
+  | 'lyrics_rounded'
+  | 'lyrics_sharp'
+  | 'macro_off'
+  | 'macro_off_outlined'
+  | 'macro_off_rounded'
+  | 'macro_off_sharp'
+  | 'macwindow'
+  | 'mail'
+  | 'mail_lock'
+  | 'mail_lock_outlined'
+  | 'mail_lock_rounded'
+  | 'mail_lock_sharp'
+  | 'mail_outline'
+  | 'mail_outline_outlined'
+  | 'mail_outline_rounded'
+  | 'mail_outline_sharp'
+  | 'mail_outlined'
+  | 'mail_rounded'
+  | 'mail_sharp'
+  | 'mail_solid'
+  | 'male'
+  | 'male_outlined'
+  | 'male_rounded'
+  | 'male_sharp'
+  | 'man'
+  | 'man_2'
+  | 'man_2_outlined'
+  | 'man_2_rounded'
+  | 'man_2_sharp'
+  | 'man_3'
+  | 'man_3_outlined'
+  | 'man_3_rounded'
+  | 'man_3_sharp'
+  | 'man_4'
+  | 'man_4_outlined'
+  | 'man_4_rounded'
+  | 'man_4_sharp'
+  | 'man_outlined'
+  | 'man_rounded'
+  | 'man_sharp'
+  | 'manage_accounts'
+  | 'manage_accounts_outlined'
+  | 'manage_accounts_rounded'
+  | 'manage_accounts_sharp'
+  | 'manage_history'
+  | 'manage_history_outlined'
+  | 'manage_history_rounded'
+  | 'manage_history_sharp'
+  | 'manage_search'
+  | 'manage_search_outlined'
+  | 'manage_search_rounded'
+  | 'manage_search_sharp'
+  | 'map'
+  | 'map_fill'
+  | 'map_outlined'
+  | 'map_pin'
+  | 'map_pin_ellipse'
+  | 'map_pin_slash'
+  | 'map_rounded'
+  | 'map_sharp'
+  | 'maps_home_work'
+  | 'maps_home_work_outlined'
+  | 'maps_home_work_rounded'
+  | 'maps_home_work_sharp'
+  | 'maps_ugc'
+  | 'maps_ugc_outlined'
+  | 'maps_ugc_rounded'
+  | 'maps_ugc_sharp'
+  | 'margin'
+  | 'margin_outlined'
+  | 'margin_rounded'
+  | 'margin_sharp'
+  | 'mark_as_unread'
+  | 'mark_as_unread_outlined'
+  | 'mark_as_unread_rounded'
+  | 'mark_as_unread_sharp'
+  | 'mark_chat_read'
+  | 'mark_chat_read_outlined'
+  | 'mark_chat_read_rounded'
+  | 'mark_chat_read_sharp'
+  | 'mark_chat_unread'
+  | 'mark_chat_unread_outlined'
+  | 'mark_chat_unread_rounded'
+  | 'mark_chat_unread_sharp'
+  | 'mark_email_read'
+  | 'mark_email_read_outlined'
+  | 'mark_email_read_rounded'
+  | 'mark_email_read_sharp'
+  | 'mark_email_unread'
+  | 'mark_email_unread_outlined'
+  | 'mark_email_unread_rounded'
+  | 'mark_email_unread_sharp'
+  | 'mark_unread_chat_alt'
+  | 'mark_unread_chat_alt_outlined'
+  | 'mark_unread_chat_alt_rounded'
+  | 'mark_unread_chat_alt_sharp'
+  | 'markunread'
+  | 'markunread_mailbox'
+  | 'markunread_mailbox_outlined'
+  | 'markunread_mailbox_rounded'
+  | 'markunread_mailbox_sharp'
+  | 'markunread_outlined'
+  | 'markunread_rounded'
+  | 'markunread_sharp'
+  | 'masks'
+  | 'masks_outlined'
+  | 'masks_rounded'
+  | 'masks_sharp'
+  | 'maximize'
+  | 'maximize_outlined'
+  | 'maximize_rounded'
+  | 'maximize_sharp'
+  | 'media_bluetooth_off'
+  | 'media_bluetooth_off_outlined'
+  | 'media_bluetooth_off_rounded'
+  | 'media_bluetooth_off_sharp'
+  | 'media_bluetooth_on'
+  | 'media_bluetooth_on_outlined'
+  | 'media_bluetooth_on_rounded'
+  | 'media_bluetooth_on_sharp'
+  | 'mediation'
+  | 'mediation_outlined'
+  | 'mediation_rounded'
+  | 'mediation_sharp'
+  | 'medical_information'
+  | 'medical_information_outlined'
+  | 'medical_information_rounded'
+  | 'medical_information_sharp'
+  | 'medical_services'
+  | 'medical_services_outlined'
+  | 'medical_services_rounded'
+  | 'medical_services_sharp'
+  | 'medication'
+  | 'medication_liquid'
+  | 'medication_liquid_outlined'
+  | 'medication_liquid_rounded'
+  | 'medication_liquid_sharp'
+  | 'medication_outlined'
+  | 'medication_rounded'
+  | 'medication_sharp'
+  | 'meeting_room'
+  | 'meeting_room_outlined'
+  | 'meeting_room_rounded'
+  | 'meeting_room_sharp'
+  | 'memories'
+  | 'memories_badge_minus'
+  | 'memories_badge_plus'
+  | 'memory'
+  | 'memory_outlined'
+  | 'memory_rounded'
+  | 'memory_sharp'
+  | 'menu'
+  | 'menu_book'
+  | 'menu_book_outlined'
+  | 'menu_book_rounded'
+  | 'menu_book_sharp'
+  | 'menu_open'
+  | 'menu_open_outlined'
+  | 'menu_open_rounded'
+  | 'menu_open_sharp'
+  | 'menu_outlined'
+  | 'menu_rounded'
+  | 'menu_sharp'
+  | 'merge'
+  | 'merge_outlined'
+  | 'merge_rounded'
+  | 'merge_sharp'
+  | 'merge_type'
+  | 'merge_type_outlined'
+  | 'merge_type_rounded'
+  | 'merge_type_sharp'
+  | 'message'
+  | 'message_outlined'
+  | 'message_rounded'
+  | 'message_sharp'
+  | 'messenger'
+  | 'messenger_outline'
+  | 'messenger_outline_outlined'
+  | 'messenger_outline_rounded'
+  | 'messenger_outline_sharp'
+  | 'messenger_outlined'
+  | 'messenger_rounded'
+  | 'messenger_sharp'
+  | 'metronome'
+  | 'mic'
+  | 'mic_circle'
+  | 'mic_circle_fill'
+  | 'mic_external_off'
+  | 'mic_external_off_outlined'
+  | 'mic_external_off_rounded'
+  | 'mic_external_off_sharp'
+  | 'mic_external_on'
+  | 'mic_external_on_outlined'
+  | 'mic_external_on_rounded'
+  | 'mic_external_on_sharp'
+  | 'mic_fill'
+  | 'mic_none'
+  | 'mic_none_outlined'
+  | 'mic_none_rounded'
+  | 'mic_none_sharp'
+  | 'mic_off'
+  | 'mic_off_outlined'
+  | 'mic_off_rounded'
+  | 'mic_off_sharp'
+  | 'mic_outlined'
+  | 'mic_rounded'
+  | 'mic_sharp'
+  | 'mic_slash'
+  | 'mic_slash_fill'
+  | 'mic_solid'
+  | 'microwave'
+  | 'microwave_outlined'
+  | 'microwave_rounded'
+  | 'microwave_sharp'
+  | 'military_tech'
+  | 'military_tech_outlined'
+  | 'military_tech_rounded'
+  | 'military_tech_sharp'
+  | 'minimize'
+  | 'minimize_outlined'
+  | 'minimize_rounded'
+  | 'minimize_sharp'
+  | 'minor_crash'
+  | 'minor_crash_outlined'
+  | 'minor_crash_rounded'
+  | 'minor_crash_sharp'
+  | 'minus'
+  | 'minus_circle'
+  | 'minus_circle_fill'
+  | 'minus_circled'
+  | 'minus_rectangle'
+  | 'minus_rectangle_fill'
+  | 'minus_slash_plus'
+  | 'minus_square'
+  | 'minus_square_fill'
+  | 'miscellaneous_services'
+  | 'miscellaneous_services_outlined'
+  | 'miscellaneous_services_rounded'
+  | 'miscellaneous_services_sharp'
+  | 'missed_video_call'
+  | 'missed_video_call_outlined'
+  | 'missed_video_call_rounded'
+  | 'missed_video_call_sharp'
+  | 'mms'
+  | 'mms_outlined'
+  | 'mms_rounded'
+  | 'mms_sharp'
+  | 'mobile_friendly'
+  | 'mobile_friendly_outlined'
+  | 'mobile_friendly_rounded'
+  | 'mobile_friendly_sharp'
+  | 'mobile_off'
+  | 'mobile_off_outlined'
+  | 'mobile_off_rounded'
+  | 'mobile_off_sharp'
+  | 'mobile_screen_share'
+  | 'mobile_screen_share_outlined'
+  | 'mobile_screen_share_rounded'
+  | 'mobile_screen_share_sharp'
+  | 'mobiledata_off'
+  | 'mobiledata_off_outlined'
+  | 'mobiledata_off_rounded'
+  | 'mobiledata_off_sharp'
+  | 'mode'
+  | 'mode_comment'
+  | 'mode_comment_outlined'
+  | 'mode_comment_rounded'
+  | 'mode_comment_sharp'
+  | 'mode_edit'
+  | 'mode_edit_outline'
+  | 'mode_edit_outline_outlined'
+  | 'mode_edit_outline_rounded'
+  | 'mode_edit_outline_sharp'
+  | 'mode_edit_outlined'
+  | 'mode_edit_rounded'
+  | 'mode_edit_sharp'
+  | 'mode_fan_off'
+  | 'mode_fan_off_outlined'
+  | 'mode_fan_off_rounded'
+  | 'mode_fan_off_sharp'
+  | 'mode_night'
+  | 'mode_night_outlined'
+  | 'mode_night_rounded'
+  | 'mode_night_sharp'
+  | 'mode_of_travel'
+  | 'mode_of_travel_outlined'
+  | 'mode_of_travel_rounded'
+  | 'mode_of_travel_sharp'
+  | 'mode_outlined'
+  | 'mode_rounded'
+  | 'mode_sharp'
+  | 'mode_standby'
+  | 'mode_standby_outlined'
+  | 'mode_standby_rounded'
+  | 'mode_standby_sharp'
+  | 'model_training'
+  | 'model_training_outlined'
+  | 'model_training_rounded'
+  | 'model_training_sharp'
+  | 'monetization_on'
+  | 'monetization_on_outlined'
+  | 'monetization_on_rounded'
+  | 'monetization_on_sharp'
+  | 'money'
+  | 'money_dollar'
+  | 'money_dollar_circle'
+  | 'money_dollar_circle_fill'
+  | 'money_euro'
+  | 'money_euro_circle'
+  | 'money_euro_circle_fill'
+  | 'money_off'
+  | 'money_off_csred'
+  | 'money_off_csred_outlined'
+  | 'money_off_csred_rounded'
+  | 'money_off_csred_sharp'
+  | 'money_off_outlined'
+  | 'money_off_rounded'
+  | 'money_off_sharp'
+  | 'money_outlined'
+  | 'money_pound'
+  | 'money_pound_circle'
+  | 'money_pound_circle_fill'
+  | 'money_rounded'
+  | 'money_rubl'
+  | 'money_rubl_circle'
+  | 'money_rubl_circle_fill'
+  | 'money_sharp'
+  | 'money_yen'
+  | 'money_yen_circle'
+  | 'money_yen_circle_fill'
+  | 'monitor'
+  | 'monitor_heart'
+  | 'monitor_heart_outlined'
+  | 'monitor_heart_rounded'
+  | 'monitor_heart_sharp'
+  | 'monitor_outlined'
+  | 'monitor_rounded'
+  | 'monitor_sharp'
+  | 'monitor_weight'
+  | 'monitor_weight_outlined'
+  | 'monitor_weight_rounded'
+  | 'monitor_weight_sharp'
+  | 'monochrome_photos'
+  | 'monochrome_photos_outlined'
+  | 'monochrome_photos_rounded'
+  | 'monochrome_photos_sharp'
+  | 'mood'
+  | 'mood_bad'
+  | 'mood_bad_outlined'
+  | 'mood_bad_rounded'
+  | 'mood_bad_sharp'
+  | 'mood_outlined'
+  | 'mood_rounded'
+  | 'mood_sharp'
+  | 'moon'
+  | 'moon_circle'
+  | 'moon_circle_fill'
+  | 'moon_fill'
+  | 'moon_stars'
+  | 'moon_stars_fill'
+  | 'moon_zzz'
+  | 'moon_zzz_fill'
+  | 'moped'
+  | 'moped_outlined'
+  | 'moped_rounded'
+  | 'moped_sharp'
+  | 'more'
+  | 'more_horiz'
+  | 'more_horiz_outlined'
+  | 'more_horiz_rounded'
+  | 'more_horiz_sharp'
+  | 'more_outlined'
+  | 'more_rounded'
+  | 'more_sharp'
+  | 'more_time'
+  | 'more_time_outlined'
+  | 'more_time_rounded'
+  | 'more_time_sharp'
+  | 'more_vert'
+  | 'more_vert_outlined'
+  | 'more_vert_rounded'
+  | 'more_vert_sharp'
+  | 'mosque'
+  | 'mosque_outlined'
+  | 'mosque_rounded'
+  | 'mosque_sharp'
+  | 'motion_photos_auto'
+  | 'motion_photos_auto_outlined'
+  | 'motion_photos_auto_rounded'
+  | 'motion_photos_auto_sharp'
+  | 'motion_photos_off'
+  | 'motion_photos_off_outlined'
+  | 'motion_photos_off_rounded'
+  | 'motion_photos_off_sharp'
+  | 'motion_photos_on'
+  | 'motion_photos_on_outlined'
+  | 'motion_photos_on_rounded'
+  | 'motion_photos_on_sharp'
+  | 'motion_photos_pause'
+  | 'motion_photos_pause_outlined'
+  | 'motion_photos_pause_rounded'
+  | 'motion_photos_pause_sharp'
+  | 'motion_photos_paused'
+  | 'motion_photos_paused_outlined'
+  | 'motion_photos_paused_rounded'
+  | 'motion_photos_paused_sharp'
+  | 'motorcycle'
+  | 'motorcycle_outlined'
+  | 'motorcycle_rounded'
+  | 'motorcycle_sharp'
+  | 'mouse'
+  | 'mouse_outlined'
+  | 'mouse_rounded'
+  | 'mouse_sharp'
+  | 'move'
+  | 'move_down'
+  | 'move_down_outlined'
+  | 'move_down_rounded'
+  | 'move_down_sharp'
+  | 'move_to_inbox'
+  | 'move_to_inbox_outlined'
+  | 'move_to_inbox_rounded'
+  | 'move_to_inbox_sharp'
+  | 'move_up'
+  | 'move_up_outlined'
+  | 'move_up_rounded'
+  | 'move_up_sharp'
+  | 'movie'
+  | 'movie_creation'
+  | 'movie_creation_outlined'
+  | 'movie_creation_rounded'
+  | 'movie_creation_sharp'
+  | 'movie_edit'
+  | 'movie_filter'
+  | 'movie_filter_outlined'
+  | 'movie_filter_rounded'
+  | 'movie_filter_sharp'
+  | 'movie_outlined'
+  | 'movie_rounded'
+  | 'movie_sharp'
+  | 'moving'
+  | 'moving_outlined'
+  | 'moving_rounded'
+  | 'moving_sharp'
+  | 'mp'
+  | 'mp_outlined'
+  | 'mp_rounded'
+  | 'mp_sharp'
+  | 'multiline_chart'
+  | 'multiline_chart_outlined'
+  | 'multiline_chart_rounded'
+  | 'multiline_chart_sharp'
+  | 'multiple_stop'
+  | 'multiple_stop_outlined'
+  | 'multiple_stop_rounded'
+  | 'multiple_stop_sharp'
+  | 'multiply'
+  | 'multiply_circle'
+  | 'multiply_circle_fill'
+  | 'multiply_square'
+  | 'multiply_square_fill'
+  | 'multitrack_audio'
+  | 'multitrack_audio_outlined'
+  | 'multitrack_audio_rounded'
+  | 'multitrack_audio_sharp'
+  | 'museum'
+  | 'museum_outlined'
+  | 'museum_rounded'
+  | 'museum_sharp'
+  | 'music_albums'
+  | 'music_albums_fill'
+  | 'music_house'
+  | 'music_house_fill'
+  | 'music_mic'
+  | 'music_note'
+  | 'music_note_2'
+  | 'music_note_list'
+  | 'music_note_outlined'
+  | 'music_note_rounded'
+  | 'music_note_sharp'
+  | 'music_off'
+  | 'music_off_outlined'
+  | 'music_off_rounded'
+  | 'music_off_sharp'
+  | 'music_video'
+  | 'music_video_outlined'
+  | 'music_video_rounded'
+  | 'music_video_sharp'
+  | 'my_library_add'
+  | 'my_library_add_outlined'
+  | 'my_library_add_rounded'
+  | 'my_library_add_sharp'
+  | 'my_library_books'
+  | 'my_library_books_outlined'
+  | 'my_library_books_rounded'
+  | 'my_library_books_sharp'
+  | 'my_library_music'
+  | 'my_library_music_outlined'
+  | 'my_library_music_rounded'
+  | 'my_library_music_sharp'
+  | 'my_location'
+  | 'my_location_outlined'
+  | 'my_location_rounded'
+  | 'my_location_sharp'
+  | 'nat'
+  | 'nat_outlined'
+  | 'nat_rounded'
+  | 'nat_sharp'
+  | 'nature'
+  | 'nature_outlined'
+  | 'nature_people'
+  | 'nature_people_outlined'
+  | 'nature_people_rounded'
+  | 'nature_people_sharp'
+  | 'nature_rounded'
+  | 'nature_sharp'
+  | 'navigate_before'
+  | 'navigate_before_outlined'
+  | 'navigate_before_rounded'
+  | 'navigate_before_sharp'
+  | 'navigate_next'
+  | 'navigate_next_outlined'
+  | 'navigate_next_rounded'
+  | 'navigate_next_sharp'
+  | 'navigation'
+  | 'navigation_outlined'
+  | 'navigation_rounded'
+  | 'navigation_sharp'
+  | 'near_me'
+  | 'near_me_disabled'
+  | 'near_me_disabled_outlined'
+  | 'near_me_disabled_rounded'
+  | 'near_me_disabled_sharp'
+  | 'near_me_outlined'
+  | 'near_me_rounded'
+  | 'near_me_sharp'
+  | 'nearby_error'
+  | 'nearby_error_outlined'
+  | 'nearby_error_rounded'
+  | 'nearby_error_sharp'
+  | 'nearby_off'
+  | 'nearby_off_outlined'
+  | 'nearby_off_rounded'
+  | 'nearby_off_sharp'
+  | 'nest_cam_wired_stand'
+  | 'nest_cam_wired_stand_outlined'
+  | 'nest_cam_wired_stand_rounded'
+  | 'nest_cam_wired_stand_sharp'
+  | 'network_cell'
+  | 'network_cell_outlined'
+  | 'network_cell_rounded'
+  | 'network_cell_sharp'
+  | 'network_check'
+  | 'network_check_outlined'
+  | 'network_check_rounded'
+  | 'network_check_sharp'
+  | 'network_locked'
+  | 'network_locked_outlined'
+  | 'network_locked_rounded'
+  | 'network_locked_sharp'
+  | 'network_ping'
+  | 'network_ping_outlined'
+  | 'network_ping_rounded'
+  | 'network_ping_sharp'
+  | 'network_wifi'
+  | 'network_wifi_1_bar'
+  | 'network_wifi_1_bar_outlined'
+  | 'network_wifi_1_bar_rounded'
+  | 'network_wifi_1_bar_sharp'
+  | 'network_wifi_2_bar'
+  | 'network_wifi_2_bar_outlined'
+  | 'network_wifi_2_bar_rounded'
+  | 'network_wifi_2_bar_sharp'
+  | 'network_wifi_3_bar'
+  | 'network_wifi_3_bar_outlined'
+  | 'network_wifi_3_bar_rounded'
+  | 'network_wifi_3_bar_sharp'
+  | 'network_wifi_outlined'
+  | 'network_wifi_rounded'
+  | 'network_wifi_sharp'
+  | 'new_label'
+  | 'new_label_outlined'
+  | 'new_label_rounded'
+  | 'new_label_sharp'
+  | 'new_releases'
+  | 'new_releases_outlined'
+  | 'new_releases_rounded'
+  | 'new_releases_sharp'
+  | 'news'
+  | 'news_solid'
+  | 'newspaper'
+  | 'newspaper_outlined'
+  | 'newspaper_rounded'
+  | 'newspaper_sharp'
+  | 'next_plan'
+  | 'next_plan_outlined'
+  | 'next_plan_rounded'
+  | 'next_plan_sharp'
+  | 'next_week'
+  | 'next_week_outlined'
+  | 'next_week_rounded'
+  | 'next_week_sharp'
+  | 'nfc'
+  | 'nfc_outlined'
+  | 'nfc_rounded'
+  | 'nfc_sharp'
+  | 'night_shelter'
+  | 'night_shelter_outlined'
+  | 'night_shelter_rounded'
+  | 'night_shelter_sharp'
+  | 'nightlife'
+  | 'nightlife_outlined'
+  | 'nightlife_rounded'
+  | 'nightlife_sharp'
+  | 'nightlight'
+  | 'nightlight_outlined'
+  | 'nightlight_round'
+  | 'nightlight_round_outlined'
+  | 'nightlight_round_rounded'
+  | 'nightlight_round_sharp'
+  | 'nightlight_rounded'
+  | 'nightlight_sharp'
+  | 'nights_stay'
+  | 'nights_stay_outlined'
+  | 'nights_stay_rounded'
+  | 'nights_stay_sharp'
+  | 'nine_k'
+  | 'nine_k_outlined'
+  | 'nine_k_plus'
+  | 'nine_k_plus_outlined'
+  | 'nine_k_plus_rounded'
+  | 'nine_k_plus_sharp'
+  | 'nine_k_rounded'
+  | 'nine_k_sharp'
+  | 'nine_mp'
+  | 'nine_mp_outlined'
+  | 'nine_mp_rounded'
+  | 'nine_mp_sharp'
+  | 'nineteen_mp'
+  | 'nineteen_mp_outlined'
+  | 'nineteen_mp_rounded'
+  | 'nineteen_mp_sharp'
+  | 'no_accounts'
+  | 'no_accounts_outlined'
+  | 'no_accounts_rounded'
+  | 'no_accounts_sharp'
+  | 'no_adult_content'
+  | 'no_adult_content_outlined'
+  | 'no_adult_content_rounded'
+  | 'no_adult_content_sharp'
+  | 'no_backpack'
+  | 'no_backpack_outlined'
+  | 'no_backpack_rounded'
+  | 'no_backpack_sharp'
+  | 'no_cell'
+  | 'no_cell_outlined'
+  | 'no_cell_rounded'
+  | 'no_cell_sharp'
+  | 'no_crash'
+  | 'no_crash_outlined'
+  | 'no_crash_rounded'
+  | 'no_crash_sharp'
+  | 'no_drinks'
+  | 'no_drinks_outlined'
+  | 'no_drinks_rounded'
+  | 'no_drinks_sharp'
+  | 'no_encryption'
+  | 'no_encryption_gmailerrorred'
+  | 'no_encryption_gmailerrorred_outlined'
+  | 'no_encryption_gmailerrorred_rounded'
+  | 'no_encryption_gmailerrorred_sharp'
+  | 'no_encryption_outlined'
+  | 'no_encryption_rounded'
+  | 'no_encryption_sharp'
+  | 'no_flash'
+  | 'no_flash_outlined'
+  | 'no_flash_rounded'
+  | 'no_flash_sharp'
+  | 'no_food'
+  | 'no_food_outlined'
+  | 'no_food_rounded'
+  | 'no_food_sharp'
+  | 'no_luggage'
+  | 'no_luggage_outlined'
+  | 'no_luggage_rounded'
+  | 'no_luggage_sharp'
+  | 'no_meals'
+  | 'no_meals_ouline'
+  | 'no_meals_outlined'
+  | 'no_meals_rounded'
+  | 'no_meals_sharp'
+  | 'no_meeting_room'
+  | 'no_meeting_room_outlined'
+  | 'no_meeting_room_rounded'
+  | 'no_meeting_room_sharp'
+  | 'no_photography'
+  | 'no_photography_outlined'
+  | 'no_photography_rounded'
+  | 'no_photography_sharp'
+  | 'no_sim'
+  | 'no_sim_outlined'
+  | 'no_sim_rounded'
+  | 'no_sim_sharp'
+  | 'no_stroller'
+  | 'no_stroller_outlined'
+  | 'no_stroller_rounded'
+  | 'no_stroller_sharp'
+  | 'no_transfer'
+  | 'no_transfer_outlined'
+  | 'no_transfer_rounded'
+  | 'no_transfer_sharp'
+  | 'noise_aware'
+  | 'noise_aware_outlined'
+  | 'noise_aware_rounded'
+  | 'noise_aware_sharp'
+  | 'noise_control_off'
+  | 'noise_control_off_outlined'
+  | 'noise_control_off_rounded'
+  | 'noise_control_off_sharp'
+  | 'nordic_walking'
+  | 'nordic_walking_outlined'
+  | 'nordic_walking_rounded'
+  | 'nordic_walking_sharp'
+  | 'north'
+  | 'north_east'
+  | 'north_east_outlined'
+  | 'north_east_rounded'
+  | 'north_east_sharp'
+  | 'north_outlined'
+  | 'north_rounded'
+  | 'north_sharp'
+  | 'north_west'
+  | 'north_west_outlined'
+  | 'north_west_rounded'
+  | 'north_west_sharp'
+  | 'nosign'
+  | 'not_accessible'
+  | 'not_accessible_outlined'
+  | 'not_accessible_rounded'
+  | 'not_accessible_sharp'
+  | 'not_interested'
+  | 'not_interested_outlined'
+  | 'not_interested_rounded'
+  | 'not_interested_sharp'
+  | 'not_listed_location'
+  | 'not_listed_location_outlined'
+  | 'not_listed_location_rounded'
+  | 'not_listed_location_sharp'
+  | 'not_started'
+  | 'not_started_outlined'
+  | 'not_started_rounded'
+  | 'not_started_sharp'
+  | 'note'
+  | 'note_add'
+  | 'note_add_outlined'
+  | 'note_add_rounded'
+  | 'note_add_sharp'
+  | 'note_alt'
+  | 'note_alt_outlined'
+  | 'note_alt_rounded'
+  | 'note_alt_sharp'
+  | 'note_outlined'
+  | 'note_rounded'
+  | 'note_sharp'
+  | 'notes'
+  | 'notes_outlined'
+  | 'notes_rounded'
+  | 'notes_sharp'
+  | 'notification_add'
+  | 'notification_add_outlined'
+  | 'notification_add_rounded'
+  | 'notification_add_sharp'
+  | 'notification_important'
+  | 'notification_important_outlined'
+  | 'notification_important_rounded'
+  | 'notification_important_sharp'
+  | 'notifications'
+  | 'notifications_active'
+  | 'notifications_active_outlined'
+  | 'notifications_active_rounded'
+  | 'notifications_active_sharp'
+  | 'notifications_none'
+  | 'notifications_none_outlined'
+  | 'notifications_none_rounded'
+  | 'notifications_none_sharp'
+  | 'notifications_off'
+  | 'notifications_off_outlined'
+  | 'notifications_off_rounded'
+  | 'notifications_off_sharp'
+  | 'notifications_on'
+  | 'notifications_on_outlined'
+  | 'notifications_on_rounded'
+  | 'notifications_on_sharp'
+  | 'notifications_outlined'
+  | 'notifications_paused'
+  | 'notifications_paused_outlined'
+  | 'notifications_paused_rounded'
+  | 'notifications_paused_sharp'
+  | 'notifications_rounded'
+  | 'notifications_sharp'
+  | 'now_wallpaper'
+  | 'now_wallpaper_outlined'
+  | 'now_wallpaper_rounded'
+  | 'now_wallpaper_sharp'
+  | 'now_widgets'
+  | 'now_widgets_outlined'
+  | 'now_widgets_rounded'
+  | 'now_widgets_sharp'
+  | 'number'
+  | 'number_circle'
+  | 'number_circle_fill'
+  | 'number_square'
+  | 'number_square_fill'
+  | 'numbers'
+  | 'numbers_outlined'
+  | 'numbers_rounded'
+  | 'numbers_sharp'
+  | 'offline_bolt'
+  | 'offline_bolt_outlined'
+  | 'offline_bolt_rounded'
+  | 'offline_bolt_sharp'
+  | 'offline_pin'
+  | 'offline_pin_outlined'
+  | 'offline_pin_rounded'
+  | 'offline_pin_sharp'
+  | 'offline_share'
+  | 'offline_share_outlined'
+  | 'offline_share_rounded'
+  | 'offline_share_sharp'
+  | 'oil_barrel'
+  | 'oil_barrel_outlined'
+  | 'oil_barrel_rounded'
+  | 'oil_barrel_sharp'
+  | 'on_device_training'
+  | 'on_device_training_outlined'
+  | 'on_device_training_rounded'
+  | 'on_device_training_sharp'
+  | 'ondemand_video'
+  | 'ondemand_video_outlined'
+  | 'ondemand_video_rounded'
+  | 'ondemand_video_sharp'
+  | 'one_k'
+  | 'one_k_outlined'
+  | 'one_k_plus'
+  | 'one_k_plus_outlined'
+  | 'one_k_plus_rounded'
+  | 'one_k_plus_sharp'
+  | 'one_k_rounded'
+  | 'one_k_sharp'
+  | 'one_x_mobiledata'
+  | 'one_x_mobiledata_outlined'
+  | 'one_x_mobiledata_rounded'
+  | 'one_x_mobiledata_sharp'
+  | 'onetwothree'
+  | 'onetwothree_outlined'
+  | 'onetwothree_rounded'
+  | 'onetwothree_sharp'
+  | 'online_prediction'
+  | 'online_prediction_outlined'
+  | 'online_prediction_rounded'
+  | 'online_prediction_sharp'
+  | 'opacity'
+  | 'opacity_outlined'
+  | 'opacity_rounded'
+  | 'opacity_sharp'
+  | 'open_in_browser'
+  | 'open_in_browser_outlined'
+  | 'open_in_browser_rounded'
+  | 'open_in_browser_sharp'
+  | 'open_in_full'
+  | 'open_in_full_outlined'
+  | 'open_in_full_rounded'
+  | 'open_in_full_sharp'
+  | 'open_in_new'
+  | 'open_in_new_off'
+  | 'open_in_new_off_outlined'
+  | 'open_in_new_off_rounded'
+  | 'open_in_new_off_sharp'
+  | 'open_in_new_outlined'
+  | 'open_in_new_rounded'
+  | 'open_in_new_sharp'
+  | 'open_with'
+  | 'open_with_outlined'
+  | 'open_with_rounded'
+  | 'open_with_sharp'
+  | 'option'
+  | 'other_houses'
+  | 'other_houses_outlined'
+  | 'other_houses_rounded'
+  | 'other_houses_sharp'
+  | 'outbond'
+  | 'outbond_outlined'
+  | 'outbond_rounded'
+  | 'outbond_sharp'
+  | 'outbound'
+  | 'outbound_outlined'
+  | 'outbound_rounded'
+  | 'outbound_sharp'
+  | 'outbox'
+  | 'outbox_outlined'
+  | 'outbox_rounded'
+  | 'outbox_sharp'
+  | 'outdoor_grill'
+  | 'outdoor_grill_outlined'
+  | 'outdoor_grill_rounded'
+  | 'outdoor_grill_sharp'
+  | 'outgoing_mail'
+  | 'outlet'
+  | 'outlet_outlined'
+  | 'outlet_rounded'
+  | 'outlet_sharp'
+  | 'outlined_flag'
+  | 'outlined_flag_outlined'
+  | 'outlined_flag_rounded'
+  | 'outlined_flag_sharp'
+  | 'output'
+  | 'output_outlined'
+  | 'output_rounded'
+  | 'output_sharp'
+  | 'padding'
+  | 'padding_outlined'
+  | 'padding_rounded'
+  | 'padding_sharp'
+  | 'padlock'
+  | 'padlock_solid'
+  | 'pages'
+  | 'pages_outlined'
+  | 'pages_rounded'
+  | 'pages_sharp'
+  | 'pageview'
+  | 'pageview_outlined'
+  | 'pageview_rounded'
+  | 'pageview_sharp'
+  | 'paid'
+  | 'paid_outlined'
+  | 'paid_rounded'
+  | 'paid_sharp'
+  | 'paintbrush'
+  | 'paintbrush_fill'
+  | 'palette'
+  | 'palette_outlined'
+  | 'palette_rounded'
+  | 'palette_sharp'
+  | 'pallet'
+  | 'pan_tool'
+  | 'pan_tool_alt'
+  | 'pan_tool_alt_outlined'
+  | 'pan_tool_alt_rounded'
+  | 'pan_tool_alt_sharp'
+  | 'pan_tool_outlined'
+  | 'pan_tool_rounded'
+  | 'pan_tool_sharp'
+  | 'pano'
+  | 'pano_fill'
+  | 'panorama'
+  | 'panorama_fish_eye'
+  | 'panorama_fish_eye_outlined'
+  | 'panorama_fish_eye_rounded'
+  | 'panorama_fish_eye_sharp'
+  | 'panorama_fisheye'
+  | 'panorama_fisheye_outlined'
+  | 'panorama_fisheye_rounded'
+  | 'panorama_fisheye_sharp'
+  | 'panorama_horizontal'
+  | 'panorama_horizontal_outlined'
+  | 'panorama_horizontal_rounded'
+  | 'panorama_horizontal_select'
+  | 'panorama_horizontal_select_outlined'
+  | 'panorama_horizontal_select_rounded'
+  | 'panorama_horizontal_select_sharp'
+  | 'panorama_horizontal_sharp'
+  | 'panorama_outlined'
+  | 'panorama_photosphere'
+  | 'panorama_photosphere_outlined'
+  | 'panorama_photosphere_rounded'
+  | 'panorama_photosphere_select'
+  | 'panorama_photosphere_select_outlined'
+  | 'panorama_photosphere_select_rounded'
+  | 'panorama_photosphere_select_sharp'
+  | 'panorama_photosphere_sharp'
+  | 'panorama_rounded'
+  | 'panorama_sharp'
+  | 'panorama_vertical'
+  | 'panorama_vertical_outlined'
+  | 'panorama_vertical_rounded'
+  | 'panorama_vertical_select'
+  | 'panorama_vertical_select_outlined'
+  | 'panorama_vertical_select_rounded'
+  | 'panorama_vertical_select_sharp'
+  | 'panorama_vertical_sharp'
+  | 'panorama_wide_angle'
+  | 'panorama_wide_angle_outlined'
+  | 'panorama_wide_angle_rounded'
+  | 'panorama_wide_angle_select'
+  | 'panorama_wide_angle_select_outlined'
+  | 'panorama_wide_angle_select_rounded'
+  | 'panorama_wide_angle_select_sharp'
+  | 'panorama_wide_angle_sharp'
+  | 'paperclip'
+  | 'paperplane'
+  | 'paperplane_fill'
+  | 'paragliding'
+  | 'paragliding_outlined'
+  | 'paragliding_rounded'
+  | 'paragliding_sharp'
+  | 'paragraph'
+  | 'park'
+  | 'park_outlined'
+  | 'park_rounded'
+  | 'park_sharp'
+  | 'party_mode'
+  | 'party_mode_outlined'
+  | 'party_mode_rounded'
+  | 'party_mode_sharp'
+  | 'password'
+  | 'password_outlined'
+  | 'password_rounded'
+  | 'password_sharp'
+  | 'paste'
+  | 'paste_outlined'
+  | 'paste_rounded'
+  | 'paste_sharp'
+  | 'pattern'
+  | 'pattern_outlined'
+  | 'pattern_rounded'
+  | 'pattern_sharp'
+  | 'pause'
+  | 'pause_circle'
+  | 'pause_circle_fill'
+  | 'pause_circle_filled'
+  | 'pause_circle_filled_outlined'
+  | 'pause_circle_filled_rounded'
+  | 'pause_circle_filled_sharp'
+  | 'pause_circle_outline'
+  | 'pause_circle_outline_outlined'
+  | 'pause_circle_outline_rounded'
+  | 'pause_circle_outline_sharp'
+  | 'pause_circle_outlined'
+  | 'pause_circle_rounded'
+  | 'pause_circle_sharp'
+  | 'pause_fill'
+  | 'pause_outlined'
+  | 'pause_presentation'
+  | 'pause_presentation_outlined'
+  | 'pause_presentation_rounded'
+  | 'pause_presentation_sharp'
+  | 'pause_rectangle'
+  | 'pause_rectangle_fill'
+  | 'pause_rounded'
+  | 'pause_sharp'
+  | 'pause_solid'
+  | 'paw'
+  | 'paw_solid'
+  | 'payment'
+  | 'payment_outlined'
+  | 'payment_rounded'
+  | 'payment_sharp'
+  | 'payments'
+  | 'payments_outlined'
+  | 'payments_rounded'
+  | 'payments_sharp'
+  | 'paypal'
+  | 'paypal_outlined'
+  | 'paypal_rounded'
+  | 'paypal_sharp'
+  | 'pedal_bike'
+  | 'pedal_bike_outlined'
+  | 'pedal_bike_rounded'
+  | 'pedal_bike_sharp'
+  | 'pen'
+  | 'pencil'
+  | 'pencil_circle'
+  | 'pencil_circle_fill'
+  | 'pencil_ellipsis_rectangle'
+  | 'pencil_outline'
+  | 'pencil_slash'
+  | 'pending'
+  | 'pending_actions'
+  | 'pending_actions_outlined'
+  | 'pending_actions_rounded'
+  | 'pending_actions_sharp'
+  | 'pending_outlined'
+  | 'pending_rounded'
+  | 'pending_sharp'
+  | 'pentagon'
+  | 'pentagon_outlined'
+  | 'pentagon_rounded'
+  | 'pentagon_sharp'
+  | 'people'
+  | 'people_alt'
+  | 'people_alt_outlined'
+  | 'people_alt_rounded'
+  | 'people_alt_sharp'
+  | 'people_outline'
+  | 'people_outline_outlined'
+  | 'people_outline_rounded'
+  | 'people_outline_sharp'
+  | 'people_outlined'
+  | 'people_rounded'
+  | 'people_sharp'
+  | 'percent'
+  | 'percent_outlined'
+  | 'percent_rounded'
+  | 'percent_sharp'
+  | 'perm_camera_mic'
+  | 'perm_camera_mic_outlined'
+  | 'perm_camera_mic_rounded'
+  | 'perm_camera_mic_sharp'
+  | 'perm_contact_cal'
+  | 'perm_contact_cal_outlined'
+  | 'perm_contact_cal_rounded'
+  | 'perm_contact_cal_sharp'
+  | 'perm_contact_calendar'
+  | 'perm_contact_calendar_outlined'
+  | 'perm_contact_calendar_rounded'
+  | 'perm_contact_calendar_sharp'
+  | 'perm_data_setting'
+  | 'perm_data_setting_outlined'
+  | 'perm_data_setting_rounded'
+  | 'perm_data_setting_sharp'
+  | 'perm_device_info'
+  | 'perm_device_info_outlined'
+  | 'perm_device_info_rounded'
+  | 'perm_device_info_sharp'
+  | 'perm_device_information'
+  | 'perm_device_information_outlined'
+  | 'perm_device_information_rounded'
+  | 'perm_device_information_sharp'
+  | 'perm_identity'
+  | 'perm_identity_outlined'
+  | 'perm_identity_rounded'
+  | 'perm_identity_sharp'
+  | 'perm_media'
+  | 'perm_media_outlined'
+  | 'perm_media_rounded'
+  | 'perm_media_sharp'
+  | 'perm_phone_msg'
+  | 'perm_phone_msg_outlined'
+  | 'perm_phone_msg_rounded'
+  | 'perm_phone_msg_sharp'
+  | 'perm_scan_wifi'
+  | 'perm_scan_wifi_outlined'
+  | 'perm_scan_wifi_rounded'
+  | 'perm_scan_wifi_sharp'
+  | 'person'
+  | 'person_2'
+  | 'person_2_alt'
+  | 'person_2_fill'
+  | 'person_2_outlined'
+  | 'person_2_rounded'
+  | 'person_2_sharp'
+  | 'person_2_square_stack'
+  | 'person_2_square_stack_fill'
+  | 'person_3'
+  | 'person_3_fill'
+  | 'person_3_outlined'
+  | 'person_3_rounded'
+  | 'person_3_sharp'
+  | 'person_4'
+  | 'person_4_outlined'
+  | 'person_4_rounded'
+  | 'person_4_sharp'
+  | 'person_add'
+  | 'person_add_alt'
+  | 'person_add_alt_1'
+  | 'person_add_alt_1_outlined'
+  | 'person_add_alt_1_rounded'
+  | 'person_add_alt_1_sharp'
+  | 'person_add_alt_outlined'
+  | 'person_add_alt_rounded'
+  | 'person_add_alt_sharp'
+  | 'person_add_disabled'
+  | 'person_add_disabled_outlined'
+  | 'person_add_disabled_rounded'
+  | 'person_add_disabled_sharp'
+  | 'person_add_outlined'
+  | 'person_add_rounded'
+  | 'person_add_sharp'
+  | 'person_add_solid'
+  | 'person_alt'
+  | 'person_alt_circle'
+  | 'person_alt_circle_fill'
+  | 'person_badge_minus'
+  | 'person_badge_minus_fill'
+  | 'person_badge_plus'
+  | 'person_badge_plus_fill'
+  | 'person_circle'
+  | 'person_circle_fill'
+  | 'person_crop_circle'
+  | 'person_crop_circle_badge_checkmark'
+  | 'person_crop_circle_badge_exclam'
+  | 'person_crop_circle_badge_minus'
+  | 'person_crop_circle_badge_plus'
+  | 'person_crop_circle_badge_xmark'
+  | 'person_crop_circle_fill'
+  | 'person_crop_circle_fill_badge_checkmark'
+  | 'person_crop_circle_fill_badge_exclam'
+  | 'person_crop_circle_fill_badge_minus'
+  | 'person_crop_circle_fill_badge_plus'
+  | 'person_crop_circle_fill_badge_xmark'
+  | 'person_crop_rectangle'
+  | 'person_crop_rectangle_fill'
+  | 'person_crop_square'
+  | 'person_crop_square_fill'
+  | 'person_fill'
+  | 'person_off'
+  | 'person_off_outlined'
+  | 'person_off_rounded'
+  | 'person_off_sharp'
+  | 'person_outline'
+  | 'person_outline_outlined'
+  | 'person_outline_rounded'
+  | 'person_outline_sharp'
+  | 'person_outlined'
+  | 'person_pin'
+  | 'person_pin_circle'
+  | 'person_pin_circle_outlined'
+  | 'person_pin_circle_rounded'
+  | 'person_pin_circle_sharp'
+  | 'person_pin_outlined'
+  | 'person_pin_rounded'
+  | 'person_pin_sharp'
+  | 'person_remove'
+  | 'person_remove_alt_1'
+  | 'person_remove_alt_1_outlined'
+  | 'person_remove_alt_1_rounded'
+  | 'person_remove_alt_1_sharp'
+  | 'person_remove_outlined'
+  | 'person_remove_rounded'
+  | 'person_remove_sharp'
+  | 'person_rounded'
+  | 'person_search'
+  | 'person_search_outlined'
+  | 'person_search_rounded'
+  | 'person_search_sharp'
+  | 'person_sharp'
+  | 'person_solid'
+  | 'personal_injury'
+  | 'personal_injury_outlined'
+  | 'personal_injury_rounded'
+  | 'personal_injury_sharp'
+  | 'personal_video'
+  | 'personal_video_outlined'
+  | 'personal_video_rounded'
+  | 'personal_video_sharp'
+  | 'personalhotspot'
+  | 'perspective'
+  | 'pest_control'
+  | 'pest_control_outlined'
+  | 'pest_control_rodent'
+  | 'pest_control_rodent_outlined'
+  | 'pest_control_rodent_rounded'
+  | 'pest_control_rodent_sharp'
+  | 'pest_control_rounded'
+  | 'pest_control_sharp'
+  | 'pets'
+  | 'pets_outlined'
+  | 'pets_rounded'
+  | 'pets_sharp'
+  | 'phishing'
+  | 'phishing_outlined'
+  | 'phishing_rounded'
+  | 'phishing_sharp'
+  | 'phone'
+  | 'phone_android'
+  | 'phone_android_outlined'
+  | 'phone_android_rounded'
+  | 'phone_android_sharp'
+  | 'phone_arrow_down_left'
+  | 'phone_arrow_right'
+  | 'phone_arrow_up_right'
+  | 'phone_badge_plus'
+  | 'phone_bluetooth_speaker'
+  | 'phone_bluetooth_speaker_outlined'
+  | 'phone_bluetooth_speaker_rounded'
+  | 'phone_bluetooth_speaker_sharp'
+  | 'phone_callback'
+  | 'phone_callback_outlined'
+  | 'phone_callback_rounded'
+  | 'phone_callback_sharp'
+  | 'phone_circle'
+  | 'phone_circle_fill'
+  | 'phone_disabled'
+  | 'phone_disabled_outlined'
+  | 'phone_disabled_rounded'
+  | 'phone_disabled_sharp'
+  | 'phone_down'
+  | 'phone_down_circle'
+  | 'phone_down_circle_fill'
+  | 'phone_down_fill'
+  | 'phone_enabled'
+  | 'phone_enabled_outlined'
+  | 'phone_enabled_rounded'
+  | 'phone_enabled_sharp'
+  | 'phone_fill'
+  | 'phone_fill_arrow_down_left'
+  | 'phone_fill_arrow_right'
+  | 'phone_fill_arrow_up_right'
+  | 'phone_fill_badge_plus'
+  | 'phone_forwarded'
+  | 'phone_forwarded_outlined'
+  | 'phone_forwarded_rounded'
+  | 'phone_forwarded_sharp'
+  | 'phone_in_talk'
+  | 'phone_in_talk_outlined'
+  | 'phone_in_talk_rounded'
+  | 'phone_in_talk_sharp'
+  | 'phone_iphone'
+  | 'phone_iphone_outlined'
+  | 'phone_iphone_rounded'
+  | 'phone_iphone_sharp'
+  | 'phone_locked'
+  | 'phone_locked_outlined'
+  | 'phone_locked_rounded'
+  | 'phone_locked_sharp'
+  | 'phone_missed'
+  | 'phone_missed_outlined'
+  | 'phone_missed_rounded'
+  | 'phone_missed_sharp'
+  | 'phone_outlined'
+  | 'phone_paused'
+  | 'phone_paused_outlined'
+  | 'phone_paused_rounded'
+  | 'phone_paused_sharp'
+  | 'phone_rounded'
+  | 'phone_sharp'
+  | 'phone_solid'
+  | 'phonelink'
+  | 'phonelink_erase'
+  | 'phonelink_erase_outlined'
+  | 'phonelink_erase_rounded'
+  | 'phonelink_erase_sharp'
+  | 'phonelink_lock'
+  | 'phonelink_lock_outlined'
+  | 'phonelink_lock_rounded'
+  | 'phonelink_lock_sharp'
+  | 'phonelink_off'
+  | 'phonelink_off_outlined'
+  | 'phonelink_off_rounded'
+  | 'phonelink_off_sharp'
+  | 'phonelink_outlined'
+  | 'phonelink_ring'
+  | 'phonelink_ring_outlined'
+  | 'phonelink_ring_rounded'
+  | 'phonelink_ring_sharp'
+  | 'phonelink_rounded'
+  | 'phonelink_setup'
+  | 'phonelink_setup_outlined'
+  | 'phonelink_setup_rounded'
+  | 'phonelink_setup_sharp'
+  | 'phonelink_sharp'
+  | 'photo'
+  | 'photo_album'
+  | 'photo_album_outlined'
+  | 'photo_album_rounded'
+  | 'photo_album_sharp'
+  | 'photo_camera'
+  | 'photo_camera_back'
+  | 'photo_camera_back_outlined'
+  | 'photo_camera_back_rounded'
+  | 'photo_camera_back_sharp'
+  | 'photo_camera_front'
+  | 'photo_camera_front_outlined'
+  | 'photo_camera_front_rounded'
+  | 'photo_camera_front_sharp'
+  | 'photo_camera_outlined'
+  | 'photo_camera_rounded'
+  | 'photo_camera_sharp'
+  | 'photo_camera_solid'
+  | 'photo_fill'
+  | 'photo_fill_on_rectangle_fill'
+  | 'photo_filter'
+  | 'photo_filter_outlined'
+  | 'photo_filter_rounded'
+  | 'photo_filter_sharp'
+  | 'photo_library'
+  | 'photo_library_outlined'
+  | 'photo_library_rounded'
+  | 'photo_library_sharp'
+  | 'photo_on_rectangle'
+  | 'photo_outlined'
+  | 'photo_rounded'
+  | 'photo_sharp'
+  | 'photo_size_select_actual'
+  | 'photo_size_select_actual_outlined'
+  | 'photo_size_select_actual_rounded'
+  | 'photo_size_select_actual_sharp'
+  | 'photo_size_select_large'
+  | 'photo_size_select_large_outlined'
+  | 'photo_size_select_large_rounded'
+  | 'photo_size_select_large_sharp'
+  | 'photo_size_select_small'
+  | 'photo_size_select_small_outlined'
+  | 'photo_size_select_small_rounded'
+  | 'photo_size_select_small_sharp'
+  | 'php'
+  | 'php_outlined'
+  | 'php_rounded'
+  | 'php_sharp'
+  | 'piano'
+  | 'piano_off'
+  | 'piano_off_outlined'
+  | 'piano_off_rounded'
+  | 'piano_off_sharp'
+  | 'piano_outlined'
+  | 'piano_rounded'
+  | 'piano_sharp'
+  | 'picture_as_pdf'
+  | 'picture_as_pdf_outlined'
+  | 'picture_as_pdf_rounded'
+  | 'picture_as_pdf_sharp'
+  | 'picture_in_picture'
+  | 'picture_in_picture_alt'
+  | 'picture_in_picture_alt_outlined'
+  | 'picture_in_picture_alt_rounded'
+  | 'picture_in_picture_alt_sharp'
+  | 'picture_in_picture_outlined'
+  | 'picture_in_picture_rounded'
+  | 'picture_in_picture_sharp'
+  | 'pie_chart'
+  | 'pie_chart_outline'
+  | 'pie_chart_outline_outlined'
+  | 'pie_chart_outline_rounded'
+  | 'pie_chart_outline_sharp'
+  | 'pie_chart_rounded'
+  | 'pie_chart_sharp'
+  | 'pin'
+  | 'pin_drop'
+  | 'pin_drop_outlined'
+  | 'pin_drop_rounded'
+  | 'pin_drop_sharp'
+  | 'pin_end'
+  | 'pin_end_outlined'
+  | 'pin_end_rounded'
+  | 'pin_end_sharp'
+  | 'pin_fill'
+  | 'pin_invoke'
+  | 'pin_invoke_outlined'
+  | 'pin_invoke_rounded'
+  | 'pin_invoke_sharp'
+  | 'pin_outlined'
+  | 'pin_rounded'
+  | 'pin_sharp'
+  | 'pin_slash'
+  | 'pin_slash_fill'
+  | 'pinch'
+  | 'pinch_outlined'
+  | 'pinch_rounded'
+  | 'pinch_sharp'
+  | 'pivot_table_chart'
+  | 'pivot_table_chart_outlined'
+  | 'pivot_table_chart_rounded'
+  | 'pivot_table_chart_sharp'
+  | 'pix'
+  | 'pix_outlined'
+  | 'pix_rounded'
+  | 'pix_sharp'
+  | 'place'
+  | 'place_outlined'
+  | 'place_rounded'
+  | 'place_sharp'
+  | 'placemark'
+  | 'placemark_fill'
+  | 'plagiarism'
+  | 'plagiarism_outlined'
+  | 'plagiarism_rounded'
+  | 'plagiarism_sharp'
+  | 'play'
+  | 'play_arrow'
+  | 'play_arrow_outlined'
+  | 'play_arrow_rounded'
+  | 'play_arrow_sharp'
+  | 'play_arrow_solid'
+  | 'play_circle'
+  | 'play_circle_fill'
+  | 'play_circle_fill_outlined'
+  | 'play_circle_fill_rounded'
+  | 'play_circle_fill_sharp'
+  | 'play_circle_filled'
+  | 'play_circle_filled_outlined'
+  | 'play_circle_filled_rounded'
+  | 'play_circle_filled_sharp'
+  | 'play_circle_outline'
+  | 'play_circle_outline_outlined'
+  | 'play_circle_outline_rounded'
+  | 'play_circle_outline_sharp'
+  | 'play_circle_outlined'
+  | 'play_circle_rounded'
+  | 'play_circle_sharp'
+  | 'play_disabled'
+  | 'play_disabled_outlined'
+  | 'play_disabled_rounded'
+  | 'play_disabled_sharp'
+  | 'play_fill'
+  | 'play_for_work'
+  | 'play_for_work_outlined'
+  | 'play_for_work_rounded'
+  | 'play_for_work_sharp'
+  | 'play_lesson'
+  | 'play_lesson_outlined'
+  | 'play_lesson_rounded'
+  | 'play_lesson_sharp'
+  | 'play_rectangle'
+  | 'play_rectangle_fill'
+  | 'playlist_add'
+  | 'playlist_add_check'
+  | 'playlist_add_check_circle'
+  | 'playlist_add_check_circle_outlined'
+  | 'playlist_add_check_circle_rounded'
+  | 'playlist_add_check_circle_sharp'
+  | 'playlist_add_check_outlined'
+  | 'playlist_add_check_rounded'
+  | 'playlist_add_check_sharp'
+  | 'playlist_add_circle'
+  | 'playlist_add_circle_outlined'
+  | 'playlist_add_circle_rounded'
+  | 'playlist_add_circle_sharp'
+  | 'playlist_add_outlined'
+  | 'playlist_add_rounded'
+  | 'playlist_add_sharp'
+  | 'playlist_play'
+  | 'playlist_play_outlined'
+  | 'playlist_play_rounded'
+  | 'playlist_play_sharp'
+  | 'playlist_remove'
+  | 'playlist_remove_outlined'
+  | 'playlist_remove_rounded'
+  | 'playlist_remove_sharp'
+  | 'playpause'
+  | 'playpause_fill'
+  | 'plumbing'
+  | 'plumbing_outlined'
+  | 'plumbing_rounded'
+  | 'plumbing_sharp'
+  | 'plus'
+  | 'plus_app'
+  | 'plus_app_fill'
+  | 'plus_bubble'
+  | 'plus_bubble_fill'
+  | 'plus_circle'
+  | 'plus_circle_fill'
+  | 'plus_circled'
+  | 'plus_one'
+  | 'plus_one_outlined'
+  | 'plus_one_rounded'
+  | 'plus_one_sharp'
+  | 'plus_rectangle'
+  | 'plus_rectangle_fill'
+  | 'plus_rectangle_fill_on_rectangle_fill'
+  | 'plus_rectangle_on_rectangle'
+  | 'plus_slash_minus'
+  | 'plus_square'
+  | 'plus_square_fill'
+  | 'plus_square_fill_on_square_fill'
+  | 'plus_square_on_square'
+  | 'plusminus'
+  | 'plusminus_circle'
+  | 'plusminus_circle_fill'
+  | 'podcasts'
+  | 'podcasts_outlined'
+  | 'podcasts_rounded'
+  | 'podcasts_sharp'
+  | 'point_of_sale'
+  | 'point_of_sale_outlined'
+  | 'point_of_sale_rounded'
+  | 'point_of_sale_sharp'
+  | 'policy'
+  | 'policy_outlined'
+  | 'policy_rounded'
+  | 'policy_sharp'
+  | 'poll'
+  | 'poll_outlined'
+  | 'poll_rounded'
+  | 'poll_sharp'
+  | 'polyline'
+  | 'polyline_outlined'
+  | 'polyline_rounded'
+  | 'polyline_sharp'
+  | 'polymer'
+  | 'polymer_outlined'
+  | 'polymer_rounded'
+  | 'polymer_sharp'
+  | 'pool'
+  | 'pool_outlined'
+  | 'pool_rounded'
+  | 'pool_sharp'
+  | 'portable_wifi_off'
+  | 'portable_wifi_off_outlined'
+  | 'portable_wifi_off_rounded'
+  | 'portable_wifi_off_sharp'
+  | 'portrait'
+  | 'portrait_outlined'
+  | 'portrait_rounded'
+  | 'portrait_sharp'
+  | 'post_add'
+  | 'post_add_outlined'
+  | 'post_add_rounded'
+  | 'post_add_sharp'
+  | 'power'
+  | 'power_input'
+  | 'power_input_outlined'
+  | 'power_input_rounded'
+  | 'power_input_sharp'
+  | 'power_off'
+  | 'power_off_outlined'
+  | 'power_off_rounded'
+  | 'power_off_sharp'
+  | 'power_outlined'
+  | 'power_rounded'
+  | 'power_settings_new'
+  | 'power_settings_new_outlined'
+  | 'power_settings_new_rounded'
+  | 'power_settings_new_sharp'
+  | 'power_sharp'
+  | 'precision_manufacturing'
+  | 'precision_manufacturing_outlined'
+  | 'precision_manufacturing_rounded'
+  | 'precision_manufacturing_sharp'
+  | 'pregnant_woman'
+  | 'pregnant_woman_outlined'
+  | 'pregnant_woman_rounded'
+  | 'pregnant_woman_sharp'
+  | 'present_to_all'
+  | 'present_to_all_outlined'
+  | 'present_to_all_rounded'
+  | 'present_to_all_sharp'
+  | 'preview'
+  | 'preview_outlined'
+  | 'preview_rounded'
+  | 'preview_sharp'
+  | 'price_change'
+  | 'price_change_outlined'
+  | 'price_change_rounded'
+  | 'price_change_sharp'
+  | 'price_check'
+  | 'price_check_outlined'
+  | 'price_check_rounded'
+  | 'price_check_sharp'
+  | 'print'
+  | 'print_disabled'
+  | 'print_disabled_outlined'
+  | 'print_disabled_rounded'
+  | 'print_disabled_sharp'
+  | 'print_outlined'
+  | 'print_rounded'
+  | 'print_sharp'
+  | 'printer'
+  | 'printer_fill'
+  | 'priority_high'
+  | 'priority_high_outlined'
+  | 'priority_high_rounded'
+  | 'priority_high_sharp'
+  | 'privacy_tip'
+  | 'privacy_tip_outlined'
+  | 'privacy_tip_rounded'
+  | 'privacy_tip_sharp'
+  | 'private_connectivity'
+  | 'private_connectivity_outlined'
+  | 'private_connectivity_rounded'
+  | 'private_connectivity_sharp'
+  | 'production_quantity_limits'
+  | 'production_quantity_limits_outlined'
+  | 'production_quantity_limits_rounded'
+  | 'production_quantity_limits_sharp'
+  | 'profile_circled'
+  | 'projective'
+  | 'propane'
+  | 'propane_outlined'
+  | 'propane_rounded'
+  | 'propane_sharp'
+  | 'propane_tank'
+  | 'propane_tank_outlined'
+  | 'propane_tank_rounded'
+  | 'propane_tank_sharp'
+  | 'psychology'
+  | 'psychology_alt'
+  | 'psychology_alt_outlined'
+  | 'psychology_alt_rounded'
+  | 'psychology_alt_sharp'
+  | 'psychology_outlined'
+  | 'psychology_rounded'
+  | 'psychology_sharp'
+  | 'public'
+  | 'public_off'
+  | 'public_off_outlined'
+  | 'public_off_rounded'
+  | 'public_off_sharp'
+  | 'public_outlined'
+  | 'public_rounded'
+  | 'public_sharp'
+  | 'publish'
+  | 'publish_outlined'
+  | 'publish_rounded'
+  | 'publish_sharp'
+  | 'published_with_changes'
+  | 'published_with_changes_outlined'
+  | 'published_with_changes_rounded'
+  | 'published_with_changes_sharp'
+  | 'punch_clock'
+  | 'punch_clock_outlined'
+  | 'punch_clock_rounded'
+  | 'punch_clock_sharp'
+  | 'purchased'
+  | 'purchased_circle'
+  | 'purchased_circle_fill'
+  | 'push_pin'
+  | 'push_pin_outlined'
+  | 'push_pin_rounded'
+  | 'push_pin_sharp'
+  | 'qr_code'
+  | 'qr_code_2'
+  | 'qr_code_2_outlined'
+  | 'qr_code_2_rounded'
+  | 'qr_code_2_sharp'
+  | 'qr_code_outlined'
+  | 'qr_code_rounded'
+  | 'qr_code_scanner'
+  | 'qr_code_scanner_outlined'
+  | 'qr_code_scanner_rounded'
+  | 'qr_code_scanner_sharp'
+  | 'qr_code_sharp'
+  | 'qrcode'
+  | 'qrcode_viewfinder'
+  | 'query_builder'
+  | 'query_builder_outlined'
+  | 'query_builder_rounded'
+  | 'query_builder_sharp'
+  | 'query_stats'
+  | 'query_stats_outlined'
+  | 'query_stats_rounded'
+  | 'query_stats_sharp'
+  | 'question'
+  | 'question_answer'
+  | 'question_answer_outlined'
+  | 'question_answer_rounded'
+  | 'question_answer_sharp'
+  | 'question_circle'
+  | 'question_circle_fill'
+  | 'question_diamond'
+  | 'question_diamond_fill'
+  | 'question_mark'
+  | 'question_mark_outlined'
+  | 'question_mark_rounded'
+  | 'question_mark_sharp'
+  | 'question_square'
+  | 'question_square_fill'
+  | 'queue'
+  | 'queue_music'
+  | 'queue_music_outlined'
+  | 'queue_music_rounded'
+  | 'queue_music_sharp'
+  | 'queue_outlined'
+  | 'queue_play_next'
+  | 'queue_play_next_outlined'
+  | 'queue_play_next_rounded'
+  | 'queue_play_next_sharp'
+  | 'queue_rounded'
+  | 'queue_sharp'
+  | 'quick_contacts_dialer'
+  | 'quick_contacts_dialer_outlined'
+  | 'quick_contacts_dialer_rounded'
+  | 'quick_contacts_dialer_sharp'
+  | 'quick_contacts_mail'
+  | 'quick_contacts_mail_outlined'
+  | 'quick_contacts_mail_rounded'
+  | 'quick_contacts_mail_sharp'
+  | 'quickreply'
+  | 'quickreply_outlined'
+  | 'quickreply_rounded'
+  | 'quickreply_sharp'
+  | 'quiz'
+  | 'quiz_outlined'
+  | 'quiz_rounded'
+  | 'quiz_sharp'
+  | 'quora'
+  | 'quora_outlined'
+  | 'quora_rounded'
+  | 'quora_sharp'
+  | 'quote_bubble'
+  | 'quote_bubble_fill'
+  | 'r_mobiledata'
+  | 'r_mobiledata_outlined'
+  | 'r_mobiledata_rounded'
+  | 'r_mobiledata_sharp'
+  | 'radar'
+  | 'radar_outlined'
+  | 'radar_rounded'
+  | 'radar_sharp'
+  | 'radio'
+  | 'radio_button_checked'
+  | 'radio_button_checked_outlined'
+  | 'radio_button_checked_rounded'
+  | 'radio_button_checked_sharp'
+  | 'radio_button_off'
+  | 'radio_button_off_outlined'
+  | 'radio_button_off_rounded'
+  | 'radio_button_off_sharp'
+  | 'radio_button_on'
+  | 'radio_button_on_outlined'
+  | 'radio_button_on_rounded'
+  | 'radio_button_on_sharp'
+  | 'radio_button_unchecked'
+  | 'radio_button_unchecked_outlined'
+  | 'radio_button_unchecked_rounded'
+  | 'radio_button_unchecked_sharp'
+  | 'radio_outlined'
+  | 'radio_rounded'
+  | 'radio_sharp'
+  | 'radiowaves_left'
+  | 'radiowaves_right'
+  | 'railway_alert'
+  | 'railway_alert_outlined'
+  | 'railway_alert_rounded'
+  | 'railway_alert_sharp'
+  | 'ramen_dining'
+  | 'ramen_dining_outlined'
+  | 'ramen_dining_rounded'
+  | 'ramen_dining_sharp'
+  | 'ramp_left'
+  | 'ramp_left_outlined'
+  | 'ramp_left_rounded'
+  | 'ramp_left_sharp'
+  | 'ramp_right'
+  | 'ramp_right_outlined'
+  | 'ramp_right_rounded'
+  | 'ramp_right_sharp'
+  | 'rate_review'
+  | 'rate_review_outlined'
+  | 'rate_review_rounded'
+  | 'rate_review_sharp'
+  | 'raw_off'
+  | 'raw_off_outlined'
+  | 'raw_off_rounded'
+  | 'raw_off_sharp'
+  | 'raw_on'
+  | 'raw_on_outlined'
+  | 'raw_on_rounded'
+  | 'raw_on_sharp'
+  | 'rays'
+  | 'read_more'
+  | 'read_more_outlined'
+  | 'read_more_rounded'
+  | 'read_more_sharp'
+  | 'real_estate_agent'
+  | 'real_estate_agent_outlined'
+  | 'real_estate_agent_rounded'
+  | 'real_estate_agent_sharp'
+  | 'rebase_edit'
+  | 'receipt'
+  | 'receipt_long'
+  | 'receipt_long_outlined'
+  | 'receipt_long_rounded'
+  | 'receipt_long_sharp'
+  | 'receipt_outlined'
+  | 'receipt_rounded'
+  | 'receipt_sharp'
+  | 'recent_actors'
+  | 'recent_actors_outlined'
+  | 'recent_actors_rounded'
+  | 'recent_actors_sharp'
+  | 'recommend'
+  | 'recommend_outlined'
+  | 'recommend_rounded'
+  | 'recommend_sharp'
+  | 'record_voice_over'
+  | 'record_voice_over_outlined'
+  | 'record_voice_over_rounded'
+  | 'record_voice_over_sharp'
+  | 'recordingtape'
+  | 'rectangle'
+  | 'rectangle_3_offgrid'
+  | 'rectangle_3_offgrid_fill'
+  | 'rectangle_arrow_up_right_arrow_down_left'
+  | 'rectangle_arrow_up_right_arrow_down_left_slash'
+  | 'rectangle_badge_checkmark'
+  | 'rectangle_badge_xmark'
+  | 'rectangle_compress_vertical'
+  | 'rectangle_dock'
+  | 'rectangle_expand_vertical'
+  | 'rectangle_fill'
+  | 'rectangle_fill_badge_checkmark'
+  | 'rectangle_fill_badge_xmark'
+  | 'rectangle_fill_on_rectangle_angled_fill'
+  | 'rectangle_fill_on_rectangle_fill'
+  | 'rectangle_grid_1x2'
+  | 'rectangle_grid_1x2_fill'
+  | 'rectangle_grid_2x2'
+  | 'rectangle_grid_2x2_fill'
+  | 'rectangle_grid_3x2'
+  | 'rectangle_grid_3x2_fill'
+  | 'rectangle_on_rectangle'
+  | 'rectangle_on_rectangle_angled'
+  | 'rectangle_outlined'
+  | 'rectangle_paperclip'
+  | 'rectangle_rounded'
+  | 'rectangle_sharp'
+  | 'rectangle_split_3x1'
+  | 'rectangle_split_3x1_fill'
+  | 'rectangle_split_3x3'
+  | 'rectangle_split_3x3_fill'
+  | 'rectangle_stack'
+  | 'rectangle_stack_badge_minus'
+  | 'rectangle_stack_badge_person_crop'
+  | 'rectangle_stack_badge_plus'
+  | 'rectangle_stack_fill'
+  | 'rectangle_stack_fill_badge_minus'
+  | 'rectangle_stack_fill_badge_person_crop'
+  | 'rectangle_stack_fill_badge_plus'
+  | 'rectangle_stack_person_crop'
+  | 'rectangle_stack_person_crop_fill'
+  | 'recycling'
+  | 'recycling_outlined'
+  | 'recycling_rounded'
+  | 'recycling_sharp'
+  | 'reddit'
+  | 'reddit_outlined'
+  | 'reddit_rounded'
+  | 'reddit_sharp'
+  | 'redeem'
+  | 'redeem_outlined'
+  | 'redeem_rounded'
+  | 'redeem_sharp'
+  | 'redo'
+  | 'redo_outlined'
+  | 'redo_rounded'
+  | 'redo_sharp'
+  | 'reduce_capacity'
+  | 'reduce_capacity_outlined'
+  | 'reduce_capacity_rounded'
+  | 'reduce_capacity_sharp'
+  | 'refresh'
+  | 'refresh_bold'
+  | 'refresh_circled'
+  | 'refresh_circled_solid'
+  | 'refresh_outlined'
+  | 'refresh_rounded'
+  | 'refresh_sharp'
+  | 'refresh_thick'
+  | 'refresh_thin'
+  | 'remember_me'
+  | 'remember_me_outlined'
+  | 'remember_me_rounded'
+  | 'remember_me_sharp'
+  | 'remove'
+  | 'remove_circle'
+  | 'remove_circle_outline'
+  | 'remove_circle_outline_outlined'
+  | 'remove_circle_outline_rounded'
+  | 'remove_circle_outline_sharp'
+  | 'remove_circle_outlined'
+  | 'remove_circle_rounded'
+  | 'remove_circle_sharp'
+  | 'remove_done'
+  | 'remove_done_outlined'
+  | 'remove_done_rounded'
+  | 'remove_done_sharp'
+  | 'remove_from_queue'
+  | 'remove_from_queue_outlined'
+  | 'remove_from_queue_rounded'
+  | 'remove_from_queue_sharp'
+  | 'remove_moderator'
+  | 'remove_moderator_outlined'
+  | 'remove_moderator_rounded'
+  | 'remove_moderator_sharp'
+  | 'remove_outlined'
+  | 'remove_red_eye'
+  | 'remove_red_eye_outlined'
+  | 'remove_red_eye_rounded'
+  | 'remove_red_eye_sharp'
+  | 'remove_road'
+  | 'remove_road_outlined'
+  | 'remove_road_rounded'
+  | 'remove_road_sharp'
+  | 'remove_rounded'
+  | 'remove_sharp'
+  | 'remove_shopping_cart'
+  | 'remove_shopping_cart_outlined'
+  | 'remove_shopping_cart_rounded'
+  | 'remove_shopping_cart_sharp'
+  | 'reorder'
+  | 'reorder_outlined'
+  | 'reorder_rounded'
+  | 'reorder_sharp'
+  | 'repartition'
+  | 'repartition_outlined'
+  | 'repartition_rounded'
+  | 'repartition_sharp'
+  | 'repeat'
+  | 'repeat_1'
+  | 'repeat_on'
+  | 'repeat_on_outlined'
+  | 'repeat_on_rounded'
+  | 'repeat_on_sharp'
+  | 'repeat_one'
+  | 'repeat_one_on'
+  | 'repeat_one_on_outlined'
+  | 'repeat_one_on_rounded'
+  | 'repeat_one_on_sharp'
+  | 'repeat_one_outlined'
+  | 'repeat_one_rounded'
+  | 'repeat_one_sharp'
+  | 'repeat_outlined'
+  | 'repeat_rounded'
+  | 'repeat_sharp'
+  | 'replay'
+  | 'replay_10'
+  | 'replay_10_outlined'
+  | 'replay_10_rounded'
+  | 'replay_10_sharp'
+  | 'replay_30'
+  | 'replay_30_outlined'
+  | 'replay_30_rounded'
+  | 'replay_30_sharp'
+  | 'replay_5'
+  | 'replay_5_outlined'
+  | 'replay_5_rounded'
+  | 'replay_5_sharp'
+  | 'replay_circle_filled'
+  | 'replay_circle_filled_outlined'
+  | 'replay_circle_filled_rounded'
+  | 'replay_circle_filled_sharp'
+  | 'replay_outlined'
+  | 'replay_rounded'
+  | 'replay_sharp'
+  | 'reply'
+  | 'reply_all'
+  | 'reply_all_outlined'
+  | 'reply_all_rounded'
+  | 'reply_all_sharp'
+  | 'reply_outlined'
+  | 'reply_rounded'
+  | 'reply_sharp'
+  | 'reply_thick_solid'
+  | 'report'
+  | 'report_gmailerrorred'
+  | 'report_gmailerrorred_outlined'
+  | 'report_gmailerrorred_rounded'
+  | 'report_gmailerrorred_sharp'
+  | 'report_off'
+  | 'report_off_outlined'
+  | 'report_off_rounded'
+  | 'report_off_sharp'
+  | 'report_outlined'
+  | 'report_problem'
+  | 'report_problem_outlined'
+  | 'report_problem_rounded'
+  | 'report_problem_sharp'
+  | 'report_rounded'
+  | 'report_sharp'
+  | 'request_page'
+  | 'request_page_outlined'
+  | 'request_page_rounded'
+  | 'request_page_sharp'
+  | 'request_quote'
+  | 'request_quote_outlined'
+  | 'request_quote_rounded'
+  | 'request_quote_sharp'
+  | 'reset_tv'
+  | 'reset_tv_outlined'
+  | 'reset_tv_rounded'
+  | 'reset_tv_sharp'
+  | 'resize'
+  | 'resize_h'
+  | 'resize_v'
+  | 'restart'
+  | 'restart_alt'
+  | 'restart_alt_outlined'
+  | 'restart_alt_rounded'
+  | 'restart_alt_sharp'
+  | 'restaurant'
+  | 'restaurant_menu'
+  | 'restaurant_menu_outlined'
+  | 'restaurant_menu_rounded'
+  | 'restaurant_menu_sharp'
+  | 'restaurant_outlined'
+  | 'restaurant_rounded'
+  | 'restaurant_sharp'
+  | 'restore'
+  | 'restore_from_trash'
+  | 'restore_from_trash_outlined'
+  | 'restore_from_trash_rounded'
+  | 'restore_from_trash_sharp'
+  | 'restore_outlined'
+  | 'restore_page'
+  | 'restore_page_outlined'
+  | 'restore_page_rounded'
+  | 'restore_page_sharp'
+  | 'restore_rounded'
+  | 'restore_sharp'
+  | 'return_icon'
+  | 'reviews'
+  | 'reviews_outlined'
+  | 'reviews_rounded'
+  | 'reviews_sharp'
+  | 'rhombus'
+  | 'rhombus_fill'
+  | 'rice_bowl'
+  | 'rice_bowl_outlined'
+  | 'rice_bowl_rounded'
+  | 'rice_bowl_sharp'
+  | 'right_chevron'
+  | 'ring_volume'
+  | 'ring_volume_outlined'
+  | 'ring_volume_rounded'
+  | 'ring_volume_sharp'
+  | 'rocket'
+  | 'rocket_fill'
+  | 'rocket_launch'
+  | 'rocket_launch_outlined'
+  | 'rocket_launch_rounded'
+  | 'rocket_launch_sharp'
+  | 'rocket_outlined'
+  | 'rocket_rounded'
+  | 'rocket_sharp'
+  | 'roller_shades'
+  | 'roller_shades_closed'
+  | 'roller_shades_closed_outlined'
+  | 'roller_shades_closed_rounded'
+  | 'roller_shades_closed_sharp'
+  | 'roller_shades_outlined'
+  | 'roller_shades_rounded'
+  | 'roller_shades_sharp'
+  | 'roller_skating'
+  | 'roller_skating_outlined'
+  | 'roller_skating_rounded'
+  | 'roller_skating_sharp'
+  | 'roofing'
+  | 'roofing_outlined'
+  | 'roofing_rounded'
+  | 'roofing_sharp'
+  | 'room'
+  | 'room_outlined'
+  | 'room_preferences'
+  | 'room_preferences_outlined'
+  | 'room_preferences_rounded'
+  | 'room_preferences_sharp'
+  | 'room_rounded'
+  | 'room_service'
+  | 'room_service_outlined'
+  | 'room_service_rounded'
+  | 'room_service_sharp'
+  | 'room_sharp'
+  | 'rosette'
+  | 'rotate_90_degrees_ccw'
+  | 'rotate_90_degrees_ccw_outlined'
+  | 'rotate_90_degrees_ccw_rounded'
+  | 'rotate_90_degrees_ccw_sharp'
+  | 'rotate_90_degrees_cw'
+  | 'rotate_90_degrees_cw_outlined'
+  | 'rotate_90_degrees_cw_rounded'
+  | 'rotate_90_degrees_cw_sharp'
+  | 'rotate_left'
+  | 'rotate_left_fill'
+  | 'rotate_left_outlined'
+  | 'rotate_left_rounded'
+  | 'rotate_left_sharp'
+  | 'rotate_right'
+  | 'rotate_right_fill'
+  | 'rotate_right_outlined'
+  | 'rotate_right_rounded'
+  | 'rotate_right_sharp'
+  | 'roundabout_left'
+  | 'roundabout_left_outlined'
+  | 'roundabout_left_rounded'
+  | 'roundabout_left_sharp'
+  | 'roundabout_right'
+  | 'roundabout_right_outlined'
+  | 'roundabout_right_rounded'
+  | 'roundabout_right_sharp'
+  | 'rounded_corner'
+  | 'rounded_corner_outlined'
+  | 'rounded_corner_rounded'
+  | 'rounded_corner_sharp'
+  | 'route'
+  | 'route_outlined'
+  | 'route_rounded'
+  | 'route_sharp'
+  | 'router'
+  | 'router_outlined'
+  | 'router_rounded'
+  | 'router_sharp'
+  | 'rowing'
+  | 'rowing_outlined'
+  | 'rowing_rounded'
+  | 'rowing_sharp'
+  | 'rss_feed'
+  | 'rss_feed_outlined'
+  | 'rss_feed_rounded'
+  | 'rss_feed_sharp'
+  | 'rsvp'
+  | 'rsvp_outlined'
+  | 'rsvp_rounded'
+  | 'rsvp_sharp'
+  | 'rtt'
+  | 'rtt_outlined'
+  | 'rtt_rounded'
+  | 'rtt_sharp'
+  | 'rule'
+  | 'rule_folder'
+  | 'rule_folder_outlined'
+  | 'rule_folder_rounded'
+  | 'rule_folder_sharp'
+  | 'rule_outlined'
+  | 'rule_rounded'
+  | 'rule_sharp'
+  | 'run_circle'
+  | 'run_circle_outlined'
+  | 'run_circle_rounded'
+  | 'run_circle_sharp'
+  | 'running_with_errors'
+  | 'running_with_errors_outlined'
+  | 'running_with_errors_rounded'
+  | 'running_with_errors_sharp'
+  | 'rv_hookup'
+  | 'rv_hookup_outlined'
+  | 'rv_hookup_rounded'
+  | 'rv_hookup_sharp'
+  | 'safety_check'
+  | 'safety_check_outlined'
+  | 'safety_check_rounded'
+  | 'safety_check_sharp'
+  | 'safety_divider'
+  | 'safety_divider_outlined'
+  | 'safety_divider_rounded'
+  | 'safety_divider_sharp'
+  | 'sailing'
+  | 'sailing_outlined'
+  | 'sailing_rounded'
+  | 'sailing_sharp'
+  | 'sanitizer'
+  | 'sanitizer_outlined'
+  | 'sanitizer_rounded'
+  | 'sanitizer_sharp'
+  | 'satellite'
+  | 'satellite_alt'
+  | 'satellite_alt_outlined'
+  | 'satellite_alt_rounded'
+  | 'satellite_alt_sharp'
+  | 'satellite_outlined'
+  | 'satellite_rounded'
+  | 'satellite_sharp'
+  | 'save'
+  | 'save_alt'
+  | 'save_alt_outlined'
+  | 'save_alt_rounded'
+  | 'save_alt_sharp'
+  | 'save_as'
+  | 'save_as_outlined'
+  | 'save_as_rounded'
+  | 'save_as_sharp'
+  | 'save_outlined'
+  | 'save_rounded'
+  | 'save_sharp'
+  | 'saved_search'
+  | 'saved_search_outlined'
+  | 'saved_search_rounded'
+  | 'saved_search_sharp'
+  | 'savings'
+  | 'savings_outlined'
+  | 'savings_rounded'
+  | 'savings_sharp'
+  | 'scale'
+  | 'scale_outlined'
+  | 'scale_rounded'
+  | 'scale_sharp'
+  | 'scanner'
+  | 'scanner_outlined'
+  | 'scanner_rounded'
+  | 'scanner_sharp'
+  | 'scatter_plot'
+  | 'scatter_plot_outlined'
+  | 'scatter_plot_rounded'
+  | 'scatter_plot_sharp'
+  | 'schedule'
+  | 'schedule_outlined'
+  | 'schedule_rounded'
+  | 'schedule_send'
+  | 'schedule_send_outlined'
+  | 'schedule_send_rounded'
+  | 'schedule_send_sharp'
+  | 'schedule_sharp'
+  | 'schema'
+  | 'schema_outlined'
+  | 'schema_rounded'
+  | 'schema_sharp'
+  | 'school'
+  | 'school_outlined'
+  | 'school_rounded'
+  | 'school_sharp'
+  | 'science'
+  | 'science_outlined'
+  | 'science_rounded'
+  | 'science_sharp'
+  | 'scissors'
+  | 'scissors_alt'
+  | 'scope'
+  | 'score'
+  | 'score_outlined'
+  | 'score_rounded'
+  | 'score_sharp'
+  | 'scoreboard'
+  | 'scoreboard_outlined'
+  | 'scoreboard_rounded'
+  | 'scoreboard_sharp'
+  | 'screen_lock_landscape'
+  | 'screen_lock_landscape_outlined'
+  | 'screen_lock_landscape_rounded'
+  | 'screen_lock_landscape_sharp'
+  | 'screen_lock_portrait'
+  | 'screen_lock_portrait_outlined'
+  | 'screen_lock_portrait_rounded'
+  | 'screen_lock_portrait_sharp'
+  | 'screen_lock_rotation'
+  | 'screen_lock_rotation_outlined'
+  | 'screen_lock_rotation_rounded'
+  | 'screen_lock_rotation_sharp'
+  | 'screen_rotation'
+  | 'screen_rotation_alt'
+  | 'screen_rotation_alt_outlined'
+  | 'screen_rotation_alt_rounded'
+  | 'screen_rotation_alt_sharp'
+  | 'screen_rotation_outlined'
+  | 'screen_rotation_rounded'
+  | 'screen_rotation_sharp'
+  | 'screen_search_desktop'
+  | 'screen_search_desktop_outlined'
+  | 'screen_search_desktop_rounded'
+  | 'screen_search_desktop_sharp'
+  | 'screen_share'
+  | 'screen_share_outlined'
+  | 'screen_share_rounded'
+  | 'screen_share_sharp'
+  | 'screenshot'
+  | 'screenshot_monitor'
+  | 'screenshot_monitor_outlined'
+  | 'screenshot_monitor_rounded'
+  | 'screenshot_monitor_sharp'
+  | 'screenshot_outlined'
+  | 'screenshot_rounded'
+  | 'screenshot_sharp'
+  | 'scribble'
+  | 'scuba_diving'
+  | 'scuba_diving_outlined'
+  | 'scuba_diving_rounded'
+  | 'scuba_diving_sharp'
+  | 'sd'
+  | 'sd_card'
+  | 'sd_card_alert'
+  | 'sd_card_alert_outlined'
+  | 'sd_card_alert_rounded'
+  | 'sd_card_alert_sharp'
+  | 'sd_card_outlined'
+  | 'sd_card_rounded'
+  | 'sd_card_sharp'
+  | 'sd_outlined'
+  | 'sd_rounded'
+  | 'sd_sharp'
+  | 'sd_storage'
+  | 'sd_storage_outlined'
+  | 'sd_storage_rounded'
+  | 'sd_storage_sharp'
+  | 'search'
+  | 'search_circle'
+  | 'search_circle_fill'
+  | 'search_off'
+  | 'search_off_outlined'
+  | 'search_off_rounded'
+  | 'search_off_sharp'
+  | 'search_outlined'
+  | 'search_rounded'
+  | 'search_sharp'
+  | 'security'
+  | 'security_outlined'
+  | 'security_rounded'
+  | 'security_sharp'
+  | 'security_update'
+  | 'security_update_good'
+  | 'security_update_good_outlined'
+  | 'security_update_good_rounded'
+  | 'security_update_good_sharp'
+  | 'security_update_outlined'
+  | 'security_update_rounded'
+  | 'security_update_sharp'
+  | 'security_update_warning'
+  | 'security_update_warning_outlined'
+  | 'security_update_warning_rounded'
+  | 'security_update_warning_sharp'
+  | 'segment'
+  | 'segment_outlined'
+  | 'segment_rounded'
+  | 'segment_sharp'
+  | 'select_all'
+  | 'select_all_outlined'
+  | 'select_all_rounded'
+  | 'select_all_sharp'
+  | 'selection_pin_in_out'
+  | 'self_improvement'
+  | 'self_improvement_outlined'
+  | 'self_improvement_rounded'
+  | 'self_improvement_sharp'
+  | 'sell'
+  | 'sell_outlined'
+  | 'sell_rounded'
+  | 'sell_sharp'
+  | 'send'
+  | 'send_and_archive'
+  | 'send_and_archive_outlined'
+  | 'send_and_archive_rounded'
+  | 'send_and_archive_sharp'
+  | 'send_outlined'
+  | 'send_rounded'
+  | 'send_sharp'
+  | 'send_time_extension'
+  | 'send_time_extension_outlined'
+  | 'send_time_extension_rounded'
+  | 'send_time_extension_sharp'
+  | 'send_to_mobile'
+  | 'send_to_mobile_outlined'
+  | 'send_to_mobile_rounded'
+  | 'send_to_mobile_sharp'
+  | 'sensor_door'
+  | 'sensor_door_outlined'
+  | 'sensor_door_rounded'
+  | 'sensor_door_sharp'
+  | 'sensor_occupied'
+  | 'sensor_occupied_outlined'
+  | 'sensor_occupied_rounded'
+  | 'sensor_occupied_sharp'
+  | 'sensor_window'
+  | 'sensor_window_outlined'
+  | 'sensor_window_rounded'
+  | 'sensor_window_sharp'
+  | 'sensors'
+  | 'sensors_off'
+  | 'sensors_off_outlined'
+  | 'sensors_off_rounded'
+  | 'sensors_off_sharp'
+  | 'sensors_outlined'
+  | 'sensors_rounded'
+  | 'sensors_sharp'
+  | 'sentiment_dissatisfied'
+  | 'sentiment_dissatisfied_outlined'
+  | 'sentiment_dissatisfied_rounded'
+  | 'sentiment_dissatisfied_sharp'
+  | 'sentiment_neutral'
+  | 'sentiment_neutral_outlined'
+  | 'sentiment_neutral_rounded'
+  | 'sentiment_neutral_sharp'
+  | 'sentiment_satisfied'
+  | 'sentiment_satisfied_alt'
+  | 'sentiment_satisfied_alt_outlined'
+  | 'sentiment_satisfied_alt_rounded'
+  | 'sentiment_satisfied_alt_sharp'
+  | 'sentiment_satisfied_outlined'
+  | 'sentiment_satisfied_rounded'
+  | 'sentiment_satisfied_sharp'
+  | 'sentiment_very_dissatisfied'
+  | 'sentiment_very_dissatisfied_outlined'
+  | 'sentiment_very_dissatisfied_rounded'
+  | 'sentiment_very_dissatisfied_sharp'
+  | 'sentiment_very_satisfied'
+  | 'sentiment_very_satisfied_outlined'
+  | 'sentiment_very_satisfied_rounded'
+  | 'sentiment_very_satisfied_sharp'
+  | 'set_meal'
+  | 'set_meal_outlined'
+  | 'set_meal_rounded'
+  | 'set_meal_sharp'
+  | 'settings'
+  | 'settings_accessibility'
+  | 'settings_accessibility_outlined'
+  | 'settings_accessibility_rounded'
+  | 'settings_accessibility_sharp'
+  | 'settings_applications'
+  | 'settings_applications_outlined'
+  | 'settings_applications_rounded'
+  | 'settings_applications_sharp'
+  | 'settings_backup_restore'
+  | 'settings_backup_restore_outlined'
+  | 'settings_backup_restore_rounded'
+  | 'settings_backup_restore_sharp'
+  | 'settings_bluetooth'
+  | 'settings_bluetooth_outlined'
+  | 'settings_bluetooth_rounded'
+  | 'settings_bluetooth_sharp'
+  | 'settings_brightness'
+  | 'settings_brightness_outlined'
+  | 'settings_brightness_rounded'
+  | 'settings_brightness_sharp'
+  | 'settings_cell'
+  | 'settings_cell_outlined'
+  | 'settings_cell_rounded'
+  | 'settings_cell_sharp'
+  | 'settings_display'
+  | 'settings_display_outlined'
+  | 'settings_display_rounded'
+  | 'settings_display_sharp'
+  | 'settings_ethernet'
+  | 'settings_ethernet_outlined'
+  | 'settings_ethernet_rounded'
+  | 'settings_ethernet_sharp'
+  | 'settings_input_antenna'
+  | 'settings_input_antenna_outlined'
+  | 'settings_input_antenna_rounded'
+  | 'settings_input_antenna_sharp'
+  | 'settings_input_component'
+  | 'settings_input_component_outlined'
+  | 'settings_input_component_rounded'
+  | 'settings_input_component_sharp'
+  | 'settings_input_composite'
+  | 'settings_input_composite_outlined'
+  | 'settings_input_composite_rounded'
+  | 'settings_input_composite_sharp'
+  | 'settings_input_hdmi'
+  | 'settings_input_hdmi_outlined'
+  | 'settings_input_hdmi_rounded'
+  | 'settings_input_hdmi_sharp'
+  | 'settings_input_svideo'
+  | 'settings_input_svideo_outlined'
+  | 'settings_input_svideo_rounded'
+  | 'settings_input_svideo_sharp'
+  | 'settings_outlined'
+  | 'settings_overscan'
+  | 'settings_overscan_outlined'
+  | 'settings_overscan_rounded'
+  | 'settings_overscan_sharp'
+  | 'settings_phone'
+  | 'settings_phone_outlined'
+  | 'settings_phone_rounded'
+  | 'settings_phone_sharp'
+  | 'settings_power'
+  | 'settings_power_outlined'
+  | 'settings_power_rounded'
+  | 'settings_power_sharp'
+  | 'settings_remote'
+  | 'settings_remote_outlined'
+  | 'settings_remote_rounded'
+  | 'settings_remote_sharp'
+  | 'settings_rounded'
+  | 'settings_sharp'
+  | 'settings_solid'
+  | 'settings_suggest'
+  | 'settings_suggest_outlined'
+  | 'settings_suggest_rounded'
+  | 'settings_suggest_sharp'
+  | 'settings_system_daydream'
+  | 'settings_system_daydream_outlined'
+  | 'settings_system_daydream_rounded'
+  | 'settings_system_daydream_sharp'
+  | 'settings_voice'
+  | 'settings_voice_outlined'
+  | 'settings_voice_rounded'
+  | 'settings_voice_sharp'
+  | 'seven_k'
+  | 'seven_k_outlined'
+  | 'seven_k_plus'
+  | 'seven_k_plus_outlined'
+  | 'seven_k_plus_rounded'
+  | 'seven_k_plus_sharp'
+  | 'seven_k_rounded'
+  | 'seven_k_sharp'
+  | 'seven_mp'
+  | 'seven_mp_outlined'
+  | 'seven_mp_rounded'
+  | 'seven_mp_sharp'
+  | 'seventeen_mp'
+  | 'seventeen_mp_outlined'
+  | 'seventeen_mp_rounded'
+  | 'seventeen_mp_sharp'
+  | 'severe_cold'
+  | 'severe_cold_outlined'
+  | 'severe_cold_rounded'
+  | 'severe_cold_sharp'
+  | 'shape_line'
+  | 'shape_line_outlined'
+  | 'shape_line_rounded'
+  | 'shape_line_sharp'
+  | 'share'
+  | 'share_arrival_time'
+  | 'share_arrival_time_outlined'
+  | 'share_arrival_time_rounded'
+  | 'share_arrival_time_sharp'
+  | 'share_location'
+  | 'share_location_outlined'
+  | 'share_location_rounded'
+  | 'share_location_sharp'
+  | 'share_outlined'
+  | 'share_rounded'
+  | 'share_sharp'
+  | 'share_solid'
+  | 'share_up'
+  | 'shelves'
+  | 'shield'
+  | 'shield_fill'
+  | 'shield_lefthalf_fill'
+  | 'shield_moon'
+  | 'shield_moon_outlined'
+  | 'shield_moon_rounded'
+  | 'shield_moon_sharp'
+  | 'shield_outlined'
+  | 'shield_rounded'
+  | 'shield_sharp'
+  | 'shield_slash'
+  | 'shield_slash_fill'
+  | 'shift'
+  | 'shift_fill'
+  | 'shop'
+  | 'shop_2'
+  | 'shop_2_outlined'
+  | 'shop_2_rounded'
+  | 'shop_2_sharp'
+  | 'shop_outlined'
+  | 'shop_rounded'
+  | 'shop_sharp'
+  | 'shop_two'
+  | 'shop_two_outlined'
+  | 'shop_two_rounded'
+  | 'shop_two_sharp'
+  | 'shopify'
+  | 'shopify_outlined'
+  | 'shopify_rounded'
+  | 'shopify_sharp'
+  | 'shopping_bag'
+  | 'shopping_bag_outlined'
+  | 'shopping_bag_rounded'
+  | 'shopping_bag_sharp'
+  | 'shopping_basket'
+  | 'shopping_basket_outlined'
+  | 'shopping_basket_rounded'
+  | 'shopping_basket_sharp'
+  | 'shopping_cart'
+  | 'shopping_cart_checkout'
+  | 'shopping_cart_checkout_outlined'
+  | 'shopping_cart_checkout_rounded'
+  | 'shopping_cart_checkout_sharp'
+  | 'shopping_cart_outlined'
+  | 'shopping_cart_rounded'
+  | 'shopping_cart_sharp'
+  | 'short_text'
+  | 'short_text_outlined'
+  | 'short_text_rounded'
+  | 'short_text_sharp'
+  | 'shortcut'
+  | 'shortcut_outlined'
+  | 'shortcut_rounded'
+  | 'shortcut_sharp'
+  | 'show_chart'
+  | 'show_chart_outlined'
+  | 'show_chart_rounded'
+  | 'show_chart_sharp'
+  | 'shower'
+  | 'shower_outlined'
+  | 'shower_rounded'
+  | 'shower_sharp'
+  | 'shuffle'
+  | 'shuffle_medium'
+  | 'shuffle_on'
+  | 'shuffle_on_outlined'
+  | 'shuffle_on_rounded'
+  | 'shuffle_on_sharp'
+  | 'shuffle_outlined'
+  | 'shuffle_rounded'
+  | 'shuffle_sharp'
+  | 'shuffle_thick'
+  | 'shutter_speed'
+  | 'shutter_speed_outlined'
+  | 'shutter_speed_rounded'
+  | 'shutter_speed_sharp'
+  | 'sick'
+  | 'sick_outlined'
+  | 'sick_rounded'
+  | 'sick_sharp'
+  | 'sidebar_left'
+  | 'sidebar_right'
+  | 'sign_language'
+  | 'sign_language_outlined'
+  | 'sign_language_rounded'
+  | 'sign_language_sharp'
+  | 'signal_cellular_0_bar'
+  | 'signal_cellular_0_bar_outlined'
+  | 'signal_cellular_0_bar_rounded'
+  | 'signal_cellular_0_bar_sharp'
+  | 'signal_cellular_4_bar'
+  | 'signal_cellular_4_bar_outlined'
+  | 'signal_cellular_4_bar_rounded'
+  | 'signal_cellular_4_bar_sharp'
+  | 'signal_cellular_alt'
+  | 'signal_cellular_alt_1_bar'
+  | 'signal_cellular_alt_1_bar_outlined'
+  | 'signal_cellular_alt_1_bar_rounded'
+  | 'signal_cellular_alt_1_bar_sharp'
+  | 'signal_cellular_alt_2_bar'
+  | 'signal_cellular_alt_2_bar_outlined'
+  | 'signal_cellular_alt_2_bar_rounded'
+  | 'signal_cellular_alt_2_bar_sharp'
+  | 'signal_cellular_alt_outlined'
+  | 'signal_cellular_alt_rounded'
+  | 'signal_cellular_alt_sharp'
+  | 'signal_cellular_connected_no_internet_0_bar'
+  | 'signal_cellular_connected_no_internet_0_bar_outlined'
+  | 'signal_cellular_connected_no_internet_0_bar_rounded'
+  | 'signal_cellular_connected_no_internet_0_bar_sharp'
+  | 'signal_cellular_connected_no_internet_4_bar'
+  | 'signal_cellular_connected_no_internet_4_bar_outlined'
+  | 'signal_cellular_connected_no_internet_4_bar_rounded'
+  | 'signal_cellular_connected_no_internet_4_bar_sharp'
+  | 'signal_cellular_no_sim'
+  | 'signal_cellular_no_sim_outlined'
+  | 'signal_cellular_no_sim_rounded'
+  | 'signal_cellular_no_sim_sharp'
+  | 'signal_cellular_nodata'
+  | 'signal_cellular_nodata_outlined'
+  | 'signal_cellular_nodata_rounded'
+  | 'signal_cellular_nodata_sharp'
+  | 'signal_cellular_null'
+  | 'signal_cellular_null_outlined'
+  | 'signal_cellular_null_rounded'
+  | 'signal_cellular_null_sharp'
+  | 'signal_cellular_off'
+  | 'signal_cellular_off_outlined'
+  | 'signal_cellular_off_rounded'
+  | 'signal_cellular_off_sharp'
+  | 'signal_wifi_0_bar'
+  | 'signal_wifi_0_bar_outlined'
+  | 'signal_wifi_0_bar_rounded'
+  | 'signal_wifi_0_bar_sharp'
+  | 'signal_wifi_4_bar'
+  | 'signal_wifi_4_bar_lock'
+  | 'signal_wifi_4_bar_lock_outlined'
+  | 'signal_wifi_4_bar_lock_rounded'
+  | 'signal_wifi_4_bar_lock_sharp'
+  | 'signal_wifi_4_bar_outlined'
+  | 'signal_wifi_4_bar_rounded'
+  | 'signal_wifi_4_bar_sharp'
+  | 'signal_wifi_bad'
+  | 'signal_wifi_bad_outlined'
+  | 'signal_wifi_bad_rounded'
+  | 'signal_wifi_bad_sharp'
+  | 'signal_wifi_connected_no_internet_4'
+  | 'signal_wifi_connected_no_internet_4_outlined'
+  | 'signal_wifi_connected_no_internet_4_rounded'
+  | 'signal_wifi_connected_no_internet_4_sharp'
+  | 'signal_wifi_off'
+  | 'signal_wifi_off_outlined'
+  | 'signal_wifi_off_rounded'
+  | 'signal_wifi_off_sharp'
+  | 'signal_wifi_statusbar_4_bar'
+  | 'signal_wifi_statusbar_4_bar_outlined'
+  | 'signal_wifi_statusbar_4_bar_rounded'
+  | 'signal_wifi_statusbar_4_bar_sharp'
+  | 'signal_wifi_statusbar_connected_no_internet_4'
+  | 'signal_wifi_statusbar_connected_no_internet_4_outlined'
+  | 'signal_wifi_statusbar_connected_no_internet_4_rounded'
+  | 'signal_wifi_statusbar_connected_no_internet_4_sharp'
+  | 'signal_wifi_statusbar_null'
+  | 'signal_wifi_statusbar_null_outlined'
+  | 'signal_wifi_statusbar_null_rounded'
+  | 'signal_wifi_statusbar_null_sharp'
+  | 'signature'
+  | 'signpost'
+  | 'signpost_outlined'
+  | 'signpost_rounded'
+  | 'signpost_sharp'
+  | 'sim_card'
+  | 'sim_card_alert'
+  | 'sim_card_alert_outlined'
+  | 'sim_card_alert_rounded'
+  | 'sim_card_alert_sharp'
+  | 'sim_card_download'
+  | 'sim_card_download_outlined'
+  | 'sim_card_download_rounded'
+  | 'sim_card_download_sharp'
+  | 'sim_card_outlined'
+  | 'sim_card_rounded'
+  | 'sim_card_sharp'
+  | 'single_bed'
+  | 'single_bed_outlined'
+  | 'single_bed_rounded'
+  | 'single_bed_sharp'
+  | 'sip'
+  | 'sip_outlined'
+  | 'sip_rounded'
+  | 'sip_sharp'
+  | 'six_ft_apart'
+  | 'six_ft_apart_outlined'
+  | 'six_ft_apart_rounded'
+  | 'six_ft_apart_sharp'
+  | 'six_k'
+  | 'six_k_outlined'
+  | 'six_k_plus'
+  | 'six_k_plus_outlined'
+  | 'six_k_plus_rounded'
+  | 'six_k_plus_sharp'
+  | 'six_k_rounded'
+  | 'six_k_sharp'
+  | 'six_mp'
+  | 'six_mp_outlined'
+  | 'six_mp_rounded'
+  | 'six_mp_sharp'
+  | 'sixteen_mp'
+  | 'sixteen_mp_outlined'
+  | 'sixteen_mp_rounded'
+  | 'sixteen_mp_sharp'
+  | 'sixty_fps'
+  | 'sixty_fps_outlined'
+  | 'sixty_fps_rounded'
+  | 'sixty_fps_select'
+  | 'sixty_fps_select_outlined'
+  | 'sixty_fps_select_rounded'
+  | 'sixty_fps_select_sharp'
+  | 'sixty_fps_sharp'
+  | 'skateboarding'
+  | 'skateboarding_outlined'
+  | 'skateboarding_rounded'
+  | 'skateboarding_sharp'
+  | 'skew'
+  | 'skip_next'
+  | 'skip_next_outlined'
+  | 'skip_next_rounded'
+  | 'skip_next_sharp'
+  | 'skip_previous'
+  | 'skip_previous_outlined'
+  | 'skip_previous_rounded'
+  | 'skip_previous_sharp'
+  | 'slash_circle'
+  | 'slash_circle_fill'
+  | 'sledding'
+  | 'sledding_outlined'
+  | 'sledding_rounded'
+  | 'sledding_sharp'
+  | 'slider_horizontal_3'
+  | 'slider_horizontal_below_rectangle'
+  | 'slideshow'
+  | 'slideshow_outlined'
+  | 'slideshow_rounded'
+  | 'slideshow_sharp'
+  | 'slow_motion_video'
+  | 'slow_motion_video_outlined'
+  | 'slow_motion_video_rounded'
+  | 'slow_motion_video_sharp'
+  | 'slowmo'
+  | 'smallcircle_circle'
+  | 'smallcircle_circle_fill'
+  | 'smallcircle_fill_circle'
+  | 'smallcircle_fill_circle_fill'
+  | 'smart_button'
+  | 'smart_button_outlined'
+  | 'smart_button_rounded'
+  | 'smart_button_sharp'
+  | 'smart_display'
+  | 'smart_display_outlined'
+  | 'smart_display_rounded'
+  | 'smart_display_sharp'
+  | 'smart_screen'
+  | 'smart_screen_outlined'
+  | 'smart_screen_rounded'
+  | 'smart_screen_sharp'
+  | 'smart_toy'
+  | 'smart_toy_outlined'
+  | 'smart_toy_rounded'
+  | 'smart_toy_sharp'
+  | 'smartphone'
+  | 'smartphone_outlined'
+  | 'smartphone_rounded'
+  | 'smartphone_sharp'
+  | 'smiley'
+  | 'smiley_fill'
+  | 'smoke'
+  | 'smoke_fill'
+  | 'smoke_free'
+  | 'smoke_free_outlined'
+  | 'smoke_free_rounded'
+  | 'smoke_free_sharp'
+  | 'smoking_rooms'
+  | 'smoking_rooms_outlined'
+  | 'smoking_rooms_rounded'
+  | 'smoking_rooms_sharp'
+  | 'sms'
+  | 'sms_failed'
+  | 'sms_failed_outlined'
+  | 'sms_failed_rounded'
+  | 'sms_failed_sharp'
+  | 'sms_outlined'
+  | 'sms_rounded'
+  | 'sms_sharp'
+  | 'snapchat'
+  | 'snapchat_outlined'
+  | 'snapchat_rounded'
+  | 'snapchat_sharp'
+  | 'snippet_folder'
+  | 'snippet_folder_outlined'
+  | 'snippet_folder_rounded'
+  | 'snippet_folder_sharp'
+  | 'snooze'
+  | 'snooze_outlined'
+  | 'snooze_rounded'
+  | 'snooze_sharp'
+  | 'snow'
+  | 'snowboarding'
+  | 'snowboarding_outlined'
+  | 'snowboarding_rounded'
+  | 'snowboarding_sharp'
+  | 'snowing'
+  | 'snowmobile'
+  | 'snowmobile_outlined'
+  | 'snowmobile_rounded'
+  | 'snowmobile_sharp'
+  | 'snowshoeing'
+  | 'snowshoeing_outlined'
+  | 'snowshoeing_rounded'
+  | 'snowshoeing_sharp'
+  | 'soap'
+  | 'soap_outlined'
+  | 'soap_rounded'
+  | 'soap_sharp'
+  | 'social_distance'
+  | 'social_distance_outlined'
+  | 'social_distance_rounded'
+  | 'social_distance_sharp'
+  | 'solar_power'
+  | 'solar_power_outlined'
+  | 'solar_power_rounded'
+  | 'solar_power_sharp'
+  | 'sort'
+  | 'sort_by_alpha'
+  | 'sort_by_alpha_outlined'
+  | 'sort_by_alpha_rounded'
+  | 'sort_by_alpha_sharp'
+  | 'sort_down'
+  | 'sort_down_circle'
+  | 'sort_down_circle_fill'
+  | 'sort_outlined'
+  | 'sort_rounded'
+  | 'sort_sharp'
+  | 'sort_up'
+  | 'sort_up_circle'
+  | 'sort_up_circle_fill'
+  | 'sos'
+  | 'sos_outlined'
+  | 'sos_rounded'
+  | 'sos_sharp'
+  | 'soup_kitchen'
+  | 'soup_kitchen_outlined'
+  | 'soup_kitchen_rounded'
+  | 'soup_kitchen_sharp'
+  | 'source'
+  | 'source_outlined'
+  | 'source_rounded'
+  | 'source_sharp'
+  | 'south'
+  | 'south_america'
+  | 'south_america_outlined'
+  | 'south_america_rounded'
+  | 'south_america_sharp'
+  | 'south_east'
+  | 'south_east_outlined'
+  | 'south_east_rounded'
+  | 'south_east_sharp'
+  | 'south_outlined'
+  | 'south_rounded'
+  | 'south_sharp'
+  | 'south_west'
+  | 'south_west_outlined'
+  | 'south_west_rounded'
+  | 'south_west_sharp'
+  | 'spa'
+  | 'spa_outlined'
+  | 'spa_rounded'
+  | 'spa_sharp'
+  | 'space_bar'
+  | 'space_bar_outlined'
+  | 'space_bar_rounded'
+  | 'space_bar_sharp'
+  | 'space_dashboard'
+  | 'space_dashboard_outlined'
+  | 'space_dashboard_rounded'
+  | 'space_dashboard_sharp'
+  | 'sparkles'
+  | 'spatial_audio'
+  | 'spatial_audio_off'
+  | 'spatial_audio_off_outlined'
+  | 'spatial_audio_off_rounded'
+  | 'spatial_audio_off_sharp'
+  | 'spatial_audio_outlined'
+  | 'spatial_audio_rounded'
+  | 'spatial_audio_sharp'
+  | 'spatial_tracking'
+  | 'spatial_tracking_outlined'
+  | 'spatial_tracking_rounded'
+  | 'spatial_tracking_sharp'
+  | 'speaker'
+  | 'speaker_1'
+  | 'speaker_1_fill'
+  | 'speaker_2'
+  | 'speaker_2_fill'
+  | 'speaker_3'
+  | 'speaker_3_fill'
+  | 'speaker_fill'
+  | 'speaker_group'
+  | 'speaker_group_outlined'
+  | 'speaker_group_rounded'
+  | 'speaker_group_sharp'
+  | 'speaker_notes'
+  | 'speaker_notes_off'
+  | 'speaker_notes_off_outlined'
+  | 'speaker_notes_off_rounded'
+  | 'speaker_notes_off_sharp'
+  | 'speaker_notes_outlined'
+  | 'speaker_notes_rounded'
+  | 'speaker_notes_sharp'
+  | 'speaker_outlined'
+  | 'speaker_phone'
+  | 'speaker_phone_outlined'
+  | 'speaker_phone_rounded'
+  | 'speaker_phone_sharp'
+  | 'speaker_rounded'
+  | 'speaker_sharp'
+  | 'speaker_slash'
+  | 'speaker_slash_fill'
+  | 'speaker_slash_fill_rtl'
+  | 'speaker_slash_rtl'
+  | 'speaker_zzz'
+  | 'speaker_zzz_fill'
+  | 'speaker_zzz_fill_rtl'
+  | 'speaker_zzz_rtl'
+  | 'speed'
+  | 'speed_outlined'
+  | 'speed_rounded'
+  | 'speed_sharp'
+  | 'speedometer'
+  | 'spellcheck'
+  | 'spellcheck_outlined'
+  | 'spellcheck_rounded'
+  | 'spellcheck_sharp'
+  | 'splitscreen'
+  | 'splitscreen_outlined'
+  | 'splitscreen_rounded'
+  | 'splitscreen_sharp'
+  | 'spoke'
+  | 'spoke_outlined'
+  | 'spoke_rounded'
+  | 'spoke_sharp'
+  | 'sports'
+  | 'sports_bar'
+  | 'sports_bar_outlined'
+  | 'sports_bar_rounded'
+  | 'sports_bar_sharp'
+  | 'sports_baseball'
+  | 'sports_baseball_outlined'
+  | 'sports_baseball_rounded'
+  | 'sports_baseball_sharp'
+  | 'sports_basketball'
+  | 'sports_basketball_outlined'
+  | 'sports_basketball_rounded'
+  | 'sports_basketball_sharp'
+  | 'sports_cricket'
+  | 'sports_cricket_outlined'
+  | 'sports_cricket_rounded'
+  | 'sports_cricket_sharp'
+  | 'sports_esports'
+  | 'sports_esports_outlined'
+  | 'sports_esports_rounded'
+  | 'sports_esports_sharp'
+  | 'sports_football'
+  | 'sports_football_outlined'
+  | 'sports_football_rounded'
+  | 'sports_football_sharp'
+  | 'sports_golf'
+  | 'sports_golf_outlined'
+  | 'sports_golf_rounded'
+  | 'sports_golf_sharp'
+  | 'sports_gymnastics'
+  | 'sports_gymnastics_outlined'
+  | 'sports_gymnastics_rounded'
+  | 'sports_gymnastics_sharp'
+  | 'sports_handball'
+  | 'sports_handball_outlined'
+  | 'sports_handball_rounded'
+  | 'sports_handball_sharp'
+  | 'sports_hockey'
+  | 'sports_hockey_outlined'
+  | 'sports_hockey_rounded'
+  | 'sports_hockey_sharp'
+  | 'sports_kabaddi'
+  | 'sports_kabaddi_outlined'
+  | 'sports_kabaddi_rounded'
+  | 'sports_kabaddi_sharp'
+  | 'sports_martial_arts'
+  | 'sports_martial_arts_outlined'
+  | 'sports_martial_arts_rounded'
+  | 'sports_martial_arts_sharp'
+  | 'sports_mma'
+  | 'sports_mma_outlined'
+  | 'sports_mma_rounded'
+  | 'sports_mma_sharp'
+  | 'sports_motorsports'
+  | 'sports_motorsports_outlined'
+  | 'sports_motorsports_rounded'
+  | 'sports_motorsports_sharp'
+  | 'sports_outlined'
+  | 'sports_rounded'
+  | 'sports_rugby'
+  | 'sports_rugby_outlined'
+  | 'sports_rugby_rounded'
+  | 'sports_rugby_sharp'
+  | 'sports_score'
+  | 'sports_score_outlined'
+  | 'sports_score_rounded'
+  | 'sports_score_sharp'
+  | 'sports_sharp'
+  | 'sports_soccer'
+  | 'sports_soccer_outlined'
+  | 'sports_soccer_rounded'
+  | 'sports_soccer_sharp'
+  | 'sports_tennis'
+  | 'sports_tennis_outlined'
+  | 'sports_tennis_rounded'
+  | 'sports_tennis_sharp'
+  | 'sports_volleyball'
+  | 'sports_volleyball_outlined'
+  | 'sports_volleyball_rounded'
+  | 'sports_volleyball_sharp'
+  | 'sportscourt'
+  | 'sportscourt_fill'
+  | 'square'
+  | 'square_arrow_down'
+  | 'square_arrow_down_fill'
+  | 'square_arrow_down_on_square'
+  | 'square_arrow_down_on_square_fill'
+  | 'square_arrow_left'
+  | 'square_arrow_left_fill'
+  | 'square_arrow_right'
+  | 'square_arrow_right_fill'
+  | 'square_arrow_up'
+  | 'square_arrow_up_fill'
+  | 'square_arrow_up_on_square'
+  | 'square_arrow_up_on_square_fill'
+  | 'square_favorites'
+  | 'square_favorites_alt'
+  | 'square_favorites_alt_fill'
+  | 'square_favorites_fill'
+  | 'square_fill'
+  | 'square_fill_line_vertical_square'
+  | 'square_fill_line_vertical_square_fill'
+  | 'square_fill_on_circle_fill'
+  | 'square_fill_on_square_fill'
+  | 'square_foot'
+  | 'square_foot_outlined'
+  | 'square_foot_rounded'
+  | 'square_foot_sharp'
+  | 'square_grid_2x2'
+  | 'square_grid_2x2_fill'
+  | 'square_grid_3x2'
+  | 'square_grid_3x2_fill'
+  | 'square_grid_4x3_fill'
+  | 'square_lefthalf_fill'
+  | 'square_line_vertical_square'
+  | 'square_line_vertical_square_fill'
+  | 'square_list'
+  | 'square_list_fill'
+  | 'square_on_circle'
+  | 'square_on_square'
+  | 'square_outlined'
+  | 'square_pencil'
+  | 'square_pencil_fill'
+  | 'square_righthalf_fill'
+  | 'square_rounded'
+  | 'square_sharp'
+  | 'square_split_1x2'
+  | 'square_split_1x2_fill'
+  | 'square_split_2x1'
+  | 'square_split_2x1_fill'
+  | 'square_split_2x2'
+  | 'square_split_2x2_fill'
+  | 'square_stack'
+  | 'square_stack_3d_down_dottedline'
+  | 'square_stack_3d_down_right'
+  | 'square_stack_3d_down_right_fill'
+  | 'square_stack_3d_up'
+  | 'square_stack_3d_up_fill'
+  | 'square_stack_3d_up_slash'
+  | 'square_stack_3d_up_slash_fill'
+  | 'square_stack_fill'
+  | 'squares_below_rectangle'
+  | 'ssid_chart'
+  | 'ssid_chart_outlined'
+  | 'ssid_chart_rounded'
+  | 'ssid_chart_sharp'
+  | 'stacked_bar_chart'
+  | 'stacked_bar_chart_outlined'
+  | 'stacked_bar_chart_rounded'
+  | 'stacked_bar_chart_sharp'
+  | 'stacked_line_chart'
+  | 'stacked_line_chart_outlined'
+  | 'stacked_line_chart_rounded'
+  | 'stacked_line_chart_sharp'
+  | 'stadium'
+  | 'stadium_outlined'
+  | 'stadium_rounded'
+  | 'stadium_sharp'
+  | 'stairs'
+  | 'stairs_outlined'
+  | 'stairs_rounded'
+  | 'stairs_sharp'
+  | 'star'
+  | 'star_border'
+  | 'star_border_outlined'
+  | 'star_border_purple500'
+  | 'star_border_purple500_outlined'
+  | 'star_border_purple500_rounded'
+  | 'star_border_purple500_sharp'
+  | 'star_border_rounded'
+  | 'star_border_sharp'
+  | 'star_circle'
+  | 'star_circle_fill'
+  | 'star_fill'
+  | 'star_half'
+  | 'star_half_outlined'
+  | 'star_half_rounded'
+  | 'star_half_sharp'
+  | 'star_lefthalf_fill'
+  | 'star_outline'
+  | 'star_outline_outlined'
+  | 'star_outline_rounded'
+  | 'star_outline_sharp'
+  | 'star_outlined'
+  | 'star_purple500'
+  | 'star_purple500_outlined'
+  | 'star_purple500_rounded'
+  | 'star_purple500_sharp'
+  | 'star_rate'
+  | 'star_rate_outlined'
+  | 'star_rate_rounded'
+  | 'star_rate_sharp'
+  | 'star_rounded'
+  | 'star_sharp'
+  | 'star_slash'
+  | 'star_slash_fill'
+  | 'staroflife'
+  | 'staroflife_fill'
+  | 'stars'
+  | 'stars_outlined'
+  | 'stars_rounded'
+  | 'stars_sharp'
+  | 'start'
+  | 'start_outlined'
+  | 'start_rounded'
+  | 'start_sharp'
+  | 'stay_current_landscape'
+  | 'stay_current_landscape_outlined'
+  | 'stay_current_landscape_rounded'
+  | 'stay_current_landscape_sharp'
+  | 'stay_current_portrait'
+  | 'stay_current_portrait_outlined'
+  | 'stay_current_portrait_rounded'
+  | 'stay_current_portrait_sharp'
+  | 'stay_primary_landscape'
+  | 'stay_primary_landscape_outlined'
+  | 'stay_primary_landscape_rounded'
+  | 'stay_primary_landscape_sharp'
+  | 'stay_primary_portrait'
+  | 'stay_primary_portrait_outlined'
+  | 'stay_primary_portrait_rounded'
+  | 'stay_primary_portrait_sharp'
+  | 'sticky_note_2'
+  | 'sticky_note_2_outlined'
+  | 'sticky_note_2_rounded'
+  | 'sticky_note_2_sharp'
+  | 'stop'
+  | 'stop_circle'
+  | 'stop_circle_fill'
+  | 'stop_circle_outlined'
+  | 'stop_circle_rounded'
+  | 'stop_circle_sharp'
+  | 'stop_fill'
+  | 'stop_outlined'
+  | 'stop_rounded'
+  | 'stop_screen_share'
+  | 'stop_screen_share_outlined'
+  | 'stop_screen_share_rounded'
+  | 'stop_screen_share_sharp'
+  | 'stop_sharp'
+  | 'stopwatch'
+  | 'stopwatch_fill'
+  | 'storage'
+  | 'storage_outlined'
+  | 'storage_rounded'
+  | 'storage_sharp'
+  | 'store'
+  | 'store_mall_directory'
+  | 'store_mall_directory_outlined'
+  | 'store_mall_directory_rounded'
+  | 'store_mall_directory_sharp'
+  | 'store_outlined'
+  | 'store_rounded'
+  | 'store_sharp'
+  | 'storefront'
+  | 'storefront_outlined'
+  | 'storefront_rounded'
+  | 'storefront_sharp'
+  | 'storm'
+  | 'storm_outlined'
+  | 'storm_rounded'
+  | 'storm_sharp'
+  | 'straight'
+  | 'straight_outlined'
+  | 'straight_rounded'
+  | 'straight_sharp'
+  | 'straighten'
+  | 'straighten_outlined'
+  | 'straighten_rounded'
+  | 'straighten_sharp'
+  | 'stream'
+  | 'stream_outlined'
+  | 'stream_rounded'
+  | 'stream_sharp'
+  | 'streetview'
+  | 'streetview_outlined'
+  | 'streetview_rounded'
+  | 'streetview_sharp'
+  | 'strikethrough'
+  | 'strikethrough_s'
+  | 'strikethrough_s_outlined'
+  | 'strikethrough_s_rounded'
+  | 'strikethrough_s_sharp'
+  | 'stroller'
+  | 'stroller_outlined'
+  | 'stroller_rounded'
+  | 'stroller_sharp'
+  | 'style'
+  | 'style_outlined'
+  | 'style_rounded'
+  | 'style_sharp'
+  | 'subdirectory_arrow_left'
+  | 'subdirectory_arrow_left_outlined'
+  | 'subdirectory_arrow_left_rounded'
+  | 'subdirectory_arrow_left_sharp'
+  | 'subdirectory_arrow_right'
+  | 'subdirectory_arrow_right_outlined'
+  | 'subdirectory_arrow_right_rounded'
+  | 'subdirectory_arrow_right_sharp'
+  | 'subject'
+  | 'subject_outlined'
+  | 'subject_rounded'
+  | 'subject_sharp'
+  | 'subscript'
+  | 'subscript_outlined'
+  | 'subscript_rounded'
+  | 'subscript_sharp'
+  | 'subscriptions'
+  | 'subscriptions_outlined'
+  | 'subscriptions_rounded'
+  | 'subscriptions_sharp'
+  | 'subtitles'
+  | 'subtitles_off'
+  | 'subtitles_off_outlined'
+  | 'subtitles_off_rounded'
+  | 'subtitles_off_sharp'
+  | 'subtitles_outlined'
+  | 'subtitles_rounded'
+  | 'subtitles_sharp'
+  | 'subway'
+  | 'subway_outlined'
+  | 'subway_rounded'
+  | 'subway_sharp'
+  | 'suit_club'
+  | 'suit_club_fill'
+  | 'suit_diamond'
+  | 'suit_diamond_fill'
+  | 'suit_heart'
+  | 'suit_heart_fill'
+  | 'suit_spade'
+  | 'suit_spade_fill'
+  | 'sum'
+  | 'summarize'
+  | 'summarize_outlined'
+  | 'summarize_rounded'
+  | 'summarize_sharp'
+  | 'sun_dust'
+  | 'sun_dust_fill'
+  | 'sun_haze'
+  | 'sun_haze_fill'
+  | 'sun_max'
+  | 'sun_max_fill'
+  | 'sun_min'
+  | 'sun_min_fill'
+  | 'sunny'
+  | 'sunny_snowing'
+  | 'sunrise'
+  | 'sunrise_fill'
+  | 'sunset'
+  | 'sunset_fill'
+  | 'superscript'
+  | 'superscript_outlined'
+  | 'superscript_rounded'
+  | 'superscript_sharp'
+  | 'supervised_user_circle'
+  | 'supervised_user_circle_outlined'
+  | 'supervised_user_circle_rounded'
+  | 'supervised_user_circle_sharp'
+  | 'supervisor_account'
+  | 'supervisor_account_outlined'
+  | 'supervisor_account_rounded'
+  | 'supervisor_account_sharp'
+  | 'support'
+  | 'support_agent'
+  | 'support_agent_outlined'
+  | 'support_agent_rounded'
+  | 'support_agent_sharp'
+  | 'support_outlined'
+  | 'support_rounded'
+  | 'support_sharp'
+  | 'surfing'
+  | 'surfing_outlined'
+  | 'surfing_rounded'
+  | 'surfing_sharp'
+  | 'surround_sound'
+  | 'surround_sound_outlined'
+  | 'surround_sound_rounded'
+  | 'surround_sound_sharp'
+  | 'swap_calls'
+  | 'swap_calls_outlined'
+  | 'swap_calls_rounded'
+  | 'swap_calls_sharp'
+  | 'swap_horiz'
+  | 'swap_horiz_outlined'
+  | 'swap_horiz_rounded'
+  | 'swap_horiz_sharp'
+  | 'swap_horizontal_circle'
+  | 'swap_horizontal_circle_outlined'
+  | 'swap_horizontal_circle_rounded'
+  | 'swap_horizontal_circle_sharp'
+  | 'swap_vert'
+  | 'swap_vert_circle'
+  | 'swap_vert_circle_outlined'
+  | 'swap_vert_circle_rounded'
+  | 'swap_vert_circle_sharp'
+  | 'swap_vert_outlined'
+  | 'swap_vert_rounded'
+  | 'swap_vert_sharp'
+  | 'swap_vertical_circle'
+  | 'swap_vertical_circle_outlined'
+  | 'swap_vertical_circle_rounded'
+  | 'swap_vertical_circle_sharp'
+  | 'swipe'
+  | 'swipe_down'
+  | 'swipe_down_alt'
+  | 'swipe_down_alt_outlined'
+  | 'swipe_down_alt_rounded'
+  | 'swipe_down_alt_sharp'
+  | 'swipe_down_outlined'
+  | 'swipe_down_rounded'
+  | 'swipe_down_sharp'
+  | 'swipe_left'
+  | 'swipe_left_alt'
+  | 'swipe_left_alt_outlined'
+  | 'swipe_left_alt_rounded'
+  | 'swipe_left_alt_sharp'
+  | 'swipe_left_outlined'
+  | 'swipe_left_rounded'
+  | 'swipe_left_sharp'
+  | 'swipe_outlined'
+  | 'swipe_right'
+  | 'swipe_right_alt'
+  | 'swipe_right_alt_outlined'
+  | 'swipe_right_alt_rounded'
+  | 'swipe_right_alt_sharp'
+  | 'swipe_right_outlined'
+  | 'swipe_right_rounded'
+  | 'swipe_right_sharp'
+  | 'swipe_rounded'
+  | 'swipe_sharp'
+  | 'swipe_up'
+  | 'swipe_up_alt'
+  | 'swipe_up_alt_outlined'
+  | 'swipe_up_alt_rounded'
+  | 'swipe_up_alt_sharp'
+  | 'swipe_up_outlined'
+  | 'swipe_up_rounded'
+  | 'swipe_up_sharp'
+  | 'swipe_vertical'
+  | 'swipe_vertical_outlined'
+  | 'swipe_vertical_rounded'
+  | 'swipe_vertical_sharp'
+  | 'switch_access_shortcut'
+  | 'switch_access_shortcut_add'
+  | 'switch_access_shortcut_add_outlined'
+  | 'switch_access_shortcut_add_rounded'
+  | 'switch_access_shortcut_add_sharp'
+  | 'switch_access_shortcut_outlined'
+  | 'switch_access_shortcut_rounded'
+  | 'switch_access_shortcut_sharp'
+  | 'switch_account'
+  | 'switch_account_outlined'
+  | 'switch_account_rounded'
+  | 'switch_account_sharp'
+  | 'switch_camera'
+  | 'switch_camera_outlined'
+  | 'switch_camera_rounded'
+  | 'switch_camera_sharp'
+  | 'switch_camera_solid'
+  | 'switch_left'
+  | 'switch_left_outlined'
+  | 'switch_left_rounded'
+  | 'switch_left_sharp'
+  | 'switch_right'
+  | 'switch_right_outlined'
+  | 'switch_right_rounded'
+  | 'switch_right_sharp'
+  | 'switch_video'
+  | 'switch_video_outlined'
+  | 'switch_video_rounded'
+  | 'switch_video_sharp'
+  | 'synagogue'
+  | 'synagogue_outlined'
+  | 'synagogue_rounded'
+  | 'synagogue_sharp'
+  | 'sync'
+  | 'sync_alt'
+  | 'sync_alt_outlined'
+  | 'sync_alt_rounded'
+  | 'sync_alt_sharp'
+  | 'sync_disabled'
+  | 'sync_disabled_outlined'
+  | 'sync_disabled_rounded'
+  | 'sync_disabled_sharp'
+  | 'sync_lock'
+  | 'sync_lock_outlined'
+  | 'sync_lock_rounded'
+  | 'sync_lock_sharp'
+  | 'sync_outlined'
+  | 'sync_problem'
+  | 'sync_problem_outlined'
+  | 'sync_problem_rounded'
+  | 'sync_problem_sharp'
+  | 'sync_rounded'
+  | 'sync_sharp'
+  | 'system_security_update'
+  | 'system_security_update_good'
+  | 'system_security_update_good_outlined'
+  | 'system_security_update_good_rounded'
+  | 'system_security_update_good_sharp'
+  | 'system_security_update_outlined'
+  | 'system_security_update_rounded'
+  | 'system_security_update_sharp'
+  | 'system_security_update_warning'
+  | 'system_security_update_warning_outlined'
+  | 'system_security_update_warning_rounded'
+  | 'system_security_update_warning_sharp'
+  | 'system_update'
+  | 'system_update_alt'
+  | 'system_update_alt_outlined'
+  | 'system_update_alt_rounded'
+  | 'system_update_alt_sharp'
+  | 'system_update_outlined'
+  | 'system_update_rounded'
+  | 'system_update_sharp'
+  | 'system_update_tv'
+  | 'system_update_tv_outlined'
+  | 'system_update_tv_rounded'
+  | 'system_update_tv_sharp'
+  | 't_bubble'
+  | 't_bubble_fill'
+  | 'tab'
+  | 'tab_outlined'
+  | 'tab_rounded'
+  | 'tab_sharp'
+  | 'tab_unselected'
+  | 'tab_unselected_outlined'
+  | 'tab_unselected_rounded'
+  | 'tab_unselected_sharp'
+  | 'table'
+  | 'table_badge_more'
+  | 'table_badge_more_fill'
+  | 'table_bar'
+  | 'table_bar_outlined'
+  | 'table_bar_rounded'
+  | 'table_bar_sharp'
+  | 'table_chart'
+  | 'table_chart_outlined'
+  | 'table_chart_rounded'
+  | 'table_chart_sharp'
+  | 'table_fill'
+  | 'table_restaurant'
+  | 'table_restaurant_outlined'
+  | 'table_restaurant_rounded'
+  | 'table_restaurant_sharp'
+  | 'table_rows'
+  | 'table_rows_outlined'
+  | 'table_rows_rounded'
+  | 'table_rows_sharp'
+  | 'table_view'
+  | 'table_view_outlined'
+  | 'table_view_rounded'
+  | 'table_view_sharp'
+  | 'tablet'
+  | 'tablet_android'
+  | 'tablet_android_outlined'
+  | 'tablet_android_rounded'
+  | 'tablet_android_sharp'
+  | 'tablet_mac'
+  | 'tablet_mac_outlined'
+  | 'tablet_mac_rounded'
+  | 'tablet_mac_sharp'
+  | 'tablet_outlined'
+  | 'tablet_rounded'
+  | 'tablet_sharp'
+  | 'tag'
+  | 'tag_circle'
+  | 'tag_circle_fill'
+  | 'tag_faces'
+  | 'tag_faces_outlined'
+  | 'tag_faces_rounded'
+  | 'tag_faces_sharp'
+  | 'tag_fill'
+  | 'tag_outlined'
+  | 'tag_rounded'
+  | 'tag_sharp'
+  | 'tag_solid'
+  | 'tags'
+  | 'tags_solid'
+  | 'takeout_dining'
+  | 'takeout_dining_outlined'
+  | 'takeout_dining_rounded'
+  | 'takeout_dining_sharp'
+  | 'tap_and_play'
+  | 'tap_and_play_outlined'
+  | 'tap_and_play_rounded'
+  | 'tap_and_play_sharp'
+  | 'tapas'
+  | 'tapas_outlined'
+  | 'tapas_rounded'
+  | 'tapas_sharp'
+  | 'task'
+  | 'task_alt'
+  | 'task_alt_outlined'
+  | 'task_alt_rounded'
+  | 'task_alt_sharp'
+  | 'task_outlined'
+  | 'task_rounded'
+  | 'task_sharp'
+  | 'taxi_alert'
+  | 'taxi_alert_outlined'
+  | 'taxi_alert_rounded'
+  | 'taxi_alert_sharp'
+  | 'telegram'
+  | 'telegram_outlined'
+  | 'telegram_rounded'
+  | 'telegram_sharp'
+  | 'temple_buddhist'
+  | 'temple_buddhist_outlined'
+  | 'temple_buddhist_rounded'
+  | 'temple_buddhist_sharp'
+  | 'temple_hindu'
+  | 'temple_hindu_outlined'
+  | 'temple_hindu_rounded'
+  | 'temple_hindu_sharp'
+  | 'ten_k'
+  | 'ten_k_outlined'
+  | 'ten_k_rounded'
+  | 'ten_k_sharp'
+  | 'ten_mp'
+  | 'ten_mp_outlined'
+  | 'ten_mp_rounded'
+  | 'ten_mp_sharp'
+  | 'terminal'
+  | 'terminal_outlined'
+  | 'terminal_rounded'
+  | 'terminal_sharp'
+  | 'terrain'
+  | 'terrain_outlined'
+  | 'terrain_rounded'
+  | 'terrain_sharp'
+  | 'text_aligncenter'
+  | 'text_alignleft'
+  | 'text_alignright'
+  | 'text_append'
+  | 'text_badge_checkmark'
+  | 'text_badge_minus'
+  | 'text_badge_plus'
+  | 'text_badge_star'
+  | 'text_badge_xmark'
+  | 'text_bubble'
+  | 'text_bubble_fill'
+  | 'text_cursor'
+  | 'text_decrease'
+  | 'text_decrease_outlined'
+  | 'text_decrease_rounded'
+  | 'text_decrease_sharp'
+  | 'text_fields'
+  | 'text_fields_outlined'
+  | 'text_fields_rounded'
+  | 'text_fields_sharp'
+  | 'text_format'
+  | 'text_format_outlined'
+  | 'text_format_rounded'
+  | 'text_format_sharp'
+  | 'text_increase'
+  | 'text_increase_outlined'
+  | 'text_increase_rounded'
+  | 'text_increase_sharp'
+  | 'text_insert'
+  | 'text_justify'
+  | 'text_justifyleft'
+  | 'text_justifyright'
+  | 'text_quote'
+  | 'text_rotate_up'
+  | 'text_rotate_up_outlined'
+  | 'text_rotate_up_rounded'
+  | 'text_rotate_up_sharp'
+  | 'text_rotate_vertical'
+  | 'text_rotate_vertical_outlined'
+  | 'text_rotate_vertical_rounded'
+  | 'text_rotate_vertical_sharp'
+  | 'text_rotation_angledown'
+  | 'text_rotation_angledown_outlined'
+  | 'text_rotation_angledown_rounded'
+  | 'text_rotation_angledown_sharp'
+  | 'text_rotation_angleup'
+  | 'text_rotation_angleup_outlined'
+  | 'text_rotation_angleup_rounded'
+  | 'text_rotation_angleup_sharp'
+  | 'text_rotation_down'
+  | 'text_rotation_down_outlined'
+  | 'text_rotation_down_rounded'
+  | 'text_rotation_down_sharp'
+  | 'text_rotation_none'
+  | 'text_rotation_none_outlined'
+  | 'text_rotation_none_rounded'
+  | 'text_rotation_none_sharp'
+  | 'text_snippet'
+  | 'text_snippet_outlined'
+  | 'text_snippet_rounded'
+  | 'text_snippet_sharp'
+  | 'textbox'
+  | 'textformat'
+  | 'textformat_123'
+  | 'textformat_abc'
+  | 'textformat_abc_dottedunderline'
+  | 'textformat_alt'
+  | 'textformat_size'
+  | 'textformat_subscript'
+  | 'textformat_superscript'
+  | 'textsms'
+  | 'textsms_outlined'
+  | 'textsms_rounded'
+  | 'textsms_sharp'
+  | 'texture'
+  | 'texture_outlined'
+  | 'texture_rounded'
+  | 'texture_sharp'
+  | 'theater_comedy'
+  | 'theater_comedy_outlined'
+  | 'theater_comedy_rounded'
+  | 'theater_comedy_sharp'
+  | 'theaters'
+  | 'theaters_outlined'
+  | 'theaters_rounded'
+  | 'theaters_sharp'
+  | 'thermometer'
+  | 'thermometer_snowflake'
+  | 'thermometer_sun'
+  | 'thermostat'
+  | 'thermostat_auto'
+  | 'thermostat_auto_outlined'
+  | 'thermostat_auto_rounded'
+  | 'thermostat_auto_sharp'
+  | 'thermostat_outlined'
+  | 'thermostat_rounded'
+  | 'thermostat_sharp'
+  | 'thirteen_mp'
+  | 'thirteen_mp_outlined'
+  | 'thirteen_mp_rounded'
+  | 'thirteen_mp_sharp'
+  | 'thirty_fps'
+  | 'thirty_fps_outlined'
+  | 'thirty_fps_rounded'
+  | 'thirty_fps_select'
+  | 'thirty_fps_select_outlined'
+  | 'thirty_fps_select_rounded'
+  | 'thirty_fps_select_sharp'
+  | 'thirty_fps_sharp'
+  | 'three_g_mobiledata'
+  | 'three_g_mobiledata_outlined'
+  | 'three_g_mobiledata_rounded'
+  | 'three_g_mobiledata_sharp'
+  | 'three_k'
+  | 'three_k_outlined'
+  | 'three_k_plus'
+  | 'three_k_plus_outlined'
+  | 'three_k_plus_rounded'
+  | 'three_k_plus_sharp'
+  | 'three_k_rounded'
+  | 'three_k_sharp'
+  | 'three_mp'
+  | 'three_mp_outlined'
+  | 'three_mp_rounded'
+  | 'three_mp_sharp'
+  | 'three_p'
+  | 'three_p_outlined'
+  | 'three_p_rounded'
+  | 'three_p_sharp'
+  | 'threed_rotation'
+  | 'threed_rotation_outlined'
+  | 'threed_rotation_rounded'
+  | 'threed_rotation_sharp'
+  | 'threesixty'
+  | 'threesixty_outlined'
+  | 'threesixty_rounded'
+  | 'threesixty_sharp'
+  | 'thumb_down'
+  | 'thumb_down_alt'
+  | 'thumb_down_alt_outlined'
+  | 'thumb_down_alt_rounded'
+  | 'thumb_down_alt_sharp'
+  | 'thumb_down_off_alt'
+  | 'thumb_down_off_alt_outlined'
+  | 'thumb_down_off_alt_rounded'
+  | 'thumb_down_off_alt_sharp'
+  | 'thumb_down_outlined'
+  | 'thumb_down_rounded'
+  | 'thumb_down_sharp'
+  | 'thumb_up'
+  | 'thumb_up_alt'
+  | 'thumb_up_alt_outlined'
+  | 'thumb_up_alt_rounded'
+  | 'thumb_up_alt_sharp'
+  | 'thumb_up_off_alt'
+  | 'thumb_up_off_alt_outlined'
+  | 'thumb_up_off_alt_rounded'
+  | 'thumb_up_off_alt_sharp'
+  | 'thumb_up_outlined'
+  | 'thumb_up_rounded'
+  | 'thumb_up_sharp'
+  | 'thumbs_up_down'
+  | 'thumbs_up_down_outlined'
+  | 'thumbs_up_down_rounded'
+  | 'thumbs_up_down_sharp'
+  | 'thunderstorm'
+  | 'thunderstorm_outlined'
+  | 'thunderstorm_rounded'
+  | 'thunderstorm_sharp'
+  | 'ticket'
+  | 'ticket_fill'
+  | 'tickets'
+  | 'tickets_fill'
+  | 'tiktok'
+  | 'tiktok_outlined'
+  | 'tiktok_rounded'
+  | 'tiktok_sharp'
+  | 'time'
+  | 'time_solid'
+  | 'time_to_leave'
+  | 'time_to_leave_outlined'
+  | 'time_to_leave_rounded'
+  | 'time_to_leave_sharp'
+  | 'timelapse'
+  | 'timelapse_outlined'
+  | 'timelapse_rounded'
+  | 'timelapse_sharp'
+  | 'timeline'
+  | 'timeline_outlined'
+  | 'timeline_rounded'
+  | 'timeline_sharp'
+  | 'timer'
+  | 'timer_10'
+  | 'timer_10_outlined'
+  | 'timer_10_rounded'
+  | 'timer_10_select'
+  | 'timer_10_select_outlined'
+  | 'timer_10_select_rounded'
+  | 'timer_10_select_sharp'
+  | 'timer_10_sharp'
+  | 'timer_3'
+  | 'timer_3_outlined'
+  | 'timer_3_rounded'
+  | 'timer_3_select'
+  | 'timer_3_select_outlined'
+  | 'timer_3_select_rounded'
+  | 'timer_3_select_sharp'
+  | 'timer_3_sharp'
+  | 'timer_fill'
+  | 'timer_off'
+  | 'timer_off_outlined'
+  | 'timer_off_rounded'
+  | 'timer_off_sharp'
+  | 'timer_outlined'
+  | 'timer_rounded'
+  | 'timer_sharp'
+  | 'tips_and_updates'
+  | 'tips_and_updates_outlined'
+  | 'tips_and_updates_rounded'
+  | 'tips_and_updates_sharp'
+  | 'tire_repair'
+  | 'tire_repair_outlined'
+  | 'tire_repair_rounded'
+  | 'tire_repair_sharp'
+  | 'title'
+  | 'title_outlined'
+  | 'title_rounded'
+  | 'title_sharp'
+  | 'toc'
+  | 'toc_outlined'
+  | 'toc_rounded'
+  | 'toc_sharp'
+  | 'today'
+  | 'today_fill'
+  | 'today_outlined'
+  | 'today_rounded'
+  | 'today_sharp'
+  | 'toggle_off'
+  | 'toggle_off_outlined'
+  | 'toggle_off_rounded'
+  | 'toggle_off_sharp'
+  | 'toggle_on'
+  | 'toggle_on_outlined'
+  | 'toggle_on_rounded'
+  | 'toggle_on_sharp'
+  | 'token'
+  | 'token_outlined'
+  | 'token_rounded'
+  | 'token_sharp'
+  | 'toll'
+  | 'toll_outlined'
+  | 'toll_rounded'
+  | 'toll_sharp'
+  | 'tonality'
+  | 'tonality_outlined'
+  | 'tonality_rounded'
+  | 'tonality_sharp'
+  | 'topic'
+  | 'topic_outlined'
+  | 'topic_rounded'
+  | 'topic_sharp'
+  | 'tornado'
+  | 'tornado_outlined'
+  | 'tornado_rounded'
+  | 'tornado_sharp'
+  | 'tortoise'
+  | 'tortoise_fill'
+  | 'touch_app'
+  | 'touch_app_outlined'
+  | 'touch_app_rounded'
+  | 'touch_app_sharp'
+  | 'tour'
+  | 'tour_outlined'
+  | 'tour_rounded'
+  | 'tour_sharp'
+  | 'toys'
+  | 'toys_outlined'
+  | 'toys_rounded'
+  | 'toys_sharp'
+  | 'track_changes'
+  | 'track_changes_outlined'
+  | 'track_changes_rounded'
+  | 'track_changes_sharp'
+  | 'traffic'
+  | 'traffic_outlined'
+  | 'traffic_rounded'
+  | 'traffic_sharp'
+  | 'train'
+  | 'train_outlined'
+  | 'train_rounded'
+  | 'train_sharp'
+  | 'train_style_one'
+  | 'train_style_two'
+  | 'tram'
+  | 'tram_fill'
+  | 'tram_outlined'
+  | 'tram_rounded'
+  | 'tram_sharp'
+  | 'transcribe'
+  | 'transcribe_outlined'
+  | 'transcribe_rounded'
+  | 'transcribe_sharp'
+  | 'transfer_within_a_station'
+  | 'transfer_within_a_station_outlined'
+  | 'transfer_within_a_station_rounded'
+  | 'transfer_within_a_station_sharp'
+  | 'transform'
+  | 'transform_outlined'
+  | 'transform_rounded'
+  | 'transform_sharp'
+  | 'transgender'
+  | 'transgender_outlined'
+  | 'transgender_rounded'
+  | 'transgender_sharp'
+  | 'transit_enterexit'
+  | 'transit_enterexit_outlined'
+  | 'transit_enterexit_rounded'
+  | 'transit_enterexit_sharp'
+  | 'translate'
+  | 'translate_outlined'
+  | 'translate_rounded'
+  | 'translate_sharp'
+  | 'trash'
+  | 'trash_circle'
+  | 'trash_circle_fill'
+  | 'trash_fill'
+  | 'trash_slash'
+  | 'trash_slash_fill'
+  | 'travel_explore'
+  | 'travel_explore_outlined'
+  | 'travel_explore_rounded'
+  | 'travel_explore_sharp'
+  | 'tray'
+  | 'tray_2'
+  | 'tray_2_fill'
+  | 'tray_arrow_down'
+  | 'tray_arrow_down_fill'
+  | 'tray_arrow_up'
+  | 'tray_arrow_up_fill'
+  | 'tray_fill'
+  | 'tray_full'
+  | 'tray_full_fill'
+  | 'tree'
+  | 'trending_down'
+  | 'trending_down_outlined'
+  | 'trending_down_rounded'
+  | 'trending_down_sharp'
+  | 'trending_flat'
+  | 'trending_flat_outlined'
+  | 'trending_flat_rounded'
+  | 'trending_flat_sharp'
+  | 'trending_neutral'
+  | 'trending_neutral_outlined'
+  | 'trending_neutral_rounded'
+  | 'trending_neutral_sharp'
+  | 'trending_up'
+  | 'trending_up_outlined'
+  | 'trending_up_rounded'
+  | 'trending_up_sharp'
+  | 'triangle'
+  | 'triangle_fill'
+  | 'triangle_lefthalf_fill'
+  | 'triangle_righthalf_fill'
+  | 'trip_origin'
+  | 'trip_origin_outlined'
+  | 'trip_origin_rounded'
+  | 'trip_origin_sharp'
+  | 'trolley'
+  | 'tropicalstorm'
+  | 'troubleshoot'
+  | 'troubleshoot_outlined'
+  | 'troubleshoot_rounded'
+  | 'troubleshoot_sharp'
+  | 'try_sms_star'
+  | 'try_sms_star_outlined'
+  | 'try_sms_star_rounded'
+  | 'try_sms_star_sharp'
+  | 'tsunami'
+  | 'tsunami_outlined'
+  | 'tsunami_rounded'
+  | 'tsunami_sharp'
+  | 'tty'
+  | 'tty_outlined'
+  | 'tty_rounded'
+  | 'tty_sharp'
+  | 'tune'
+  | 'tune_outlined'
+  | 'tune_rounded'
+  | 'tune_sharp'
+  | 'tungsten'
+  | 'tungsten_outlined'
+  | 'tungsten_rounded'
+  | 'tungsten_sharp'
+  | 'tuningfork'
+  | 'turn_left'
+  | 'turn_left_outlined'
+  | 'turn_left_rounded'
+  | 'turn_left_sharp'
+  | 'turn_right'
+  | 'turn_right_outlined'
+  | 'turn_right_rounded'
+  | 'turn_right_sharp'
+  | 'turn_sharp_left'
+  | 'turn_sharp_left_outlined'
+  | 'turn_sharp_left_rounded'
+  | 'turn_sharp_left_sharp'
+  | 'turn_sharp_right'
+  | 'turn_sharp_right_outlined'
+  | 'turn_sharp_right_rounded'
+  | 'turn_sharp_right_sharp'
+  | 'turn_slight_left'
+  | 'turn_slight_left_outlined'
+  | 'turn_slight_left_rounded'
+  | 'turn_slight_left_sharp'
+  | 'turn_slight_right'
+  | 'turn_slight_right_outlined'
+  | 'turn_slight_right_rounded'
+  | 'turn_slight_right_sharp'
+  | 'turned_in'
+  | 'turned_in_not'
+  | 'turned_in_not_outlined'
+  | 'turned_in_not_rounded'
+  | 'turned_in_not_sharp'
+  | 'turned_in_outlined'
+  | 'turned_in_rounded'
+  | 'turned_in_sharp'
+  | 'tv'
+  | 'tv_circle'
+  | 'tv_circle_fill'
+  | 'tv_fill'
+  | 'tv_music_note'
+  | 'tv_music_note_fill'
+  | 'tv_off'
+  | 'tv_off_outlined'
+  | 'tv_off_rounded'
+  | 'tv_off_sharp'
+  | 'tv_outlined'
+  | 'tv_rounded'
+  | 'tv_sharp'
+  | 'twelve_mp'
+  | 'twelve_mp_outlined'
+  | 'twelve_mp_rounded'
+  | 'twelve_mp_sharp'
+  | 'twenty_four_mp'
+  | 'twenty_four_mp_outlined'
+  | 'twenty_four_mp_rounded'
+  | 'twenty_four_mp_sharp'
+  | 'twenty_mp'
+  | 'twenty_mp_outlined'
+  | 'twenty_mp_rounded'
+  | 'twenty_mp_sharp'
+  | 'twenty_one_mp'
+  | 'twenty_one_mp_outlined'
+  | 'twenty_one_mp_rounded'
+  | 'twenty_one_mp_sharp'
+  | 'twenty_three_mp'
+  | 'twenty_three_mp_outlined'
+  | 'twenty_three_mp_rounded'
+  | 'twenty_three_mp_sharp'
+  | 'twenty_two_mp'
+  | 'twenty_two_mp_outlined'
+  | 'twenty_two_mp_rounded'
+  | 'twenty_two_mp_sharp'
+  | 'two_k'
+  | 'two_k_outlined'
+  | 'two_k_plus'
+  | 'two_k_plus_outlined'
+  | 'two_k_plus_rounded'
+  | 'two_k_plus_sharp'
+  | 'two_k_rounded'
+  | 'two_k_sharp'
+  | 'two_mp'
+  | 'two_mp_outlined'
+  | 'two_mp_rounded'
+  | 'two_mp_sharp'
+  | 'two_wheeler'
+  | 'two_wheeler_outlined'
+  | 'two_wheeler_rounded'
+  | 'two_wheeler_sharp'
+  | 'type_specimen'
+  | 'type_specimen_outlined'
+  | 'type_specimen_rounded'
+  | 'type_specimen_sharp'
+  | 'u_turn_left'
+  | 'u_turn_left_outlined'
+  | 'u_turn_left_rounded'
+  | 'u_turn_left_sharp'
+  | 'u_turn_right'
+  | 'u_turn_right_outlined'
+  | 'u_turn_right_rounded'
+  | 'u_turn_right_sharp'
+  | 'uiwindow_split_2x1'
+  | 'umbrella'
+  | 'umbrella_fill'
+  | 'umbrella_outlined'
+  | 'umbrella_rounded'
+  | 'umbrella_sharp'
+  | 'unarchive'
+  | 'unarchive_outlined'
+  | 'unarchive_rounded'
+  | 'unarchive_sharp'
+  | 'underline'
+  | 'undo'
+  | 'undo_outlined'
+  | 'undo_rounded'
+  | 'undo_sharp'
+  | 'unfold_less'
+  | 'unfold_less_double'
+  | 'unfold_less_double_outlined'
+  | 'unfold_less_double_rounded'
+  | 'unfold_less_double_sharp'
+  | 'unfold_less_outlined'
+  | 'unfold_less_rounded'
+  | 'unfold_less_sharp'
+  | 'unfold_more'
+  | 'unfold_more_double'
+  | 'unfold_more_double_outlined'
+  | 'unfold_more_double_rounded'
+  | 'unfold_more_double_sharp'
+  | 'unfold_more_outlined'
+  | 'unfold_more_rounded'
+  | 'unfold_more_sharp'
+  | 'unpublished'
+  | 'unpublished_outlined'
+  | 'unpublished_rounded'
+  | 'unpublished_sharp'
+  | 'unsubscribe'
+  | 'unsubscribe_outlined'
+  | 'unsubscribe_rounded'
+  | 'unsubscribe_sharp'
+  | 'up_arrow'
+  | 'upcoming'
+  | 'upcoming_outlined'
+  | 'upcoming_rounded'
+  | 'upcoming_sharp'
+  | 'update'
+  | 'update_disabled'
+  | 'update_disabled_outlined'
+  | 'update_disabled_rounded'
+  | 'update_disabled_sharp'
+  | 'update_outlined'
+  | 'update_rounded'
+  | 'update_sharp'
+  | 'upgrade'
+  | 'upgrade_outlined'
+  | 'upgrade_rounded'
+  | 'upgrade_sharp'
+  | 'upload'
+  | 'upload_circle'
+  | 'upload_circle_fill'
+  | 'upload_file'
+  | 'upload_file_outlined'
+  | 'upload_file_rounded'
+  | 'upload_file_sharp'
+  | 'upload_outlined'
+  | 'upload_rounded'
+  | 'upload_sharp'
+  | 'usb'
+  | 'usb_off'
+  | 'usb_off_outlined'
+  | 'usb_off_rounded'
+  | 'usb_off_sharp'
+  | 'usb_outlined'
+  | 'usb_rounded'
+  | 'usb_sharp'
+  | 'vaccines'
+  | 'vaccines_outlined'
+  | 'vaccines_rounded'
+  | 'vaccines_sharp'
+  | 'vape_free'
+  | 'vape_free_outlined'
+  | 'vape_free_rounded'
+  | 'vape_free_sharp'
+  | 'vaping_rooms'
+  | 'vaping_rooms_outlined'
+  | 'vaping_rooms_rounded'
+  | 'vaping_rooms_sharp'
+  | 'verified'
+  | 'verified_outlined'
+  | 'verified_rounded'
+  | 'verified_sharp'
+  | 'verified_user'
+  | 'verified_user_outlined'
+  | 'verified_user_rounded'
+  | 'verified_user_sharp'
+  | 'vertical_align_bottom'
+  | 'vertical_align_bottom_outlined'
+  | 'vertical_align_bottom_rounded'
+  | 'vertical_align_bottom_sharp'
+  | 'vertical_align_center'
+  | 'vertical_align_center_outlined'
+  | 'vertical_align_center_rounded'
+  | 'vertical_align_center_sharp'
+  | 'vertical_align_top'
+  | 'vertical_align_top_outlined'
+  | 'vertical_align_top_rounded'
+  | 'vertical_align_top_sharp'
+  | 'vertical_distribute'
+  | 'vertical_distribute_outlined'
+  | 'vertical_distribute_rounded'
+  | 'vertical_distribute_sharp'
+  | 'vertical_shades'
+  | 'vertical_shades_closed'
+  | 'vertical_shades_closed_outlined'
+  | 'vertical_shades_closed_rounded'
+  | 'vertical_shades_closed_sharp'
+  | 'vertical_shades_outlined'
+  | 'vertical_shades_rounded'
+  | 'vertical_shades_sharp'
+  | 'vertical_split'
+  | 'vertical_split_outlined'
+  | 'vertical_split_rounded'
+  | 'vertical_split_sharp'
+  | 'vibration'
+  | 'vibration_outlined'
+  | 'vibration_rounded'
+  | 'vibration_sharp'
+  | 'video_call'
+  | 'video_call_outlined'
+  | 'video_call_rounded'
+  | 'video_call_sharp'
+  | 'video_camera'
+  | 'video_camera_back'
+  | 'video_camera_back_outlined'
+  | 'video_camera_back_rounded'
+  | 'video_camera_back_sharp'
+  | 'video_camera_front'
+  | 'video_camera_front_outlined'
+  | 'video_camera_front_rounded'
+  | 'video_camera_front_sharp'
+  | 'video_camera_solid'
+  | 'video_chat'
+  | 'video_chat_outlined'
+  | 'video_chat_rounded'
+  | 'video_chat_sharp'
+  | 'video_collection'
+  | 'video_collection_outlined'
+  | 'video_collection_rounded'
+  | 'video_collection_sharp'
+  | 'video_file'
+  | 'video_file_outlined'
+  | 'video_file_rounded'
+  | 'video_file_sharp'
+  | 'video_label'
+  | 'video_label_outlined'
+  | 'video_label_rounded'
+  | 'video_label_sharp'
+  | 'video_library'
+  | 'video_library_outlined'
+  | 'video_library_rounded'
+  | 'video_library_sharp'
+  | 'video_settings'
+  | 'video_settings_outlined'
+  | 'video_settings_rounded'
+  | 'video_settings_sharp'
+  | 'video_stable'
+  | 'video_stable_outlined'
+  | 'video_stable_rounded'
+  | 'video_stable_sharp'
+  | 'videocam'
+  | 'videocam_circle'
+  | 'videocam_circle_fill'
+  | 'videocam_fill'
+  | 'videocam_off'
+  | 'videocam_off_outlined'
+  | 'videocam_off_rounded'
+  | 'videocam_off_sharp'
+  | 'videocam_outlined'
+  | 'videocam_rounded'
+  | 'videocam_sharp'
+  | 'videogame_asset'
+  | 'videogame_asset_off'
+  | 'videogame_asset_off_outlined'
+  | 'videogame_asset_off_rounded'
+  | 'videogame_asset_off_sharp'
+  | 'videogame_asset_outlined'
+  | 'videogame_asset_rounded'
+  | 'videogame_asset_sharp'
+  | 'view_2d'
+  | 'view_3d'
+  | 'view_agenda'
+  | 'view_agenda_outlined'
+  | 'view_agenda_rounded'
+  | 'view_agenda_sharp'
+  | 'view_array'
+  | 'view_array_outlined'
+  | 'view_array_rounded'
+  | 'view_array_sharp'
+  | 'view_carousel'
+  | 'view_carousel_outlined'
+  | 'view_carousel_rounded'
+  | 'view_carousel_sharp'
+  | 'view_column'
+  | 'view_column_outlined'
+  | 'view_column_rounded'
+  | 'view_column_sharp'
+  | 'view_comfortable'
+  | 'view_comfortable_outlined'
+  | 'view_comfortable_rounded'
+  | 'view_comfortable_sharp'
+  | 'view_comfy'
+  | 'view_comfy_alt'
+  | 'view_comfy_alt_outlined'
+  | 'view_comfy_alt_rounded'
+  | 'view_comfy_alt_sharp'
+  | 'view_comfy_outlined'
+  | 'view_comfy_rounded'
+  | 'view_comfy_sharp'
+  | 'view_compact'
+  | 'view_compact_alt'
+  | 'view_compact_alt_outlined'
+  | 'view_compact_alt_rounded'
+  | 'view_compact_alt_sharp'
+  | 'view_compact_outlined'
+  | 'view_compact_rounded'
+  | 'view_compact_sharp'
+  | 'view_cozy'
+  | 'view_cozy_outlined'
+  | 'view_cozy_rounded'
+  | 'view_cozy_sharp'
+  | 'view_day'
+  | 'view_day_outlined'
+  | 'view_day_rounded'
+  | 'view_day_sharp'
+  | 'view_headline'
+  | 'view_headline_outlined'
+  | 'view_headline_rounded'
+  | 'view_headline_sharp'
+  | 'view_in_ar'
+  | 'view_in_ar_outlined'
+  | 'view_in_ar_rounded'
+  | 'view_in_ar_sharp'
+  | 'view_kanban'
+  | 'view_kanban_outlined'
+  | 'view_kanban_rounded'
+  | 'view_kanban_sharp'
+  | 'view_list'
+  | 'view_list_outlined'
+  | 'view_list_rounded'
+  | 'view_list_sharp'
+  | 'view_module'
+  | 'view_module_outlined'
+  | 'view_module_rounded'
+  | 'view_module_sharp'
+  | 'view_quilt'
+  | 'view_quilt_outlined'
+  | 'view_quilt_rounded'
+  | 'view_quilt_sharp'
+  | 'view_sidebar'
+  | 'view_sidebar_outlined'
+  | 'view_sidebar_rounded'
+  | 'view_sidebar_sharp'
+  | 'view_stream'
+  | 'view_stream_outlined'
+  | 'view_stream_rounded'
+  | 'view_stream_sharp'
+  | 'view_timeline'
+  | 'view_timeline_outlined'
+  | 'view_timeline_rounded'
+  | 'view_timeline_sharp'
+  | 'view_week'
+  | 'view_week_outlined'
+  | 'view_week_rounded'
+  | 'view_week_sharp'
+  | 'viewfinder'
+  | 'viewfinder_circle'
+  | 'viewfinder_circle_fill'
+  | 'vignette'
+  | 'vignette_outlined'
+  | 'vignette_rounded'
+  | 'vignette_sharp'
+  | 'villa'
+  | 'villa_outlined'
+  | 'villa_rounded'
+  | 'villa_sharp'
+  | 'visibility'
+  | 'visibility_off'
+  | 'visibility_off_outlined'
+  | 'visibility_off_rounded'
+  | 'visibility_off_sharp'
+  | 'visibility_outlined'
+  | 'visibility_rounded'
+  | 'visibility_sharp'
+  | 'voice_chat'
+  | 'voice_chat_outlined'
+  | 'voice_chat_rounded'
+  | 'voice_chat_sharp'
+  | 'voice_over_off'
+  | 'voice_over_off_outlined'
+  | 'voice_over_off_rounded'
+  | 'voice_over_off_sharp'
+  | 'voicemail'
+  | 'voicemail_outlined'
+  | 'voicemail_rounded'
+  | 'voicemail_sharp'
+  | 'volcano'
+  | 'volcano_outlined'
+  | 'volcano_rounded'
+  | 'volcano_sharp'
+  | 'volume_down'
+  | 'volume_down_alt'
+  | 'volume_down_outlined'
+  | 'volume_down_rounded'
+  | 'volume_down_sharp'
+  | 'volume_mute'
+  | 'volume_mute_outlined'
+  | 'volume_mute_rounded'
+  | 'volume_mute_sharp'
+  | 'volume_off'
+  | 'volume_off_outlined'
+  | 'volume_off_rounded'
+  | 'volume_off_sharp'
+  | 'volume_up'
+  | 'volume_up_outlined'
+  | 'volume_up_rounded'
+  | 'volume_up_sharp'
+  | 'volunteer_activism'
+  | 'volunteer_activism_outlined'
+  | 'volunteer_activism_rounded'
+  | 'volunteer_activism_sharp'
+  | 'vpn_key'
+  | 'vpn_key_off'
+  | 'vpn_key_off_outlined'
+  | 'vpn_key_off_rounded'
+  | 'vpn_key_off_sharp'
+  | 'vpn_key_outlined'
+  | 'vpn_key_rounded'
+  | 'vpn_key_sharp'
+  | 'vpn_lock'
+  | 'vpn_lock_outlined'
+  | 'vpn_lock_rounded'
+  | 'vpn_lock_sharp'
+  | 'vrpano'
+  | 'vrpano_outlined'
+  | 'vrpano_rounded'
+  | 'vrpano_sharp'
+  | 'wallet'
+  | 'wallet_giftcard'
+  | 'wallet_giftcard_outlined'
+  | 'wallet_giftcard_rounded'
+  | 'wallet_giftcard_sharp'
+  | 'wallet_membership'
+  | 'wallet_membership_outlined'
+  | 'wallet_membership_rounded'
+  | 'wallet_membership_sharp'
+  | 'wallet_outlined'
+  | 'wallet_rounded'
+  | 'wallet_sharp'
+  | 'wallet_travel'
+  | 'wallet_travel_outlined'
+  | 'wallet_travel_rounded'
+  | 'wallet_travel_sharp'
+  | 'wallpaper'
+  | 'wallpaper_outlined'
+  | 'wallpaper_rounded'
+  | 'wallpaper_sharp'
+  | 'wand_rays'
+  | 'wand_rays_inverse'
+  | 'wand_stars'
+  | 'wand_stars_inverse'
+  | 'warehouse'
+  | 'warehouse_outlined'
+  | 'warehouse_rounded'
+  | 'warehouse_sharp'
+  | 'warning'
+  | 'warning_amber'
+  | 'warning_amber_outlined'
+  | 'warning_amber_rounded'
+  | 'warning_amber_sharp'
+  | 'warning_outlined'
+  | 'warning_rounded'
+  | 'warning_sharp'
+  | 'wash'
+  | 'wash_outlined'
+  | 'wash_rounded'
+  | 'wash_sharp'
+  | 'watch'
+  | 'watch_later'
+  | 'watch_later_outlined'
+  | 'watch_later_rounded'
+  | 'watch_later_sharp'
+  | 'watch_off'
+  | 'watch_off_outlined'
+  | 'watch_off_rounded'
+  | 'watch_off_sharp'
+  | 'watch_outlined'
+  | 'watch_rounded'
+  | 'watch_sharp'
+  | 'water'
+  | 'water_damage'
+  | 'water_damage_outlined'
+  | 'water_damage_rounded'
+  | 'water_damage_sharp'
+  | 'water_drop'
+  | 'water_drop_outlined'
+  | 'water_drop_rounded'
+  | 'water_drop_sharp'
+  | 'water_outlined'
+  | 'water_rounded'
+  | 'water_sharp'
+  | 'waterfall_chart'
+  | 'waterfall_chart_outlined'
+  | 'waterfall_chart_rounded'
+  | 'waterfall_chart_sharp'
+  | 'waveform'
+  | 'waveform_circle'
+  | 'waveform_circle_fill'
+  | 'waveform_path'
+  | 'waveform_path_badge_minus'
+  | 'waveform_path_badge_plus'
+  | 'waveform_path_ecg'
+  | 'waves'
+  | 'waves_outlined'
+  | 'waves_rounded'
+  | 'waves_sharp'
+  | 'waving_hand'
+  | 'waving_hand_outlined'
+  | 'waving_hand_rounded'
+  | 'waving_hand_sharp'
+  | 'wb_auto'
+  | 'wb_auto_outlined'
+  | 'wb_auto_rounded'
+  | 'wb_auto_sharp'
+  | 'wb_cloudy'
+  | 'wb_cloudy_outlined'
+  | 'wb_cloudy_rounded'
+  | 'wb_cloudy_sharp'
+  | 'wb_incandescent'
+  | 'wb_incandescent_outlined'
+  | 'wb_incandescent_rounded'
+  | 'wb_incandescent_sharp'
+  | 'wb_iridescent'
+  | 'wb_iridescent_outlined'
+  | 'wb_iridescent_rounded'
+  | 'wb_iridescent_sharp'
+  | 'wb_shade'
+  | 'wb_shade_outlined'
+  | 'wb_shade_rounded'
+  | 'wb_shade_sharp'
+  | 'wb_sunny'
+  | 'wb_sunny_outlined'
+  | 'wb_sunny_rounded'
+  | 'wb_sunny_sharp'
+  | 'wb_twighlight'
+  | 'wb_twilight'
+  | 'wb_twilight_outlined'
+  | 'wb_twilight_rounded'
+  | 'wb_twilight_sharp'
+  | 'wc'
+  | 'wc_outlined'
+  | 'wc_rounded'
+  | 'wc_sharp'
+  | 'web'
+  | 'web_asset'
+  | 'web_asset_off'
+  | 'web_asset_off_outlined'
+  | 'web_asset_off_rounded'
+  | 'web_asset_off_sharp'
+  | 'web_asset_outlined'
+  | 'web_asset_rounded'
+  | 'web_asset_sharp'
+  | 'web_outlined'
+  | 'web_rounded'
+  | 'web_sharp'
+  | 'web_stories'
+  | 'web_stories_outlined'
+  | 'web_stories_rounded'
+  | 'web_stories_sharp'
+  | 'webhook'
+  | 'webhook_outlined'
+  | 'webhook_rounded'
+  | 'webhook_sharp'
+  | 'wechat'
+  | 'wechat_outlined'
+  | 'wechat_rounded'
+  | 'wechat_sharp'
+  | 'weekend'
+  | 'weekend_outlined'
+  | 'weekend_rounded'
+  | 'weekend_sharp'
+  | 'west'
+  | 'west_outlined'
+  | 'west_rounded'
+  | 'west_sharp'
+  | 'whatshot'
+  | 'whatshot_outlined'
+  | 'whatshot_rounded'
+  | 'whatshot_sharp'
+  | 'wheelchair_pickup'
+  | 'wheelchair_pickup_outlined'
+  | 'wheelchair_pickup_rounded'
+  | 'wheelchair_pickup_sharp'
+  | 'where_to_vote'
+  | 'where_to_vote_outlined'
+  | 'where_to_vote_rounded'
+  | 'where_to_vote_sharp'
+  | 'widgets'
+  | 'widgets_outlined'
+  | 'widgets_rounded'
+  | 'widgets_sharp'
+  | 'width_full'
+  | 'width_full_outlined'
+  | 'width_full_rounded'
+  | 'width_full_sharp'
+  | 'width_normal'
+  | 'width_normal_outlined'
+  | 'width_normal_rounded'
+  | 'width_normal_sharp'
+  | 'width_wide'
+  | 'width_wide_outlined'
+  | 'width_wide_rounded'
+  | 'width_wide_sharp'
+  | 'wifi'
+  | 'wifi_1_bar'
+  | 'wifi_1_bar_outlined'
+  | 'wifi_1_bar_rounded'
+  | 'wifi_1_bar_sharp'
+  | 'wifi_2_bar'
+  | 'wifi_2_bar_outlined'
+  | 'wifi_2_bar_rounded'
+  | 'wifi_2_bar_sharp'
+  | 'wifi_calling'
+  | 'wifi_calling_3'
+  | 'wifi_calling_3_outlined'
+  | 'wifi_calling_3_rounded'
+  | 'wifi_calling_3_sharp'
+  | 'wifi_calling_outlined'
+  | 'wifi_calling_rounded'
+  | 'wifi_calling_sharp'
+  | 'wifi_channel'
+  | 'wifi_channel_outlined'
+  | 'wifi_channel_rounded'
+  | 'wifi_channel_sharp'
+  | 'wifi_exclamationmark'
+  | 'wifi_find'
+  | 'wifi_find_outlined'
+  | 'wifi_find_rounded'
+  | 'wifi_find_sharp'
+  | 'wifi_lock'
+  | 'wifi_lock_outlined'
+  | 'wifi_lock_rounded'
+  | 'wifi_lock_sharp'
+  | 'wifi_off'
+  | 'wifi_off_outlined'
+  | 'wifi_off_rounded'
+  | 'wifi_off_sharp'
+  | 'wifi_outlined'
+  | 'wifi_password'
+  | 'wifi_password_outlined'
+  | 'wifi_password_rounded'
+  | 'wifi_password_sharp'
+  | 'wifi_protected_setup'
+  | 'wifi_protected_setup_outlined'
+  | 'wifi_protected_setup_rounded'
+  | 'wifi_protected_setup_sharp'
+  | 'wifi_rounded'
+  | 'wifi_sharp'
+  | 'wifi_slash'
+  | 'wifi_tethering'
+  | 'wifi_tethering_error'
+  | 'wifi_tethering_error_outlined'
+  | 'wifi_tethering_error_rounded'
+  | 'wifi_tethering_error_rounded_outlined'
+  | 'wifi_tethering_error_rounded_rounded'
+  | 'wifi_tethering_error_rounded_sharp'
+  | 'wifi_tethering_error_sharp'
+  | 'wifi_tethering_off'
+  | 'wifi_tethering_off_outlined'
+  | 'wifi_tethering_off_rounded'
+  | 'wifi_tethering_off_sharp'
+  | 'wifi_tethering_outlined'
+  | 'wifi_tethering_rounded'
+  | 'wifi_tethering_sharp'
+  | 'wind'
+  | 'wind_power'
+  | 'wind_power_outlined'
+  | 'wind_power_rounded'
+  | 'wind_power_sharp'
+  | 'wind_snow'
+  | 'window'
+  | 'window_outlined'
+  | 'window_rounded'
+  | 'window_sharp'
+  | 'wine_bar'
+  | 'wine_bar_outlined'
+  | 'wine_bar_rounded'
+  | 'wine_bar_sharp'
+  | 'woman'
+  | 'woman_2'
+  | 'woman_2_outlined'
+  | 'woman_2_rounded'
+  | 'woman_2_sharp'
+  | 'woman_outlined'
+  | 'woman_rounded'
+  | 'woman_sharp'
+  | 'woo_commerce'
+  | 'woo_commerce_outlined'
+  | 'woo_commerce_rounded'
+  | 'woo_commerce_sharp'
+  | 'wordpress'
+  | 'wordpress_outlined'
+  | 'wordpress_rounded'
+  | 'wordpress_sharp'
+  | 'work'
+  | 'work_history'
+  | 'work_history_outlined'
+  | 'work_history_rounded'
+  | 'work_history_sharp'
+  | 'work_off'
+  | 'work_off_outlined'
+  | 'work_off_rounded'
+  | 'work_off_sharp'
+  | 'work_outline'
+  | 'work_outline_outlined'
+  | 'work_outline_rounded'
+  | 'work_outline_sharp'
+  | 'work_outlined'
+  | 'work_rounded'
+  | 'work_sharp'
+  | 'workspace_premium'
+  | 'workspace_premium_outlined'
+  | 'workspace_premium_rounded'
+  | 'workspace_premium_sharp'
+  | 'workspaces'
+  | 'workspaces_filled'
+  | 'workspaces_outline'
+  | 'workspaces_outlined'
+  | 'workspaces_rounded'
+  | 'workspaces_sharp'
+  | 'wrap_text'
+  | 'wrap_text_outlined'
+  | 'wrap_text_rounded'
+  | 'wrap_text_sharp'
+  | 'wrench'
+  | 'wrench_fill'
+  | 'wrong_location'
+  | 'wrong_location_outlined'
+  | 'wrong_location_rounded'
+  | 'wrong_location_sharp'
+  | 'wysiwyg'
+  | 'wysiwyg_outlined'
+  | 'wysiwyg_rounded'
+  | 'wysiwyg_sharp'
+  | 'xmark'
+  | 'xmark_circle'
+  | 'xmark_circle_fill'
+  | 'xmark_octagon'
+  | 'xmark_octagon_fill'
+  | 'xmark_rectangle'
+  | 'xmark_rectangle_fill'
+  | 'xmark_seal'
+  | 'xmark_seal_fill'
+  | 'xmark_shield'
+  | 'xmark_shield_fill'
+  | 'xmark_square'
+  | 'xmark_square_fill'
+  | 'yard'
+  | 'yard_outlined'
+  | 'yard_rounded'
+  | 'yard_sharp'
+  | 'youtube_searched_for'
+  | 'youtube_searched_for_outlined'
+  | 'youtube_searched_for_rounded'
+  | 'youtube_searched_for_sharp'
+  | 'zoom_in'
+  | 'zoom_in_map'
+  | 'zoom_in_map_outlined'
+  | 'zoom_in_map_rounded'
+  | 'zoom_in_map_sharp'
+  | 'zoom_in_outlined'
+  | 'zoom_in_rounded'
+  | 'zoom_in_sharp'
+  | 'zoom_out'
+  | 'zoom_out_map'
+  | 'zoom_out_map_outlined'
+  | 'zoom_out_map_rounded'
+  | 'zoom_out_map_sharp'
+  | 'zoom_out_outlined'
+  | 'zoom_out_rounded'
+  | 'zoom_out_sharp'
+  | 'zzz';
+
+export interface IconThemeDataObject {
+  /**
+   * The default for [Icon.size].
+   *
+   * Falls back to 24.0.
+   */
+  size?: number;
+  /**
+   * The default for [Icon.fill].
+   *
+   * Falls back to 0.0.
+   */
+  fill?: number;
+  /**
+   * The default for [Icon.weight].
+   *
+   * Falls back to 400.0.
+   */
+  weight?: number;
+  /**
+   * The default for [Icon.grade].
+   *
+   * Falls back to 0.0.
+   */
+  grade?: number;
+  /**
+   * The default for [Icon.opticalSize].
+   *
+   * Falls back to 48.0.
+   */
+  opticalSize?: number;
+  /**
+   * The default for [Icon.color].
+   *
+   * In material apps, if there is a [Theme] without any [IconTheme]s
+   * specified, icon colors default to white if [ThemeData.brightness] is dark
+   * and black if [ThemeData.brightness] is light.
+   *
+   * Otherwise, falls back to black.
+   */
+  color?: ColorValue;
+  opacity?: number;
+  /**
+   * The default for [Icon.shadows].
+   */
+  shadows?: Shadow[];
+  /**
+   * The default for [Icon.applyTextScaling].
+   */
+  applyTextScaling?: boolean;
+}
+
+export type IconThemeDataValue = IconThemeData | IconThemeDataObject;
+
+export type InputBorderValue = InputBorder | 'none';
+
+export interface InputDecorationObject {
+  /**
+   * An icon to show before the input field and outside of the decoration's
+   * container.
+   *
+   * The size and color of the icon is configured automatically using an
+   * [IconTheme] and therefore does not need to be explicitly given in the
+   * icon widget.
+   *
+   * The trailing edge of the icon is padded by 16dps.
+   *
+   * The decoration's container is the area which is filled if [filled] is
+   * true and bordered per the [border]. It's the area adjacent to
+   * [icon] and above the widgets that contain [helperText],
+   * [errorText], and [counterText].
+   *
+   * See [Icon], [ImageIcon].
+   */
+  icon?: FlutterElement;
+  /**
+   * The color of the [icon].
+   *
+   * If [iconColor] is a [WidgetStateColor], then the effective
+   * color can depend on the [WidgetState.focused] state, i.e.
+   * if the [TextField] is focused or not.
+   */
+  iconColor?: ColorValue;
+  /**
+   * Optional widget that describes the input field.
+   *
+   * When the input field is empty and unfocused, the label is displayed on
+   * top of the input field (i.e., at the same location on the screen where
+   * text may be entered in the input field). When the input field receives
+   * focus (or if the field is non-empty), depending on [floatingLabelAlignment],
+   * the label moves above, either vertically adjacent to, or to the center of
+   * the input field.
+   *
+   * This can be used, for example, to add multiple [TextStyle]'s to a label that would
+   * otherwise be specified using [labelText], which only takes one [TextStyle].
+   *
+   * This example shows a `TextField` with a [Text.rich] widget as the [label].
+   * The widget contains multiple [Text] widgets with different [TextStyle]'s.
+   *
+   * ** See code in examples/api/lib/material/input_decorator/input_decoration.label.0.dart **
+   *
+   * Only one of [label] and [labelText] can be specified.
+   */
+  label?: FlutterElement;
+  /**
+   * Optional text that describes the input field.
+   *
+   *
+   * If a more elaborate label is required, consider using [label] instead.
+   * Only one of [label] and [labelText] can be specified.
+   */
+  labelText?: string;
+  /**
+   * The style to use for [InputDecoration.labelText] when the label is on top
+   * of the input field.
+   *
+   * If [labelStyle] is a [WidgetStateTextStyle], then the effective
+   * text style can depend on the [WidgetState.focused] state, i.e.
+   * if the [TextField] is focused or not.
+   *
+   * When the [InputDecoration.labelText] is above (i.e., vertically adjacent to)
+   * the input field, the text uses the [floatingLabelStyle] instead.
+   *
+   * If null, defaults to a value derived from the base [TextStyle] for the
+   * input field and the current [Theme].
+   *
+   * Specifying this style will override the default behavior
+   * of [InputDecoration] that changes the color of the label to the
+   * [InputDecoration.errorStyle] color or [ColorScheme.error].
+   *
+   * It's possible to override the label style for just the error state, or
+   * just the default state, or both.
+   *
+   * In this example the [labelStyle] is specified with a [WidgetStateProperty]
+   * which resolves to a text style whose color depends on the decorator's
+   * error state.
+   *
+   * ** See code in examples/api/lib/material/input_decorator/input_decoration.label_style_error.0.dart **
+   */
+  labelStyle?: TextStyleValue;
+  /**
+   * The style to use for [InputDecoration.labelText] when the label is
+   * above (i.e., vertically adjacent to) the input field.
+   *
+   * When the [InputDecoration.labelText] is on top of the input field, the
+   * text uses the [labelStyle] instead.
+   *
+   * If [floatingLabelStyle] is a [WidgetStateTextStyle], then the effective
+   * text style can depend on the [WidgetState.focused] state, i.e.
+   * if the [TextField] is focused or not.
+   *
+   * If null, defaults to [labelStyle].
+   *
+   * Specifying this style will override the default behavior
+   * of [InputDecoration] that changes the color of the label to the
+   * [InputDecoration.errorStyle] color or [ColorScheme.error].
+   *
+   * When the input field receives focus, the font size of [InputDecoration.label] is
+   * scaled down by 75%.
+   *
+   * It's possible to override the label style for just the error state, or
+   * just the default state, or both.
+   *
+   * In this example the [floatingLabelStyle] is specified with a
+   * [WidgetStateProperty] which resolves to a text style whose color depends
+   * on the decorator's error state.
+   *
+   * ** See code in examples/api/lib/material/input_decorator/input_decoration.floating_label_style_error.0.dart **
+   */
+  floatingLabelStyle?: TextStyleValue;
+  /**
+   * Optional widget that appears below the [InputDecorator.child].
+   *
+   * If non-null, the [helper] is displayed below the [InputDecorator.child], in
+   * the same location as [error]. If a non-null [error] or [errorText] value is
+   * specified then the [helper] is not shown.
+   *
+   * This example shows a `TextField` with a [Text.rich] widget as the [helper].
+   * The widget contains [Text] and [Icon] widgets with different styles.
+   *
+   * ** See code in examples/api/lib/material/input_decorator/input_decoration.helper.0.dart **
+   *
+   * Only one of [helper] and [helperText] can be specified.
+   */
+  helper?: FlutterElement;
+  /**
+   * Text that provides context about the [InputDecorator.child]'s value, such
+   * as how the value will be used.
+   *
+   * If non-null, the text is displayed below the [InputDecorator.child], in
+   * the same location as [errorText]. If a non-null [errorText] value is
+   * specified then the helper text is not shown.
+   *
+   * If a more elaborate helper text is required, consider using [helper] instead.
+   *
+   * Only one of [helper] and [helperText] can be specified.
+   */
+  helperText?: string;
+  /**
+   * The style to use for the [helperText].
+   *
+   * If [helperStyle] is a [WidgetStateTextStyle], then the effective
+   * text style can depend on the [WidgetState.focused] state, i.e.
+   * if the [TextField] is focused or not.
+   */
+  helperStyle?: TextStyleValue;
+  /**
+   * The maximum number of lines the [helperText] can occupy.
+   *
+   * Defaults to null, which means that soft line breaks in [helperText] are
+   * truncated with an ellipse while hard line breaks are respected.
+   * For example, a [helperText] that overflows the width of the field will be
+   * truncated with an ellipse. However, a [helperText] with explicit linebreak
+   * characters (\n) will display on multiple lines.
+   *
+   * To cause a long [helperText] to wrap, either set [helperMaxLines] or use
+   * [helper] which offers more flexibility. For instance, it can be set to a
+   * [Text] widget with a specific overflow value.
+   *
+   * This value is passed along to the [Text.maxLines] attribute
+   * of the [Text] widget used to display the helper.
+   *
+   * See also:
+   *
+   *  * [errorMaxLines], the equivalent but for the [errorText].
+   */
+  helperMaxLines?: number;
+  /**
+   * Text that suggests what sort of input the field accepts.
+   *
+   * Displayed on top of the [InputDecorator.child] (i.e., at the same location
+   * on the screen where text may be entered in the [InputDecorator.child]),
+   * when [InputDecorator.isEmpty] is true and either (a) [labelText] is null
+   * or (b) the input has the focus.
+   */
+  hintText?: string;
+  /**
+   * The widget to use in place of the [hintText].
+   *
+   * Either [hintText] or [hint] can be specified, but not both.
+   */
+  hint?: FlutterElement;
+  /**
+   * The style to use for the [hintText].
+   *
+   * If [hintStyle] is a [WidgetStateTextStyle], then the effective
+   * text style can depend on the [WidgetState.focused] state, i.e.
+   * if the [TextField] is focused or not.
+   *
+   * Also used for the [labelText] when the [labelText] is displayed on
+   * top of the input field (i.e., at the same location on the screen where
+   * text may be entered in the [InputDecorator.child]).
+   *
+   * If null, defaults to a value derived from the base [TextStyle] for the
+   * input field and the current [Theme].
+   */
+  hintStyle?: TextStyleValue;
+  /**
+   * The direction to use for the [hintText].
+   *
+   * If null, defaults to a value derived from [Directionality] for the
+   * input field and the current context.
+   */
+  hintTextDirection?: TextDirection;
+  /**
+   * The maximum number of lines the [hintText] can occupy.
+   *
+   * Defaults to the value of [TextField.maxLines] attribute.
+   *
+   * This value is passed along to the [Text.maxLines] attribute
+   * of the [Text] widget used to display the hint text. [TextOverflow.ellipsis] is
+   * used to handle the overflow when it is limited to single line.
+   */
+  hintMaxLines?: number;
+  /**
+   * The duration of the [hintText] fade in and fade out animations.
+   *
+   * If null, defaults to [InputDecorationThemeData.hintFadeDuration].
+   * If [InputDecorationThemeData.hintFadeDuration] is null defaults to 20ms.
+   */
+  hintFadeDuration?: DurationValue;
+  /**
+   * Whether the input field's height should always be greater than or equal to
+   * the height of the [hintText], even if the [hintText] is not visible.
+   *
+   * The [InputDecorator] widget ignores [hintText] during layout when
+   * it's not visible, if this flag is set to false.
+   *
+   * Defaults to true.
+   *
+   * @deprecated
+   */
+  maintainHintHeight?: boolean;
+  /**
+   * Whether the input field's size should always be greater than or equal to
+   * the size of the [hint] or [hintText], even if the [hint] or [hintText] are not visible.
+   *
+   * The [InputDecorator] widget ignores [hint] and [hintText] during layout when
+   * they are not visible, if this flag is set to false.
+   *
+   * Defaults to true.
+   */
+  maintainHintSize?: boolean;
+  /**
+   * Whether the input field's size should always be greater than or equal to
+   * the size of the [label] or [labelText], even if the [label] or [labelText] are not visible.
+   *
+   * The [InputDecorator] widget ignores [label] and [labelText] during layout when
+   * this flag is set to false.
+   *
+   * Defaults to false for compatibility reason.
+   */
+  maintainLabelSize?: boolean;
+  /**
+   * Optional widget that appears below the [InputDecorator.child] and the border.
+   *
+   * If non-null, the border's color animates to red and the [helperText] is not shown.
+   *
+   * Only one of [error] and [errorText] can be specified.
+   */
+  error?: FlutterElement;
+  /**
+   * Text that appears below the [InputDecorator.child] and the border.
+   *
+   * If non-null, the border's color animates to red and the [helperText] is
+   * not shown.
+   *
+   * In a [TextFormField], this is overridden by the value returned from
+   * [TextFormField.validator], if that is not null.
+   *
+   * If a more elaborate error is required, consider using [error] instead.
+   *
+   * Only one of [error] and [errorText] can be specified.
+   */
+  errorText?: string;
+  /**
+   * The style to use for the [InputDecoration.errorText].
+   *
+   * If null, defaults of a value derived from the base [TextStyle] for the
+   * input field and the current [Theme].
+   *
+   * By default the color of style will be used by the label of
+   * [InputDecoration] if [InputDecoration.errorText] is not null. See
+   * [InputDecoration.labelStyle] or [InputDecoration.floatingLabelStyle] for
+   * an example of how to replicate this behavior when specifying those
+   * styles.
+   */
+  errorStyle?: TextStyleValue;
+  /**
+   * The maximum number of lines the [errorText] can occupy.
+   *
+   * Defaults to null, which means that soft line breaks in [errorText] are
+   * truncated with an ellipse while hard line breaks are respected.
+   * For example, an [errorText] that overflows the width of the field will be
+   * truncated with an ellipse. However, an [errorText] with explicit linebreak
+   * characters (\n) will display on multiple lines.
+   *
+   * To cause a long [errorText] to wrap, either set [errorMaxLines] or use
+   * [error] which offers more flexibility. For instance, it can be set to a
+   * [Text] widget with a specific overflow value.
+   *
+   * This value is passed along to the [Text.maxLines] attribute
+   * of the [Text] widget used to display the error.
+   *
+   * See also:
+   *
+   *  * [helperMaxLines], the equivalent but for the [helperText].
+   */
+  errorMaxLines?: number;
+  /**
+   * Defines **how** the floating label should behave.
+   *
+   * When [FloatingLabelBehavior.auto] the label will float to the top only when
+   * the field is focused or has some text content, otherwise it will appear
+   * in the field in place of the content.
+   *
+   * When [FloatingLabelBehavior.always] the label will always float at the top
+   * of the field above the content.
+   *
+   * When [FloatingLabelBehavior.never] the label will always appear in an empty
+   * field in place of the content.
+   *
+   * If null, [InputDecorationThemeData.floatingLabelBehavior] will be used.
+   *
+   * See also:
+   *
+   *  * [floatingLabelAlignment] which defines **where** the floating label
+   *    should be displayed.
+   */
+  floatingLabelBehavior?: FloatingLabelBehavior;
+  /**
+   * Defines **where** the floating label should be displayed.
+   *
+   * [FloatingLabelAlignment.start] aligns the floating label to the leftmost
+   * (when [TextDirection.ltr]) or rightmost (when [TextDirection.rtl]),
+   * possible position, which is vertically adjacent to the label, on top of
+   * the field.
+   *
+   * [FloatingLabelAlignment.center] aligns the floating label to the center on
+   * top of the field.
+   *
+   * If null, [InputDecorationThemeData.floatingLabelAlignment] will be used.
+   *
+   * See also:
+   *
+   *  * [floatingLabelBehavior] which defines **how** the floating label should
+   *    behave.
+   */
+  floatingLabelAlignment?: FloatingLabelAlignmentValue;
+  /**
+   * Whether the decoration is the same size as the input field.
+   *
+   * A collapsed decoration cannot have [labelText], [errorText], [counter],
+   * [icon], prefixes, and suffixes.
+   *
+   * To create a collapsed input decoration, use [InputDecoration.collapsed].
+   */
+  isCollapsed?: boolean;
+  /**
+   * Whether the [InputDecorator.child] is part of a dense form (i.e., uses less vertical
+   * space).
+   *
+   * Defaults to false.
+   */
+  isDense?: boolean;
+  /**
+   * The padding for the input decoration's container.
+   *
+   *
+   * By default the [contentPadding] reflects [isDense] and the type of the
+   * [border].
+   *
+   * If [isCollapsed] is true then [contentPadding] is [EdgeInsets.zero].
+   *
+   * ### Material 3 default content padding
+   *
+   * If `isOutline` property of [border] is false and if [filled] is true then
+   * [contentPadding] is `EdgeInsets.fromLTRB(12, 4, 12, 4)` when [isDense]
+   * is true and `EdgeInsets.fromLTRB(12, 8, 12, 8)` when [isDense] is false.
+   *
+   * If `isOutline` property of [border] is false and if [filled] is false then
+   * [contentPadding] is `EdgeInsets.fromLTRB(0, 4, 0, 4)` when [isDense] is
+   * true and `EdgeInsets.fromLTRB(0, 8, 0, 8)` when [isDense] is false.
+   *
+   * If `isOutline` property of [border] is true then [contentPadding] is
+   * `EdgeInsets.fromLTRB(12, 16, 12, 8)` when [isDense] is true
+   * and `EdgeInsets.fromLTRB(12, 20, 12, 12)` when [isDense] is false.
+   *
+   * ### Material 2 default content padding
+   *
+   * If `isOutline` property of [border] is false and if [filled] is true then
+   * [contentPadding] is `EdgeInsets.fromLTRB(12, 8, 12, 8)` when [isDense]
+   * is true and `EdgeInsets.fromLTRB(12, 12, 12, 12)` when [isDense] is false.
+   *
+   * If `isOutline` property of [border] is false and if [filled] is false then
+   * [contentPadding] is `EdgeInsets.fromLTRB(0, 8, 0, 8)` when [isDense] is
+   * true and `EdgeInsets.fromLTRB(0, 12, 0, 12)` when [isDense] is false.
+   *
+   * If `isOutline` property of [border] is true then [contentPadding] is
+   * `EdgeInsets.fromLTRB(12, 20, 12, 12)` when [isDense] is true
+   * and `EdgeInsets.fromLTRB(12, 24, 12, 16)` when [isDense] is false.
+   */
+  contentPadding?: EdgeInsetsGeometryValue;
+  /**
+   * An icon that appears before the [prefix] or [prefixText] and before
+   * the editable part of the text field, within the decoration's container.
+   *
+   * The size and color of the prefix icon is configured automatically using an
+   * [IconTheme] and therefore does not need to be explicitly given in the
+   * icon widget.
+   *
+   * The prefix icon is constrained with a minimum size of 48px by 48px, but
+   * can be expanded beyond that. Anything larger than 24px will require
+   * additional padding to ensure it matches the Material Design spec of 12px
+   * padding between the left edge of the input and leading edge of the prefix
+   * icon. The following snippet shows how to pad the leading edge of the
+   * prefix icon:
+   *
+   * ```dart
+   * prefixIcon: Padding(
+   *   padding: const EdgeInsetsDirectional.only(start: 12.0),
+   *   child: _myIcon, // _myIcon is a 48px-wide widget.
+   * )
+   * ```
+   *
+   *
+   * The prefix icon alignment can be changed using [Align] with a fixed `widthFactor` and
+   * `heightFactor`.
+   *
+   * This example shows how the prefix icon alignment can be changed using [Align] with
+   * a fixed `widthFactor` and `heightFactor`.
+   *
+   * ** See code in examples/api/lib/material/input_decorator/input_decoration.prefix_icon.0.dart **
+   *
+   * See also:
+   *
+   *  * [Icon] and [ImageIcon], which are typically used to show icons.
+   *  * [prefix] and [prefixText], which are other ways to show content
+   *    before the text field (but after the icon).
+   *  * [suffixIcon], which is the same but on the trailing edge.
+   *  * [Align] A widget that aligns its child within itself and optionally
+   *    sizes itself based on the child's size.
+   */
+  prefixIcon?: FlutterElement;
+  /**
+   * The constraints for the prefix icon.
+   *
+   * This can be used to modify the [BoxConstraints] surrounding [prefixIcon].
+   *
+   * This property is particularly useful for getting the decoration's height
+   * less than the minimum tappable height (which is 48px when the visual
+   * density is set to [VisualDensity.standard]). This can be achieved by
+   * setting [isDense] to true and setting the constraints' minimum height
+   * and width to a value lower than the minimum tappable size.
+   *
+   * This example shows the differences between two `TextField` widgets when
+   * [prefixIconConstraints] is set to the default value and when one is not.
+   *
+   * The [isDense] property must be set to true to be able to
+   * set the constraints smaller than 48px.
+   *
+   * If null, [BoxConstraints] with a minimum width and height of 48px is
+   * used.
+   *
+   * ** See code in examples/api/lib/material/input_decorator/input_decoration.prefix_icon_constraints.0.dart **
+   */
+  prefixIconConstraints?: BoxConstraintsValue;
+  /**
+   * Optional widget to place on the line before the input.
+   *
+   * This can be used, for example, to add some padding to text that would
+   * otherwise be specified using [prefixText], or to add a custom widget in
+   * front of the input. The widget's baseline is lined up with the input
+   * baseline.
+   *
+   * Only one of [prefix] and [prefixText] can be specified.
+   *
+   * The [prefix] appears after the [prefixIcon], if both are specified.
+   *
+   * See also:
+   *
+   *  * [suffix], the equivalent but on the trailing edge.
+   */
+  prefix?: FlutterElement;
+  /**
+   * Optional text prefix to place on the line before the input.
+   *
+   * Uses the [prefixStyle]. Uses [hintStyle] if [prefixStyle] isn't specified.
+   * The prefix text is not returned as part of the user's input.
+   *
+   * If a more elaborate prefix is required, consider using [prefix] instead.
+   * Only one of [prefix] and [prefixText] can be specified.
+   *
+   * The [prefixText] appears after the [prefixIcon], if both are specified.
+   *
+   * See also:
+   *
+   *  * [suffixText], the equivalent but on the trailing edge.
+   */
+  prefixText?: string;
+  /**
+   * The style to use for the [prefixText].
+   *
+   * If [prefixStyle] is a [WidgetStateTextStyle], then the effective
+   * text style can depend on the [WidgetState.focused] state, i.e.
+   * if the [TextField] is focused or not.
+   *
+   * If null, defaults to the [hintStyle].
+   *
+   * See also:
+   *
+   *  * [suffixStyle], the equivalent but on the trailing edge.
+   */
+  prefixStyle?: TextStyleValue;
+  /**
+   * Optional color of the prefixIcon
+   *
+   * Defaults to [iconColor]
+   *
+   * If [prefixIconColor] is a [WidgetStateColor], then the effective
+   * color can depend on the [WidgetState.focused] state, i.e.
+   * if the [TextField] is focused or not.
+   */
+  prefixIconColor?: ColorValue;
+  /**
+   * An icon that appears after the editable part of the text field and
+   * after the [suffix] or [suffixText], within the decoration's container.
+   *
+   * The size and color of the suffix icon is configured automatically using an
+   * [IconTheme] and therefore does not need to be explicitly given in the
+   * icon widget.
+   *
+   * The suffix icon is constrained with a minimum size of 48px by 48px, but
+   * can be expanded beyond that. Anything larger than 24px will require
+   * additional padding to ensure it matches the Material Design spec of 12px
+   * padding between the right edge of the input and trailing edge of the
+   * prefix icon. The following snippet shows how to pad the trailing edge of
+   * the suffix icon:
+   *
+   * ```dart
+   * suffixIcon: Padding(
+   *   padding: const EdgeInsetsDirectional.only(end: 12.0),
+   *   child: _myIcon, // myIcon is a 48px-wide widget.
+   * )
+   * ```
+   *
+   * The decoration's container is the area which is filled if [filled] is
+   * true and bordered per the [border]. It's the area adjacent to
+   * [icon] and above the widgets that contain [helperText],
+   * [errorText], and [counterText].
+   *
+   * The suffix icon alignment can be changed using [Align] with a fixed `widthFactor` and
+   * `heightFactor`.
+   *
+   * This example shows how the suffix icon alignment can be changed using [Align] with
+   * a fixed `widthFactor` and `heightFactor`.
+   *
+   * ** See code in examples/api/lib/material/input_decorator/input_decoration.suffix_icon.0.dart **
+   *
+   * See also:
+   *
+   *  * [Icon] and [ImageIcon], which are typically used to show icons.
+   *  * [suffix] and [suffixText], which are other ways to show content
+   *    after the text field (but before the icon).
+   *  * [prefixIcon], which is the same but on the leading edge.
+   *  * [Align] A widget that aligns its child within itself and optionally
+   *    sizes itself based on the child's size.
+   */
+  suffixIcon?: FlutterElement;
+  /**
+   * Optional widget to place on the line after the input.
+   *
+   * This can be used, for example, to add some padding to the text that would
+   * otherwise be specified using [suffixText], or to add a custom widget after
+   * the input. The widget's baseline is lined up with the input baseline.
+   *
+   * Only one of [suffix] and [suffixText] can be specified.
+   *
+   * The [suffix] appears before the [suffixIcon], if both are specified.
+   *
+   * See also:
+   *
+   *  * [prefix], the equivalent but on the leading edge.
+   */
+  suffix?: FlutterElement;
+  /**
+   * Optional text suffix to place on the line after the input.
+   *
+   * Uses the [suffixStyle]. Uses [hintStyle] if [suffixStyle] isn't specified.
+   * The suffix text is not returned as part of the user's input.
+   *
+   * If a more elaborate suffix is required, consider using [suffix] instead.
+   * Only one of [suffix] and [suffixText] can be specified.
+   *
+   * The [suffixText] appears before the [suffixIcon], if both are specified.
+   *
+   * See also:
+   *
+   *  * [prefixText], the equivalent but on the leading edge.
+   */
+  suffixText?: string;
+  /**
+   * The style to use for the [suffixText].
+   *
+   * If [suffixStyle] is a [WidgetStateTextStyle], then the effective text
+   * style can depend on the [WidgetState.focused] state, i.e. if the
+   * [TextField] is focused or not.
+   *
+   * If null, defaults to the [hintStyle].
+   *
+   * See also:
+   *
+   *  * [prefixStyle], the equivalent but on the leading edge.
+   */
+  suffixStyle?: TextStyleValue;
+  /**
+   * Optional color of the [suffixIcon].
+   *
+   * Defaults to [iconColor]
+   *
+   * If [suffixIconColor] is a [WidgetStateColor], then the effective
+   * color can depend on the [WidgetState.focused] state, i.e.
+   * if the [TextField] is focused or not.
+   */
+  suffixIconColor?: ColorValue;
+  /**
+   * The constraints for the suffix icon.
+   *
+   * This can be used to modify the [BoxConstraints] surrounding [suffixIcon].
+   *
+   * This property is particularly useful for getting the decoration's height
+   * less than the minimum tappable height (which is 48px when the visual
+   * density is set to [VisualDensity.standard]). This can be achieved by
+   * setting [isDense] to true and setting the constraints' minimum height
+   * and width to a value lower than the minimum tappable size.
+   *
+   * If null, a [BoxConstraints] with a minimum width and height of 48px is
+   * used.
+   *
+   * This example shows the differences between two `TextField` widgets when
+   * [suffixIconConstraints] is set to the default value and when one is not.
+   *
+   * The [isDense] property must be set to true to be able to
+   * set the constraints smaller than 48px.
+   *
+   * If null, [BoxConstraints] with a minimum width and height of 48px is
+   * used.
+   *
+   * ** See code in examples/api/lib/material/input_decorator/input_decoration.suffix_icon_constraints.0.dart **
+   */
+  suffixIconConstraints?: BoxConstraintsValue;
+  /**
+   * Optional custom counter widget to go in the place otherwise occupied by
+   * [counterText]. If this property is non null, then [counterText] is
+   * ignored.
+   */
+  counter?: FlutterElement;
+  /**
+   * Optional text to place below the line as a character count.
+   *
+   * Rendered using [counterStyle]. Uses [helperStyle] if [counterStyle] is
+   * null.
+   *
+   * The semantic label can be replaced by providing a [semanticCounterText].
+   *
+   * If null or an empty string and [counter] isn't specified, then nothing
+   * will appear in the counter's location.
+   */
+  counterText?: string;
+  /**
+   * The style to use for the [counterText].
+   *
+   * If [counterStyle] is a [WidgetStateTextStyle], then the effective
+   * text style can depend on the [WidgetState.focused] state, i.e.
+   * if the [TextField] is focused or not.
+   *
+   * If null, defaults to the [helperStyle].
+   */
+  counterStyle?: TextStyleValue;
+  /**
+   * If true the decoration's container is filled with [fillColor].
+   *
+   * When [InputDecorator.isHovering] is true, the [hoverColor] is also blended
+   * into the final fill color.
+   *
+   * Typically this field set to true if [border] is an [UnderlineInputBorder].
+   *
+   * The decoration's container is the area which is filled if [filled] is true
+   * and bordered per the [border]. It's the area adjacent to [icon] and above
+   * the widgets that contain [helperText], [errorText], and [counterText].
+   *
+   * This property is false by default.
+   */
+  filled?: boolean;
+  /**
+   * The base fill color of the decoration's container color.
+   *
+   * When [InputDecorator.isHovering] is true, the [hoverColor] is also blended
+   * into the final fill color.
+   *
+   * By default the [fillColor] is based on the current
+   * [InputDecorationThemeData.fillColor].
+   */
+  fillColor?: ColorValue;
+  /**
+   * The fill color of the decoration's container when it has the input focus.
+   *
+   * By default the [focusColor] is based on the current
+   * [InputDecorationThemeData.focusColor].
+   *
+   * This [focusColor] is ignored by [TextField] and [TextFormField] because
+   * they don't respond to focus changes by changing their decorator's
+   * container color, they respond by changing their border to the
+   * [focusedBorder], which you can change the color of.
+   */
+  focusColor?: ColorValue;
+  /**
+   * The color of the highlight for the decoration shown if the container
+   * is being hovered over by a mouse.
+   *
+   * If [filled] is true, the [hoverColor] is blended with [fillColor] and
+   * fills the decoration's container.
+   *
+   * If [filled] is false, and [InputDecorator.isFocused] is false, the color
+   * is blended over the [enabledBorder]'s color.
+   *
+   * By default the [hoverColor] is based on the current [Theme].
+   */
+  hoverColor?: ColorValue;
+  /**
+   * The border to display when the [InputDecorator] does not have the focus and
+   * is showing an error.
+   *
+   * See also:
+   *
+   *  * [InputDecorator.isFocused], which is true if the [InputDecorator]'s child
+   *    has the focus.
+   *  * [InputDecoration.errorText], the error shown by the [InputDecorator], if non-null.
+   *  * [border], for a description of where the [InputDecorator] border appears.
+   *  * [UnderlineInputBorder], an [InputDecorator] border which draws a horizontal
+   *    line at the bottom of the input decorator's container.
+   *  * [OutlineInputBorder], an [InputDecorator] border which draws a
+   *    rounded rectangle around the input decorator's container.
+   *  * [InputBorder.none], which doesn't draw a border.
+   *  * [focusedBorder], displayed when [InputDecorator.isFocused] is true
+   *    and [InputDecoration.errorText] is null.
+   *  * [focusedErrorBorder], displayed when [InputDecorator.isFocused] is true
+   *    and [InputDecoration.errorText] is non-null.
+   *  * [disabledBorder], displayed when [InputDecoration.enabled] is false
+   *    and [InputDecoration.errorText] is null.
+   *  * [enabledBorder], displayed when [InputDecoration.enabled] is true
+   *    and [InputDecoration.errorText] is null.
+   */
+  errorBorder?: InputBorderValue;
+  /**
+   * The border to display when the [InputDecorator] has the focus and is not
+   * showing an error.
+   *
+   * See also:
+   *
+   *  * [InputDecorator.isFocused], which is true if the [InputDecorator]'s child
+   *    has the focus.
+   *  * [InputDecoration.errorText], the error shown by the [InputDecorator], if non-null.
+   *  * [border], for a description of where the [InputDecorator] border appears.
+   *  * [UnderlineInputBorder], an [InputDecorator] border which draws a horizontal
+   *    line at the bottom of the input decorator's container.
+   *  * [OutlineInputBorder], an [InputDecorator] border which draws a
+   *    rounded rectangle around the input decorator's container.
+   *  * [InputBorder.none], which doesn't draw a border.
+   *  * [errorBorder], displayed when [InputDecorator.isFocused] is false
+   *    and [InputDecoration.errorText] is non-null.
+   *  * [focusedErrorBorder], displayed when [InputDecorator.isFocused] is true
+   *    and [InputDecoration.errorText] is non-null.
+   *  * [disabledBorder], displayed when [InputDecoration.enabled] is false
+   *    and [InputDecoration.errorText] is null.
+   *  * [enabledBorder], displayed when [InputDecoration.enabled] is true
+   *    and [InputDecoration.errorText] is null.
+   */
+  focusedBorder?: InputBorderValue;
+  /**
+   * The border to display when the [InputDecorator] has the focus and is
+   * showing an error.
+   *
+   * See also:
+   *
+   *  * [InputDecorator.isFocused], which is true if the [InputDecorator]'s child
+   *    has the focus.
+   *  * [InputDecoration.errorText], the error shown by the [InputDecorator], if non-null.
+   *  * [border], for a description of where the [InputDecorator] border appears.
+   *  * [UnderlineInputBorder], an [InputDecorator] border which draws a horizontal
+   *    line at the bottom of the input decorator's container.
+   *  * [OutlineInputBorder], an [InputDecorator] border which draws a
+   *    rounded rectangle around the input decorator's container.
+   *  * [InputBorder.none], which doesn't draw a border.
+   *  * [errorBorder], displayed when [InputDecorator.isFocused] is false
+   *    and [InputDecoration.errorText] is non-null.
+   *  * [focusedBorder], displayed when [InputDecorator.isFocused] is true
+   *    and [InputDecoration.errorText] is null.
+   *  * [disabledBorder], displayed when [InputDecoration.enabled] is false
+   *    and [InputDecoration.errorText] is null.
+   *  * [enabledBorder], displayed when [InputDecoration.enabled] is true
+   *    and [InputDecoration.errorText] is null.
+   */
+  focusedErrorBorder?: InputBorderValue;
+  /**
+   * The border to display when the [InputDecorator] is disabled and is not
+   * showing an error.
+   *
+   * See also:
+   *
+   *  * [InputDecoration.enabled], which is false if the [InputDecorator] is disabled.
+   *  * [InputDecoration.errorText], the error shown by the [InputDecorator], if non-null.
+   *  * [border], for a description of where the [InputDecorator] border appears.
+   *  * [UnderlineInputBorder], an [InputDecorator] border which draws a horizontal
+   *    line at the bottom of the input decorator's container.
+   *  * [OutlineInputBorder], an [InputDecorator] border which draws a
+   *    rounded rectangle around the input decorator's container.
+   *  * [InputBorder.none], which doesn't draw a border.
+   *  * [errorBorder], displayed when [InputDecorator.isFocused] is false
+   *    and [InputDecoration.errorText] is non-null.
+   *  * [focusedBorder], displayed when [InputDecorator.isFocused] is true
+   *    and [InputDecoration.errorText] is null.
+   *  * [focusedErrorBorder], displayed when [InputDecorator.isFocused] is true
+   *    and [InputDecoration.errorText] is non-null.
+   *  * [enabledBorder], displayed when [InputDecoration.enabled] is true
+   *    and [InputDecoration.errorText] is null.
+   */
+  disabledBorder?: InputBorderValue;
+  /**
+   * The border to display when the [InputDecorator] is enabled and is not
+   * showing an error.
+   *
+   * See also:
+   *
+   *  * [InputDecoration.enabled], which is false if the [InputDecorator] is disabled.
+   *  * [InputDecoration.errorText], the error shown by the [InputDecorator], if non-null.
+   *  * [border], for a description of where the [InputDecorator] border appears.
+   *  * [UnderlineInputBorder], an [InputDecorator] border which draws a horizontal
+   *    line at the bottom of the input decorator's container.
+   *  * [OutlineInputBorder], an [InputDecorator] border which draws a
+   *    rounded rectangle around the input decorator's container.
+   *  * [InputBorder.none], which doesn't draw a border.
+   *  * [errorBorder], displayed when [InputDecorator.isFocused] is false
+   *    and [InputDecoration.errorText] is non-null.
+   *  * [focusedBorder], displayed when [InputDecorator.isFocused] is true
+   *    and [InputDecoration.errorText] is null.
+   *  * [focusedErrorBorder], displayed when [InputDecorator.isFocused] is true
+   *    and [InputDecoration.errorText] is non-null.
+   *  * [disabledBorder], displayed when [InputDecoration.enabled] is false
+   *    and [InputDecoration.errorText] is null.
+   */
+  enabledBorder?: InputBorderValue;
+  /**
+   * The shape of the border to draw around the decoration's container.
+   *
+   * If [border] is a [WidgetStateInputBorder] then the effective border is resolved
+   * in the following states:
+   *  * [WidgetState.disabled].
+   *  * [WidgetState.error].
+   *  * [WidgetState.focused].
+   *  * [WidgetState.hovered].
+   *
+   * If [border] derives from [InputBorder] the border's [InputBorder.borderSide],
+   * i.e. the border's color and width, will be overridden to reflect the input
+   * decorator's state. Only the border's shape is used. If custom  [BorderSide]
+   * values are desired for a given state, all five borders – [errorBorder],
+   * [focusedBorder], [enabledBorder], [disabledBorder], [focusedErrorBorder] – must be set.
+   *
+   * The decoration's container is the area which is filled if [filled] is
+   * true and bordered per the [border]. It's the area adjacent to
+   * [InputDecoration.icon] and above the widgets that contain
+   * [InputDecoration.helperText], [InputDecoration.errorText], and
+   * [InputDecoration.counterText].
+   *
+   * The border's bounds, i.e. the value of `border.getOuterPath()`, define
+   * the area to be filled.
+   *
+   * This property is only used when the appropriate one of [errorBorder],
+   * [focusedBorder], [focusedErrorBorder], [disabledBorder], or [enabledBorder]
+   * is not specified. This border's [InputBorder.borderSide] property is
+   * configured by the InputDecorator, depending on the values of
+   * [InputDecoration.errorText], [InputDecoration.enabled],
+   * [InputDecorator.isFocused] and the current [Theme].
+   *
+   * Typically one of [UnderlineInputBorder] or [OutlineInputBorder].
+   * If null, InputDecorator's default is `const UnderlineInputBorder()`.
+   *
+   * See also:
+   *
+   *  * [InputBorder.none], which doesn't draw a border.
+   *  * [UnderlineInputBorder], which draws a horizontal line at the
+   *    bottom of the input decorator's container.
+   *  * [OutlineInputBorder], an [InputDecorator] border which draws a
+   *    rounded rectangle around the input decorator's container.
+   */
+  border?: InputBorderValue;
+  /**
+   * If false the opacity of the visual elements is reduced, including [helperText],[errorText], and [counterText].
+   *
+   * This property is true by default.
+   */
+  enabled?: boolean;
+  /**
+   * A semantic label for the [counterText].
+   *
+   * Defaults to null.
+   *
+   * If provided, this replaces the semantic label of the [counterText].
+   */
+  semanticCounterText?: string;
+  /**
+   * Typically set to true when the [InputDecorator] contains a multiline
+   * [TextField] ([TextField.maxLines] is null or > 1) to override the default
+   * behavior of aligning the label with the center of the [TextField].
+   *
+   * Defaults to false.
+   */
+  alignLabelWithHint?: boolean;
+  /**
+   * Defines minimum and maximum sizes for the [InputDecorator].
+   *
+   * Typically the decorator will fill the horizontal space it is given. For
+   * larger screens, it may be useful to have the maximum width clamped to
+   * a given value so it doesn't fill the whole screen. This property
+   * allows you to control how big the decorator will be in its available
+   * space.
+   *
+   * If null, then the ambient [InputDecorationThemeData.constraints] will be used.
+   * If that is null then the decorator will fill the available width with
+   * a default height based on text size.
+   */
+  constraints?: BoxConstraintsValue;
+  /**
+   * Defines how compact the decoration's layout will be.
+   *
+   * The vertical aspect of the default or user-specified [contentPadding] is adjusted
+   * automatically based on [visualDensity].
+   *
+   * When the visual density is [VisualDensity.compact], the vertical aspect of
+   * [contentPadding] is reduced by 8 pixels.
+   *
+   * When the visual density is [VisualDensity.comfortable], the vertical aspect of
+   * [contentPadding] is reduced by 4 pixels.
+   *
+   * When the visual density is [VisualDensity.standard] vertical aspect of
+   * [contentPadding] is not changed.
+   *
+   * If null, then the ambient [InputDecorationThemeData.visualDensity] will be used.
+   * If that is null then [ThemeData.visualDensity] will be used.
+   *
+   * See also:
+   *
+   *  * [ThemeData.visualDensity], which specifies the [visualDensity] for all widgets
+   *    within a [Theme].
+   *  * [InputDecorationThemeData.visualDensity], which can override this setting for a
+   *    given decorator.
+   */
+  visualDensity?: VisualDensityValue;
+}
+
+export type InputDecorationValue = InputDecoration | InputDecorationObject;
+
+export interface InputDecorationThemeDataObject {
+  labelStyle?: TextStyleValue;
+  floatingLabelStyle?: TextStyleValue;
+  /**
+   * The style to use for [InputDecoration.helperText].
+   *
+   * If [helperStyle] is a [WidgetStateTextStyle], then the effective
+   * text style can depend on the [WidgetState.focused] state, i.e.
+   * if the [TextField] is focused or not.
+   */
+  helperStyle?: TextStyleValue;
+  /**
+   * The maximum number of lines the [InputDecoration.helperText] can occupy.
+   *
+   * Defaults to null, which means that the [InputDecoration.helperText] will
+   * be limited to a single line with [TextOverflow.ellipsis].
+   *
+   * This value is passed along to the [Text.maxLines] attribute
+   * of the [Text] widget used to display the helper.
+   *
+   * See also:
+   *
+   *  * [errorMaxLines], the equivalent but for the [InputDecoration.errorText].
+   */
+  helperMaxLines?: number;
+  /**
+   * The style to use for the [InputDecoration.hintText].
+   *
+   * If [hintStyle] is a [WidgetStateTextStyle], then the effective
+   * text style can depend on the [WidgetState.focused] state, i.e.
+   * if the [TextField] is focused or not.
+   *
+   * Also used for the [InputDecoration.labelText] when the
+   * [InputDecoration.labelText] is displayed on top of the input field (i.e.,
+   * at the same location on the screen where text may be entered in the input
+   * field).
+   *
+   * If null, defaults to a value derived from the base [TextStyle] for the
+   * input field and the current [Theme].
+   */
+  hintStyle?: TextStyleValue;
+  /**
+   * The duration of the [InputDecoration.hintText] fade in and fade out animations.
+   */
+  hintFadeDuration?: DurationValue;
+  /**
+   * The maximum number of lines the [InputDecoration.hintText] can occupy.
+   *
+   * Defaults to null, which means that the [InputDecoration.hintText] will
+   * be limited to a single line with [TextOverflow.ellipsis].
+   *
+   * This value is passed along to the [Text.maxLines] attribute
+   * of the [Text] widget used to display the hint text.
+   */
+  hintMaxLines?: number;
+  errorStyle?: TextStyleValue;
+  /**
+   * The maximum number of lines the [InputDecoration.errorText] can occupy.
+   *
+   * Defaults to null, which means that the [InputDecoration.errorText] will be
+   * limited to a single line with [TextOverflow.ellipsis].
+   *
+   * This value is passed along to the [Text.maxLines] attribute
+   * of the [Text] widget used to display the error.
+   *
+   * See also:
+   *
+   *  * [helperMaxLines], the equivalent but for the [InputDecoration.helperText].
+   */
+  errorMaxLines?: number;
+  /**
+   * Defaults to [FloatingLabelBehavior.auto].
+   */
+  floatingLabelBehavior?: FloatingLabelBehavior;
+  /**
+   * Defaults to [FloatingLabelAlignment.start].
+   */
+  floatingLabelAlignment?: FloatingLabelAlignmentValue;
+  /**
+   * Whether the input decorator's child is part of a dense form (i.e., uses
+   * less vertical space).
+   *
+   * Defaults to false.
+   */
+  isDense?: boolean;
+  /**
+   * The padding for the input decoration's container.
+   *
+   * The decoration's container is the area which is filled if
+   * [InputDecoration.filled] is true and bordered per the [border].
+   * It's the area adjacent to [InputDecoration.icon] and above the
+   * [InputDecoration.icon] and above the widgets that contain
+   * [InputDecoration.helperText], [InputDecoration.errorText], and
+   * [InputDecoration.counterText].
+   *
+   * By default the [contentPadding] reflects [visualDensity], [isDense] and
+   * the type of the [border]. If [isCollapsed] is true then [contentPadding]
+   * is [EdgeInsets.zero].
+   */
+  contentPadding?: EdgeInsetsGeometryValue;
+  /**
+   * Whether the decoration is the same size as the input field.
+   *
+   * A collapsed decoration cannot have [InputDecoration.labelText],
+   * [InputDecoration.errorText], or an [InputDecoration.icon].
+   */
+  isCollapsed?: boolean;
+  /**
+   * The Color to use for the [InputDecoration.icon].
+   *
+   * If [iconColor] is a [WidgetStateColor], then the effective
+   * color can depend on the [WidgetState.focused] state, i.e.
+   * if the [TextField] is focused or not.
+   *
+   * If null, defaults to the [ColorScheme.primary].
+   */
+  iconColor?: ColorValue;
+  /**
+   * The style to use for the [InputDecoration.prefixText].
+   *
+   * If [prefixStyle] is a [WidgetStateTextStyle], then the effective
+   * text style can depend on the [WidgetState.focused] state, i.e.
+   * if the [TextField] is focused or not.
+   *
+   * If null, defaults to the [hintStyle].
+   */
+  prefixStyle?: TextStyleValue;
+  /**
+   * The Color to use for the [InputDecoration.prefixIcon].
+   *
+   * If [prefixIconColor] is a [WidgetStateColor], then the effective
+   * color can depend on the [WidgetState.focused] state, i.e.
+   * if the [TextField] is focused or not.
+   *
+   * If null, defaults to the [ColorScheme.primary].
+   */
+  prefixIconColor?: ColorValue;
+  /**
+   * The constraints to use for [InputDecoration.prefixIconConstraints].
+   *
+   * This can be used to modify the [BoxConstraints] surrounding
+   * [InputDecoration.prefixIcon].
+   *
+   * This property is particularly useful for getting the decoration's height
+   * less than the minimum tappable height (which is 48px when the visual
+   * density is set to [VisualDensity.standard]). This can be achieved by
+   * setting [isDense] to true and setting the constraints' minimum height
+   * and width to a value lower than the minimum tappable size.
+   *
+   * If null, [BoxConstraints] with a minimum width and height of 48px is
+   * used.
+   */
+  prefixIconConstraints?: BoxConstraintsValue;
+  /**
+   * The style to use for the [InputDecoration.suffixText].
+   *
+   * If [suffixStyle] is a [WidgetStateTextStyle], then the effective
+   * color can depend on the [WidgetState.focused] state, i.e.
+   * if the [TextField] is focused or not.
+   *
+   * If null, defaults to the [hintStyle].
+   */
+  suffixStyle?: TextStyleValue;
+  /**
+   * The Color to use for the [InputDecoration.suffixIcon].
+   *
+   * If [suffixIconColor] is a [WidgetStateColor], then the effective
+   * color can depend on the [WidgetState.focused] state, i.e.
+   * if the [TextField] is focused or not.
+   *
+   * If null, defaults to the [ColorScheme.primary].
+   */
+  suffixIconColor?: ColorValue;
+  /**
+   * The constraints to use for [InputDecoration.suffixIconConstraints].
+   *
+   * This can be used to modify the [BoxConstraints] surrounding
+   * [InputDecoration.suffixIcon].
+   *
+   * This property is particularly useful for getting the decoration's height
+   * less than the minimum tappable height (which is 48px when the visual
+   * density is set to [VisualDensity.standard]). This can be achieved by
+   * setting [isDense] to true and setting the constraints' minimum height
+   * and width to a value lower than the minimum tappable size.
+   *
+   * If null, [BoxConstraints] with a minimum width and height of 48px is
+   * used.
+   */
+  suffixIconConstraints?: BoxConstraintsValue;
+  /**
+   * The style to use for the [InputDecoration.counterText].
+   *
+   * If [counterStyle] is a [WidgetStateTextStyle], then the effective
+   * text style can depend on the [WidgetState.focused] state, i.e.
+   * if the [TextField] is focused or not.
+   *
+   * If null, defaults to the [helperStyle].
+   */
+  counterStyle?: TextStyleValue;
+  /**
+   * If true the decoration's container is filled with [fillColor].
+   *
+   * Typically this field set to true if [border] is an
+   * [UnderlineInputBorder].
+   *
+   * The decoration's container is the area, defined by the border's
+   * [InputBorder.getOuterPath], which is filled if [filled] is
+   * true and bordered per the [border].
+   *
+   * This property is false by default.
+   */
+  filled?: boolean;
+  /**
+   * The color to fill the decoration's container with, if [filled] is true.
+   *
+   * By default the fillColor is based on the current [Theme].
+   *
+   * The decoration's container is the area, defined by the border's
+   * [InputBorder.getOuterPath], which is filled if [filled] is
+   * true and bordered per the [border].
+   */
+  fillColor?: ColorValue;
+  /**
+   * The borderSide of the UnderlineInputBorder with `color` and `weight`.
+   */
+  activeIndicatorBorder?: BorderSideValue;
+  /**
+   * The borderSide of the OutlineInputBorder with `color` and `weight`.
+   */
+  outlineBorder?: BorderSideValue;
+  /**
+   * The color to blend with the decoration's [fillColor] with, if [filled] is
+   * true and the container has the input focus.
+   *
+   * By default the [focusColor] is based on the current [Theme].
+   *
+   * The decoration's container is the area, defined by the border's
+   * [InputBorder.getOuterPath], which is filled if [filled] is
+   * true and bordered per the [border].
+   */
+  focusColor?: ColorValue;
+  /**
+   * The color to blend with the decoration's [fillColor] with, if the
+   * decoration is being hovered over by a mouse pointer.
+   *
+   * By default the [hoverColor] is based on the current [Theme].
+   *
+   * The decoration's container is the area, defined by the border's
+   * [InputBorder.getOuterPath], which is filled if [filled] is
+   * true and bordered per the [border].
+   *
+   * The container will be filled when hovered over even if [filled] is false.
+   */
+  hoverColor?: ColorValue;
+  /**
+   * The border to display when the [InputDecorator] does not have the focus and
+   * is showing an error.
+   *
+   * See also:
+   *
+   *  * [InputDecorator.isFocused], which is true if the [InputDecorator]'s child
+   *    has the focus.
+   *  * [InputDecoration.errorText], the error shown by the [InputDecorator], if non-null.
+   *  * [border], for a description of where the [InputDecorator] border appears.
+   *  * [UnderlineInputBorder], an [InputDecorator] border which draws a horizontal
+   *    line at the bottom of the input decorator's container.
+   *  * [OutlineInputBorder], an [InputDecorator] border which draws a
+   *    rounded rectangle around the input decorator's container.
+   *  * [InputBorder.none], which doesn't draw a border.
+   *  * [focusedBorder], displayed when [InputDecorator.isFocused] is true
+   *    and [InputDecoration.errorText] is null.
+   *  * [focusedErrorBorder], displayed when [InputDecorator.isFocused] is true
+   *    and [InputDecoration.errorText] is non-null.
+   *  * [disabledBorder], displayed when [InputDecoration.enabled] is false
+   *    and [InputDecoration.errorText] is null.
+   *  * [enabledBorder], displayed when [InputDecoration.enabled] is true
+   *    and [InputDecoration.errorText] is null.
+   */
+  errorBorder?: InputBorderValue;
+  /**
+   * The border to display when the [InputDecorator] has the focus and is not
+   * showing an error.
+   *
+   * See also:
+   *
+   *  * [InputDecorator.isFocused], which is true if the [InputDecorator]'s child
+   *    has the focus.
+   *  * [InputDecoration.errorText], the error shown by the [InputDecorator], if non-null.
+   *  * [border], for a description of where the [InputDecorator] border appears.
+   *  * [UnderlineInputBorder], an [InputDecorator] border which draws a horizontal
+   *    line at the bottom of the input decorator's container.
+   *  * [OutlineInputBorder], an [InputDecorator] border which draws a
+   *    rounded rectangle around the input decorator's container.
+   *  * [InputBorder.none], which doesn't draw a border.
+   *  * [errorBorder], displayed when [InputDecorator.isFocused] is false
+   *    and [InputDecoration.errorText] is non-null.
+   *  * [focusedErrorBorder], displayed when [InputDecorator.isFocused] is true
+   *    and [InputDecoration.errorText] is non-null.
+   *  * [disabledBorder], displayed when [InputDecoration.enabled] is false
+   *    and [InputDecoration.errorText] is null.
+   *  * [enabledBorder], displayed when [InputDecoration.enabled] is true
+   *    and [InputDecoration.errorText] is null.
+   */
+  focusedBorder?: InputBorderValue;
+  /**
+   * The border to display when the [InputDecorator] has the focus and is
+   * showing an error.
+   *
+   * See also:
+   *
+   *  * [InputDecorator.isFocused], which is true if the [InputDecorator]'s child
+   *    has the focus.
+   *  * [InputDecoration.errorText], the error shown by the [InputDecorator], if non-null.
+   *  * [border], for a description of where the [InputDecorator] border appears.
+   *  * [UnderlineInputBorder], an [InputDecorator] border which draws a horizontal
+   *    line at the bottom of the input decorator's container.
+   *  * [OutlineInputBorder], an [InputDecorator] border which draws a
+   *    rounded rectangle around the input decorator's container.
+   *  * [InputBorder.none], which doesn't draw a border.
+   *  * [errorBorder], displayed when [InputDecorator.isFocused] is false
+   *    and [InputDecoration.errorText] is non-null.
+   *  * [focusedBorder], displayed when [InputDecorator.isFocused] is true
+   *    and [InputDecoration.errorText] is null.
+   *  * [disabledBorder], displayed when [InputDecoration.enabled] is false
+   *    and [InputDecoration.errorText] is null.
+   *  * [enabledBorder], displayed when [InputDecoration.enabled] is true
+   *    and [InputDecoration.errorText] is null.
+   */
+  focusedErrorBorder?: InputBorderValue;
+  /**
+   * The border to display when the [InputDecorator] is disabled and is not
+   * showing an error.
+   *
+   * See also:
+   *
+   *  * [InputDecoration.enabled], which is false if the [InputDecorator] is disabled.
+   *  * [InputDecoration.errorText], the error shown by the [InputDecorator], if non-null.
+   *  * [border], for a description of where the [InputDecorator] border appears.
+   *  * [UnderlineInputBorder], an [InputDecorator] border which draws a horizontal
+   *    line at the bottom of the input decorator's container.
+   *  * [OutlineInputBorder], an [InputDecorator] border which draws a
+   *    rounded rectangle around the input decorator's container.
+   *  * [InputBorder.none], which doesn't draw a border.
+   *  * [errorBorder], displayed when [InputDecorator.isFocused] is false
+   *    and [InputDecoration.errorText] is non-null.
+   *  * [focusedBorder], displayed when [InputDecorator.isFocused] is true
+   *    and [InputDecoration.errorText] is null.
+   *  * [focusedErrorBorder], displayed when [InputDecorator.isFocused] is true
+   *    and [InputDecoration.errorText] is non-null.
+   *  * [enabledBorder], displayed when [InputDecoration.enabled] is true
+   *    and [InputDecoration.errorText] is null.
+   */
+  disabledBorder?: InputBorderValue;
+  /**
+   * The border to display when the [InputDecorator] is enabled and is not
+   * showing an error.
+   *
+   * See also:
+   *
+   *  * [InputDecoration.enabled], which is false if the [InputDecorator] is disabled.
+   *  * [InputDecoration.errorText], the error shown by the [InputDecorator], if non-null.
+   *  * [border], for a description of where the [InputDecorator] border appears.
+   *  * [UnderlineInputBorder], an [InputDecorator] border which draws a horizontal
+   *    line at the bottom of the input decorator's container.
+   *  * [OutlineInputBorder], an [InputDecorator] border which draws a
+   *    rounded rectangle around the input decorator's container.
+   *  * [InputBorder.none], which doesn't draw a border.
+   *  * [errorBorder], displayed when [InputDecorator.isFocused] is false
+   *    and [InputDecoration.errorText] is non-null.
+   *  * [focusedBorder], displayed when [InputDecorator.isFocused] is true
+   *    and [InputDecoration.errorText] is null.
+   *  * [focusedErrorBorder], displayed when [InputDecorator.isFocused] is true
+   *    and [InputDecoration.errorText] is non-null.
+   *  * [disabledBorder], displayed when [InputDecoration.enabled] is false
+   *    and [InputDecoration.errorText] is null.
+   */
+  enabledBorder?: InputBorderValue;
+  /**
+   * The shape of the border to draw around the decoration's container.
+   *
+   * If [border] is a [WidgetStateInputBorder], then the effective border can
+   * depend on the [WidgetState.focused] state, i.e. if the [TextField] is
+   * focused or not.
+   *
+   * The decoration's container is the area which is filled if [filled] is
+   * true and bordered per the [border]. It's the area adjacent to
+   * [InputDecoration.icon] and above the widgets that contain
+   * [InputDecoration.helperText], [InputDecoration.errorText], and
+   * [InputDecoration.counterText].
+   *
+   * The border's bounds, i.e. the value of `border.getOuterPath()`, define
+   * the area to be filled.
+   *
+   * This property is only used when the appropriate one of [errorBorder],
+   * [focusedBorder], [focusedErrorBorder], [disabledBorder], or [enabledBorder]
+   * is not specified. This border's [InputBorder.borderSide] property is
+   * configured by the InputDecorator, depending on the values of
+   * [InputDecoration.errorText], [InputDecoration.enabled],
+   * [InputDecorator.isFocused] and the current [Theme].
+   *
+   * Typically one of [UnderlineInputBorder] or [OutlineInputBorder].
+   * If null, InputDecorator's default is `const UnderlineInputBorder()`.
+   *
+   * See also:
+   *
+   *  * [InputBorder.none], which doesn't draw a border.
+   *  * [UnderlineInputBorder], which draws a horizontal line at the
+   *    bottom of the input decorator's container.
+   *  * [OutlineInputBorder], an [InputDecorator] border which draws a
+   *    rounded rectangle around the input decorator's container.
+   */
+  border?: InputBorderValue;
+  /**
+   * Typically set to true when the [InputDecorator] contains a multiline
+   * [TextField] ([TextField.maxLines] is null or > 1) to override the default
+   * behavior of aligning the label with the center of the [TextField].
+   */
+  alignLabelWithHint?: boolean;
+  /**
+   * Defines minimum and maximum sizes for the [InputDecorator].
+   *
+   * Typically the decorator will fill the horizontal space it is given. For
+   * larger screens, it may be useful to have the maximum width clamped to
+   * a given value so it doesn't fill the whole screen. This property
+   * allows you to control how big the decorator will be in its available
+   * space.
+   *
+   * If null, then the decorator will fill the available width with
+   * a default height based on text size.
+   *
+   * See also:
+   *
+   *  * [InputDecoration.constraints], which can override this setting for a
+   *    given decorator.
+   */
+  constraints?: BoxConstraintsValue;
+  /**
+   * Defines how compact the decoration's layout will be.
+   *
+   * The vertical aspect of the default or user-specified [contentPadding] is adjusted
+   * automatically based on [visualDensity].
+   *
+   * When the visual density is [VisualDensity.compact], the vertical aspect of
+   * [contentPadding] is reduced by 8 pixels.
+   *
+   * When the visual density is [VisualDensity.comfortable], the vertical aspect of
+   * [contentPadding] is reduced by 4 pixels.
+   *
+   * When the visual density is [VisualDensity.standard] vertical aspect of
+   * [contentPadding] is not changed.
+   *
+   * If null, defaults to [ThemeData.visualDensity].
+   *
+   * See also:
+   *
+   *  * [ThemeData.visualDensity], which specifies the [visualDensity] for all widgets
+   *    within a [Theme].
+   *  * [InputDecoration.visualDensity], which can override this setting for a
+   *    given decorator.
+   */
+  visualDensity?: VisualDensityValue;
+}
+
+export type InputDecorationThemeDataValue =
+  InputDecorationThemeData | InputDecorationThemeDataObject;
+
+export type IntentValue = Intent | 'copy' | 'doNothing';
+
+export type InteractiveInkFeatureFactoryValue =
+  | InteractiveInkFeatureFactory
+  | 'constantTurbulenceSeedSplashFactory'
+  | 'splashFactory';
+
+export interface ListTileThemeDataObject {
+  /**
+   * Overrides the default value of [ListTile.dense].
+   */
+  dense?: boolean;
+  /**
+   * Overrides the default value of [ListTile.shape].
+   */
+  shape?: ShapeBorderValue;
+  /**
+   * Overrides the default value of [ListTile.style].
+   */
+  style?: ListTileStyle;
+  /**
+   * Overrides the default value of [ListTile.selectedColor].
+   */
+  selectedColor?: ColorValue;
+  /**
+   * Overrides the default value of [ListTile.iconColor].
+   */
+  iconColor?: ColorValue;
+  /**
+   * Overrides the default value of [ListTile.textColor].
+   */
+  textColor?: ColorValue;
+  /**
+   * Overrides the default value of [ListTile.titleTextStyle].
+   */
+  titleTextStyle?: TextStyleValue;
+  /**
+   * Overrides the default value of [ListTile.subtitleTextStyle].
+   */
+  subtitleTextStyle?: TextStyleValue;
+  /**
+   * Overrides the default value of [ListTile.leadingAndTrailingTextStyle].
+   */
+  leadingAndTrailingTextStyle?: TextStyleValue;
+  /**
+   * Overrides the default value of [ListTile.contentPadding].
+   */
+  contentPadding?: EdgeInsetsGeometryValue;
+  /**
+   * Overrides the default value of [ListTile.tileColor].
+   */
+  tileColor?: ColorValue;
+  /**
+   * Overrides the default value of [ListTile.selectedTileColor].
+   */
+  selectedTileColor?: ColorValue;
+  /**
+   * Overrides the default value of [ListTile.horizontalTitleGap].
+   */
+  horizontalTitleGap?: number;
+  /**
+   * Overrides the default value of [ListTile.minVerticalPadding].
+   */
+  minVerticalPadding?: number;
+  /**
+   * Overrides the default value of [ListTile.minLeadingWidth].
+   */
+  minLeadingWidth?: number;
+  /**
+   * Overrides the default value of [ListTile.enableFeedback].
+   */
+  enableFeedback?: boolean;
+  /**
+   * If specified, overrides the default value of [ListTile.mouseCursor].
+   */
+  mouseCursor?: WidgetStatePropertyValue;
+  /**
+   * If specified, overrides the default value of [ListTile.visualDensity].
+   */
+  visualDensity?: VisualDensityValue;
+  /**
+   * Overrides the default value of [ListTile.minTileHeight].
+   */
+  minTileHeight?: number;
+  /**
+   * If specified, overrides the default value of [ListTile.titleAlignment].
+   */
+  titleAlignment?: ListTileTitleAlignment;
+  /**
+   * If specified, overrides the default value of [CheckboxListTile.controlAffinity]
+   * or [ExpansionTile.controlAffinity] or [SwitchListTile.controlAffinity] or [RadioListTile.controlAffinity].
+   */
+  controlAffinity?: ListTileControlAffinity;
+  /**
+   * If specified, overrides the default value of [ListTile.isThreeLine]
+   * or [CheckboxListTile.isThreeLine] or [RadioListTile.isThreeLine] or [SwitchListTile.isThreeLine].
+   */
+  isThreeLine?: boolean;
+}
+
+export type ListTileThemeDataValue =
+  ListTileThemeData | ListTileThemeDataObject;
+
+export type LocalizationsDelegateValue = LocalizationsDelegate | 'delegate';
+
+export interface LongPressDownDetailsObject {
+  globalPosition?: OffsetValue;
+  localPosition?: OffsetValue;
+  /**
+   * The kind of the device that initiated the event.
+   */
+  kind?: PointerDeviceKind;
+}
+
+export type LongPressDownDetailsValue =
+  LongPressDownDetails | LongPressDownDetailsObject;
+
+export interface LongPressEndDetailsObject {
+  globalPosition?: OffsetValue;
+  localPosition?: OffsetValue;
+  /**
+   * The pointer's velocity when it stopped contacting the screen.
+   *
+   * Defaults to zero if not specified in the constructor.
+   */
+  velocity?: VelocityValue;
+}
+
+export type LongPressEndDetailsValue =
+  LongPressEndDetails | LongPressEndDetailsObject;
+
+export interface LongPressMoveUpdateDetailsObject {
+  globalPosition?: OffsetValue;
+  localPosition?: OffsetValue;
+  /**
+   * A delta offset from the point where the long press drag initially contacted
+   * the screen to the point where the pointer is currently located (the
+   * present [globalPosition]) when this callback is triggered.
+   */
+  offsetFromOrigin?: OffsetValue;
+  /**
+   * A local delta offset from the point where the long press drag initially contacted
+   * the screen to the point where the pointer is currently located (the
+   * present [localPosition]) when this callback is triggered.
+   */
+  localOffsetFromOrigin?: OffsetValue;
+}
+
+export type LongPressMoveUpdateDetailsValue =
+  LongPressMoveUpdateDetails | LongPressMoveUpdateDetailsObject;
+
+export interface LongPressStartDetailsObject {
+  globalPosition?: OffsetValue;
+  localPosition?: OffsetValue;
+}
+
+export type LongPressStartDetailsValue =
+  LongPressStartDetails | LongPressStartDetailsObject;
+
+export interface MagnifierDecorationObject {
+  /**
+   * The opacity of the magnifier and decorations around the magnifier.
+   *
+   * When this is 1.0, the magnified image shows in the [shape] of the
+   * magnifier. When this is less than 1.0, the magnified image is transparent
+   * and shows through the unmagnified background.
+   *
+   * Generally this is only useful for animating the magnifier in and out, as a
+   * transparent magnifier looks quite confusing.
+   */
+  opacity?: number;
+  /**
+   * A list of shadows cast by the [shape].
+   *
+   * If the shadows are offset, consider setting [RawMagnifier.clipBehavior] to
+   * [Clip.hardEdge] (or similar) to ensure the shadow does not occlude the
+   * magnifier (the shadow is drawn above the magnifier).
+   *
+   * If the shadows are _not_ offset, consider using [BlurStyle.outer] in the
+   * shadows instead, to avoid having to introduce a clip.
+   *
+   * In the event that [shape] consists of a stack of borders, the shadow is
+   * drawn using the bounds of the last one.
+   *
+   * See also:
+   *
+   *  * [kElevationToShadow], which defines some shadows for Material design.
+   *    Those shadows use [BlurStyle.normal] and may need to be converted to
+   *    [BlurStyle.outer] for use with [MagnifierDecoration].
+   */
+  shadows?: BoxShadow[];
+  /**
+   * The shape of the magnifier and the outline (border) around it.
+   *
+   * Shapes can be stacked (using the `+` operator). In that case, the
+   * magnifier and shadow are drawn according to the outside edge of the last
+   * shape, with the borders painted on top.
+   */
+  shape?: ShapeBorderValue;
+}
+
+export type MagnifierDecorationValue =
+  MagnifierDecoration | MagnifierDecorationObject;
+
+export interface MaterialBannerThemeDataObject {
+  /**
+   * The background color of a [MaterialBanner].
+   */
+  backgroundColor?: ColorValue;
+  /**
+   * Overrides the default value of [MaterialBanner.surfaceTintColor].
+   */
+  surfaceTintColor?: ColorValue;
+  /**
+   * Overrides the default value of [MaterialBanner.shadowColor].
+   */
+  shadowColor?: ColorValue;
+  /**
+   * Overrides the default value of [MaterialBanner.dividerColor].
+   */
+  dividerColor?: ColorValue;
+  /**
+   * Used to configure the [DefaultTextStyle] for the [MaterialBanner.content]
+   * widget.
+   */
+  contentTextStyle?: TextStyleValue;
+  /**
+   * Default value for [MaterialBanner.elevation].
+   */
+  elevation?: number;
+  /**
+   * The amount of space by which to inset [MaterialBanner.content].
+   */
+  padding?: EdgeInsetsGeometryValue;
+  /**
+   * The amount of space by which to inset [MaterialBanner.leading].
+   */
+  leadingPadding?: EdgeInsetsGeometryValue;
+}
+
+export type MaterialBannerThemeDataValue =
+  MaterialBannerThemeData | MaterialBannerThemeDataObject;
+
+export interface MediaQueryDataObject {
+  /**
+   * The size of the media in logical pixels (e.g, the size of the screen).
+   *
+   * Logical pixels are roughly the same visual size across devices. Physical
+   * pixels are the size of the actual hardware pixels on the device. The
+   * number of physical pixels per logical pixel is described by the
+   * [devicePixelRatio].
+   *
+   * Prefer using [MediaQuery.sizeOf] over [MediaQuery.of]`.size` to get the
+   * size, since the former will only notify of changes in [size], while the
+   * latter will notify for all [MediaQueryData] changes.
+   *
+   * For widgets drawn in an [Overlay], do not assume that the size of the
+   * [Overlay] is the size of the [MediaQuery]'s size. Nested overlays can have
+   * different sizes.
+   *
+   * ## Troubleshooting
+   *
+   * It is considered bad practice to cache and later use the size returned by
+   * `MediaQuery.sizeOf(context)`. It will make the application non-responsive
+   * and might lead to unexpected behaviors.
+   *
+   * For instance, during startup, especially in release mode, the first
+   * returned size might be [Size.zero]. The size will be updated when the
+   * native platform reports the actual resolution. Using [MediaQuery.sizeOf]
+   * will ensure that when the size changes, any widgets depending on the size
+   * are automatically rebuilt.
+   *
+   * See the article on [Creating responsive and adaptive
+   * apps](https://docs.flutter.dev/ui/adaptive-responsive)
+   * for an introduction.
+   *
+   * See also:
+   *
+   * * [FlutterView.physicalSize], which returns the size of the view in physical pixels.
+   * * [FlutterView.display], which returns reports display information like size, and refresh rate.
+   * * [MediaQuery.sizeOf], a method to find and depend on the size defined for
+   *   a [BuildContext].
+   */
+  size?: SizeValue;
+  /**
+   * The number of device pixels for each logical pixel of the encompassing [FlutterView].
+   * This number might not be a power of two. Indeed, it might not even be an integer.
+   * For example, the Nexus 6 has a device pixel ratio of 3.5.
+   *
+   * This property is typically only informational. Overriding this property does not
+   * rescale the app as the Flutter framework or its rendering pipeline usually
+   * does not read this value.
+   */
+  devicePixelRatio?: number;
+  /**
+   * @deprecated
+   */
+  textScaleFactor?: number;
+  textScaler?: TextScalerValue;
+  /**
+   * The current brightness mode of the host platform.
+   *
+   * For example, starting in Android Pie, battery saver mode asks all apps to
+   * render in a "dark mode".
+   *
+   * Not all platforms necessarily support a concept of brightness mode. Those
+   * platforms will report [Brightness.light] in this property.
+   *
+   * See also:
+   *
+   *  * [MediaQuery.platformBrightnessOf], a method to find and depend on the
+   *    platformBrightness defined for a [BuildContext].
+   */
+  platformBrightness?: Brightness;
+  /**
+   * The parts of the display that are partially obscured by system UI,
+   * typically by the hardware display "notches" or the system status bar.
+   *
+   * If you consumed this padding (e.g. by building a widget that envelops or
+   * accounts for this padding in its layout in such a way that children are
+   * no longer exposed to this padding), you should remove this padding
+   * for subsequent descendants in the widget tree by inserting a new
+   * [MediaQuery] widget using the [MediaQuery.removePadding] factory.
+   *
+   * Padding is derived from the values of [viewInsets] and [viewPadding].
+   *
+   *
+   * See also:
+   *
+   *  * [FlutterView], which provides some additional detail about this
+   *    property and how it relates to [viewInsets] and [viewPadding].
+   *  * [SafeArea], a widget that consumes this padding with a [Padding] widget
+   *    and automatically removes it from the [MediaQuery] for its child.
+   */
+  padding?: EdgeInsetsValue;
+  /**
+   * The parts of the display that are completely obscured by system UI,
+   * typically by the device's keyboard.
+   *
+   * When a mobile device's keyboard is visible `viewInsets.bottom`
+   * corresponds to the top of the keyboard.
+   *
+   * This value is independent of the [padding] and [viewPadding]. viewPadding
+   * is measured from the edges of the [MediaQuery] widget's bounds. Padding is
+   * calculated based on the viewPadding and viewInsets. The bounds of the top
+   * level MediaQuery created by [WidgetsApp] are the same as the window
+   * (often the mobile device screen) that contains the app.
+   *
+   *
+   * See also:
+   *
+   *  * [FlutterView], which provides some additional detail about this property
+   *    and how it relates to [padding] and [viewPadding].
+   */
+  viewInsets?: EdgeInsetsValue;
+  /**
+   * The areas along the edges of the display where the system consumes
+   * certain input events and blocks delivery of those events to the app.
+   *
+   * Starting with Android Q, simple swipe gestures that start within the
+   * [systemGestureInsets] areas are used by the system for page navigation
+   * and may not be delivered to the app. Taps and swipe gestures that begin
+   * with a long-press are delivered to the app, but simple press-drag-release
+   * swipe gestures which begin within the area defined by [systemGestureInsets]
+   * may not be.
+   *
+   * Apps should avoid locating gesture detectors within the system gesture
+   * insets area. Apps should feel free to put visual elements within
+   * this area.
+   *
+   * This property is currently only expected to be set to a non-default value
+   * on Android starting with version Q.
+   *
+   * For apps that might be deployed on Android Q devices with full gesture
+   * navigation enabled, use [systemGestureInsets] with [Padding]
+   * to avoid having the left and right edges of the [Slider] from appearing
+   * within the area reserved for system gesture navigation.
+   *
+   * By default, [Slider]s expand to fill the available width. So, we pad the
+   * left and right sides.
+   *
+   * ** See code in examples/api/lib/widgets/media_query/media_query_data.system_gesture_insets.0.dart **
+   */
+  systemGestureInsets?: EdgeInsetsValue;
+  /**
+   * The parts of the display that are partially obscured by system UI,
+   * typically by the hardware display "notches" or the system status bar.
+   *
+   * This value remains the same regardless of whether the system is reporting
+   * other obstructions in the same physical area of the screen. For example, a
+   * software keyboard on the bottom of the screen that may cover and consume
+   * the same area that requires bottom padding will not affect this value.
+   *
+   * This value is independent of the [padding] and [viewInsets]: their values
+   * are measured from the edges of the [MediaQuery] widget's bounds. The
+   * bounds of the top level MediaQuery created by [WidgetsApp] are the
+   * same as the window that contains the app. On mobile devices, this will
+   * typically be the full screen.
+   *
+   *
+   * See also:
+   *
+   *  * [FlutterView], which provides some additional detail about this
+   *    property and how it relates to [padding] and [viewInsets].
+   */
+  viewPadding?: EdgeInsetsValue;
+  /**
+   * Whether to use 24-hour format when formatting time.
+   *
+   * The behavior of this flag is different across platforms:
+   *
+   * - On Android this flag is reported directly from the user settings called
+   *   "Use 24-hour format". It applies to any locale used by the application,
+   *   whether it is the system-wide locale, or the custom locale set by the
+   *   application.
+   * - On iOS this flag is set to true when the user setting called "24-Hour
+   *   Time" is set or the system-wide locale's default uses 24-hour
+   *   formatting.
+   * - On macOS this flag reflects the current system locale's time format,
+   *   which incorporates the "24-Hour Time" preference in System Settings.
+   *   As on iOS, this only takes effect for the system locale; a custom
+   *   locale passed to the application will ignore the 24-hour preference.
+   * - On Windows this flag is derived from the user's "Short time" format
+   *   in the Region settings; it is true when the configured format uses a
+   *   24-hour pattern.
+   * - On Linux this flag reflects the desktop environment's clock-format
+   *   setting where available (for example,
+   *   `org.gnome.desktop.interface.clock-format` on GNOME). On desktops
+   *   that do not expose such a setting, it defaults to true (24-hour).
+   * - On Web this flag is always false. The Flutter web engine does not
+   *   currently populate it from the browser's locale settings, even though
+   *   the browser exposes a preferred hour cycle via
+   *   `Intl.DateTimeFormat.resolvedOptions().hourCycle`.
+   */
+  alwaysUse24HourFormat?: boolean;
+  /**
+   * Whether the user is using an accessibility service like TalkBack or
+   * VoiceOver to interact with the application.
+   *
+   * When this setting is true, features such as timeouts should be disabled or
+   * have minimum durations increased.
+   *
+   * See also:
+   *
+   *  * [dart:ui.PlatformDispatcher.accessibilityFeatures], where the setting originates.
+   */
+  accessibleNavigation?: boolean;
+  /**
+   * Whether the operating system is currently inverting the colors of the platform.
+   *
+   * This flag indicates that the underlying OS is already performing a global
+   * color inversion at the screen level. It does not mean the Flutter framework
+   * will automatically invert its own layout painting.
+   *
+   * Instead, this flag allows the application to react to the inversion. For
+   * example, by selectively re-inverting images, maps, or video playback so that
+   * they display with natural colors instead of looking like a film negative.
+   *
+   * This flag is currently only updated on iOS devices.
+   *
+   * See also:
+   *
+   *  * [dart:ui.PlatformDispatcher.accessibilityFeatures], where the setting
+   *    originates.
+   */
+  invertColors?: boolean;
+  /**
+   * Whether the platform is requesting a high contrast between foreground and
+   * background content.
+   *
+   * On iOS, this corresponds to the "Increase Contrast" setting in
+   * Settings -> Accessibility. On Android, this corresponds to the "High
+   * contrast text" or similar accessibility settings.
+   *
+   * This flag indicates that the operating system is already performing
+   * high-contrast adjustments or expects the application to adjust its
+   * color palette to meet higher accessibility standards.
+   *
+   * Changing this value manually in a [MediaQuery] override will not
+   * automatically trigger a theme change in [MaterialApp]. Instead, [MaterialApp]
+   * uses this value to decide whether to use [MaterialApp.highContrastTheme]
+   * or [MaterialApp.highContrastDarkTheme].
+   *
+   * This flag is currently only updated on iOS devices running iOS 13+
+   * and Android devices running API 34+.
+   */
+  highContrast?: boolean;
+  /**
+   * Whether the user requested to show on/off labels inside switches on iOS,
+   * via Settings -> Accessibility -> Display & Text Size -> On/Off Labels.
+   *
+   * See also:
+   *
+   *  * [dart:ui.PlatformDispatcher.accessibilityFeatures], where the setting
+   *    originates.
+   */
+  onOffSwitchLabels?: boolean;
+  /**
+   * Whether the platform is requesting that animations be disabled or reduced
+   * as much as possible.
+   *
+   * This corresponds to Android's "Remove animations" accessibility setting.
+   *
+   * On iOS, reduced motion is exposed separately via
+   * [dart:ui.AccessibilityFeatures.reduceMotion] and does not set this flag.
+   *
+   * This value is read directly from the engine via
+   * [SemanticsBinding.disableAnimations]. As a result, it is used by
+   * framework-level animation APIs such as [AnimationController] and cannot be
+   * overridden using [MediaQuery].
+   *
+   * Manually overriding this value in a [MediaQuery] widget will not affect
+   * framework animations (for example those driven by [AnimationController]).
+   * However, it can still be useful for testing or for custom widgets that
+   * explicitly read [MediaQueryData.disableAnimations].
+   *
+   * When implementing custom explicit animations, you should check this
+   * property and adjust behavior accordingly (for example, by reducing
+   * duration or skipping non-essential animations when it is true).
+   *
+   * See also:
+   *
+   *  * [AnimationController], which adjusts its playback behavior based on this setting.
+   *  * [AnimationBehavior], which defines how animations behave when this setting is active.
+   *  * [dart:ui.AccessibilityFeatures.disableAnimations], the underlying primitive
+   *    flag provided by the platform.
+   *  * [dart:ui.PlatformDispatcher.accessibilityFeatures], where the setting
+   *    originates.
+   */
+  disableAnimations?: boolean;
+  /**
+   * Whether the platform is requesting that text be drawn with a bold font
+   * weight.
+   *
+   * See also:
+   *
+   *  * [dart:ui.PlatformDispatcher.accessibilityFeatures], where the setting
+   *    originates.
+   */
+  boldText?: boolean;
+  /**
+   * Whether accessibility announcements (like [SemanticsService.sendAnnouncement])
+   * are supported on the current platform.
+   *
+   * Returns `false` on platforms where announcements are deprecated or
+   * unsupported by the underlying platform.
+   *
+   * Returns `true` on platforms where such announcements are
+   * generally supported without discouragement. (iOS, web etc)
+   *
+   * See also:
+   *
+   *  * [dart:ui.PlatformDispatcher.accessibilityFeatures], where the setting
+   *    originates.
+   */
+  supportsAnnounce?: boolean;
+  /**
+   * Describes the navigation mode requested by the platform.
+   *
+   * Some user interfaces are better navigated using a directional pad (DPAD)
+   * or arrow keys, and for those interfaces, some widgets need to handle these
+   * directional events differently. In order to know when to do that, these
+   * widgets will look for the navigation mode in effect for their context.
+   *
+   * For instance, in a television interface, [NavigationMode.directional]
+   * should be set, so that directional navigation is used to navigate away
+   * from a text field using the DPAD. In contrast, on a regular desktop
+   * application with the [navigationMode] set to [NavigationMode.traditional],
+   * the arrow keys are used to move the cursor instead of navigating away.
+   *
+   * The [NavigationMode] values indicate the type of navigation to be used in
+   * a widget subtree for those widgets sensitive to it.
+   */
+  navigationMode?: NavigationMode;
+  /**
+   * The gesture settings for the view this media query is derived from.
+   *
+   * This contains platform specific configuration for gesture behavior,
+   * such as touch slop. These settings should be favored for configuring
+   * gesture behavior over the framework constants.
+   */
+  gestureSettings?: DeviceGestureSettingsValue;
+  /**
+   * See also:
+   *
+   *  * [dart:ui.DisplayFeatureType], which lists the different types of
+   *  display features and explains the differences between them.
+   *  * [dart:ui.DisplayFeatureState], which lists the possible states for
+   *  folding features ([dart:ui.DisplayFeatureType.fold] and
+   *  [dart:ui.DisplayFeatureType.hinge]).
+   */
+  displayFeatures?: DisplayFeature[];
+  /**
+   * Whether showing the system context menu is supported.
+   *
+   * For example, on iOS 16.0 and above, the system text selection context menu
+   * may be shown instead of the Flutter-drawn context menu in order to avoid
+   * the iOS clipboard access notification when the "Paste" button is pressed.
+   *
+   * See also:
+   *
+   *  * [SystemContextMenuController] and [SystemContextMenu], which may be
+   *    used to show the system context menu when this flag indicates it's
+   *    supported.
+   */
+  supportsShowingSystemContextMenu?: boolean;
+  /**
+   * Overrides the height of the text, as a multiple of the font size.
+   *
+   * Returns `null` when the platform has not set an override
+   * for text height.
+   *
+   * See also:
+   *
+   *  * [Text], [SelectableText], and [EditableText], all of whose
+   *  [TextStyle.height] and [StrutStyle.height] are overridden by
+   *  [lineHeightScaleFactorOverride].
+   */
+  lineHeightScaleFactorOverride?: number;
+  /**
+   * Overrides the amount of space (in logical pixels) to add between each
+   * letter in a piece of text.
+   *
+   * A negative value can be used to bring the letters closer.
+   *
+   * Returns `null` when the platform has not set an override
+   * for text letter spacing.
+   *
+   * See also:
+   *
+   *  * [Text], [SelectableText], and [EditableText], all of whose
+   *  [TextStyle.letterSpacing] is overridden by [letterSpacingOverride].
+   */
+  letterSpacingOverride?: number;
+  /**
+   * Overrides the amount of space (in logical pixels) to add at each
+   * sequence of white-space (i.e. between each word) in a piece of text.
+   *
+   * A negative value can be used to bring the words closer.
+   *
+   * Returns `null` when the platform has not set an override
+   * for text word spacing.
+   *
+   * See also:
+   *
+   *  * [Text], [SelectableText], and [EditableText], all of whose
+   *  [TextStyle.wordSpacing] is overridden by [wordSpacingOverride].
+   */
+  wordSpacingOverride?: number;
+  /**
+   * The amount of space (in logical pixels) to add following each paragraph
+   * in a piece of text.
+   *
+   * Returns `null` when the platform has not set an override
+   * for text paragraph spacing.
+   */
+  paragraphSpacingOverride?: number;
+  /**
+   * The radii of the display corners in logical pixels.
+   *
+   * This is currently populated only on Android API 31+. On earlier Android
+   * versions, iOS, and other platforms, this value is `null`.
+   *
+   * See also:
+   *
+   *  * [FlutterView.displayCornerRadii], which returns the display corner
+   *    radii in physical pixels.
+   */
+  displayCornerRadii?: BorderRadiusValue;
+}
+
+export type MediaQueryDataValue = MediaQueryData | MediaQueryDataObject;
+
+export interface MenuBarThemeDataObject {
+  /**
+   * The [MenuStyle] of a [SubmenuButton] menu.
+   *
+   * Any values not set in the [MenuStyle] will use the menu default for that
+   * property.
+   */
+  style?: MenuStyleValue;
+}
+
+export type MenuBarThemeDataValue = MenuBarThemeData | MenuBarThemeDataObject;
+
+export interface MenuButtonThemeDataObject {
+  /**
+   * Overrides for [SubmenuButton] and [MenuItemButton]'s default style.
+   *
+   * Non-null properties or non-null resolved [WidgetStateProperty] values
+   * override the [ButtonStyle] returned by [SubmenuButton.defaultStyleOf] or
+   * [MenuItemButton.defaultStyleOf].
+   *
+   * If [style] is null, then this theme doesn't override anything.
+   */
+  style?: ButtonStyleValue;
+}
+
+export type MenuButtonThemeDataValue =
+  MenuButtonThemeData | MenuButtonThemeDataObject;
+
+export interface MenuStyleObject {
+  /**
+   * The menu's background fill color.
+   */
+  backgroundColor?: WidgetStatePropertyValue;
+  /**
+   * The shadow color of the menu's [Material].
+   *
+   * The material's elevation shadow can be difficult to see for dark themes,
+   * so by default the menu classes add a semi-transparent overlay to indicate
+   * elevation. See [ThemeData.applyElevationOverlayColor].
+   */
+  shadowColor?: WidgetStatePropertyValue;
+  /**
+   * The surface tint color of the menu's [Material].
+   *
+   * See [Material.surfaceTintColor] for more details.
+   */
+  surfaceTintColor?: WidgetStatePropertyValue;
+  /**
+   * The elevation of the menu's [Material].
+   */
+  elevation?: WidgetStatePropertyValue;
+  /**
+   * The padding between the menu's boundary and its child.
+   */
+  padding?: WidgetStatePropertyValue;
+  /**
+   * The minimum size of the menu itself.
+   *
+   * This value must be less than or equal to [maximumSize].
+   */
+  minimumSize?: WidgetStatePropertyValue;
+  /**
+   * The menu's size.
+   *
+   * This size is still constrained by the style's [minimumSize] and
+   * [maximumSize]. Fixed size dimensions whose value is [double.infinity] are
+   * ignored.
+   *
+   * To specify menus with a fixed width and the default height use `fixedSize:
+   * Size.fromWidth(320)`. Similarly, to specify a fixed height and the default
+   * width use `fixedSize: Size.fromHeight(100)`.
+   */
+  fixedSize?: WidgetStatePropertyValue;
+  /**
+   * The maximum size of the menu itself.
+   *
+   * A [Size.infinite] or null value for this property means that the menu's
+   * maximum size is not constrained.
+   *
+   * This value must be greater than or equal to [minimumSize].
+   */
+  maximumSize?: WidgetStatePropertyValue;
+  /**
+   * The color and weight of the menu's outline.
+   *
+   * This value is combined with [shape] to create a shape decorated with an
+   * outline.
+   */
+  side?: WidgetStatePropertyValue;
+  /**
+   * The shape of the menu's underlying [Material].
+   *
+   * This shape is combined with [side] to create a shape decorated with an
+   * outline.
+   */
+  shape?: WidgetStatePropertyValue;
+  /**
+   * The cursor for a mouse pointer when it enters or is hovering over this
+   * menu's [InkWell].
+   */
+  mouseCursor?: WidgetStatePropertyValue;
+  /**
+   * Defines how compact the menu's layout will be.
+   *
+   *
+   * See also:
+   *
+   *  * [ThemeData.visualDensity], which specifies the [visualDensity] for all
+   *    widgets within a [Theme].
+   */
+  visualDensity?: VisualDensityValue;
+  /**
+   * Determines the desired alignment of the submenu when opened relative to
+   * the button that opens it.
+   *
+   * If there isn't sufficient space to open the menu with the given alignment,
+   * and there's space on the other side of the button, then the alignment is
+   * swapped to it's opposite (1 becomes -1, etc.), and the menu will try to
+   * appear on the other side of the button. If there isn't enough space there
+   * either, then the menu will be pushed as far over as necessary to display
+   * as much of itself as possible, possibly overlapping the parent button.
+   */
+  alignment?: AlignmentGeometryValue;
+}
+
+export type MenuStyleValue = MenuStyle | MenuStyleObject;
+
+export interface MenuThemeDataObject {
+  /**
+   * The [MenuStyle] of a [SubmenuButton] menu.
+   *
+   * Any values not set in the [MenuStyle] will use the menu default for that
+   * property.
+   */
+  style?: MenuStyleValue;
+  /**
+   * If provided, the widget replaces the default [SubmenuButton] arrow icon.
+   *
+   * Resolves in the following states:
+   *  * [WidgetState.disabled].
+   *  * [WidgetState.hovered].
+   *  * [WidgetState.focused].
+   */
+  submenuIcon?: WidgetStatePropertyValue;
+}
+
+export type MenuThemeDataValue = MenuThemeData | MenuThemeDataObject;
+
+export type MouseCursorValue =
+  | MouseCursor
+  | 'adaptiveClickable'
+  | 'alias'
+  | 'allScroll'
+  | 'basic'
+  | 'cell'
+  | 'click'
+  | 'clickable'
+  | 'contextMenu'
+  | 'copy'
+  | 'defer'
+  | 'disappearing'
+  | 'forbidden'
+  | 'grab'
+  | 'grabbing'
+  | 'help'
+  | 'move'
+  | 'noDrop'
+  | 'none'
+  | 'precise'
+  | 'progress'
+  | 'resizeColumn'
+  | 'resizeDown'
+  | 'resizeDownLeft'
+  | 'resizeDownRight'
+  | 'resizeLeft'
+  | 'resizeLeftRight'
+  | 'resizeRight'
+  | 'resizeRow'
+  | 'resizeUp'
+  | 'resizeUpDown'
+  | 'resizeUpLeft'
+  | 'resizeUpLeftDownRight'
+  | 'resizeUpRight'
+  | 'resizeUpRightDownLeft'
+  | 'text'
+  | 'textable'
+  | 'uncontrolled'
+  | 'verticalText'
+  | 'wait'
+  | 'zoomIn'
+  | 'zoomOut';
+
+export interface NavigationBarThemeDataObject {
+  /**
+   * Overrides the default value of [NavigationBar.height].
+   */
+  height?: number;
+  /**
+   * Overrides the default value of [NavigationBar.backgroundColor].
+   */
+  backgroundColor?: ColorValue;
+  /**
+   * Overrides the default value of [NavigationBar.elevation].
+   */
+  elevation?: number;
+  /**
+   * Overrides the default value of [NavigationBar.shadowColor].
+   */
+  shadowColor?: ColorValue;
+  /**
+   * Overrides the default value of [NavigationBar.surfaceTintColor].
+   */
+  surfaceTintColor?: ColorValue;
+  /**
+   * Overrides the default value of [NavigationBar]'s selection indicator.
+   */
+  indicatorColor?: ColorValue;
+  /**
+   * Overrides the default shape of the [NavigationBar]'s selection indicator.
+   */
+  indicatorShape?: ShapeBorderValue;
+  /**
+   * The style to merge with the default text style for
+   * [NavigationDestination] labels.
+   *
+   * You can use this to specify a different style when the label is selected.
+   */
+  labelTextStyle?: WidgetStatePropertyValue;
+  /**
+   * The theme to merge with the default icon theme for
+   * [NavigationDestination] icons.
+   *
+   * You can use this to specify a different icon theme when the icon is
+   * selected.
+   */
+  iconTheme?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default value of [NavigationBar.labelBehavior].
+   */
+  labelBehavior?: NavigationDestinationLabelBehavior;
+  /**
+   * Overrides the default value of [NavigationBar.overlayColor].
+   */
+  overlayColor?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default value of [NavigationBar.labelPadding].
+   */
+  labelPadding?: EdgeInsetsGeometryValue;
+}
+
+export type NavigationBarThemeDataValue =
+  NavigationBarThemeData | NavigationBarThemeDataObject;
+
+export interface NavigationDrawerThemeDataObject {
+  /**
+   * Overrides the default height of [NavigationDrawerDestination].
+   */
+  tileHeight?: number;
+  /**
+   * Overrides the default value of [NavigationDrawer.backgroundColor].
+   */
+  backgroundColor?: ColorValue;
+  /**
+   * Overrides the default value of [NavigationDrawer.elevation].
+   */
+  elevation?: number;
+  /**
+   * Overrides the default value of [NavigationDrawer.shadowColor].
+   */
+  shadowColor?: ColorValue;
+  /**
+   * Overrides the default value of [NavigationDrawer.surfaceTintColor].
+   */
+  surfaceTintColor?: ColorValue;
+  /**
+   * Overrides the default value of [NavigationDrawer]'s selection indicator.
+   */
+  indicatorColor?: ColorValue;
+  /**
+   * Overrides the default shape of the [NavigationDrawer]'s selection indicator.
+   */
+  indicatorShape?: ShapeBorderValue;
+  /**
+   * Overrides the default size of the [NavigationDrawer]'s selection indicator.
+   */
+  indicatorSize?: SizeValue;
+  /**
+   * The style to merge with the default text style for
+   * [NavigationDestination] labels.
+   *
+   * You can use this to specify a different style when the label is selected.
+   */
+  labelTextStyle?: WidgetStatePropertyValue;
+  /**
+   * The theme to merge with the default icon theme for
+   * [NavigationDestination] icons.
+   *
+   * You can use this to specify a different icon theme when the icon is
+   * selected.
+   */
+  iconTheme?: WidgetStatePropertyValue;
+}
+
+export type NavigationDrawerThemeDataValue =
+  NavigationDrawerThemeData | NavigationDrawerThemeDataObject;
+
+export interface NavigationRailThemeDataObject {
+  /**
+   * Color to be used for the [NavigationRail]'s background.
+   */
+  backgroundColor?: ColorValue;
+  /**
+   * The z-coordinate to be used for the [NavigationRail]'s elevation.
+   */
+  elevation?: number;
+  /**
+   * The style to merge with the default text style for
+   * [NavigationRailDestination] labels, when the destination is not selected.
+   */
+  unselectedLabelTextStyle?: TextStyleValue;
+  /**
+   * The style to merge with the default text style for
+   * [NavigationRailDestination] labels, when the destination is selected.
+   */
+  selectedLabelTextStyle?: TextStyleValue;
+  /**
+   * The theme to merge with the default icon theme for
+   * [NavigationRailDestination] icons, when the destination is not selected.
+   */
+  unselectedIconTheme?: IconThemeDataValue;
+  /**
+   * The theme to merge with the default icon theme for
+   * [NavigationRailDestination] icons, when the destination is selected.
+   */
+  selectedIconTheme?: IconThemeDataValue;
+  /**
+   * The alignment for the [NavigationRailDestination]s as they are positioned
+   * within the [NavigationRail].
+   */
+  groupAlignment?: number;
+  /**
+   * The type that defines the layout and behavior of the labels in the
+   * [NavigationRail].
+   */
+  labelType?: NavigationRailLabelType;
+  /**
+   * Whether or not the selected [NavigationRailDestination] should include a
+   * [NavigationIndicator].
+   */
+  useIndicator?: boolean;
+  /**
+   * Overrides the default value of [NavigationRail]'s selection indicator color,
+   * when [useIndicator] is true.
+   */
+  indicatorColor?: ColorValue;
+  /**
+   * Overrides the default shape of the [NavigationRail]'s selection indicator.
+   */
+  indicatorShape?: ShapeBorderValue;
+  /**
+   * Overrides the default value of [NavigationRail]'s minimum width when it
+   * is not extended.
+   */
+  minWidth?: number;
+  /**
+   * Overrides the default value of [NavigationRail]'s minimum width when it
+   * is extended.
+   */
+  minExtendedWidth?: number;
+}
+
+export type NavigationRailThemeDataValue =
+  NavigationRailThemeData | NavigationRailThemeDataObject;
+
+export type OffsetValue = Offset | 'infinite' | 'zero';
+
+export type OutlinedBorderValue = OutlinedBorder | 'none';
+
+export interface OutlinedButtonThemeDataObject {
+  /**
+   * Overrides for [OutlinedButton]'s default style.
+   *
+   * Non-null properties or non-null resolved [WidgetStateProperty]
+   * values override the [ButtonStyle] returned by
+   * [OutlinedButton.defaultStyleOf].
+   *
+   * If [style] is null, then this theme doesn't override anything.
+   */
+  style?: ButtonStyleValue;
+}
+
+export type OutlinedButtonThemeDataValue =
+  OutlinedButtonThemeData | OutlinedButtonThemeDataObject;
+
+export interface PointerCancelEventObject {
+  /**
+   * The ID of the [FlutterView] which this event originated from.
+   */
+  viewId?: number;
+  /**
+   * Time of event dispatch, relative to an arbitrary timeline.
+   */
+  timeStamp?: DurationValue;
+  /**
+   * Unique identifier for the pointer, not reused. Changes for each new
+   * pointer down event.
+   */
+  pointer?: number;
+  /**
+   * The kind of input device for which the event was generated.
+   */
+  kind?: PointerDeviceKind;
+  /**
+   * Unique identifier for the pointing device, reused across interactions.
+   */
+  device?: number;
+  /**
+   * Coordinate of the position of the pointer, in logical pixels in the global
+   * coordinate space.
+   *
+   * See also:
+   *
+   *  * [localPosition], which is the [position] transformed into the local
+   *    coordinate system of the event receiver.
+   */
+  position?: OffsetValue;
+  /**
+   * Bit field using the *Button constants such as [kPrimaryMouseButton],
+   * [kSecondaryStylusButton], etc.
+   *
+   * For example, if this has the value 6 and the
+   * [kind] is [PointerDeviceKind.invertedStylus], then this indicates an
+   * upside-down stylus with both its primary and secondary buttons pressed.
+   */
+  buttons?: number;
+  /**
+   * Set if an application from a different security domain is in any way
+   * obscuring this application's window.
+   *
+   * This is not currently implemented.
+   */
+  obscured?: boolean;
+  /**
+   * The minimum value that [pressure] can return for this pointer.
+   *
+   * For devices that do not detect pressure (e.g. mice), returns 1.0.
+   * This will always be a number less than or equal to 1.0.
+   */
+  pressureMin?: number;
+  /**
+   * The maximum value that [pressure] can return for this pointer.
+   *
+   * For devices that do not detect pressure (e.g. mice), returns 1.0.
+   * This will always be a greater than or equal to 1.0.
+   */
+  pressureMax?: number;
+  /**
+   * The distance of the detected object from the input surface.
+   *
+   * For instance, this value could be the distance of a stylus or finger
+   * from a touch screen, in arbitrary units on an arbitrary (not necessarily
+   * linear) scale. If the pointer is down, this is 0.0 by definition.
+   */
+  distance?: number;
+  /**
+   * The maximum value that [distance] can return for this pointer.
+   *
+   * If this input device cannot detect "hover touch" input events,
+   * then this will be 0.0.
+   */
+  distanceMax?: number;
+  /**
+   * The area of the screen being pressed.
+   *
+   * This value is scaled to a range between 0 and 1. It can be used to
+   * determine fat touch events. This value is only set on Android and is
+   * a device specific approximation within the range of detectable values.
+   * So, for example, the value of 0.1 could mean a touch with the tip of
+   * the finger, 0.2 a touch with full finger, and 0.3 the full palm.
+   *
+   * Because this value uses device-specific range and is uncalibrated,
+   * it is of limited use and is primarily retained in order to be able
+   * to reconstruct original pointer events for [AndroidView].
+   */
+  size?: number;
+  /**
+   * The radius of the contact ellipse along the major axis, in logical pixels.
+   */
+  radiusMajor?: number;
+  /**
+   * The radius of the contact ellipse along the minor axis, in logical pixels.
+   */
+  radiusMinor?: number;
+  /**
+   * The minimum value that could be reported for [radiusMajor] and [radiusMinor]
+   * for this pointer, in logical pixels.
+   */
+  radiusMin?: number;
+  /**
+   * The maximum value that could be reported for [radiusMajor] and [radiusMinor]
+   * for this pointer, in logical pixels.
+   */
+  radiusMax?: number;
+  /**
+   * The orientation angle of the detected object, in radians.
+   *
+   * For [PointerDeviceKind.touch] events:
+   *
+   * The angle of the contact ellipse, in radians in the range:
+   *
+   *     -pi/2 < orientation <= pi/2
+   *
+   * ...giving the angle of the major axis of the ellipse with the y-axis
+   * (negative angles indicating an orientation along the top-left /
+   * bottom-right diagonal, positive angles indicating an orientation along the
+   * top-right / bottom-left diagonal, and zero indicating an orientation
+   * parallel with the y-axis).
+   *
+   * For [PointerDeviceKind.stylus] and [PointerDeviceKind.invertedStylus] events:
+   *
+   * The angle of the stylus, in radians in the range:
+   *
+   *     -pi < orientation <= pi
+   *
+   * ...giving the angle of the axis of the stylus projected onto the input
+   * surface, relative to the positive y-axis of that surface (thus 0.0
+   * indicates the stylus, if projected onto that surface, would go from the
+   * contact point vertically up in the positive y-axis direction, pi would
+   * indicate that the stylus would go down in the negative y-axis direction;
+   * pi/4 would indicate that the stylus goes up and to the right, -pi/2 would
+   * indicate that the stylus goes to the left, etc).
+   */
+  orientation?: number;
+  /**
+   * The tilt angle of the detected object, in radians.
+   *
+   * For [PointerDeviceKind.stylus] and [PointerDeviceKind.invertedStylus] events:
+   *
+   * The angle of the stylus, in radians in the range:
+   *
+   *     0 <= tilt <= pi/2
+   *
+   * ...giving the angle of the axis of the stylus, relative to the axis
+   * perpendicular to the input surface (thus 0.0 indicates the stylus is
+   * orthogonal to the plane of the input surface, while pi/2 indicates that
+   * the stylus is flat on that surface).
+   */
+  tilt?: number;
+  /**
+   * Unique identifier that ties the [PointerEvent] to the embedder event that created it.
+   *
+   * No two pointer events can have the same [embedderId] on platforms that set it.
+   * This is different from [pointer] identifier - used for hit-testing,
+   * whereas [embedderId] is used to identify the platform event.
+   *
+   * On Android this is ID of the underlying [MotionEvent](https://developer.android.com/reference/android/view/MotionEvent).
+   */
+  embedderId?: number;
+}
+
+export type PointerCancelEventValue =
+  PointerCancelEvent | PointerCancelEventObject;
+
+export interface PointerDownEventObject {
+  /**
+   * The ID of the [FlutterView] which this event originated from.
+   */
+  viewId?: number;
+  /**
+   * Time of event dispatch, relative to an arbitrary timeline.
+   */
+  timeStamp?: DurationValue;
+  /**
+   * Unique identifier for the pointer, not reused. Changes for each new
+   * pointer down event.
+   */
+  pointer?: number;
+  /**
+   * The kind of input device for which the event was generated.
+   */
+  kind?: PointerDeviceKind;
+  /**
+   * Unique identifier for the pointing device, reused across interactions.
+   */
+  device?: number;
+  /**
+   * Coordinate of the position of the pointer, in logical pixels in the global
+   * coordinate space.
+   *
+   * See also:
+   *
+   *  * [localPosition], which is the [position] transformed into the local
+   *    coordinate system of the event receiver.
+   */
+  position?: OffsetValue;
+  /**
+   * Bit field using the *Button constants such as [kPrimaryMouseButton],
+   * [kSecondaryStylusButton], etc.
+   *
+   * For example, if this has the value 6 and the
+   * [kind] is [PointerDeviceKind.invertedStylus], then this indicates an
+   * upside-down stylus with both its primary and secondary buttons pressed.
+   */
+  buttons?: number;
+  /**
+   * Set if an application from a different security domain is in any way
+   * obscuring this application's window.
+   *
+   * This is not currently implemented.
+   */
+  obscured?: boolean;
+  /**
+   * The pressure of the touch.
+   *
+   * This value is a number ranging from 0.0, indicating a touch with no
+   * discernible pressure, to 1.0, indicating a touch with "normal" pressure,
+   * and possibly beyond, indicating a stronger touch. For devices that do not
+   * detect pressure (e.g. mice), returns 1.0.
+   */
+  pressure?: number;
+  /**
+   * The minimum value that [pressure] can return for this pointer.
+   *
+   * For devices that do not detect pressure (e.g. mice), returns 1.0.
+   * This will always be a number less than or equal to 1.0.
+   */
+  pressureMin?: number;
+  /**
+   * The maximum value that [pressure] can return for this pointer.
+   *
+   * For devices that do not detect pressure (e.g. mice), returns 1.0.
+   * This will always be a greater than or equal to 1.0.
+   */
+  pressureMax?: number;
+  /**
+   * The maximum value that [distance] can return for this pointer.
+   *
+   * If this input device cannot detect "hover touch" input events,
+   * then this will be 0.0.
+   */
+  distanceMax?: number;
+  /**
+   * The area of the screen being pressed.
+   *
+   * This value is scaled to a range between 0 and 1. It can be used to
+   * determine fat touch events. This value is only set on Android and is
+   * a device specific approximation within the range of detectable values.
+   * So, for example, the value of 0.1 could mean a touch with the tip of
+   * the finger, 0.2 a touch with full finger, and 0.3 the full palm.
+   *
+   * Because this value uses device-specific range and is uncalibrated,
+   * it is of limited use and is primarily retained in order to be able
+   * to reconstruct original pointer events for [AndroidView].
+   */
+  size?: number;
+  /**
+   * The radius of the contact ellipse along the major axis, in logical pixels.
+   */
+  radiusMajor?: number;
+  /**
+   * The radius of the contact ellipse along the minor axis, in logical pixels.
+   */
+  radiusMinor?: number;
+  /**
+   * The minimum value that could be reported for [radiusMajor] and [radiusMinor]
+   * for this pointer, in logical pixels.
+   */
+  radiusMin?: number;
+  /**
+   * The maximum value that could be reported for [radiusMajor] and [radiusMinor]
+   * for this pointer, in logical pixels.
+   */
+  radiusMax?: number;
+  /**
+   * The orientation angle of the detected object, in radians.
+   *
+   * For [PointerDeviceKind.touch] events:
+   *
+   * The angle of the contact ellipse, in radians in the range:
+   *
+   *     -pi/2 < orientation <= pi/2
+   *
+   * ...giving the angle of the major axis of the ellipse with the y-axis
+   * (negative angles indicating an orientation along the top-left /
+   * bottom-right diagonal, positive angles indicating an orientation along the
+   * top-right / bottom-left diagonal, and zero indicating an orientation
+   * parallel with the y-axis).
+   *
+   * For [PointerDeviceKind.stylus] and [PointerDeviceKind.invertedStylus] events:
+   *
+   * The angle of the stylus, in radians in the range:
+   *
+   *     -pi < orientation <= pi
+   *
+   * ...giving the angle of the axis of the stylus projected onto the input
+   * surface, relative to the positive y-axis of that surface (thus 0.0
+   * indicates the stylus, if projected onto that surface, would go from the
+   * contact point vertically up in the positive y-axis direction, pi would
+   * indicate that the stylus would go down in the negative y-axis direction;
+   * pi/4 would indicate that the stylus goes up and to the right, -pi/2 would
+   * indicate that the stylus goes to the left, etc).
+   */
+  orientation?: number;
+  /**
+   * The tilt angle of the detected object, in radians.
+   *
+   * For [PointerDeviceKind.stylus] and [PointerDeviceKind.invertedStylus] events:
+   *
+   * The angle of the stylus, in radians in the range:
+   *
+   *     0 <= tilt <= pi/2
+   *
+   * ...giving the angle of the axis of the stylus, relative to the axis
+   * perpendicular to the input surface (thus 0.0 indicates the stylus is
+   * orthogonal to the plane of the input surface, while pi/2 indicates that
+   * the stylus is flat on that surface).
+   */
+  tilt?: number;
+  /**
+   * Unique identifier that ties the [PointerEvent] to the embedder event that created it.
+   *
+   * No two pointer events can have the same [embedderId] on platforms that set it.
+   * This is different from [pointer] identifier - used for hit-testing,
+   * whereas [embedderId] is used to identify the platform event.
+   *
+   * On Android this is ID of the underlying [MotionEvent](https://developer.android.com/reference/android/view/MotionEvent).
+   */
+  embedderId?: number;
+}
+
+export type PointerDownEventValue = PointerDownEvent | PointerDownEventObject;
+
+export interface PointerEnterEventObject {
+  /**
+   * The ID of the [FlutterView] which this event originated from.
+   */
+  viewId?: number;
+  /**
+   * Time of event dispatch, relative to an arbitrary timeline.
+   */
+  timeStamp?: DurationValue;
+  /**
+   * Unique identifier for the pointer, not reused. Changes for each new
+   * pointer down event.
+   */
+  pointer?: number;
+  /**
+   * The kind of input device for which the event was generated.
+   */
+  kind?: PointerDeviceKind;
+  /**
+   * Unique identifier for the pointing device, reused across interactions.
+   */
+  device?: number;
+  /**
+   * Coordinate of the position of the pointer, in logical pixels in the global
+   * coordinate space.
+   *
+   * See also:
+   *
+   *  * [localPosition], which is the [position] transformed into the local
+   *    coordinate system of the event receiver.
+   */
+  position?: OffsetValue;
+  /**
+   * Distance in logical pixels that the pointer moved since the last
+   * [PointerMoveEvent] or [PointerHoverEvent].
+   *
+   * This value is always 0.0 for down, up, and cancel events.
+   *
+   * See also:
+   *
+   *  * [localDelta], which is the [delta] transformed into the local
+   *    coordinate space of the event receiver.
+   */
+  delta?: OffsetValue;
+  /**
+   * Bit field using the *Button constants such as [kPrimaryMouseButton],
+   * [kSecondaryStylusButton], etc.
+   *
+   * For example, if this has the value 6 and the
+   * [kind] is [PointerDeviceKind.invertedStylus], then this indicates an
+   * upside-down stylus with both its primary and secondary buttons pressed.
+   */
+  buttons?: number;
+  /**
+   * Set if an application from a different security domain is in any way
+   * obscuring this application's window.
+   *
+   * This is not currently implemented.
+   */
+  obscured?: boolean;
+  /**
+   * The minimum value that [pressure] can return for this pointer.
+   *
+   * For devices that do not detect pressure (e.g. mice), returns 1.0.
+   * This will always be a number less than or equal to 1.0.
+   */
+  pressureMin?: number;
+  /**
+   * The maximum value that [pressure] can return for this pointer.
+   *
+   * For devices that do not detect pressure (e.g. mice), returns 1.0.
+   * This will always be a greater than or equal to 1.0.
+   */
+  pressureMax?: number;
+  /**
+   * The distance of the detected object from the input surface.
+   *
+   * For instance, this value could be the distance of a stylus or finger
+   * from a touch screen, in arbitrary units on an arbitrary (not necessarily
+   * linear) scale. If the pointer is down, this is 0.0 by definition.
+   */
+  distance?: number;
+  /**
+   * The maximum value that [distance] can return for this pointer.
+   *
+   * If this input device cannot detect "hover touch" input events,
+   * then this will be 0.0.
+   */
+  distanceMax?: number;
+  /**
+   * The area of the screen being pressed.
+   *
+   * This value is scaled to a range between 0 and 1. It can be used to
+   * determine fat touch events. This value is only set on Android and is
+   * a device specific approximation within the range of detectable values.
+   * So, for example, the value of 0.1 could mean a touch with the tip of
+   * the finger, 0.2 a touch with full finger, and 0.3 the full palm.
+   *
+   * Because this value uses device-specific range and is uncalibrated,
+   * it is of limited use and is primarily retained in order to be able
+   * to reconstruct original pointer events for [AndroidView].
+   */
+  size?: number;
+  /**
+   * The radius of the contact ellipse along the major axis, in logical pixels.
+   */
+  radiusMajor?: number;
+  /**
+   * The radius of the contact ellipse along the minor axis, in logical pixels.
+   */
+  radiusMinor?: number;
+  /**
+   * The minimum value that could be reported for [radiusMajor] and [radiusMinor]
+   * for this pointer, in logical pixels.
+   */
+  radiusMin?: number;
+  /**
+   * The maximum value that could be reported for [radiusMajor] and [radiusMinor]
+   * for this pointer, in logical pixels.
+   */
+  radiusMax?: number;
+  /**
+   * The orientation angle of the detected object, in radians.
+   *
+   * For [PointerDeviceKind.touch] events:
+   *
+   * The angle of the contact ellipse, in radians in the range:
+   *
+   *     -pi/2 < orientation <= pi/2
+   *
+   * ...giving the angle of the major axis of the ellipse with the y-axis
+   * (negative angles indicating an orientation along the top-left /
+   * bottom-right diagonal, positive angles indicating an orientation along the
+   * top-right / bottom-left diagonal, and zero indicating an orientation
+   * parallel with the y-axis).
+   *
+   * For [PointerDeviceKind.stylus] and [PointerDeviceKind.invertedStylus] events:
+   *
+   * The angle of the stylus, in radians in the range:
+   *
+   *     -pi < orientation <= pi
+   *
+   * ...giving the angle of the axis of the stylus projected onto the input
+   * surface, relative to the positive y-axis of that surface (thus 0.0
+   * indicates the stylus, if projected onto that surface, would go from the
+   * contact point vertically up in the positive y-axis direction, pi would
+   * indicate that the stylus would go down in the negative y-axis direction;
+   * pi/4 would indicate that the stylus goes up and to the right, -pi/2 would
+   * indicate that the stylus goes to the left, etc).
+   */
+  orientation?: number;
+  /**
+   * The tilt angle of the detected object, in radians.
+   *
+   * For [PointerDeviceKind.stylus] and [PointerDeviceKind.invertedStylus] events:
+   *
+   * The angle of the stylus, in radians in the range:
+   *
+   *     0 <= tilt <= pi/2
+   *
+   * ...giving the angle of the axis of the stylus, relative to the axis
+   * perpendicular to the input surface (thus 0.0 indicates the stylus is
+   * orthogonal to the plane of the input surface, while pi/2 indicates that
+   * the stylus is flat on that surface).
+   */
+  tilt?: number;
+  /**
+   * Set if the pointer is currently down.
+   *
+   * For touch and stylus pointers, this means the object (finger, pen) is in
+   * contact with the input surface. For mice, it means a button is pressed.
+   */
+  down?: boolean;
+  /**
+   * Set if the event was synthesized by Flutter.
+   *
+   * We occasionally synthesize PointerEvents that aren't exact translations
+   * of [PointerData] from the engine to cover small cross-OS discrepancies
+   * in pointer behaviors.
+   *
+   * For instance, on end events, Android always drops any location changes
+   * that happened between its reporting intervals when emitting the end events.
+   *
+   * On iOS, minor incorrect location changes from the previous move events
+   * can be reported on end events. We synthesize a [PointerEvent] to cover
+   * the difference between the 2 events in that case.
+   */
+  synthesized?: boolean;
+  /**
+   * Unique identifier that ties the [PointerEvent] to the embedder event that created it.
+   *
+   * No two pointer events can have the same [embedderId] on platforms that set it.
+   * This is different from [pointer] identifier - used for hit-testing,
+   * whereas [embedderId] is used to identify the platform event.
+   *
+   * On Android this is ID of the underlying [MotionEvent](https://developer.android.com/reference/android/view/MotionEvent).
+   */
+  embedderId?: number;
+}
+
+export type PointerEnterEventValue =
+  PointerEnterEvent | PointerEnterEventObject;
+
+export interface PointerExitEventObject {
+  /**
+   * The ID of the [FlutterView] which this event originated from.
+   */
+  viewId?: number;
+  /**
+   * Time of event dispatch, relative to an arbitrary timeline.
+   */
+  timeStamp?: DurationValue;
+  /**
+   * The kind of input device for which the event was generated.
+   */
+  kind?: PointerDeviceKind;
+  /**
+   * Unique identifier for the pointer, not reused. Changes for each new
+   * pointer down event.
+   */
+  pointer?: number;
+  /**
+   * Unique identifier for the pointing device, reused across interactions.
+   */
+  device?: number;
+  /**
+   * Coordinate of the position of the pointer, in logical pixels in the global
+   * coordinate space.
+   *
+   * See also:
+   *
+   *  * [localPosition], which is the [position] transformed into the local
+   *    coordinate system of the event receiver.
+   */
+  position?: OffsetValue;
+  /**
+   * Distance in logical pixels that the pointer moved since the last
+   * [PointerMoveEvent] or [PointerHoverEvent].
+   *
+   * This value is always 0.0 for down, up, and cancel events.
+   *
+   * See also:
+   *
+   *  * [localDelta], which is the [delta] transformed into the local
+   *    coordinate space of the event receiver.
+   */
+  delta?: OffsetValue;
+  /**
+   * Bit field using the *Button constants such as [kPrimaryMouseButton],
+   * [kSecondaryStylusButton], etc.
+   *
+   * For example, if this has the value 6 and the
+   * [kind] is [PointerDeviceKind.invertedStylus], then this indicates an
+   * upside-down stylus with both its primary and secondary buttons pressed.
+   */
+  buttons?: number;
+  /**
+   * Set if an application from a different security domain is in any way
+   * obscuring this application's window.
+   *
+   * This is not currently implemented.
+   */
+  obscured?: boolean;
+  /**
+   * The minimum value that [pressure] can return for this pointer.
+   *
+   * For devices that do not detect pressure (e.g. mice), returns 1.0.
+   * This will always be a number less than or equal to 1.0.
+   */
+  pressureMin?: number;
+  /**
+   * The maximum value that [pressure] can return for this pointer.
+   *
+   * For devices that do not detect pressure (e.g. mice), returns 1.0.
+   * This will always be a greater than or equal to 1.0.
+   */
+  pressureMax?: number;
+  /**
+   * The distance of the detected object from the input surface.
+   *
+   * For instance, this value could be the distance of a stylus or finger
+   * from a touch screen, in arbitrary units on an arbitrary (not necessarily
+   * linear) scale. If the pointer is down, this is 0.0 by definition.
+   */
+  distance?: number;
+  /**
+   * The maximum value that [distance] can return for this pointer.
+   *
+   * If this input device cannot detect "hover touch" input events,
+   * then this will be 0.0.
+   */
+  distanceMax?: number;
+  /**
+   * The area of the screen being pressed.
+   *
+   * This value is scaled to a range between 0 and 1. It can be used to
+   * determine fat touch events. This value is only set on Android and is
+   * a device specific approximation within the range of detectable values.
+   * So, for example, the value of 0.1 could mean a touch with the tip of
+   * the finger, 0.2 a touch with full finger, and 0.3 the full palm.
+   *
+   * Because this value uses device-specific range and is uncalibrated,
+   * it is of limited use and is primarily retained in order to be able
+   * to reconstruct original pointer events for [AndroidView].
+   */
+  size?: number;
+  /**
+   * The radius of the contact ellipse along the major axis, in logical pixels.
+   */
+  radiusMajor?: number;
+  /**
+   * The radius of the contact ellipse along the minor axis, in logical pixels.
+   */
+  radiusMinor?: number;
+  /**
+   * The minimum value that could be reported for [radiusMajor] and [radiusMinor]
+   * for this pointer, in logical pixels.
+   */
+  radiusMin?: number;
+  /**
+   * The maximum value that could be reported for [radiusMajor] and [radiusMinor]
+   * for this pointer, in logical pixels.
+   */
+  radiusMax?: number;
+  /**
+   * The orientation angle of the detected object, in radians.
+   *
+   * For [PointerDeviceKind.touch] events:
+   *
+   * The angle of the contact ellipse, in radians in the range:
+   *
+   *     -pi/2 < orientation <= pi/2
+   *
+   * ...giving the angle of the major axis of the ellipse with the y-axis
+   * (negative angles indicating an orientation along the top-left /
+   * bottom-right diagonal, positive angles indicating an orientation along the
+   * top-right / bottom-left diagonal, and zero indicating an orientation
+   * parallel with the y-axis).
+   *
+   * For [PointerDeviceKind.stylus] and [PointerDeviceKind.invertedStylus] events:
+   *
+   * The angle of the stylus, in radians in the range:
+   *
+   *     -pi < orientation <= pi
+   *
+   * ...giving the angle of the axis of the stylus projected onto the input
+   * surface, relative to the positive y-axis of that surface (thus 0.0
+   * indicates the stylus, if projected onto that surface, would go from the
+   * contact point vertically up in the positive y-axis direction, pi would
+   * indicate that the stylus would go down in the negative y-axis direction;
+   * pi/4 would indicate that the stylus goes up and to the right, -pi/2 would
+   * indicate that the stylus goes to the left, etc).
+   */
+  orientation?: number;
+  /**
+   * The tilt angle of the detected object, in radians.
+   *
+   * For [PointerDeviceKind.stylus] and [PointerDeviceKind.invertedStylus] events:
+   *
+   * The angle of the stylus, in radians in the range:
+   *
+   *     0 <= tilt <= pi/2
+   *
+   * ...giving the angle of the axis of the stylus, relative to the axis
+   * perpendicular to the input surface (thus 0.0 indicates the stylus is
+   * orthogonal to the plane of the input surface, while pi/2 indicates that
+   * the stylus is flat on that surface).
+   */
+  tilt?: number;
+  /**
+   * Set if the pointer is currently down.
+   *
+   * For touch and stylus pointers, this means the object (finger, pen) is in
+   * contact with the input surface. For mice, it means a button is pressed.
+   */
+  down?: boolean;
+  /**
+   * Set if the event was synthesized by Flutter.
+   *
+   * We occasionally synthesize PointerEvents that aren't exact translations
+   * of [PointerData] from the engine to cover small cross-OS discrepancies
+   * in pointer behaviors.
+   *
+   * For instance, on end events, Android always drops any location changes
+   * that happened between its reporting intervals when emitting the end events.
+   *
+   * On iOS, minor incorrect location changes from the previous move events
+   * can be reported on end events. We synthesize a [PointerEvent] to cover
+   * the difference between the 2 events in that case.
+   */
+  synthesized?: boolean;
+  /**
+   * Unique identifier that ties the [PointerEvent] to the embedder event that created it.
+   *
+   * No two pointer events can have the same [embedderId] on platforms that set it.
+   * This is different from [pointer] identifier - used for hit-testing,
+   * whereas [embedderId] is used to identify the platform event.
+   *
+   * On Android this is ID of the underlying [MotionEvent](https://developer.android.com/reference/android/view/MotionEvent).
+   */
+  embedderId?: number;
+}
+
+export type PointerExitEventValue = PointerExitEvent | PointerExitEventObject;
+
+export interface PointerHoverEventObject {
+  /**
+   * The ID of the [FlutterView] which this event originated from.
+   */
+  viewId?: number;
+  /**
+   * Time of event dispatch, relative to an arbitrary timeline.
+   */
+  timeStamp?: DurationValue;
+  /**
+   * The kind of input device for which the event was generated.
+   */
+  kind?: PointerDeviceKind;
+  /**
+   * Unique identifier for the pointer, not reused. Changes for each new
+   * pointer down event.
+   */
+  pointer?: number;
+  /**
+   * Unique identifier for the pointing device, reused across interactions.
+   */
+  device?: number;
+  /**
+   * Coordinate of the position of the pointer, in logical pixels in the global
+   * coordinate space.
+   *
+   * See also:
+   *
+   *  * [localPosition], which is the [position] transformed into the local
+   *    coordinate system of the event receiver.
+   */
+  position?: OffsetValue;
+  /**
+   * Distance in logical pixels that the pointer moved since the last
+   * [PointerMoveEvent] or [PointerHoverEvent].
+   *
+   * This value is always 0.0 for down, up, and cancel events.
+   *
+   * See also:
+   *
+   *  * [localDelta], which is the [delta] transformed into the local
+   *    coordinate space of the event receiver.
+   */
+  delta?: OffsetValue;
+  /**
+   * Bit field using the *Button constants such as [kPrimaryMouseButton],
+   * [kSecondaryStylusButton], etc.
+   *
+   * For example, if this has the value 6 and the
+   * [kind] is [PointerDeviceKind.invertedStylus], then this indicates an
+   * upside-down stylus with both its primary and secondary buttons pressed.
+   */
+  buttons?: number;
+  /**
+   * Set if an application from a different security domain is in any way
+   * obscuring this application's window.
+   *
+   * This is not currently implemented.
+   */
+  obscured?: boolean;
+  /**
+   * The minimum value that [pressure] can return for this pointer.
+   *
+   * For devices that do not detect pressure (e.g. mice), returns 1.0.
+   * This will always be a number less than or equal to 1.0.
+   */
+  pressureMin?: number;
+  /**
+   * The maximum value that [pressure] can return for this pointer.
+   *
+   * For devices that do not detect pressure (e.g. mice), returns 1.0.
+   * This will always be a greater than or equal to 1.0.
+   */
+  pressureMax?: number;
+  /**
+   * The distance of the detected object from the input surface.
+   *
+   * For instance, this value could be the distance of a stylus or finger
+   * from a touch screen, in arbitrary units on an arbitrary (not necessarily
+   * linear) scale. If the pointer is down, this is 0.0 by definition.
+   */
+  distance?: number;
+  /**
+   * The maximum value that [distance] can return for this pointer.
+   *
+   * If this input device cannot detect "hover touch" input events,
+   * then this will be 0.0.
+   */
+  distanceMax?: number;
+  /**
+   * The area of the screen being pressed.
+   *
+   * This value is scaled to a range between 0 and 1. It can be used to
+   * determine fat touch events. This value is only set on Android and is
+   * a device specific approximation within the range of detectable values.
+   * So, for example, the value of 0.1 could mean a touch with the tip of
+   * the finger, 0.2 a touch with full finger, and 0.3 the full palm.
+   *
+   * Because this value uses device-specific range and is uncalibrated,
+   * it is of limited use and is primarily retained in order to be able
+   * to reconstruct original pointer events for [AndroidView].
+   */
+  size?: number;
+  /**
+   * The radius of the contact ellipse along the major axis, in logical pixels.
+   */
+  radiusMajor?: number;
+  /**
+   * The radius of the contact ellipse along the minor axis, in logical pixels.
+   */
+  radiusMinor?: number;
+  /**
+   * The minimum value that could be reported for [radiusMajor] and [radiusMinor]
+   * for this pointer, in logical pixels.
+   */
+  radiusMin?: number;
+  /**
+   * The maximum value that could be reported for [radiusMajor] and [radiusMinor]
+   * for this pointer, in logical pixels.
+   */
+  radiusMax?: number;
+  /**
+   * The orientation angle of the detected object, in radians.
+   *
+   * For [PointerDeviceKind.touch] events:
+   *
+   * The angle of the contact ellipse, in radians in the range:
+   *
+   *     -pi/2 < orientation <= pi/2
+   *
+   * ...giving the angle of the major axis of the ellipse with the y-axis
+   * (negative angles indicating an orientation along the top-left /
+   * bottom-right diagonal, positive angles indicating an orientation along the
+   * top-right / bottom-left diagonal, and zero indicating an orientation
+   * parallel with the y-axis).
+   *
+   * For [PointerDeviceKind.stylus] and [PointerDeviceKind.invertedStylus] events:
+   *
+   * The angle of the stylus, in radians in the range:
+   *
+   *     -pi < orientation <= pi
+   *
+   * ...giving the angle of the axis of the stylus projected onto the input
+   * surface, relative to the positive y-axis of that surface (thus 0.0
+   * indicates the stylus, if projected onto that surface, would go from the
+   * contact point vertically up in the positive y-axis direction, pi would
+   * indicate that the stylus would go down in the negative y-axis direction;
+   * pi/4 would indicate that the stylus goes up and to the right, -pi/2 would
+   * indicate that the stylus goes to the left, etc).
+   */
+  orientation?: number;
+  /**
+   * The tilt angle of the detected object, in radians.
+   *
+   * For [PointerDeviceKind.stylus] and [PointerDeviceKind.invertedStylus] events:
+   *
+   * The angle of the stylus, in radians in the range:
+   *
+   *     0 <= tilt <= pi/2
+   *
+   * ...giving the angle of the axis of the stylus, relative to the axis
+   * perpendicular to the input surface (thus 0.0 indicates the stylus is
+   * orthogonal to the plane of the input surface, while pi/2 indicates that
+   * the stylus is flat on that surface).
+   */
+  tilt?: number;
+  /**
+   * Set if the event was synthesized by Flutter.
+   *
+   * We occasionally synthesize PointerEvents that aren't exact translations
+   * of [PointerData] from the engine to cover small cross-OS discrepancies
+   * in pointer behaviors.
+   *
+   * For instance, on end events, Android always drops any location changes
+   * that happened between its reporting intervals when emitting the end events.
+   *
+   * On iOS, minor incorrect location changes from the previous move events
+   * can be reported on end events. We synthesize a [PointerEvent] to cover
+   * the difference between the 2 events in that case.
+   */
+  synthesized?: boolean;
+  /**
+   * Unique identifier that ties the [PointerEvent] to the embedder event that created it.
+   *
+   * No two pointer events can have the same [embedderId] on platforms that set it.
+   * This is different from [pointer] identifier - used for hit-testing,
+   * whereas [embedderId] is used to identify the platform event.
+   *
+   * On Android this is ID of the underlying [MotionEvent](https://developer.android.com/reference/android/view/MotionEvent).
+   */
+  embedderId?: number;
+}
+
+export type PointerHoverEventValue =
+  PointerHoverEvent | PointerHoverEventObject;
+
+export interface PointerMoveEventObject {
+  /**
+   * The ID of the [FlutterView] which this event originated from.
+   */
+  viewId?: number;
+  /**
+   * Time of event dispatch, relative to an arbitrary timeline.
+   */
+  timeStamp?: DurationValue;
+  /**
+   * Unique identifier for the pointer, not reused. Changes for each new
+   * pointer down event.
+   */
+  pointer?: number;
+  /**
+   * The kind of input device for which the event was generated.
+   */
+  kind?: PointerDeviceKind;
+  /**
+   * Unique identifier for the pointing device, reused across interactions.
+   */
+  device?: number;
+  /**
+   * Coordinate of the position of the pointer, in logical pixels in the global
+   * coordinate space.
+   *
+   * See also:
+   *
+   *  * [localPosition], which is the [position] transformed into the local
+   *    coordinate system of the event receiver.
+   */
+  position?: OffsetValue;
+  /**
+   * Distance in logical pixels that the pointer moved since the last
+   * [PointerMoveEvent] or [PointerHoverEvent].
+   *
+   * This value is always 0.0 for down, up, and cancel events.
+   *
+   * See also:
+   *
+   *  * [localDelta], which is the [delta] transformed into the local
+   *    coordinate space of the event receiver.
+   */
+  delta?: OffsetValue;
+  /**
+   * Bit field using the *Button constants such as [kPrimaryMouseButton],
+   * [kSecondaryStylusButton], etc.
+   *
+   * For example, if this has the value 6 and the
+   * [kind] is [PointerDeviceKind.invertedStylus], then this indicates an
+   * upside-down stylus with both its primary and secondary buttons pressed.
+   */
+  buttons?: number;
+  /**
+   * Set if an application from a different security domain is in any way
+   * obscuring this application's window.
+   *
+   * This is not currently implemented.
+   */
+  obscured?: boolean;
+  /**
+   * The pressure of the touch.
+   *
+   * This value is a number ranging from 0.0, indicating a touch with no
+   * discernible pressure, to 1.0, indicating a touch with "normal" pressure,
+   * and possibly beyond, indicating a stronger touch. For devices that do not
+   * detect pressure (e.g. mice), returns 1.0.
+   */
+  pressure?: number;
+  /**
+   * The minimum value that [pressure] can return for this pointer.
+   *
+   * For devices that do not detect pressure (e.g. mice), returns 1.0.
+   * This will always be a number less than or equal to 1.0.
+   */
+  pressureMin?: number;
+  /**
+   * The maximum value that [pressure] can return for this pointer.
+   *
+   * For devices that do not detect pressure (e.g. mice), returns 1.0.
+   * This will always be a greater than or equal to 1.0.
+   */
+  pressureMax?: number;
+  /**
+   * The maximum value that [distance] can return for this pointer.
+   *
+   * If this input device cannot detect "hover touch" input events,
+   * then this will be 0.0.
+   */
+  distanceMax?: number;
+  /**
+   * The area of the screen being pressed.
+   *
+   * This value is scaled to a range between 0 and 1. It can be used to
+   * determine fat touch events. This value is only set on Android and is
+   * a device specific approximation within the range of detectable values.
+   * So, for example, the value of 0.1 could mean a touch with the tip of
+   * the finger, 0.2 a touch with full finger, and 0.3 the full palm.
+   *
+   * Because this value uses device-specific range and is uncalibrated,
+   * it is of limited use and is primarily retained in order to be able
+   * to reconstruct original pointer events for [AndroidView].
+   */
+  size?: number;
+  /**
+   * The radius of the contact ellipse along the major axis, in logical pixels.
+   */
+  radiusMajor?: number;
+  /**
+   * The radius of the contact ellipse along the minor axis, in logical pixels.
+   */
+  radiusMinor?: number;
+  /**
+   * The minimum value that could be reported for [radiusMajor] and [radiusMinor]
+   * for this pointer, in logical pixels.
+   */
+  radiusMin?: number;
+  /**
+   * The maximum value that could be reported for [radiusMajor] and [radiusMinor]
+   * for this pointer, in logical pixels.
+   */
+  radiusMax?: number;
+  /**
+   * The orientation angle of the detected object, in radians.
+   *
+   * For [PointerDeviceKind.touch] events:
+   *
+   * The angle of the contact ellipse, in radians in the range:
+   *
+   *     -pi/2 < orientation <= pi/2
+   *
+   * ...giving the angle of the major axis of the ellipse with the y-axis
+   * (negative angles indicating an orientation along the top-left /
+   * bottom-right diagonal, positive angles indicating an orientation along the
+   * top-right / bottom-left diagonal, and zero indicating an orientation
+   * parallel with the y-axis).
+   *
+   * For [PointerDeviceKind.stylus] and [PointerDeviceKind.invertedStylus] events:
+   *
+   * The angle of the stylus, in radians in the range:
+   *
+   *     -pi < orientation <= pi
+   *
+   * ...giving the angle of the axis of the stylus projected onto the input
+   * surface, relative to the positive y-axis of that surface (thus 0.0
+   * indicates the stylus, if projected onto that surface, would go from the
+   * contact point vertically up in the positive y-axis direction, pi would
+   * indicate that the stylus would go down in the negative y-axis direction;
+   * pi/4 would indicate that the stylus goes up and to the right, -pi/2 would
+   * indicate that the stylus goes to the left, etc).
+   */
+  orientation?: number;
+  /**
+   * The tilt angle of the detected object, in radians.
+   *
+   * For [PointerDeviceKind.stylus] and [PointerDeviceKind.invertedStylus] events:
+   *
+   * The angle of the stylus, in radians in the range:
+   *
+   *     0 <= tilt <= pi/2
+   *
+   * ...giving the angle of the axis of the stylus, relative to the axis
+   * perpendicular to the input surface (thus 0.0 indicates the stylus is
+   * orthogonal to the plane of the input surface, while pi/2 indicates that
+   * the stylus is flat on that surface).
+   */
+  tilt?: number;
+  /**
+   * Opaque platform-specific data associated with the event.
+   */
+  platformData?: number;
+  /**
+   * Set if the event was synthesized by Flutter.
+   *
+   * We occasionally synthesize PointerEvents that aren't exact translations
+   * of [PointerData] from the engine to cover small cross-OS discrepancies
+   * in pointer behaviors.
+   *
+   * For instance, on end events, Android always drops any location changes
+   * that happened between its reporting intervals when emitting the end events.
+   *
+   * On iOS, minor incorrect location changes from the previous move events
+   * can be reported on end events. We synthesize a [PointerEvent] to cover
+   * the difference between the 2 events in that case.
+   */
+  synthesized?: boolean;
+  /**
+   * Unique identifier that ties the [PointerEvent] to the embedder event that created it.
+   *
+   * No two pointer events can have the same [embedderId] on platforms that set it.
+   * This is different from [pointer] identifier - used for hit-testing,
+   * whereas [embedderId] is used to identify the platform event.
+   *
+   * On Android this is ID of the underlying [MotionEvent](https://developer.android.com/reference/android/view/MotionEvent).
+   */
+  embedderId?: number;
+}
+
+export type PointerMoveEventValue = PointerMoveEvent | PointerMoveEventObject;
+
+export interface PointerPanZoomEndEventObject {
+  /**
+   * The ID of the [FlutterView] which this event originated from.
+   */
+  viewId?: number;
+  /**
+   * Time of event dispatch, relative to an arbitrary timeline.
+   */
+  timeStamp?: DurationValue;
+  /**
+   * Unique identifier for the pointing device, reused across interactions.
+   */
+  device?: number;
+  /**
+   * Unique identifier for the pointer, not reused. Changes for each new
+   * pointer down event.
+   */
+  pointer?: number;
+  /**
+   * Coordinate of the position of the pointer, in logical pixels in the global
+   * coordinate space.
+   *
+   * See also:
+   *
+   *  * [localPosition], which is the [position] transformed into the local
+   *    coordinate system of the event receiver.
+   */
+  position?: OffsetValue;
+  /**
+   * Unique identifier that ties the [PointerEvent] to the embedder event that created it.
+   *
+   * No two pointer events can have the same [embedderId] on platforms that set it.
+   * This is different from [pointer] identifier - used for hit-testing,
+   * whereas [embedderId] is used to identify the platform event.
+   *
+   * On Android this is ID of the underlying [MotionEvent](https://developer.android.com/reference/android/view/MotionEvent).
+   */
+  embedderId?: number;
+  /**
+   * Set if the event was synthesized by Flutter.
+   *
+   * We occasionally synthesize PointerEvents that aren't exact translations
+   * of [PointerData] from the engine to cover small cross-OS discrepancies
+   * in pointer behaviors.
+   *
+   * For instance, on end events, Android always drops any location changes
+   * that happened between its reporting intervals when emitting the end events.
+   *
+   * On iOS, minor incorrect location changes from the previous move events
+   * can be reported on end events. We synthesize a [PointerEvent] to cover
+   * the difference between the 2 events in that case.
+   */
+  synthesized?: boolean;
+}
+
+export type PointerPanZoomEndEventValue =
+  PointerPanZoomEndEvent | PointerPanZoomEndEventObject;
+
+export interface PointerPanZoomStartEventObject {
+  /**
+   * The ID of the [FlutterView] which this event originated from.
+   */
+  viewId?: number;
+  /**
+   * Time of event dispatch, relative to an arbitrary timeline.
+   */
+  timeStamp?: DurationValue;
+  /**
+   * Unique identifier for the pointing device, reused across interactions.
+   */
+  device?: number;
+  /**
+   * Unique identifier for the pointer, not reused. Changes for each new
+   * pointer down event.
+   */
+  pointer?: number;
+  /**
+   * Coordinate of the position of the pointer, in logical pixels in the global
+   * coordinate space.
+   *
+   * See also:
+   *
+   *  * [localPosition], which is the [position] transformed into the local
+   *    coordinate system of the event receiver.
+   */
+  position?: OffsetValue;
+  /**
+   * Unique identifier that ties the [PointerEvent] to the embedder event that created it.
+   *
+   * No two pointer events can have the same [embedderId] on platforms that set it.
+   * This is different from [pointer] identifier - used for hit-testing,
+   * whereas [embedderId] is used to identify the platform event.
+   *
+   * On Android this is ID of the underlying [MotionEvent](https://developer.android.com/reference/android/view/MotionEvent).
+   */
+  embedderId?: number;
+  /**
+   * Set if the event was synthesized by Flutter.
+   *
+   * We occasionally synthesize PointerEvents that aren't exact translations
+   * of [PointerData] from the engine to cover small cross-OS discrepancies
+   * in pointer behaviors.
+   *
+   * For instance, on end events, Android always drops any location changes
+   * that happened between its reporting intervals when emitting the end events.
+   *
+   * On iOS, minor incorrect location changes from the previous move events
+   * can be reported on end events. We synthesize a [PointerEvent] to cover
+   * the difference between the 2 events in that case.
+   */
+  synthesized?: boolean;
+}
+
+export type PointerPanZoomStartEventValue =
+  PointerPanZoomStartEvent | PointerPanZoomStartEventObject;
+
+export interface PointerPanZoomUpdateEventObject {
+  /**
+   * The ID of the [FlutterView] which this event originated from.
+   */
+  viewId?: number;
+  /**
+   * Time of event dispatch, relative to an arbitrary timeline.
+   */
+  timeStamp?: DurationValue;
+  /**
+   * Unique identifier for the pointing device, reused across interactions.
+   */
+  device?: number;
+  /**
+   * Unique identifier for the pointer, not reused. Changes for each new
+   * pointer down event.
+   */
+  pointer?: number;
+  /**
+   * Coordinate of the position of the pointer, in logical pixels in the global
+   * coordinate space.
+   *
+   * See also:
+   *
+   *  * [localPosition], which is the [position] transformed into the local
+   *    coordinate system of the event receiver.
+   */
+  position?: OffsetValue;
+  /**
+   * Unique identifier that ties the [PointerEvent] to the embedder event that created it.
+   *
+   * No two pointer events can have the same [embedderId] on platforms that set it.
+   * This is different from [pointer] identifier - used for hit-testing,
+   * whereas [embedderId] is used to identify the platform event.
+   *
+   * On Android this is ID of the underlying [MotionEvent](https://developer.android.com/reference/android/view/MotionEvent).
+   */
+  embedderId?: number;
+  pan?: OffsetValue;
+  panDelta?: OffsetValue;
+  scale?: number;
+  rotation?: number;
+  /**
+   * Set if the event was synthesized by Flutter.
+   *
+   * We occasionally synthesize PointerEvents that aren't exact translations
+   * of [PointerData] from the engine to cover small cross-OS discrepancies
+   * in pointer behaviors.
+   *
+   * For instance, on end events, Android always drops any location changes
+   * that happened between its reporting intervals when emitting the end events.
+   *
+   * On iOS, minor incorrect location changes from the previous move events
+   * can be reported on end events. We synthesize a [PointerEvent] to cover
+   * the difference between the 2 events in that case.
+   */
+  synthesized?: boolean;
+}
+
+export type PointerPanZoomUpdateEventValue =
+  PointerPanZoomUpdateEvent | PointerPanZoomUpdateEventObject;
+
+export interface PointerUpEventObject {
+  /**
+   * The ID of the [FlutterView] which this event originated from.
+   */
+  viewId?: number;
+  /**
+   * Time of event dispatch, relative to an arbitrary timeline.
+   */
+  timeStamp?: DurationValue;
+  /**
+   * Unique identifier for the pointer, not reused. Changes for each new
+   * pointer down event.
+   */
+  pointer?: number;
+  /**
+   * The kind of input device for which the event was generated.
+   */
+  kind?: PointerDeviceKind;
+  /**
+   * Unique identifier for the pointing device, reused across interactions.
+   */
+  device?: number;
+  /**
+   * Coordinate of the position of the pointer, in logical pixels in the global
+   * coordinate space.
+   *
+   * See also:
+   *
+   *  * [localPosition], which is the [position] transformed into the local
+   *    coordinate system of the event receiver.
+   */
+  position?: OffsetValue;
+  /**
+   * Bit field using the *Button constants such as [kPrimaryMouseButton],
+   * [kSecondaryStylusButton], etc.
+   *
+   * For example, if this has the value 6 and the
+   * [kind] is [PointerDeviceKind.invertedStylus], then this indicates an
+   * upside-down stylus with both its primary and secondary buttons pressed.
+   */
+  buttons?: number;
+  /**
+   * Set if an application from a different security domain is in any way
+   * obscuring this application's window.
+   *
+   * This is not currently implemented.
+   */
+  obscured?: boolean;
+  /**
+   * The pressure of the touch.
+   *
+   * This value is a number ranging from 0.0, indicating a touch with no
+   * discernible pressure, to 1.0, indicating a touch with "normal" pressure,
+   * and possibly beyond, indicating a stronger touch. For devices that do not
+   * detect pressure (e.g. mice), returns 1.0.
+   */
+  pressure?: number;
+  /**
+   * The minimum value that [pressure] can return for this pointer.
+   *
+   * For devices that do not detect pressure (e.g. mice), returns 1.0.
+   * This will always be a number less than or equal to 1.0.
+   */
+  pressureMin?: number;
+  /**
+   * The maximum value that [pressure] can return for this pointer.
+   *
+   * For devices that do not detect pressure (e.g. mice), returns 1.0.
+   * This will always be a greater than or equal to 1.0.
+   */
+  pressureMax?: number;
+  /**
+   * The distance of the detected object from the input surface.
+   *
+   * For instance, this value could be the distance of a stylus or finger
+   * from a touch screen, in arbitrary units on an arbitrary (not necessarily
+   * linear) scale. If the pointer is down, this is 0.0 by definition.
+   */
+  distance?: number;
+  /**
+   * The maximum value that [distance] can return for this pointer.
+   *
+   * If this input device cannot detect "hover touch" input events,
+   * then this will be 0.0.
+   */
+  distanceMax?: number;
+  /**
+   * The area of the screen being pressed.
+   *
+   * This value is scaled to a range between 0 and 1. It can be used to
+   * determine fat touch events. This value is only set on Android and is
+   * a device specific approximation within the range of detectable values.
+   * So, for example, the value of 0.1 could mean a touch with the tip of
+   * the finger, 0.2 a touch with full finger, and 0.3 the full palm.
+   *
+   * Because this value uses device-specific range and is uncalibrated,
+   * it is of limited use and is primarily retained in order to be able
+   * to reconstruct original pointer events for [AndroidView].
+   */
+  size?: number;
+  /**
+   * The radius of the contact ellipse along the major axis, in logical pixels.
+   */
+  radiusMajor?: number;
+  /**
+   * The radius of the contact ellipse along the minor axis, in logical pixels.
+   */
+  radiusMinor?: number;
+  /**
+   * The minimum value that could be reported for [radiusMajor] and [radiusMinor]
+   * for this pointer, in logical pixels.
+   */
+  radiusMin?: number;
+  /**
+   * The maximum value that could be reported for [radiusMajor] and [radiusMinor]
+   * for this pointer, in logical pixels.
+   */
+  radiusMax?: number;
+  /**
+   * The orientation angle of the detected object, in radians.
+   *
+   * For [PointerDeviceKind.touch] events:
+   *
+   * The angle of the contact ellipse, in radians in the range:
+   *
+   *     -pi/2 < orientation <= pi/2
+   *
+   * ...giving the angle of the major axis of the ellipse with the y-axis
+   * (negative angles indicating an orientation along the top-left /
+   * bottom-right diagonal, positive angles indicating an orientation along the
+   * top-right / bottom-left diagonal, and zero indicating an orientation
+   * parallel with the y-axis).
+   *
+   * For [PointerDeviceKind.stylus] and [PointerDeviceKind.invertedStylus] events:
+   *
+   * The angle of the stylus, in radians in the range:
+   *
+   *     -pi < orientation <= pi
+   *
+   * ...giving the angle of the axis of the stylus projected onto the input
+   * surface, relative to the positive y-axis of that surface (thus 0.0
+   * indicates the stylus, if projected onto that surface, would go from the
+   * contact point vertically up in the positive y-axis direction, pi would
+   * indicate that the stylus would go down in the negative y-axis direction;
+   * pi/4 would indicate that the stylus goes up and to the right, -pi/2 would
+   * indicate that the stylus goes to the left, etc).
+   */
+  orientation?: number;
+  /**
+   * The tilt angle of the detected object, in radians.
+   *
+   * For [PointerDeviceKind.stylus] and [PointerDeviceKind.invertedStylus] events:
+   *
+   * The angle of the stylus, in radians in the range:
+   *
+   *     0 <= tilt <= pi/2
+   *
+   * ...giving the angle of the axis of the stylus, relative to the axis
+   * perpendicular to the input surface (thus 0.0 indicates the stylus is
+   * orthogonal to the plane of the input surface, while pi/2 indicates that
+   * the stylus is flat on that surface).
+   */
+  tilt?: number;
+  /**
+   * Unique identifier that ties the [PointerEvent] to the embedder event that created it.
+   *
+   * No two pointer events can have the same [embedderId] on platforms that set it.
+   * This is different from [pointer] identifier - used for hit-testing,
+   * whereas [embedderId] is used to identify the platform event.
+   *
+   * On Android this is ID of the underlying [MotionEvent](https://developer.android.com/reference/android/view/MotionEvent).
+   */
+  embedderId?: number;
+}
+
+export type PointerUpEventValue = PointerUpEvent | PointerUpEventObject;
+
+export interface PopupMenuThemeDataObject {
+  /**
+   * The background color of the popup menu.
+   */
+  color?: ColorValue;
+  /**
+   * The shape of the popup menu.
+   */
+  shape?: ShapeBorderValue;
+  /**
+   * If specified, the padding of the popup menu.
+   *
+   * If [PopupMenuButton.menuPadding] is provided, [menuPadding] is ignored.
+   */
+  menuPadding?: EdgeInsetsGeometryValue;
+  /**
+   * The elevation of the popup menu.
+   */
+  elevation?: number;
+  /**
+   * The color used to paint shadow below the popup menu.
+   */
+  shadowColor?: ColorValue;
+  /**
+   * The color used as an overlay on [color] of the popup menu.
+   */
+  surfaceTintColor?: ColorValue;
+  /**
+   * The text style of items in the popup menu.
+   */
+  textStyle?: TextStyleValue;
+  /**
+   * You can use this to specify a different style of the label
+   * when the popup menu item is enabled and disabled.
+   */
+  labelTextStyle?: WidgetStatePropertyValue;
+  /**
+   * If specified, defines the feedback property for [PopupMenuButton].
+   *
+   * If [PopupMenuButton.enableFeedback] is provided, [enableFeedback] is ignored.
+   */
+  enableFeedback?: boolean;
+  /**
+   * If specified, overrides the default value of [PopupMenuItem.mouseCursor].
+   */
+  mouseCursor?: WidgetStatePropertyValue;
+  /**
+   * Whether the popup menu is positioned over or under the popup menu button.
+   *
+   * When not set, the position defaults to [PopupMenuPosition.over] which makes the
+   * popup menu appear directly over the button that was used to create it.
+   */
+  position?: PopupMenuPosition;
+  /**
+   * The color of the icon in the popup menu button.
+   */
+  iconColor?: ColorValue;
+  /**
+   * The size of the icon in the popup menu button.
+   */
+  iconSize?: number;
+}
+
+export type PopupMenuThemeDataValue =
+  PopupMenuThemeData | PopupMenuThemeDataObject;
+
+export interface ProgressIndicatorThemeDataObject {
+  /**
+   * The color of the [ProgressIndicator]'s indicator.
+   *
+   * If null, then it will use [ColorScheme.primary] of the ambient
+   * [ThemeData.colorScheme].
+   *
+   * See also:
+   *
+   *  * [ProgressIndicator.color], which specifies the indicator color for a
+   *    specific progress indicator.
+   *  * [ProgressIndicator.valueColor], which specifies the indicator color
+   *    a an animated color.
+   */
+  color?: ColorValue;
+  linearTrackColor?: ColorValue;
+  linearMinHeight?: number;
+  circularTrackColor?: ColorValue;
+  refreshBackgroundColor?: ColorValue;
+  /**
+   * Overrides the border radius of the [ProgressIndicator].
+   */
+  borderRadius?: BorderRadiusGeometryValue;
+  /**
+   * Overrides the stop indicator color of the [LinearProgressIndicator].
+   *
+   * If [LinearProgressIndicator.year2023] is true or [ThemeData.useMaterial3]
+   * is false, then no stop indicator will be drawn.
+   */
+  stopIndicatorColor?: ColorValue;
+  /**
+   * Overrides the stop indicator radius of the [LinearProgressIndicator].
+   *
+   * If [LinearProgressIndicator.year2023] is true or [ThemeData.useMaterial3]
+   * is false, then no stop indicator will be drawn.
+   */
+  stopIndicatorRadius?: number;
+  /**
+   * Overrides the stroke width of the [CircularProgressIndicator].
+   */
+  strokeWidth?: number;
+  /**
+   * Overrides the stroke align of the [CircularProgressIndicator].
+   */
+  strokeAlign?: number;
+  /**
+   * Overrides the stroke cap of the [CircularProgressIndicator].
+   */
+  strokeCap?: StrokeCap;
+  /**
+   * Overrides the constraints of the [CircularProgressIndicator].
+   */
+  constraints?: BoxConstraintsValue;
+  /**
+   * Overrides the active indicator and the background track.
+   *
+   * If [CircularProgressIndicator.year2023] is true or [ThemeData.useMaterial3]
+   * is false, then no track gap will be drawn.
+   *
+   * If [LinearProgressIndicator.year2023] is true or [ThemeData.useMaterial3]
+   * is false, then no track gap will be drawn.
+   */
+  trackGap?: number;
+  /**
+   * Overrides the padding of the [CircularProgressIndicator].
+   */
+  circularTrackPadding?: EdgeInsetsGeometryValue;
+  /**
+   * Overrides the [CircularProgressIndicator.year2023] and
+   * [LinearProgressIndicator.year2023] properties.
+   *
+   * When true, the [CircularProgressIndicator] and [LinearProgressIndicator]
+   * will use the 2023 Material Design 3 appearance. Defaults to true.
+   *
+   * If this is set to false, the [CircularProgressIndicator] and
+   * [LinearProgressIndicator] will use the latest Material Design 3 appearance,
+   * which was introduced in December 2023.
+   *
+   * If [ThemeData.useMaterial3] is false, then this property is ignored.
+   *
+   * @deprecated
+   */
+  year2023?: boolean;
+  /**
+   * Defines a default [AnimationController] for descendant
+   * [CircularProgressIndicator] and [LinearProgressIndicator] widgets.
+   *
+   * If a descendant progress indicator's `controller` property is null, this
+   * controller will be used to drive its indeterminate animation. This allows
+   * a single controller to synchronize the animations of multiple indicators.
+   *
+   * If this property is also null, the progress indicator will create and
+   * manage its own internal [AnimationController].
+   */
+  controller?: AnimationController;
+}
+
+export type ProgressIndicatorThemeDataValue =
+  ProgressIndicatorThemeData | ProgressIndicatorThemeDataObject;
+
+export interface RadioThemeDataObject {
+  /**
+   * If specified, overrides the default value of [Radio.mouseCursor]. The
+   * default value is [WidgetStateMouseCursor.clickable].
+   */
+  mouseCursor?: WidgetStatePropertyValue;
+  /**
+   * If specified, overrides the default value of [Radio.fillColor].
+   */
+  fillColor?: WidgetStatePropertyValue;
+  /**
+   * If specified, overrides the default value of [Radio.overlayColor].
+   */
+  overlayColor?: WidgetStatePropertyValue;
+  /**
+   * If specified, overrides the default value of [Radio.splashRadius]. The
+   * default value is [kRadialReactionRadius].
+   */
+  splashRadius?: number;
+  /**
+   * If specified, overrides the default value of
+   * [Radio.materialTapTargetSize]. The default value is the value of
+   * [ThemeData.materialTapTargetSize].
+   */
+  materialTapTargetSize?: MaterialTapTargetSize;
+  /**
+   * If specified, overrides the default value of [Radio.visualDensity]. The
+   * default value is the value of [ThemeData.visualDensity].
+   */
+  visualDensity?: VisualDensityValue;
+  /**
+   * If specified, overrides the default value of [Radio.backgroundColor]. The
+   * default value is transparent in all states.
+   */
+  backgroundColor?: WidgetStatePropertyValue;
+  /**
+   * If specified, overrides the default value of [Radio.side]. The default
+   * value is a border using the fill color.
+   */
+  side?: BorderSideValue;
+  /**
+   * If specified, overrides the default value of [Radio.innerRadius]. The
+   * default value is `4.5` in all states.
+   */
+  innerRadius?: WidgetStatePropertyValue;
+}
+
+export type RadioThemeDataValue = RadioThemeData | RadioThemeDataObject;
+
+export type RadiusValue =
+  Radius | 'defaultRadius' | 'defaultRadiusWhileDragging' | 'zero';
+
+export type RectValue = Rect | 'largest' | 'zero';
+
+export interface RouteSettingsObject {
+  /**
+   * The name of the route (e.g., "/settings").
+   *
+   * If null, the route is anonymous.
+   */
+  name?: string;
+  /**
+   * The arguments passed to this route.
+   *
+   * May be used when building the route, e.g. in [Navigator.onGenerateRoute].
+   */
+  arguments?: Object;
+}
+
+export type RouteSettingsValue = RouteSettings | RouteSettingsObject;
+
+export interface ScrollbarThemeDataObject {
+  /**
+   * Overrides the default value of [Scrollbar.thumbVisibility] in all
+   * descendant [Scrollbar] widgets.
+   */
+  thumbVisibility?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default value of [Scrollbar.thickness] in all
+   * descendant [Scrollbar] widgets.
+   *
+   * Resolves in the following states:
+   *  * [WidgetState.hovered] on web and desktop platforms.
+   */
+  thickness?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default value of [Scrollbar.trackVisibility] in all
+   * descendant [Scrollbar] widgets.
+   */
+  trackVisibility?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default value of [Scrollbar.radius] in all
+   * descendant widgets.
+   */
+  radius?: RadiusValue;
+  /**
+   * Overrides the default [Color] of the [Scrollbar] thumb in all descendant
+   * [Scrollbar] widgets.
+   *
+   * Resolves in the following states:
+   *  * [WidgetState.dragged].
+   *  * [WidgetState.hovered] on web and desktop platforms.
+   */
+  thumbColor?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default [Color] of the [Scrollbar] track when
+   * [trackVisibility] is true in all descendant [Scrollbar] widgets.
+   *
+   * Resolves in the following states:
+   *  * [WidgetState.hovered] on web and desktop platforms.
+   */
+  trackColor?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default [Color] of the [Scrollbar] track border when
+   * [trackVisibility] is true in all descendant [Scrollbar] widgets.
+   *
+   * Resolves in the following states:
+   *  * [WidgetState.hovered] on web and desktop platforms.
+   */
+  trackBorderColor?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default value of the [ScrollbarPainter.crossAxisMargin]
+   * property in all descendant [Scrollbar] widgets.
+   *
+   * See also:
+   *
+   *  * [ScrollbarPainter.crossAxisMargin], which sets the distance from the
+   *    scrollbar's side to the nearest edge in logical pixels.
+   */
+  crossAxisMargin?: number;
+  /**
+   * Overrides the default value of the [ScrollbarPainter.mainAxisMargin]
+   * property in all descendant [Scrollbar] widgets.
+   *
+   * See also:
+   *
+   *  * [ScrollbarPainter.mainAxisMargin], which sets the distance from the
+   *    scrollbar's start and end to the edge of the viewport in logical pixels.
+   */
+  mainAxisMargin?: number;
+  /**
+   * Overrides the default value of the [ScrollbarPainter.minLength]
+   * property in all descendant [Scrollbar] widgets.
+   *
+   * See also:
+   *
+   *  * [ScrollbarPainter.minLength], which sets the preferred smallest size
+   *    the scrollbar can shrink to when the total scrollable extent is large,
+   *    the current visible viewport is small, and the viewport is not
+   *    overscrolled.
+   */
+  minThumbLength?: number;
+  /**
+   * Overrides the default value of [Scrollbar.interactive] in all
+   * descendant [Scrollbar] widgets.
+   */
+  interactive?: boolean;
+}
+
+export type ScrollbarThemeDataValue =
+  ScrollbarThemeData | ScrollbarThemeDataObject;
+
+export interface ScrollPhysicsObject {
+  /**
+   * If non-null, determines the default behavior for each method.
+   *
+   * If a subclass of [ScrollPhysics] does not override a method, that subclass
+   * will inherit an implementation from this base class that defers to
+   * [parent]. This mechanism lets you assemble novel combinations of
+   * [ScrollPhysics] subclasses at runtime. For example:
+   *
+   * ```dart
+   * const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics())
+   * ```
+   *
+   * will result in a [ScrollPhysics] that has the combined behavior
+   * of [BouncingScrollPhysics] and [AlwaysScrollableScrollPhysics]:
+   * behaviors that are not specified in [BouncingScrollPhysics]
+   * (e.g. [shouldAcceptUserOffset]) will defer to [AlwaysScrollableScrollPhysics].
+   */
+  parent?: ScrollPhysicsValue;
+}
+
+export type ScrollPhysicsValue = ScrollPhysics | ScrollPhysicsObject;
+
+export interface SearchBarThemeDataObject {
+  /**
+   * Overrides the default value of the [SearchBar.elevation].
+   */
+  elevation?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default value of the [SearchBar.backgroundColor].
+   */
+  backgroundColor?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default value of the [SearchBar.shadowColor].
+   */
+  shadowColor?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default value of the [SearchBar.surfaceTintColor].
+   */
+  surfaceTintColor?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default value of the [SearchBar.overlayColor].
+   */
+  overlayColor?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default value of the [SearchBar.side].
+   */
+  side?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default value of the [SearchBar.shape].
+   */
+  shape?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default value for [SearchBar.padding].
+   */
+  padding?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default value for [SearchBar.textStyle].
+   */
+  textStyle?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default value for [SearchBar.hintStyle].
+   */
+  hintStyle?: WidgetStatePropertyValue;
+  /**
+   * Overrides the value of size constraints for [SearchBar].
+   */
+  constraints?: BoxConstraintsValue;
+  /**
+   * Overrides the value of [SearchBar.textCapitalization].
+   */
+  textCapitalization?: TextCapitalization;
+}
+
+export type SearchBarThemeDataValue =
+  SearchBarThemeData | SearchBarThemeDataObject;
+
+export interface SearchViewThemeDataObject {
+  /**
+   * Overrides the default value of the [SearchAnchor.viewBackgroundColor].
+   */
+  backgroundColor?: ColorValue;
+  /**
+   * Overrides the default value of the [SearchAnchor.viewElevation].
+   */
+  elevation?: number;
+  /**
+   * Overrides the default value of the [SearchAnchor.viewSurfaceTintColor].
+   */
+  surfaceTintColor?: ColorValue;
+  /**
+   * Overrides the value of size constraints for [SearchAnchor.viewConstraints].
+   */
+  constraints?: BoxConstraintsValue;
+  /**
+   * Overrides the value of the padding for [SearchAnchor.viewPadding].
+   */
+  padding?: EdgeInsetsGeometryValue;
+  /**
+   * Overrides the value of the padding for [SearchAnchor.viewBarPadding]
+   */
+  barPadding?: EdgeInsetsGeometryValue;
+  /**
+   * Overrides the value of the shrink wrap for [SearchAnchor.shrinkWrap].
+   */
+  shrinkWrap?: boolean;
+  /**
+   * Overrides the default value of the [SearchAnchor.viewSide].
+   */
+  side?: BorderSideValue;
+  /**
+   * Overrides the default value of the [SearchAnchor.viewShape].
+   */
+  shape?: OutlinedBorderValue;
+  /**
+   * Overrides the default value of the [SearchAnchor.headerHeight].
+   */
+  headerHeight?: number;
+  /**
+   * Overrides the default value for [SearchAnchor.headerTextStyle].
+   */
+  headerTextStyle?: TextStyleValue;
+  /**
+   * Overrides the default value for [SearchAnchor.headerHintStyle].
+   */
+  headerHintStyle?: TextStyleValue;
+  /**
+   * Overrides the value of the divider color for [SearchAnchor.dividerColor].
+   */
+  dividerColor?: ColorValue;
+}
+
+export type SearchViewThemeDataValue =
+  SearchViewThemeData | SearchViewThemeDataObject;
+
+export interface SegmentedButtonThemeDataObject {
+  /**
+   * Overrides the [SegmentedButton]'s default style.
+   *
+   * Non-null properties or non-null resolved [WidgetStateProperty]
+   * values override the default values used by [SegmentedButton].
+   *
+   * If [style] is null, then this theme doesn't override anything.
+   *
+   * If [ButtonStyle.side] is provided, [WidgetStateProperty.resolve] is used
+   * for the following [WidgetState]s:
+   *
+   *  * [WidgetState.focused].
+   *  * [WidgetState.hovered].
+   *  * [WidgetState.disabled].
+   *  * [WidgetState.selected].
+   */
+  style?: ButtonStyleValue;
+  /**
+   * Override for [SegmentedButton.selectedIcon] property.
+   *
+   * If non-null, then [selectedIcon] will be used instead of default
+   * value for [SegmentedButton.selectedIcon].
+   */
+  selectedIcon?: FlutterElement;
+}
+
+export type SegmentedButtonThemeDataValue =
+  SegmentedButtonThemeData | SegmentedButtonThemeDataObject;
+
+export type SemanticsTagValue =
+  SemanticsTag | 'excludeFromScrolling' | 'useTwoPaneSemantics';
+
+export interface ShadowObject {
+  /**
+   * Color that the shadow will be drawn with.
+   *
+   * The shadows are shapes composited directly over the base canvas, and do not
+   * represent optical occlusion.
+   */
+  color?: ColorValue;
+  /**
+   * The displacement of the shadow from the casting element.
+   *
+   * Positive x/y offsets will shift the shadow to the right and down, while
+   * negative offsets shift the shadow to the left and up. The offsets are
+   * relative to the position of the element that is casting it.
+   */
+  offset?: OffsetValue;
+  /**
+   * The standard deviation of the Gaussian to convolve with the shadow's shape.
+   */
+  blurRadius?: number;
+}
+
+export type ShadowValue = Shadow | ShadowObject;
+
+export type ShapeBorderValue = ShapeBorder | 'none';
+
+export type SizeValue =
+  Size | 'infinite' | 'kDefaultMagnifierSize' | 'kDefaultSize' | 'zero';
+
+export interface SliderThemeDataObject {
+  /**
+   * The height of the [Slider] track.
+   */
+  trackHeight?: number;
+  /**
+   * The color of the [Slider] track between the [Slider.min] position and the
+   * current thumb position.
+   */
+  activeTrackColor?: ColorValue;
+  /**
+   * The color of the [Slider] track between the current thumb position and the
+   * [Slider.max] position.
+   */
+  inactiveTrackColor?: ColorValue;
+  /**
+   * The color of the [Slider] track between the current thumb position and the
+   * [Slider.secondaryTrackValue] position.
+   */
+  secondaryActiveTrackColor?: ColorValue;
+  /**
+   * The color of the [Slider] track between the [Slider.min] position and the
+   * current thumb position when the [Slider] is disabled.
+   */
+  disabledActiveTrackColor?: ColorValue;
+  /**
+   * The color of the [Slider] track between the current thumb position and the
+   * [Slider.max] position when the [Slider] is disabled.
+   */
+  disabledInactiveTrackColor?: ColorValue;
+  /**
+   * The color of the [Slider] track between the current thumb position and the
+   * [Slider.secondaryTrackValue] position when the [Slider] is disabled.
+   */
+  disabledSecondaryActiveTrackColor?: ColorValue;
+  /**
+   * The color of the track's tick marks that are drawn between the [Slider.min]
+   * position and the current thumb position.
+   */
+  activeTickMarkColor?: ColorValue;
+  /**
+   * The color of the track's tick marks that are drawn between the current
+   * thumb position and the [Slider.max] position.
+   */
+  inactiveTickMarkColor?: ColorValue;
+  /**
+   * The color of the track's tick marks that are drawn between the [Slider.min]
+   * position and the current thumb position when the [Slider] is disabled.
+   */
+  disabledActiveTickMarkColor?: ColorValue;
+  /**
+   * The color of the track's tick marks that are drawn between the current
+   * thumb position and the [Slider.max] position when the [Slider] is
+   * disabled.
+   */
+  disabledInactiveTickMarkColor?: ColorValue;
+  /**
+   * The color given to the [thumbShape] to draw itself with.
+   */
+  thumbColor?: ColorValue;
+  /**
+   * The color given to the perimeter of the top [rangeThumbShape] when the
+   * thumbs are overlapping and the top [rangeValueIndicatorShape] when the
+   * value indicators are overlapping.
+   */
+  overlappingShapeStrokeColor?: ColorValue;
+  /**
+   * The color given to the [thumbShape] to draw itself with when the
+   * [Slider] is disabled.
+   */
+  disabledThumbColor?: ColorValue;
+  /**
+   * The color of the overlay drawn around the slider thumb when it is
+   * pressed, focused, or hovered.
+   *
+   * This is typically a semi-transparent color.
+   */
+  overlayColor?: ColorValue;
+  /**
+   * The color given to the [valueIndicatorShape] to draw itself with.
+   */
+  valueIndicatorColor?: ColorValue;
+  /**
+   * The color given to the [valueIndicatorShape] stroke.
+   */
+  valueIndicatorStrokeColor?: ColorValue;
+  /**
+   * The shape that will be used to draw the [Slider]'s overlay.
+   *
+   * Both the [overlayColor] and a non default [overlayShape] may be specified.
+   * The default [overlayShape] refers to the [overlayColor].
+   *
+   * The default value is [RoundSliderOverlayShape].
+   */
+  overlayShape?: SliderComponentShape;
+  /**
+   * The shape that will be used to draw the [Slider]'s tick marks.
+   *
+   * The [SliderTickMarkShape.getPreferredSize] is used to help determine the
+   * location of each tick mark on the track. The slider's minimum size will
+   * be at least this big.
+   *
+   * The default value is [RoundSliderTickMarkShape].
+   *
+   * See also:
+   *
+   *  * [RoundRangeSliderTickMarkShape], which is the default tick mark
+   *    shape for the range slider.
+   */
+  tickMarkShape?: SliderTickMarkShape;
+  /**
+   * The shape that will be used to draw the [Slider]'s thumb.
+   *
+   * The default value is [RoundSliderThumbShape].
+   *
+   * See also:
+   *
+   *  * [RoundRangeSliderThumbShape], which is the default thumb shape for
+   *    the [RangeSlider].
+   */
+  thumbShape?: SliderComponentShape;
+  /**
+   * The shape that will be used to draw the [Slider]'s track.
+   *
+   * The [SliderTrackShape.getPreferredRect] method is used to map
+   * slider-relative gesture coordinates to the correct thumb position on the
+   * track. It is also used to horizontally position tick marks, when the
+   * slider is discrete.
+   *
+   * The default value is [RoundedRectSliderTrackShape].
+   *
+   * See also:
+   *
+   *  * [RoundedRectRangeSliderTrackShape], which is the default track
+   *    shape for the [RangeSlider].
+   */
+  trackShape?: SliderTrackShape;
+  /**
+   * The shape that will be used to draw the [Slider]'s value
+   * indicator.
+   *
+   * The default value is [PaddleSliderValueIndicatorShape].
+   *
+   * See also:
+   *
+   *  * [PaddleRangeSliderValueIndicatorShape], which is the default value
+   *    indicator shape for the [RangeSlider].
+   */
+  valueIndicatorShape?: SliderComponentShape;
+  /**
+   * The shape that will be used to draw the [RangeSlider]'s tick marks.
+   *
+   * The [RangeSliderTickMarkShape.getPreferredSize] is used to help determine
+   * the location of each tick mark on the track. The slider's minimum size
+   * will be at least this big.
+   *
+   * The default value is [RoundRangeSliderTickMarkShape].
+   *
+   * See also:
+   *
+   *  * [RoundSliderTickMarkShape], which is the default tick mark shape
+   *    for the [Slider].
+   */
+  rangeTickMarkShape?: RangeSliderTickMarkShape;
+  /**
+   * The shape that will be used for the [RangeSlider]'s thumbs.
+   *
+   * By default the same shape is used for both thumbs, but strokes the top
+   * thumb when it overlaps the bottom thumb. The top thumb is always the last
+   * selected thumb.
+   *
+   * The default value is [RoundRangeSliderThumbShape].
+   *
+   * See also:
+   *
+   *  * [RoundSliderThumbShape], which is the default thumb shape for the
+   *    [Slider].
+   */
+  rangeThumbShape?: RangeSliderThumbShape;
+  /**
+   * The shape that will be used to draw the [RangeSlider]'s track.
+   *
+   * The [SliderTrackShape.getPreferredRect] method is used to map
+   * slider-relative gesture coordinates to the correct thumb position on the
+   * track. It is also used to horizontally position the tick marks, when the
+   * slider is discrete.
+   *
+   * The default value is [RoundedRectRangeSliderTrackShape].
+   *
+   * See also:
+   *
+   *  * [RoundedRectSliderTrackShape], which is the default track
+   *    shape for the [Slider].
+   */
+  rangeTrackShape?: RangeSliderTrackShape;
+  /**
+   * The shape that will be used for the [RangeSlider]'s value indicators.
+   *
+   * The default shape uses the same value indicator for each thumb, but
+   * strokes the top value indicator when it overlaps the bottom value
+   * indicator. The top indicator corresponds to the top thumb, which is always
+   * the most recently selected thumb.
+   *
+   * The default value is [PaddleRangeSliderValueIndicatorShape].
+   *
+   * See also:
+   *
+   *  * [PaddleSliderValueIndicatorShape], which is the default value
+   *    indicator shape for the [Slider].
+   */
+  rangeValueIndicatorShape?: RangeSliderValueIndicatorShape;
+  /**
+   * Whether the value indicator should be shown for different types of
+   * sliders.
+   *
+   * By default, [showValueIndicator] is set to
+   * [ShowValueIndicator.onlyForDiscrete]. The value indicator is only shown
+   * when the thumb is being touched.
+   */
+  showValueIndicator?: ShowValueIndicator;
+  /**
+   * The text style for the text on the value indicator.
+   */
+  valueIndicatorTextStyle?: TextStyleValue;
+  /**
+   * Limits the thumb's separation distance.
+   *
+   * Use this only if you want to control the visual appearance of the thumbs
+   * in terms of a logical pixel value. This can be done when you want a
+   * specific look for thumbs when they are close together. To limit with the
+   * real values, rather than logical pixels, the values can be restricted by
+   * the parent.
+   */
+  minThumbSeparation?: number;
+  /**
+   * Determines which thumb should be selected when the slider is interacted
+   * with.
+   *
+   * If null, the default thumb selector finds the closest thumb, excluding
+   * taps that are between the thumbs and not within any one touch target.
+   * When the selection is within the touch target bounds of both thumbs, no
+   * thumb is selected until the selection is moved.
+   *
+   * Override this for custom thumb selection.
+   */
+  thumbSelector?: (
+    textDirection: TextDirection,
+    values: RangeValues,
+    tapValue: number,
+    thumbSize: Size,
+    trackSize: Size,
+    dx: number,
+  ) => Thumb | null;
+  /**
+   * If specified, overrides the default value of [Slider.mouseCursor].
+   */
+  mouseCursor?: WidgetStatePropertyValue;
+  /**
+   * Allowed way for the user to interact with the [Slider].
+   *
+   * If specified, overrides the default value of [Slider.allowedInteraction].
+   */
+  allowedInteraction?: SliderInteraction;
+  /**
+   * Determines the padding around the [Slider].
+   *
+   * If specified, this padding overrides the default vertical padding of
+   * the [Slider], defaults to the height of the overlay shape, and the
+   * horizontal padding, defaults to the width of the thumb shape or
+   * overlay shape, whichever is larger.
+   */
+  padding?: EdgeInsetsGeometryValue;
+  /**
+   * The size of the [HandleThumbShape] thumb.
+   *
+   * If [SliderThemeData.thumbShape] is [HandleThumbShape], this property is used to
+   * set the size of the thumb. Otherwise, the default thumb size is 4 pixels for the
+   * width and 44 pixels for the height.
+   */
+  thumbSize?: WidgetStatePropertyValue;
+  /**
+   * The size of the gap between the active and inactive tracks of the [GappedSliderTrackShape].
+   *
+   * If [SliderThemeData.trackShape] is [GappedSliderTrackShape], this property
+   * is used to set the gap between the active and inactive tracks. Otherwise,
+   * the default gap size is 6.0 pixels.
+   *
+   * The Slider defaults to [GappedSliderTrackShape] when the track shape is
+   * not specified, and the [trackGap] can be used to adjust the gap size.
+   *
+   * If [Slider.year2023] is true or [ThemeData.useMaterial3] is false, then
+   * the Slider track shape defaults to [RoundedRectSliderTrackShape] and the
+   * [trackGap] is ignored. In this case, set the track shape to
+   * [GappedSliderTrackShape] to use the [trackGap].
+   *
+   * Defaults to 6.0 pixels of gap between the active and inactive tracks.
+   */
+  trackGap?: number;
+  /**
+   * Overrides the default value of [Slider.year2023] and [RangeSlider.year2023].
+   *
+   * When true, the [Slider] and [RangeSlider] will use the 2023 Material Design 3 appearance.
+   * Defaults to true.
+   *
+   * If this is set to false, the [Slider] and [RangeSlider] will use the latest Material Design 3
+   * appearance, which was introduced in December 2023.
+   *
+   * If [ThemeData.useMaterial3] is false, then this property is ignored.
+   *
+   * @deprecated
+   */
+  year2023?: boolean;
+}
+
+export type SliderThemeDataValue = SliderThemeData | SliderThemeDataObject;
+
+export interface SnackBarThemeDataObject {
+  /**
+   * Overrides the default value for [SnackBar.backgroundColor].
+   *
+   * If null, [SnackBar] defaults to dark grey: `Color(0xFF323232)`.
+   */
+  backgroundColor?: ColorValue;
+  /**
+   * Overrides the default value for [SnackBarAction.textColor].
+   *
+   * If null, [SnackBarAction] defaults to [ColorScheme.secondary] of
+   * [ThemeData.colorScheme].
+   */
+  actionTextColor?: ColorValue;
+  /**
+   * Overrides the default value for [SnackBarAction.disabledTextColor].
+   *
+   * If null, [SnackBarAction] defaults to [ColorScheme.onSurface] with its
+   * opacity set to 0.30 if the [Theme]'s brightness is [Brightness.dark], 0.38
+   * otherwise.
+   */
+  disabledActionTextColor?: ColorValue;
+  /**
+   * Used to configure the [DefaultTextStyle] for the [SnackBar.content] widget.
+   *
+   * If null, [SnackBar] defines its default.
+   */
+  contentTextStyle?: TextStyleValue;
+  /**
+   * Overrides the default value for [SnackBar.elevation].
+   *
+   * If null, [SnackBar] uses a default of 6.0.
+   */
+  elevation?: number;
+  /**
+   * Overrides the default value for [SnackBar.shape].
+   *
+   * If null, [SnackBar] provides different defaults depending on the
+   * [SnackBarBehavior]. For [SnackBarBehavior.fixed], no overriding shape is
+   * specified, so the [SnackBar] is rectangular. For
+   * [SnackBarBehavior.floating], it uses a [RoundedRectangleBorder] with a
+   * circular corner radius of 4.0.
+   */
+  shape?: ShapeBorderValue;
+  /**
+   * Overrides the default value for [SnackBar.behavior].
+   *
+   * If null, [SnackBar] will default to [SnackBarBehavior.fixed].
+   */
+  behavior?: SnackBarBehavior;
+  /**
+   * Overrides the default value for [SnackBar.width].
+   *
+   * If this property is null, then the snack bar will take up the full device
+   * width less the margin. This value is only used when [behavior] is
+   * [SnackBarBehavior.floating].
+   */
+  width?: number;
+  /**
+   * Overrides the default value for [SnackBar.margin].
+   *
+   * This value is only used when [behavior] is [SnackBarBehavior.floating].
+   */
+  insetPadding?: EdgeInsetsValue;
+  /**
+   * Overrides the default value for [SnackBar.showCloseIcon].
+   *
+   * Whether to show an optional "Close" icon.
+   */
+  showCloseIcon?: boolean;
+  /**
+   * Overrides the default value for [SnackBar.closeIconColor].
+   *
+   * This value is only used if [showCloseIcon] is true.
+   */
+  closeIconColor?: ColorValue;
+  /**
+   * Overrides the default value for [SnackBar.actionOverflowThreshold].
+   *
+   * Must be a value between 0 and 1, if present.
+   */
+  actionOverflowThreshold?: number;
+  /**
+   * Overrides default value for [SnackBarAction.backgroundColor].
+   *
+   * If null, [SnackBarAction] falls back to [Colors.transparent].
+   */
+  actionBackgroundColor?: ColorValue;
+  /**
+   * Overrides default value for [SnackBarAction.disabledBackgroundColor].
+   *
+   * If null, [SnackBarAction] falls back to [Colors.transparent].
+   */
+  disabledActionBackgroundColor?: ColorValue;
+  /**
+   * Overrides the default value for [SnackBar.dismissDirection].
+   *
+   * If null, [SnackBar] will default to [DismissDirection.down].
+   */
+  dismissDirection?: DismissDirection;
+}
+
+export type SnackBarThemeDataValue =
+  SnackBarThemeData | SnackBarThemeDataObject;
+
+export interface SpellCheckConfigurationObject {
+  /**
+   * The service used to fetch spell check results for text input.
+   */
+  spellCheckService?: SpellCheckService;
+  /**
+   * The color the paint the selection highlight when spell check is showing
+   * suggestions for a misspelled word.
+   *
+   * For example, on iOS, the selection appears red while the spell check menu
+   * is showing.
+   */
+  misspelledSelectionColor?: ColorValue;
+  /**
+   * Style used to indicate misspelled words.
+   *
+   * This is nullable to allow style-specific wrappers of [EditableText]
+   * to infer this, but this must be specified if this configuration is
+   * provided directly to [EditableText] or its construction will fail with an
+   * assertion error.
+   */
+  misspelledTextStyle?: TextStyleValue;
+  /**
+   * Builds the toolbar used to display spell check suggestions for misspelled
+   * words.
+   */
+  spellCheckSuggestionsToolbarBuilder?: (
+    context: BuildContext,
+    editableTextState: EditableTextState,
+  ) => FlutterElement;
+}
+
+export type SpellCheckConfigurationValue =
+  SpellCheckConfiguration | SpellCheckConfigurationObject;
+
+export interface StrutStyleObject {
+  /**
+   * The name of the font to use when calculating the strut (e.g., Roboto). If
+   * the font is defined in a package, this will be prefixed with
+   * 'packages/package_name/' (e.g. 'packages/cool_fonts/Roboto'). The
+   * prefixing is done by the constructor when the `package` argument is
+   * provided.
+   *
+   * The value provided in [fontFamily] will act as the preferred/first font
+   * family that will be searched for, followed in order by the font families
+   * in [fontFamilyFallback]. If all font families are exhausted and no match
+   * was found, the default platform font family will be used instead. Unlike
+   * [TextStyle.fontFamilyFallback], the font does not need to contain the
+   * desired glyphs to match.
+   */
+  fontFamily?: string;
+  fontFamilyFallback?: string[];
+  /**
+   * The size of text (in logical pixels) to use when obtaining metrics from the font.
+   *
+   * The [fontSize] is used to get the base set of metrics that are then used to calculated
+   * the metrics of strut. The height and leading are expressed as a multiple of
+   * [fontSize].
+   *
+   * The default fontSize is 14 logical pixels.
+   */
+  fontSize?: number;
+  /**
+   * The minimum height of the strut, as a multiple of [fontSize].
+   *
+   * When [height] is omitted or null, then the strut's height will be the sum
+   * of the strut's font-defined ascent, its font-defined descent, and its
+   * [leading]. The font's combined ascent and descent may be taller or shorter
+   * than the [fontSize].
+   *
+   * When [height] is provided, the line's EM-square ascent and descent (which
+   * sums to [fontSize]) will be scaled by [height] to achieve a final strut
+   * height of `fontSize * height + fontSize * leading` logical pixels. The
+   * following diagram illustrates the differences between the font metrics
+   * defined height and the EM-square height:
+   *
+   * ![Text height diagram](https://flutter.github.io/assets-for-api-docs/assets/painting/text_height_diagram.png)
+   *
+   * The ratio of ascent:descent with [height] specified is the same as the
+   * font metrics defined ascent:descent ratio when [height] is null or omitted.
+   *
+   * See [TextStyle.height], which works in a similar manner.
+   *
+   * The default height is null.
+   */
+  height?: number;
+  /**
+   * How the vertical space added by the [height] multiplier should be
+   * distributed over and under the strut.
+   *
+   * When a non-null [height] is specified, after accommodating the imaginary
+   * strut glyph, the remaining vertical space from the allotted
+   * `fontSize * height` logical pixels will be distributed over and under the
+   * strut, according to the [leadingDistribution] property.
+   *
+   * The additional leading introduced by the [leading] property applies
+   * independently of [leadingDistribution]: it will always be distributed
+   * evenly over and under the strut, regardless of [leadingDistribution].
+   *
+   * Defaults to null, which defers to the paragraph's
+   * `ParagraphStyle.textHeightBehavior`'s [leadingDistribution].
+   */
+  leadingDistribution?: TextLeadingDistribution;
+  /**
+   * The additional leading to apply to the strut as a multiple of [fontSize],
+   * independent of [height] and [leadingDistribution].
+   *
+   * Leading is additional spacing between lines. Half of the leading is added
+   * to the top and the other half to the bottom of the line. This differs
+   * from [height] since the spacing is always equally distributed above and
+   * below the baseline, regardless of [leadingDistribution].
+   *
+   * The default leading is null, which will use the font-specified leading.
+   */
+  leading?: number;
+  /**
+   * The typeface thickness to use when calculating the strut (e.g., bold).
+   *
+   * The default fontWeight is [FontWeight.w400].
+   */
+  fontWeight?: FontWeightValue;
+  /**
+   * The typeface variant to use when calculating the strut (e.g., italics).
+   *
+   * The default fontStyle is [FontStyle.normal].
+   */
+  fontStyle?: FontStyle;
+  /**
+   * Whether the strut height should be forced.
+   *
+   * When true, all lines will be laid out with the height of the
+   * strut. All line and run-specific metrics will be ignored/overridden
+   * and only strut metrics will be used instead. This property guarantees
+   * uniform line spacing, however text in adjacent lines may overlap.
+   *
+   * This property should be enabled with caution as
+   * it bypasses a large portion of the vertical layout system.
+   *
+   * This is equivalent to setting [TextStyle.height] to zero for all [TextStyle]s
+   * in the paragraph. Since the height of each line is calculated as a max of the
+   * metrics of each run of text, zero height [TextStyle]s cause the minimums
+   * defined by strut to always manifest, resulting in all lines having the height
+   * of the strut.
+   *
+   * The default is false.
+   */
+  forceStrutHeight?: boolean;
+  /**
+   * A human-readable description of this strut style.
+   *
+   * This property is maintained only in debug builds.
+   *
+   * This property is not considered when comparing strut styles using `==` or
+   * [compareTo], and it does not affect [hashCode].
+   */
+  debugLabel?: string;
+  package?: string;
+}
+
+export type StrutStyleValue = StrutStyle | StrutStyleObject | 'disabled';
+
+export interface SwitchThemeDataObject {
+  /**
+   * If specified, overrides the default value of [Switch.thumbColor].
+   */
+  thumbColor?: WidgetStatePropertyValue;
+  /**
+   * If specified, overrides the default value of [Switch.trackColor].
+   */
+  trackColor?: WidgetStatePropertyValue;
+  /**
+   * If specified, overrides the default value of [Switch.trackOutlineColor].
+   */
+  trackOutlineColor?: WidgetStatePropertyValue;
+  /**
+   * If specified, overrides the default value of [Switch.trackOutlineWidth].
+   */
+  trackOutlineWidth?: WidgetStatePropertyValue;
+  /**
+   * If specified, overrides the default value of
+   * [Switch.materialTapTargetSize].
+   */
+  materialTapTargetSize?: MaterialTapTargetSize;
+  /**
+   * If specified, overrides the default value of [Switch.mouseCursor].
+   */
+  mouseCursor?: WidgetStatePropertyValue;
+  /**
+   * If specified, overrides the default value of [Switch.overlayColor].
+   */
+  overlayColor?: WidgetStatePropertyValue;
+  /**
+   * If specified, overrides the default value of [Switch.splashRadius].
+   */
+  splashRadius?: number;
+  /**
+   * It is overridden by [Switch.thumbIcon].
+   */
+  thumbIcon?: WidgetStatePropertyValue;
+  /**
+   * If specified, overrides the default value of [Switch.padding].
+   */
+  padding?: EdgeInsetsGeometryValue;
+}
+
+export type SwitchThemeDataValue = SwitchThemeData | SwitchThemeDataObject;
+
+export interface SystemUiOverlayStyleObject {
+  /**
+   * The color of the system bottom navigation bar.
+   *
+   * Only honored in Android versions O and greater.
+   */
+  systemNavigationBarColor?: ColorValue;
+  /**
+   * The color of the divider between the system's bottom navigation bar and the app's content.
+   *
+   * Only honored in Android versions P and greater.
+   */
+  systemNavigationBarDividerColor?: ColorValue;
+  /**
+   * The brightness of the system navigation bar icons.
+   *
+   * Only honored in Android versions O and greater.
+   * When set to [Brightness.light], the system navigation bar icons are light.
+   * When set to [Brightness.dark], the system navigation bar icons are dark.
+   */
+  systemNavigationBarIconBrightness?: Brightness;
+  /**
+   * Overrides the contrast enforcement when setting a transparent navigation
+   * bar.
+   *
+   * When setting a transparent navigation bar in SDK 29+, or Android 10 and up,
+   * a translucent body scrim may be applied behind the button navigation bar
+   * to ensure contrast with buttons and the background of the application.
+   *
+   * SDK 28-, or Android P and lower, will not apply this body scrim.
+   *
+   * Setting this to false overrides the default body scrim.
+   *
+   * See also:
+   *
+   *   * [SystemUiOverlayStyle.systemNavigationBarColor], which is overridden
+   *   when transparent to enforce this contrast policy.
+   */
+  systemNavigationBarContrastEnforced?: boolean;
+  /**
+   * The color of top status bar.
+   *
+   * Only honored in Android version M and greater.
+   */
+  statusBarColor?: ColorValue;
+  /**
+   * The brightness of top status bar.
+   *
+   * Only honored in iOS.
+   */
+  statusBarBrightness?: Brightness;
+  /**
+   * The brightness of the top status bar icons.
+   *
+   * Only honored in Android version M and greater.
+   */
+  statusBarIconBrightness?: Brightness;
+  /**
+   * Overrides the contrast enforcement when setting a transparent status
+   * bar.
+   *
+   * When setting a transparent status bar in SDK 29+, or Android 10 and up,
+   * a translucent body scrim may be applied to ensure contrast with icons and
+   * the background of the application.
+   *
+   * SDK 28-, or Android P and lower, will not apply this body scrim.
+   *
+   * Setting this to false overrides the default body scrim.
+   *
+   * See also:
+   *
+   *   * [SystemUiOverlayStyle.statusBarColor], which is overridden
+   *   when transparent to enforce this contrast policy.
+   */
+  systemStatusBarContrastEnforced?: boolean;
+}
+
+export type SystemUiOverlayStyleValue =
+  SystemUiOverlayStyle | SystemUiOverlayStyleObject | 'dark' | 'light';
+
+export interface TabBarThemeDataObject {
+  /**
+   * Overrides the default value for [TabBar.indicator].
+   */
+  indicator?: Decoration;
+  /**
+   * Overrides the default value for [TabBar.indicatorColor].
+   */
+  indicatorColor?: ColorValue;
+  /**
+   * Overrides the default value for [TabBar.indicatorSize].
+   */
+  indicatorSize?: TabBarIndicatorSize;
+  /**
+   * Overrides the default value for [TabBar.dividerColor].
+   */
+  dividerColor?: ColorValue;
+  /**
+   * Overrides the default value for [TabBar.dividerHeight].
+   */
+  dividerHeight?: number;
+  /**
+   * Overrides the default value for [TabBar.labelColor].
+   *
+   * If [labelColor] is a [WidgetStateColor], then the effective color will
+   * depend on the [WidgetState.selected] state, i.e. if the [Tab] is
+   * selected or not. In case of unselected state, this [WidgetStateColor]'s
+   * resolved color will be used even if [TabBar.unselectedLabelColor] or
+   * [unselectedLabelColor] is non-null.
+   */
+  labelColor?: ColorValue;
+  /**
+   * Overrides the default value for [TabBar.labelPadding].
+   *
+   * If there are few tabs with both icon and text and few
+   * tabs with only icon or text, this padding is vertically
+   * adjusted to provide uniform padding to all tabs.
+   */
+  labelPadding?: EdgeInsetsGeometryValue;
+  /**
+   * Overrides the default value for [TabBar.labelStyle].
+   */
+  labelStyle?: TextStyleValue;
+  /**
+   * Overrides the default value for [TabBar.unselectedLabelColor].
+   */
+  unselectedLabelColor?: ColorValue;
+  /**
+   * Overrides the default value for [TabBar.unselectedLabelStyle].
+   */
+  unselectedLabelStyle?: TextStyleValue;
+  /**
+   * Overrides the default value for [TabBar.overlayColor].
+   */
+  overlayColor?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default value for [TabBar.splashFactory].
+   */
+  splashFactory?: InteractiveInkFeatureFactoryValue;
+  /**
+   * If specified, overrides the default value of [TabBar.mouseCursor].
+   */
+  mouseCursor?: WidgetStatePropertyValue;
+  /**
+   * Overrides the default value for [TabBar.tabAlignment].
+   */
+  tabAlignment?: TabAlignment;
+  /**
+   * Overrides the default value for [TabBar.textScaler].
+   */
+  textScaler?: TextScalerValue;
+  /**
+   * Overrides the default value for [TabBar.indicatorAnimation].
+   */
+  indicatorAnimation?: TabIndicatorAnimation;
+  /**
+   * Defines the clipping radius of splashes that extend outside the bounds of the tab.
+   */
+  splashBorderRadius?: BorderRadiusValue;
+}
+
+export type TabBarThemeDataValue = TabBarThemeData | TabBarThemeDataObject;
+
+export interface TableBorderObject {
+  /**
+   * The top side of this border.
+   */
+  top?: BorderSideValue;
+  /**
+   * The right side of this border.
+   */
+  right?: BorderSideValue;
+  /**
+   * The bottom side of this border.
+   */
+  bottom?: BorderSideValue;
+  /**
+   * The left side of this border.
+   */
+  left?: BorderSideValue;
+  /**
+   * The horizontal interior sides of this border.
+   */
+  horizontalInside?: BorderSideValue;
+  /**
+   * The vertical interior sides of this border.
+   */
+  verticalInside?: BorderSideValue;
+  /**
+   * The [BorderRadius] to use when painting the corners of this border.
+   *
+   * It is also applied to [DataTable]'s [Material].
+   */
+  borderRadius?: BorderRadiusValue;
+}
+
+export type TableBorderValue = TableBorder | TableBorderObject;
+
+export interface TableRowObject {
+  /**
+   * An identifier for the row.
+   */
+  key?: LocalKey;
+  /**
+   * A decoration to paint behind this row.
+   *
+   * Row decorations fill the horizontal and vertical extent of each row in
+   * the table, unlike decorations for individual cells, which might not fill
+   * either.
+   */
+  decoration?: Decoration;
+  /**
+   * The widgets that comprise the cells in this row.
+   *
+   * Children may be wrapped in [TableCell] widgets to provide per-cell
+   * configuration to the [Table], but children are not required to be wrapped
+   * in [TableCell] widgets.
+   */
+  children?: FlutterElement[];
+}
+
+export type TableRowValue = TableRow | TableRowObject;
+
+export type TextAlignVerticalValue =
+  TextAlignVertical | 'bottom' | 'center' | 'top';
+
+export interface TextButtonThemeDataObject {
+  /**
+   * Overrides for [TextButton]'s default style.
+   *
+   * Non-null properties or non-null resolved [WidgetStateProperty]
+   * values override the [ButtonStyle] returned by
+   * [TextButton.defaultStyleOf].
+   *
+   * If [style] is null, then this theme doesn't override anything.
+   */
+  style?: ButtonStyleValue;
+}
+
+export type TextButtonThemeDataValue =
+  TextButtonThemeData | TextButtonThemeDataObject;
+
+export type TextDecorationValue =
+  TextDecoration | 'lineThrough' | 'none' | 'overline' | 'underline';
+
+export interface TextEditingValueObject {
+  /**
+   * The current text being edited.
+   */
+  text?: string;
+  /**
+   * The range of text that is currently selected.
+   *
+   * When [selection] is a [TextSelection] that has the same non-negative
+   * `baseOffset` and `extentOffset`, the [selection] property represents the
+   * caret position.
+   *
+   * If the current [selection] has a negative `baseOffset` or `extentOffset`,
+   * then the text currently does not have a selection or a caret location, and
+   * most text editing operations that rely on the current selection (for
+   * instance, insert a character at the caret location) will do nothing.
+   */
+  selection?: TextSelection;
+  /**
+   * The range of text that is still being composed.
+   *
+   * Composing regions are created by input methods (IMEs) to indicate the text
+   * within a certain range is provisional. For instance, the Android Gboard
+   * app's English keyboard puts the current word under the caret into a
+   * composing region to indicate the word is subject to autocorrect or
+   * prediction changes.
+   *
+   * Composing regions can also be used for performing multistage input, which
+   * is typically used by IMEs designed for phonetic keyboard to enter
+   * ideographic symbols. As an example, many CJK keyboards require the user to
+   * enter a Latin alphabet sequence and then convert it to CJK characters. On
+   * iOS, the default software keyboards do not have a dedicated view to show
+   * the unfinished Latin sequence, so it's displayed directly in the text
+   * field, inside of a composing region.
+   *
+   * On iOS 17 and later, the composing region can also be used
+   * to display inline text predictions. The user can accept the
+   * predicted text by tapping the Space bar.
+   *
+   * The composing region should typically only be changed by the IME, or the
+   * user via interacting with the IME.
+   *
+   * If the range represented by this property is [TextRange.empty], then the
+   * text is not currently being composed.
+   */
+  composing?: TextRangeValue;
+}
+
+export type TextEditingValueValue =
+  TextEditingValue | TextEditingValueObject | 'empty';
+
+export interface TextHeightBehaviorObject {
+  /**
+   * Whether to apply the [TextStyle.height] modifier to the ascent of the first
+   * line in the paragraph.
+   *
+   * When true, the [TextStyle.height] modifier will be applied to the ascent
+   * of the first line. When false, the font's default ascent will be used and
+   * the [TextStyle.height] will have no effect on the ascent of the first line.
+   *
+   * This property only has effect if a non-null [TextStyle.height] is specified.
+   *
+   * Defaults to true (height modifications applied as normal).
+   */
+  applyHeightToFirstAscent?: boolean;
+  /**
+   * Whether to apply the [TextStyle.height] modifier to the descent of the last
+   * line in the paragraph.
+   *
+   * When true, the [TextStyle.height] modifier will be applied to the descent
+   * of the last line. When false, the font's default descent will be used and
+   * the [TextStyle.height] will have no effect on the descent of the last line.
+   *
+   * This property only has effect if a non-null [TextStyle.height] is specified.
+   *
+   * Defaults to true (height modifications applied as normal).
+   */
+  applyHeightToLastDescent?: boolean;
+  /**
+   * How the ["leading"](https://en.wikipedia.org/wiki/Leading) is distributed
+   * over and under the text.
+   *
+   * Does not affect layout when [TextStyle.height] is not specified. The
+   * leading can become negative, for example, when [TextLeadingDistribution.even]
+   * is used with a [TextStyle.height] much smaller than 1.0.
+   *
+   * Defaults to [TextLeadingDistribution.proportional],
+   */
+  leadingDistribution?: TextLeadingDistribution;
+}
+
+export type TextHeightBehaviorValue =
+  TextHeightBehavior | TextHeightBehaviorObject;
+
+export type TextInputTypeValue =
+  | TextInputType
+  | 'datetime'
+  | 'emailAddress'
+  | 'multiline'
+  | 'name'
+  | 'none'
+  | 'number'
+  | 'phone'
+  | 'streetAddress'
+  | 'text'
+  | 'twitter'
+  | 'url'
+  | 'visiblePassword'
+  | 'webSearch';
+
+export interface TextMagnifierConfigurationObject {
+  magnifierBuilder?: (
+    context: BuildContext,
+    controller: MagnifierController,
+    magnifierInfo: ValueNotifier,
+  ) => FlutterElement | null;
+  /**
+   * Whether a magnifier should show the text editing handles or not.
+   *
+   * This flag is used by [SelectionOverlay.showMagnifier] to control the order
+   * of layers in the rendering; specifically, whether to place the layer
+   * containing the handles above or below the layer containing the magnifier
+   * in the [Overlay].
+   */
+  shouldDisplayHandlesInMagnifier?: boolean;
+}
+
+export type TextMagnifierConfigurationValue =
+  TextMagnifierConfiguration | TextMagnifierConfigurationObject | 'disabled';
+
+export type TextRangeValue = TextRange | 'empty';
+
+export type TextScalerValue = TextScaler | 'noScaling';
+
+export interface TextSelectionThemeDataObject {
+  /**
+   * The color of the cursor in the text field.
+   *
+   * The cursor indicates the current location of text insertion point in
+   * the field.
+   */
+  cursorColor?: ColorValue;
+  /**
+   * The background color of selected text.
+   */
+  selectionColor?: ColorValue;
+  /**
+   * The color of the selection handles on the text field.
+   *
+   * Selection handles are used to indicate the bounds of the selected text,
+   * or as a handle to drag the cursor to a new location in the text.
+   *
+   * On iOS [TextField] and [SelectableText] cannot access [selectionHandleColor].
+   * To set the [selectionHandleColor] on iOS, you can change the
+   * [CupertinoThemeData.selectionHandleColor] by wrapping the subtree
+   * containing your [TextField] or [SelectableText] with a [CupertinoTheme].
+   */
+  selectionHandleColor?: ColorValue;
+}
+
+export type TextSelectionThemeDataValue =
+  TextSelectionThemeData | TextSelectionThemeDataObject;
+
+export interface TextStyleObject {
+  /**
+   * Whether null values in this [TextStyle] can be replaced with their value
+   * in another [TextStyle] using [merge].
+   *
+   * The [merge] operation is not commutative: the [inherit] value of the
+   * method argument decides whether the two [TextStyle]s can be combined
+   * together. If it is false, the method argument [TextStyle] will be returned.
+   * Otherwise, the combining is allowed, and the returned [TextStyle] inherits
+   * the [inherit] value from the method receiver.
+   *
+   * This property does not affect the text style inheritance in an [InlineSpan]
+   * tree: an [InlineSpan]'s text style is merged with that of an ancestor
+   * [InlineSpan] if it has unspecified fields, regardless of its [inherit]
+   * value.
+   *
+   * Properties that don't have explicit values or other default values to fall
+   * back to will revert to the defaults: white in color, a font size of 14
+   * pixels, in a sans-serif font face.
+   *
+   * See also:
+   *  * [TextStyle.merge], which can be used to combine properties from two
+   *    [TextStyle]s.
+   */
+  inherit?: boolean;
+  /**
+   * The color to use when painting the text.
+   *
+   * If [foreground] is specified, this value must be null. The [color] property
+   * is shorthand for `Paint()..color = color`.
+   *
+   * In [merge], [apply], and [lerp], conflicts between [color] and [foreground]
+   * specification are resolved in [foreground]'s favor - i.e. if [foreground] is
+   * specified in one place, it will dominate [color] in another.
+   */
+  color?: ColorValue;
+  /**
+   * The color to use as the background for the text.
+   *
+   * If [background] is specified, this value must be null. The
+   * [backgroundColor] property is shorthand for
+   * `background: Paint()..color = backgroundColor`.
+   *
+   * In [merge], [apply], and [lerp], conflicts between [backgroundColor] and [background]
+   * specification are resolved in [background]'s favor - i.e. if [background] is
+   * specified in one place, it will dominate [color] in another.
+   */
+  backgroundColor?: ColorValue;
+  /**
+   * The size of fonts (in logical pixels) to use when painting the text.
+   *
+   * The value specified matches the dimension of the
+   * [em square](https://fonts.google.com/knowledge/glossary/em) of the
+   * underlying font, and more often then not isn't exactly the height or the
+   * width of glyphs in the font.
+   *
+   * During painting, the [fontSize] is multiplied by the current
+   * `textScaleFactor` to let users make it easier to read text by increasing
+   * its size.
+   *
+   * The [getParagraphStyle] method defaults to 14 logical pixels if [fontSize]
+   * is set to null.
+   */
+  fontSize?: number;
+  /**
+   * The typeface thickness to use when painting the text (e.g., bold).
+   */
+  fontWeight?: FontWeightValue;
+  /**
+   * The typeface variant to use when drawing the letters (e.g., italics).
+   */
+  fontStyle?: FontStyle;
+  /**
+   * The amount of space (in logical pixels) to add between each letter.
+   * A negative value can be used to bring the letters closer.
+   */
+  letterSpacing?: number;
+  /**
+   * The amount of space (in logical pixels) to add at each sequence of
+   * white-space (i.e. between each word). A negative value can be used to
+   * bring the words closer.
+   */
+  wordSpacing?: number;
+  /**
+   * The common baseline that should be aligned between this text span and its
+   * parent text span, or, for the root text spans, with the line box.
+   */
+  textBaseline?: TextBaseline;
+  /**
+   * The height of this text span, as a multiple of the font size.
+   *
+   * When [height] is [kTextHeightNone], the line height will be determined by
+   * the font's metrics directly, which may differ from the fontSize. Otherwise
+   * the line height of the span of text will be a multiple of [fontSize],
+   * and be exactly `fontSize * height` logical pixels tall.
+   *
+   * For most fonts, setting [height] to 1.0 is not the same as setting height
+   * to [kTextHeightNone] because the [fontSize] sets the height of the EM-square,
+   * which is different than the font provided metrics for line height. The
+   * following diagram illustrates the difference between the font-metrics
+   * defined line height and the line height produced with `height: 1.0`
+   * (which forms the upper and lower edges of the EM-square):
+   *
+   * ![With the font-metrics-defined line height, there is space between lines appropriate for the font, whereas the EM-square is only the height required to hold most of the characters.](https://flutter.github.io/assets-for-api-docs/assets/painting/text_height_diagram.png)
+   *
+   * Examples of the resulting line heights from different values of `TextStyle.height`:
+   *
+   * ![Since the explicit line height is applied as a scale factor on the font-metrics-defined line height, the gap above the text grows faster, as the height grows, than the gap below the text.](https://flutter.github.io/assets-for-api-docs/assets/painting/text_height_comparison_diagram.png)
+   *
+   * See [StrutStyle] and [TextHeightBehavior] for further control of line
+   * height at the paragraph level.
+   */
+  height?: number;
+  /**
+   * How the vertical space added by the [height] multiplier should be
+   * distributed over and under the text.
+   *
+   * When a non-null [height] is specified, after accommodating the glyphs of
+   * the text, the remaining vertical space from the allotted line height will
+   * be distributed over and under the text, according to the
+   * [leadingDistribution] property. See the [TextStyle] class's documentation
+   * for an example.
+   *
+   * When [height] is null, [leadingDistribution] does not affect the text
+   * layout.
+   *
+   * Defaults to null, which defers to the paragraph's
+   * `ParagraphStyle.textHeightBehavior`'s [leadingDistribution].
+   */
+  leadingDistribution?: TextLeadingDistribution;
+  /**
+   * The locale used to select region-specific glyphs.
+   *
+   * This property is rarely set. Typically the locale used to select
+   * region-specific glyphs is defined by the text widget's [BuildContext]
+   * using `Localizations.localeOf(context)`. For example [RichText] defines
+   * its locale this way. However, a rich text widget's [TextSpan]s could
+   * specify text styles with different explicit locales in order to select
+   * different region-specific glyphs for each text span.
+   */
+  locale?: Locale;
+  /**
+   * The paint drawn as a foreground for the text.
+   *
+   * The value should ideally be cached and reused each time if multiple text
+   * styles are created with the same paint settings. Otherwise, each time it
+   * will appear like the style changed, which will result in unnecessary
+   * updates all the way through the framework.
+   *
+   * If [color] is specified, this value must be null. The [color] property
+   * is shorthand for `Paint()..color = color`.
+   *
+   * In [merge], [apply], and [lerp], conflicts between [color] and [foreground]
+   * specification are resolved in [foreground]'s favor - i.e. if [foreground] is
+   * specified in one place, it will dominate [color] in another.
+   */
+  foreground?: Paint;
+  /**
+   * The paint drawn as a background for the text.
+   *
+   * The value should ideally be cached and reused each time if multiple text
+   * styles are created with the same paint settings. Otherwise, each time it
+   * will appear like the style changed, which will result in unnecessary
+   * updates all the way through the framework.
+   *
+   * If [backgroundColor] is specified, this value must be null. The
+   * [backgroundColor] property is shorthand for
+   * `background: Paint()..color = backgroundColor`.
+   *
+   * In [merge], [apply], and [lerp], conflicts between [backgroundColor] and
+   * [background] specification are resolved in [background]'s favor - i.e. if
+   * [background] is specified in one place, it will dominate [backgroundColor]
+   * in another.
+   */
+  background?: Paint;
+  /**
+   * A list of [Shadow]s that will be painted underneath the text.
+   *
+   * Multiple shadows are supported to replicate lighting from multiple light
+   * sources.
+   *
+   * Shadows must be in the same order for [TextStyle] to be considered as
+   * equivalent as order produces differing transparency.
+   */
+  shadows?: Shadow[];
+  /**
+   * A list of [FontFeature]s that affect how the font selects glyphs.
+   *
+   * Some fonts support multiple variants of how a given character can be
+   * rendered. For example, a font might provide both proportional and
+   * tabular numbers, or it might offer versions of the zero digit with
+   * and without slashes. [FontFeature]s can be used to select which of
+   * these variants will be used for rendering.
+   *
+   * Font features are not interpolated by [lerp].
+   *
+   * See also:
+   *
+   *  * [fontVariations], for font features that have continuous parameters.
+   */
+  fontFeatures?: FontFeature[];
+  /**
+   * A list of [FontVariation]s that affect how a variable font is rendered.
+   *
+   * Some fonts are variable fonts that can generate multiple font faces based
+   * on the values of customizable attributes. For example, a variable font
+   * may have a weight axis that can be set to a value between 1 and 1000.
+   * [FontVariation]s can be used to select the values of these design axes.
+   *
+   * For example, to control the weight axis of the Roboto Slab variable font
+   * (https://fonts.google.com/specimen/Roboto+Slab):
+   * ```dart
+   * const TextStyle(
+   *   fontFamily: 'RobotoSlab',
+   *   fontVariations: <FontVariation>[FontVariation('wght', 900.0)]
+   * )
+   * ```
+   *
+   * Font variations can be interpolated via [lerp]. This is fastest when the
+   * same font variation axes are specified, in the same order, in both
+   * [TextStyle] objects. See [lerpFontVariations].
+   *
+   * See also:
+   *
+   *  * [fontFeatures], for font variations that have discrete values.
+   */
+  fontVariations?: FontVariation[];
+  /**
+   * The decorations to paint near the text (e.g., an underline).
+   *
+   * Multiple decorations can be applied using [TextDecoration.combine].
+   */
+  decoration?: TextDecorationValue;
+  /**
+   * The color in which to paint the text decorations.
+   */
+  decorationColor?: ColorValue;
+  /**
+   * The style in which to paint the text decorations (e.g., dashed).
+   */
+  decorationStyle?: TextDecorationStyle;
+  /**
+   * The thickness of the decoration stroke as a multiplier of the thickness
+   * defined by the font.
+   *
+   * The font provides a base stroke width for [decoration]s which scales off
+   * of the [fontSize]. This property may be used to achieve a thinner or
+   * thicker decoration stroke, without changing the [fontSize]. For example,
+   * a [decorationThickness] of 2.0 will draw a decoration twice as thick as
+   * the font defined decoration thickness.
+   *
+   * To achieve a bolded strike-through, we can apply a thicker stroke for the
+   * decoration.
+   *
+   * ```dart
+   * const Text(
+   *   'This has a very BOLD strike through!',
+   *   style: TextStyle(
+   *     decoration: TextDecoration.lineThrough,
+   *     decorationThickness: 2.85,
+   *   ),
+   * )
+   * ```
+   *
+   * We can apply a very thin and subtle wavy underline (perhaps, when words
+   * are misspelled) by using a [decorationThickness] < 1.0.
+   *
+   * ```dart
+   * const Text(
+   *   'oopsIforgottousespaces!',
+   *   style: TextStyle(
+   *     decoration: TextDecoration.underline,
+   *     decorationStyle: TextDecorationStyle.wavy,
+   *     decorationColor: Colors.red,
+   *     decorationThickness: 0.5,
+   *   ),
+   * )
+   * ```
+   *
+   * The default [decorationThickness] is 1.0, which will use the font's base
+   * stroke thickness/width.
+   */
+  decorationThickness?: number;
+  /**
+   * A human-readable description of this text style.
+   *
+   * This property is maintained only in debug builds.
+   *
+   * When merging ([merge]), copying ([copyWith]), modifying using [apply], or
+   * interpolating ([lerp]), the label of the resulting style is marked with
+   * the debug labels of the original styles. This helps figuring out where a
+   * particular text style came from.
+   *
+   * This property is not considered when comparing text styles using `==` or
+   * [compareTo], and it does not affect [hashCode].
+   */
+  debugLabel?: string;
+  /**
+   * The name of the font to use when painting the text (e.g., Roboto).
+   *
+   * If the font is defined in a package, this will be prefixed with
+   * 'packages/package_name/' (e.g. 'packages/cool_fonts/Roboto'). The
+   * prefixing is done by the constructor when the `package` argument is
+   * provided.
+   *
+   * The value provided in [fontFamily] will act as the preferred/first font
+   * family that glyphs are looked for in, followed in order by the font families
+   * in [fontFamilyFallback]. When [fontFamily] is null or not provided, the
+   * first value in [fontFamilyFallback] acts as the preferred/first font
+   * family. When neither is provided, then the default platform font will
+   * be used.
+   *
+   * When running on Apple devices, the strings 'CupertinoSystemText' and
+   * 'CupertinoSystemDisplay' are used as proxies for the Apple system fonts.
+   * They currently redirect to the equivalent of SF Pro Text and SF Pro Display
+   * respectively. 'CupertinoSystemText' is designed for fonts below 20 point
+   * size, and 'CupertinoSystemDisplay' is recommended for sizes 20 and above.
+   * When used on non-Apple platforms, these strings will return the regular
+   * fallback font family instead.
+   */
+  fontFamily?: string;
+  fontFamilyFallback?: string[];
+  package?: string;
+  /**
+   * How visual text overflow should be handled.
+   */
+  overflow?: TextOverflow;
+}
+
+export type TextStyleValue =
+  | TextStyle
+  | TextStyleObject
+  | 'cupertinoMisspelledTextStyle'
+  | 'materialMisspelledTextStyle';
+
+export interface TimePickerThemeDataObject {
+  /**
+   * The background color of a time picker.
+   *
+   * If this is null, the time picker defaults to the overall theme's
+   * [ColorScheme.surfaceContainerHigh].
+   */
+  backgroundColor?: ColorValue;
+  /**
+   * The style of the cancel button of a [TimePickerDialog].
+   */
+  cancelButtonStyle?: ButtonStyleValue;
+  /**
+   * The style of the confirm (OK) button of a [TimePickerDialog].
+   */
+  confirmButtonStyle?: ButtonStyleValue;
+  /**
+   * The color and weight of the day period's outline.
+   *
+   * If this is null, the time picker defaults to:
+   *
+   * ```dart
+   * BorderSide(
+   *   color: Color.alphaBlend(
+   *     Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.38),
+   *     Theme.of(context).colorScheme.surface,
+   *   ),
+   * ),
+   * ```
+   */
+  dayPeriodBorderSide?: BorderSideValue;
+  dayPeriodColor?: ColorValue;
+  /**
+   * The shape of the day period that the time picker uses.
+   *
+   * If this is null, the time picker defaults to:
+   *
+   * ```dart
+   * const RoundedRectangleBorder(
+   *   borderRadius: BorderRadius.all(Radius.circular(4.0)),
+   *   side: BorderSide(),
+   * )
+   * ```
+   */
+  dayPeriodShape?: OutlinedBorderValue;
+  /**
+   * The color of the day period text that represents AM/PM.
+   *
+   * If [dayPeriodTextColor] is a [WidgetStateColor], then the effective
+   * text color can depend on the [WidgetState.selected] state, i.e. if the
+   * text is selected or not.
+   *
+   * By default the overall theme's [ColorScheme.primary] color is used when
+   * the text is selected and `ColorScheme.onSurface.withOpacity(0.60)` when
+   * it's not selected.
+   */
+  dayPeriodTextColor?: ColorValue;
+  /**
+   * Used to configure the [TextStyle]s for the day period control.
+   *
+   * If this is null, the time picker defaults to the overall theme's
+   * [TextTheme.titleMedium].
+   */
+  dayPeriodTextStyle?: TextStyleValue;
+  /**
+   * The background color of the time picker dial when the entry mode is
+   * [TimePickerEntryMode.dial] or [TimePickerEntryMode.dialOnly].
+   *
+   * If this is null and [ThemeData.useMaterial3] is true, the time picker
+   * dial background color defaults [ColorScheme.surfaceContainerHighest] color.
+   *
+   * If this is null and [ThemeData.useMaterial3] is false, the time picker
+   * dial background color defaults to [ColorScheme.onSurface] color with
+   * an opacity of 0.08 when the overall theme's brightness is [Brightness.light]
+   * and [ColorScheme.onSurface] color with an opacity of 0.12 when the overall
+   * theme's brightness is [Brightness.dark].
+   */
+  dialBackgroundColor?: ColorValue;
+  /**
+   * The color of the time picker dial's hand when the entry mode is
+   * [TimePickerEntryMode.dial] or [TimePickerEntryMode.dialOnly].
+   *
+   * If this is null, the time picker defaults to the overall theme's
+   * [ColorScheme.primary].
+   */
+  dialHandColor?: ColorValue;
+  /**
+   * The color of the dial text that represents specific hours and minutes.
+   *
+   * If [dialTextColor] is a [WidgetStateColor], then the effective
+   * text color can depend on the [WidgetState.selected] state, i.e. if the
+   * text is selected or not.
+   *
+   * If this color is null then the dial's text colors are based on the
+   * theme's [ThemeData.colorScheme].
+   */
+  dialTextColor?: ColorValue;
+  /**
+   * The [TextStyle] for the numbers on the time selection dial.
+   *
+   * If [dialTextStyle]'s [TextStyle.color] is a [WidgetStateColor], then the
+   * effective text color can depend on the [WidgetState.selected] state,
+   * i.e. if the text is selected or not.
+   *
+   * If this style is null then the dial's text style is based on the theme's
+   * [ThemeData.textTheme].
+   */
+  dialTextStyle?: TextStyleValue;
+  /**
+   * The Material elevation for the time picker dialog.
+   */
+  elevation?: number;
+  /**
+   * The color of the entry mode [IconButton].
+   *
+   * If this is null, the time picker defaults to:
+   *
+   * ```dart
+   * Theme.of(context).colorScheme.onSurface.withValues(
+   *   alpha: Theme.of(context).colorScheme.brightness == Brightness.dark
+   *     ? 1.0
+   *     : 0.6,
+   * )
+   * ```
+   */
+  entryModeIconColor?: ColorValue;
+  /**
+   * Used to configure the [TextStyle]s for the helper text in the header.
+   *
+   * If this is null, the time picker defaults to the overall theme's
+   * [TextTheme.labelSmall].
+   */
+  helpTextStyle?: TextStyleValue;
+  /**
+   * The background color of the hour and minute header segments.
+   *
+   * If [hourMinuteColor] is a [WidgetStateColor], then the effective
+   * background color can depend on the [WidgetState.selected] state, i.e.
+   * if the segment is selected or not.
+   *
+   * By default, if the segment is selected, the overall theme's
+   * `ColorScheme.primary.withValues(alpha: 0.12)` is used when the overall theme's
+   * brightness is [Brightness.light] and
+   * `ColorScheme.primary.withValues(alpha: 0.24)` is used when the overall theme's
+   * brightness is [Brightness.dark].
+   * If the segment is not selected, the overall theme's
+   * `ColorScheme.onSurface.withValues(alpha: 0.12)` is used.
+   */
+  hourMinuteColor?: ColorValue;
+  /**
+   * The shape of the hour and minute controls that the time picker uses.
+   *
+   * If this is null, the time picker defaults to
+   * `RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0)))`.
+   */
+  hourMinuteShape?: ShapeBorderValue;
+  /**
+   * The color of the header text that represents hours and minutes.
+   *
+   * If [hourMinuteTextColor] is a [WidgetStateColor], then the effective
+   * text color can depend on the [WidgetState.selected] state, i.e. if the
+   * text is selected or not.
+   *
+   * By default the overall theme's [ColorScheme.primary] color is used when
+   * the text is selected and [ColorScheme.onSurface] when it's not selected.
+   */
+  hourMinuteTextColor?: ColorValue;
+  /**
+   * Used to configure the [TextStyle]s for the hour/minute controls.
+   *
+   * If this is null and entry mode is [TimePickerEntryMode.dial], the time
+   * picker defaults to the overall theme's [TextTheme.displayLarge] with
+   * the value of [hourMinuteTextColor].
+   *
+   * If this is null and entry mode is [TimePickerEntryMode.input], the time
+   * picker defaults to the overall theme's [TextTheme.displayMedium] with
+   * the value of [hourMinuteTextColor].
+   *
+   * If this is null and [ThemeData.useMaterial3] is false, the time picker
+   * defaults to the overall theme's [TextTheme.displayMedium].
+   */
+  hourMinuteTextStyle?: TextStyleValue;
+  inputDecorationTheme?: Object;
+  /**
+   * The padding around the time picker dialog when the entry mode is
+   * [TimePickerEntryMode.dial] or [TimePickerEntryMode.dialOnly].
+   */
+  padding?: EdgeInsetsGeometryValue;
+  /**
+   * The shape of the [Dialog] that the time picker is presented in.
+   *
+   * If this is null, the time picker defaults to
+   * `RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0)))`.
+   */
+  shape?: ShapeBorderValue;
+  /**
+   * The color of the time selector separator between the hour and minute controls.
+   *
+   * if this is null, the time picker defaults to the overall theme's
+   * [ColorScheme.onSurface].
+   *
+   * If this is null and [ThemeData.useMaterial3] is false, then defaults to the value of
+   * [hourMinuteTextColor].
+   */
+  timeSelectorSeparatorColor?: WidgetStatePropertyValue;
+  /**
+   * Used to configure the text style for the time selector separator between the hour
+   * and minute controls.
+   *
+   * If this is null, the time picker defaults to the overall theme's
+   * [TextTheme.displayLarge].
+   *
+   * If this is null and [ThemeData.useMaterial3] is false, then defaults to the value of
+   * [hourMinuteTextStyle].
+   */
+  timeSelectorSeparatorTextStyle?: WidgetStatePropertyValue;
+}
+
+export type TimePickerThemeDataValue =
+  TimePickerThemeData | TimePickerThemeDataObject;
+
+export interface ToggleButtonsThemeDataObject {
+  /**
+   * The default text style for [ToggleButtons.children].
+   *
+   * [TextStyle.color] will be ignored and substituted by [color],
+   * [selectedColor] or [disabledColor] depending on whether the buttons
+   * are active, selected, or disabled.
+   */
+  textStyle?: TextStyleValue;
+  /**
+   * Defines the button's size.
+   *
+   * Typically used to constrain the button's minimum size.
+   */
+  constraints?: BoxConstraintsValue;
+  /**
+   * The color for descendant [Text] and [Icon] widgets if the toggle button
+   * is enabled.
+   */
+  color?: ColorValue;
+  /**
+   * The color for descendant [Text] and [Icon] widgets if the toggle button
+   * is selected.
+   */
+  selectedColor?: ColorValue;
+  /**
+   * The color for descendant [Text] and [Icon] widgets if the toggle button
+   * is disabled.
+   */
+  disabledColor?: ColorValue;
+  /**
+   * The fill color for selected toggle buttons.
+   */
+  fillColor?: ColorValue;
+  /**
+   * The color to use for filling the button when the button has input focus.
+   */
+  focusColor?: ColorValue;
+  /**
+   * The highlight color for the toggle button's [InkWell].
+   */
+  highlightColor?: ColorValue;
+  /**
+   * The color to use for filling the toggle button when the button has a
+   * pointer hovering over it.
+   */
+  hoverColor?: ColorValue;
+  /**
+   * The splash color for the toggle button's [InkWell].
+   */
+  splashColor?: ColorValue;
+  /**
+   * The border color to display when the toggle button is enabled.
+   */
+  borderColor?: ColorValue;
+  /**
+   * The border color to display when the toggle button is selected.
+   */
+  selectedBorderColor?: ColorValue;
+  /**
+   * The border color to display when the toggle button is disabled.
+   */
+  disabledBorderColor?: ColorValue;
+  /**
+   * The radii of the border's corners.
+   */
+  borderRadius?: BorderRadiusValue;
+  /**
+   * The width of the border surrounding each toggle button.
+   *
+   * This applies to both the greater surrounding border, as well as the
+   * borders dividing each toggle button.
+   *
+   * To render a hairline border (one physical pixel), set borderWidth to 0.0.
+   * See [BorderSide.width] for more details on hairline borders.
+   */
+  borderWidth?: number;
+}
+
+export type ToggleButtonsThemeDataValue =
+  ToggleButtonsThemeData | ToggleButtonsThemeDataObject;
+
+export interface ToolbarOptionsObject {
+  /**
+   * Whether to show copy option in toolbar.
+   *
+   * Defaults to false.
+   */
+  copy?: boolean;
+  /**
+   * Whether to show cut option in toolbar.
+   *
+   * If [EditableText.readOnly] is set to true, cut will be disabled regardless.
+   *
+   * Defaults to false.
+   */
+  cut?: boolean;
+  /**
+   * Whether to show paste option in toolbar.
+   *
+   * If [EditableText.readOnly] is set to true, paste will be disabled regardless.
+   *
+   * Defaults to false.
+   */
+  paste?: boolean;
+  /**
+   * Whether to show select all option in toolbar.
+   *
+   * Defaults to false.
+   */
+  selectAll?: boolean;
+}
+
+export type ToolbarOptionsValue =
+  ToolbarOptions | ToolbarOptionsObject | 'empty';
+
+export interface TooltipThemeDataObject {
+  /**
+   * The minimum height of the [Tooltip]'s message.
+   *
+   * @deprecated
+   */
+  height?: number;
+  /**
+   * Constrains the size of the [Tooltip]'s message.
+   */
+  constraints?: BoxConstraintsValue;
+  /**
+   * If provided, the amount of space by which to inset the [Tooltip]'s message.
+   */
+  padding?: EdgeInsetsGeometryValue;
+  /**
+   * If provided, the amount of empty space to surround the [Tooltip].
+   */
+  margin?: EdgeInsetsGeometryValue;
+  /**
+   * The vertical gap between the widget and the displayed tooltip.
+   *
+   * When [preferBelow] is set to true and tooltips have sufficient space to
+   * display themselves, this property defines how much vertical space
+   * tooltips will position themselves under their corresponding widgets.
+   * Otherwise, tooltips will position themselves above their corresponding
+   * widgets with the given offset.
+   */
+  verticalOffset?: number;
+  /**
+   * Whether the tooltip is displayed below its widget by default.
+   *
+   * If there is insufficient space to display the tooltip in the preferred
+   * direction, the tooltip will be displayed in the opposite direction.
+   *
+   * Applying `false` for the entire app is recommended
+   * to avoid having a finger or cursor hide a tooltip.
+   */
+  preferBelow?: boolean;
+  /**
+   * Whether the [Tooltip.message] should be excluded from the semantics
+   * tree.
+   *
+   * By default, [Tooltip]s will add a [Semantics] label that is set to
+   * [Tooltip.message]. Set this property to true if the app is going to
+   * provide its own custom semantics label.
+   */
+  excludeFromSemantics?: boolean;
+  /**
+   * The [Tooltip]'s shape and background color.
+   */
+  decoration?: Decoration;
+  /**
+   * The style to use for the message of [Tooltip]s.
+   */
+  textStyle?: TextStyleValue;
+  /**
+   * The [TextAlign] to use for the message of [Tooltip]s.
+   */
+  textAlign?: TextAlign;
+  /**
+   * The length of time that a pointer must hover over a tooltip's widget
+   * before the tooltip will be shown.
+   */
+  waitDuration?: DurationValue;
+  /**
+   * The length of time that the tooltip will be shown once it has appeared.
+   */
+  showDuration?: DurationValue;
+  /**
+   * The length of time that a pointer must have stopped hovering over a
+   * tooltip's widget before the tooltip will be hidden.
+   */
+  exitDuration?: DurationValue;
+  /**
+   * The [TooltipTriggerMode] that will show the tooltip.
+   */
+  triggerMode?: TooltipTriggerMode;
+  /**
+   * Whether the tooltip should provide acoustic and/or haptic feedback.
+   *
+   * For example, on Android a tap will produce a clicking sound and a
+   * long-press will produce a short vibration, when feedback is enabled.
+   *
+   * This value is used if [Tooltip.enableFeedback] is null.
+   * If this value is null, the default is true.
+   *
+   * See also:
+   *
+   *   * [Feedback], for providing platform-specific feedback to certain actions.
+   */
+  enableFeedback?: boolean;
+}
+
+export type TooltipThemeDataValue = TooltipThemeData | TooltipThemeDataObject;
+
+export type TreeSliverIndentationTypeValue =
+  TreeSliverIndentationType | 'none' | 'standard';
+
+export type VelocityValue = Velocity | 'zero';
+
+export interface VisualDensityObject {
+  /**
+   * The horizontal visual density of UI components.
+   *
+   * This property affects only the horizontal spacing between and within
+   * components, to allow for different UI visual densities. It does not affect
+   * text sizes, icon sizes, or padding values. The default value is 0.0,
+   * corresponding to the metrics specified in the Material Design
+   * specification. The value can range from [minimumDensity] to
+   * [maximumDensity], inclusive.
+   *
+   * See also:
+   *
+   *  * [ThemeData.visualDensity], where this property is used to specify the base
+   *    horizontal density of Material components.
+   *  * [Material design guidance on density](https://material.io/design/layout/applying-density.html).
+   */
+  horizontal?: number;
+  /**
+   * The vertical visual density of UI components.
+   *
+   * This property affects only the vertical spacing between and within
+   * components, to allow for different UI visual densities. It does not affect
+   * text sizes, icon sizes, or padding values. The default value is 0.0,
+   * corresponding to the metrics specified in the Material Design
+   * specification. The value can range from [minimumDensity] to
+   * [maximumDensity], inclusive.
+   *
+   * See also:
+   *
+   *  * [ThemeData.visualDensity], where this property is used to specify the base
+   *    vertical density of Material components.
+   *  * [Material design guidance on density](https://material.io/design/layout/applying-density.html).
+   */
+  vertical?: number;
+}
+
+export type VisualDensityValue =
+  VisualDensity | VisualDensityObject | 'comfortable' | 'compact' | 'standard';
+
+export type WidgetStatePropertyValue =
+  | WidgetStateProperty
+  | 'adaptiveClickable'
+  | 'clickable'
+  | 'kDefaultDecoration'
+  | 'textable'
+  | 'transparent';
 
 /**
  * An about box. This is a dialog box with the application's icon, name,
@@ -5452,29 +24468,29 @@ export const AbsorbPointer: FlutterComponent<AbsorbPointerProps> =
 export interface ActionChipProps {
   avatar?: FlutterChild;
   label: FlutterChild;
-  labelStyle?: TextStyle;
-  labelPadding?: EdgeInsetsGeometry;
+  labelStyle?: TextStyleValue;
+  labelPadding?: EdgeInsetsGeometryValue;
   onClick?: () => void;
   pressElevation?: number;
   tooltip?: string;
-  side?: BorderSide;
-  shape?: OutlinedBorder;
+  side?: BorderSideValue;
+  shape?: OutlinedBorderValue;
   clipBehavior?: Clip;
   focusNode?: FocusNode;
   autofocus?: boolean;
-  color?: WidgetStateProperty;
-  backgroundColor?: Color;
-  disabledColor?: Color;
-  padding?: EdgeInsetsGeometry;
-  visualDensity?: VisualDensity;
+  color?: WidgetStatePropertyValue;
+  backgroundColor?: ColorValue;
+  disabledColor?: ColorValue;
+  padding?: EdgeInsetsGeometryValue;
+  visualDensity?: VisualDensityValue;
   materialTapTargetSize?: MaterialTapTargetSize;
   elevation?: number;
-  shadowColor?: Color;
-  surfaceTintColor?: Color;
-  iconTheme?: IconThemeData;
-  avatarBoxConstraints?: BoxConstraints;
+  shadowColor?: ColorValue;
+  surfaceTintColor?: ColorValue;
+  iconTheme?: IconThemeDataValue;
+  avatarBoxConstraints?: BoxConstraintsValue;
   chipAnimationStyle?: ChipAnimationStyle;
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
 }
 
 /**
@@ -5563,7 +24579,7 @@ export interface ActionIconThemeProps {
    * Specifies the default icon overrides for descendant [BackButtonIcon],
    * [CloseButtonIcon], [DrawerButtonIcon], and [EndDrawerButtonIcon] widgets.
    */
-  data: ActionIconThemeData;
+  data: ActionIconThemeDataValue;
 }
 
 /**
@@ -5901,7 +24917,7 @@ export interface AlertDialogProps {
    * [contentPadding]). In any other case 24 pixels of bottom padding is
    * added.
    */
-  iconPadding?: EdgeInsetsGeometry;
+  iconPadding?: EdgeInsetsGeometryValue;
   /**
    * Color for the [Icon] in the [icon] of this [AlertDialog].
    *
@@ -5909,7 +24925,7 @@ export interface AlertDialogProps {
    * color scheme's [ColorScheme.secondary] if [ThemeData.useMaterial3] is
    * true, black otherwise.
    */
-  iconColor?: Color;
+  iconColor?: ColorValue;
   /**
    * The (optional) title of the dialog is displayed in a large font at the top
    * of the dialog, below the (optional) [icon].
@@ -5929,7 +24945,7 @@ export interface AlertDialogProps {
    * pixels of bottom padding is added to separate the [title] from the
    * [actions].
    */
-  titlePadding?: EdgeInsetsGeometry;
+  titlePadding?: EdgeInsetsGeometryValue;
   /**
    * Style for the text in the [title] of this [AlertDialog].
    *
@@ -5937,7 +24953,7 @@ export interface AlertDialogProps {
    * [TextTheme.headlineSmall] of [ThemeData.textTheme] if
    * [ThemeData.useMaterial3] is true, [TextTheme.titleLarge] otherwise.
    */
-  titleTextStyle?: TextStyle;
+  titleTextStyle?: TextStyleValue;
   /**
    * The (optional) content of the dialog is displayed in the center of the
    * dialog in a lighter font.
@@ -5967,7 +24983,7 @@ export interface AlertDialogProps {
    * If [ThemeData.useMaterial3] is true, the top padding separating the
    * content from the title defaults to 16 pixels instead of 20 pixels.
    */
-  contentPadding?: EdgeInsetsGeometry;
+  contentPadding?: EdgeInsetsGeometryValue;
   /**
    * Style for the text in the [content] of this [AlertDialog].
    *
@@ -5975,7 +24991,7 @@ export interface AlertDialogProps {
    * to [TextTheme.bodyMedium] of [ThemeData.textTheme] if
    * [ThemeData.useMaterial3] is true, [TextTheme.titleMedium] otherwise.
    */
-  contentTextStyle?: TextStyle;
+  contentTextStyle?: TextStyleValue;
   /**
    * The (optional) set of actions that are displayed at the bottom of the
    * dialog with an [OverflowBar].
@@ -6018,7 +25034,7 @@ export interface AlertDialogProps {
    *
    * * [OverflowBar], which [actions] configures to lay itself out.
    */
-  actionsPadding?: EdgeInsetsGeometry;
+  actionsPadding?: EdgeInsetsGeometryValue;
   /**
    * Defines the horizontal layout of the [actions] according to the same
    * rules as for [Row.mainAxisAlignment].
@@ -6088,11 +25104,11 @@ export interface AlertDialogProps {
    * If this property is null, then it will default to
    * 8.0 logical pixels on the left and right.
    */
-  buttonPadding?: EdgeInsetsGeometry;
-  backgroundColor?: Color;
+  buttonPadding?: EdgeInsetsGeometryValue;
+  backgroundColor?: ColorValue;
   elevation?: number;
-  shadowColor?: Color;
-  surfaceTintColor?: Color;
+  shadowColor?: ColorValue;
+  surfaceTintColor?: ColorValue;
   /**
    * The semantic label of the dialog used by accessibility frameworks to
    * announce screen transitions when the dialog is opened and closed.
@@ -6109,11 +25125,11 @@ export interface AlertDialogProps {
    *    value is used.
    */
   semanticLabel?: string;
-  insetPadding?: EdgeInsets;
+  insetPadding?: EdgeInsetsValue;
   clipBehavior?: Clip;
-  shape?: ShapeBorder;
-  alignment?: AlignmentGeometry;
-  constraints?: BoxConstraints;
+  shape?: ShapeBorderValue;
+  alignment?: AlignmentGeometryValue;
+  constraints?: BoxConstraintsValue;
   /**
    * Determines whether the [title] and [content] widgets are wrapped in a
    * scrollable.
@@ -6371,7 +25387,7 @@ export interface AlignProps {
    *  * [AlignmentDirectional], which has a horizontal coordinate orientation
    *    that depends on the [TextDirection].
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
   /**
    * If non-null, sets its width to the child's width multiplied by this factor.
    *
@@ -6883,7 +25899,7 @@ export interface AnimatedAlignProps {
    *  * [AlignmentDirectional], which has a horizontal coordinate orientation
    *    that depends on the [TextDirection].
    */
-  alignment: AlignmentGeometry;
+  alignment: AlignmentGeometryValue;
   /**
    * If non-null, sets its height to the child's height multiplied by this factor.
    *
@@ -6899,11 +25915,11 @@ export interface AnimatedAlignProps {
   /**
    * The curve to apply when animating the parameters of this container.
    */
-  curve?: Curve;
+  curve?: CurveValue;
   /**
    * The duration over which to animate the parameters of this container.
    */
-  duration: Duration;
+  duration: DurationValue;
   /**
    * Called every time an animation completes.
    *
@@ -7115,13 +26131,13 @@ export interface AnimatedContainerProps {
    *  * [AlignmentDirectional], like [Alignment] for specifying alignments
    *    relative to text direction.
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
   /**
    * Empty space to inscribe inside the [decoration]. The [child], if any, is
    * placed inside this padding.
    */
-  padding?: EdgeInsetsGeometry;
-  color?: Color;
+  padding?: EdgeInsetsGeometryValue;
+  color?: ColorValue;
   /**
    * The decoration to paint behind the [child].
    *
@@ -7144,11 +26160,11 @@ export interface AnimatedContainerProps {
    *
    * The [padding] goes inside the constraints.
    */
-  constraints?: BoxConstraints;
+  constraints?: BoxConstraintsValue;
   /**
    * Empty space to surround the [decoration] and [child].
    */
-  margin?: EdgeInsetsGeometry;
+  margin?: EdgeInsetsGeometryValue;
   /**
    * The transformation matrix to apply before painting the container.
    */
@@ -7162,7 +26178,7 @@ export interface AnimatedContainerProps {
    *
    *  * [Transform.alignment], which is set by this property.
    */
-  transformAlignment?: AlignmentGeometry;
+  transformAlignment?: AlignmentGeometryValue;
   /**
    * The clip behavior when [AnimatedContainer.decoration] is not null.
    *
@@ -7180,11 +26196,11 @@ export interface AnimatedContainerProps {
   /**
    * The curve to apply when animating the parameters of this container.
    */
-  curve?: Curve;
+  curve?: CurveValue;
   /**
    * The duration over which to animate the parameters of this container.
    */
-  duration: Duration;
+  duration: DurationValue;
   /**
    * Called every time an animation completes.
    *
@@ -7296,19 +26312,19 @@ export interface AnimatedCrossFadeProps {
    *
    * Defaults to [Curves.linear].
    */
-  firstCurve?: Curve;
+  firstCurve?: CurveValue;
   /**
    * The fade curve of the second child.
    *
    * Defaults to [Curves.linear].
    */
-  secondCurve?: Curve;
+  secondCurve?: CurveValue;
   /**
    * The curve of the animation between the two children's sizes.
    *
    * Defaults to [Curves.linear].
    */
-  sizeCurve?: Curve;
+  sizeCurve?: CurveValue;
   /**
    * How the children should be aligned while the size is animating.
    *
@@ -7321,7 +26337,7 @@ export interface AnimatedCrossFadeProps {
    *  * [AlignmentDirectional], like [Alignment] for specifying alignments
    *    relative to text direction.
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
   /**
    * The child that will be shown when the animation has completed.
    */
@@ -7329,13 +26345,13 @@ export interface AnimatedCrossFadeProps {
   /**
    * The duration of the whole orchestrated animation.
    */
-  duration: Duration;
+  duration: DurationValue;
   /**
    * The duration of the whole orchestrated animation when running in reverse.
    *
    * If not supplied, this defaults to [duration].
    */
-  reverseDuration?: Duration;
+  reverseDuration?: DurationValue;
   /**
    * A builder that positions the [firstChild] and [secondChild] widgets.
    *
@@ -7469,7 +26485,7 @@ export interface AnimatedDefaultTextStyleProps {
    *
    * When this property is changed, the style will be animated over [duration] time.
    */
-  style: TextStyle;
+  style: TextStyleValue;
   /**
    * How the text should be aligned horizontally.
    *
@@ -7504,15 +26520,15 @@ export interface AnimatedDefaultTextStyleProps {
    * See [TextWidthBasis] for possible values and their implications.
    */
   textWidthBasis?: TextWidthBasis;
-  textHeightBehavior?: TextHeightBehavior;
+  textHeightBehavior?: TextHeightBehaviorValue;
   /**
    * The curve to apply when animating the parameters of this container.
    */
-  curve?: Curve;
+  curve?: CurveValue;
   /**
    * The duration over which to animate the parameters of this container.
    */
-  duration: Duration;
+  duration: DurationValue;
   /**
    * Called every time an animation completes.
    *
@@ -7576,17 +26592,17 @@ export interface AnimatedFractionallySizedBoxProps {
    * The widget below this widget in the tree.
    */
   children?: FlutterChild;
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
   heightFactor?: number;
   widthFactor?: number;
   /**
    * The curve to apply when animating the parameters of this container.
    */
-  curve?: Curve;
+  curve?: CurveValue;
   /**
    * The duration over which to animate the parameters of this container.
    */
-  duration: Duration;
+  duration: DurationValue;
   /**
    * Called every time an animation completes.
    *
@@ -7772,11 +26788,11 @@ export interface AnimatedGridProps {
    *
    * Defaults to matching platform conventions.
    */
-  physics?: ScrollPhysics;
+  physics?: ScrollPhysicsValue;
   /**
    * The amount of space by which to inset the children.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * Defaults to [Clip.hardEdge].
    */
@@ -7860,7 +26876,7 @@ export interface AnimatedIconProps {
   /**
    * The icon to display. Available icons are listed in [AnimatedIcons].
    */
-  icon: AnimatedIconData;
+  icon: AnimatedIconDataValue;
   /**
    * The animation progress for the animated icon.
    *
@@ -7886,7 +26902,7 @@ export interface AnimatedIconProps {
    * See [Theme] to set the current theme and [ThemeData.brightness]
    * for setting the current theme's brightness.
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * The size of the icon in logical pixels.
    *
@@ -8067,7 +27083,7 @@ export interface AnimatedListProps {
    *
    * Defaults to matching platform conventions.
    */
-  physics?: ScrollPhysics;
+  physics?: ScrollPhysicsValue;
   /**
    * Whether the extent of the scroll view in the [scrollDirection] should be
    * determined by the contents being viewed.
@@ -8088,7 +27104,7 @@ export interface AnimatedListProps {
   /**
    * The amount of space by which to inset the children.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * Defaults to [Clip.hardEdge].
    */
@@ -8324,11 +27340,11 @@ export interface AnimatedOpacityProps {
   /**
    * The curve to apply when animating the parameters of this container.
    */
-  curve?: Curve;
+  curve?: CurveValue;
   /**
    * The duration over which to animate the parameters of this container.
    */
-  duration: Duration;
+  duration: DurationValue;
   /**
    * Called every time an animation completes.
    *
@@ -8454,15 +27470,15 @@ export interface AnimatedPaddingProps {
   /**
    * The amount of space by which to inset the child.
    */
-  padding: EdgeInsetsGeometry;
+  padding: EdgeInsetsGeometryValue;
   /**
    * The curve to apply when animating the parameters of this container.
    */
-  curve?: Curve;
+  curve?: CurveValue;
   /**
    * The duration over which to animate the parameters of this container.
    */
-  duration: Duration;
+  duration: DurationValue;
   /**
    * Called every time an animation completes.
    *
@@ -8530,7 +27546,7 @@ export interface AnimatedPhysicalModelProps {
    *
    * If null, treated as [BorderRadius.zero].
    */
-  borderRadius?: BorderRadius;
+  borderRadius?: BorderRadiusValue;
   /**
    * The target z-coordinate relative to the parent at which to place this
    * physical object.
@@ -8541,7 +27557,7 @@ export interface AnimatedPhysicalModelProps {
   /**
    * The target background color.
    */
-  color: Color;
+  color: ColorValue;
   /**
    * Whether the color should be animated.
    */
@@ -8549,7 +27565,7 @@ export interface AnimatedPhysicalModelProps {
   /**
    * The target shadow color.
    */
-  shadowColor: Color;
+  shadowColor: ColorValue;
   /**
    * Whether the shadow color should be animated.
    */
@@ -8557,11 +27573,11 @@ export interface AnimatedPhysicalModelProps {
   /**
    * The curve to apply when animating the parameters of this container.
    */
-  curve?: Curve;
+  curve?: CurveValue;
   /**
    * The duration over which to animate the parameters of this container.
    */
-  duration: Duration;
+  duration: DurationValue;
   /**
    * Called every time an animation completes.
    *
@@ -8664,11 +27680,11 @@ export interface AnimatedPositionedProps {
   /**
    * The curve to apply when animating the parameters of this container.
    */
-  curve?: Curve;
+  curve?: CurveValue;
   /**
    * The duration over which to animate the parameters of this container.
    */
-  duration: Duration;
+  duration: DurationValue;
   /**
    * Called every time an animation completes.
    *
@@ -8781,11 +27797,11 @@ export interface AnimatedPositionedDirectionalProps {
   /**
    * The curve to apply when animating the parameters of this container.
    */
-  curve?: Curve;
+  curve?: CurveValue;
   /**
    * The duration over which to animate the parameters of this container.
    */
-  duration: Duration;
+  duration: DurationValue;
   /**
    * Called every time an animation completes.
    *
@@ -8896,7 +27912,7 @@ export interface AnimatedRotationProps {
    * For example, to set the origin of the rotation to bottom middle, you can use
    * an alignment of (0.0, 1.0).
    */
-  alignment?: Alignment;
+  alignment?: AlignmentValue;
   /**
    * The filter quality with which to apply the transform as a bitmap operation.
    */
@@ -8904,11 +27920,11 @@ export interface AnimatedRotationProps {
   /**
    * The curve to apply when animating the parameters of this container.
    */
-  curve?: Curve;
+  curve?: CurveValue;
   /**
    * The duration over which to animate the parameters of this container.
    */
-  duration: Duration;
+  duration: DurationValue;
   /**
    * Called every time an animation completes.
    *
@@ -9044,7 +28060,7 @@ export interface AnimatedScaleProps {
    * For example, to set the origin of the scale to bottom middle, you can use
    * an alignment of (0.0, 1.0).
    */
-  alignment?: Alignment;
+  alignment?: AlignmentValue;
   /**
    * The filter quality with which to apply the transform as a bitmap operation.
    */
@@ -9052,11 +28068,11 @@ export interface AnimatedScaleProps {
   /**
    * The curve to apply when animating the parameters of this container.
    */
-  curve?: Curve;
+  curve?: CurveValue;
   /**
    * The duration over which to animate the parameters of this container.
    */
-  duration: Duration;
+  duration: DurationValue;
   /**
    * Called every time an animation completes.
    *
@@ -9163,24 +28179,24 @@ export interface AnimatedSizeProps {
    *  * [AlignmentDirectional], like [Alignment] for specifying alignments
    *    relative to text direction.
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
   /**
    * The animation curve when transitioning this widget's size to match the
    * child's size.
    */
-  curve?: Curve;
+  curve?: CurveValue;
   /**
    * The duration when transitioning this widget's size to match the child's
    * size.
    */
-  duration: Duration;
+  duration: DurationValue;
   /**
    * The duration when transitioning this widget's size to match the child's
    * size when going in reverse.
    *
    * If not specified, defaults to [duration].
    */
-  reverseDuration?: Duration;
+  reverseDuration?: DurationValue;
   /**
    * Defaults to [Clip.hardEdge].
    */
@@ -9240,15 +28256,15 @@ export interface AnimatedSlideProps {
    * The target offset.
    * The child will be translated horizontally by `width * dx` and vertically by `height * dy`
    */
-  offset: Offset;
+  offset: OffsetValue;
   /**
    * The curve to apply when animating the parameters of this container.
    */
-  curve?: Curve;
+  curve?: CurveValue;
   /**
    * The duration over which to animate the parameters of this container.
    */
-  duration: Duration;
+  duration: DurationValue;
   /**
    * Called every time an animation completes.
    *
@@ -9345,7 +28361,7 @@ export interface AnimatedSwitcherProps {
    * [reverseDuration] is set. Changing [duration] will not affect the
    * durations of transitions already in progress.
    */
-  duration: Duration;
+  duration: DurationValue;
   /**
    * The duration of the transition from the new [child] value to the old one.
    *
@@ -9355,7 +28371,7 @@ export interface AnimatedSwitcherProps {
    *
    * If not set, then the value of [duration] is used by default.
    */
-  reverseDuration?: Duration;
+  reverseDuration?: DurationValue;
   /**
    * The animation curve to use when transitioning in a new [child].
    *
@@ -9368,7 +28384,7 @@ export interface AnimatedSwitcherProps {
    * [switchInCurve] will be run in reverse from that point instead of jumping
    * to the corresponding point on [switchOutCurve].
    */
-  switchInCurve?: Curve;
+  switchInCurve?: CurveValue;
   /**
    * The animation curve to use when transitioning a previous [child] out.
    *
@@ -9381,7 +28397,7 @@ export interface AnimatedSwitcherProps {
    * in, [switchInCurve] will be run in reverse from that point instead of
    * jumping to the corresponding point on [switchOutCurve].
    */
-  switchOutCurve?: Curve;
+  switchOutCurve?: CurveValue;
   /**
    * A function that wraps a new [child] with an animation that transitions
    * the [child] in when the animation runs in the forward direction and out
@@ -9495,11 +28511,11 @@ export interface AnimatedThemeProps {
   /**
    * The curve to apply when animating the parameters of this container.
    */
-  curve?: Curve;
+  curve?: CurveValue;
   /**
    * The duration over which to animate the parameters of this container.
    */
-  duration?: Duration;
+  duration?: DurationValue;
   /**
    * Called every time an animation completes.
    *
@@ -9897,7 +28913,7 @@ export interface AppBarProps {
    *  * [elevation], which defines the size of the shadow below the app bar.
    *  * [shape], which defines the shape of the app bar and its shadow.
    */
-  shadowColor?: Color;
+  shadowColor?: ColorValue;
   /**
    * The color of the surface tint overlay applied to the app bar's
    * background color to indicate elevation.
@@ -9907,7 +28923,7 @@ export interface AppBarProps {
    * See also:
    *   * [Material.surfaceTintColor], which described this feature in more detail.
    */
-  surfaceTintColor?: Color;
+  surfaceTintColor?: ColorValue;
   /**
    * The shape of the app bar's [Material] as well as its shadow.
    *
@@ -9928,7 +28944,7 @@ export interface AppBarProps {
    *  * [elevation], which defines the size of the shadow below the app bar.
    *  * [shadowColor], which is the color of the shadow below the app bar.
    */
-  shape?: ShapeBorder;
+  shape?: ShapeBorderValue;
   /**
    * The fill color to use for an app bar's [Material].
    *
@@ -9956,7 +28972,7 @@ export interface AppBarProps {
    *  * [ColorScheme.brightness], which indicates if the overall [Theme]
    *    is light or dark.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * The default color for [Text] and [Icon]s within the app bar.
    *
@@ -9983,7 +28999,7 @@ export interface AppBarProps {
    *  * [ColorScheme.brightness], which indicates if the overall [Theme]
    *    is light or dark.
    */
-  foregroundColor?: Color;
+  foregroundColor?: ColorValue;
   /**
    * The color, opacity, and size to use for toolbar icons.
    *
@@ -9996,7 +29012,7 @@ export interface AppBarProps {
    *  * [actionsIconTheme], which defines the appearance of icons in
    *    the [actions] list.
    */
-  iconTheme?: IconThemeData;
+  iconTheme?: IconThemeDataValue;
   /**
    * The color, opacity, and size to use for the icons that appear in the app
    * bar's [actions].
@@ -10012,7 +29028,7 @@ export interface AppBarProps {
    *
    *  * [iconTheme], which defines the appearance of all of the toolbar icons.
    */
-  actionsIconTheme?: IconThemeData;
+  actionsIconTheme?: IconThemeDataValue;
   /**
    * Whether this app bar is being displayed at the top of the screen.
    *
@@ -10102,7 +29118,7 @@ export interface AppBarProps {
    *  * [DefaultTextStyle], which overrides the default text style for all of the
    *    widgets in a subtree.
    */
-  toolbarTextStyle?: TextStyle;
+  toolbarTextStyle?: TextStyleValue;
   /**
    * The default text style for the AppBar's [title] widget.
    *
@@ -10119,7 +29135,7 @@ export interface AppBarProps {
    *  * [DefaultTextStyle], which overrides the default text style for all of the
    *    widgets in a subtree.
    */
-  titleTextStyle?: TextStyle;
+  titleTextStyle?: TextStyleValue;
   /**
    * Specifies the style to use for the system overlays (e.g. the status bar on
    * Android or iOS, the system navigation bar on Android).
@@ -10139,7 +29155,7 @@ export interface AppBarProps {
    *  * [SystemChrome.setSystemUIOverlayStyle], the imperative API for setting
    *    system overlays style.
    */
-  systemOverlayStyle?: SystemUiOverlayStyle;
+  systemOverlayStyle?: SystemUiOverlayStyleValue;
   /**
    * Forces the AppBar's Material widget type to be [MaterialType.transparency]
    * (instead of Material's default type).
@@ -10177,7 +29193,7 @@ export interface AppBarProps {
    *
    * Defaults to zero.
    */
-  actionsPadding?: EdgeInsetsGeometry;
+  actionsPadding?: EdgeInsetsGeometryValue;
   /**
    * Whether the color should be animated.
    */
@@ -10316,25 +29332,25 @@ export interface AppBarThemeProps {
   /**
    * @deprecated
    */
-  color?: Color;
-  backgroundColor?: Color;
-  foregroundColor?: Color;
+  color?: ColorValue;
+  backgroundColor?: ColorValue;
+  foregroundColor?: ColorValue;
   elevation?: number;
   scrolledUnderElevation?: number;
-  shadowColor?: Color;
-  surfaceTintColor?: Color;
-  shape?: ShapeBorder;
-  iconTheme?: IconThemeData;
-  actionsIconTheme?: IconThemeData;
+  shadowColor?: ColorValue;
+  surfaceTintColor?: ColorValue;
+  shape?: ShapeBorderValue;
+  iconTheme?: IconThemeDataValue;
+  actionsIconTheme?: IconThemeDataValue;
   centerTitle?: boolean;
   titleSpacing?: number;
   leadingWidth?: number;
   toolbarHeight?: number;
-  toolbarTextStyle?: TextStyle;
-  titleTextStyle?: TextStyle;
-  systemOverlayStyle?: SystemUiOverlayStyle;
-  actionsPadding?: EdgeInsetsGeometry;
-  data?: AppBarThemeData;
+  toolbarTextStyle?: TextStyleValue;
+  titleTextStyle?: TextStyleValue;
+  systemOverlayStyle?: SystemUiOverlayStyleValue;
+  actionsPadding?: EdgeInsetsGeometryValue;
+  data?: AppBarThemeDataValue;
 }
 
 /**
@@ -10706,7 +29722,7 @@ export interface AutocompleteProps {
    * If this parameter is not null, then [focusNode] must also be non-null.
    */
   textEditingController?: TextEditingController;
-  initialValue?: TextEditingValue;
+  initialValue?: TextEditingValueValue;
 }
 
 /**
@@ -11057,7 +30073,7 @@ export interface BackButtonProps {
    * )
    * ```
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * Customizes this button's appearance.
    *
@@ -11077,7 +30093,7 @@ export interface BackButtonProps {
    *
    * Null by default.
    */
-  style?: ButtonStyle;
+  style?: ButtonStyleValue;
   /**
    * The callback that is called when the button is tapped or otherwise activated.
    *
@@ -11598,7 +30614,7 @@ export interface BadgeProps {
    * Defaults to the [BadgeTheme]'s background color, or
    * [ColorScheme.error] if the theme value is null.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * The color of the badge's [label] text.
    *
@@ -11607,7 +30623,7 @@ export interface BadgeProps {
    * Defaults to the [BadgeTheme]'s foreground color, or
    * [ColorScheme.onError] if the theme value is null.
    */
-  textColor?: Color;
+  textColor?: ColorValue;
   /**
    * The diameter of the badge if [label] is null.
    *
@@ -11635,7 +30651,7 @@ export interface BadgeProps {
    * the default text style is overridden then it may be useful to
    * also override [largeSize], [padding], and [alignment].
    */
-  textStyle?: TextStyle;
+  textStyle?: TextStyleValue;
   /**
    * The padding added to the badge's label.
    *
@@ -11644,7 +30660,7 @@ export interface BadgeProps {
    * Defaults to the [BadgeTheme]'s padding, or 4 pixels on the
    * left and right if the theme's value is null.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * Combined with [offset] to determine the location of the [label]
    * relative to the [child].
@@ -11659,7 +30675,7 @@ export interface BadgeProps {
    * Defaults to the [BadgeTheme]'s alignment, or
    * [AlignmentDirectional.topEnd] if the theme's value is null.
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
   /**
    * Combined with [alignment] to determine the location of the [label]
    * relative to the [child].
@@ -11670,7 +30686,7 @@ export interface BadgeProps {
    * if the theme's value is null then `Offset(4, -4)` for
    * [TextDirection.ltr] or `Offset(-4, -4)` for [TextDirection.rtl].
    */
-  offset?: Offset;
+  offset?: OffsetValue;
   /**
    * The badge's content, typically a [Text] widget that contains 1 to 4
    * characters.
@@ -11731,7 +30747,7 @@ export interface BadgeThemeProps {
   /**
    * Specifies the default color and size overrides for descendant [Badge] widgets.
    */
-  data: BadgeThemeData;
+  data: BadgeThemeDataValue;
 }
 
 /**
@@ -11800,11 +30816,11 @@ export interface BannerProps {
   /**
    * The color of the banner.
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * The style of the text shown on the banner.
    */
-  textStyle?: TextStyle;
+  textStyle?: TextStyleValue;
   /**
    * The shadow properties for the banner.
    *
@@ -11812,7 +30828,7 @@ export interface BannerProps {
    * and spread radius. These properties can be used to create different
    * shadow effects.
    */
-  shadow?: BoxShadow;
+  shadow?: BoxShadowValue;
 }
 
 /**
@@ -11979,7 +30995,7 @@ export interface BottomAppBarProps {
    * is false, then the default value is `Color(0xFF424242)` in dark theme and
    * [Colors.white] in light theme.
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * The z-coordinate at which to place this bottom app bar relative to its
    * parent.
@@ -12016,7 +31032,7 @@ export interface BottomAppBarProps {
    * In Material 3 the padding will default to `EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0)`
    * Otherwise the value will default to EdgeInsets.zero.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * A custom color for the Material 3 surface-tint elevation effect.
    *
@@ -12032,7 +31048,7 @@ export interface BottomAppBarProps {
    *
    * See [Material.surfaceTintColor] for more details on how this overlay is applied.
    */
-  surfaceTintColor?: Color;
+  surfaceTintColor?: ColorValue;
   /**
    * The color of the shadow below the app bar.
    *
@@ -12045,7 +31061,7 @@ export interface BottomAppBarProps {
    *  * [elevation], which defines the size of the shadow below the app bar.
    *  * [shape], which defines the shape of the app bar and its shadow.
    */
-  shadowColor?: Color;
+  shadowColor?: ColorValue;
   /**
    * The double value used to indicate the height of the [BottomAppBar].
    *
@@ -12119,14 +31135,14 @@ export interface BottomAppBarThemeProps {
    * `children` property, and then provide the children to that widget.
    */
   children?: FlutterChild;
-  color?: Color;
+  color?: ColorValue;
   elevation?: number;
   shape?: NotchedShape;
   height?: number;
-  surfaceTintColor?: Color;
-  shadowColor?: Color;
-  padding?: EdgeInsetsGeometry;
-  data?: BottomAppBarThemeData;
+  surfaceTintColor?: ColorValue;
+  shadowColor?: ColorValue;
+  padding?: EdgeInsetsGeometryValue;
+  data?: BottomAppBarThemeDataValue;
 }
 
 /**
@@ -12292,7 +31308,7 @@ export interface BottomNavigationBarProps {
    * meaning of different types.
    */
   type?: BottomNavigationBarType;
-  fixedColor?: Color;
+  fixedColor?: ColorValue;
   /**
    * The color of the [BottomNavigationBar] itself.
    *
@@ -12300,7 +31316,7 @@ export interface BottomNavigationBarProps {
    * [items] have [BottomNavigationBarItem.backgroundColor] set, the [items]'
    * backgroundColor will splash and overwrite this color.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * The size of all of the [BottomNavigationBarItem] icons.
    *
@@ -12316,7 +31332,7 @@ export interface BottomNavigationBarProps {
    * [ThemeData.brightness] is [Brightness.light], and [ColorScheme.secondary]
    * is used when [ThemeData.brightness] is [Brightness.dark].
    */
-  selectedItemColor?: Color;
+  selectedItemColor?: ColorValue;
   /**
    * The color of the unselected [BottomNavigationBarItem.icon] and
    * [BottomNavigationBarItem.label]s.
@@ -12324,7 +31340,7 @@ export interface BottomNavigationBarProps {
    * If null then the ambient [BottomNavigationBarThemeData.unselectedItemColor]
    * is used. If that is also null, [ThemeData.unselectedWidgetColor] is used.
    */
-  unselectedItemColor?: Color;
+  unselectedItemColor?: ColorValue;
   /**
    * The size, opacity, and color of the icon in the currently selected
    * [BottomNavigationBarItem.icon].
@@ -12336,7 +31352,7 @@ export interface BottomNavigationBarProps {
    * and [IconThemeData.color] properties. Also, if this field is supplied,
    * [unselectedIconTheme] must be provided.
    */
-  selectedIconTheme?: IconThemeData;
+  selectedIconTheme?: IconThemeDataValue;
   /**
    * The size, opacity, and color of the icon in the currently unselected
    * [BottomNavigationBarItem.icon]s.
@@ -12348,7 +31364,7 @@ export interface BottomNavigationBarProps {
    * and [IconThemeData.color] properties. Also, if this field is supplied,
    * [selectedIconTheme] must be provided.
    */
-  unselectedIconTheme?: IconThemeData;
+  unselectedIconTheme?: IconThemeDataValue;
   /**
    * The font size of the [BottomNavigationBarItem] labels when they are selected.
    *
@@ -12372,12 +31388,12 @@ export interface BottomNavigationBarProps {
    * The [TextStyle] of the [BottomNavigationBarItem] labels when they are
    * selected.
    */
-  selectedLabelStyle?: TextStyle;
+  selectedLabelStyle?: TextStyleValue;
   /**
    * The [TextStyle] of the [BottomNavigationBarItem] labels when they are not
    * selected.
    */
-  unselectedLabelStyle?: TextStyle;
+  unselectedLabelStyle?: TextStyleValue;
   /**
    * Whether the labels are shown for the selected [BottomNavigationBarItem].
    */
@@ -12397,7 +31413,7 @@ export interface BottomNavigationBarProps {
    * If null, then the value of [BottomNavigationBarThemeData.mouseCursor] is used. If
    * that is also null, then [WidgetStateMouseCursor.clickable] is used.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * Whether detected gestures should provide acoustic and/or haptic feedback.
    *
@@ -12597,7 +31613,7 @@ export interface BottomNavigationBarThemeProps {
   /**
    * The properties used for all descendant [BottomNavigationBar] widgets.
    */
-  data: BottomNavigationBarThemeData;
+  data: BottomNavigationBarThemeDataValue;
 }
 
 /**
@@ -12697,12 +31713,12 @@ export interface BottomSheetProps {
    * Defaults to [BottomSheetThemeData.dragHandleColor].
    * If that is also null, defaults to [ColorScheme.onSurfaceVariant].
    */
-  dragHandleColor?: Color;
+  dragHandleColor?: ColorValue;
   /**
    * Defaults to [BottomSheetThemeData.dragHandleSize].
    * If that is also null, defaults to Size(32, 4).
    */
-  dragHandleSize?: Size;
+  dragHandleSize?: SizeValue;
   /**
    * Called when the user begins dragging the bottom sheet vertically, if
    * [enableDrag] is true.
@@ -12727,7 +31743,7 @@ export interface BottomSheetProps {
    *
    * Defaults to null and falls back to [Material]'s default.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * The color of the shadow below the sheet.
    *
@@ -12740,7 +31756,7 @@ export interface BottomSheetProps {
    *  * [elevation], which defines the size of the shadow below the sheet.
    *  * [shape], which defines the shape of the sheet and its shadow.
    */
-  shadowColor?: Color;
+  shadowColor?: ColorValue;
   /**
    * The z-coordinate at which to place this material relative to its parent.
    *
@@ -12756,7 +31772,7 @@ export interface BottomSheetProps {
    *
    * Defaults to null and falls back to [Material]'s default.
    */
-  shape?: ShapeBorder;
+  shape?: ShapeBorderValue;
   /**
    * Defines the bottom sheet's [Material.clipBehavior].
    *
@@ -12785,7 +31801,7 @@ export interface BottomSheetProps {
    * theme), the bottom sheet will be aligned to the bottom-center of
    * the available space. Otherwise, no alignment is applied.
    */
-  constraints?: BoxConstraints;
+  constraints?: BoxConstraintsValue;
   /**
    * Called when the bottom sheet begins to close.
    *
@@ -13157,7 +32173,7 @@ export interface ButtonBarProps {
    * If that is null, it will default to 8.0 logical pixels on the left
    * and right.
    */
-  buttonPadding?: EdgeInsetsGeometry;
+  buttonPadding?: EdgeInsetsGeometryValue;
   /**
    * Overrides the surrounding [ButtonThemeData.alignedDropdown] to define whether
    * a [DropdownButton] menu's width will match the button's width.
@@ -13317,7 +32333,7 @@ export interface ButtonBarThemeProps {
   /**
    * The properties used for all descendant [ButtonBar] widgets.
    */
-  data: ButtonBarThemeData;
+  data: ButtonBarThemeDataValue;
 }
 
 /**
@@ -13377,15 +32393,15 @@ export interface ButtonThemeProps {
   layoutBehavior?: ButtonBarLayoutBehavior;
   minWidth?: number;
   height?: number;
-  padding?: EdgeInsetsGeometry;
-  shape?: ShapeBorder;
+  padding?: EdgeInsetsGeometryValue;
+  shape?: ShapeBorderValue;
   alignedDropdown?: boolean;
-  buttonColor?: Color;
-  disabledColor?: Color;
-  focusColor?: Color;
-  hoverColor?: Color;
-  highlightColor?: Color;
-  splashColor?: Color;
+  buttonColor?: ColorValue;
+  disabledColor?: ColorValue;
+  focusColor?: ColorValue;
+  hoverColor?: ColorValue;
+  highlightColor?: ColorValue;
+  splashColor?: ColorValue;
   colorScheme?: ColorScheme;
   materialTapTargetSize?: MaterialTapTargetSize;
 }
@@ -13667,7 +32683,7 @@ export interface CardProps {
    * and [ThemeData.useMaterial3] is true, then [ColorScheme.surfaceContainerLow] of
    * [ThemeData.colorScheme] is used. Otherwise, [ThemeData.cardColor] is used.
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * The color to paint the shadow below the card.
    *
@@ -13675,7 +32691,7 @@ export interface CardProps {
    * If that's null too, then the overall theme's [ThemeData.shadowColor]
    * (default black) is used.
    */
-  shadowColor?: Color;
+  shadowColor?: ColorValue;
   /**
    * The color used as an overlay on [color] to indicate elevation.
    *
@@ -13693,7 +32709,7 @@ export interface CardProps {
    * See [Material.surfaceTintColor] for more details on how this
    * overlay is applied.
    */
-  surfaceTintColor?: Color;
+  surfaceTintColor?: ColorValue;
   /**
    * The z-coordinate at which to place this card. This controls the size of
    * the shadow below the card.
@@ -13715,7 +32731,7 @@ export interface CardProps {
    * and 4.0 otherwise. For Material 3 outlined cards, the default [shape] also
    * includes a border side (see [OutlinedBorder.side]).
    */
-  shape?: ShapeBorder;
+  shape?: ShapeBorderValue;
   /**
    * Whether to paint the [shape] border in front of the [child].
    *
@@ -13732,7 +32748,7 @@ export interface CardProps {
    * If that's null, the default margin is 4.0 logical pixels on
    * all sides: `EdgeInsets.all(4.0)`.
    */
-  margin?: EdgeInsetsGeometry;
+  margin?: EdgeInsetsGeometryValue;
   /**
    * If this property is null then the ambient [CardThemeData.clipBehavior] is
    * used. If that's null then the behavior will be [Clip.none].
@@ -13835,13 +32851,13 @@ export interface CardThemeProps {
    */
   children?: FlutterChild;
   clipBehavior?: Clip;
-  color?: Color;
-  surfaceTintColor?: Color;
-  shadowColor?: Color;
+  color?: ColorValue;
+  surfaceTintColor?: ColorValue;
+  shadowColor?: ColorValue;
   elevation?: number;
-  margin?: EdgeInsetsGeometry;
-  shape?: ShapeBorder;
-  data?: CardThemeData;
+  margin?: EdgeInsetsGeometryValue;
+  shape?: ShapeBorderValue;
+  data?: CardThemeDataValue;
 }
 
 /**
@@ -13981,13 +32997,13 @@ export interface CarouselViewProps {
    *
    * Defaults to [EdgeInsets.all] of 4 pixels.
    */
-  padding?: EdgeInsets;
+  padding?: EdgeInsetsValue;
   /**
    * The background color for each carousel item.
    *
    * Defaults to [ColorScheme.surface].
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * The z-coordinate of each carousel item.
    *
@@ -14002,7 +33018,7 @@ export interface CarouselViewProps {
    * Defaults to a [RoundedRectangleBorder] with a circular corner radius
    * of 28.0.
    */
-  shape?: ShapeBorder;
+  shape?: ShapeBorderValue;
   /**
    * The clip behavior for each carousel item.
    *
@@ -14021,7 +33037,7 @@ export interface CarouselViewProps {
    *   * [WidgetState.hovered] - [ColorScheme.onSurface] with an opacity of 0.08
    *   * [WidgetState.focused] - [ColorScheme.onSurface] with an opacity of 0.1
    */
-  overlayColor?: WidgetStateProperty;
+  overlayColor?: WidgetStatePropertyValue;
   /**
    * Whether the carousel should keep scrolling to the next/previous items to
    * maintain the original layout.
@@ -14273,7 +33289,7 @@ export interface CarouselViewThemeProps {
   /**
    * The properties for descendant carousel widgets.
    */
-  data: CarouselViewThemeData;
+  data: CarouselViewThemeDataValue;
 }
 
 /**
@@ -14464,7 +33480,7 @@ export interface CheckboxProps {
    * If this property is null, the value of [CheckboxThemeData.mouseCursor] is used.
    * If that is also null, [WidgetStateMouseCursor.adaptiveClickable] is used.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * The color to use when this checkbox is checked.
    *
@@ -14473,7 +33489,7 @@ export interface CheckboxProps {
    * If [fillColor] returns a non-null color in the [WidgetState.selected]
    * state, it will be used instead of this color.
    */
-  activeColor?: Color;
+  activeColor?: ColorValue;
   /**
    * The color that fills the checkbox, in all [WidgetState]s.
    *
@@ -14507,14 +33523,14 @@ export interface CheckboxProps {
    * selected state, and [ThemeData.unselectedWidgetColor] is used in the
    * default state.
    */
-  fillColor?: WidgetStateProperty;
+  fillColor?: WidgetStatePropertyValue;
   /**
    * The color to use for the check icon when this checkbox is checked.
    *
    * If null, then the value of [CheckboxThemeData.checkColor] is used. If
    * that is also null, then Color(0xFFFFFFFF) is used.
    */
-  checkColor?: Color;
+  checkColor?: ColorValue;
   /**
    * The color for the checkbox's [Material] when it has the input focus.
    *
@@ -14525,7 +33541,7 @@ export interface CheckboxProps {
    * focused state. If that is also null, then the value of
    * [ThemeData.focusColor] is used.
    */
-  focusColor?: Color;
+  focusColor?: ColorValue;
   /**
    * The color for the checkbox's [Material] when a pointer is hovering over it.
    *
@@ -14536,7 +33552,7 @@ export interface CheckboxProps {
    * hovered state. If that is also null, then the value of
    * [ThemeData.hoverColor] is used.
    */
-  hoverColor?: Color;
+  hoverColor?: ColorValue;
   /**
    * The color for the checkbox's [Material].
    *
@@ -14554,7 +33570,7 @@ export interface CheckboxProps {
    * [kRadialReactionAlpha], [ThemeData.focusColor] and [ThemeData.hoverColor]
    * is used in the pressed, focused and hovered state.
    */
-  overlayColor?: WidgetStateProperty;
+  overlayColor?: WidgetStatePropertyValue;
   /**
    * The splash radius of the circular [Material] ink response.
    *
@@ -14588,7 +33604,7 @@ export interface CheckboxProps {
    *  * [ThemeData.visualDensity], which specifies the [visualDensity] for all
    *    widgets within a [Theme].
    */
-  visualDensity?: VisualDensity;
+  visualDensity?: VisualDensityValue;
   focusNode?: FocusNode;
   autofocus?: boolean;
   /**
@@ -14598,7 +33614,7 @@ export interface CheckboxProps {
    * is used. If that's null then the shape will be a [RoundedRectangleBorder]
    * with a circular corner radius of 1.0 in Material 2, and 2.0 in Material 3.
    */
-  shape?: OutlinedBorder;
+  shape?: OutlinedBorderValue;
   /**
    * The color and width of the checkbox's border.
    *
@@ -14622,7 +33638,7 @@ export interface CheckboxProps {
    * If this property is null, then the ambient [CheckboxThemeData.side] is
    * used. If that is also null, then the side will be width 2.
    */
-  side?: BorderSide;
+  side?: BorderSideValue;
   /**
    * True if this checkbox wants to show an error state.
    *
@@ -14852,13 +33868,13 @@ export interface CheckboxListTileProps {
    * If null, then the value of [CheckboxThemeData.mouseCursor] is used. If
    * that is also null, then [WidgetStateMouseCursor.clickable] is used.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * The color to use when this checkbox is checked.
    *
    * Defaults to [ColorScheme.secondary] of the current [Theme].
    */
-  activeColor?: Color;
+  activeColor?: ColorValue;
   /**
    * The color that fills the checkbox.
    *
@@ -14871,14 +33887,14 @@ export interface CheckboxListTileProps {
    * state. If that is also null, the value of [CheckboxThemeData.fillColor]
    * is used. If that is also null, then the default value is used.
    */
-  fillColor?: WidgetStateProperty;
+  fillColor?: WidgetStatePropertyValue;
   /**
    * The color to use for the check icon when this checkbox is checked.
    *
    * Defaults to Color(0xFFFFFFFF).
    */
-  checkColor?: Color;
-  hoverColor?: Color;
+  checkColor?: ColorValue;
+  hoverColor?: ColorValue;
   /**
    * The color for the checkbox's [Material].
    *
@@ -14892,7 +33908,7 @@ export interface CheckboxListTileProps {
    * the value of [CheckboxThemeData.overlayColor] is used. If that is also null,
    * then the default value is used in the pressed and hovered state.
    */
-  overlayColor?: WidgetStateProperty;
+  overlayColor?: WidgetStatePropertyValue;
   /**
    * If null, then the value of [CheckboxThemeData.splashRadius] is used. If
    * that is also null, then [kRadialReactionRadius] is used.
@@ -14905,14 +33921,14 @@ export interface CheckboxListTileProps {
   /**
    * Defines how compact the list tile's layout will be.
    */
-  visualDensity?: VisualDensity;
+  visualDensity?: VisualDensityValue;
   focusNode?: FocusNode;
   /**
    * Controls the interactive states of the backing [ListTile].
    */
   statesController?: WidgetStatesController;
   autofocus?: boolean;
-  shape?: ShapeBorder;
+  shape?: ShapeBorderValue;
   /**
    * The given value is passed directly to [Checkbox.side].
    *
@@ -14920,7 +33936,7 @@ export interface CheckboxListTileProps {
    * [ThemeData.checkboxTheme] is used. If that is also null, then the side
    * will be width 2.
    */
-  side?: BorderSide;
+  side?: BorderSideValue;
   /**
    * Defaults to false.
    */
@@ -14933,7 +33949,7 @@ export interface CheckboxListTileProps {
    * inoperative.
    */
   enabled?: boolean;
-  tileColor?: Color;
+  tileColor?: ColorValue;
   /**
    * The primary content of the list tile.
    *
@@ -14987,7 +34003,7 @@ export interface CheckboxListTileProps {
    *
    * When the value is null, the [contentPadding] is `EdgeInsets.symmetric(horizontal: 16.0)`.
    */
-  contentPadding?: EdgeInsetsGeometry;
+  contentPadding?: EdgeInsetsGeometryValue;
   /**
    * If true the checkbox's [value] can be true, false, or null.
    *
@@ -15006,11 +34022,11 @@ export interface CheckboxListTileProps {
    * is used. If that's null then the shape will be a [RoundedRectangleBorder]
    * with a circular corner radius of 1.0.
    */
-  checkboxShape?: OutlinedBorder;
+  checkboxShape?: OutlinedBorderValue;
   /**
    * If non-null, defines the background color when [CheckboxListTile.selected] is true.
    */
-  selectedTileColor?: Color;
+  selectedTileColor?: ColorValue;
   onFocusChange?: (value: boolean) => void;
   /**
    * See also:
@@ -15286,7 +34302,7 @@ export interface CheckboxMenuButtonProps {
    *
    * Null by default.
    */
-  style?: ButtonStyle;
+  style?: ButtonStyleValue;
   statesController?: WidgetStatesController;
   /**
    * Defaults to [Clip.none].
@@ -15346,7 +34362,7 @@ export interface CheckboxThemeProps {
   /**
    * The properties used for all descendant [Checkbox] widgets.
    */
-  data: CheckboxThemeData;
+  data: CheckboxThemeDataValue;
 }
 
 /**
@@ -15494,7 +34510,7 @@ export interface CheckedPopupMenuItemProps {
    * If this is null and [ThemeData.useMaterial3] is false, the horizontal padding
    * defaults to 16.0 on both sides.
    */
-  padding?: EdgeInsets;
+  padding?: EdgeInsetsValue;
   /**
    * The minimum height of the menu item.
    *
@@ -15511,7 +34527,7 @@ export interface CheckedPopupMenuItemProps {
    * is used with the [ColorScheme.onSurface] color when popup menu item is enabled and
    * the [ColorScheme.onSurface] color with 0.38 opacity when the popup menu item is disabled.
    */
-  labelTextStyle?: WidgetStateProperty;
+  labelTextStyle?: WidgetStatePropertyValue;
   /**
    * The cursor for a mouse pointer when it enters or is hovering over the
    * widget.
@@ -15526,7 +34542,7 @@ export interface CheckedPopupMenuItemProps {
    * If null, then the value of [PopupMenuThemeData.mouseCursor] is used. If
    * that is also null, then [WidgetStateMouseCursor.adaptiveClickable] is used.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * Called when the menu item is tapped.
    */
@@ -15639,30 +34655,30 @@ export const CheckedPopupMenuItem: FlutterComponent<CheckedPopupMenuItemProps> =
 export interface ChipProps {
   avatar?: FlutterChild;
   label: FlutterChild;
-  labelStyle?: TextStyle;
-  labelPadding?: EdgeInsetsGeometry;
+  labelStyle?: TextStyleValue;
+  labelPadding?: EdgeInsetsGeometryValue;
   deleteIcon?: FlutterChild;
   onDeleted?: () => void;
-  deleteIconColor?: Color;
+  deleteIconColor?: ColorValue;
   deleteButtonTooltipMessage?: string;
-  side?: BorderSide;
-  shape?: OutlinedBorder;
+  side?: BorderSideValue;
+  shape?: OutlinedBorderValue;
   clipBehavior?: Clip;
   focusNode?: FocusNode;
   autofocus?: boolean;
-  color?: WidgetStateProperty;
-  backgroundColor?: Color;
-  padding?: EdgeInsetsGeometry;
-  visualDensity?: VisualDensity;
+  color?: WidgetStatePropertyValue;
+  backgroundColor?: ColorValue;
+  padding?: EdgeInsetsGeometryValue;
+  visualDensity?: VisualDensityValue;
   materialTapTargetSize?: MaterialTapTargetSize;
   elevation?: number;
-  shadowColor?: Color;
-  surfaceTintColor?: Color;
-  iconTheme?: IconThemeData;
-  avatarBoxConstraints?: BoxConstraints;
-  deleteIconBoxConstraints?: BoxConstraints;
+  shadowColor?: ColorValue;
+  surfaceTintColor?: ColorValue;
+  iconTheme?: IconThemeDataValue;
+  avatarBoxConstraints?: BoxConstraintsValue;
+  deleteIconBoxConstraints?: BoxConstraintsValue;
   chipAnimationStyle?: ChipAnimationStyle;
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
 }
 
 /**
@@ -15750,7 +34766,7 @@ export interface ChipThemeProps {
    * Specifies the color, shape, and text style values for descendant chip
    * widgets.
    */
-  data: ChipThemeData;
+  data: ChipThemeDataValue;
 }
 
 /**
@@ -15822,35 +34838,35 @@ export const ChipTheme: FlutterComponent<ChipThemeProps> =
 export interface ChoiceChipProps {
   avatar?: FlutterChild;
   label: FlutterChild;
-  labelStyle?: TextStyle;
-  labelPadding?: EdgeInsetsGeometry;
+  labelStyle?: TextStyleValue;
+  labelPadding?: EdgeInsetsGeometryValue;
   onSelected?: (value: boolean) => void;
   pressElevation?: number;
   selected: boolean;
-  selectedColor?: Color;
-  disabledColor?: Color;
+  selectedColor?: ColorValue;
+  disabledColor?: ColorValue;
   tooltip?: string;
-  side?: BorderSide;
-  shape?: OutlinedBorder;
+  side?: BorderSideValue;
+  shape?: OutlinedBorderValue;
   clipBehavior?: Clip;
   focusNode?: FocusNode;
   autofocus?: boolean;
-  color?: WidgetStateProperty;
-  backgroundColor?: Color;
-  padding?: EdgeInsetsGeometry;
-  visualDensity?: VisualDensity;
+  color?: WidgetStatePropertyValue;
+  backgroundColor?: ColorValue;
+  padding?: EdgeInsetsGeometryValue;
+  visualDensity?: VisualDensityValue;
   materialTapTargetSize?: MaterialTapTargetSize;
   elevation?: number;
-  shadowColor?: Color;
-  surfaceTintColor?: Color;
-  iconTheme?: IconThemeData;
-  selectedShadowColor?: Color;
+  shadowColor?: ColorValue;
+  surfaceTintColor?: ColorValue;
+  iconTheme?: IconThemeDataValue;
+  selectedShadowColor?: ColorValue;
   showCheckmark?: boolean;
-  checkmarkColor?: Color;
-  avatarBorder?: ShapeBorder;
-  avatarBoxConstraints?: BoxConstraints;
+  checkmarkColor?: ColorValue;
+  avatarBorder?: ShapeBorderValue;
+  avatarBoxConstraints?: BoxConstraintsValue;
   chipAnimationStyle?: ChipAnimationStyle;
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
 }
 
 /**
@@ -15951,7 +34967,7 @@ export interface CircleAvatarProps {
    * [ThemeData.primaryColorLight] is used with dark foreground colors, and
    * [ThemeData.primaryColorDark] with light foreground colors.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * The background image of the circle. Changing the background
    * image will cause the avatar to animate to the new image.
@@ -15994,7 +35010,7 @@ export interface CircleAvatarProps {
    * [ThemeData.primaryColorLight] for dark background colors, and
    * [ThemeData.primaryColorDark] for light background colors.
    */
-  foregroundColor?: Color;
+  foregroundColor?: ColorValue;
   /**
    * The size of the avatar, expressed as the radius (half the diameter).
    *
@@ -16182,7 +35198,7 @@ export interface CircularProgressIndicatorProps {
    * It is up to the subclass to implement this in whatever way makes sense
    * for the given use case. See the subclass documentation for details.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * The progress indicator's color.
    *
@@ -16192,7 +35208,7 @@ export interface CircularProgressIndicatorProps {
    * is null then the current theme's [ColorScheme.primary] will
    * be used by default.
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * The progress indicator's color as an animated value.
    *
@@ -16267,7 +35283,7 @@ export interface CircularProgressIndicatorProps {
    * If null, then the [ProgressIndicatorThemeData.constraints] will be used.
    * Otherwise, defaults to a minimum width and height of 36 pixels.
    */
-  constraints?: BoxConstraints;
+  constraints?: BoxConstraintsValue;
   /**
    * The gap between the active indicator and the background track.
    *
@@ -16302,7 +35318,7 @@ export interface CircularProgressIndicatorProps {
    * used. If that is null and [year2023] is false, then defaults to `EdgeInsets.all(4.0)`
    * padding. Otherwise, defaults to zero padding.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * See also:
    *
@@ -16604,7 +35620,7 @@ export interface ClipRRectProps {
    *
    * This value is ignored if [clipper] is non-null.
    */
-  borderRadius?: BorderRadiusGeometry;
+  borderRadius?: BorderRadiusGeometryValue;
   /**
    * If non-null, determines which clip to use.
    */
@@ -16691,7 +35707,7 @@ export interface ClipRSuperellipseProps {
    *
    * This value is ignored if [clipper] is non-null.
    */
-  borderRadius?: BorderRadiusGeometry;
+  borderRadius?: BorderRadiusGeometryValue;
   /**
    * If non-null, determines which clip to use.
    */
@@ -16867,7 +35883,7 @@ export interface CloseButtonProps {
    * )
    * ```
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * The callback that is called when the button is tapped or otherwise activated.
    *
@@ -16893,7 +35909,7 @@ export interface CloseButtonProps {
    *
    * Null by default.
    */
-  style?: ButtonStyle;
+  style?: ButtonStyleValue;
 }
 
 /**
@@ -17024,7 +36040,7 @@ export interface ColoredBoxProps {
   /**
    * The color to paint the background area with.
    */
-  color: Color;
+  color: ColorValue;
   /**
    * Whether to apply anti-aliasing when painting the box.
    *
@@ -17606,7 +36622,7 @@ export interface CompositedTransformFollowerProps {
    * [CompositedTransformTarget] to obtain this widget's [followerAnchor]
    * position.
    */
-  offset?: Offset;
+  offset?: OffsetValue;
   /**
    * The anchor point on the linked [CompositedTransformTarget] that
    * [followerAnchor] will line up with.
@@ -17621,7 +36637,7 @@ export interface CompositedTransformFollowerProps {
    *
    * Defaults to [Alignment.topLeft].
    */
-  targetAnchor?: Alignment;
+  targetAnchor?: AlignmentValue;
   /**
    * The anchor point on this widget that will line up with [targetAnchor] on
    * the linked [CompositedTransformTarget].
@@ -17629,7 +36645,7 @@ export interface CompositedTransformFollowerProps {
    *
    * Defaults to [Alignment.topLeft].
    */
-  followerAnchor?: Alignment;
+  followerAnchor?: AlignmentValue;
 }
 
 /**
@@ -17782,7 +36798,7 @@ export interface ConstrainedBoxProps {
   /**
    * The additional constraints to impose on the child.
    */
-  constraints: BoxConstraints;
+  constraints: BoxConstraintsValue;
 }
 
 /**
@@ -17901,7 +36917,7 @@ export interface ConstraintsTransformBoxProps {
    *  * [Alignment] for non-[Directionality]-aware alignments.
    *  * [AlignmentDirectional] for [Directionality]-aware alignments.
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
   /**
    * The function used to transform the incoming [BoxConstraints], to size
    * [child].
@@ -18138,7 +37154,7 @@ export interface ContainerProps {
    *  * [AlignmentDirectional], like [Alignment] for specifying alignments
    *    relative to text direction.
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
   /**
    * Empty space to inscribe inside the [decoration]. The [child], if any, is
    * placed inside this padding.
@@ -18146,7 +37162,7 @@ export interface ContainerProps {
    * This padding is in addition to any padding inherent in the [decoration];
    * see [Decoration.padding].
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * The color to paint behind the [child].
    *
@@ -18158,7 +37174,7 @@ export interface ContainerProps {
    * color may still be painted by the [decoration] even if this property is
    * null.
    */
-  color?: Color;
+  color?: ColorValue;
   isAntiAlias?: boolean;
   /**
    * The decoration to paint behind the [child].
@@ -18183,11 +37199,11 @@ export interface ContainerProps {
    *
    * The [padding] goes inside the constraints.
    */
-  constraints?: BoxConstraints;
+  constraints?: BoxConstraintsValue;
   /**
    * Empty space to surround the [decoration] and [child].
    */
-  margin?: EdgeInsetsGeometry;
+  margin?: EdgeInsetsGeometryValue;
   /**
    * The transformation matrix to apply before painting the container.
    */
@@ -18201,7 +37217,7 @@ export interface ContainerProps {
    *
    *  * [Transform.alignment], which is set by this property.
    */
-  transformAlignment?: AlignmentGeometry;
+  transformAlignment?: AlignmentGeometryValue;
   /**
    * The clip behavior when [Container.decoration] is not null.
    *
@@ -18514,7 +37530,7 @@ export interface CupertinoActionSheetActionProps {
    * If null, defaults to [SystemMouseCursors.click] on web and
    * [MouseCursor.defer] on other platforms.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   focusNode?: FocusNode;
   /**
    * The color of the background that highlights active focus.
@@ -18524,7 +37540,7 @@ export interface CupertinoActionSheetActionProps {
    *
    * When [focusColor] is null, defaults to [CupertinoColors.activeBlue].
    */
-  focusColor?: Color;
+  focusColor?: ColorValue;
 }
 
 /**
@@ -18562,7 +37578,7 @@ export interface CupertinoActivityIndicatorProps {
    *
    * Defaults to color extracted from native iOS.
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * Whether the activity indicator is running its animation.
    *
@@ -18722,8 +37738,8 @@ export interface CupertinoAlertDialogProps {
    *    section when it is long.
    */
   actionScrollController?: ScrollController;
-  insetAnimationDuration?: Duration;
-  insetAnimationCurve?: Curve;
+  insetAnimationDuration?: DurationValue;
+  insetAnimationCurve?: CurveValue;
 }
 
 /**
@@ -18888,7 +37904,7 @@ export interface CupertinoAppProps {
    * A null [theme] or unspecified [theme] attributes will default to iOS
    * system values.
    */
-  theme?: CupertinoThemeData;
+  theme?: CupertinoThemeDataValue;
   /**
    * The application's top-level routing table.
    *
@@ -18917,7 +37933,7 @@ export interface CupertinoAppProps {
    * This value is passed unmodified to [WidgetsApp.onGenerateTitle].
    */
   onGenerateTitle?: (context: BuildContext) => string;
-  color?: Color;
+  color?: ColorValue;
   locale?: Locale;
   localizationsDelegates?: LocalizationsDelegate[];
   /**
@@ -19192,7 +38208,7 @@ export interface CupertinoButtonProps {
    *
    * Defaults to 16.0 pixels.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * The color of the button's background.
    *
@@ -19201,14 +38217,14 @@ export interface CupertinoButtonProps {
    * Defaults to the [CupertinoTheme]'s `primaryColor` when the
    * [CupertinoButton.filled] constructor is used.
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * The color of the button's text and icons.
    *
    * Defaults to the [CupertinoTheme]'s `primaryColor` when the
    * [CupertinoButton.filled] constructor is used.
    */
-  foregroundColor?: Color;
+  foregroundColor?: ColorValue;
   /**
    * The color of the button's background when the button is disabled.
    *
@@ -19217,7 +38233,7 @@ export interface CupertinoButtonProps {
    * Defaults to [CupertinoColors.quaternarySystemFill] when [color] is
    * specified.
    */
-  disabledColor?: Color;
+  disabledColor?: ColorValue;
   /**
    * Minimum size of the button.
    *
@@ -19234,7 +38250,7 @@ export interface CupertinoButtonProps {
    * [kMinInteractiveDimensionCupertino], which the iOS Human
    * Interface Guidelines recommends as the minimum tappable area.
    */
-  minimumSize?: Size;
+  minimumSize?: SizeValue;
   /**
    * The opacity that the button will fade to when it is pressed.
    * The button will have an opacity of 1.0 when it is not pressed.
@@ -19248,7 +38264,7 @@ export interface CupertinoButtonProps {
    *
    * Defaults to [kCupertinoButtonSizeBorderRadius], based on [sizeStyle].
    */
-  borderRadius?: BorderRadius;
+  borderRadius?: BorderRadiusValue;
   /**
    * The alignment of the button's [child].
    *
@@ -19259,7 +38275,7 @@ export interface CupertinoButtonProps {
    *
    * Always defaults to [Alignment.center].
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
   /**
    * The color to use for the focus highlight for keyboard interactions.
    *
@@ -19268,7 +38284,7 @@ export interface CupertinoButtonProps {
    * transparent in this context means the color is used with an opacity of
    * 0.80, a brightness of 0.69 and a saturation of 0.835.
    */
-  focusColor?: Color;
+  focusColor?: ColorValue;
   focusNode?: FocusNode;
   /**
    * Handler called when the focus changes.
@@ -19297,7 +38313,7 @@ export interface CupertinoButtonProps {
    *    [WidgetStateProperty] which is used in APIs that need to accept
    *    either a [MouseCursor] or a [WidgetStateProperty].
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * If [onPressed] and [onLongPress] callbacks are null, then the button will be disabled.
    */
@@ -19453,7 +38469,7 @@ export interface CupertinoCheckboxProps {
    *    [WidgetStateProperty] which is used in APIs that need to accept
    *    either a [MouseCursor] or a [WidgetStateProperty].
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * The color to use when this checkbox is checked.
    *
@@ -19462,7 +38478,7 @@ export interface CupertinoCheckboxProps {
    *
    * Defaults to [CupertinoColors.activeBlue].
    */
-  activeColor?: Color;
+  activeColor?: ColorValue;
   /**
    * The color used if the checkbox is inactive.
    *
@@ -19471,7 +38487,7 @@ export interface CupertinoCheckboxProps {
    *
    * @deprecated
    */
-  inactiveColor?: Color;
+  inactiveColor?: ColorValue;
   /**
    * The color used to fill this checkbox.
    *
@@ -19503,20 +38519,20 @@ export interface CupertinoCheckboxProps {
    * [CupertinoColors.white] at 50% opacity if checkbox is disabled,
    * and [CupertinoColors.white] otherwise.
    */
-  fillColor?: WidgetStateProperty;
+  fillColor?: WidgetStatePropertyValue;
   /**
    * The color to use for the check icon when this checkbox is checked.
    *
    * If null, then the value of [CupertinoColors.white] is used if the checkbox
    * is enabled. If the checkbox is disabled, a grey-black color is used.
    */
-  checkColor?: Color;
+  checkColor?: ColorValue;
   /**
    * The color for the checkbox's border shadow when it has the input focus.
    *
    * If null, then a paler form of the [activeColor] will be used.
    */
-  focusColor?: Color;
+  focusColor?: ColorValue;
   focusNode?: FocusNode;
   autofocus?: boolean;
   /**
@@ -19542,14 +38558,14 @@ export interface CupertinoCheckboxProps {
    * If this property is null and the checkbox's value is false, then the side
    * defaults to a one pixel wide grey-black border.
    */
-  side?: BorderSide;
+  side?: BorderSideValue;
   /**
    * The shape of the checkbox.
    *
    * If this property is null then the shape defaults to a
    * [RoundedRectangleBorder] with a circular corner radius of 4.0.
    */
-  shape?: OutlinedBorder;
+  shape?: OutlinedBorderValue;
   /**
    * The tap target and layout size of the checkbox.
    *
@@ -19557,7 +38573,7 @@ export interface CupertinoCheckboxProps {
    * [CupertinoCheckbox.width] pixels on desktop devices and
    * [kMinInteractiveDimensionCupertino] pixels on mobile devices.
    */
-  tapTargetSize?: Size;
+  tapTargetSize?: SizeValue;
   /**
    * The semantic label for the checkbox that will be announced by screen readers.
    *
@@ -19820,7 +38836,7 @@ export interface CupertinoContextMenuActionProps {
    * Will be colored in the same way as the [TextStyle] used for [child] (for
    * example, if using [isDestructiveAction]).
    */
-  trailingIcon?: IconData;
+  trailingIcon?: IconDataValue;
 }
 
 /**
@@ -19955,7 +38971,7 @@ export interface CupertinoDatePickerProps {
    *
    * Defaults to null, which disables background painting entirely.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * Whether to show the day of week alongside the day in [CupertinoDatePickerMode.date] mode.
    *
@@ -20101,7 +39117,7 @@ export interface CupertinoDesktopTextSelectionToolbarProps {
    *     macOS-style text selection toolbar text button.
    */
   children: FlutterChildren;
-  anchor: Offset;
+  anchor: OffsetValue;
 }
 
 /**
@@ -20192,14 +39208,14 @@ export interface CupertinoDialogActionProps {
    * must be used if a text size is desired other than that specified in
    * [_kCupertinoDialogActionStyle].
    */
-  textStyle?: TextStyle;
+  textStyle?: TextStyleValue;
   /**
    * The cursor that will be shown when hovering over the button.
    *
    * If null, defaults to [SystemMouseCursors.click] on web and
    * [MouseCursor.defer] on other platforms.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
 }
 
 /**
@@ -20327,7 +39343,7 @@ export interface CupertinoFormRowProps {
    * Defaults to the standard iOS padding for form rows. If no edge insets are
    * intended, explicitly pass [EdgeInsets.zero] to [padding].
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * A widget that is displayed underneath the [prefix] and [child] widgets.
    *
@@ -20452,13 +39468,13 @@ export interface CupertinoFormSectionProps {
    * [CupertinoFormSection] constructor. Defaults to the standard notched-style
    * iOS margin when constructing with [CupertinoFormSection.insetGrouped].
    */
-  margin?: EdgeInsetsGeometry;
+  margin?: EdgeInsetsGeometryValue;
   /**
    * Sets the background color behind the section.
    *
    * Defaults to [CupertinoColors.systemGroupedBackground].
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * Sets the decoration around [children].
    *
@@ -20469,7 +39485,7 @@ export interface CupertinoFormSectionProps {
    * with [CupertinoFormSection.insetGrouped]. Defaults to zero radius for the
    * standard [CupertinoFormSection] constructor.
    */
-  decoration?: BoxDecoration;
+  decoration?: BoxDecorationValue;
   /**
    * Defaults to [Clip.none].
    */
@@ -20598,7 +39614,7 @@ export interface CupertinoLinearActivityIndicatorProps {
    *
    * Defaults to [CupertinoColors.activeBlue] if no color is specified.
    */
-  color?: Color;
+  color?: ColorValue;
 }
 
 /**
@@ -20711,13 +39727,13 @@ export interface CupertinoListSectionProps {
    * [CupertinoListSection] constructor. Defaults to the standard notched-style
    * iOS margin when constructing with [CupertinoListSection.insetGrouped].
    */
-  margin?: EdgeInsetsGeometry;
+  margin?: EdgeInsetsGeometryValue;
   /**
    * Sets the background color behind the section.
    *
    * Defaults to [CupertinoColors.systemGroupedBackground].
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * Sets the decoration around [children].
    *
@@ -20728,7 +39744,7 @@ export interface CupertinoListSectionProps {
    * with [CupertinoListSection.insetGrouped]. Defaults to zero radius for the
    * standard [CupertinoListSection] constructor.
    */
-  decoration?: BoxDecoration;
+  decoration?: BoxDecorationValue;
   /**
    * Defaults to [Clip.hardEdge].
    */
@@ -20755,7 +39771,7 @@ export interface CupertinoListSectionProps {
    *
    * If null, defaults to [CupertinoColors.separator].
    */
-  separatorColor?: Color;
+  separatorColor?: ColorValue;
 }
 
 /**
@@ -20907,16 +39923,16 @@ export interface CupertinoListTileProps {
    * tapped, the background color switches to [backgroundColorActivated]. It is
    * set to match the iOS look by default.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * The [backgroundColorActivated] is the background color of the tile after
    * the tile was tapped. It is set to match the iOS look by default.
    */
-  backgroundColorActivated?: Color;
+  backgroundColorActivated?: ColorValue;
   /**
    * Padding of the content inside [CupertinoListTile].
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * The [leadingSize] is used to constrain the width and height of [leading]
    * widget.
@@ -21018,18 +40034,18 @@ export interface CupertinoMagnifierProps {
    *
    * The size does not include the [borderSide] or [shadows].
    */
-  size?: Size;
+  size?: SizeValue;
   /**
    * The border radius of this magnifier.
    *
    * The magnifier's shape is a [RoundedRectangleBorder] with this radius.
    */
-  borderRadius?: BorderRadius;
+  borderRadius?: BorderRadiusValue;
   /**
    * Any additional focal point offset, applied over the regular focal
    * point offset defined in [kMagnifierAboveFocalPoint].
    */
-  additionalFocalPointOffset?: Offset;
+  additionalFocalPointOffset?: OffsetValue;
   /**
    * A list of shadows cast by the [Magnifier].
    *
@@ -21069,7 +40085,7 @@ export interface CupertinoMagnifierProps {
    * [borderRadius], and increases the [size] of the magnifier by the
    * [BorderSide.width].
    */
-  borderSide?: BorderSide;
+  borderSide?: BorderSideValue;
   /**
    * This [RawMagnifier]'s controller.
    *
@@ -21205,7 +40221,7 @@ export interface CupertinoMenuAnchorProps {
   /**
    * The constraints to apply to the menu scrollable.
    */
-  constraints?: BoxConstraints;
+  constraints?: BoxConstraintsValue;
   /**
    * Whether the menu's cross axis should be constrained by the overlay.
    *
@@ -21276,7 +40292,7 @@ export interface CupertinoMenuAnchorProps {
    *
    * Defaults to `EdgeInsets.all(8)`.
    */
-  overlayPadding?: EdgeInsetsGeometry;
+  overlayPadding?: EdgeInsetsGeometryValue;
   /**
    * A list of menu items to display in the menu.
    */
@@ -21373,7 +40389,7 @@ export interface CupertinoMenuDividerProps {
    *
    * Defaults to [CupertinoMenuDivider.kDefaultColor].
    */
-  color?: Color;
+  color?: ColorValue;
 }
 
 /**
@@ -21483,7 +40499,7 @@ export interface CupertinoMenuItemProps {
    * The alignment of the center point of the leading widget within the
    * [leadingWidth] of the menu item.
    */
-  leadingMidpointAlignment?: AlignmentGeometry;
+  leadingMidpointAlignment?: AlignmentGeometryValue;
   /**
    * The widget shown after the label. Typically an [Icon].
    */
@@ -21496,11 +40512,11 @@ export interface CupertinoMenuItemProps {
    * The alignment of the center point of the trailing widget within the
    * [trailingWidth] of the menu item.
    */
-  trailingMidpointAlignment?: AlignmentGeometry;
+  trailingMidpointAlignment?: AlignmentGeometryValue;
   /**
    * The padding applied to this menu item.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * The [BoxConstraints] to apply to the menu item.
    *
@@ -21509,7 +40525,7 @@ export interface CupertinoMenuItemProps {
    * plus the height of the menu item's children exceeds the
    * [BoxConstraints.minHeight].
    */
-  constraints?: BoxConstraints;
+  constraints?: BoxConstraintsValue;
   autofocus?: boolean;
   focusNode?: FocusNode;
   onFocusChange?: (value: boolean) => void;
@@ -21538,11 +40554,11 @@ export interface CupertinoMenuItemProps {
    *
    * If null, defaults to [CupertinoMenuItem.kDefaultDecoration].
    */
-  decoration?: WidgetStateProperty;
+  decoration?: WidgetStatePropertyValue;
   /**
    * The mouse cursor to display on hover.
    */
-  mouseCursor?: WidgetStateProperty;
+  mouseCursor?: WidgetStatePropertyValue;
   /**
    * How the menu item should respond to hit tests.
    */
@@ -21784,7 +40800,7 @@ export interface CupertinoNavigationBarProps {
    *
    * If a border is null, the navigation bar will not display a border.
    */
-  border?: Border;
+  border?: BorderValue;
   /**
    * The background color of the navigation bar. If it contains transparency, the
    * tab bar will automatically produce a blurring effect to the content
@@ -21796,7 +40812,7 @@ export interface CupertinoNavigationBarProps {
    *
    * Defaults to [CupertinoTheme]'s `barBackgroundColor` if null.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * Whether the navigation bar appears transparent when no content is scrolled under.
    *
@@ -21843,7 +40859,7 @@ export interface CupertinoNavigationBarProps {
    *
    * Vertical padding won't change the height of the nav bar.
    */
-  padding?: EdgeInsetsDirectional;
+  padding?: EdgeInsetsDirectionalValue;
   /**
    * Whether to transition between navigation bars.
    *
@@ -21996,7 +41012,7 @@ export interface CupertinoNavigationBarBackButtonProps {
    *
    * Defaults to [CupertinoTheme]'s `primaryColor` if null.
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * An override for showing the previous route's title. If null, it will be
    * automatically derived from [CupertinoPageRoute.title] if the current and
@@ -22090,7 +41106,7 @@ export interface CupertinoPageScaffoldProps {
    *
    * By default uses [CupertinoTheme]'s `scaffoldBackgroundColor` when null.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * Whether the [child] should size itself to avoid the window's bottom inset.
    *
@@ -22148,7 +41164,7 @@ export interface CupertinoPageScaffoldBackgroundColorProps {
   /**
    * The background color defined in [CupertinoPageScaffold].
    */
-  color: Color;
+  color: ColorValue;
 }
 
 /**
@@ -22251,7 +41267,7 @@ export interface CupertinoPickerProps {
    * Any alpha value less 255 (fully opaque) will cause the removal of the
    * wheel list edge fade gradient from rendering of the widget.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   offAxisFraction?: number;
   useMagnifier?: boolean;
   magnification?: number;
@@ -22367,7 +41383,7 @@ export interface CupertinoPickerDefaultSelectionOverlayProps {
    * selected item of the underlying [CupertinoPicker] should remain visible.
    * Defaults to [CupertinoColors.tertiarySystemFill].
    */
-  background?: Color;
+  background?: ColorValue;
   /**
    * Whether to use the default use rounded corners and margin on the start side.
    */
@@ -22588,7 +41604,7 @@ export interface CupertinoRadioProps {
    *    `WidgetStateProperty` which is used in APIs that need to accept
    *    either a [MouseCursor] or a [WidgetStateProperty<MouseCursor>].
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * This example shows how to enable deselecting a radio button by setting the
    * [toggleable] attribute.
@@ -22601,25 +41617,25 @@ export interface CupertinoRadioProps {
    *
    * Defaults to [CupertinoColors.activeBlue].
    */
-  activeColor?: Color;
+  activeColor?: ColorValue;
   /**
    * The color to use when this radio button is not selected.
    *
    * Defaults to [CupertinoColors.white].
    */
-  inactiveColor?: Color;
+  inactiveColor?: ColorValue;
   /**
    * The color that fills the inner circle of the radio button when selected.
    *
    * Defaults to [CupertinoColors.white].
    */
-  fillColor?: Color;
+  fillColor?: ColorValue;
   /**
    * The color for the radio's border when it has the input focus.
    *
    * If null, then a paler form of the [activeColor] will be used.
    */
-  focusColor?: Color;
+  focusColor?: ColorValue;
   focusNode?: FocusNode;
   autofocus?: boolean;
   /**
@@ -22874,7 +41890,7 @@ export interface CupertinoScrollbarProps {
    * Scrollbar will be rectangular if [radius] is null, which is the default
    * behavior.
    */
-  radius?: Radius;
+  radius?: RadiusValue;
   /**
    * The radius of the scrollbar edges when the scrollbar is being dragged by
    * the user.
@@ -22883,7 +41899,7 @@ export interface CupertinoScrollbarProps {
    * from [radius] to this value, then animate back when the user stops
    * dragging the scrollbar.
    */
-  radiusWhileDragging?: Radius;
+  radiusWhileDragging?: RadiusValue;
   /**
    * A check that specifies whether a [ScrollNotification] should be
    * handled by this widget.
@@ -23016,7 +42032,7 @@ export interface CupertinoSearchTextFieldProps {
    *
    * Defaults to the gray [CupertinoColors.secondaryLabel] iOS color.
    */
-  style?: TextStyle;
+  style?: TextStyleValue;
   /**
    * A hint placeholder text that appears when the text entry is empty.
    *
@@ -23028,7 +42044,7 @@ export interface CupertinoSearchTextFieldProps {
    *
    * Defaults to the gray [CupertinoColors.secondaryLabel] iOS color.
    */
-  placeholderStyle?: TextStyle;
+  placeholderStyle?: TextStyleValue;
   /**
    * Sets the decoration for the text field.
    *
@@ -23037,27 +42053,27 @@ export interface CupertinoSearchTextFieldProps {
    * [decoration] has a default value upon building the widget. It is designed
    * to mimic the look of a `UISearchTextField`.
    */
-  decoration?: BoxDecoration;
+  decoration?: BoxDecorationValue;
   /**
    * Set the [decoration] property's background color.
    *
    * Can't be set along with the [decoration]. Defaults to the translucent
    * [CupertinoColors.tertiarySystemFill] iOS color.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * Sets the [decoration] property's border radius.
    *
    * Can't be set along with the [decoration]. Defaults to 9 px circular
    * corner radius.
    */
-  borderRadius?: BorderRadius;
+  borderRadius?: BorderRadiusValue;
   /**
    * The keyboard type for this search field.
    *
    * Defaults to [TextInputType.text].
    */
-  keyboardType?: TextInputType;
+  keyboardType?: TextInputTypeValue;
   /**
    * Sets the padding insets for the text and placeholder.
    *
@@ -23065,13 +42081,13 @@ export interface CupertinoSearchTextFieldProps {
    * inset values were determined using the comparison tool in
    * https://github.com/flutter/platform_tests/.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * Sets the color for the suffix and prefix icons.
    *
    * Defaults to [CupertinoColors.secondaryLabel].
    */
-  itemColor?: Color;
+  itemColor?: ColorValue;
   /**
    * Sets the base icon size for the suffix and prefix icons.
    *
@@ -23086,7 +42102,7 @@ export interface CupertinoSearchTextFieldProps {
    * The inset values were determined using the comparison tool in
    * https://github.com/flutter/platform_tests/.
    */
-  prefixInsets?: EdgeInsetsGeometry;
+  prefixInsets?: EdgeInsetsGeometryValue;
   /**
    * Sets a prefix widget.
    *
@@ -23100,7 +42116,7 @@ export interface CupertinoSearchTextFieldProps {
    * The inset values were determined using the comparison tool in
    * https://github.com/flutter/platform_tests/.
    */
-  suffixInsets?: EdgeInsetsGeometry;
+  suffixInsets?: EdgeInsetsGeometryValue;
   /**
    * Sets the suffix widget's icon.
    *
@@ -23191,12 +42207,12 @@ export interface CupertinoSearchTextFieldProps {
   enabled?: boolean;
   cursorWidth?: number;
   cursorHeight?: number;
-  cursorRadius?: Radius;
+  cursorRadius?: RadiusValue;
   cursorOpacityAnimates?: boolean;
   /**
    * The color to use when painting the cursor.
    */
-  cursorColor?: Color;
+  cursorColor?: ColorValue;
 }
 
 /**
@@ -23322,27 +42338,27 @@ export interface CupertinoSegmentedControlProps {
    *
    * Defaults to [CupertinoTheme]'s `primaryContrastingColor` if null.
    */
-  unselectedColor?: Color;
+  unselectedColor?: ColorValue;
   /**
    * The color used to fill the background of the selected widget and as the text
    * color of unselected widgets.
    *
    * Defaults to [CupertinoTheme]'s `primaryColor` if null.
    */
-  selectedColor?: Color;
+  selectedColor?: ColorValue;
   /**
    * The color used as the border around each widget.
    *
    * Defaults to [CupertinoTheme]'s `primaryColor` if null.
    */
-  borderColor?: Color;
+  borderColor?: ColorValue;
   /**
    * The color used to fill the background of the widget the user is
    * temporarily interacting with through a long press or drag.
    *
    * Defaults to the selectedColor at 20% opacity if null.
    */
-  pressedColor?: Color;
+  pressedColor?: ColorValue;
   /**
    * The color used to fill the background of the segment when it is disabled.
    *
@@ -23350,17 +42366,17 @@ export interface CupertinoSegmentedControlProps {
    * the segment is selected. If the segment is unselected, this color will be
    * set to [unselectedColor].
    */
-  disabledColor?: Color;
+  disabledColor?: ColorValue;
   /**
    * The color used for the text of the segment when it is disabled.
    */
-  disabledTextColor?: Color;
+  disabledTextColor?: ColorValue;
   /**
    * The CupertinoSegmentedControl will be placed inside this padding.
    *
    * Defaults to EdgeInsets.symmetric(horizontal: 16.0)
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * The set of identifying keys that correspond to the segments that should be disabled.
    *
@@ -23639,13 +42655,13 @@ export interface CupertinoSliderProps {
    *
    * Defaults to the [CupertinoTheme]'s primary color if null.
    */
-  activeColor?: Color;
+  activeColor?: ColorValue;
   /**
    * The color to use for the thumb of the slider.
    *
    * Defaults to [CupertinoColors.white].
    */
-  thumbColor?: Color;
+  thumbColor?: ColorValue;
 }
 
 /**
@@ -23805,20 +42821,20 @@ export interface CupertinoSlidingSegmentedControlProps {
    * The default value is a [CupertinoDynamicColor] that appears white in light
    * mode and becomes a gray color in dark mode.
    */
-  thumbColor?: Color;
+  thumbColor?: ColorValue;
   /**
    * The amount of space by which to inset the [children].
    *
    * Defaults to `EdgeInsets.symmetric(vertical: 2, horizontal: 3)`.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * The color used to paint the rounded rect behind the [children] and the separators.
    *
    * The default value is [CupertinoColors.tertiarySystemFill]. The background
    * will not be painted if null is specified.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * Determine whether segments have proportional widths based on their content.
    *
@@ -24039,12 +43055,12 @@ export interface CupertinoSliverNavigationBarProps {
    * This widget is visible in both collapsed and expanded states.
    */
   trailing?: FlutterChild;
-  border?: Border;
-  backgroundColor?: Color;
+  border?: BorderValue;
+  backgroundColor?: ColorValue;
   automaticBackgroundVisibility?: boolean;
   enableBackgroundFilterBlur?: boolean;
   brightness?: Brightness;
-  padding?: EdgeInsetsDirectional;
+  padding?: EdgeInsetsDirectionalValue;
   transitionBetweenRoutes?: boolean;
   heroTag?: Object;
   /**
@@ -24452,11 +43468,11 @@ export interface CupertinoSwitchProps {
   /**
    * @deprecated
    */
-  activeColor?: Color;
+  activeColor?: ColorValue;
   /**
    * @deprecated
    */
-  trackColor?: Color;
+  trackColor?: ColorValue;
   /**
    * The color to use for the track when the switch is on.
    *
@@ -24468,7 +43484,7 @@ export interface CupertinoSwitchProps {
    *
    *  * [inactiveTrackColor], the color to use for the track when the switch is off.
    */
-  activeTrackColor?: Color;
+  activeTrackColor?: ColorValue;
   /**
    * The color to use for the track when the switch is off.
    *
@@ -24478,7 +43494,7 @@ export interface CupertinoSwitchProps {
    *
    *  * [activeTrackColor], the color to use for the track when the switch is on.
    */
-  inactiveTrackColor?: Color;
+  inactiveTrackColor?: ColorValue;
   /**
    * The color to use for the thumb when the switch is on.
    *
@@ -24492,7 +43508,7 @@ export interface CupertinoSwitchProps {
    *
    *  * [inactiveThumbColor], the color to use for the thumb when the switch is off.
    */
-  thumbColor?: Color;
+  thumbColor?: ColorValue;
   /**
    * The color to use on the thumb when the switch is off.
    *
@@ -24507,7 +43523,7 @@ export interface CupertinoSwitchProps {
    *
    *  * [thumbColor], the color to use for the thumb when the switch is on.
    */
-  inactiveThumbColor?: Color;
+  inactiveThumbColor?: ColorValue;
   /**
    * Whether to apply the ambient [CupertinoThemeData].
    *
@@ -24523,20 +43539,20 @@ export interface CupertinoSwitchProps {
    * Defaults to [activeColor] with an opacity of 0.80, a brightness of 0.69
    * and a saturation of 0.835.
    */
-  focusColor?: Color;
+  focusColor?: ColorValue;
   /**
    * The color to use for the accessibility label when the switch is on.
    *
    * Defaults to [CupertinoColors.white] when null.
    */
-  onLabelColor?: Color;
+  onLabelColor?: ColorValue;
   /**
    * The color to use for the accessibility label when the switch is off.
    *
    * Defaults to [Color.fromARGB(255, 179, 179, 179)]
    * (or [Color.fromARGB(255, 255, 255, 255)] in high contrast) when null.
    */
-  offLabelColor?: Color;
+  offLabelColor?: ColorValue;
   activeThumbImage?: ImageProvider;
   onActiveThumbImageError?: (
     exception: Object,
@@ -24575,7 +43591,7 @@ export interface CupertinoSwitchProps {
    *
    * The [CupertinoSwitch] track has no outline by default.
    */
-  trackOutlineColor?: WidgetStateProperty;
+  trackOutlineColor?: WidgetStatePropertyValue;
   /**
    * The outline width of this [CupertinoSwitch]'s track.
    *
@@ -24607,7 +43623,7 @@ export interface CupertinoSwitchProps {
    *
    * Defaults to 2.0 if a [trackOutlineColor] is provided.
    */
-  trackOutlineWidth?: WidgetStateProperty;
+  trackOutlineWidth?: WidgetStatePropertyValue;
   /**
    * The icon to use on the thumb of this switch.
    *
@@ -24636,7 +43652,7 @@ export interface CupertinoSwitchProps {
    *
    * If null, then the [CupertinoSwitch] does not have any icons on the thumb.
    */
-  thumbIcon?: WidgetStateProperty;
+  thumbIcon?: WidgetStatePropertyValue;
   /**
    * The cursor for a mouse pointer when it enters or is hovering over the
    * widget.
@@ -24674,7 +43690,7 @@ export interface CupertinoSwitchProps {
    *    `WidgetStateProperty` which is used in APIs that need to accept
    *    either a [MouseCursor] or a [WidgetStateProperty].
    */
-  mouseCursor?: WidgetStateProperty;
+  mouseCursor?: WidgetStatePropertyValue;
   focusNode?: FocusNode;
   /**
    * Handler called when the focus changes.
@@ -24808,14 +43824,14 @@ export interface CupertinoTabBarProps {
    *
    * Defaults to [CupertinoTheme]'s `barBackgroundColor` when null.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * The foreground color of the icon and title for the [BottomNavigationBarItem]
    * of the selected tab.
    *
    * Defaults to [CupertinoTheme]'s `primaryColor` if null.
    */
-  activeColor?: Color;
+  activeColor?: ColorValue;
   /**
    * The foreground color of the icon and title for the [BottomNavigationBarItem]s
    * in the unselected state.
@@ -24823,7 +43839,7 @@ export interface CupertinoTabBarProps {
    * Defaults to a [CupertinoDynamicColor] that matches the disabled foreground
    * color of the native `UITabBar` component.
    */
-  inactiveColor?: Color;
+  inactiveColor?: ColorValue;
   /**
    * The size of all of the [BottomNavigationBarItem] icons.
    *
@@ -24843,7 +43859,7 @@ export interface CupertinoTabBarProps {
    *
    * The default value is a one physical pixel top border with grey color.
    */
-  border?: Border;
+  border?: BorderValue;
 }
 
 /**
@@ -24992,7 +44008,7 @@ export interface CupertinoTabScaffoldProps {
    *
    * By default uses [CupertinoTheme]'s `scaffoldBackgroundColor` when null.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * Whether the body should size itself to avoid the window's bottom inset.
    *
@@ -25305,14 +44321,14 @@ export interface CupertinoTextFieldProps {
    * Defaults to having a rounded rectangle grey border and can be null to have
    * no box decoration.
    */
-  decoration?: BoxDecoration;
+  decoration?: BoxDecorationValue;
   /**
    * Padding around the text entry area between the [prefix] and [suffix]
    * or the clear button when [clearButtonMode] is not never.
    *
    * Defaults to a padding of 6 pixels on all sides and can be null.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * A lighter colored placeholder hint that appears on the first line of the
    * text field when the text entry is empty.
@@ -25334,7 +44350,7 @@ export interface CupertinoTextFieldProps {
    *
    * If specifically set to null, placeholder's style will be the same as [style].
    */
-  placeholderStyle?: TextStyle;
+  placeholderStyle?: TextStyleValue;
   /**
    * An optional [Widget] to display before the text.
    */
@@ -25387,7 +44403,7 @@ export interface CupertinoTextFieldProps {
    * widget. Defaults to "Clear".
    */
   clearButtonSemanticLabel?: string;
-  keyboardType?: TextInputType;
+  keyboardType?: TextInputTypeValue;
   /**
    * The type of action button to use for the keyboard.
    *
@@ -25403,10 +44419,10 @@ export interface CupertinoTextFieldProps {
    *
    * Defaults to the standard iOS font style from [CupertinoTheme] if null.
    */
-  style?: TextStyle;
-  strutStyle?: StrutStyle;
+  style?: TextStyleValue;
+  strutStyle?: StrutStyleValue;
   textAlign?: TextAlign;
-  textAlignVertical?: TextAlignVertical;
+  textAlignVertical?: TextAlignVerticalValue;
   textDirection?: TextDirection;
   readOnly?: boolean;
   /**
@@ -25418,7 +44434,7 @@ export interface CupertinoTextFieldProps {
    *
    * @deprecated
    */
-  toolbarOptions?: ToolbarOptions;
+  toolbarOptions?: ToolbarOptionsValue;
   showCursor?: boolean;
   autofocus?: boolean;
   obscuringCharacter?: string;
@@ -25489,7 +44505,7 @@ export interface CupertinoTextFieldProps {
   enabled?: boolean;
   cursorWidth?: number;
   cursorHeight?: number;
-  cursorRadius?: Radius;
+  cursorRadius?: RadiusValue;
   cursorOpacityAnimates?: boolean;
   /**
    * The color to use when painting the cursor.
@@ -25499,7 +44515,7 @@ export interface CupertinoTextFieldProps {
    * which itself defaults to [CupertinoColors.activeBlue] in the light theme
    * and [CupertinoColors.activeOrange] in the dark theme.
    */
-  cursorColor?: Color;
+  cursorColor?: ColorValue;
   /**
    * Controls how tall the selection highlight boxes are computed to be.
    *
@@ -25520,14 +44536,14 @@ export interface CupertinoTextFieldProps {
    * If null, defaults to [Brightness.light].
    */
   keyboardAppearance?: Brightness;
-  scrollPadding?: EdgeInsets;
+  scrollPadding?: EdgeInsetsValue;
   dragStartBehavior?: DragStartBehavior;
   enableInteractiveSelection?: boolean;
   selectAllOnFocus?: boolean;
   selectionControls?: TextSelectionControls;
   onClick?: () => void;
   scrollController?: ScrollController;
-  scrollPhysics?: ScrollPhysics;
+  scrollPhysics?: ScrollPhysicsValue;
   autofillHints?: string[];
   contentInsertionConfiguration?: ContentInsertionConfiguration;
   /**
@@ -25557,7 +44573,7 @@ export interface CupertinoTextFieldProps {
    * If [SpellCheckConfiguration.misspelledTextStyle] is not specified in this
    * configuration, then [cupertinoMisspelledTextStyle] is used by default.
    */
-  spellCheckConfiguration?: SpellCheckConfiguration;
+  spellCheckConfiguration?: SpellCheckConfigurationValue;
   /**
    * Configuration for the text field magnifier.
    *
@@ -25571,7 +44587,7 @@ export interface CupertinoTextFieldProps {
    *
    * ** See code in examples/api/lib/widgets/text_magnifier/text_magnifier.0.dart **
    */
-  magnifierConfiguration?: TextMagnifierConfiguration;
+  magnifierConfiguration?: TextMagnifierConfigurationValue;
 }
 
 /**
@@ -25730,7 +44746,7 @@ export interface CupertinoTextFormFieldRowProps {
    * If no edge insets are intended, explicitly pass [EdgeInsets.zero] to
    * [padding].
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * Controls the text being edited.
    *
@@ -25748,21 +44764,21 @@ export interface CupertinoTextFormFieldRowProps {
    */
   initialValue?: string;
   focusNode?: FocusNode;
-  decoration?: BoxDecoration;
-  keyboardType?: TextInputType;
+  decoration?: BoxDecorationValue;
+  keyboardType?: TextInputTypeValue;
   textCapitalization?: TextCapitalization;
   textInputAction?: TextInputAction;
-  style?: TextStyle;
-  strutStyle?: StrutStyle;
+  style?: TextStyleValue;
+  strutStyle?: StrutStyleValue;
   textDirection?: TextDirection;
   textAlign?: TextAlign;
-  textAlignVertical?: TextAlignVertical;
+  textAlignVertical?: TextAlignVerticalValue;
   autofocus?: boolean;
   readOnly?: boolean;
   /**
    * @deprecated
    */
-  toolbarOptions?: ToolbarOptions;
+  toolbarOptions?: ToolbarOptionsValue;
   showCursor?: boolean;
   obscuringCharacter?: string;
   obscureText?: boolean;
@@ -25810,12 +44826,12 @@ export interface CupertinoTextFormFieldRowProps {
   enabled?: boolean;
   cursorWidth?: number;
   cursorHeight?: number;
-  cursorColor?: Color;
+  cursorColor?: ColorValue;
   keyboardAppearance?: Brightness;
-  scrollPadding?: EdgeInsets;
+  scrollPadding?: EdgeInsetsValue;
   enableInteractiveSelection?: boolean;
   selectionControls?: TextSelectionControls;
-  scrollPhysics?: ScrollPhysics;
+  scrollPhysics?: ScrollPhysicsValue;
   autofillHints?: string[];
   /**
    * Used to enable/disable this form field auto validation and update its
@@ -25830,12 +44846,12 @@ export interface CupertinoTextFormFieldRowProps {
    */
   autovalidateMode?: AutovalidateMode;
   placeholder?: string;
-  placeholderStyle?: TextStyle;
+  placeholderStyle?: TextStyleValue;
   contextMenuBuilder?: (
     context: BuildContext,
     editableTextState: EditableTextState,
   ) => FlutterElement;
-  spellCheckConfiguration?: SpellCheckConfiguration;
+  spellCheckConfiguration?: SpellCheckConfigurationValue;
   selectionHeightStyle?: BoxHeightStyle;
   selectionWidthStyle?: BoxWidthStyle;
   /**
@@ -25947,7 +44963,7 @@ export interface CupertinoTextMagnifierProps {
   /**
    * The curve used for the in / out animations.
    */
-  animationCurve?: Curve;
+  animationCurve?: CurveValue;
   /**
    * This magnifier's controller.
    *
@@ -26032,8 +45048,8 @@ export interface CupertinoTextSelectionToolbarProps {
    *     Cupertino-style text selection toolbar text button.
    */
   children: FlutterChildren;
-  anchorAbove: Offset;
-  anchorBelow: Offset;
+  anchorAbove: OffsetValue;
+  anchorBelow: OffsetValue;
   /**
    * The given anchor and isAbove can be used to position an arrow, as in the
    * default Cupertino toolbar.
@@ -26137,7 +45153,7 @@ export interface CupertinoThemeProps {
   /**
    * The [CupertinoThemeData] styling for this theme.
    */
-  data: CupertinoThemeData;
+  data: CupertinoThemeDataValue;
 }
 
 /**
@@ -26196,7 +45212,7 @@ export interface CupertinoTimerPickerProps {
   /**
    * The initial duration of the countdown timer.
    */
-  initialTimerDuration?: Duration;
+  initialTimerDuration?: DurationValue;
   /**
    * The granularity of the minute spinner. Must be a positive integer factor
    * of 60.
@@ -26212,13 +45228,13 @@ export interface CupertinoTimerPickerProps {
    *
    * Defaults to [Alignment.center].
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
   /**
    * Background color of timer picker.
    *
    * Defaults to null, which disables background painting entirely.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * Defaults to a value that matches the default iOS timer picker wheel.
    */
@@ -26581,7 +45597,7 @@ export interface CustomPaintProps {
    * If there's a child, this is ignored, and the size of the child is used
    * instead.
    */
-  size?: Size;
+  size?: SizeValue;
   /**
    * Whether the painting is complex enough to benefit from caching.
    *
@@ -26908,7 +45924,7 @@ export interface CustomScrollViewProps {
    * [ScrollPhysics] provided by that behavior will take precedence after
    * [physics].
    */
-  physics?: ScrollPhysics;
+  physics?: ScrollPhysicsValue;
   scrollBehavior?: ScrollBehavior;
   /**
    * Whether the extent of the scroll view in the [scrollDirection] should be
@@ -27459,7 +46475,7 @@ export interface DataTableProps {
    *    match a component's state:
    *    <https://material.io/design/interaction/states.html#anatomy>.
    */
-  dataRowColor?: WidgetStateProperty;
+  dataRowColor?: WidgetStatePropertyValue;
   /**
    * @deprecated
    */
@@ -27486,7 +46502,7 @@ export interface DataTableProps {
    * If null, [DataTableThemeData.dataTextStyle] is used. By default, the text
    * style is [TextTheme.bodyMedium].
    */
-  dataTextStyle?: TextStyle;
+  dataTextStyle?: TextStyleValue;
   /**
    * The background color for the heading row.
    *
@@ -27517,7 +46533,7 @@ export interface DataTableProps {
    *    match a component's state:
    *    <https://material.io/design/interaction/states.html#anatomy>.
    */
-  headingRowColor?: WidgetStateProperty;
+  headingRowColor?: WidgetStatePropertyValue;
   /**
    * The height of the heading row.
    *
@@ -27531,7 +46547,7 @@ export interface DataTableProps {
    * If null, [DataTableThemeData.headingTextStyle] is used. By default, the
    * text style is [TextTheme.titleSmall].
    */
-  headingTextStyle?: TextStyle;
+  headingTextStyle?: TextStyleValue;
   /**
    * The horizontal margin between the edges of the table and the content
    * in the first and last cells of each row.
@@ -27599,7 +46615,7 @@ export interface DataTableProps {
   /**
    * The style to use when painting the boundary and interior divisions of the table.
    */
-  border?: TableBorder;
+  border?: TableBorderValue;
   /**
    * This can be used to clip the content within the border of the [DataTable].
    *
@@ -27694,7 +46710,7 @@ export interface DataTableThemeProps {
   /**
    * The properties used for all descendant [DataTable] widgets.
    */
-  data: DataTableThemeData;
+  data: DataTableThemeDataValue;
 }
 
 /**
@@ -27805,7 +46821,7 @@ export interface DatePickerDialogProps {
    *
    * If this is null, it will default to [TextInputType.datetime]
    */
-  keyboardType?: TextInputType;
+  keyboardType?: TextInputTypeValue;
   /**
    * Restoration ID to save and restore the state of the [DatePickerDialog].
    *
@@ -27839,7 +46855,7 @@ export interface DatePickerDialogProps {
    *
    * Defaults to `EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0)`.
    */
-  insetPadding?: EdgeInsets;
+  insetPadding?: EdgeInsetsValue;
   calendarDelegate?: CalendarDelegate;
 }
 
@@ -27877,7 +46893,7 @@ export interface DatePickerThemeProps {
    * Specifies the visual properties used by descendant [DatePickerDialog]
    * widgets.
    */
-  data: DatePickerThemeData;
+  data: DatePickerThemeDataValue;
 }
 
 /**
@@ -28014,7 +47030,7 @@ export interface DateRangePickerDialogProps {
    * is used.
    */
   fieldEndLabelText?: string;
-  keyboardType?: TextInputType;
+  keyboardType?: TextInputTypeValue;
   /**
    * Restoration ID to save and restore the state of the [DateRangePickerDialog].
    *
@@ -28450,17 +47466,17 @@ export interface DefaultSelectionStyleProps {
    * The cursor indicates the current location of the text insertion point in
    * the field.
    */
-  cursorColor?: Color;
+  cursorColor?: ColorValue;
   /**
    * The background color of selected text.
    */
-  selectionColor?: Color;
+  selectionColor?: ColorValue;
   /**
    * The [MouseCursor] for mouse pointers hovering over selectable Text widgets.
    *
    * If this property is null, [SystemMouseCursors.text] will be used.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
 }
 
 /**
@@ -28559,7 +47575,7 @@ export interface DefaultTabControllerProps {
    *
    * Defaults to kTabScrollDuration.
    */
-  animationDuration?: Duration;
+  animationDuration?: DurationValue;
 }
 
 /**
@@ -28924,7 +47940,7 @@ export interface DefaultTextHeightBehaviorProps {
    * `children` property, and then provide the children to that widget.
    */
   children: FlutterChild;
-  textHeightBehavior: TextHeightBehavior;
+  textHeightBehavior: TextHeightBehaviorValue;
 }
 
 /**
@@ -28978,7 +47994,7 @@ export interface DefaultTextStyleProps {
   /**
    * The text style to apply.
    */
-  style: TextStyle;
+  style: TextStyleValue;
   /**
    * How each line of text in the Text widget should be aligned horizontally.
    */
@@ -29017,7 +48033,7 @@ export interface DefaultTextStyleProps {
    * See [TextWidthBasis] for possible values and their implications.
    */
   textWidthBasis?: TextWidthBasis;
-  textHeightBehavior?: TextHeightBehavior;
+  textHeightBehavior?: TextHeightBehaviorValue;
 }
 
 /**
@@ -29136,7 +48152,7 @@ export interface DesktopTextSelectionToolbarProps {
    * The point where the toolbar will attempt to position itself as closely as
    * possible.
    */
-  anchor: Offset;
+  anchor: OffsetValue;
 }
 
 /**
@@ -29311,7 +48327,7 @@ export interface DialogProps {
    *
    * If [Dialog.fullscreen] is used, defaults to [ColorScheme.surface].
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * The z-coordinate of this [Dialog].
    *
@@ -29349,7 +48365,7 @@ export interface DialogProps {
    *   * [surfaceTintColor], which can be used to indicate elevation through
    *     tinting the background color.
    */
-  shadowColor?: Color;
+  shadowColor?: ColorValue;
   /**
    * The color used as a surface tint overlay on the dialog's background color,
    * which reflects the dialog's [elevation].
@@ -29372,7 +48388,7 @@ export interface DialogProps {
    *   * [shadowColor], which can be used to indicate elevation through
    *     a drop shadow.
    */
-  surfaceTintColor?: Color;
+  surfaceTintColor?: ColorValue;
   /**
    * The duration of the animation to show when the system keyboard intrudes
    * into the space that the dialog is placed in.
@@ -29380,14 +48396,14 @@ export interface DialogProps {
    * Defaults to 100 milliseconds when [Dialog] is used, and [Duration.zero]
    * when [Dialog.fullscreen] is used.
    */
-  insetAnimationDuration?: Duration;
+  insetAnimationDuration?: DurationValue;
   /**
    * The curve to use for the animation shown when the system keyboard intrudes
    * into the space that the dialog is placed in.
    *
    * Defaults to [Curves.decelerate].
    */
-  insetAnimationCurve?: Curve;
+  insetAnimationCurve?: CurveValue;
   /**
    * The amount of padding added to [MediaQueryData.viewInsets] on the outside
    * of the dialog. This defines the minimum space between the screen's edges
@@ -29395,7 +48411,7 @@ export interface DialogProps {
    *
    * Defaults to `EdgeInsets.symmetric(horizontal: 40.0, vertical: 24.0)`.
    */
-  insetPadding?: EdgeInsets;
+  insetPadding?: EdgeInsetsValue;
   /**
    * Controls how the contents of the dialog are clipped (or not) to the given
    * [shape].
@@ -29414,14 +48430,14 @@ export interface DialogProps {
    *
    * The default shape is a [RoundedRectangleBorder] with a radius of 4.0
    */
-  shape?: ShapeBorder;
+  shape?: ShapeBorderValue;
   /**
    * How to align the [Dialog].
    *
    * If null, then [DialogThemeData.alignment] is used. If that is also null, the
    * default is [Alignment.center].
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
   /**
    * The role this dialog represent in assist technologies.
    *
@@ -29434,7 +48450,7 @@ export interface DialogProps {
    * If null, then [DialogThemeData.constraints] is used. If that is also null, the
    * default is `const BoxConstraints(minWidth: 280.0)`.
    */
-  constraints?: BoxConstraints;
+  constraints?: BoxConstraintsValue;
 }
 
 /**
@@ -29497,20 +48513,20 @@ export interface DialogThemeProps {
    * `children` property, and then provide the children to that widget.
    */
   children?: FlutterChild;
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   elevation?: number;
-  shadowColor?: Color;
-  surfaceTintColor?: Color;
-  shape?: ShapeBorder;
-  alignment?: AlignmentGeometry;
-  iconColor?: Color;
-  titleTextStyle?: TextStyle;
-  contentTextStyle?: TextStyle;
-  actionsPadding?: EdgeInsetsGeometry;
-  barrierColor?: Color;
-  insetPadding?: EdgeInsets;
+  shadowColor?: ColorValue;
+  surfaceTintColor?: ColorValue;
+  shape?: ShapeBorderValue;
+  alignment?: AlignmentGeometryValue;
+  iconColor?: ColorValue;
+  titleTextStyle?: TextStyleValue;
+  contentTextStyle?: TextStyleValue;
+  actionsPadding?: EdgeInsetsGeometryValue;
+  barrierColor?: ColorValue;
+  insetPadding?: EdgeInsetsValue;
   clipBehavior?: Clip;
-  data?: DialogThemeData;
+  data?: DialogThemeDataValue;
 }
 
 /**
@@ -29716,7 +48732,7 @@ export interface DismissibleProps {
    * If null, the widget will not contract and [onDismissed] will be called
    * immediately after the widget is dismissed.
    */
-  resizeDuration?: Duration;
+  resizeDuration?: DurationValue;
   /**
    * The offset threshold the item has to be dragged in order to be considered
    * dismissed.
@@ -29742,7 +48758,7 @@ export interface DismissibleProps {
   /**
    * Defines the duration for card to dismiss or to come back to original position if not dismissed.
    */
-  movementDuration?: Duration;
+  movementDuration?: DurationValue;
   /**
    * Defines the end offset across the main axis after the card is dismissed.
    *
@@ -29871,7 +48887,7 @@ export interface DisplayFeatureSubScreenProps {
    *     `Offset(double.maxFinite, 0)`, which will cause the top-right
    *     sub-screen to be picked.
    */
-  anchorPoint?: Offset;
+  anchorPoint?: OffsetValue;
 }
 
 /**
@@ -29996,14 +49012,14 @@ export interface DividerProps {
    * )
    * ```
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * The amount of radius for the border of the divider.
    *
    * If this is null, then [DividerThemeData.radius] is used. If that is
    * also null, then the default radius of [BoxDecoration] is used.
    */
-  radius?: BorderRadiusGeometry;
+  radius?: BorderRadiusGeometryValue;
 }
 
 /**
@@ -30061,7 +49077,7 @@ export interface DividerThemeProps {
    * The properties for descendant [Divider]s, [VerticalDivider]s, dividers
    * between [ListTile]s, and dividers between rows in [DataTable]s.
    */
-  data: DividerThemeData;
+  data: DividerThemeDataValue;
 }
 
 /**
@@ -30322,7 +49338,7 @@ export interface DraggableProps {
    * purposes of finding a drag target. It is especially useful if the feedback
    * is transformed compared to the child.
    */
-  feedbackOffset?: Offset;
+  feedbackOffset?: OffsetValue;
   /**
    * A strategy that is used by this draggable to get the anchor offset when it
    * is dragged.
@@ -30678,7 +49694,7 @@ export interface DraggableScrollableSheetProps {
    * If it's not set, then the animation duration is the distance to the snap
    * target divided by the velocity of the widget.
    */
-  snapAnimationDuration?: Duration;
+  snapAnimationDuration?: DurationValue;
   /**
    * A controller that can be used to programmatically control this sheet.
    */
@@ -30841,7 +49857,7 @@ export interface DrawerProps {
    * If this is null, then [DrawerThemeData.backgroundColor] is used. If that
    * is also null, then it falls back to [Material]'s default.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * The z-coordinate at which to place this drawer relative to its parent.
    *
@@ -30867,7 +49883,7 @@ export interface DrawerProps {
    *   * [surfaceTintColor], which can be used to indicate elevation through
    *     tinting the background color.
    */
-  shadowColor?: Color;
+  shadowColor?: ColorValue;
   /**
    * The color used as a surface tint overlay on the drawer's background color,
    * which reflects the drawer's [elevation].
@@ -30888,7 +49904,7 @@ export interface DrawerProps {
    *   * [shadowColor], which can be used to indicate elevation through
    *     a drop shadow.
    */
-  surfaceTintColor?: Color;
+  surfaceTintColor?: ColorValue;
   /**
    * The shape of the drawer.
    *
@@ -30897,7 +49913,7 @@ export interface DrawerProps {
    * If this is null, then [DrawerThemeData.shape] is used. If that
    * is also null, then it falls back to [Material]'s default.
    */
-  shape?: ShapeBorder;
+  shape?: ShapeBorderValue;
   /**
    * The width of the drawer.
    *
@@ -31032,7 +50048,7 @@ export interface DrawerButtonProps {
    * )
    * ```
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * Customizes this button's appearance.
    *
@@ -31052,7 +50068,7 @@ export interface DrawerButtonProps {
    *
    * Null by default.
    */
-  style?: ButtonStyle;
+  style?: ButtonStyleValue;
   /**
    * The callback that is called when the button is tapped or otherwise activated.
    *
@@ -31188,7 +50204,7 @@ export interface DrawerControllerProps {
    * If this is null, then [DrawerThemeData.scrimColor] is used. If that
    * is also null, then it defaults to [Colors.black54].
    */
-  scrimColor?: Color;
+  scrimColor?: ColorValue;
   /**
    * The width of the area within which a horizontal swipe will open the
    * drawer.
@@ -31272,7 +50288,7 @@ export interface DrawerHeaderProps {
   /**
    * The margin around the drawer header.
    */
-  margin?: EdgeInsetsGeometry;
+  margin?: EdgeInsetsGeometryValue;
   /**
    * The padding by which to inset [child].
    *
@@ -31281,15 +50297,15 @@ export interface DrawerHeaderProps {
    *
    * If the child is null, the padding has no effect.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * The duration for animations of the [decoration].
    */
-  duration?: Duration;
+  duration?: DurationValue;
   /**
    * The curve for animations of the [decoration].
    */
-  curve?: Curve;
+  curve?: CurveValue;
 }
 
 /**
@@ -31333,7 +50349,7 @@ export interface DrawerThemeProps {
    * Specifies the background color, scrim color, elevation, and shape for
    * descendant [Drawer] widgets.
    */
-  data: DrawerThemeData;
+  data: DrawerThemeDataValue;
 }
 
 /**
@@ -31538,7 +50554,7 @@ export interface DropdownButtonProps {
    * Defaults to the [TextTheme.titleMedium] value of the current
    * [ThemeData.textTheme] of the current [Theme].
    */
-  style?: TextStyle;
+  style?: TextStyleValue;
   /**
    * The widget to use for drawing the drop-down button's underline.
    *
@@ -31559,7 +50575,7 @@ export interface DropdownButtonProps {
    * [ThemeData.brightness] is [Brightness.light] and to
    * [Colors.white10] when it is [Brightness.dark]
    */
-  iconDisabledColor?: Color;
+  iconDisabledColor?: ColorValue;
   /**
    * The color of any [Icon] descendant of [icon] if this button is enabled,
    * i.e. if [onChanged] is defined.
@@ -31568,7 +50584,7 @@ export interface DropdownButtonProps {
    * [ThemeData.brightness] is [Brightness.light] and to
    * [Colors.white70] when it is [Brightness.dark]
    */
-  iconEnabledColor?: Color;
+  iconEnabledColor?: ColorValue;
   /**
    * The size to use for the drop-down button's down arrow icon button.
    *
@@ -31616,7 +50632,7 @@ export interface DropdownButtonProps {
   /**
    * The color for the button's [Material] when it has the input focus.
    */
-  focusColor?: Color;
+  focusColor?: ColorValue;
   focusNode?: FocusNode;
   autofocus?: boolean;
   /**
@@ -31625,7 +50641,7 @@ export interface DropdownButtonProps {
    * If it is not provided, the theme's [ThemeData.canvasColor] will be used
    * instead.
    */
-  dropdownColor?: Color;
+  dropdownColor?: ColorValue;
   /**
    * The maximum height of the menu.
    *
@@ -31663,11 +50679,11 @@ export interface DropdownButtonProps {
    *  * [AlignmentDirectional], like [Alignment] for specifying alignments
    *    relative to text direction.
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
   /**
    * Defines the corner radii of the menu's rounded rectangle shape.
    */
-  borderRadius?: BorderRadius;
+  borderRadius?: BorderRadiusValue;
   /**
    * Padding around the visible portion of the dropdown widget.
    *
@@ -31679,7 +50695,7 @@ export interface DropdownButtonProps {
    * area will stay flush with the border, as opposed to an external [Padding]
    * widget which will leave a non-clickable gap.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * Determines whether tapping outside the dropdown will close it.
    *
@@ -31693,7 +50709,7 @@ export interface DropdownButtonProps {
    *
    * If this property is null, [WidgetStateMouseCursor.adaptiveClickable] will be used.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * The cursor for a mouse pointer when it enters or is hovering over the
    * this button's [items].
@@ -31701,7 +50717,7 @@ export interface DropdownButtonProps {
    *
    * If this property is null, [WidgetStateMouseCursor.adaptiveClickable] will be used.
    */
-  dropdownMenuItemMouseCursor?: MouseCursor;
+  dropdownMenuItemMouseCursor?: MouseCursorValue;
 }
 
 /**
@@ -31840,18 +50856,18 @@ export interface DropdownButtonFormFieldProps {
   onChanged: ((value: unknown | null) => void) | null;
   onClick?: () => void;
   elevation?: number;
-  style?: TextStyle;
+  style?: TextStyleValue;
   icon?: FlutterChild;
-  iconDisabledColor?: Color;
-  iconEnabledColor?: Color;
+  iconDisabledColor?: ColorValue;
+  iconEnabledColor?: ColorValue;
   iconSize?: number;
   isDense?: boolean;
   isExpanded?: boolean;
   itemHeight?: number;
-  focusColor?: Color;
+  focusColor?: ColorValue;
   focusNode?: FocusNode;
   autofocus?: boolean;
-  dropdownColor?: Color;
+  dropdownColor?: ColorValue;
   /**
    * The decoration to show around the dropdown button form field.
    *
@@ -31861,7 +50877,7 @@ export interface DropdownButtonFormFieldProps {
    * If not specified, an [InputDecorator] with the `focusColor` set to the
    * supplied `focusColor` (if any) will be used.
    */
-  decoration?: InputDecoration;
+  decoration?: InputDecorationValue;
   /**
    * An optional method to call with the final value when the form is saved via
    * [FormState.save].
@@ -31926,9 +50942,9 @@ export interface DropdownButtonFormFieldProps {
   autovalidateMode?: AutovalidateMode;
   menuMaxHeight?: number;
   enableFeedback?: boolean;
-  alignment?: AlignmentGeometry;
-  borderRadius?: BorderRadius;
-  padding?: EdgeInsetsGeometry;
+  alignment?: AlignmentGeometryValue;
+  borderRadius?: BorderRadiusValue;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * Determines whether tapping outside the dropdown will close it.
    *
@@ -31942,7 +50958,7 @@ export interface DropdownButtonFormFieldProps {
    *
    * If this property is null, [WidgetStateMouseCursor.adaptiveClickable] will be used.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * The cursor for a mouse pointer when it enters or is hovering over the
    * this button's [DropdownMenuItem]s.
@@ -31950,7 +50966,7 @@ export interface DropdownButtonFormFieldProps {
    *
    * If this property is null, [WidgetStateMouseCursor.adaptiveClickable] will be used.
    */
-  dropdownMenuItemMouseCursor?: MouseCursor;
+  dropdownMenuItemMouseCursor?: MouseCursorValue;
 }
 
 /**
@@ -32187,14 +51203,14 @@ export interface DropdownMenuProps {
    *
    * Defaults to [TextInputType.text].
    */
-  keyboardType?: TextInputType;
+  keyboardType?: TextInputTypeValue;
   /**
    * The text style for the [TextField] of the [DropdownMenu];
    *
    * Defaults to the overall theme's [TextTheme.bodyLarge]
    * if the dropdown menu theme's value is null.
    */
-  textStyle?: TextStyle;
+  textStyle?: TextStyleValue;
   /**
    * The text align for the [TextField] of the [DropdownMenu].
    *
@@ -32228,7 +51244,7 @@ export interface DropdownMenuProps {
    *
    * The default width of the menu is set to the width of the text field.
    */
-  menuStyle?: MenuStyle;
+  menuStyle?: MenuStyleValue;
   /**
    * Controls the text being edited or selected in the menu.
    *
@@ -32364,7 +51380,7 @@ export interface DropdownMenuProps {
    *
    * Defaults to null.
    */
-  expandedInsets?: EdgeInsetsGeometry;
+  expandedInsets?: EdgeInsetsGeometryValue;
   /**
    * When [DropdownMenu.enableFilter] is true, this callback is used to
    * compute the list of filtered items.
@@ -32432,7 +51448,7 @@ export interface DropdownMenuProps {
     entries: DropdownMenuEntry[],
     query: string,
   ) => number | null;
-  alignmentOffset?: Offset;
+  alignmentOffset?: OffsetValue;
   /**
    * Descriptions of the menu items in the [DropdownMenu].
    *
@@ -32499,7 +51515,7 @@ export interface DropdownMenuProps {
    * other widgets.
    */
   menuController?: MenuController;
-  scrollPadding?: EdgeInsets;
+  scrollPadding?: EdgeInsetsValue;
 }
 
 /**
@@ -32575,15 +51591,15 @@ export interface DropdownMenuFormFieldProps {
   selectedTrailingIcon?: FlutterChild;
   enableFilter?: boolean;
   enableSearch?: boolean;
-  keyboardType?: TextInputType;
-  textStyle?: TextStyle;
+  keyboardType?: TextInputTypeValue;
+  textStyle?: TextStyleValue;
   textAlign?: TextAlign;
   inputDecorationTheme?: Object;
   decorationBuilder?: (
     context: BuildContext,
     controller: MenuController,
   ) => InputDecoration;
-  menuStyle?: MenuStyle;
+  menuStyle?: MenuStyleValue;
   /**
    * Controls the text being edited.
    *
@@ -32605,8 +51621,8 @@ export interface DropdownMenuFormFieldProps {
   focusNode?: FocusNode;
   requestFocusOnTap?: boolean;
   selectOnly?: boolean;
-  expandedInsets?: EdgeInsetsGeometry;
-  alignmentOffset?: Offset;
+  expandedInsets?: EdgeInsetsGeometryValue;
+  alignmentOffset?: OffsetValue;
   filterCallback?: (
     entries: DropdownMenuEntry[],
     filter: string,
@@ -32770,7 +51786,7 @@ export interface DropdownMenuItemProps {
    *  * [AlignmentDirectional], like [Alignment] for specifying alignments
    *    relative to text direction.
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
 }
 
 /**
@@ -32801,7 +51817,7 @@ export interface DropdownMenuThemeProps {
    * Specifies the visual properties used by descendant [DropdownMenu]
    * widgets.
    */
-  data: DropdownMenuThemeData;
+  data: DropdownMenuThemeDataValue;
 }
 
 /**
@@ -33182,12 +52198,12 @@ export interface EditableTextProps {
    * [MediaQueryData.letterSpacingOverride], and [MediaQueryData.wordSpacingOverride]
    * regardless of its [TextStyle.inherit] value.
    */
-  style: TextStyle;
-  strutStyle?: StrutStyle;
+  style: TextStyleValue;
+  strutStyle?: StrutStyleValue;
   /**
    * The color to use when painting the cursor.
    */
-  cursorColor: Color;
+  cursorColor: ColorValue;
   /**
    * The color to use when painting the background cursor aligned with the text
    * while rendering the floating cursor.
@@ -33199,7 +52215,7 @@ export interface EditableTextProps {
    *  * [FloatingCursorDragState], which explains the floating cursor feature
    *    in detail.
    */
-  backgroundCursorColor: Color;
+  backgroundCursorColor: ColorValue;
   /**
    * How the text should be aligned horizontally.
    *
@@ -33247,7 +52263,7 @@ export interface EditableTextProps {
    * @deprecated
    */
   textScaleFactor?: number;
-  textScaler?: TextScaler;
+  textScaler?: TextScalerValue;
   /**
    * The maximum number of lines to show at one time, wrapping if necessary.
    *
@@ -33384,7 +52400,7 @@ export interface EditableTextProps {
    *  * [textWidthBasis], which controls the calculation of text width.
    */
   forceLine?: boolean;
-  textHeightBehavior?: TextHeightBehavior;
+  textHeightBehavior?: TextHeightBehaviorValue;
   textWidthBasis?: TextWidthBasis;
   /**
    * Whether this text field should focus itself if nothing else is already
@@ -33428,7 +52444,7 @@ export interface EditableTextProps {
    * [CupertinoThemeData.primaryColor] with 20% opacity. For [TextField]s, the
    * value is set to the ambient [TextSelectionThemeData.selectionColor].
    */
-  selectionColor?: Color;
+  selectionColor?: ColorValue;
   /**
    * Optional delegate for building the text selection handles.
    *
@@ -33454,7 +52470,7 @@ export interface EditableTextProps {
    * Defaults to [TextInputType.text] if [maxLines] is one and
    * [TextInputType.multiline] otherwise.
    */
-  keyboardType?: TextInputType;
+  keyboardType?: TextInputTypeValue;
   /**
    * The type of action button to use with the soft keyboard.
    */
@@ -33686,7 +52702,7 @@ export interface EditableTextProps {
    * stands for the text cursor, which is usually a blinking vertical line at
    * the editing position.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * Whether the caller will provide gesture handling (true), or if the
    * [EditableText] is expected to handle basic gestures (false).
@@ -33735,7 +52751,7 @@ export interface EditableTextProps {
    *
    * By default, the cursor has no radius.
    */
-  cursorRadius?: Radius;
+  cursorRadius?: RadiusValue;
   /**
    * Whether the cursor will animate from fully transparent to fully opaque
    * during each cursor blink.
@@ -33744,7 +52760,7 @@ export interface EditableTextProps {
    * animate on Android platforms.
    */
   cursorOpacityAnimates?: boolean;
-  cursorOffset?: Offset;
+  cursorOffset?: OffsetValue;
   paintCursorAboveText?: boolean;
   /**
    * Controls how tall the selection highlight boxes are computed to be.
@@ -33770,7 +52786,7 @@ export interface EditableTextProps {
    *
    * Defaults to EdgeInsets.all(20.0).
    */
-  scrollPadding?: EdgeInsets;
+  scrollPadding?: EdgeInsetsValue;
   /**
    * The appearance of the keyboard.
    *
@@ -33824,7 +52840,7 @@ export interface EditableTextProps {
    * [ScrollPhysics] provided by that behavior will take precedence after
    * [scrollPhysics].
    */
-  scrollPhysics?: ScrollPhysics;
+  scrollPhysics?: ScrollPhysicsValue;
   /**
    * The color to use when painting the autocorrection Rect.
    *
@@ -33837,7 +52853,7 @@ export interface EditableTextProps {
    *
    * Defaults to null, which disables autocorrection Rect painting.
    */
-  autocorrectionTextRectColor?: Color;
+  autocorrectionTextRectColor?: ColorValue;
   /**
    * Configuration of toolbar options.
    *
@@ -33848,7 +52864,7 @@ export interface EditableTextProps {
    *
    * @deprecated
    */
-  toolbarOptions?: ToolbarOptions;
+  toolbarOptions?: ToolbarOptionsValue;
   /**
    * A list of strings that helps the autofill service identify the type of this
    * text input.
@@ -34100,12 +53116,12 @@ export interface EditableTextProps {
    *
    * If this configuration is left null, then spell check is disabled by default.
    */
-  spellCheckConfiguration?: SpellCheckConfiguration;
+  spellCheckConfiguration?: SpellCheckConfigurationValue;
   /**
    * The configuration for the magnifier to use with selections in this text
    * field.
    */
-  magnifierConfiguration?: TextMagnifierConfiguration;
+  magnifierConfiguration?: TextMagnifierConfigurationValue;
   /**
    * Controls the undo state of the current editable text.
    *
@@ -34431,7 +53447,7 @@ export interface ElevatedButtonProps {
    *
    * Null by default.
    */
-  style?: ButtonStyle;
+  style?: ButtonStyleValue;
   focusNode?: FocusNode;
   autofocus?: boolean;
   /**
@@ -34512,7 +53528,7 @@ export interface ElevatedButtonThemeProps {
   /**
    * The configuration of this theme.
    */
-  data: ElevatedButtonThemeData;
+  data: ElevatedButtonThemeDataValue;
 }
 
 /**
@@ -34601,7 +53617,7 @@ export interface EndDrawerButtonProps {
    * )
    * ```
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * Customizes this button's appearance.
    *
@@ -34621,7 +53637,7 @@ export interface EndDrawerButtonProps {
    *
    * Null by default.
    */
-  style?: ButtonStyle;
+  style?: ButtonStyleValue;
   /**
    * The callback that is called when the button is tapped or otherwise activated.
    *
@@ -34942,7 +53958,7 @@ export interface ExpandIconProps {
    *
    * Defaults to a padding of 8 on all sides.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * The color of the icon.
    *
@@ -34952,7 +53968,7 @@ export interface ExpandIconProps {
    * Material Design specifications for [icons](https://material.io/design/iconography/system-icons.html#color)
    * and for [dark theme](https://material.io/design/color/dark-theme.html#ui-application)
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * The color of the icon when it is disabled,
    * i.e. if [onPressed] is null.
@@ -34963,7 +53979,7 @@ export interface ExpandIconProps {
    * Material Design specifications for [icons](https://material.io/design/iconography/system-icons.html#color)
    * and for [dark theme](https://material.io/design/color/dark-theme.html#ui-application)
    */
-  disabledColor?: Color;
+  disabledColor?: ColorValue;
   /**
    * The color of the icon when the icon is expanded.
    *
@@ -34973,7 +53989,7 @@ export interface ExpandIconProps {
    * Material Design specifications for [icons](https://material.io/design/iconography/system-icons.html#color)
    * and for [dark theme](https://material.io/design/color/dark-theme.html#ui-application)
    */
-  expandedColor?: Color;
+  expandedColor?: ColorValue;
   /**
    * Defines the splash color of the IconButton.
    *
@@ -34983,13 +53999,13 @@ export interface ExpandIconProps {
    *
    * Defaults to [ThemeData.splashColor].
    */
-  splashColor?: Color;
+  splashColor?: ColorValue;
   /**
    * Defines the highlight color of the IconButton.
    *
    * Defaults to [ThemeData.highlightColor].
    */
-  highlightColor?: Color;
+  highlightColor?: ColorValue;
 }
 
 /**
@@ -35192,7 +54208,7 @@ export interface ExpansibleProps {
    *
    * To disable the theme animation, use [AnimationStyle.noAnimation].
    */
-  animationStyle?: AnimationStyle;
+  animationStyle?: AnimationStyleValue;
   /**
    * The duration of the expansion animation.
    *
@@ -35202,7 +54218,7 @@ export interface ExpansibleProps {
    *
    * @deprecated
    */
-  duration?: Duration;
+  duration?: DurationValue;
   /**
    * The curve of the expansion animation.
    *
@@ -35212,7 +54228,7 @@ export interface ExpansibleProps {
    *
    * @deprecated
    */
-  curve?: Curve;
+  curve?: CurveValue;
   /**
    * The reverse curve of the expansion animation.
    *
@@ -35222,7 +54238,7 @@ export interface ExpansibleProps {
    *
    * @deprecated
    */
-  reverseCurve?: Curve;
+  reverseCurve?: CurveValue;
   /**
    * Whether the state of the body is maintained when the widget expands or
    * collapses.
@@ -35325,28 +54341,28 @@ export interface ExpansionPanelListProps {
   /**
    * The duration of the expansion animation.
    */
-  animationDuration?: Duration;
+  animationDuration?: DurationValue;
   /**
    * The padding that surrounds the panel header when expanded.
    *
    * By default, 16px of space is added to the header vertically (above and below)
    * during expansion.
    */
-  expandedHeaderPadding?: EdgeInsets;
+  expandedHeaderPadding?: EdgeInsetsValue;
   /**
    * Defines color for the divider when [ExpansionPanel.isExpanded] is false.
    *
    * If [dividerColor] is null, then [DividerThemeData.color] is used. If that
    * is null, then [ThemeData.dividerColor] is used.
    */
-  dividerColor?: Color;
+  dividerColor?: ColorValue;
   /**
    * Defines elevation for the [ExpansionPanel] while it's expanded.
    *
    * By default, the value of elevation is 2.
    */
   elevation?: number;
-  expandIconColor?: Color;
+  expandIconColor?: ColorValue;
   /**
    * Defines the [MaterialGap.size] of the [MaterialGap] which is placed
    * between the [ExpansionPanelList.children] when they're expanded.
@@ -35507,7 +54523,7 @@ export interface ExpansionTileProps {
    * * [ExpansionTileTheme.of], which returns the nearest [ExpansionTileTheme]'s
    *   [ExpansionTileThemeData].
    */
-  tilePadding?: EdgeInsetsGeometry;
+  tilePadding?: EdgeInsetsGeometryValue;
   /**
    * Specifies the alignment of each child within [children] when the tile is expanded.
    *
@@ -35549,7 +54565,7 @@ export interface ExpansionTileProps {
    * * [ExpansionTileTheme.of], which returns the nearest [ExpansionTileTheme]'s
    *   [ExpansionTileThemeData].
    */
-  expandedAlignment?: AlignmentGeometry;
+  expandedAlignment?: AlignmentGeometryValue;
   /**
    * Specifies padding for [children].
    *
@@ -35561,7 +54577,7 @@ export interface ExpansionTileProps {
    * * [ExpansionTileTheme.of], which returns the nearest [ExpansionTileTheme]'s
    *   [ExpansionTileThemeData].
    */
-  childrenPadding?: EdgeInsetsGeometry;
+  childrenPadding?: EdgeInsetsGeometryValue;
   /**
    * The color to display behind the sublist when expanded.
    *
@@ -35573,7 +54589,7 @@ export interface ExpansionTileProps {
    * * [ExpansionTileTheme.of], which returns the nearest [ExpansionTileTheme]'s
    *   [ExpansionTileThemeData].
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * When not null, defines the background color of tile when the sublist is collapsed.
    *
@@ -35585,7 +54601,7 @@ export interface ExpansionTileProps {
    * * [ExpansionTileTheme.of], which returns the nearest [ExpansionTileTheme]'s
    *   [ExpansionTileThemeData].
    */
-  collapsedBackgroundColor?: Color;
+  collapsedBackgroundColor?: ColorValue;
   /**
    * The color of the tile's titles when the sublist is expanded.
    *
@@ -35600,7 +54616,7 @@ export interface ExpansionTileProps {
    * * [ExpansionTileTheme.of], which returns the nearest [ExpansionTileTheme]'s
    *   [ExpansionTileThemeData].
    */
-  textColor?: Color;
+  textColor?: ColorValue;
   /**
    * The color of the tile's titles when the sublist is collapsed.
    *
@@ -35616,7 +54632,7 @@ export interface ExpansionTileProps {
    * * [ExpansionTileTheme.of], which returns the nearest [ExpansionTileTheme]'s
    *   [ExpansionTileThemeData].
    */
-  collapsedTextColor?: Color;
+  collapsedTextColor?: ColorValue;
   /**
    * The icon color of tile's expansion arrow icon when the sublist is expanded.
    *
@@ -35630,7 +54646,7 @@ export interface ExpansionTileProps {
    * * [ExpansionTileTheme.of], which returns the nearest [ExpansionTileTheme]'s
    *   [ExpansionTileThemeData].
    */
-  iconColor?: Color;
+  iconColor?: ColorValue;
   /**
    * The icon color of tile's expansion arrow icon when the sublist is collapsed.
    *
@@ -35645,7 +54661,7 @@ export interface ExpansionTileProps {
    * * [ExpansionTileTheme.of], which returns the nearest [ExpansionTileTheme]'s
    *   [ExpansionTileThemeData].
    */
-  collapsedIconColor?: Color;
+  collapsedIconColor?: ColorValue;
   /**
    * The tile's border shape when the sublist is expanded.
    *
@@ -35657,7 +54673,7 @@ export interface ExpansionTileProps {
    * * [ExpansionTileTheme.of], which returns the nearest [ExpansionTileTheme]'s
    *   [ExpansionTileThemeData].
    */
-  shape?: ShapeBorder;
+  shape?: ShapeBorderValue;
   /**
    * The tile's border shape when the sublist is collapsed.
    *
@@ -35669,7 +54685,7 @@ export interface ExpansionTileProps {
    * * [ExpansionTileTheme.of], which returns the nearest [ExpansionTileTheme]'s
    *   [ExpansionTileThemeData].
    */
-  collapsedShape?: ShapeBorder;
+  collapsedShape?: ShapeBorderValue;
   /**
    * If this is not null and a custom collapsed or expanded shape is provided,
    * the value of [clipBehavior] will be used to clip the expansion tile.
@@ -35718,11 +54734,11 @@ export interface ExpansionTileProps {
    *   effect in Material widgets.
    * * [ThemeData.splashColor], which provides a fallback color.
    */
-  splashColor?: Color;
+  splashColor?: ColorValue;
   /**
    * Defines how compact the expansion tile's layout will be.
    */
-  visualDensity?: VisualDensity;
+  visualDensity?: VisualDensityValue;
   minTileHeight?: number;
   enableFeedback?: boolean;
   /**
@@ -35760,7 +54776,7 @@ export interface ExpansionTileProps {
    *
    * ** See code in examples/api/lib/material/expansion_tile/expansion_tile.2.dart **
    */
-  expansionAnimationStyle?: AnimationStyle;
+  expansionAnimationStyle?: AnimationStyleValue;
   /**
    * Whether to add button:true to the semantics if onTap is provided.
    * This is a temporary flag to help changing the behavior of ListTile onTap semantics.
@@ -35848,7 +54864,7 @@ export interface ExpansionTileThemeProps {
    * Specifies color, alignment, and text style values for
    * descendant [ExpansionTile] widgets.
    */
-  data: ExpansionTileThemeData;
+  data: ExpansionTileThemeDataValue;
 }
 
 /**
@@ -35962,19 +54978,19 @@ export interface FadeInImageProps {
   /**
    * The duration of the fade-out animation for the [placeholder].
    */
-  fadeOutDuration?: Duration;
+  fadeOutDuration?: DurationValue;
   /**
    * The curve of the fade-out animation for the [placeholder].
    */
-  fadeOutCurve?: Curve;
+  fadeOutCurve?: CurveValue;
   /**
    * The duration of the fade-in animation for the [image].
    */
-  fadeInDuration?: Duration;
+  fadeInDuration?: DurationValue;
   /**
    * The curve of the fade-in animation for the [image].
    */
-  fadeInCurve?: Curve;
+  fadeInCurve?: CurveValue;
   /**
    * If non-null, this color is blended with each image pixel using [colorBlendMode].
    *
@@ -35984,7 +55000,7 @@ export interface FadeInImageProps {
    *
    *  * [placeholderColor], the color which applies to the [placeholder].
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * Used to combine [color] with this [image].
    *
@@ -36006,7 +55022,7 @@ export interface FadeInImageProps {
    *
    *  * [color], the color which applies to the [image].
    */
-  placeholderColor?: Color;
+  placeholderColor?: ColorValue;
   /**
    * Used to combine [placeholderColor] with the [placeholder] image.
    *
@@ -36082,7 +55098,7 @@ export interface FadeInImageProps {
    *  * [AlignmentDirectional], like [Alignment] for specifying alignments
    *    relative to text direction.
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
   /**
    * How to paint any portions of the layout bounds not covered by the image.
    */
@@ -36368,7 +55384,7 @@ export interface FilledButtonProps {
    *
    * Null by default.
    */
-  style?: ButtonStyle;
+  style?: ButtonStyleValue;
   focusNode?: FocusNode;
   autofocus?: boolean;
   /**
@@ -36457,7 +55473,7 @@ export interface FilledButtonThemeProps {
   /**
    * The configuration of this theme.
    */
-  data: FilledButtonThemeData;
+  data: FilledButtonThemeDataValue;
 }
 
 /**
@@ -36515,40 +55531,40 @@ export const FilledButtonTheme: FlutterComponent<FilledButtonThemeProps> =
 export interface FilterChipProps {
   avatar?: FlutterChild;
   label: FlutterChild;
-  labelStyle?: TextStyle;
-  labelPadding?: EdgeInsetsGeometry;
+  labelStyle?: TextStyleValue;
+  labelPadding?: EdgeInsetsGeometryValue;
   selected?: boolean;
   onSelected: ((value: boolean) => void) | null;
   deleteIcon?: FlutterChild;
   onDeleted?: () => void;
-  deleteIconColor?: Color;
+  deleteIconColor?: ColorValue;
   deleteButtonTooltipMessage?: string;
   pressElevation?: number;
-  disabledColor?: Color;
-  selectedColor?: Color;
+  disabledColor?: ColorValue;
+  selectedColor?: ColorValue;
   tooltip?: string;
-  side?: BorderSide;
-  shape?: OutlinedBorder;
+  side?: BorderSideValue;
+  shape?: OutlinedBorderValue;
   clipBehavior?: Clip;
   focusNode?: FocusNode;
   autofocus?: boolean;
-  color?: WidgetStateProperty;
-  backgroundColor?: Color;
-  padding?: EdgeInsetsGeometry;
-  visualDensity?: VisualDensity;
+  color?: WidgetStatePropertyValue;
+  backgroundColor?: ColorValue;
+  padding?: EdgeInsetsGeometryValue;
+  visualDensity?: VisualDensityValue;
   materialTapTargetSize?: MaterialTapTargetSize;
   elevation?: number;
-  shadowColor?: Color;
-  surfaceTintColor?: Color;
-  iconTheme?: IconThemeData;
-  selectedShadowColor?: Color;
+  shadowColor?: ColorValue;
+  surfaceTintColor?: ColorValue;
+  iconTheme?: IconThemeDataValue;
+  selectedShadowColor?: ColorValue;
   showCheckmark?: boolean;
-  checkmarkColor?: Color;
-  avatarBorder?: ShapeBorder;
-  avatarBoxConstraints?: BoxConstraints;
-  deleteIconBoxConstraints?: BoxConstraints;
+  checkmarkColor?: ColorValue;
+  avatarBorder?: ShapeBorderValue;
+  avatarBoxConstraints?: BoxConstraintsValue;
+  deleteIconBoxConstraints?: BoxConstraintsValue;
   chipAnimationStyle?: ChipAnimationStyle;
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
 }
 
 /**
@@ -36631,7 +55647,7 @@ export interface FittedBoxProps {
    *  * [AlignmentDirectional], like [Alignment] for specifying alignments
    *    relative to text direction.
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
   /**
    * Defaults to [Clip.none].
    */
@@ -37122,7 +56138,7 @@ export interface FlexibleSpaceBarProps {
    * [titlePadding] applied. If [titlePadding] is null, then defaults to start
    * padding of 72.0 pixels and bottom padding of 16.0 pixels.
    */
-  titlePadding?: EdgeInsetsGeometry;
+  titlePadding?: EdgeInsetsGeometryValue;
   /**
    * Collapse effect while scrolling.
    *
@@ -37319,7 +56335,7 @@ export interface FloatingActionButtonProps {
    * is used. If [ThemeData.useMaterial3] is set to false, then the
    * [ColorScheme.onSecondary] color of [ThemeData.colorScheme] is used.
    */
-  foregroundColor?: Color;
+  foregroundColor?: ColorValue;
   /**
    * The button's background color.
    *
@@ -37329,14 +56345,14 @@ export interface FloatingActionButtonProps {
    * is used. If [ThemeData.useMaterial3] is set to false, then the
    * [ColorScheme.secondary] color of [ThemeData.colorScheme] is used.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * The color to use for filling the button when the button has input focus.
    *
    * In Material3, defaults to [ColorScheme.onPrimaryContainer] with opacity 0.1.
    * In Material 2, it defaults to [ThemeData.focusColor] for the current theme.
    */
-  focusColor?: Color;
+  focusColor?: ColorValue;
   /**
    * The color to use for filling the button when the button has a pointer
    * hovering over it.
@@ -37344,7 +56360,7 @@ export interface FloatingActionButtonProps {
    * Defaults to [ThemeData.hoverColor] for the current theme in Material 2. In
    * Material 3, defaults to [ColorScheme.onPrimaryContainer] with opacity 0.08.
    */
-  hoverColor?: Color;
+  hoverColor?: ColorValue;
   /**
    * The splash color for this [FloatingActionButton]'s [InkWell].
    *
@@ -37352,7 +56368,7 @@ export interface FloatingActionButtonProps {
    * null, [ThemeData.splashColor] is used in Material 2; [ColorScheme.onPrimaryContainer]
    * with opacity 0.1 is used in Material 3.
    */
-  splashColor?: Color;
+  splashColor?: ColorValue;
   /**
    * The tag to apply to the button's [Hero] widget.
    *
@@ -37454,7 +56470,7 @@ export interface FloatingActionButtonProps {
    * If this property is null, [FloatingActionButtonThemeData.mouseCursor] is used.
    * If that is null, [WidgetStateMouseCursor.adaptiveClickable] will be used.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * Controls the size of this button.
    *
@@ -37473,7 +56489,7 @@ export interface FloatingActionButtonProps {
    * button has an elevation, then its drop shadow is defined by this
    * shape as well.
    */
-  shape?: ShapeBorder;
+  shape?: ShapeBorderValue;
   /**
    * Defaults to [Clip.none].
    */
@@ -37584,7 +56600,7 @@ export interface FloatingActionButtonThemeProps {
   /**
    * The properties for descendant [FloatingActionButton] widgets.
    */
-  data: FloatingActionButtonThemeData;
+  data: FloatingActionButtonThemeDataValue;
 }
 
 /**
@@ -37823,7 +56839,7 @@ export interface FlutterLogoProps {
    * If possible, the default (a medium grey) should be used against a white
    * background.
    */
-  textColor?: Color;
+  textColor?: ColorValue;
   /**
    * Whether and where to draw the "Flutter" text. By default, only the logo
    * itself is drawn.
@@ -37833,11 +56849,11 @@ export interface FlutterLogoProps {
    * The length of time for the animation if the [style] or [textColor]
    * properties are changed.
    */
-  duration?: Duration;
+  duration?: DurationValue;
   /**
    * The curve for the logo animation if the [style] or [textColor] change.
    */
-  curve?: Curve;
+  curve?: CurveValue;
 }
 
 /**
@@ -38548,7 +57564,7 @@ export interface FocusableActionDetectorProps {
    * The [mouseCursor] defaults to [MouseCursor.defer], deferring the choice of
    * cursor to the next region behind it in hit-test order.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * Whether to include semantics from [Focus].
    *
@@ -38897,7 +57913,7 @@ export interface FractionalTranslationProps {
    * For example, an [Offset] with a `dx` of 0.25 will result in a horizontal
    * translation of one quarter the width of the child.
    */
-  translation: Offset;
+  translation: OffsetValue;
   /**
    * Whether to apply the translation when performing hit tests.
    */
@@ -38972,7 +57988,7 @@ export interface FractionallySizedBoxProps {
    *  * [AlignmentDirectional], like [Alignment] for specifying alignments
    *    relative to text direction.
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
   /**
    * If non-null, the fraction of the incoming width given to the child.
    *
@@ -40079,7 +59095,7 @@ export interface GestureDetectorProps {
    */
   dragStartBehavior?: DragStartBehavior;
   trackpadScrollCausesScale?: boolean;
-  trackpadScrollToScaleFactor?: Offset;
+  trackpadScrollToScaleFactor?: OffsetValue;
   /**
    * The kind of devices that are allowed to be recognized.
    *
@@ -40286,7 +59302,7 @@ export interface GlowingOverscrollIndicatorProps {
   /**
    * The color of the glow. The alpha channel is ignored.
    */
-  color: Color;
+  color: ColorValue;
   /**
    * A check that specifies whether a [ScrollNotification] should be
    * handled by this widget.
@@ -40373,7 +59389,7 @@ export interface GridPaperProps {
    *
    * Defaults to a light blue commonly seen on traditional grid paper.
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * The distance between the primary lines in the grid, in logical pixels.
    *
@@ -40488,7 +59504,7 @@ export interface GridTileBarProps {
    *
    * Defaults to transparent.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * A widget to display before the title.
    *
@@ -40880,7 +59896,7 @@ export interface GridViewProps {
    * [ScrollPhysics] provided by that behavior will take precedence after
    * [physics].
    */
-  physics?: ScrollPhysics;
+  physics?: ScrollPhysicsValue;
   /**
    * Whether the extent of the scroll view in the [scrollDirection] should be
    * determined by the contents being viewed.
@@ -40901,7 +59917,7 @@ export interface GridViewProps {
   /**
    * The amount of space by which to inset the children.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * A delegate that controls the layout of the children within the [GridView].
    *
@@ -41382,13 +60398,13 @@ export interface HeroProps {
    *
    * Defaults to [Curves.fastOutSlowIn].
    */
-  curve?: Curve;
+  curve?: CurveValue;
   /**
    * The curve to use in the reverse direction.
    *
    * If this property is null, [Hero.curve].flipped is used.
    */
-  reverseCurve?: Curve;
+  reverseCurve?: CurveValue;
 }
 
 /**
@@ -42181,7 +61197,7 @@ export interface IconProps {
    * The icon can be null, in which case the widget will render as an empty
    * space of the specified [size].
    */
-  icon: IconData | null;
+  icon: IconDataValue | null;
   /**
    * The size of the icon in logical pixels.
    *
@@ -42291,7 +61307,7 @@ export interface IconProps {
    * )
    * ```
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * A list of [Shadow]s that will be painted underneath the icon.
    *
@@ -42350,7 +61366,7 @@ export interface IconProps {
   /**
    * The typeface thickness to use when painting the text (e.g., bold).
    */
-  fontWeight?: FontWeight;
+  fontWeight?: FontWeightValue;
 }
 
 /**
@@ -42568,7 +61584,7 @@ export interface IconButtonProps {
    *  * [ThemeData.visualDensity], which specifies the [visualDensity] for all
    *    widgets within a [Theme].
    */
-  visualDensity?: VisualDensity;
+  visualDensity?: VisualDensityValue;
   /**
    * The padding around the button's icon. The entire padded icon will react
    * to input gestures.
@@ -42581,7 +61597,7 @@ export interface IconButtonProps {
    *
    * This property can be null. If null, it defaults to 8.0 padding on all sides.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * Defines how the icon is positioned within the IconButton.
    *
@@ -42594,7 +61610,7 @@ export interface IconButtonProps {
    *  * [AlignmentDirectional], like [Alignment] for specifying alignments
    *    relative to text direction.
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
   /**
    * The splash radius.
    *
@@ -42619,7 +61635,7 @@ export interface IconButtonProps {
    * )
    * ```
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * The color for the button when it has the input focus.
    *
@@ -42640,7 +61656,7 @@ export interface IconButtonProps {
    *
    * Defaults to [ThemeData.focusColor] of the ambient theme.
    */
-  focusColor?: Color;
+  focusColor?: ColorValue;
   /**
    * The color for the button when a pointer is hovering over it.
    *
@@ -42661,7 +61677,7 @@ export interface IconButtonProps {
    *
    * Defaults to [ThemeData.hoverColor] of the ambient theme.
    */
-  hoverColor?: Color;
+  hoverColor?: ColorValue;
   /**
    * The secondary color of the button when the button is in the down (pressed)
    * state. The highlight color is represented as a solid color that is overlaid over the
@@ -42685,7 +61701,7 @@ export interface IconButtonProps {
    *
    * Defaults to the Theme's highlight color, [ThemeData.highlightColor].
    */
-  highlightColor?: Color;
+  highlightColor?: ColorValue;
   /**
    * The primary color of the button when the button is in the down (pressed) state.
    * The splash is represented as a circular overlay that appears above the
@@ -42700,14 +61716,14 @@ export interface IconButtonProps {
    *
    * Defaults to the Theme's splash color, [ThemeData.splashColor].
    */
-  splashColor?: Color;
+  splashColor?: ColorValue;
   /**
    * The color to use for the icon inside the button, if the icon is disabled.
    * Defaults to the [ThemeData.disabledColor] of the current [Theme].
    *
    * The icon is disabled if [onPressed] is null.
    */
-  disabledColor?: Color;
+  disabledColor?: ColorValue;
   /**
    * The callback that is called when the button is tapped or otherwise activated.
    *
@@ -42728,7 +61744,7 @@ export interface IconButtonProps {
    * If set to null, will default to [SystemMouseCursors.basic] if [onPressed]
    * is null, otherwise [WidgetStateMouseCursor.adaptiveClickable].
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   focusNode?: FocusNode;
   autofocus?: boolean;
   /**
@@ -42769,7 +61785,7 @@ export interface IconButtonProps {
    * The visual density uses the [visualDensity] parameter if specified,
    * and `Theme.of(context).visualDensity` otherwise.
    */
-  constraints?: BoxConstraints;
+  constraints?: BoxConstraintsValue;
   /**
    * Customizes this button's appearance.
    *
@@ -42789,7 +61805,7 @@ export interface IconButtonProps {
    *
    * Null by default.
    */
-  style?: ButtonStyle;
+  style?: ButtonStyleValue;
   /**
    * The optional selection state of the icon button.
    *
@@ -42984,7 +62000,7 @@ export interface IconButtonThemeProps {
   /**
    * The configuration of this theme.
    */
-  data: IconButtonThemeData;
+  data: IconButtonThemeDataValue;
 }
 
 /**
@@ -43018,7 +62034,7 @@ export interface IconThemeProps {
   /**
    * The set of properties to use for icons in this subtree.
    */
-  data: IconThemeData;
+  data: IconThemeDataValue;
 }
 
 /**
@@ -43454,7 +62470,7 @@ export interface ImageProps {
   /**
    * If non-null, this color is blended with each image pixel using [colorBlendMode].
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * If non-null, the value from the [Animation] is multiplied with the opacity
    * of each image pixel before painting onto the canvas.
@@ -43515,7 +62531,7 @@ export interface ImageProps {
    *  * [AlignmentDirectional], like [Alignment] for specifying alignments
    *    relative to text direction.
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
   /**
    * How to paint any portions of the layout bounds not covered by the image.
    */
@@ -43529,7 +62545,7 @@ export interface ImageProps {
    * only horizontally and the region of the image to the left and right of
    * the center slice will be stretched only vertically.
    */
-  centerSlice?: Rect;
+  centerSlice?: RectValue;
   /**
    * Whether to paint the image in the direction of the [TextDirection].
    *
@@ -43813,7 +62829,7 @@ export interface ImageIconProps {
    * The image will be additionally adjusted by the opacity of the current
    * [IconTheme], if any.
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * Semantic label for the icon.
    *
@@ -43969,7 +62985,7 @@ export interface IndexedStackProps {
    *
    * See [Stack.alignment] for more information.
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
   /**
    * The text direction with which to resolve [alignment].
    *
@@ -44172,8 +63188,8 @@ export interface InkProps {
    * This padding is in addition to any padding inherent in the [decoration];
    * see [Decoration.padding].
    */
-  padding?: EdgeInsetsGeometry;
-  color?: Color;
+  padding?: EdgeInsetsGeometryValue;
+  color?: ColorValue;
   /**
    * The decoration to paint on the nearest ancestor [Material] widget.
    *
@@ -44518,7 +63534,7 @@ export interface InkResponseProps {
    *
    * If this property is null, [WidgetStateMouseCursor.adaptiveClickable] will be used.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * Whether this ink response should be clipped its bounds.
    *
@@ -44577,13 +63593,13 @@ export interface InkResponseProps {
    *
    * If this is null, it is interpreted as [BorderRadius.zero].
    */
-  borderRadius?: BorderRadius;
+  borderRadius?: BorderRadiusValue;
   /**
    * The custom clip border.
    *
    * If this is null, the ink response will not clip its content.
    */
-  customBorder?: ShapeBorder;
+  customBorder?: ShapeBorderValue;
   /**
    * The color of the ink response when the parent widget is focused. If this
    * property is null then the focus color of the theme,
@@ -44597,7 +63613,7 @@ export interface InkResponseProps {
    *  * [splashColor], the color of the splash.
    *  * [splashFactory], which defines the appearance of the splash.
    */
-  focusColor?: Color;
+  focusColor?: ColorValue;
   /**
    * The color of the ink response when a pointer is hovering over it. If this
    * property is null then the hover color of the theme,
@@ -44612,7 +63628,7 @@ export interface InkResponseProps {
    *  * [splashColor], the color of the splash.
    *  * [splashFactory], which defines the appearance of the splash.
    */
-  hoverColor?: Color;
+  hoverColor?: ColorValue;
   /**
    * The highlight color of the ink response when pressed. If this property is
    * null then the highlight color of the theme, [ThemeData.highlightColor],
@@ -44627,7 +63643,7 @@ export interface InkResponseProps {
    *  * [splashColor], the color of the splash.
    *  * [splashFactory], which defines the appearance of the splash.
    */
-  highlightColor?: Color;
+  highlightColor?: ColorValue;
   /**
    * Defines the ink response focus, hover, and splash colors.
    *
@@ -44654,7 +63670,7 @@ export interface InkResponseProps {
    *    match a component's state:
    *    <https://material.io/design/interaction/states.html#anatomy>.
    */
-  overlayColor?: WidgetStateProperty;
+  overlayColor?: WidgetStatePropertyValue;
   /**
    * The splash color of the ink response. If this property is null then the
    * splash color of the theme, [ThemeData.splashColor], will be used.
@@ -44665,7 +63681,7 @@ export interface InkResponseProps {
    *  * [radius], the (maximum) size of the ink splash.
    *  * [highlightColor], the color of the highlight.
    */
-  splashColor?: Color;
+  splashColor?: ColorValue;
   /**
    * Defines the appearance of the splash.
    *
@@ -44680,7 +63696,7 @@ export interface InkResponseProps {
    *  * [InkRipple.splashFactory], which defines a splash that spreads out
    *    more aggressively than the default.
    */
-  splashFactory?: InteractiveInkFeatureFactory;
+  splashFactory?: InteractiveInkFeatureFactoryValue;
   /**
    * Whether detected gestures should provide acoustic and/or haptic feedback.
    *
@@ -44729,7 +63745,7 @@ export interface InkResponseProps {
    *
    * The default is 50ms.
    */
-  hoverDuration?: Duration;
+  hoverDuration?: DurationValue;
 }
 
 /**
@@ -45014,7 +64030,7 @@ export interface InkWellProps {
    *
    * If this property is null, [WidgetStateMouseCursor.adaptiveClickable] will be used.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * The color of the ink response when the parent widget is focused. If this
    * property is null then the focus color of the theme,
@@ -45028,7 +64044,7 @@ export interface InkWellProps {
    *  * [splashColor], the color of the splash.
    *  * [splashFactory], which defines the appearance of the splash.
    */
-  focusColor?: Color;
+  focusColor?: ColorValue;
   /**
    * The color of the ink response when a pointer is hovering over it. If this
    * property is null then the hover color of the theme,
@@ -45043,7 +64059,7 @@ export interface InkWellProps {
    *  * [splashColor], the color of the splash.
    *  * [splashFactory], which defines the appearance of the splash.
    */
-  hoverColor?: Color;
+  hoverColor?: ColorValue;
   /**
    * The highlight color of the ink response when pressed. If this property is
    * null then the highlight color of the theme, [ThemeData.highlightColor],
@@ -45058,7 +64074,7 @@ export interface InkWellProps {
    *  * [splashColor], the color of the splash.
    *  * [splashFactory], which defines the appearance of the splash.
    */
-  highlightColor?: Color;
+  highlightColor?: ColorValue;
   /**
    * Defines the ink response focus, hover, and splash colors.
    *
@@ -45085,7 +64101,7 @@ export interface InkWellProps {
    *    match a component's state:
    *    <https://material.io/design/interaction/states.html#anatomy>.
    */
-  overlayColor?: WidgetStateProperty;
+  overlayColor?: WidgetStatePropertyValue;
   /**
    * The splash color of the ink response. If this property is null then the
    * splash color of the theme, [ThemeData.splashColor], will be used.
@@ -45096,7 +64112,7 @@ export interface InkWellProps {
    *  * [radius], the (maximum) size of the ink splash.
    *  * [highlightColor], the color of the highlight.
    */
-  splashColor?: Color;
+  splashColor?: ColorValue;
   /**
    * Defines the appearance of the splash.
    *
@@ -45111,7 +64127,7 @@ export interface InkWellProps {
    *  * [InkRipple.splashFactory], which defines a splash that spreads out
    *    more aggressively than the default.
    */
-  splashFactory?: InteractiveInkFeatureFactory;
+  splashFactory?: InteractiveInkFeatureFactoryValue;
   /**
    * The radius of the ink splash.
    *
@@ -45131,13 +64147,13 @@ export interface InkWellProps {
    *
    * If this is null, it is interpreted as [BorderRadius.zero].
    */
-  borderRadius?: BorderRadius;
+  borderRadius?: BorderRadiusValue;
   /**
    * The custom clip border.
    *
    * If this is null, the ink response will not clip its content.
    */
-  customBorder?: ShapeBorder;
+  customBorder?: ShapeBorderValue;
   /**
    * Whether detected gestures should provide acoustic and/or haptic feedback.
    *
@@ -45186,7 +64202,7 @@ export interface InkWellProps {
    *
    * The default is 50ms.
    */
-  hoverDuration?: Duration;
+  hoverDuration?: DurationValue;
 }
 
 /**
@@ -45325,42 +64341,42 @@ export const InkWell: FlutterComponent<InkWellProps> =
 export interface InputChipProps {
   avatar?: FlutterChild;
   label: FlutterChild;
-  labelStyle?: TextStyle;
-  labelPadding?: EdgeInsetsGeometry;
+  labelStyle?: TextStyleValue;
+  labelPadding?: EdgeInsetsGeometryValue;
   selected?: boolean;
   isEnabled?: boolean;
   onSelected?: (value: boolean) => void;
   deleteIcon?: FlutterChild;
   onDeleted?: () => void;
-  deleteIconColor?: Color;
+  deleteIconColor?: ColorValue;
   deleteButtonTooltipMessage?: string;
   onClick?: () => void;
   pressElevation?: number;
-  disabledColor?: Color;
-  selectedColor?: Color;
+  disabledColor?: ColorValue;
+  selectedColor?: ColorValue;
   tooltip?: string;
-  side?: BorderSide;
-  shape?: OutlinedBorder;
+  side?: BorderSideValue;
+  shape?: OutlinedBorderValue;
   clipBehavior?: Clip;
   focusNode?: FocusNode;
   autofocus?: boolean;
-  color?: WidgetStateProperty;
-  backgroundColor?: Color;
-  padding?: EdgeInsetsGeometry;
-  visualDensity?: VisualDensity;
+  color?: WidgetStatePropertyValue;
+  backgroundColor?: ColorValue;
+  padding?: EdgeInsetsGeometryValue;
+  visualDensity?: VisualDensityValue;
   materialTapTargetSize?: MaterialTapTargetSize;
   elevation?: number;
-  shadowColor?: Color;
-  surfaceTintColor?: Color;
-  iconTheme?: IconThemeData;
-  selectedShadowColor?: Color;
+  shadowColor?: ColorValue;
+  surfaceTintColor?: ColorValue;
+  iconTheme?: IconThemeDataValue;
+  selectedShadowColor?: ColorValue;
   showCheckmark?: boolean;
-  checkmarkColor?: Color;
-  avatarBorder?: ShapeBorder;
-  avatarBoxConstraints?: BoxConstraints;
-  deleteIconBoxConstraints?: BoxConstraints;
+  checkmarkColor?: ColorValue;
+  avatarBorder?: ShapeBorderValue;
+  avatarBoxConstraints?: BoxConstraintsValue;
+  deleteIconBoxConstraints?: BoxConstraintsValue;
   chipAnimationStyle?: ChipAnimationStyle;
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
 }
 
 /**
@@ -45497,7 +64513,7 @@ export interface InputDatePickerFormFieldProps {
    *
    * If this is null, it will default to [TextInputType.datetime]
    */
-  keyboardType?: TextInputType;
+  keyboardType?: TextInputTypeValue;
   autofocus?: boolean;
   /**
    * Determines if an empty date would show [errorFormatText] or not.
@@ -45557,44 +64573,44 @@ export interface InputDecorationThemeProps {
    * `children` property, and then provide the children to that widget.
    */
   children?: FlutterChild;
-  labelStyle?: TextStyle;
-  floatingLabelStyle?: TextStyle;
-  helperStyle?: TextStyle;
+  labelStyle?: TextStyleValue;
+  floatingLabelStyle?: TextStyleValue;
+  helperStyle?: TextStyleValue;
   helperMaxLines?: number;
-  hintStyle?: TextStyle;
-  hintFadeDuration?: Duration;
+  hintStyle?: TextStyleValue;
+  hintFadeDuration?: DurationValue;
   hintMaxLines?: number;
-  errorStyle?: TextStyle;
+  errorStyle?: TextStyleValue;
   errorMaxLines?: number;
   floatingLabelBehavior?: FloatingLabelBehavior;
-  floatingLabelAlignment?: FloatingLabelAlignment;
+  floatingLabelAlignment?: FloatingLabelAlignmentValue;
   isDense?: boolean;
-  contentPadding?: EdgeInsetsGeometry;
+  contentPadding?: EdgeInsetsGeometryValue;
   isCollapsed?: boolean;
-  iconColor?: Color;
-  prefixStyle?: TextStyle;
-  prefixIconColor?: Color;
-  prefixIconConstraints?: BoxConstraints;
-  suffixStyle?: TextStyle;
-  suffixIconColor?: Color;
-  suffixIconConstraints?: BoxConstraints;
-  counterStyle?: TextStyle;
+  iconColor?: ColorValue;
+  prefixStyle?: TextStyleValue;
+  prefixIconColor?: ColorValue;
+  prefixIconConstraints?: BoxConstraintsValue;
+  suffixStyle?: TextStyleValue;
+  suffixIconColor?: ColorValue;
+  suffixIconConstraints?: BoxConstraintsValue;
+  counterStyle?: TextStyleValue;
   filled?: boolean;
-  fillColor?: Color;
-  activeIndicatorBorder?: BorderSide;
-  outlineBorder?: BorderSide;
-  focusColor?: Color;
-  hoverColor?: Color;
-  errorBorder?: InputBorder;
-  focusedBorder?: InputBorder;
-  focusedErrorBorder?: InputBorder;
-  disabledBorder?: InputBorder;
-  enabledBorder?: InputBorder;
-  border?: InputBorder;
+  fillColor?: ColorValue;
+  activeIndicatorBorder?: BorderSideValue;
+  outlineBorder?: BorderSideValue;
+  focusColor?: ColorValue;
+  hoverColor?: ColorValue;
+  errorBorder?: InputBorderValue;
+  focusedBorder?: InputBorderValue;
+  focusedErrorBorder?: InputBorderValue;
+  disabledBorder?: InputBorderValue;
+  enabledBorder?: InputBorderValue;
+  border?: InputBorderValue;
   alignLabelWithHint?: boolean;
-  constraints?: BoxConstraints;
-  visualDensity?: VisualDensity;
-  data?: InputDecorationThemeData;
+  constraints?: BoxConstraintsValue;
+  visualDensity?: VisualDensityValue;
+  data?: InputDecorationThemeDataValue;
 }
 
 /**
@@ -45651,7 +64667,7 @@ export interface InputDecoratorProps {
    * Null [InputDecoration] properties are initialized with the corresponding
    * values from the ambient [InputDecorationThemeData].
    */
-  decoration: InputDecoration;
+  decoration: InputDecorationValue;
   /**
    * The style on which to base the label, hint, counter, and error styles
    * if the [decoration] does not provide explicit styles.
@@ -45662,7 +64678,7 @@ export interface InputDecoratorProps {
    * The [TextStyle.textBaseline] of the [baseStyle] is used to determine
    * the baseline used for text alignment.
    */
-  baseStyle?: TextStyle;
+  baseStyle?: TextStyleValue;
   /**
    * How the text in the decoration should be aligned horizontally.
    */
@@ -45679,7 +64695,7 @@ export interface InputDecoratorProps {
    * available, then the prefix and suffix will be allowed to overflow first
    * before the text scrolls.
    */
-  textAlignVertical?: TextAlignVertical;
+  textAlignVertical?: TextAlignVerticalValue;
   /**
    * Whether the input field has focus.
    *
@@ -45830,7 +64846,7 @@ export interface InteractiveViewerProps {
    * Defaults to [EdgeInsets.zero], which results in boundaries that are the
    * exact same size and position as the [child].
    */
-  boundaryMargin?: EdgeInsets;
+  boundaryMargin?: EdgeInsetsValue;
   /**
    * Whether the normal size constraints at this point in the widget tree are
    * applied to the child.
@@ -46009,7 +65025,7 @@ export interface InteractiveViewerProps {
   /**
    * The alignment of the child's origin, relative to the size of the box.
    */
-  alignment?: Alignment;
+  alignment?: AlignmentValue;
   trackpadScrollCausesScale?: boolean;
 }
 
@@ -46717,7 +65733,7 @@ export interface LinearProgressIndicatorProps {
    * It is up to the subclass to implement this in whatever way makes sense
    * for the given use case. See the subclass documentation for details.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * The progress indicator's color.
    *
@@ -46727,7 +65743,7 @@ export interface LinearProgressIndicatorProps {
    * is null then the current theme's [ColorScheme.primary] will
    * be used by default.
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * The progress indicator's color as an animated value.
    *
@@ -46774,7 +65790,7 @@ export interface LinearProgressIndicatorProps {
    * then defaults to [BorderRadius.zero], which produces a rectangular shape
    * with a rectangular indicator.
    */
-  borderRadius?: BorderRadiusGeometry;
+  borderRadius?: BorderRadiusGeometryValue;
   /**
    * The color of the stop indicator.
    *
@@ -46784,7 +65800,7 @@ export interface LinearProgressIndicatorProps {
    * If null, then the [ProgressIndicatorThemeData.stopIndicatorColor] will be used.
    * If that is null, then the [ColorScheme.primary] will be used.
    */
-  stopIndicatorColor?: Color;
+  stopIndicatorColor?: ColorValue;
   /**
    * The radius of the stop indicator.
    *
@@ -47311,7 +66327,7 @@ export interface ListTileProps {
    *  * [ThemeData.visualDensity], which specifies the [visualDensity] for all
    *    widgets within a [Theme].
    */
-  visualDensity?: VisualDensity;
+  visualDensity?: VisualDensityValue;
   /**
    * Defines the tile's [InkWell.customBorder] and [Ink.decoration] shape.
    *
@@ -47323,7 +66339,7 @@ export interface ListTileProps {
    * * [ListTileTheme.of], which returns the nearest [ListTileTheme]'s
    *   [ListTileThemeData].
    */
-  shape?: ShapeBorder;
+  shape?: ShapeBorderValue;
   /**
    * Defines the font used for the [title].
    *
@@ -47347,7 +66363,7 @@ export interface ListTileProps {
    * * [ListTileTheme.of], which returns the nearest [ListTileTheme]'s
    *   [ListTileThemeData].
    */
-  selectedColor?: Color;
+  selectedColor?: ColorValue;
   /**
    * Defines the default color for [leading] and [trailing] icons.
    *
@@ -47367,7 +66383,7 @@ export interface ListTileProps {
    * * [ListTileTheme.of], which returns the nearest [ListTileTheme]'s
    *   [ListTileThemeData].
    */
-  iconColor?: Color;
+  iconColor?: ColorValue;
   /**
    * Defines the text color for the [title], [subtitle], [leading], and [trailing].
    *
@@ -47387,7 +66403,7 @@ export interface ListTileProps {
    * * [ListTileTheme.of], which returns the nearest [ListTileTheme]'s
    *   [ListTileThemeData].
    */
-  textColor?: Color;
+  textColor?: ColorValue;
   /**
    * The text style for ListTile's [title].
    *
@@ -47397,7 +66413,7 @@ export interface ListTileProps {
    * [ListTileStyle.list], [TextTheme.titleMedium] will be used and if ListTile style
    * is [ListTileStyle.drawer], [TextTheme.bodyLarge] will be used.
    */
-  titleTextStyle?: TextStyle;
+  titleTextStyle?: TextStyleValue;
   /**
    * The text style for ListTile's [subtitle].
    *
@@ -47406,7 +66422,7 @@ export interface ListTileProps {
    * with [ColorScheme.onSurfaceVariant] will be used, otherwise [TextTheme.bodyMedium]
    * with [TextTheme.bodySmall] color will be used.
    */
-  subtitleTextStyle?: TextStyle;
+  subtitleTextStyle?: TextStyleValue;
   /**
    * The text style for ListTile's [leading] and [trailing].
    *
@@ -47415,7 +66431,7 @@ export interface ListTileProps {
    * with [ColorScheme.onSurfaceVariant] will be used, otherwise [TextTheme.bodyMedium]
    * will be used.
    */
-  leadingAndTrailingTextStyle?: TextStyle;
+  leadingAndTrailingTextStyle?: TextStyleValue;
   /**
    * The tile's internal padding.
    *
@@ -47426,7 +66442,7 @@ export interface ListTileProps {
    * `EdgeInsetsDirectional.only(start: 16.0, end: 24.0)` will be used. Otherwise, a default value
    * of `EdgeInsets.symmetric(horizontal: 16.0)` will be used.
    */
-  contentPadding?: EdgeInsetsGeometry;
+  contentPadding?: EdgeInsetsGeometryValue;
   /**
    * Whether this list tile is interactive.
    *
@@ -47461,7 +66477,7 @@ export interface ListTileProps {
    * If null, then the value of [ListTileThemeData.mouseCursor] is used. If
    * that is also null, then [WidgetStateMouseCursor.clickable] is used.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * If this tile is also [enabled] then icons and text are rendered with the same color.
    *
@@ -47478,15 +66494,15 @@ export interface ListTileProps {
   /**
    * The color for the tile's [Material] when it has the input focus.
    */
-  focusColor?: Color;
+  focusColor?: ColorValue;
   /**
    * The color for the tile's [Material] when a pointer is hovering over it.
    */
-  hoverColor?: Color;
+  hoverColor?: ColorValue;
   /**
    * The color of splash for the tile's [Material].
    */
-  splashColor?: Color;
+  splashColor?: ColorValue;
   focusNode?: FocusNode;
   autofocus?: boolean;
   /**
@@ -47497,14 +66513,14 @@ export interface ListTileProps {
    * When that is also null, the [ListTileTheme.selectedTileColor] is used, otherwise
    * [Colors.transparent] is used.
    */
-  tileColor?: Color;
+  tileColor?: ColorValue;
   /**
    * Defines the background color of `ListTile` when [selected] is true.
    *
    * When the value if null, the [selectedTileColor] is set to [ListTileTheme.selectedTileColor]
    * if it's not null and to [Colors.transparent] if it's null.
    */
-  selectedTileColor?: Color;
+  selectedTileColor?: ColorValue;
   /**
    * Whether detected gestures should provide acoustic and/or haptic feedback.
    *
@@ -47789,18 +66805,18 @@ export interface ListTileThemeProps {
    * `children` property, and then provide the children to that widget.
    */
   children: FlutterChild;
-  data?: ListTileThemeData;
+  data?: ListTileThemeDataValue;
   dense?: boolean;
-  shape?: ShapeBorder;
+  shape?: ShapeBorderValue;
   style?: ListTileStyle;
-  selectedColor?: Color;
-  iconColor?: Color;
-  textColor?: Color;
-  contentPadding?: EdgeInsetsGeometry;
-  tileColor?: Color;
-  selectedTileColor?: Color;
+  selectedColor?: ColorValue;
+  iconColor?: ColorValue;
+  textColor?: ColorValue;
+  contentPadding?: EdgeInsetsGeometryValue;
+  tileColor?: ColorValue;
+  selectedTileColor?: ColorValue;
   enableFeedback?: boolean;
-  mouseCursor?: WidgetStateProperty;
+  mouseCursor?: WidgetStatePropertyValue;
   horizontalTitleGap?: number;
   minVerticalPadding?: number;
   minLeadingWidth?: number;
@@ -48270,7 +67286,7 @@ export interface ListViewProps {
    * [ScrollPhysics] provided by that behavior will take precedence after
    * [physics].
    */
-  physics?: ScrollPhysics;
+  physics?: ScrollPhysicsValue;
   /**
    * Whether the extent of the scroll view in the [scrollDirection] should be
    * determined by the contents being viewed.
@@ -48291,7 +67307,7 @@ export interface ListViewProps {
   /**
    * The amount of space by which to inset the children.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * If non-null, forces the children to have the given extent in the scroll
    * direction.
@@ -48791,7 +67807,7 @@ export interface ListWheelScrollViewProps {
    *
    * Defaults to matching platform conventions.
    */
-  physics?: ScrollPhysics;
+  physics?: ScrollPhysicsValue;
   diameterRatio?: number;
   perspective?: number;
   offAxisFraction?: number;
@@ -49476,7 +68492,7 @@ export interface LongPressDraggableProps {
    * purposes of finding a drag target. It is especially useful if the feedback
    * is transformed compared to the child.
    */
-  feedbackOffset?: Offset;
+  feedbackOffset?: OffsetValue;
   /**
    * A strategy that is used by this draggable to get the anchor offset when it
    * is dragged.
@@ -49585,7 +68601,7 @@ export interface LongPressDraggableProps {
    *
    * Defaults to [kLongPressTimeout].
    */
-  delay?: Duration;
+  delay?: DurationValue;
   allowedButtonsFilter?: (buttons: number) => boolean;
   /**
    * How to behave during hit test.
@@ -49767,13 +68783,13 @@ export interface MagnifierProps {
    * This is useful for instances where the magnifier is not pointing to
    * something directly below it.
    */
-  additionalFocalPointOffset?: Offset;
+  additionalFocalPointOffset?: OffsetValue;
   /**
    * The border radius for this magnifier.
    *
    * The magnifier's shape is a [RoundedRectangleBorder] with this radius.
    */
-  borderRadius?: BorderRadius;
+  borderRadius?: BorderRadiusValue;
   /**
    * The color to tint the image in this [Magnifier].
    *
@@ -49781,7 +68797,7 @@ export interface MagnifierProps {
    * magnifier, in order to better distinguish the contents of the lens from
    * the background.
    */
-  filmColor?: Color;
+  filmColor?: ColorValue;
   /**
    * A list of shadows cast by the [Magnifier].
    *
@@ -49815,7 +68831,7 @@ export interface MagnifierProps {
    *
    * The [shadows] are drawn outside of the [size].
    */
-  size?: Size;
+  size?: SizeValue;
 }
 
 /**
@@ -49989,7 +69005,7 @@ export interface MaterialProps {
    *
    * By default, the color is derived from the [type] of material.
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * The color to paint the shadow below the material.
    *
@@ -50006,7 +69022,7 @@ export interface MaterialProps {
    *  * [ThemeData.applyElevationOverlayColor], which turns elevation overlay
    * on or off for dark themes.
    */
-  shadowColor?: Color;
+  shadowColor?: ColorValue;
   /**
    * The color of the surface tint overlay applied to the material color
    * to indicate elevation.
@@ -50032,11 +69048,11 @@ export interface MaterialProps {
    *   * https://m3.material.io/styles/color/the-color-system/color-roles
    *     which specifies how the overlay is applied.
    */
-  surfaceTintColor?: Color;
+  surfaceTintColor?: ColorValue;
   /**
    * The typographical style to use for text within this material.
    */
-  textStyle?: TextStyle;
+  textStyle?: TextStyleValue;
   /**
    * If non-null, the corners of this box are rounded by this
    * [BorderRadiusGeometry] value.
@@ -50048,7 +69064,7 @@ export interface MaterialProps {
    *
    * Must be null if [type] is [MaterialType.circle].
    */
-  borderRadius?: BorderRadiusGeometry;
+  borderRadius?: BorderRadiusGeometryValue;
   /**
    * Defines the material's shape as well its shadow.
    *
@@ -50058,7 +69074,7 @@ export interface MaterialProps {
    * A shadow is only displayed if the [elevation] is greater than
    * zero.
    */
-  shape?: ShapeBorder;
+  shape?: ShapeBorderValue;
   /**
    * Whether to paint the [shape] border in front of the [child].
    *
@@ -50081,7 +69097,7 @@ export interface MaterialProps {
    *
    * The default value is [kThemeChangeDuration].
    */
-  animationDuration?: Duration;
+  animationDuration?: DurationValue;
   /**
    * Whether the color should be animated.
    */
@@ -50359,7 +69375,7 @@ export interface MaterialAppProps {
    * This value is passed unmodified to [WidgetsApp.onGenerateTitle].
    */
   onGenerateTitle?: (context: BuildContext) => string;
-  color?: Color;
+  color?: ColorValue;
   /**
    * Default visual properties, like colors fonts and shapes, for this app's
    * material widgets.
@@ -50475,7 +69491,7 @@ export interface MaterialAppProps {
    * See also:
    *   [themeAnimationCurve], which defines the curve used for the animation.
    */
-  themeAnimationDuration?: Duration;
+  themeAnimationDuration?: DurationValue;
   /**
    * The curve to apply when animating theme changes.
    *
@@ -50486,7 +69502,7 @@ export interface MaterialAppProps {
    * See also:
    *   [themeAnimationDuration], which defines how long the animation is.
    */
-  themeAnimationCurve?: Curve;
+  themeAnimationCurve?: CurveValue;
   locale?: Locale;
   /**
    * Internationalized apps that require translations for one of the locales
@@ -50746,7 +69762,7 @@ export interface MaterialAppProps {
    *
    * ** See code in examples/api/lib/material/app/app.0.dart **
    */
-  themeAnimationStyle?: AnimationStyle;
+  themeAnimationStyle?: AnimationStyleValue;
 }
 
 /**
@@ -50932,7 +69948,7 @@ export interface MaterialBannerProps {
    * If `null`, [MaterialBannerThemeData.contentTextStyle] is used. If that is
    * also `null`, [TextTheme.bodyMedium] of [ThemeData.textTheme] is used.
    */
-  contentTextStyle?: TextStyle;
+  contentTextStyle?: TextStyleValue;
   /**
    * The set of actions that are displayed at the bottom or trailing side of
    * the [MaterialBanner].
@@ -50965,7 +69981,7 @@ export interface MaterialBannerProps {
    * If `null`, [MaterialBannerThemeData.backgroundColor] is used. If that is
    * also `null`, [ColorScheme.surfaceContainerLow] of [ThemeData.colorScheme] is used.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * The color used as an overlay on [backgroundColor] to indicate elevation.
    *
@@ -50977,21 +69993,21 @@ export interface MaterialBannerProps {
    * which provide more flexibility. The intention is to eventually remove surface tint color from
    * the framework.
    */
-  surfaceTintColor?: Color;
+  surfaceTintColor?: ColorValue;
   /**
    * The color of the shadow below the [MaterialBanner].
    *
    * If this property is null, then the ambient [MaterialBannerThemeData.shadowColor]
    * is used. If that is also null, the default value is null.
    */
-  shadowColor?: Color;
+  shadowColor?: ColorValue;
   /**
    * The color of the divider.
    *
    * If this property is null, then the ambient [MaterialBannerThemeData.dividerColor]
    * is used. If that is also null, the default value is [ColorScheme.surfaceVariant].
    */
-  dividerColor?: Color;
+  dividerColor?: ColorValue;
   /**
    * The amount of space by which to inset the [content].
    *
@@ -51001,20 +70017,20 @@ export interface MaterialBannerProps {
    * If the [actions] are trailing the [content], this defaults to
    * `EdgeInsetsDirectional.only(start: 16.0, top: 2.0)`.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * Empty space to surround the [MaterialBanner].
    *
    * If the [margin] is null then this defaults to
    * 0 if the banner's [elevation] is 0, 10 otherwise.
    */
-  margin?: EdgeInsetsGeometry;
+  margin?: EdgeInsetsGeometryValue;
   /**
    * The amount of space by which to inset the [leading] widget.
    *
    * This defaults to `EdgeInsetsDirectional.only(end: 16.0)`.
    */
-  leadingPadding?: EdgeInsetsGeometry;
+  leadingPadding?: EdgeInsetsGeometryValue;
   /**
    * An override to force the [actions] to be below the [content] regardless of
    * how many there are.
@@ -51105,7 +70121,7 @@ export interface MaterialBannerThemeProps {
   /**
    * The properties for descendant [MaterialBanner] widgets.
    */
-  data?: MaterialBannerThemeData;
+  data?: MaterialBannerThemeDataValue;
 }
 
 /**
@@ -51184,7 +70200,7 @@ export interface MaterialButtonProps {
   /**
    * If this property is null, [WidgetStateMouseCursor.adaptiveClickable] will be used.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * Defines the button's base colors, and the defaults for the button's minimum
    * size, internal padding, and shape.
@@ -51210,7 +70226,7 @@ export interface MaterialButtonProps {
    *  * [disabledTextColor], the text color to use when the button has been
    *    disabled.
    */
-  textColor?: Color;
+  textColor?: ColorValue;
   /**
    * The color to use for this button's text when the button is disabled.
    *
@@ -51228,7 +70244,7 @@ export interface MaterialButtonProps {
    *
    *  * [textColor] - The color to use for this button's text when the button is [enabled].
    */
-  disabledTextColor?: Color;
+  disabledTextColor?: ColorValue;
   /**
    * The button's fill color, displayed by its [Material], while it
    * is in its default (unpressed, [enabled]) state.
@@ -51237,7 +70253,7 @@ export interface MaterialButtonProps {
    *
    *  * [disabledColor] - the fill color of the button when the button is disabled.
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * The fill color of the button when the button is disabled.
    *
@@ -51248,14 +70264,14 @@ export interface MaterialButtonProps {
    *
    *  * [color] - the fill color of the button when the button is [enabled].
    */
-  disabledColor?: Color;
+  disabledColor?: ColorValue;
   /**
    * The fill color of the button's [Material] when it has the input focus.
    *
    * The button changed focus color when the button has the input focus. It
    * appears behind the button's child.
    */
-  focusColor?: Color;
+  focusColor?: ColorValue;
   /**
    * The fill color of the button's [Material] when a pointer is hovering over
    * it.
@@ -51263,7 +70279,7 @@ export interface MaterialButtonProps {
    * The button changes fill color when a pointer is hovering over the button.
    * It appears behind the button's child.
    */
-  hoverColor?: Color;
+  hoverColor?: ColorValue;
   /**
    * The highlight color of the button's [InkWell].
    *
@@ -51275,7 +70291,7 @@ export interface MaterialButtonProps {
    * transparent (in other words the highlight doesn't appear). Otherwise it's
    * the current theme's highlight color, [ThemeData.highlightColor].
    */
-  highlightColor?: Color;
+  highlightColor?: ColorValue;
   /**
    * The splash color of the button's [InkWell].
    *
@@ -51289,7 +70305,7 @@ export interface MaterialButtonProps {
    * The appearance of the splash can be configured with the theme's splash
    * factory, [ThemeData.splashFactory].
    */
-  splashColor?: Color;
+  splashColor?: ColorValue;
   /**
    * The theme brightness to use for this button.
    *
@@ -51386,7 +70402,7 @@ export interface MaterialButtonProps {
    * Defaults to the value from the current [ButtonTheme],
    * [ButtonThemeData.padding].
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * Defines how compact the button's layout will be.
    *
@@ -51396,7 +70412,7 @@ export interface MaterialButtonProps {
    *  * [ThemeData.visualDensity], which specifies the [visualDensity] for all
    *    widgets within a [Theme].
    */
-  visualDensity?: VisualDensity;
+  visualDensity?: VisualDensityValue;
   /**
    * The shape of the button's [Material].
    *
@@ -51407,7 +70423,7 @@ export interface MaterialButtonProps {
    * Defaults to the value from the current [ButtonTheme],
    * [ButtonThemeData.shape].
    */
-  shape?: ShapeBorder;
+  shape?: ShapeBorderValue;
   /**
    * Defaults to [Clip.none].
    */
@@ -51429,7 +70445,7 @@ export interface MaterialButtonProps {
    *
    * The default value is [kThemeChangeDuration].
    */
-  animationDuration?: Duration;
+  animationDuration?: DurationValue;
   /**
    * The smallest horizontal extent that the button will occupy.
    *
@@ -51521,7 +70537,7 @@ export interface MatrixTransitionProps {
    * For example, to set the origin of the transform to bottom middle, you can
    * use an alignment of (0.0, 1.0).
    */
-  alignment?: Alignment;
+  alignment?: AlignmentValue;
   /**
    * The filter quality with which to apply the transform as a bitmap operation.
    *
@@ -51598,7 +70614,7 @@ export interface MediaQueryProps {
    * For example, the [MediaQueryData.size] property contains the width and
    * height of the current window.
    */
-  data: MediaQueryData;
+  data: MediaQueryDataValue;
 }
 
 /**
@@ -51876,7 +70892,7 @@ export interface MenuAnchorProps {
    *
    * Defaults to the ambient [MenuThemeData.style].
    */
-  style?: MenuStyle;
+  style?: MenuStyleValue;
   /**
    * The offset of the menu relative to the alignment origin determined by
    * [MenuStyle.alignment] on the [style] attribute and the ambient
@@ -51899,13 +70915,13 @@ export interface MenuAnchorProps {
    *
    * Defaults to [Offset.zero].
    */
-  alignmentOffset?: Offset;
+  alignmentOffset?: OffsetValue;
   /**
    * The padding between the edge of the safe area and the menu panel.
    *
    * Defaults to EdgeInsets.all(8).
    */
-  reservedPadding?: EdgeInsetsGeometry;
+  reservedPadding?: EdgeInsetsGeometryValue;
   /**
    * An optional [LayerLink] to attach the menu to the widget that this
    * [MenuAnchor] surrounds.
@@ -52171,7 +71187,7 @@ export interface MenuBarProps {
    *
    * Defaults to the ambient [MenuThemeData.style].
    */
-  style?: MenuStyle;
+  style?: MenuStyleValue;
   /**
    * Defaults to [Clip.none].
    */
@@ -52279,7 +71295,7 @@ export interface MenuBarThemeProps {
   /**
    * The properties to set for [MenuBar] in this widget's descendants.
    */
-  data: MenuBarThemeData;
+  data: MenuBarThemeDataValue;
 }
 
 /**
@@ -52336,7 +71352,7 @@ export interface MenuButtonThemeProps {
   /**
    * The configuration of this theme.
    */
-  data: MenuButtonThemeData;
+  data: MenuButtonThemeDataValue;
 }
 
 /**
@@ -52453,7 +71469,7 @@ export interface MenuItemButtonProps {
    *
    * Null by default.
    */
-  style?: ButtonStyle;
+  style?: ButtonStyleValue;
   statesController?: WidgetStatesController;
   /**
    * Defaults to [Clip.none].
@@ -52549,7 +71565,7 @@ export interface MenuThemeProps {
    * The properties for [MenuBar] and [MenuItemButton] in this widget's
    * descendants.
    */
-  data: MenuThemeData;
+  data: MenuThemeDataValue;
 }
 
 /**
@@ -52710,7 +71726,7 @@ export interface MergeableMaterialProps {
    * If [dividerColor] is null, then [DividerThemeData.color] is used. If that
    * is null, then [ThemeData.dividerColor] is used.
    */
-  dividerColor?: Color;
+  dividerColor?: ColorValue;
 }
 
 /**
@@ -52798,7 +71814,7 @@ export interface ModalBarrierProps {
    *  * [ModalRoute.barrierColor], which controls this property for the
    *    [ModalBarrier] built by [ModalRoute] pages.
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * Specifies if the barrier will be dismissed when the user taps on it.
    *
@@ -53034,7 +72050,7 @@ export interface MouseRegionProps {
    * The [cursor] defaults to [MouseCursor.defer], deferring the choice of
    * cursor to the next region behind it in hit-test order.
    */
-  cursor?: MouseCursor;
+  cursor?: MouseCursorValue;
   /**
    * Whether this widget should prevent other [MouseRegion]s visually behind it
    * from detecting the pointer.
@@ -53154,7 +72170,7 @@ export interface NavigationBarProps {
    * Determines the transition time for each destination as it goes between
    * selected and unselected.
    */
-  animationDuration?: Duration;
+  animationDuration?: DurationValue;
   /**
    * Determines which one of the [destinations] is currently selected.
    *
@@ -53189,7 +72205,7 @@ export interface NavigationBarProps {
    * [ColorScheme.surfaceContainer]. If that is false, the default blends [ColorScheme.surface]
    * and [ColorScheme.onSurface] using an [ElevationOverlay].
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * The elevation of the [NavigationBar] itself.
    *
@@ -53207,7 +72223,7 @@ export interface NavigationBarProps {
    *
    * See [Material.shadowColor] for more details on drop shadows.
    */
-  shadowColor?: Color;
+  shadowColor?: ColorValue;
   /**
    * The color used as an overlay on [backgroundColor] to indicate elevation.
    *
@@ -53222,7 +72238,7 @@ export interface NavigationBarProps {
    * See [Material.surfaceTintColor] for more details on how this
    * overlay is applied.
    */
-  surfaceTintColor?: Color;
+  surfaceTintColor?: ColorValue;
   /**
    * The color of the [indicatorShape] when this destination is selected.
    *
@@ -53230,7 +72246,7 @@ export interface NavigationBarProps {
    * is also null and [ThemeData.useMaterial3] is true, [ColorScheme.secondaryContainer]
    * is used. Otherwise, [ColorScheme.secondary] with an opacity of 0.24 is used.
    */
-  indicatorColor?: Color;
+  indicatorColor?: ColorValue;
   /**
    * The shape of the selected indicator.
    *
@@ -53238,7 +72254,7 @@ export interface NavigationBarProps {
    * is also null and [ThemeData.useMaterial3] is true, [StadiumBorder] is used.
    * Otherwise, [RoundedRectangleBorder] with a circular border radius of 16 is used.
    */
-  indicatorShape?: ShapeBorder;
+  indicatorShape?: ShapeBorderValue;
   /**
    * The height of the [NavigationBar] itself.
    *
@@ -53271,7 +72287,7 @@ export interface NavigationBarProps {
    * The highlight color that's typically used to indicate that
    * the [NavigationDestination] is focused, hovered, or pressed.
    */
-  overlayColor?: WidgetStateProperty;
+  overlayColor?: WidgetStatePropertyValue;
   /**
    * / The text style of the label.
    *
@@ -53285,7 +72301,7 @@ export interface NavigationBarProps {
    * If [ThemeData.useMaterial3] is false, then the default text style is
    * [TextTheme.labelSmall] with [ColorScheme.onSurface].
    */
-  labelTextStyle?: WidgetStateProperty;
+  labelTextStyle?: WidgetStatePropertyValue;
   /**
    * The padding around the [NavigationDestination.label] widget.
    *
@@ -53293,7 +72309,7 @@ export interface NavigationBarProps {
    * is used. If that is also null, the default padding is 4 pixels on
    * the top.
    */
-  labelPadding?: EdgeInsetsGeometry;
+  labelPadding?: EdgeInsetsGeometryValue;
   /**
    * Specifies whether the underlying [SafeArea] should maintain the bottom
    * [MediaQueryData.viewPadding] instead of the bottom [MediaQueryData.padding].
@@ -53398,7 +72414,7 @@ export interface NavigationBarThemeProps {
    * Specifies the background color, label text style, icon theme, and label
    * type values for descendant [NavigationBar] widgets.
    */
-  data: NavigationBarThemeData;
+  data: NavigationBarThemeDataValue;
 }
 
 /**
@@ -53548,7 +72564,7 @@ export interface NavigationDrawerProps {
    * If this is null, then [NavigationDrawerThemeData.backgroundColor] is used.
    * If that is also null, then it falls back to [ColorScheme.surfaceContainerLow].
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * The color used for the drop shadow to indicate elevation.
    *
@@ -53558,7 +72574,7 @@ export interface NavigationDrawerProps {
    *
    * See [Material.shadowColor] for more details on drop shadows.
    */
-  shadowColor?: Color;
+  shadowColor?: ColorValue;
   /**
    * The surface tint of the [Material] that holds the [NavigationDrawer]'s
    * contents.
@@ -53571,7 +72587,7 @@ export interface NavigationDrawerProps {
    * If this is null, then [NavigationDrawerThemeData.surfaceTintColor] is used.
    * If that is also null, the default value is [Colors.transparent].
    */
-  surfaceTintColor?: Color;
+  surfaceTintColor?: ColorValue;
   /**
    * The elevation of the [NavigationDrawer] itself.
    *
@@ -53585,14 +72601,14 @@ export interface NavigationDrawerProps {
    * If this is null, [NavigationDrawerThemeData.indicatorColor] is used.
    * If that is also null, defaults to [ColorScheme.secondaryContainer].
    */
-  indicatorColor?: Color;
+  indicatorColor?: ColorValue;
   /**
    * The shape of the selected indicator.
    *
    * If this is null, [NavigationDrawerThemeData.indicatorShape] is used.
    * If that is also null, defaults to [StadiumBorder].
    */
-  indicatorShape?: ShapeBorder;
+  indicatorShape?: ShapeBorderValue;
   /**
    * Called when one of the [NavigationDrawerDestination] children is selected.
    *
@@ -53614,7 +72630,7 @@ export interface NavigationDrawerProps {
    *
    * Defaults to `EdgeInsets.symmetric(horizontal: 12.0)`.
    */
-  tilePadding?: EdgeInsetsGeometry;
+  tilePadding?: EdgeInsetsGeometryValue;
 }
 
 /**
@@ -53666,7 +72682,7 @@ export interface NavigationDrawerDestinationProps {
    * This is the background color of the whole rectangular area behind the drawer destination.
    * To customize only the indicator color consider using [NavigationDrawer.indicatorColor].
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * The [Widget] (usually an [Icon]) that's displayed for this
    * [NavigationDestination].
@@ -53740,7 +72756,7 @@ export interface NavigationDrawerThemeProps {
    * Specifies the background color, label text style, icon theme, and label
    * type values for descendant [NavigationDrawer] widgets.
    */
-  data: NavigationDrawerThemeData;
+  data: NavigationDrawerThemeDataValue;
 }
 
 /**
@@ -53781,7 +72797,7 @@ export interface NavigationIndicatorProps {
    *
    * If null, defaults to [ColorScheme.secondary].
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * The width of this indicator.
    *
@@ -53802,7 +72818,7 @@ export interface NavigationIndicatorProps {
    *
    * Defaults to `BorderRadius.circular(16)`.
    */
-  borderRadius?: BorderRadius;
+  borderRadius?: BorderRadiusValue;
   /**
    * The shape of the indicator.
    *
@@ -53810,7 +72826,7 @@ export interface NavigationIndicatorProps {
    * of the indicator. If null then a [RoundedRectangleBorder] with the
    * [borderRadius] is used.
    */
-  shape?: ShapeBorder;
+  shape?: ShapeBorderValue;
 }
 
 /**
@@ -53875,7 +72891,7 @@ export interface NavigationRailProps {
    * [NavigationRailThemeData.backgroundColor] is null, then the default value
    * is based on [ColorScheme.surface] of [ThemeData.colorScheme].
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * Indicates that the [NavigationRail] should be in the extended state.
    *
@@ -53997,7 +73013,7 @@ export interface NavigationRailProps {
    * [NavigationRailThemeData.unselectedLabelTextStyle] if this is null, are
    * merged into the defaults.
    */
-  unselectedLabelTextStyle?: TextStyle;
+  unselectedLabelTextStyle?: TextStyleValue;
   /**
    * The [TextStyle] of a destination's label when it is selected.
    *
@@ -54012,7 +73028,7 @@ export interface NavigationRailProps {
    * or [NavigationRailThemeData.selectedLabelTextStyle] if this is null, are
    * merged into the defaults.
    */
-  selectedLabelTextStyle?: TextStyle;
+  selectedLabelTextStyle?: TextStyleValue;
   /**
    * The visual properties of the icon in the unselected destination.
    *
@@ -54026,7 +73042,7 @@ export interface NavigationRailProps {
    * [NavigationRailThemeData.unselectedIconTheme] if this is null, are
    * merged into the defaults.
    */
-  unselectedIconTheme?: IconThemeData;
+  unselectedIconTheme?: IconThemeDataValue;
   /**
    * The visual properties of the icon in the selected destination.
    *
@@ -54038,7 +73054,7 @@ export interface NavigationRailProps {
    * or [NavigationRailThemeData.selectedIconTheme] if this is null, are
    * merged into the defaults.
    */
-  selectedIconTheme?: IconThemeData;
+  selectedIconTheme?: IconThemeDataValue;
   /**
    * The smallest possible width for the rail regardless of the destination's
    * icon or label size.
@@ -54079,7 +73095,7 @@ export interface NavigationRailProps {
    * If this is null, [NavigationRailThemeData.indicatorColor] is used. If
    * that is null, defaults to [ColorScheme.secondaryContainer].
    */
-  indicatorColor?: Color;
+  indicatorColor?: ColorValue;
   /**
    * Overrides the default value of [NavigationRail]'s selection indicator shape,
    * when [useIndicator] is true.
@@ -54087,7 +73103,7 @@ export interface NavigationRailProps {
    * If this is null, [NavigationRailThemeData.indicatorShape] is used. If
    * that is null, defaults to [StadiumBorder].
    */
-  indicatorShape?: ShapeBorder;
+  indicatorShape?: ShapeBorderValue;
   /**
    * Pin the [leading] widget to the top.
    *
@@ -54205,7 +73221,7 @@ export interface NavigationRailThemeProps {
    * group alignment, and label type and border values for descendant
    * [NavigationRail] widgets.
    */
-  data: NavigationRailThemeData;
+  data: NavigationRailThemeDataValue;
 }
 
 /**
@@ -55429,7 +74445,7 @@ export interface NestedScrollViewProps {
    * dragged, then dragging will be allowed. Configuring both scroll views with
    * [NeverScrollableScrollPhysics] will disallow dragging in this case.
    */
-  physics?: ScrollPhysics;
+  physics?: ScrollPhysicsValue;
   /**
    * A builder for any widgets that are to precede the inner scroll views (as
    * given by [body]).
@@ -56199,7 +75215,7 @@ export interface OutlinedButtonProps {
    *
    * Null by default.
    */
-  style?: ButtonStyle;
+  style?: ButtonStyleValue;
   focusNode?: FocusNode;
   autofocus?: boolean;
   /**
@@ -56284,7 +75300,7 @@ export interface OutlinedButtonThemeProps {
   /**
    * The configuration of this theme.
    */
-  data: OutlinedButtonThemeData;
+  data: OutlinedButtonThemeDataValue;
 }
 
 /**
@@ -56591,7 +75607,7 @@ export interface OverflowBoxProps {
    *  * [AlignmentDirectional], like [Alignment] for specifying alignments
    *    relative to text direction.
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
   /**
    * The minimum width constraint to give the child. Set this to null (the
    * default) to use the constraint from the parent instead.
@@ -57016,7 +76032,7 @@ export interface PaddingProps {
   /**
    * The amount of space by which to inset the child.
    */
-  padding: EdgeInsetsGeometry;
+  padding: EdgeInsetsGeometryValue;
 }
 
 /**
@@ -57240,7 +76256,7 @@ export interface PageViewProps {
    *
    * Defaults to matching platform conventions.
    */
-  physics?: ScrollPhysics;
+  physics?: ScrollPhysicsValue;
   /**
    * Set to false to disable page snapping, useful for custom scroll behavior.
    *
@@ -57535,7 +76551,7 @@ export interface PaginatedDataTableProps {
   /**
    * Defines the color of the arrow heads in the footer.
    */
-  arrowHeadColor?: Color;
+  arrowHeadColor?: ColorValue;
   /**
    * The data source which provides data to show in each row.
    *
@@ -57554,7 +76570,7 @@ export interface PaginatedDataTableProps {
   checkboxHorizontalMargin?: number;
   controller?: ScrollController;
   primary?: boolean;
-  headingRowColor?: WidgetStateProperty;
+  headingRowColor?: WidgetStatePropertyValue;
   /**
    * If null, [DataTableThemeData.dividerThickness] is used. This value
    * defaults to 1.0.
@@ -57702,7 +76718,7 @@ export interface PhysicalModelProps {
    *
    * This is ignored if the [shape] is not [BoxShape.rectangle].
    */
-  borderRadius?: BorderRadius;
+  borderRadius?: BorderRadiusValue;
   /**
    * The z-coordinate relative to the parent at which to place this physical
    * object.
@@ -57713,11 +76729,11 @@ export interface PhysicalModelProps {
   /**
    * The background color.
    */
-  color: Color;
+  color: ColorValue;
   /**
    * The shadow color.
    */
-  shadowColor?: Color;
+  shadowColor?: ColorValue;
 }
 
 /**
@@ -57787,11 +76803,11 @@ export interface PhysicalShapeProps {
   /**
    * The background color.
    */
-  color: Color;
+  color: ColorValue;
   /**
    * When elevation is non zero the color to use for the shadow color.
    */
-  shadowColor?: Color;
+  shadowColor?: ColorValue;
 }
 
 /**
@@ -57918,7 +76934,7 @@ export interface PlaceholderProps {
   /**
    * The color to draw the placeholder box.
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * The width of the lines in the placeholder box.
    */
@@ -58569,7 +77585,7 @@ export interface PopupMenuButtonProps {
    * If that is null too, then the overall theme's [ThemeData.shadowColor]
    * (default black) is used.
    */
-  shadowColor?: Color;
+  shadowColor?: ColorValue;
   /**
    * The color used as an overlay on [color] to indicate elevation.
    *
@@ -58584,13 +77600,13 @@ export interface PopupMenuButtonProps {
    * See [Material.surfaceTintColor] for more details on how this
    * overlay is applied.
    */
-  surfaceTintColor?: Color;
+  surfaceTintColor?: ColorValue;
   /**
    * Matches IconButton's 8 dps padding by default. In some cases, notably where
    * this button appears as the trailing element of a list item, it's useful to be able
    * to set the padding to zero.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * If provided, menu padding is used for empty space around the outside
    * of the popup menu.
@@ -58599,13 +77615,13 @@ export interface PopupMenuButtonProps {
    * If [PopupMenuThemeData.menuPadding] is also null, then vertical padding
    * of 8 pixels is used.
    */
-  menuPadding?: EdgeInsetsGeometry;
+  menuPadding?: EdgeInsetsGeometryValue;
   /**
    * The border radius for the [InkWell] that wraps the [child].
    *
    * Defaults to null, which indicates no border radius should be applied.
    */
-  borderRadius?: BorderRadius;
+  borderRadius?: BorderRadiusValue;
   /**
    * The splash radius.
    *
@@ -58631,7 +77647,7 @@ export interface PopupMenuButtonProps {
    *
    * When not set, the offset defaults to [Offset.zero].
    */
-  offset?: Offset;
+  offset?: OffsetValue;
   /**
    * Whether this popup menu button is interactive.
    *
@@ -58655,7 +77671,7 @@ export interface PopupMenuButtonProps {
    * [MaterialType.card] is used. This default shape is a rectangle with
    * rounded edges of BorderRadius.circular(2.0).
    */
-  shape?: ShapeBorder;
+  shape?: ShapeBorderValue;
   /**
    * If provided, the background color used for the menu.
    *
@@ -58664,7 +77680,7 @@ export interface PopupMenuButtonProps {
    * [ThemeData.cardColor] is used in Material 2. In Material3, defaults to
    * [ColorScheme.surfaceContainer].
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * If provided, this color is used for the button icon.
    *
@@ -58672,7 +77688,7 @@ export interface PopupMenuButtonProps {
    * If [PopupMenuThemeData.iconColor] is also null then defaults to
    * [IconThemeData.color].
    */
-  iconColor?: Color;
+  iconColor?: ColorValue;
   /**
    * Whether detected gestures should provide acoustic and/or haptic feedback.
    *
@@ -58700,7 +77716,7 @@ export interface PopupMenuButtonProps {
    * Specifying this parameter enables creation of menu wider than
    * the default maximum width.
    */
-  constraints?: BoxConstraints;
+  constraints?: BoxConstraintsValue;
   /**
    * Whether the popup menu is positioned over or under the popup menu button.
    *
@@ -58744,13 +77760,13 @@ export interface PopupMenuButtonProps {
    *
    * If this is null, then the default animation will be used.
    */
-  popUpAnimationStyle?: AnimationStyle;
+  popUpAnimationStyle?: AnimationStyleValue;
   /**
    * Optional route settings for the menu.
    *
    * See [RouteSettings] for details.
    */
-  routeSettings?: RouteSettings;
+  routeSettings?: RouteSettingsValue;
   /**
    * Customizes this icon button's appearance.
    *
@@ -58760,7 +77776,7 @@ export interface PopupMenuButtonProps {
    *
    * Null by default.
    */
-  style?: ButtonStyle;
+  style?: ButtonStyleValue;
   /**
    * Whether to request focus when the menu appears.
    *
@@ -58878,7 +77894,7 @@ export interface PopupMenuDividerProps {
   /**
    * The amount of radius for the border of the [PopupMenuDivider].
    */
-  radius?: BorderRadiusGeometry;
+  radius?: BorderRadiusGeometryValue;
   /**
    * ```dart
    * const PopupMenuDivider(
@@ -58886,7 +77902,7 @@ export interface PopupMenuDividerProps {
    * )
    * ```
    */
-  color?: Color;
+  color?: ColorValue;
 }
 
 /**
@@ -58986,7 +78002,7 @@ export interface PopupMenuItemProps {
    * If this is null and [ThemeData.useMaterial3] is false, the horizontal padding
    * defaults to 16.0 on both sides.
    */
-  padding?: EdgeInsets;
+  padding?: EdgeInsetsValue;
   /**
    * The text style of the popup menu item.
    *
@@ -58994,7 +78010,7 @@ export interface PopupMenuItemProps {
    * If [PopupMenuThemeData.textStyle] is also null, then [TextTheme.titleMedium]
    * of [ThemeData.textTheme] is used.
    */
-  textStyle?: TextStyle;
+  textStyle?: TextStyleValue;
   /**
    * The label style of the popup menu item.
    *
@@ -59005,7 +78021,7 @@ export interface PopupMenuItemProps {
    * is used with the [ColorScheme.onSurface] color when popup menu item is enabled and
    * the [ColorScheme.onSurface] color with 0.38 opacity when the popup menu item is disabled.
    */
-  labelTextStyle?: WidgetStateProperty;
+  labelTextStyle?: WidgetStatePropertyValue;
   /**
    * The cursor for a mouse pointer when it enters or is hovering over the
    * widget.
@@ -59020,7 +78036,7 @@ export interface PopupMenuItemProps {
    * If null, then the value of [PopupMenuThemeData.mouseCursor] is used. If
    * that is also null, then [WidgetStateMouseCursor.adaptiveClickable] is used.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
 }
 
 /**
@@ -59084,7 +78100,7 @@ export interface PopupMenuThemeProps {
   /**
    * The properties for descendant popup menu widgets.
    */
-  data: PopupMenuThemeData;
+  data: PopupMenuThemeDataValue;
 }
 
 /**
@@ -59468,7 +78484,7 @@ export interface PreferredSizeProps {
    * The widget below this widget in the tree.
    */
   children: FlutterChild;
-  preferredSize: Size;
+  preferredSize: SizeValue;
 }
 
 /**
@@ -59651,7 +78667,7 @@ export interface ProgressIndicatorThemeProps {
   /**
    * The properties for descendant [ProgressIndicator] widgets.
    */
-  data: ProgressIndicatorThemeData;
+  data: ProgressIndicatorThemeDataValue;
 }
 
 /**
@@ -59785,7 +78801,7 @@ export interface RadioProps {
    * If null, the value of [RadioThemeData.mouseCursor] is used. If that is
    * also null, [WidgetStateMouseCursor.adaptiveClickable] is used.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * This example shows how to enable deselecting a radio button by setting the
    * [toggleable] attribute.
@@ -59801,7 +78817,7 @@ export interface RadioProps {
    * If [fillColor] returns a non-null color in the [WidgetState.selected]
    * state, it will be used instead of this color.
    */
-  activeColor?: Color;
+  activeColor?: ColorValue;
   /**
    * The color that fills the radio button, in all [WidgetState]s.
    *
@@ -59836,7 +78852,7 @@ export interface RadioProps {
    * is used in the disabled state, [ColorScheme.primary] is used in the
    * selected state and [ColorScheme.onSurfaceVariant] is used in the default state.
    */
-  fillColor?: WidgetStateProperty;
+  fillColor?: WidgetStatePropertyValue;
   /**
    * The color for the radio's [Material] when it has the input focus.
    *
@@ -59847,7 +78863,7 @@ export interface RadioProps {
    * focused state. If that is also null, then the value of
    * [ThemeData.focusColor] is used.
    */
-  focusColor?: Color;
+  focusColor?: ColorValue;
   /**
    * The color for the radio's [Material] when a pointer is hovering over it.
    *
@@ -59858,7 +78874,7 @@ export interface RadioProps {
    * hovered state. If that is also null, then the value of
    * [ThemeData.hoverColor] is used.
    */
-  hoverColor?: Color;
+  hoverColor?: ColorValue;
   /**
    * The color for the radio's [Material].
    *
@@ -59884,7 +78900,7 @@ export interface RadioProps {
    *   * hovered - Theme.colorScheme.onSurface(0.08)
    *   * focused - Theme.colorScheme.onSurface(0.1)
    */
-  overlayColor?: WidgetStateProperty;
+  overlayColor?: WidgetStatePropertyValue;
   /**
    * The splash radius of the circular [Material] ink response.
    *
@@ -59916,7 +78932,7 @@ export interface RadioProps {
    *  * [ThemeData.visualDensity], which specifies the [visualDensity] for all
    *    widgets within a [Theme].
    */
-  visualDensity?: VisualDensity;
+  visualDensity?: VisualDensityValue;
   focusNode?: FocusNode;
   autofocus?: boolean;
   /**
@@ -59950,7 +78966,7 @@ export interface RadioProps {
    * If null, then the ambient [RadioThemeData.backgroundColor] is used.
    * If that is also null the default value is transparent in all states.
    */
-  backgroundColor?: WidgetStateProperty;
+  backgroundColor?: WidgetStatePropertyValue;
   /**
    * The side for the circular border of the radio button, in all
    * [WidgetState]s.
@@ -59967,7 +78983,7 @@ export interface RadioProps {
    * If null, then the ambient [RadioThemeData.side] is used. If that is
    * also null, the default value is a border using the fill color.
    */
-  side?: BorderSide;
+  side?: BorderSideValue;
   /**
    * The radius of the inner circle of the radio button, in all [WidgetState]s.
    *
@@ -59979,7 +78995,7 @@ export interface RadioProps {
    * If null, then the ambient [RadioThemeData.innerRadius] is used.
    * If that is also null, the default value is `4.5` in all states.
    */
-  innerRadius?: WidgetStateProperty;
+  innerRadius?: WidgetStatePropertyValue;
 }
 
 /**
@@ -60298,7 +79314,7 @@ export interface RadioListTileProps {
    * If null, then the value of [RadioThemeData.mouseCursor] is used.
    * If that is also null, then [WidgetStateMouseCursor.clickable] is used.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * Set to true if this radio list tile is allowed to be returned to an
    * indeterminate state by selecting it again when selected.
@@ -60328,7 +79344,7 @@ export interface RadioListTileProps {
    *
    * Defaults to [ColorScheme.secondary] of the current [Theme].
    */
-  activeColor?: Color;
+  activeColor?: ColorValue;
   /**
    * The color that fills the radio button.
    *
@@ -60341,8 +79357,8 @@ export interface RadioListTileProps {
    * that is also null, then the value of [RadioThemeData.fillColor] is used.
    * If that is also null, then the default value is used.
    */
-  fillColor?: WidgetStateProperty;
-  hoverColor?: Color;
+  fillColor?: WidgetStatePropertyValue;
+  hoverColor?: ColorValue;
   /**
    * The color for the radio's [Material].
    *
@@ -60356,7 +79372,7 @@ export interface RadioListTileProps {
    * null, the value of [SwitchThemeData.overlayColor] is used. If that is
    * also null, then the default value is used in the pressed and hovered state.
    */
-  overlayColor?: WidgetStateProperty;
+  overlayColor?: WidgetStatePropertyValue;
   /**
    * If null, then the value of [RadioThemeData.splashRadius] is used. If that
    * is also null, then [kRadialReactionRadius] is used.
@@ -60422,24 +79438,24 @@ export interface RadioListTileProps {
    *
    * When null, `EdgeInsets.symmetric(horizontal: 16.0)` is used.
    */
-  contentPadding?: EdgeInsetsGeometry;
+  contentPadding?: EdgeInsetsGeometryValue;
   /**
    * If specified, [shape] defines the shape of the [RadioListTile]'s [InkWell] border.
    */
-  shape?: ShapeBorder;
+  shape?: ShapeBorderValue;
   /**
    * If specified, defines the background color for `RadioListTile` when
    * [RadioListTile.selected] is false.
    */
-  tileColor?: Color;
+  tileColor?: ColorValue;
   /**
    * If non-null, defines the background color when [RadioListTile.selected] is true.
    */
-  selectedTileColor?: Color;
+  selectedTileColor?: ColorValue;
   /**
    * Defines how compact the list tile's layout will be.
    */
-  visualDensity?: VisualDensity;
+  visualDensity?: VisualDensityValue;
   focusNode?: FocusNode;
   /**
    * Controls the interactive states of the backing [ListTile].
@@ -60505,7 +79521,7 @@ export interface RadioListTileProps {
    *
    * If null, then it is transparent in all states.
    */
-  radioBackgroundColor?: WidgetStateProperty;
+  radioBackgroundColor?: WidgetStatePropertyValue;
   /**
    * The side for the circular border of the radio button, in all
    * [WidgetState]s.
@@ -60520,7 +79536,7 @@ export interface RadioListTileProps {
    *
    * If null, then it defaults to a border using the fill color.
    */
-  radioSide?: BorderSide;
+  radioSide?: BorderSideValue;
   /**
    * The radius of the inner circle of the radio button, in all [WidgetState]s.
    *
@@ -60530,7 +79546,7 @@ export interface RadioListTileProps {
    *
    * If null, then it defaults to `4.5` in all states.
    */
-  radioInnerRadius?: WidgetStateProperty;
+  radioInnerRadius?: WidgetStatePropertyValue;
 }
 
 /**
@@ -60764,7 +79780,7 @@ export interface RadioMenuButtonProps {
    *
    * Null by default.
    */
-  style?: ButtonStyle;
+  style?: ButtonStyleValue;
   statesController?: WidgetStatesController;
   /**
    * Defaults to [Clip.none].
@@ -60824,7 +79840,7 @@ export interface RadioThemeProps {
   /**
    * The properties used for all descendant [Radio] widgets.
    */
-  data: RadioThemeData;
+  data: RadioThemeDataValue;
 }
 
 /**
@@ -61083,7 +80099,7 @@ export interface RangeSliderProps {
    * Using a [SliderTheme] gives more fine-grained control over the
    * appearance of various components of the slider.
    */
-  activeColor?: Color;
+  activeColor?: ColorValue;
   /**
    * The color of the track's inactive segments, i.e. the span of tracks
    * between the min and the start thumb, and the end thumb and the max.
@@ -61096,7 +80112,7 @@ export interface RangeSliderProps {
    * Using a [SliderTheme] gives more fine-grained control over the
    * appearance of various components of the slider.
    */
-  inactiveColor?: Color;
+  inactiveColor?: ColorValue;
   /**
    * The highlight color that's typically used to indicate that
    * the range slider thumb is hovered or dragged.
@@ -61106,7 +80122,7 @@ export interface RangeSliderProps {
    * will be used, otherwise defaults to [ColorScheme.primary] with
    * an opacity of 0.12.
    */
-  overlayColor?: WidgetStateProperty;
+  overlayColor?: WidgetStatePropertyValue;
   /**
    * The cursor for a mouse pointer when it enters or is hovering over the
    * widget.
@@ -61118,7 +80134,7 @@ export interface RangeSliderProps {
    *
    *  * [WidgetStateMouseCursor], which can be used to create a [MouseCursor].
    */
-  mouseCursor?: WidgetStateProperty;
+  mouseCursor?: WidgetStatePropertyValue;
   /**
    * The callback used to create a semantic value from the slider's values.
    *
@@ -61156,7 +80172,7 @@ export interface RangeSliderProps {
    * is the height of the overlay shape, and the horizontal padding is the
    * larger size between the width of the thumb shape and overlay shape.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * When true, the [RangeSlider] will use the 2023 Material Design 3 appearance.
    * Defaults to true.
@@ -61389,7 +80405,7 @@ export interface RawAutocompleteProps {
    *
    * This parameter is ignored if [textEditingController] is defined.
    */
-  initialValue?: TextEditingValue;
+  initialValue?: TextEditingValueValue;
 }
 
 /**
@@ -61475,16 +80491,16 @@ export interface RawChipProps {
    * If null then [ChipThemeData.fromDefaults] will be used
    * for the default properties.
    */
-  defaultProperties?: ChipThemeData;
+  defaultProperties?: ChipThemeDataValue;
   avatar?: FlutterChild;
   label: FlutterChild;
-  labelStyle?: TextStyle;
-  padding?: EdgeInsetsGeometry;
-  visualDensity?: VisualDensity;
-  labelPadding?: EdgeInsetsGeometry;
+  labelStyle?: TextStyleValue;
+  padding?: EdgeInsetsGeometryValue;
+  visualDensity?: VisualDensityValue;
+  labelPadding?: EdgeInsetsGeometryValue;
   deleteIcon?: FlutterChild;
   onDeleted?: () => void;
-  deleteIconColor?: Color;
+  deleteIconColor?: ColorValue;
   deleteButtonTooltipMessage?: string;
   onClick?: () => void;
   onSelected?: (value: boolean) => void;
@@ -61502,29 +80518,29 @@ export interface RawChipProps {
   tapEnabled?: boolean;
   selected?: boolean;
   isEnabled?: boolean;
-  disabledColor?: Color;
-  selectedColor?: Color;
+  disabledColor?: ColorValue;
+  selectedColor?: ColorValue;
   tooltip?: string;
-  side?: BorderSide;
-  shape?: OutlinedBorder;
+  side?: BorderSideValue;
+  shape?: OutlinedBorderValue;
   clipBehavior?: Clip;
   focusNode?: FocusNode;
   autofocus?: boolean;
-  color?: WidgetStateProperty;
-  backgroundColor?: Color;
+  color?: WidgetStatePropertyValue;
+  backgroundColor?: ColorValue;
   materialTapTargetSize?: MaterialTapTargetSize;
   elevation?: number;
-  shadowColor?: Color;
-  surfaceTintColor?: Color;
-  iconTheme?: IconThemeData;
-  selectedShadowColor?: Color;
+  shadowColor?: ColorValue;
+  surfaceTintColor?: ColorValue;
+  iconTheme?: IconThemeDataValue;
+  selectedShadowColor?: ColorValue;
   showCheckmark?: boolean;
-  checkmarkColor?: Color;
-  avatarBorder?: ShapeBorder;
-  avatarBoxConstraints?: BoxConstraints;
-  deleteIconBoxConstraints?: BoxConstraints;
+  checkmarkColor?: ColorValue;
+  avatarBorder?: ShapeBorderValue;
+  avatarBoxConstraints?: BoxConstraintsValue;
+  deleteIconBoxConstraints?: BoxConstraintsValue;
   chipAnimationStyle?: ChipAnimationStyle;
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
 }
 
 /**
@@ -61795,7 +80811,7 @@ export interface RawImageProps {
   /**
    * If non-null, this color is blended with each image pixel using [colorBlendMode].
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * If non-null, the value from the [Animation] is multiplied with the opacity
    * of each image pixel before painting onto the canvas.
@@ -61849,7 +80865,7 @@ export interface RawImageProps {
    *  * [AlignmentDirectional], like [Alignment] for specifying alignments
    *    relative to text direction.
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
   /**
    * How to paint any portions of the layout bounds not covered by the image.
    */
@@ -61863,7 +80879,7 @@ export interface RawImageProps {
    * only horizontally and the region of the image to the left and right of
    * the center slice will be stretched only vertically.
    */
-  centerSlice?: Rect;
+  centerSlice?: RectValue;
   /**
    * Whether to paint the image in the direction of the [TextDirection].
    *
@@ -62027,7 +81043,7 @@ export interface RawMagnifierProps {
    * consider setting [clipBehavior] to [Clip.hardEdge] (or similar) to ensure
    * the magnified image is visible.
    */
-  decoration?: MagnifierDecoration;
+  decoration?: MagnifierDecorationValue;
   /**
    * Whether and how to clip the parts of [decoration] that render inside the
    * loupe.
@@ -62047,7 +81063,7 @@ export interface RawMagnifierProps {
    * If left as [Offset.zero], the [RawMagnifier] will show the content that
    * is directly below it.
    */
-  focalPointOffset?: Offset;
+  focalPointOffset?: OffsetValue;
   /**
    * How "zoomed in" the magnification subject is in the lens.
    *
@@ -62060,7 +81076,7 @@ export interface RawMagnifierProps {
    * This does not include the border from the [decoration]; it only includes
    * the size of the magnifier.
    */
-  size: Size;
+  size: SizeValue;
 }
 
 /**
@@ -62153,7 +81169,7 @@ export interface RawMaterialButtonProps {
    *
    * If this property is null, [WidgetStateMouseCursor.adaptiveClickable] will be used.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * Defines the default text style, with [Material.textStyle], for the
    * button's [child].
@@ -62166,27 +81182,27 @@ export interface RawMaterialButtonProps {
    *  * [WidgetState.focused].
    *  * [WidgetState.disabled].
    */
-  textStyle?: TextStyle;
+  textStyle?: TextStyleValue;
   /**
    * The color of the button's [Material].
    */
-  fillColor?: Color;
+  fillColor?: ColorValue;
   /**
    * The color for the button's [Material] when it has the input focus.
    */
-  focusColor?: Color;
+  focusColor?: ColorValue;
   /**
    * The color for the button's [Material] when a pointer is hovering over it.
    */
-  hoverColor?: Color;
+  hoverColor?: ColorValue;
   /**
    * The highlight color for the button's [InkWell].
    */
-  highlightColor?: Color;
+  highlightColor?: ColorValue;
   /**
    * The splash color for the button's [InkWell].
    */
-  splashColor?: Color;
+  splashColor?: ColorValue;
   /**
    * The elevation for the button's [Material] when the button
    * is [enabled] but not pressed.
@@ -62271,7 +81287,7 @@ export interface RawMaterialButtonProps {
   /**
    * The internal padding for the button's [child].
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * Defines how compact the button's layout will be.
    *
@@ -62281,13 +81297,13 @@ export interface RawMaterialButtonProps {
    *  * [ThemeData.visualDensity], which specifies the [visualDensity] for all widgets
    *    within a [Theme].
    */
-  visualDensity?: VisualDensity;
+  visualDensity?: VisualDensityValue;
   /**
    * Defines the button's size.
    *
    * Typically used to constrain the button's minimum size.
    */
-  constraints?: BoxConstraints;
+  constraints?: BoxConstraintsValue;
   /**
    * The shape of the button's [Material].
    *
@@ -62302,13 +81318,13 @@ export interface RawMaterialButtonProps {
    * * [WidgetState.focused].
    * * [WidgetState.disabled].
    */
-  shape?: ShapeBorder;
+  shape?: ShapeBorderValue;
   /**
    * Defines the duration of animated changes for [shape] and [elevation].
    *
    * The default value is [kThemeChangeDuration].
    */
-  animationDuration?: Duration;
+  animationDuration?: DurationValue;
   /**
    * Defaults to [Clip.none].
    */
@@ -62824,7 +81840,7 @@ export interface RawRadioProps {
    *  * [WidgetState.focused].
    *  * [WidgetState.disabled].
    */
-  mouseCursor: WidgetStateProperty;
+  mouseCursor: WidgetStatePropertyValue;
   /**
    * Set to true if this radio button is allowed to be returned to an
    * indeterminate state by selecting it again when selected.
@@ -63169,14 +82185,14 @@ export interface RawScrollbarProps {
    *
    * ** See code in examples/api/lib/widgets/scrollbar/raw_scrollbar.shape.0.dart **
    */
-  shape?: OutlinedBorder;
+  shape?: OutlinedBorderValue;
   /**
    * The [Radius] of the scrollbar thumb's rounded rectangle corners.
    *
    * Scrollbar will be rectangular if [radius] is null, which is the default
    * behavior.
    */
-  radius?: Radius;
+  radius?: RadiusValue;
   /**
    * The thickness of the scrollbar in the cross axis of the scrollable.
    *
@@ -63188,7 +82204,7 @@ export interface RawScrollbarProps {
    *
    * If null, defaults to Color(0x66BCBCBC).
    */
-  thumbColor?: Color;
+  thumbColor?: ColorValue;
   /**
    * The preferred smallest size the scrollbar thumb can shrink to when the total
    * scrollable extent is large, the current visible viewport is small, and the
@@ -63238,7 +82254,7 @@ export interface RawScrollbarProps {
    * Scrollbar's track will be rectangular if [trackRadius] is null, which is
    * the default behavior.
    */
-  trackRadius?: Radius;
+  trackRadius?: RadiusValue;
   /**
    * The color of the scrollbar track.
    *
@@ -63247,7 +82263,7 @@ export interface RawScrollbarProps {
    *
    * If null, defaults to Color(0x08000000).
    */
-  trackColor?: Color;
+  trackColor?: ColorValue;
   /**
    * The color of the scrollbar track's border.
    *
@@ -63256,26 +82272,26 @@ export interface RawScrollbarProps {
    *
    * If null, defaults to Color(0x1a000000).
    */
-  trackBorderColor?: Color;
+  trackBorderColor?: ColorValue;
   /**
    * The [Duration] of the fade animation.
    *
    * Defaults to a [Duration] of 300 milliseconds.
    */
-  fadeDuration?: Duration;
+  fadeDuration?: DurationValue;
   /**
    * The [Duration] of time until the fade animation begins.
    *
    * Defaults to a [Duration] of 600 milliseconds.
    */
-  timeToFade?: Duration;
+  timeToFade?: DurationValue;
   /**
    * The [Duration] of time that a LongPress will trigger the drag gesture of
    * the scrollbar thumb.
    *
    * Defaults to [Duration.zero].
    */
-  pressDuration?: Duration;
+  pressDuration?: DurationValue;
   /**
    * A check that specifies whether a [ScrollNotification] should be
    * handled by this widget.
@@ -63332,7 +82348,7 @@ export interface RawScrollbarProps {
    *
    * Defaults to null.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
 }
 
 /**
@@ -63539,7 +82555,7 @@ export interface RawTooltipProps {
    *
    * Defaults to 0 milliseconds (the tooltip is shown immediately upon hover).
    */
-  hoverDelay?: Duration;
+  hoverDelay?: DurationValue;
   /**
    * The length of time that the tooltip will be shown after a long press is
    * released (if triggerMode is [TooltipTriggerMode.longPress]) or a tap is
@@ -63555,7 +82571,7 @@ export interface RawTooltipProps {
    *  * [dismissDelay], which allows configuring the time until a pointer
    * disappears when hovering.
    */
-  touchDelay?: Duration;
+  touchDelay?: DurationValue;
   /**
    * The length of time that a pointer must have stopped hovering over a
    * tooltip's widget before the tooltip will be hidden.
@@ -63567,7 +82583,7 @@ export interface RawTooltipProps {
    *  * [touchDelay], which allows configuring the length of time that a
    * tooltip will be visible after touch events are released.
    */
-  dismissDelay?: Duration;
+  dismissDelay?: DurationValue;
   /**
    * Whether the tooltip can be dismissed by tap.
    *
@@ -63635,7 +82651,7 @@ export interface RawTooltipProps {
    * To disable the tooltip show/hide animation, use
    * [AnimationStyle.noAnimation].
    */
-  animationStyle?: AnimationStyle;
+  animationStyle?: AnimationStyleValue;
   /**
    * A custom position delegate function for computing where the tooltip should
    * be positioned.
@@ -63925,12 +82941,12 @@ export interface RefreshIndicatorProps {
    * The progress indicator's foreground color. The current theme's
    * [ColorScheme.primary] by default.
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * The progress indicator's background color. The current theme's
    * [ThemeData.canvasColor] by default.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * A check that specifies whether a [ScrollNotification] should be
    * handled by this widget.
@@ -64067,7 +83083,7 @@ export interface RefreshProgressIndicatorProps {
    * It is up to the subclass to implement this in whatever way makes sense
    * for the given use case. See the subclass documentation for details.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * The progress indicator's color.
    *
@@ -64077,7 +83093,7 @@ export interface RefreshProgressIndicatorProps {
    * is null then the current theme's [ColorScheme.primary] will
    * be used by default.
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * The progress indicator's color as an animated value.
    *
@@ -64151,11 +83167,11 @@ export interface RefreshProgressIndicatorProps {
    * The amount of space by which to inset the whole indicator.
    * It accommodates the [elevation] of the indicator.
    */
-  indicatorMargin?: EdgeInsetsGeometry;
+  indicatorMargin?: EdgeInsetsGeometryValue;
   /**
    * The amount of space by which to inset the inner refresh indicator.
    */
-  indicatorPadding?: EdgeInsetsGeometry;
+  indicatorPadding?: EdgeInsetsGeometryValue;
 }
 
 /**
@@ -64221,7 +83237,7 @@ export interface RelativePositionedTransitionProps {
    * The [Positioned] widget's offsets are relative to a box of this
    * size whose origin is 0,0.
    */
-  size: Size;
+  size: SizeValue;
 }
 
 /**
@@ -64551,12 +83567,12 @@ export interface ReorderableListProps {
    *
    * It defaults to `EdgeInsets.all(0)`.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   scrollDirection?: Axis;
   reverse?: boolean;
   controller?: ScrollController;
   primary?: boolean;
-  physics?: ScrollPhysics;
+  physics?: ScrollPhysicsValue;
   shrinkWrap?: boolean;
   anchor?: number;
   /**
@@ -64700,7 +83716,7 @@ export interface ReorderableListViewProps {
    * ** See code in examples/api/lib/material/reorderable_list/reorderable_list_view.build_default_drag_handles.0.dart **
    */
   buildDefaultDragHandles?: boolean;
-  padding?: EdgeInsets;
+  padding?: EdgeInsetsValue;
   /**
    * A non-reorderable header item to show before the items of the list.
    *
@@ -64721,7 +83737,7 @@ export interface ReorderableListViewProps {
    * [scrollController] is null.
    */
   primary?: boolean;
-  physics?: ScrollPhysics;
+  physics?: ScrollPhysicsValue;
   shrinkWrap?: boolean;
   anchor?: number;
   /**
@@ -64754,7 +83770,7 @@ export interface ReorderableListViewProps {
    * If this property is null, [SystemMouseCursors.grab] will be used when
    *  hovering, and [SystemMouseCursors.grabbing] when dragging.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
 }
 
 /**
@@ -64976,7 +83992,7 @@ export interface RepeatingAnimationBuilderProps {
    * The total time for one complete forward-and-reverse cycle
    * will be twice this value.
    */
-  duration: Duration;
+  duration: DurationValue;
   /**
    * The curve applied to the animation input before it is passed to the
    * [animatable].
@@ -64986,7 +84002,7 @@ export interface RepeatingAnimationBuilderProps {
    *
    * Defaults to [Curves.linear].
    */
-  curve?: Curve;
+  curve?: CurveValue;
   /**
    * How the animation behaves after reaching 1.0.
    *
@@ -65272,7 +84288,7 @@ export interface RichTextProps {
    * @deprecated
    */
   textScaleFactor?: number;
-  textScaler?: TextScaler;
+  textScaler?: TextScalerValue;
   /**
    * An optional maximum number of lines for the text to span, wrapping if necessary.
    * If the text exceeds the given number of lines, it will be truncated according
@@ -65292,9 +84308,9 @@ export interface RichTextProps {
    * See [RenderParagraph.locale] for more information.
    */
   locale?: Locale;
-  strutStyle?: StrutStyle;
+  strutStyle?: StrutStyleValue;
   textWidthBasis?: TextWidthBasis;
-  textHeightBehavior?: TextHeightBehavior;
+  textHeightBehavior?: TextHeightBehaviorValue;
   /**
    * The [SelectionRegistrar] this rich text is subscribed to.
    *
@@ -65310,7 +84326,7 @@ export interface RichTextProps {
    * documentation for more details on enabling selection in [RichText]
    * widgets.
    */
-  selectionColor?: Color;
+  selectionColor?: ColorValue;
 }
 
 /**
@@ -65660,7 +84676,7 @@ export interface RotationTransitionProps {
    * For example, to set the origin of the transform to bottom middle, you can
    * use an alignment of (0.0, 1.0).
    */
-  alignment?: Alignment;
+  alignment?: AlignmentValue;
   /**
    * The filter quality with which to apply the transform as a bitmap operation.
    *
@@ -66753,7 +85769,7 @@ export interface SafeAreaProps {
    *
    * The greater of the minimum insets and the media padding will be applied.
    */
-  minimum?: EdgeInsets;
+  minimum?: EdgeInsetsValue;
   /**
    * Specifies whether the [SafeArea] should maintain the bottom
    * [MediaQueryData.viewPadding] instead of the bottom [MediaQueryData.padding],
@@ -66983,13 +85999,13 @@ export interface ScaffoldProps {
    *
    * If null, the [ScaffoldState] will use the default location, [FloatingActionButtonLocation.endFloat].
    */
-  floatingActionButtonLocation?: FloatingActionButtonLocation;
+  floatingActionButtonLocation?: FloatingActionButtonLocationValue;
   /**
    * Animator to move the [floatingActionButton] to a new [floatingActionButtonLocation].
    *
    * If null, the [ScaffoldState] will use the default animator, [FloatingActionButtonAnimator.scaling].
    */
-  floatingActionButtonAnimator?: FloatingActionButtonAnimator;
+  floatingActionButtonAnimator?: FloatingActionButtonAnimatorValue;
   /**
    * A set of buttons that are displayed at the bottom of the scaffold.
    *
@@ -67007,7 +86023,7 @@ export interface ScaffoldProps {
    *
    * Defaults to [AlignmentDirectional.centerEnd].
    */
-  persistentFooterAlignment?: AlignmentDirectional;
+  persistentFooterAlignment?: AlignmentDirectionalValue;
   /**
    * Decoration for the container that holds the [persistentFooterButtons].
    *
@@ -67019,7 +86035,7 @@ export interface ScaffoldProps {
    *  * [persistentFooterButtons], which defines the buttons to show in the footer.
    *  * [persistentFooterAlignment], which defines the alignment of the footer buttons.
    */
-  persistentFooterDecoration?: BoxDecoration;
+  persistentFooterDecoration?: BoxDecorationValue;
   /**
    * A panel displayed to the side of the [body], often hidden on mobile
    * devices. Swipes in from either left-to-right ([TextDirection.ltr]) or
@@ -67117,7 +86133,7 @@ export interface ScaffoldProps {
    *
    * The theme's [ThemeData.scaffoldBackgroundColor] by default.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * If true the [body] and the scaffold's floating widgets should size
    * themselves to avoid the onscreen keyboard whose height is defined by the
@@ -67196,7 +86212,7 @@ export interface ScaffoldProps {
    * If this is null, then [DrawerThemeData.scrimColor] is used. If that
    * is also null, then it defaults to [Colors.black54].
    */
-  drawerScrimColor?: Color;
+  drawerScrimColor?: ColorValue;
   /**
    * A builder for the widget that obscures primary content while a bottom sheet is open.
    *
@@ -67502,7 +86518,7 @@ export interface ScaleTransitionProps {
    * For example, to set the origin of the transform to bottom middle, you can
    * use an alignment of (0.0, 1.0).
    */
-  alignment?: Alignment;
+  alignment?: AlignmentValue;
   /**
    * The filter quality with which to apply the transform as a bitmap operation.
    *
@@ -67769,7 +86785,7 @@ export interface ScrollableProps {
    *    scrollable should react to scroll requests (and possible overscroll)
    *    even if the scrollable's contents fit without scrolling being necessary.
    */
-  physics?: ScrollPhysics;
+  physics?: ScrollPhysicsValue;
   /**
    * Builds the viewport through which the scrollable content is displayed.
    *
@@ -68042,7 +87058,7 @@ export interface ScrollbarProps {
    * [CupertinoScrollbar.defaultRadius] is used. The remaining platforms have a
    * default [Radius.circular] of 8.0 pixels.
    */
-  radius?: Radius;
+  radius?: RadiusValue;
   notificationPredicate?: (notification: ScrollNotification) => boolean;
   interactive?: boolean;
   scrollbarOrientation?: ScrollbarOrientation;
@@ -68125,7 +87141,7 @@ export interface ScrollbarThemeProps {
   /**
    * The properties used for all descendant [Scrollbar] widgets.
    */
-  data: ScrollbarThemeData;
+  data: ScrollbarThemeDataValue;
 }
 
 /**
@@ -68244,7 +87260,7 @@ export interface SearchAnchorProps {
    * If null, the value of [SearchViewThemeData.backgroundColor] will be used.
    * If this is also null, then the default value is [ColorScheme.surfaceContainerHigh].
    */
-  viewBackgroundColor?: Color;
+  viewBackgroundColor?: ColorValue;
   /**
    * The elevation of the search view's [Material].
    *
@@ -68263,7 +87279,7 @@ export interface SearchAnchorProps {
    * If null, the value of [SearchViewThemeData.surfaceTintColor] will be used.
    * If this is also null, then the default value is [ColorScheme.surfaceTint].
    */
-  viewSurfaceTintColor?: Color;
+  viewSurfaceTintColor?: ColorValue;
   /**
    * The color and weight of the search view's outline.
    *
@@ -68273,7 +87289,7 @@ export interface SearchAnchorProps {
    * If null, the value of [SearchViewThemeData.side] will be used. If this is
    * also null, the search view doesn't have a side by default.
    */
-  viewSide?: BorderSide;
+  viewSide?: BorderSideValue;
   /**
    * The shape of the search view's underlying [Material].
    *
@@ -68284,13 +87300,13 @@ export interface SearchAnchorProps {
    * If this is also null, then the default value is a rectangle shape for full-screen
    * mode and a [RoundedRectangleBorder] shape with a 28.0 radius otherwise.
    */
-  viewShape?: OutlinedBorder;
+  viewShape?: OutlinedBorderValue;
   /**
    * The padding to use for the search view's search bar.
    *
    * If null, then the default value is 8.0 horizontally.
    */
-  viewBarPadding?: EdgeInsetsGeometry;
+  viewBarPadding?: EdgeInsetsGeometryValue;
   /**
    * The height of the search field on the search view.
    *
@@ -68304,7 +87320,7 @@ export interface SearchAnchorProps {
    * If null, defaults to the `bodyLarge` text style from the current [Theme].
    * The default text color is [ColorScheme.onSurface].
    */
-  headerTextStyle?: TextStyle;
+  headerTextStyle?: TextStyleValue;
   /**
    * The style to use for the [viewHintText] on the search view.
    *
@@ -68313,14 +87329,14 @@ export interface SearchAnchorProps {
    * defaults to the `bodyLarge` text style from the current [Theme]. The default
    * text color is [ColorScheme.onSurfaceVariant].
    */
-  headerHintStyle?: TextStyle;
+  headerHintStyle?: TextStyleValue;
   /**
    * The color of the divider on the search view.
    *
    * If this property is null, then [SearchViewThemeData.dividerColor] is used.
    * If that is also null, the default value is [ColorScheme.outline].
    */
-  dividerColor?: Color;
+  dividerColor?: ColorValue;
   /**
    * Optional size constraints for the search view.
    *
@@ -68335,7 +87351,7 @@ export interface SearchAnchorProps {
    * const BoxConstraints(minWidth: 360.0, minHeight: 240.0)
    * ```
    */
-  viewConstraints?: BoxConstraints;
+  viewConstraints?: BoxConstraintsValue;
   /**
    * The padding to use for the search view.
    *
@@ -68343,7 +87359,7 @@ export interface SearchAnchorProps {
    *
    * If null, the value of [SearchViewThemeData.padding] will be used.
    */
-  viewPadding?: EdgeInsetsGeometry;
+  viewPadding?: EdgeInsetsGeometryValue;
   /**
    * Whether the search view should shrink-wrap its contents.
    *
@@ -68411,7 +87427,7 @@ export interface SearchAnchorProps {
    *
    * Defaults to the default value specified in [TextField].
    */
-  keyboardType?: TextInputType;
+  keyboardType?: TextInputTypeValue;
   /**
    * Whether or not this widget is currently interactive.
    *
@@ -68589,28 +87605,28 @@ export interface SearchBarProps {
    * const BoxConstraints(minWidth: 360.0, maxWidth: 800.0, minHeight: 56.0)
    * ```
    */
-  constraints?: BoxConstraints;
+  constraints?: BoxConstraintsValue;
   /**
    * The elevation of the search bar's [Material].
    *
    * If null, the value of [SearchBarThemeData.elevation] will be used. If this
    * is also null, then default value is 6.0.
    */
-  elevation?: WidgetStateProperty;
+  elevation?: WidgetStatePropertyValue;
   /**
    * The search bar's background fill color.
    *
    * If null, the value of [SearchBarThemeData.backgroundColor] will be used.
    * If this is also null, then the default value is [ColorScheme.surfaceContainerHigh].
    */
-  backgroundColor?: WidgetStateProperty;
+  backgroundColor?: WidgetStatePropertyValue;
   /**
    * The shadow color of the search bar's [Material].
    *
    * If null, the value of [SearchBarThemeData.shadowColor] will be used.
    * If this is also null, then the default value is [ColorScheme.shadow].
    */
-  shadowColor?: WidgetStateProperty;
+  shadowColor?: WidgetStatePropertyValue;
   /**
    * The surface tint color of the search bar's [Material].
    *
@@ -68622,12 +87638,12 @@ export interface SearchBarProps {
    * If null, the value of [SearchBarThemeData.surfaceTintColor] will be used.
    * If this is also null, then the default value is [Colors.transparent].
    */
-  surfaceTintColor?: WidgetStateProperty;
+  surfaceTintColor?: WidgetStatePropertyValue;
   /**
    * The highlight color that's typically used to indicate that
    * the search bar is focused, hovered, or pressed.
    */
-  overlayColor?: WidgetStateProperty;
+  overlayColor?: WidgetStatePropertyValue;
   /**
    * The color and weight of the search bar's outline.
    *
@@ -68637,7 +87653,7 @@ export interface SearchBarProps {
    * If null, the value of [SearchBarThemeData.side] will be used. If this is
    * also null, the search bar doesn't have a side by default.
    */
-  side?: WidgetStateProperty;
+  side?: WidgetStatePropertyValue;
   /**
    * The shape of the search bar's underlying [Material].
    *
@@ -68647,21 +87663,21 @@ export interface SearchBarProps {
    * If null, the value of [SearchBarThemeData.shape] will be used.
    * If this is also null, defaults to [StadiumBorder].
    */
-  shape?: WidgetStateProperty;
+  shape?: WidgetStatePropertyValue;
   /**
    * The padding between the search bar's boundary and its contents.
    *
    * If null, the value of [SearchBarThemeData.padding] will be used.
    * If this is also null, then the default value is 16.0 horizontally.
    */
-  padding?: WidgetStateProperty;
+  padding?: WidgetStatePropertyValue;
   /**
    * The style to use for the text being edited.
    *
    * If null, defaults to the `bodyLarge` text style from the current [Theme].
    * The default text color is [ColorScheme.onSurface].
    */
-  textStyle?: WidgetStateProperty;
+  textStyle?: WidgetStatePropertyValue;
   /**
    * The style to use for the [hintText].
    *
@@ -68670,7 +87686,7 @@ export interface SearchBarProps {
    * defaults to the `bodyLarge` text style from the current [Theme].
    * The default text color is [ColorScheme.onSurfaceVariant].
    */
-  hintStyle?: WidgetStateProperty;
+  hintStyle?: WidgetStatePropertyValue;
   textCapitalization?: TextCapitalization;
   /**
    * Whether or not this widget is currently interactive.
@@ -68687,8 +87703,8 @@ export interface SearchBarProps {
    *
    * Defaults to the default value specified in [TextField].
    */
-  keyboardType?: TextInputType;
-  scrollPadding?: EdgeInsets;
+  keyboardType?: TextInputTypeValue;
+  scrollPadding?: EdgeInsetsValue;
   /**
    * If not provided, will build a default menu based on the platform.
    *
@@ -68796,7 +87812,7 @@ export interface SearchBarThemeProps {
   /**
    * The properties used for all descendant [SearchBar] widgets.
    */
-  data: SearchBarThemeData;
+  data: SearchBarThemeDataValue;
 }
 
 /**
@@ -68841,7 +87857,7 @@ export interface SearchViewThemeProps {
   /**
    * The properties used for all descendant [SearchAnchor] widgets.
    */
-  data: SearchViewThemeData;
+  data: SearchViewThemeDataValue;
 }
 
 /**
@@ -68975,7 +87991,7 @@ export interface SegmentedButtonProps {
    * the button expands to fill its parent's space, with the [EdgeInsets]
    * defining the padding.
    */
-  expandedInsets?: EdgeInsets;
+  expandedInsets?: EdgeInsetsValue;
   /**
    * Customizes this button's appearance.
    *
@@ -69016,7 +88032,7 @@ export interface SegmentedButtonProps {
    *  * [WidgetState.disabled].
    *  * [WidgetState.selected].
    */
-  style?: ButtonStyle;
+  style?: ButtonStyleValue;
   /**
    * Determines if the [selectedIcon] (usually an icon using [Icons.check])
    * is displayed on the selected segments.
@@ -69128,7 +88144,7 @@ export interface SegmentedButtonThemeProps {
    * Specifies the visual properties used by descendant [SegmentedButton]
    * widgets.
    */
-  data: SegmentedButtonThemeData;
+  data: SegmentedButtonThemeDataValue;
 }
 
 /**
@@ -69338,7 +88354,7 @@ export interface SelectableRegionProps {
    * For a version of [SelectableRegion] that adapts automatically to the
    * current platform, consider [SelectionArea].
    */
-  magnifierConfiguration?: TextMagnifierConfiguration;
+  magnifierConfiguration?: TextMagnifierConfigurationValue;
   /**
    * Called when the selected content changes.
    */
@@ -69643,15 +88659,15 @@ export interface SelectableTextProps {
    *
    * If null, defaults [DefaultTextStyle] of context.
    */
-  style?: TextStyle;
-  strutStyle?: StrutStyle;
+  style?: TextStyleValue;
+  strutStyle?: StrutStyleValue;
   textAlign?: TextAlign;
   textDirection?: TextDirection;
   /**
    * @deprecated
    */
   textScaleFactor?: number;
-  textScaler?: TextScaler;
+  textScaler?: TextScalerValue;
   showCursor?: boolean;
   autofocus?: boolean;
   /**
@@ -69663,12 +88679,12 @@ export interface SelectableTextProps {
    *
    * @deprecated
    */
-  toolbarOptions?: ToolbarOptions;
+  toolbarOptions?: ToolbarOptionsValue;
   minLines?: number;
   maxLines?: number;
   cursorWidth?: number;
   cursorHeight?: number;
-  cursorRadius?: Radius;
+  cursorRadius?: RadiusValue;
   /**
    * The color of the cursor.
    *
@@ -69679,7 +88695,7 @@ export interface SelectableTextProps {
    * [TargetPlatform.macOS], then [CupertinoThemeData.primaryColor] is used.
    * Otherwise [ColorScheme.primary] of [ThemeData.colorScheme] is used.
    */
-  cursorColor?: Color;
+  cursorColor?: ColorValue;
   /**
    * The color to use when painting the selection.
    *
@@ -69689,7 +88705,7 @@ export interface SelectableTextProps {
    * Apple platforms and [ColorScheme.primary] of [ThemeData.colorScheme] on
    * other platforms.
    */
-  selectionColor?: Color;
+  selectionColor?: ColorValue;
   /**
    * Controls how tall the selection highlight boxes are computed to be.
    *
@@ -69723,10 +88739,10 @@ export interface SelectableTextProps {
    * selectable text's internal gesture detector, use a [Listener].
    */
   onClick?: () => void;
-  scrollPhysics?: ScrollPhysics;
+  scrollPhysics?: ScrollPhysicsValue;
   scrollBehavior?: ScrollBehavior;
   semanticsLabel?: string;
-  textHeightBehavior?: TextHeightBehavior;
+  textHeightBehavior?: TextHeightBehaviorValue;
   textWidthBasis?: TextWidthBasis;
   onSelectionChanged?: (
     selection: TextSelection,
@@ -69743,7 +88759,7 @@ export interface SelectableTextProps {
    * on Android, and builds nothing on all other platforms. To suppress the
    * magnifier, consider passing [TextMagnifierConfiguration.disabled].
    */
-  magnifierConfiguration?: TextMagnifierConfiguration;
+  magnifierConfiguration?: TextMagnifierConfigurationValue;
 }
 
 /**
@@ -69877,7 +88893,7 @@ export interface SelectionAreaProps {
    * on Android, and builds nothing on all other platforms. To suppress the
    * magnifier, consider passing [TextMagnifierConfiguration.disabled].
    */
-  magnifierConfiguration?: TextMagnifierConfiguration;
+  magnifierConfiguration?: TextMagnifierConfigurationValue;
   /**
    * Called when the selected content changes.
    */
@@ -70270,7 +89286,7 @@ export interface SemanticsProps {
   onLongPressHint?: string;
   textDirection?: TextDirection;
   sortKey?: SemanticsSortKey;
-  tagForChildren?: SemanticsTag;
+  tagForChildren?: SemanticsTagValue;
   onClick?: () => void;
   onLongPress?: () => void;
   onScrollLeft?: () => void;
@@ -70332,7 +89348,7 @@ export interface SemanticsDebuggerProps {
   /**
    * The [TextStyle] to use when rendering semantics labels.
    */
-  labelStyle?: TextStyle;
+  labelStyle?: TextStyleValue;
 }
 
 /**
@@ -71041,14 +90057,14 @@ export interface SimpleDialogProps {
    * See [contentPadding] for the conventions regarding padding between the
    * [title] and the [children].
    */
-  titlePadding?: EdgeInsetsGeometry;
+  titlePadding?: EdgeInsetsGeometryValue;
   /**
    * Style for the text in the [title] of this [SimpleDialog].
    *
    * If null, [DialogThemeData.titleTextStyle] is used. If that's null, defaults to
    * [TextTheme.titleLarge] of [ThemeData.textTheme].
    */
-  titleTextStyle?: TextStyle;
+  titleTextStyle?: TextStyleValue;
   /**
    * Padding around the content.
    *
@@ -71063,7 +90079,7 @@ export interface SimpleDialogProps {
    * If there is no [title], the [contentPadding] should be adjusted so that
    * the top padding ends up being 24 pixels.
    */
-  contentPadding?: EdgeInsetsGeometry;
+  contentPadding?: EdgeInsetsGeometryValue;
   /**
    * Style for the text in the [children] of this [SimpleDialog].
    *
@@ -71071,11 +90087,11 @@ export interface SimpleDialogProps {
    * defaults to [TextTheme.titleMedium] for Material 2, or [TextTheme.bodyMedium]
    * for Material 3.
    */
-  contentTextStyle?: TextStyle;
-  backgroundColor?: Color;
+  contentTextStyle?: TextStyleValue;
+  backgroundColor?: ColorValue;
   elevation?: number;
-  shadowColor?: Color;
-  surfaceTintColor?: Color;
+  shadowColor?: ColorValue;
+  surfaceTintColor?: ColorValue;
   /**
    * The semantic label of the dialog used by accessibility frameworks to
    * announce screen transitions when the dialog is opened and closed.
@@ -71090,11 +90106,11 @@ export interface SimpleDialogProps {
    *    value is used.
    */
   semanticLabel?: string;
-  insetPadding?: EdgeInsets;
+  insetPadding?: EdgeInsetsValue;
   clipBehavior?: Clip;
-  shape?: ShapeBorder;
-  alignment?: AlignmentGeometry;
-  constraints?: BoxConstraints;
+  shape?: ShapeBorderValue;
+  alignment?: AlignmentGeometryValue;
+  constraints?: BoxConstraintsValue;
 }
 
 /**
@@ -71222,7 +90238,7 @@ export interface SimpleDialogOptionProps {
    *
    * Defaults to EdgeInsets.symmetric(vertical: 8.0, horizontal: 24.0).
    */
-  padding?: EdgeInsets;
+  padding?: EdgeInsetsValue;
 }
 
 /**
@@ -71398,7 +90414,7 @@ export interface SingleChildScrollViewProps {
   /**
    * The amount of space by which to inset the child.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   primary?: boolean;
   /**
    * How the scroll view should respond to user input.
@@ -71408,7 +90424,7 @@ export interface SingleChildScrollViewProps {
    *
    * Defaults to matching platform conventions.
    */
-  physics?: ScrollPhysics;
+  physics?: ScrollPhysicsValue;
   /**
    * An object that can be used to control the position to which this scroll
    * view is scrolled.
@@ -71679,7 +90695,7 @@ export interface SizeTransitionProps {
   /**
    * The alignment of the child within the parent during the transition.
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
   /**
    * The factor by which to multiply the cross axis size of the child.
    *
@@ -71916,7 +90932,7 @@ export interface SizedOverflowBoxProps {
   /**
    * The size this widget should attempt to be.
    */
-  size: Size;
+  size: SizeValue;
   /**
    * How to align the child.
    *
@@ -71937,7 +90953,7 @@ export interface SizedOverflowBoxProps {
    *  * [AlignmentDirectional], like [Alignment] for specifying alignments
    *    relative to text direction.
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
 }
 
 /**
@@ -72307,7 +91323,7 @@ export interface SliderProps {
    * Using a [SliderTheme] gives much more fine-grained control over the
    * appearance of various components of the slider.
    */
-  activeColor?: Color;
+  activeColor?: ColorValue;
   /**
    * The color for the inactive portion of the slider track.
    *
@@ -72325,7 +91341,7 @@ export interface SliderProps {
    *
    * Ignored if this slider is created with [Slider.adaptive].
    */
-  inactiveColor?: Color;
+  inactiveColor?: ColorValue;
   /**
    * The color to use for the portion of the slider track between the thumb and
    * the [Slider.secondaryTrackValue].
@@ -72341,7 +91357,7 @@ export interface SliderProps {
    *
    * Ignored if this slider is created with [Slider.adaptive].
    */
-  secondaryActiveColor?: Color;
+  secondaryActiveColor?: ColorValue;
   /**
    * The color of the thumb.
    *
@@ -72353,7 +91369,7 @@ export interface SliderProps {
    * * [CupertinoSlider] will have a white thumb
    * (like the native default iOS slider).
    */
-  thumbColor?: Color;
+  thumbColor?: ColorValue;
   /**
    * The highlight color that's typically used to indicate that
    * the slider thumb is focused, hovered, or dragged.
@@ -72368,7 +91384,7 @@ export interface SliderProps {
    * is focused or dragged, If [ThemeData.useMaterial3] is false, defaults
    * to [ColorScheme.primary] with an opacity of 0.12.
    */
-  overlayColor?: WidgetStateProperty;
+  overlayColor?: WidgetStatePropertyValue;
   /**
    * The cursor for a mouse pointer when it enters or is hovering over the
    * widget.
@@ -72384,7 +91400,7 @@ export interface SliderProps {
    * If null, then the value of [SliderThemeData.mouseCursor] is used. If that
    * is also null, then [WidgetStateMouseCursor.clickable] is used.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * The callback used to create a semantic value from a slider value.
    *
@@ -72437,7 +91453,7 @@ export interface SliderProps {
    * horizontal padding, defaults to the width of the thumb shape or
    * overlay shape, whichever is larger.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * Determines the conditions under which the value indicator is shown.
    *
@@ -72582,7 +91598,7 @@ export interface SliderThemeProps {
   /**
    * Specifies the color and shape values for descendant slider widgets.
    */
-  data: SliderThemeData;
+  data: SliderThemeDataValue;
 }
 
 /**
@@ -72801,11 +91817,11 @@ export interface SliverAnimatedOpacityProps {
   /**
    * The curve to apply when animating the parameters of this container.
    */
-  curve?: Curve;
+  curve?: CurveValue;
   /**
    * The duration over which to animate the parameters of this container.
    */
-  duration: Duration;
+  duration: DurationValue;
   /**
    * Called every time an animation completes.
    *
@@ -72992,11 +92008,11 @@ export interface SliverAppBarProps {
   /**
    * This property is used to configure an [AppBar].
    */
-  shadowColor?: Color;
+  shadowColor?: ColorValue;
   /**
    * This property is used to configure an [AppBar].
    */
-  surfaceTintColor?: Color;
+  surfaceTintColor?: ColorValue;
   /**
    * Whether to show the shadow appropriate for the [elevation] even if the
    * content is not scrolled under the [AppBar].
@@ -73012,19 +92028,19 @@ export interface SliverAppBarProps {
   /**
    * This property is used to configure an [AppBar].
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * This property is used to configure an [AppBar].
    */
-  foregroundColor?: Color;
+  foregroundColor?: ColorValue;
   /**
    * This property is used to configure an [AppBar].
    */
-  iconTheme?: IconThemeData;
+  iconTheme?: IconThemeDataValue;
   /**
    * This property is used to configure an [AppBar].
    */
-  actionsIconTheme?: IconThemeData;
+  actionsIconTheme?: IconThemeDataValue;
   /**
    * This property is used to configure an [AppBar].
    */
@@ -73162,7 +92178,7 @@ export interface SliverAppBarProps {
   /**
    * This property is used to configure an [AppBar].
    */
-  shape?: ShapeBorder;
+  shape?: ShapeBorderValue;
   /**
    * This property is used to configure an [AppBar].
    */
@@ -73174,15 +92190,15 @@ export interface SliverAppBarProps {
   /**
    * This property is used to configure an [AppBar].
    */
-  toolbarTextStyle?: TextStyle;
+  toolbarTextStyle?: TextStyleValue;
   /**
    * This property is used to configure an [AppBar].
    */
-  titleTextStyle?: TextStyle;
+  titleTextStyle?: TextStyleValue;
   /**
    * This property is used to configure an [AppBar].
    */
-  systemOverlayStyle?: SystemUiOverlayStyle;
+  systemOverlayStyle?: SystemUiOverlayStyleValue;
   /**
    * This property is used to configure an [AppBar].
    */
@@ -73195,7 +92211,7 @@ export interface SliverAppBarProps {
   /**
    * This property is used to configure an [AppBar].
    */
-  actionsPadding?: EdgeInsetsGeometry;
+  actionsPadding?: EdgeInsetsGeometryValue;
 }
 
 /**
@@ -74077,7 +93093,7 @@ export interface SliverFloatingHeaderProps {
    *
    * The reverse duration and curve apply to the animation that hides the header.
    */
-  animationStyle?: AnimationStyle;
+  animationStyle?: AnimationStyleValue;
   /**
    * Specifies how a partially visible [SliverFloatingHeader] animates
    * into a view when a user scroll gesture ends.
@@ -74792,7 +93808,7 @@ export interface SliverPaddingProps {
   /**
    * The amount of space by which to inset the child sliver.
    */
-  padding: EdgeInsetsGeometry;
+  padding: EdgeInsetsGeometryValue;
   sliver?: FlutterChild;
 }
 
@@ -75187,7 +94203,7 @@ export interface SliverSafeAreaProps {
    *
    * The greater of the minimum padding and the media padding is be applied.
    */
-  minimum?: EdgeInsets;
+  minimum?: EdgeInsetsValue;
   /**
    * The sliver below this sliver in the tree.
    *
@@ -75381,7 +94397,7 @@ export interface SliverSemanticsProps {
   onLongPressHint?: string;
   textDirection?: TextDirection;
   sortKey?: SemanticsSortKey;
-  tagForChildren?: SemanticsTag;
+  tagForChildren?: SemanticsTagValue;
   onClick?: () => void;
   onLongPress?: () => void;
   onScrollLeft?: () => void;
@@ -75834,7 +94850,7 @@ export interface SnackBarProps {
    * dark variation of [ColorScheme.surface] for light themes, or
    * [ColorScheme.onSurface] for dark themes.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * The z-coordinate at which to place the snack bar. This controls the size
    * of the shadow below the snack bar.
@@ -75857,7 +94873,7 @@ export interface SnackBarProps {
    *
    * If this property is not null and [hitTestBehavior] is null, then [hitTestBehavior] default is [HitTestBehavior.deferToChild].
    */
-  margin?: EdgeInsetsGeometry;
+  margin?: EdgeInsetsGeometryValue;
   /**
    * The amount of padding to apply to the snack bar's content and optional
    * action.
@@ -75886,7 +94902,7 @@ export interface SnackBarProps {
    *     * Right padding is replaced with one and a half times the
    *       right padding.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * The width of the snack bar.
    *
@@ -75911,7 +94927,7 @@ export interface SnackBarProps {
    * [SnackBarBehavior.floating], it uses a [RoundedRectangleBorder] with a
    * circular corner radius of 4.0.
    */
-  shape?: ShapeBorder;
+  shape?: ShapeBorderValue;
   /**
    * Defines how the snack bar area, including margin, will behave during hit testing.
    *
@@ -75976,7 +94992,7 @@ export interface SnackBarProps {
    * is in, thus allowing for different colors for states such as pressed,
    * hovered and others.
    */
-  closeIconColor?: Color;
+  closeIconColor?: ColorValue;
   /**
    * The amount of time the snack bar should be displayed.
    *
@@ -75989,7 +95005,7 @@ export interface SnackBarProps {
    *    displayed.
    *  * <https://material.io/design/components/snackbars.html>
    */
-  duration?: Duration;
+  duration?: DurationValue;
   /**
    * Whether the snack bar will stay or auto-dismiss after timeout.
    *
@@ -76105,12 +95121,12 @@ export interface SnackBarActionProps {
    * is in, thus allowing for different colors for states such as pressed,
    * hovered and others.
    */
-  textColor?: Color;
+  textColor?: ColorValue;
   /**
    * The button disabled label color. This color is shown after the
    * [SnackBarAction] is dismissed.
    */
-  disabledTextColor?: Color;
+  disabledTextColor?: ColorValue;
   /**
    * The button background fill color. If not provided, defaults to
    * [SnackBarThemeData.actionBackgroundColor].
@@ -76119,14 +95135,14 @@ export interface SnackBarActionProps {
    * be resolved against the set of [WidgetState]s that the action text is
    * in, thus allowing for different colors for the states.
    */
-  backgroundColor?: Color;
+  backgroundColor?: ColorValue;
   /**
    * The button disabled background color. This color is shown after the
    * [SnackBarAction] is dismissed.
    *
    * If not provided, defaults to [SnackBarThemeData.disabledActionBackgroundColor].
    */
-  disabledBackgroundColor?: Color;
+  disabledBackgroundColor?: ColorValue;
   /**
    * The button label.
    */
@@ -76175,7 +95191,7 @@ export interface SnackBarThemeProps {
   /**
    * The properties for descendant [SnackBar] widgets.
    */
-  data: SnackBarThemeData;
+  data: SnackBarThemeDataValue;
 }
 
 /**
@@ -76379,7 +95395,7 @@ export interface SpellCheckSuggestionsToolbarProps {
   /**
    * The focal point below which the toolbar attempts to position itself.
    */
-  anchor: Offset;
+  anchor: OffsetValue;
   /**
    * The [ContextMenuButtonItem]s that will be turned into the correct button
    * widgets and displayed in the spell check suggestions toolbar.
@@ -76606,7 +95622,7 @@ export interface StackProps {
    *  * [AlignmentDirectional], like [Alignment] for specifying alignments
    *    relative to text direction.
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
   /**
    * The text direction with which to resolve [alignment].
    *
@@ -76910,7 +95926,7 @@ export interface StepperProps {
    * If the stepper is contained within another scrollable it
    * can be helpful to set this property to [ClampingScrollPhysics].
    */
-  physics?: ScrollPhysics;
+  physics?: ScrollPhysicsValue;
   /**
    * The type of stepper that determines the layout. In the case of
    * [StepperType.horizontal], the content of the current step is displayed
@@ -77002,7 +96018,7 @@ export interface StepperProps {
   /**
    * Custom margin on vertical stepper.
    */
-  margin?: EdgeInsetsGeometry;
+  margin?: EdgeInsetsGeometryValue;
   /**
    * Customize connected lines colors.
    *
@@ -77013,7 +96029,7 @@ export interface StepperProps {
    * If not set then the widget will use default colors, primary for selected state
    * and grey.shade400 for disabled state.
    */
-  connectorColor?: WidgetStateProperty;
+  connectorColor?: WidgetStatePropertyValue;
   /**
    * The thickness of the connecting lines.
    */
@@ -77041,7 +96057,7 @@ export interface StepperProps {
   /**
    * Overrides the default step icon margin.
    */
-  stepIconMargin?: EdgeInsets;
+  stepIconMargin?: EdgeInsetsValue;
   /**
    * The [Step.content] will be clipped to this Clip type.
    *
@@ -77058,7 +96074,7 @@ export interface StepperProps {
    *
    * Defaults to to `EdgeInsets.symmetric(horizontal: 24.0)`.
    */
-  headerPadding?: EdgeInsetsGeometry;
+  headerPadding?: EdgeInsetsGeometryValue;
   /**
    * The padding around the content area in both [StepperType.vertical] and
    * [StepperType.horizontal] steppers.
@@ -77070,7 +96086,7 @@ export interface StepperProps {
    * The `start` padding is also increased by the `left` value of
    * [stepIconMargin] if it is provided.
    */
-  contentPadding?: EdgeInsetsGeometry;
+  contentPadding?: EdgeInsetsGeometryValue;
 }
 
 /**
@@ -77489,13 +96505,13 @@ export interface SubmenuButtonProps {
    *
    * Null by default.
    */
-  style?: ButtonStyle;
+  style?: ButtonStyleValue;
   /**
    * The [MenuStyle] of the menu specified by [menuChildren].
    *
    * Defaults to the value of [MenuThemeData.style] of the ambient [MenuTheme].
    */
-  menuStyle?: MenuStyle;
+  menuStyle?: MenuStyleValue;
   /**
    * The offset of the menu relative to the alignment origin determined by
    * [MenuStyle.alignment] on the [style] attribute.
@@ -77506,7 +96522,7 @@ export interface SubmenuButtonProps {
    * that the top starting corner of the first menu item is aligned with the
    * top of the [MenuAnchor] region.
    */
-  alignmentOffset?: Offset;
+  alignmentOffset?: OffsetValue;
   /**
    * Defaults to [Clip.hardEdge].
    */
@@ -77533,7 +96549,7 @@ export interface SubmenuButtonProps {
    * If that is also null, then defaults to a right arrow icon with the size
    * of 24 pixels.
    */
-  submenuIcon?: WidgetStateProperty;
+  submenuIcon?: WidgetStatePropertyValue;
   /**
    * Defaults to false.
    */
@@ -77550,7 +96566,7 @@ export interface SubmenuButtonProps {
    *
    * Defaults to [Duration.zero].
    */
-  hoverOpenDelay?: Duration;
+  hoverOpenDelay?: DurationValue;
   /**
    * Whether the menu should open and close with an animation.
    *
@@ -77711,7 +96727,7 @@ export interface SwitchProps {
    *
    * @deprecated
    */
-  activeColor?: Color;
+  activeColor?: ColorValue;
   /**
    * The color to use when this switch is on.
    *
@@ -77720,7 +96736,7 @@ export interface SwitchProps {
    * If [thumbColor] returns a non-null color in the [WidgetState.selected]
    * state, it will be used instead of this color.
    */
-  activeThumbColor?: Color;
+  activeThumbColor?: ColorValue;
   /**
    * The color to use on the track when this switch is on.
    *
@@ -77729,7 +96745,7 @@ export interface SwitchProps {
    * If [trackColor] returns a non-null color in the [WidgetState.selected]
    * state, it will be used instead of this color.
    */
-  activeTrackColor?: Color;
+  activeTrackColor?: ColorValue;
   /**
    * The color to use on the thumb when this switch is off.
    *
@@ -77738,7 +96754,7 @@ export interface SwitchProps {
    * If [thumbColor] returns a non-null color in the default state, it will be
    * used instead of this color.
    */
-  inactiveThumbColor?: Color;
+  inactiveThumbColor?: ColorValue;
   /**
    * The color to use on the track when this switch is off.
    *
@@ -77747,7 +96763,7 @@ export interface SwitchProps {
    * If [trackColor] returns a non-null color in the default state, it will be
    * used instead of this color.
    */
-  inactiveTrackColor?: Color;
+  inactiveTrackColor?: ColorValue;
   /**
    * An image to use on the thumb of this switch when the switch is on.
    */
@@ -77809,7 +96825,7 @@ export interface SwitchProps {
    * | Selected | [ColorScheme.secondary] | [ColorScheme.secondary] |
    * | Disabled | `Colors.grey.shade400`            | `Colors.grey.shade800`            |
    */
-  thumbColor?: WidgetStateProperty;
+  thumbColor?: WidgetStatePropertyValue;
   /**
    * The color of this [Switch]'s track.
    *
@@ -77847,7 +96863,7 @@ export interface SwitchProps {
    * | Selected | [activeThumbColor] with alpha `0x80` | [activeThumbColor] with alpha `0x80` |
    * | Disabled | `Colors.black12`                | `Colors.white10`                |
    */
-  trackColor?: WidgetStateProperty;
+  trackColor?: WidgetStatePropertyValue;
   /**
    * The outline color of this [Switch]'s track.
    *
@@ -77878,7 +96894,7 @@ export interface SwitchProps {
    * state and [ColorScheme.outline] in the unselected state. In Material 2,
    * the [Switch] track has no outline by default.
    */
-  trackOutlineColor?: WidgetStateProperty;
+  trackOutlineColor?: WidgetStatePropertyValue;
   /**
    * The outline width of this [Switch]'s track.
    *
@@ -77907,7 +96923,7 @@ export interface SwitchProps {
    *
    * Defaults to 2.0.
    */
-  trackOutlineWidth?: WidgetStateProperty;
+  trackOutlineWidth?: WidgetStatePropertyValue;
   /**
    * The icon to use on the thumb of this switch
    *
@@ -77937,7 +96953,7 @@ export interface SwitchProps {
    * If null, then the value of [SwitchThemeData.thumbIcon] is used. If this is also null,
    * then the [Switch] does not have any icons on the thumb.
    */
-  thumbIcon?: WidgetStateProperty;
+  thumbIcon?: WidgetStatePropertyValue;
   /**
    * Configures the minimum size of the tap target.
    *
@@ -77966,7 +96982,7 @@ export interface SwitchProps {
    * If null, then the value of [SwitchThemeData.mouseCursor] is used. If that
    * is also null, then [WidgetStateMouseCursor.clickable] is used.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * The color for the button's [Material] when it has the input focus.
    *
@@ -77977,7 +96993,7 @@ export interface SwitchProps {
    * focused state. If that is also null, then the value of
    * [ThemeData.focusColor] is used.
    */
-  focusColor?: Color;
+  focusColor?: ColorValue;
   /**
    * The color for the button's [Material] when a pointer is hovering over it.
    *
@@ -77988,7 +97004,7 @@ export interface SwitchProps {
    * hovered state. If that is also null, then the value of
    * [ThemeData.hoverColor] is used.
    */
-  hoverColor?: Color;
+  hoverColor?: ColorValue;
   /**
    * The color for the switch's [Material].
    *
@@ -78006,7 +97022,7 @@ export interface SwitchProps {
    * [kRadialReactionAlpha], [ThemeData.focusColor] and [ThemeData.hoverColor]
    * is used in the pressed, focused and hovered state.
    */
-  overlayColor?: WidgetStateProperty;
+  overlayColor?: WidgetStatePropertyValue;
   /**
    * The splash radius of the circular [Material] ink response.
    *
@@ -78023,7 +97039,7 @@ export interface SwitchProps {
    * Defaults to horizontal padding of 4 pixels. If [ThemeData.useMaterial3] is false,
    * then there is no padding by default.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
 }
 
 /**
@@ -78236,29 +97252,29 @@ export interface SwitchListTileProps {
    *
    * @deprecated
    */
-  activeColor?: Color;
+  activeColor?: ColorValue;
   /**
    * Defaults to [ColorScheme.secondary] of the current [Theme].
    */
-  activeThumbColor?: Color;
+  activeThumbColor?: ColorValue;
   /**
    * Defaults to [ColorScheme.secondary] with the opacity set at 50%.
    *
    * Ignored if created with [SwitchListTile.adaptive].
    */
-  activeTrackColor?: Color;
+  activeTrackColor?: ColorValue;
   /**
    * Defaults to the colors described in the Material design specification.
    *
    * Ignored if created with [SwitchListTile.adaptive].
    */
-  inactiveThumbColor?: Color;
+  inactiveThumbColor?: ColorValue;
   /**
    * Defaults to the colors described in the Material design specification.
    *
    * Ignored if created with [SwitchListTile.adaptive].
    */
-  inactiveTrackColor?: Color;
+  inactiveTrackColor?: ColorValue;
   activeThumbImage?: ImageProvider;
   onActiveThumbImageError?: (
     exception: Object,
@@ -78285,7 +97301,7 @@ export interface SwitchListTileProps {
    * the value of [SwitchThemeData.thumbColor] is used. If that is also null,
    * The default value is used.
    */
-  thumbColor?: WidgetStateProperty;
+  thumbColor?: WidgetStatePropertyValue;
   /**
    * The color of this switch's track.
    *
@@ -78299,7 +97315,7 @@ export interface SwitchListTileProps {
    * then the value of [SwitchThemeData.trackColor] is used. If that is also
    * null, then the default value is used.
    */
-  trackColor?: WidgetStateProperty;
+  trackColor?: WidgetStatePropertyValue;
   /**
    * The [ListTile] will be focused when this [SwitchListTile] requests focus,
    * so the focused outline color of the switch will be ignored.
@@ -78308,7 +97324,7 @@ export interface SwitchListTileProps {
    * state and [ColorScheme.outline] in the unselected state. In Material 2,
    * the [Switch] track has no outline.
    */
-  trackOutlineColor?: WidgetStateProperty;
+  trackOutlineColor?: WidgetStatePropertyValue;
   /**
    * The icon to use on the thumb of this switch
    *
@@ -78320,7 +97336,7 @@ export interface SwitchListTileProps {
    * If null, then the value of [SwitchThemeData.thumbIcon] is used. If this is
    * also null, then the [Switch] does not have any icons on the thumb.
    */
-  thumbIcon?: WidgetStateProperty;
+  thumbIcon?: WidgetStatePropertyValue;
   /**
    * defaults to [MaterialTapTargetSize.shrinkWrap].
    */
@@ -78340,7 +97356,7 @@ export interface SwitchListTileProps {
    * If null, then the value of [SwitchThemeData.mouseCursor] is used. If that
    * is also null, then [WidgetStateMouseCursor.clickable] is used.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * The color for the switch's [Material].
    *
@@ -78354,7 +97370,7 @@ export interface SwitchListTileProps {
    * null, the value of [SwitchThemeData.overlayColor] is used. If that is
    * also null, then the default value is used in the pressed and hovered state.
    */
-  overlayColor?: WidgetStateProperty;
+  overlayColor?: WidgetStatePropertyValue;
   /**
    * If null, then the value of [SwitchThemeData.splashRadius] is used. If that
    * is also null, then [kRadialReactionRadius] is used.
@@ -78367,7 +97383,7 @@ export interface SwitchListTileProps {
   statesController?: WidgetStatesController;
   onFocusChange?: (value: boolean) => void;
   autofocus?: boolean;
-  tileColor?: Color;
+  tileColor?: ColorValue;
   /**
    * The primary content of the list tile.
    *
@@ -78403,7 +97419,7 @@ export interface SwitchListTileProps {
    * If null, [ListTile]'s default of `EdgeInsets.symmetric(horizontal: 16.0)`
    * is used.
    */
-  contentPadding?: EdgeInsetsGeometry;
+  contentPadding?: EdgeInsetsGeometryValue;
   /**
    * A widget to display on the opposite side of the tile from the switch.
    *
@@ -78426,15 +97442,15 @@ export interface SwitchListTileProps {
    * By default, the value of [controlAffinity] is [ListTileControlAffinity.platform].
    */
   controlAffinity?: ListTileControlAffinity;
-  shape?: ShapeBorder;
+  shape?: ShapeBorderValue;
   /**
    * If non-null, defines the background color when [SwitchListTile.selected] is true.
    */
-  selectedTileColor?: Color;
+  selectedTileColor?: ColorValue;
   /**
    * Defines how compact the list tile's layout will be.
    */
-  visualDensity?: VisualDensity;
+  visualDensity?: VisualDensityValue;
   /**
    * See also:
    *
@@ -78448,7 +97464,7 @@ export interface SwitchListTileProps {
   /**
    * The color for the tile's [Material] when a pointer is hovering over it.
    */
-  hoverColor?: Color;
+  hoverColor?: ColorValue;
   /**
    * Whether to add button:true to the semantics if onTap is provided.
    * This is a temporary flag to help changing the behavior of ListTile onTap semantics.
@@ -78605,7 +97621,7 @@ export interface SwitchThemeProps {
   /**
    * The properties used for all descendant [Switch] widgets.
    */
-  data: SwitchThemeData;
+  data: SwitchThemeDataValue;
 }
 
 /**
@@ -78667,7 +97683,7 @@ export interface TabProps {
    * Defaults to 2 pixels of bottom margin. If [ThemeData.useMaterial3] is false,
    * then defaults to 10 pixels of bottom margin.
    */
-  iconMargin?: EdgeInsetsGeometry;
+  iconMargin?: EdgeInsetsGeometryValue;
   /**
    * The height of the [Tab].
    *
@@ -78804,7 +97820,7 @@ export interface TabBarProps {
    * in a [Padding] widget. When [isScrollable] is true, the scrollable itself is inset,
    * allowing the padding to scroll with the tab bar, rather than enclosing it.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * The color of the line that appears below the selected tab.
    *
@@ -78814,7 +97830,7 @@ export interface TabBarProps {
    * If [indicator] is specified or provided from [TabBarThemeData],
    * this property is ignored.
    */
-  indicatorColor?: Color;
+  indicatorColor?: ColorValue;
   /**
    * Whether this tab bar should automatically adjust the [indicatorColor].
    *
@@ -78853,7 +97869,7 @@ export interface TabBarProps {
    * the indicator with the tab's text for [Tab] widgets and all but the
    * shortest [Tab.text] values.
    */
-  indicatorPadding?: EdgeInsetsGeometry;
+  indicatorPadding?: EdgeInsetsGeometryValue;
   /**
    * Defines the appearance of the selected tab indicator.
    *
@@ -78897,7 +97913,7 @@ export interface TabBarProps {
    * color is used. If that is null and [ThemeData.useMaterial3] is true,
    * [ColorScheme.outlineVariant] will be used, otherwise divider will not be drawn.
    */
-  dividerColor?: Color;
+  dividerColor?: ColorValue;
   /**
    * The height of the divider.
    *
@@ -78929,7 +97945,7 @@ export interface TabBarProps {
    *
    *   * [unselectedLabelColor], for color of unselected tab labels.
    */
-  labelColor?: Color;
+  labelColor?: ColorValue;
   /**
    * The text style of the selected tab labels.
    *
@@ -78946,7 +97962,7 @@ export interface TabBarProps {
    * will be used, otherwise the text style of the [ThemeData.primaryTextTheme]'s
    * [TextTheme.bodyLarge] definition is used.
    */
-  labelStyle?: TextStyle;
+  labelStyle?: TextStyleValue;
   /**
    * The padding added to each of the tab labels.
    *
@@ -78956,7 +97972,7 @@ export interface TabBarProps {
    *
    * If this property is null, then [kTabLabelPadding] is used.
    */
-  labelPadding?: EdgeInsetsGeometry;
+  labelPadding?: EdgeInsetsGeometryValue;
   /**
    * The color of unselected tab labels.
    *
@@ -78978,7 +97994,7 @@ export interface TabBarProps {
    *
    *  * [labelColor], for color of selected tab labels.
    */
-  unselectedLabelColor?: Color;
+  unselectedLabelColor?: ColorValue;
   /**
    * The text style of the unselected tab labels.
    *
@@ -78993,7 +98009,7 @@ export interface TabBarProps {
    * the text style of the [ThemeData.primaryTextTheme]'s [TextTheme.bodyLarge]
    * definition is used.
    */
-  unselectedLabelStyle?: TextStyle;
+  unselectedLabelStyle?: TextStyleValue;
   dragStartBehavior?: DragStartBehavior;
   /**
    * Defines the ink response focus, hover, and splash colors.
@@ -79016,7 +98032,7 @@ export interface TabBarProps {
    * * hovered - ThemeData.colorScheme.onSurface(0.08)
    * * focused - ThemeData.colorScheme.onSurface(0.1)
    */
-  overlayColor?: WidgetStateProperty;
+  overlayColor?: WidgetStatePropertyValue;
   /**
    * The cursor for a mouse pointer when it enters or is hovering over the
    * individual tab widgets.
@@ -79029,7 +98045,7 @@ export interface TabBarProps {
    * If null, then the value of [TabBarThemeData.mouseCursor] is used. If
    * that is also null, then [WidgetStateMouseCursor.clickable] is used.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * Whether detected gestures should provide acoustic and/or haptic feedback.
    *
@@ -79097,7 +98113,7 @@ export interface TabBarProps {
    *
    * Defaults to matching platform conventions.
    */
-  physics?: ScrollPhysics;
+  physics?: ScrollPhysicsValue;
   /**
    * Creates the tab bar's [InkWell] splash factory, which defines
    * the appearance of "ink" splashes that occur in response to taps.
@@ -79120,7 +98136,7 @@ export interface TabBarProps {
    * )
    * ```
    */
-  splashFactory?: InteractiveInkFeatureFactory;
+  splashFactory?: InteractiveInkFeatureFactoryValue;
   /**
    * Defines the clipping radius of splashes that extend outside the bounds of the tab.
    *
@@ -79140,7 +98156,7 @@ export interface TabBarProps {
    *
    * If this property is null, it is interpreted as [BorderRadius.zero].
    */
-  splashBorderRadius?: BorderRadius;
+  splashBorderRadius?: BorderRadiusValue;
   /**
    * Specifies the horizontal alignment of the tabs within a [TabBar].
    *
@@ -79171,7 +98187,7 @@ export interface TabBarProps {
    * See also:
    *   * [TextScaler], which is used to scale text based on the device's text scale factor.
    */
-  textScaler?: TextScaler;
+  textScaler?: TextScalerValue;
   /**
    * Specifies the animation behavior of the tab indicator.
    *
@@ -79272,22 +98288,22 @@ export interface TabBarThemeProps {
    */
   children?: FlutterChild;
   indicator?: Decoration;
-  indicatorColor?: Color;
+  indicatorColor?: ColorValue;
   indicatorSize?: TabBarIndicatorSize;
-  dividerColor?: Color;
+  dividerColor?: ColorValue;
   dividerHeight?: number;
-  labelColor?: Color;
-  labelPadding?: EdgeInsetsGeometry;
-  labelStyle?: TextStyle;
-  unselectedLabelColor?: Color;
-  unselectedLabelStyle?: TextStyle;
-  overlayColor?: WidgetStateProperty;
-  splashFactory?: InteractiveInkFeatureFactory;
-  mouseCursor?: WidgetStateProperty;
+  labelColor?: ColorValue;
+  labelPadding?: EdgeInsetsGeometryValue;
+  labelStyle?: TextStyleValue;
+  unselectedLabelColor?: ColorValue;
+  unselectedLabelStyle?: TextStyleValue;
+  overlayColor?: WidgetStatePropertyValue;
+  splashFactory?: InteractiveInkFeatureFactoryValue;
+  mouseCursor?: WidgetStatePropertyValue;
   tabAlignment?: TabAlignment;
-  textScaler?: TextScaler;
+  textScaler?: TextScalerValue;
   indicatorAnimation?: TabIndicatorAnimation;
-  data?: TabBarThemeData;
+  data?: TabBarThemeDataValue;
 }
 
 /**
@@ -79349,7 +98365,7 @@ export interface TabBarViewProps {
    *
    * Defaults to matching platform conventions.
    */
-  physics?: ScrollPhysics;
+  physics?: ScrollPhysicsValue;
   dragStartBehavior?: DragStartBehavior;
   viewportFraction?: number;
   /**
@@ -79404,7 +98420,7 @@ export interface TabPageSelectorProps {
    *
    * If this parameter is null, then the indicator is filled with [Colors.transparent].
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * The indicator circle's fill color for selected pages and border color
    * for all indicator circles.
@@ -79412,7 +98428,7 @@ export interface TabPageSelectorProps {
    * If this parameter is null, then the indicator is filled with the theme's
    * [ColorScheme.secondary].
    */
-  selectedColor?: Color;
+  selectedColor?: ColorValue;
   /**
    * The indicator circle's border style.
    *
@@ -79445,11 +98461,11 @@ export interface TabPageSelectorIndicatorProps {
   /**
    * The indicator circle's background color.
    */
-  backgroundColor: Color;
+  backgroundColor: ColorValue;
   /**
    * The indicator circle's border color.
    */
-  borderColor: Color;
+  borderColor: ColorValue;
   /**
    * The indicator circle's diameter.
    */
@@ -79552,7 +98568,7 @@ export interface TableProps {
   /**
    * The style to use when painting the boundary and interior divisions of the table.
    */
-  border?: TableBorder;
+  border?: TableBorderValue;
   /**
    * How cells that do not explicitly specify a vertical alignment are aligned vertically.
    *
@@ -79744,7 +98760,7 @@ export interface TableRowInkWellProps {
    *    match a component's state:
    *    <https://material.io/design/interaction/states.html#anatomy>.
    */
-  overlayColor?: WidgetStateProperty;
+  overlayColor?: WidgetStatePropertyValue;
   /**
    * The cursor for a mouse pointer when it enters or is hovering over the
    * widget.
@@ -79758,7 +98774,7 @@ export interface TableRowInkWellProps {
    *
    * If this property is null, [WidgetStateMouseCursor.adaptiveClickable] will be used.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
 }
 
 /**
@@ -80193,12 +99209,12 @@ export interface TextProps {
    * [MediaQueryData.letterSpacingOverride], and [MediaQueryData.wordSpacingOverride]
    * regardless of its [TextStyle.inherit] value.
    */
-  style?: TextStyle;
+  style?: TextStyleValue;
   /**
    * The user or platform may override this [strutStyle]'s [StrutStyle.height]
    * via a [MediaQuery] ancestor's [MediaQueryData.lineHeightScaleFactorOverride].
    */
-  strutStyle?: StrutStyle;
+  strutStyle?: StrutStyleValue;
   /**
    * How the text should be aligned horizontally.
    */
@@ -80258,7 +99274,7 @@ export interface TextProps {
    * @deprecated
    */
   textScaleFactor?: number;
-  textScaler?: TextScaler;
+  textScaler?: TextScalerValue;
   /**
    * An optional maximum number of lines for the text to span, wrapping if necessary.
    * If the text exceeds the given number of lines, it will be truncated according
@@ -80298,7 +99314,7 @@ export interface TextProps {
    */
   semanticsIdentifier?: string;
   textWidthBasis?: TextWidthBasis;
-  textHeightBehavior?: TextHeightBehavior;
+  textHeightBehavior?: TextHeightBehaviorValue;
   /**
    * The color to use when painting the selection.
    *
@@ -80309,7 +99325,7 @@ export interface TextProps {
    * that, the selection color defaults to [DefaultSelectionStyle.defaultColor]
    * (semi-transparent grey).
    */
-  selectionColor?: Color;
+  selectionColor?: ColorValue;
 }
 
 /**
@@ -80534,7 +99550,7 @@ export interface TextButtonProps {
    *
    * Null by default.
    */
-  style?: ButtonStyle;
+  style?: ButtonStyleValue;
   focusNode?: FocusNode;
   autofocus?: boolean;
   /**
@@ -80635,7 +99651,7 @@ export interface TextButtonThemeProps {
   /**
    * The configuration of this theme.
    */
-  data: TextButtonThemeData;
+  data: TextButtonThemeDataValue;
 }
 
 /**
@@ -80831,8 +99847,8 @@ export interface TextFieldProps {
    * Specify null to remove the decoration entirely (including the
    * extra padding introduced by the decoration to save space for the labels).
    */
-  decoration?: InputDecoration;
-  keyboardType?: TextInputType;
+  decoration?: InputDecorationValue;
+  keyboardType?: TextInputTypeValue;
   /**
    * The type of action button to use for the keyboard.
    *
@@ -80853,10 +99869,10 @@ export interface TextFieldProps {
    * be used. When the text field is disabled, [TextTheme.titleMedium] with
    * [ThemeData.disabledColor] will be used instead.
    */
-  style?: TextStyle;
-  strutStyle?: StrutStyle;
+  style?: TextStyleValue;
+  strutStyle?: StrutStyleValue;
   textAlign?: TextAlign;
-  textAlignVertical?: TextAlignVertical;
+  textAlignVertical?: TextAlignVerticalValue;
   textDirection?: TextDirection;
   readOnly?: boolean;
   /**
@@ -80868,7 +99884,7 @@ export interface TextFieldProps {
    *
    * @deprecated
    */
-  toolbarOptions?: ToolbarOptions;
+  toolbarOptions?: ToolbarOptionsValue;
   showCursor?: boolean;
   autofocus?: boolean;
   /**
@@ -81003,7 +100019,7 @@ export interface TextFieldProps {
   ignorePointers?: boolean;
   cursorWidth?: number;
   cursorHeight?: number;
-  cursorRadius?: Radius;
+  cursorRadius?: RadiusValue;
   cursorOpacityAnimates?: boolean;
   /**
    * The color of the cursor.
@@ -81017,7 +100033,7 @@ export interface TextFieldProps {
    * it will use [CupertinoThemeData.primaryColor]. Otherwise it will use
    * the value of [ColorScheme.primary] of [ThemeData.colorScheme].
    */
-  cursorColor?: Color;
+  cursorColor?: ColorValue;
   /**
    * The color of the cursor when the [InputDecorator] is showing an error.
    *
@@ -81025,7 +100041,7 @@ export interface TextFieldProps {
    * [InputDecoration.errorStyle]. If that is null, it will use
    * [ColorScheme.error] of [ThemeData.colorScheme].
    */
-  cursorErrorColor?: Color;
+  cursorErrorColor?: ColorValue;
   /**
    * Controls how tall the selection highlight boxes are computed to be.
    *
@@ -81046,7 +100062,7 @@ export interface TextFieldProps {
    * If unset, defaults to [ThemeData.brightness].
    */
   keyboardAppearance?: Brightness;
-  scrollPadding?: EdgeInsets;
+  scrollPadding?: EdgeInsetsValue;
   dragStartBehavior?: DragStartBehavior;
   enableInteractiveSelection?: boolean;
   selectAllOnFocus?: boolean;
@@ -81117,7 +100133,7 @@ export interface TextFieldProps {
    * stand for the text cursor, which is usually a blinking vertical line at
    * the editing position.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * Callback that generates a custom [InputDecoration.counter] widget.
    *
@@ -81155,7 +100171,7 @@ export interface TextFieldProps {
     maxLength: number | null,
   ) => FlutterElement | null;
   scrollController?: ScrollController;
-  scrollPhysics?: ScrollPhysics;
+  scrollPhysics?: ScrollPhysicsValue;
   autofillHints?: string[];
   contentInsertionConfiguration?: ContentInsertionConfiguration;
   /**
@@ -81212,7 +100228,7 @@ export interface TextFieldProps {
    * If [SpellCheckConfiguration.misspelledTextStyle] is not specified in this
    * configuration, then [materialMisspelledTextStyle] is used by default.
    */
-  spellCheckConfiguration?: SpellCheckConfiguration;
+  spellCheckConfiguration?: SpellCheckConfigurationValue;
   /**
    * The configuration for the magnifier of this text field.
    *
@@ -81225,7 +100241,7 @@ export interface TextFieldProps {
    *
    * ** See code in examples/api/lib/widgets/text_magnifier/text_magnifier.0.dart **
    */
-  magnifierConfiguration?: TextMagnifierConfiguration;
+  magnifierConfiguration?: TextMagnifierConfigurationValue;
   hintLocales?: Locale[];
 }
 
@@ -81633,21 +100649,21 @@ export interface TextFormFieldProps {
    * not null, it will override [InputDecoration.errorText] value.
    */
   forceErrorText?: string;
-  decoration?: InputDecoration;
-  keyboardType?: TextInputType;
+  decoration?: InputDecorationValue;
+  keyboardType?: TextInputTypeValue;
   textCapitalization?: TextCapitalization;
   textInputAction?: TextInputAction;
-  style?: TextStyle;
-  strutStyle?: StrutStyle;
+  style?: TextStyleValue;
+  strutStyle?: StrutStyleValue;
   textDirection?: TextDirection;
   textAlign?: TextAlign;
-  textAlignVertical?: TextAlignVertical;
+  textAlignVertical?: TextAlignVerticalValue;
   autofocus?: boolean;
   readOnly?: boolean;
   /**
    * @deprecated
    */
-  toolbarOptions?: ToolbarOptions;
+  toolbarOptions?: ToolbarOptionsValue;
   showCursor?: boolean;
   obscuringCharacter?: string;
   obscureText?: boolean;
@@ -81714,11 +100730,11 @@ export interface TextFormFieldProps {
   ignorePointers?: boolean;
   cursorWidth?: number;
   cursorHeight?: number;
-  cursorRadius?: Radius;
-  cursorColor?: Color;
-  cursorErrorColor?: Color;
+  cursorRadius?: RadiusValue;
+  cursorColor?: ColorValue;
+  cursorErrorColor?: ColorValue;
   keyboardAppearance?: Brightness;
-  scrollPadding?: EdgeInsets;
+  scrollPadding?: EdgeInsetsValue;
   enableInteractiveSelection?: boolean;
   selectAllOnFocus?: boolean;
   selectionControls?: TextSelectionControls;
@@ -81728,7 +100744,7 @@ export interface TextFormFieldProps {
     isFocused: boolean,
     maxLength: number | null,
   ) => FlutterElement | null;
-  scrollPhysics?: ScrollPhysics;
+  scrollPhysics?: ScrollPhysicsValue;
   autofillHints?: string[];
   /**
    * Used to enable/disable this form field auto validation and update its
@@ -81759,13 +100775,13 @@ export interface TextFormFieldProps {
    */
   restorationId?: string;
   enableIMEPersonalizedLearning?: boolean;
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   contextMenuBuilder?: (
     context: BuildContext,
     editableTextState: EditableTextState,
   ) => FlutterElement;
-  spellCheckConfiguration?: SpellCheckConfiguration;
-  magnifierConfiguration?: TextMagnifierConfiguration;
+  spellCheckConfiguration?: SpellCheckConfigurationValue;
+  magnifierConfiguration?: TextMagnifierConfigurationValue;
   undoController?: UndoHistoryController;
   onAppPrivateCommand?: (action: string, data: Record<string, unknown>) => void;
   cursorOpacityAnimates?: boolean;
@@ -82113,7 +101129,7 @@ export interface TextSelectionThemeProps {
   /**
    * The properties for descendant [TextField] and [SelectableText] widgets.
    */
-  data: TextSelectionThemeData;
+  data: TextSelectionThemeDataValue;
 }
 
 /**
@@ -82178,12 +101194,12 @@ export interface TextSelectionToolbarProps {
    * If there is not enough room above before reaching the top of the screen,
    * then the toolbar will position itself below [anchorBelow].
    */
-  anchorAbove: Offset;
+  anchorAbove: OffsetValue;
   /**
    * The focal point below which the toolbar attempts to position itself, if it
    * doesn't fit above [anchorAbove].
    */
-  anchorBelow: Offset;
+  anchorBelow: OffsetValue;
   /**
    * Builds the toolbar container.
    *
@@ -82253,7 +101269,7 @@ export interface TextSelectionToolbarTextButtonProps {
    *    button's position.
    *  * [ButtonStyle.padding], which is where this padding is applied.
    */
-  padding: EdgeInsetsGeometry;
+  padding: EdgeInsetsGeometryValue;
   /**
    * Called when this button is pressed.
    */
@@ -82267,7 +101283,7 @@ export interface TextSelectionToolbarTextButtonProps {
    *
    *  * [ButtonStyle.alignment], which is where this alignment is applied.
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
 }
 
 /**
@@ -82603,7 +101619,7 @@ export interface TimePickerThemeProps {
   /**
    * The properties for descendant time picker widgets.
    */
-  data: TimePickerThemeData;
+  data: TimePickerThemeDataValue;
 }
 
 /**
@@ -82633,7 +101649,7 @@ export interface TitleProps {
    * an opaque color (i.e. color.alpha must be 255 (0xFF)), and must not be
    * null.
    */
-  color: Color;
+  color: ColorValue;
 }
 
 /**
@@ -82840,7 +101856,7 @@ export interface ToggleButtonsProps {
   /**
    * If this property is null, [WidgetStateMouseCursor.adaptiveClickable] is used.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * Configures the minimum size of the area within which the buttons may
    * be pressed.
@@ -82858,7 +101874,7 @@ export interface ToggleButtonsProps {
    * [selectedColor] or [disabledColor] depending on whether the buttons
    * are active, selected, or disabled.
    */
-  textStyle?: TextStyle;
+  textStyle?: TextStyleValue;
   /**
    * Defines the button's size.
    *
@@ -82867,7 +101883,7 @@ export interface ToggleButtonsProps {
    * If this property is null, then
    * BoxConstraints(minWidth: 48.0, minHeight: 48.0) is be used.
    */
-  constraints?: BoxConstraints;
+  constraints?: BoxConstraintsValue;
   /**
    * The color for descendant [Text] and [Icon] widgets if the button is
    * enabled and not selected.
@@ -82879,7 +101895,7 @@ export interface ToggleButtonsProps {
    * is used. If [ToggleButtonsThemeData.color] is also null, then
    * Theme.of(context).colorScheme.onSurface is used.
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * The color for descendant [Text] and [Icon] widgets if the button is
    * selected.
@@ -82892,7 +101908,7 @@ export interface ToggleButtonsProps {
    * [ToggleButtonsThemeData.selectedColor] is also null, then
    * Theme.of(context).colorScheme.primary is used.
    */
-  selectedColor?: Color;
+  selectedColor?: ColorValue;
   /**
    * The color for descendant [Text] and [Icon] widgets if the button is
    * disabled.
@@ -82904,7 +101920,7 @@ export interface ToggleButtonsProps {
    * [ToggleButtonsThemeData.disabledColor] is also null, then
    * Theme.of(context).colorScheme.onSurface.withOpacity(0.38) is used.
    */
-  disabledColor?: Color;
+  disabledColor?: ColorValue;
   /**
    * The fill color for selected toggle buttons.
    *
@@ -82919,7 +101935,7 @@ export interface ToggleButtonsProps {
    *  * [WidgetState.disabled]
    *  * [WidgetState.selected]
    */
-  fillColor?: Color;
+  fillColor?: ColorValue;
   /**
    * The color to use for filling the button when the button has input focus.
    *
@@ -82928,7 +101944,7 @@ export interface ToggleButtonsProps {
    * [ToggleButtonsThemeData.focusColor] is also null, then
    * Theme.of(context).focusColor is used.
    */
-  focusColor?: Color;
+  focusColor?: ColorValue;
   /**
    * The highlight color for the button's [InkWell].
    *
@@ -82937,7 +101953,7 @@ export interface ToggleButtonsProps {
    * [ToggleButtonsThemeData.highlightColor] is also null, then
    * Theme.of(context).highlightColor is used.
    */
-  highlightColor?: Color;
+  highlightColor?: ColorValue;
   /**
    * The color to use for filling the button when the button has a pointer
    * hovering over it.
@@ -82947,7 +101963,7 @@ export interface ToggleButtonsProps {
    * [ToggleButtonsThemeData.hoverColor] is also null, then
    * Theme.of(context).hoverColor is used.
    */
-  hoverColor?: Color;
+  hoverColor?: ColorValue;
   /**
    * The splash color for the button's [InkWell].
    *
@@ -82956,7 +101972,7 @@ export interface ToggleButtonsProps {
    * [ToggleButtonsThemeData.splashColor] is also null, then
    * Theme.of(context).splashColor is used.
    */
-  splashColor?: Color;
+  splashColor?: ColorValue;
   /**
    * The list of [FocusNode]s, corresponding to each toggle button.
    *
@@ -82987,7 +102003,7 @@ export interface ToggleButtonsProps {
    * [ToggleButtonsThemeData.borderColor] is also null, then
    * Theme.of(context).colorScheme.onSurface is used.
    */
-  borderColor?: Color;
+  borderColor?: ColorValue;
   /**
    * The border color to display when the toggle button is selected.
    *
@@ -82996,7 +102012,7 @@ export interface ToggleButtonsProps {
    * [ToggleButtonsThemeData.selectedBorderColor] is also null, then
    * Theme.of(context).colorScheme.primary is used.
    */
-  selectedBorderColor?: Color;
+  selectedBorderColor?: ColorValue;
   /**
    * The border color to display when the toggle button is disabled.
    *
@@ -83005,7 +102021,7 @@ export interface ToggleButtonsProps {
    * [ToggleButtonsThemeData.disabledBorderColor] is also null, then
    * Theme.of(context).disabledBorderColor is used.
    */
-  disabledBorderColor?: Color;
+  disabledBorderColor?: ColorValue;
   /**
    * The radii of the border's corners.
    *
@@ -83014,7 +102030,7 @@ export interface ToggleButtonsProps {
    * [ToggleButtonsThemeData.borderRadius] is also null, then
    * the buttons default to non-rounded borders.
    */
-  borderRadius?: BorderRadius;
+  borderRadius?: BorderRadiusValue;
   /**
    * The width of the border surrounding each toggle button.
    *
@@ -83231,7 +102247,7 @@ export interface ToggleButtonsThemeProps {
   /**
    * Specifies the color and border values for descendant [ToggleButtons] widgets.
    */
-  data: ToggleButtonsThemeData;
+  data: ToggleButtonsThemeDataValue;
 }
 
 /**
@@ -83341,14 +102357,14 @@ export interface TooltipProps {
    * platform. For desktop platforms, the default value is `BoxConstraints(minHeight: 24.0)`,
    * while for mobile platforms the default value is `BoxConstraints(minHeight: 32.0)`.
    */
-  constraints?: BoxConstraints;
+  constraints?: BoxConstraintsValue;
   /**
    * The amount of space by which to inset the [Tooltip]'s message.
    *
    * On mobile, defaults to 16.0 logical pixels horizontally and 4.0 vertically.
    * On desktop, defaults to 8.0 logical pixels horizontally and 4.0 vertically.
    */
-  padding?: EdgeInsetsGeometry;
+  padding?: EdgeInsetsGeometryValue;
   /**
    * The empty space that surrounds the tooltip.
    *
@@ -83366,7 +102382,7 @@ export interface TooltipProps {
    *
    *  * [constraints], which allow setting an explicit size for the tooltip.
    */
-  margin?: EdgeInsetsGeometry;
+  margin?: EdgeInsetsGeometryValue;
   /**
    * The vertical gap between the widget and the displayed tooltip.
    *
@@ -83420,7 +102436,7 @@ export interface TooltipProps {
    * [Brightness.light], [TextTheme.bodyMedium] of [ThemeData.textTheme] will be
    * used with [Colors.black].
    */
-  textStyle?: TextStyle;
+  textStyle?: TextStyleValue;
   /**
    * How the message of the tooltip is aligned horizontally.
    *
@@ -83429,21 +102445,21 @@ export interface TooltipProps {
    * [TextAlign.start].
    */
   textAlign?: TextAlign;
-  waitDuration?: Duration;
+  waitDuration?: DurationValue;
   /**
    * See also:
    *
    *  * [exitDuration], which allows configuring the time until a pointer
    * disappears when hovering.
    */
-  showDuration?: Duration;
+  showDuration?: DurationValue;
   /**
    * See also:
    *
    *  * [showDuration], which allows configuring the length of time that a
    * tooltip will be visible after touch events are released.
    */
-  exitDuration?: Duration;
+  exitDuration?: DurationValue;
   enableTapToDismiss?: boolean;
   /**
    * If this property is null, then [TooltipThemeData.triggerMode] is used.
@@ -83459,7 +102475,7 @@ export interface TooltipProps {
    *
    * If this property is null, [MouseCursor.defer] will be used.
    */
-  mouseCursor?: MouseCursor;
+  mouseCursor?: MouseCursorValue;
   /**
    * Whether this tooltip should be invisible to hit testing.
    *
@@ -83594,7 +102610,7 @@ export interface TooltipThemeProps {
   /**
    * The properties for descendant [Tooltip] widgets.
    */
-  data: TooltipThemeData;
+  data: TooltipThemeDataValue;
 }
 
 /**
@@ -83755,7 +102771,7 @@ export interface TransformProps {
    * )
    * ```
    */
-  origin?: Offset;
+  origin?: OffsetValue;
   /**
    * The alignment of the origin, relative to the size of the box.
    *
@@ -83775,7 +102791,7 @@ export interface TransformProps {
    * [Directionality.of] returns	 [TextDirection.ltr], and `-1.0` if
    * [Directionality.of] returns [TextDirection.rtl].
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
   /**
    * Whether to transform registered hits into the child's resulting coordinate system.
    *
@@ -83973,12 +102989,12 @@ export interface TreeSliverProps {
    *
    * To disable the tree animation, use [AnimationStyle.noAnimation].
    */
-  toggleAnimationStyle?: AnimationStyle;
+  toggleAnimationStyle?: AnimationStyleValue;
   /**
    * The number of pixels children will be offset by in the cross axis based on
    * their [TreeSliverNode.depth].
    */
-  indentation?: TreeSliverIndentationType;
+  indentation?: TreeSliverIndentationTypeValue;
   addAutomaticKeepAlives?: boolean;
   addRepaintBoundaries?: boolean;
   addSemanticIndexes?: boolean;
@@ -84179,11 +103195,11 @@ export interface TweenAnimationBuilderProps {
   /**
    * The duration over which to animate the parameters of this container.
    */
-  duration: Duration;
+  duration: DurationValue;
   /**
    * The curve to apply when animating the parameters of this container.
    */
-  curve?: Curve;
+  curve?: CurveValue;
   /**
    * Called every time the animation value changes.
    *
@@ -84555,7 +103571,7 @@ export interface UnconstrainedBoxProps {
    *  * [Alignment] for non-[Directionality]-aware alignments.
    *  * [AlignmentDirectional] for [Directionality]-aware alignments.
    */
-  alignment?: AlignmentGeometry;
+  alignment?: AlignmentGeometryValue;
   /**
    * The axis to retain constraints on, if any.
    *
@@ -84773,7 +103789,7 @@ export interface UserAccountsDrawerHeaderProps {
   /**
    * The margin around the drawer header.
    */
-  margin?: EdgeInsetsGeometry;
+  margin?: EdgeInsetsGeometryValue;
   /**
    * A widget placed in the upper-left corner that represents the current
    * user's account. Normally a [CircleAvatar].
@@ -84788,11 +103804,11 @@ export interface UserAccountsDrawerHeaderProps {
   /**
    * The size of the [currentAccountPicture].
    */
-  currentAccountPictureSize?: Size;
+  currentAccountPictureSize?: SizeValue;
   /**
    * The size of each widget in [otherAccountsPicturesSize].
    */
-  otherAccountsPicturesSize?: Size;
+  otherAccountsPicturesSize?: SizeValue;
   /**
    * A widget that represents the user's current account name. It is
    * displayed on the left, below the [currentAccountPicture].
@@ -84811,7 +103827,7 @@ export interface UserAccountsDrawerHeaderProps {
   /**
    * The [Color] of the arrow icon.
    */
-  arrowColor?: Color;
+  arrowColor?: ColorValue;
 }
 
 /**
@@ -85016,13 +104032,13 @@ export interface VerticalDividerProps {
    * )
    * ```
    */
-  color?: Color;
+  color?: ColorValue;
   /**
    * The amount of radius for the border of the divider.
    *
    * If this is null, then the default radius of [BoxDecoration] will be used.
    */
-  radius?: BorderRadiusGeometry;
+  radius?: BorderRadiusGeometryValue;
 }
 
 /**
@@ -86142,7 +105158,7 @@ export interface WidgetsAppProps {
   /**
    * The default text style for [Text] in the application.
    */
-  textStyle?: TextStyle;
+  textStyle?: TextStyleValue;
   /**
    * The primary color to use for the application in the operating system
    * interface.
@@ -86150,7 +105166,7 @@ export interface WidgetsAppProps {
    * For example, on Android this is the color used for the application in the
    * application switcher.
    */
-  color: Color;
+  color: ColorValue;
   /**
    * The initial locale for this app's [Localizations] widget is based
    * on this value.

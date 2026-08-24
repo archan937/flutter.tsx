@@ -7,6 +7,13 @@ export type IrValue =
   | { kind: 'number'; value: string }
   | { kind: 'boolean'; value: boolean }
   | { kind: 'enumValue'; enumName: string; member: string }
+  | { kind: 'constantRef'; owner: string; member: string }
+  | {
+      kind: 'construct';
+      className: string;
+      constructorName: string;
+      args: IrArgument[];
+    }
   | { kind: 'handlerRef'; name: string }
   | { kind: 'stateRef'; name: string }
   | { kind: 'raw'; node: ts.Expression }
@@ -29,6 +36,7 @@ export interface IrArgument {
 
 export interface IrWidget {
   name: string;
+  constConstructor: boolean;
   args: IrArgument[];
 }
 

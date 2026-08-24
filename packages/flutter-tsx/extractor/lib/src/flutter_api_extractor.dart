@@ -46,12 +46,20 @@ Future<ApiSnapshot> extractFlutterApi({
     for (final entity in extracted.entities) {
       final existing = entitiesByName[entity.name];
       // A bare name can be claimed by two Dart types (dart:ui Image vs the
-      // Image widget); the JSX-facing widget must win, first-wins otherwise.
+      // Image widget, dart:ui TextStyle vs painting's). The JSX-facing widget
+      // must win, a framework type beats the dart:ui type it shadows (the
+      // framework barrels never re-export the shadowed engine type), and it
+      // is first-wins otherwise.
       final widgetWinsCollision =
           existing != null &&
           existing is! WidgetEntity &&
           entity is WidgetEntity;
-      if (existing == null || widgetWinsCollision) {
+      final frameworkWinsOverUi =
+          existing != null &&
+          existing is! WidgetEntity &&
+          existing.library == 'ui' &&
+          entity.library != 'ui';
+      if (existing == null || widgetWinsCollision || frameworkWinsOverUi) {
         if (existing == null) {
           freshCount += 1;
         }

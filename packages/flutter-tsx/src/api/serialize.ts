@@ -59,6 +59,7 @@ const constructorToJson = (
 ): Record<string, unknown> => ({
   name: constructor.name,
   doc: constructor.doc,
+  const: constructor.isConst,
   params: constructor.params.map(paramToJson),
 });
 

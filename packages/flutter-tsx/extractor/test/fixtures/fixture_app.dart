@@ -42,6 +42,14 @@ abstract final class TestPalette {
   static const int size = 3;
 }
 
+/// A stateful helper whose constructor is deliberately not const.
+class TestController {
+  TestController({this.tick = 0});
+
+  /// The current tick.
+  final int tick;
+}
+
 abstract class AbstractWidget extends StatelessWidget {
   const AbstractWidget();
 }

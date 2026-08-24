@@ -22,7 +22,12 @@ const param = (
 
 describe('dartSignature', () => {
   test('renders an empty constructor inline', () => {
-    const constructor: ConstructorModel = { name: '', doc: '', params: [] };
+    const constructor: ConstructorModel = {
+      name: '',
+      doc: '',
+      isConst: true,
+      params: [],
+    };
     expect(dartSignature('Spacer', constructor)).toBe('Spacer()');
   });
 
@@ -30,6 +35,7 @@ describe('dartSignature', () => {
     const constructor: ConstructorModel = {
       name: '',
       doc: '',
+      isConst: true,
       params: [
         param('key', 'Key?'),
         param('mainAxisAlignment', 'MainAxisAlignment', {
@@ -58,6 +64,7 @@ describe('dartSignature', () => {
     const constructor: ConstructorModel = {
       name: '',
       doc: '',
+      isConst: true,
       params: [
         param('data', 'String', { named: false, required: true }),
         param('key', 'Key?'),
@@ -73,6 +80,7 @@ describe('dartSignature', () => {
     const constructor: ConstructorModel = {
       name: '',
       doc: '',
+      isConst: true,
       params: [param('child', 'Widget', { named: false, required: true })],
     };
 
@@ -127,6 +135,7 @@ describe('buildSitePage', () => {
           {
             name: '',
             doc: '',
+            isConst: true,
             params: [
               param('key', 'Key?'),
               param('child', 'Widget?'),
@@ -173,7 +182,7 @@ describe('buildSitePage', () => {
             },
             {
               tsxProp: 'paint',
-              tsType: 'PaintLike',
+              tsType: 'PaintLikeValue',
               dartType: 'PaintLike',
               required: true,
             },
@@ -184,8 +193,7 @@ describe('buildSitePage', () => {
               required: false,
             },
           ],
-          tsxExample:
-            '<Frame paint={TestPalette.main}>\n  <Text>Content</Text>\n</Frame>',
+          tsxExample: '<Frame paint="main">\n  <Text>Content</Text>\n</Frame>',
           exampleComplete: true,
           dartSignature: [
             'Frame({',

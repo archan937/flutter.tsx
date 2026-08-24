@@ -45,10 +45,7 @@ describe('irWidgetToDart — camera fixture', () => {
         'Column(',
         '  children: [',
         "    if (_taken) const Text('Photo saved!'),",
-        '    ElevatedButton(',
-        '      onPressed: _takePhoto,',
-        "      child: const Text('Take Photo'),",
-        '    ),',
+        "    ElevatedButton(onPressed: _takePhoto, child: const Text('Take Photo')),",
         '  ],',
         ')',
       ].join('\n'),
@@ -93,7 +90,109 @@ describe('irWidgetToDart — const inference and value kinds', () => {
           'export const Probe = () => <Column>{40 + 2}</Column>;\n',
         'probe.tsx',
       ),
-    ).toBe(['Column(', '  children: [', '    40 + 2,', '  ],', ')'].join('\n'));
+    ).toBe('Column(children: [40 + 2])');
+  });
+
+  test('non-const constructors stay bare while constable args get const', async () => {
+    expect(
+      await printFirstBody(
+        "import { Container, Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => (\n' +
+          '  <Container padding={16} color="#7B1FA2" alignment="center">\n' +
+          '    <Text>Styled</Text>\n' +
+          '  </Container>\n' +
+          ');\n',
+        'probe.tsx',
+      ),
+    ).toBe(
+      [
+        'Container(',
+        '  padding: const EdgeInsets.all(16),',
+        '  color: const Color(0xFF7B1FA2),',
+        '  alignment: AlignmentGeometry.center,',
+        "  child: const Text('Styled'),",
+        ')',
+      ].join('\n'),
+    );
+  });
+
+  test('style objects construct a TextStyle with recursive value forms', async () => {
+    expect(
+      await printFirstBody(
+        "import { Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => (\n' +
+          '  <Text style={{ color: "white", fontSize: 18, fontWeight: "bold", fontStyle: "italic" }}>\n' +
+          '    hi\n' +
+          '  </Text>\n' +
+          ');\n',
+        'probe.tsx',
+      ),
+    ).toBe(
+      [
+        'const Text(',
+        "  'hi',",
+        '  style: TextStyle(',
+        '    color: Colors.white,',
+        '    fontSize: 18,',
+        '    fontWeight: FontWeight.bold,',
+        '    fontStyle: FontStyle.italic,',
+        '  ),',
+        ')',
+      ].join('\n'),
+    );
+  });
+
+  test('edge-inset objects pick symmetric or only constructors', async () => {
+    expect(
+      await printFirstBody(
+        "import { Container, Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => (\n' +
+          '  <Container padding={{ horizontal: 12 }} margin={{ top: 8, left: 4 }}>\n' +
+          '    <Text>hi</Text>\n' +
+          '  </Container>\n' +
+          ');\n',
+        'probe.tsx',
+      ),
+    ).toBe(
+      [
+        'Container(',
+        '  padding: const EdgeInsets.symmetric(horizontal: 12),',
+        '  margin: const EdgeInsets.only(top: 8, left: 4),',
+        "  child: const Text('hi'),",
+        ')',
+      ].join('\n'),
+    );
+  });
+
+  test('imported constant namespaces lower to constant references', async () => {
+    expect(
+      await printFirstBody(
+        "import { Colors, Container, Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => (\n' +
+          '  <Container color={Colors.deepPurple}>\n' +
+          '    <Text>hi</Text>\n' +
+          '  </Container>\n' +
+          ');\n',
+        'probe.tsx',
+      ),
+    ).toBe("Container(color: Colors.deepPurple, child: const Text('hi'))");
+  });
+
+  test('widget elements passed as props lower to constructor slots', async () => {
+    expect(
+      await printFirstBody(
+        "import { AppBar, Scaffold, Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => (\n' +
+          '  <Scaffold\n' +
+          '    appBar={<AppBar title={<Text>Hi</Text>} />}\n' +
+          '    body={<Text>body</Text>}\n' +
+          '  />\n' +
+          ');\n',
+        'probe.tsx',
+      ),
+    ).toBe(
+      "Scaffold(appBar: AppBar(title: const Text('Hi')), body: const Text('body'))",
+    );
   });
 
   test('public naming keeps identifiers bare', async () => {
@@ -112,7 +211,7 @@ describe('irWidgetToDart — const inference and value kinds', () => {
     const ir = lowerComponent(component, await contextOnce());
 
     expect(printExpr(irWidgetToDart(ir.body, { privateMembers: false }))).toBe(
-      ['Column(', '  children: [', '    label,', '  ],', ')'].join('\n'),
+      'Column(children: [label])',
     );
   });
 });

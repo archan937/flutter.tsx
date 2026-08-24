@@ -31,9 +31,30 @@ export const unknownProp = (): unknown =>
   // @ts-expect-error whirlSpeed is not a Center prop
   Center({ whirlSpeed: 11 });
 
-export const wrongColorValue = (): unknown =>
-  // @ts-expect-error a bare string is not a Color (transforms arrive later)
-  Container({ color: 'red' });
+export const valueFormUsage = (): unknown => [
+  Container({ color: 'red' }),
+  Container({ color: '#7B1FA2' }),
+  Container({ padding: 16 }),
+  Container({ padding: { horizontal: 8 } }),
+  Container({ alignment: 'center' }),
+  Text({
+    children: 'hi',
+    style: { color: 'white', fontSize: 18, fontWeight: 'bold' },
+  }),
+];
+
+export const wrongColorName = (): unknown =>
+  // @ts-expect-error 'blurple' is not a color constant name
+  Container({ color: 'blurple' });
+
+export const wrongStyleProperty = (): unknown =>
+  // @ts-expect-error glow is not a TextStyle property
+  Text({ children: 'hi', style: { glow: 1 } });
+
+// Mixed inset keys slip through TS (union excess-property checking is
+// per-union) — the compiler rejects them with TSX0206 instead.
+export const mixedInsetsCaughtAtCompileTime = (): unknown =>
+  Container({ padding: { top: 1, horizontal: 2 } });
 
 export const brandedAssignability: Color = Colors.red;
 

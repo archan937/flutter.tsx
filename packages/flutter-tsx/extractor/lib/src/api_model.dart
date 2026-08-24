@@ -76,16 +76,19 @@ class ConstructorModel {
   const ConstructorModel({
     required this.name,
     required this.doc,
+    required this.isConst,
     required this.params,
   });
 
   final String name;
   final String doc;
+  final bool isConst;
   final List<ParamModel> params;
 
   Map<String, Object?> toJson() => {
     'name': name,
     'doc': doc,
+    'const': isConst,
     'params': params.map((param) => param.toJson()).toList(),
   };
 }

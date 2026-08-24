@@ -71,6 +71,7 @@ List<ConstructorModel> _mapConstructors(ClassElement classElement) {
         (constructor) => ConstructorModel(
           name: _constructorName(constructor),
           doc: constructor.documentationComment ?? '',
+          isConst: constructor.isConst,
           params: constructor.formalParameters
               .map((param) => _mapParam(classElement, param))
               .toList(),

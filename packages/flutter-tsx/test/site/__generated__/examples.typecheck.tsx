@@ -6,9 +6,9 @@ import {
   AboutListTile,
   AbsorbPointer,
   ActionChip,
+  ActionIconTheme,
   AlertDialog,
   Align,
-  AlignmentGeometry,
   AndroidView,
   AnimatedAlign,
   AnimatedContainer,
@@ -36,24 +36,30 @@ import {
   BackdropFilter,
   BackdropGroup,
   Badge,
+  BadgeTheme,
   Banner,
   Baseline,
   BlockSemantics,
   BottomAppBar,
   BottomAppBarTheme,
   BottomNavigationBar,
+  BottomNavigationBarTheme,
   ButtonBar,
+  ButtonBarTheme,
   ButtonTheme,
   Card,
   CardTheme,
   CarouselView,
+  CarouselViewTheme,
   Center,
   Checkbox,
   CheckboxListTile,
   CheckboxMenuButton,
+  CheckboxTheme,
   CheckedModeBanner,
   CheckedPopupMenuItem,
   Chip,
+  ChipTheme,
   ChoiceChip,
   CircleAvatar,
   CircularProgressIndicator,
@@ -65,8 +71,8 @@ import {
   CloseButton,
   CloseButtonIcon,
   ColoredBox,
-  Colors,
   Column,
+  ConstrainedBox,
   Container,
   CupertinoActionSheet,
   CupertinoActionSheetAction,
@@ -111,14 +117,18 @@ import {
   CupertinoTextFormFieldRow,
   CupertinoTextSelectionToolbar,
   CupertinoTextSelectionToolbarButton,
+  CupertinoTheme,
   CupertinoTimerPicker,
   CupertinoUserInterfaceLevel,
   CustomPaint,
   CustomScrollView,
   DataTable,
+  DataTableTheme,
+  DatePickerTheme,
   DefaultSelectionStyle,
   DefaultTabController,
   DefaultTextEditingShortcuts,
+  DefaultTextHeightBehavior,
   DefaultTextStyle,
   DesktopTextSelectionToolbar,
   DesktopTextSelectionToolbarButton,
@@ -129,6 +139,7 @@ import {
   Dismissible,
   DisplayFeatureSubScreen,
   Divider,
+  DividerTheme,
   DragBoundary,
   Draggable,
   DraggableScrollableActuator,
@@ -137,14 +148,16 @@ import {
   DrawerButtonIcon,
   DrawerController,
   DrawerHeader,
+  DrawerTheme,
   DropdownButton,
   DropdownButtonFormField,
   DropdownButtonHideUnderline,
   DropdownMenu,
   DropdownMenuFormField,
   DropdownMenuItem,
-  EdgeInsetsGeometry,
+  DropdownMenuTheme,
   ElevatedButton,
+  ElevatedButtonTheme,
   EnableWidgetInspectorScope,
   EndDrawerButton,
   EndDrawerButtonIcon,
@@ -155,7 +168,9 @@ import {
   Expanded,
   ExpansionPanelList,
   ExpansionTile,
+  ExpansionTileTheme,
   FilledButton,
+  FilledButtonTheme,
   FilterChip,
   FittedBox,
   Flex,
@@ -163,6 +178,7 @@ import {
   FlexibleSpaceBar,
   FlexibleSpaceBarSettings,
   FloatingActionButton,
+  FloatingActionButtonTheme,
   FlutterLogo,
   Focus,
   FocusScope,
@@ -180,7 +196,8 @@ import {
   HtmlElementView,
   Icon,
   IconButton,
-  Icons,
+  IconButtonTheme,
+  IconTheme,
   IgnoreBaseline,
   IgnorePointer,
   IndexedSemantics,
@@ -191,6 +208,7 @@ import {
   InkWell,
   InputChip,
   InputDecorationTheme,
+  InputDecorator,
   InteractiveViewer,
   IntrinsicHeight,
   IntrinsicWidth,
@@ -213,29 +231,36 @@ import {
   MaterialBanner,
   MaterialBannerTheme,
   MaterialButton,
+  MediaQuery,
   MenuAcceleratorCallbackBinding,
   MenuAcceleratorLabel,
   MenuAnchor,
   MenuBar,
+  MenuBarTheme,
+  MenuButtonTheme,
   MenuItemButton,
+  MenuTheme,
   MergeSemantics,
   MergeableMaterial,
   MetaData,
   ModalBarrier,
   MouseRegion,
   NavigationBar,
+  NavigationBarTheme,
   NavigationDestination,
   NavigationDrawer,
   NavigationDrawerDestination,
+  NavigationDrawerTheme,
   NavigationRail,
+  NavigationRailTheme,
   NavigationToolbar,
   Navigator,
   NavigatorPopHandler,
   NotificationListener,
-  Offset,
   Offstage,
   Opacity,
   OutlinedButton,
+  OutlinedButtonTheme,
   OverflowBar,
   OverflowBox,
   Overlay,
@@ -250,10 +275,13 @@ import {
   PopScope,
   PopupMenuDivider,
   PopupMenuItem,
+  PopupMenuTheme,
   Positioned,
   PositionedDirectional,
   PreferredSize,
+  ProgressIndicatorTheme,
   RadioGroup,
+  RadioTheme,
   RawChip,
   RawGestureDetector,
   RawImage,
@@ -275,8 +303,12 @@ import {
   ScaffoldMessenger,
   ScrollNotificationObserver,
   Scrollbar,
+  ScrollbarTheme,
   SearchBar,
+  SearchBarTheme,
+  SearchViewTheme,
   SegmentedButton,
+  SegmentedButtonTheme,
   SelectableText,
   SelectionArea,
   Semantics,
@@ -291,6 +323,7 @@ import {
   SizedBox,
   SizedOverflowBox,
   Slider,
+  SliderTheme,
   SliverAnimatedOpacity,
   SliverAppBar,
   SliverConstrainedCrossAxis,
@@ -311,6 +344,7 @@ import {
   SliverVisibility,
   SnackBar,
   SnackBarAction,
+  SnackBarTheme,
   Spacer,
   SpellCheckSuggestionsToolbar,
   Stack,
@@ -320,6 +354,7 @@ import {
   SubmenuButton,
   Switch,
   SwitchListTile,
+  SwitchTheme,
   Tab,
   TabBar,
   TabBarTheme,
@@ -333,17 +368,22 @@ import {
   TapRegionSurface,
   Text,
   TextButton,
+  TextButtonTheme,
   TextField,
   TextFieldTapRegion,
   TextFormField,
   TextSelectionGestureDetector,
+  TextSelectionTheme,
   TextSelectionToolbar,
   TextSelectionToolbarTextButton,
   Texture,
   TickerMode,
+  TimePickerTheme,
   Title,
   ToggleButtons,
+  ToggleButtonsTheme,
   Tooltip,
+  TooltipTheme,
   TooltipVisibility,
   TreeSliver,
   UiKitView,
@@ -370,92 +410,67 @@ export const examples = [
     <Text>Content</Text>
   </AbsorbPointer>,
   <ActionChip label={<Text>Content</Text>} />,
+  <ActionIconTheme data={{}}>
+    <Text>Content</Text>
+  </ActionIconTheme>,
   <AlertDialog />,
   <Align>
     <Text>Content</Text>
   </Align>,
   <AndroidView viewType="example" />,
-  <AnimatedAlign
-    alignment={AlignmentGeometry.bottomCenter}
-    duration={CircularProgressIndicator.defaultAnimationDuration}
-  >
+  <AnimatedAlign alignment="bottomCenter" duration="defaultAnimationDuration">
     <Text>Content</Text>
   </AnimatedAlign>,
-  <AnimatedContainer
-    duration={CircularProgressIndicator.defaultAnimationDuration}
-  >
+  <AnimatedContainer duration="defaultAnimationDuration">
     <Text>Content</Text>
   </AnimatedContainer>,
   <AnimatedCrossFade
     firstChild={<Text>Content</Text>}
     secondChild={<Text>Content</Text>}
     crossFadeState="showFirst"
-    duration={CircularProgressIndicator.defaultAnimationDuration}
+    duration="defaultAnimationDuration"
   />,
   <AnimatedDefaultTextStyle
-    style={CupertinoTextField.cupertinoMisspelledTextStyle}
-    duration={CircularProgressIndicator.defaultAnimationDuration}
+    style="cupertinoMisspelledTextStyle"
+    duration="defaultAnimationDuration"
   >
     <Text>Content</Text>
   </AnimatedDefaultTextStyle>,
-  <AnimatedFractionallySizedBox
-    duration={CircularProgressIndicator.defaultAnimationDuration}
-  >
+  <AnimatedFractionallySizedBox duration="defaultAnimationDuration">
     <Text>Content</Text>
   </AnimatedFractionallySizedBox>,
-  <AnimatedOpacity
-    opacity={16}
-    duration={CircularProgressIndicator.defaultAnimationDuration}
-  >
+  <AnimatedOpacity opacity={16} duration="defaultAnimationDuration">
     <Text>Content</Text>
   </AnimatedOpacity>,
-  <AnimatedPadding
-    padding={EdgeInsetsGeometry.infinity}
-    duration={CircularProgressIndicator.defaultAnimationDuration}
-  >
+  <AnimatedPadding padding="infinity" duration="defaultAnimationDuration">
     <Text>Content</Text>
   </AnimatedPadding>,
   <AnimatedPhysicalModel
-    color={Colors.blue}
-    shadowColor={Colors.blue}
-    duration={CircularProgressIndicator.defaultAnimationDuration}
+    color="activeBlue"
+    shadowColor="activeBlue"
+    duration="defaultAnimationDuration"
   >
     <Text>Content</Text>
   </AnimatedPhysicalModel>,
-  <AnimatedPositioned
-    duration={CircularProgressIndicator.defaultAnimationDuration}
-  >
+  <AnimatedPositioned duration="defaultAnimationDuration">
     <Text>Content</Text>
   </AnimatedPositioned>,
-  <AnimatedPositionedDirectional
-    duration={CircularProgressIndicator.defaultAnimationDuration}
-  >
+  <AnimatedPositionedDirectional duration="defaultAnimationDuration">
     <Text>Content</Text>
   </AnimatedPositionedDirectional>,
-  <AnimatedRotation
-    turns={16}
-    duration={CircularProgressIndicator.defaultAnimationDuration}
-  >
+  <AnimatedRotation turns={16} duration="defaultAnimationDuration">
     <Text>Content</Text>
   </AnimatedRotation>,
-  <AnimatedScale
-    scale={16}
-    duration={CircularProgressIndicator.defaultAnimationDuration}
-  >
+  <AnimatedScale scale={16} duration="defaultAnimationDuration">
     <Text>Content</Text>
   </AnimatedScale>,
-  <AnimatedSize duration={CircularProgressIndicator.defaultAnimationDuration}>
+  <AnimatedSize duration="defaultAnimationDuration">
     <Text>Content</Text>
   </AnimatedSize>,
-  <AnimatedSlide
-    offset={Offset.infinite}
-    duration={CircularProgressIndicator.defaultAnimationDuration}
-  >
+  <AnimatedSlide offset="infinite" duration="defaultAnimationDuration">
     <Text>Content</Text>
   </AnimatedSlide>,
-  <AnimatedSwitcher
-    duration={CircularProgressIndicator.defaultAnimationDuration}
-  >
+  <AnimatedSwitcher duration="defaultAnimationDuration">
     <Text>Content</Text>
   </AnimatedSwitcher>,
   <AppBar />,
@@ -483,6 +498,9 @@ export const examples = [
   <Badge>
     <Text>Content</Text>
   </Badge>,
+  <BadgeTheme data={{}}>
+    <Text>Content</Text>
+  </BadgeTheme>,
   <Banner message="example" location="topStart">
     <Text>Content</Text>
   </Banner>,
@@ -499,10 +517,16 @@ export const examples = [
     <Text>Content</Text>
   </BottomAppBarTheme>,
   <BottomNavigationBar items={[]} />,
+  <BottomNavigationBarTheme data={{}}>
+    <Text>Content</Text>
+  </BottomNavigationBarTheme>,
   <ButtonBar>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
   </ButtonBar>,
+  <ButtonBarTheme data={{}}>
+    <Text>Content</Text>
+  </ButtonBarTheme>,
   <ButtonTheme>
     <Text>Content</Text>
   </ButtonTheme>,
@@ -516,6 +540,9 @@ export const examples = [
     <Text>Item 1</Text>
     <Text>Item 2</Text>
   </CarouselView>,
+  <CarouselViewTheme data={{}}>
+    <Text>Content</Text>
+  </CarouselViewTheme>,
   <Center>
     <Text>Content</Text>
   </Center>,
@@ -524,6 +551,9 @@ export const examples = [
   <CheckboxMenuButton value={true} onChanged={() => {}}>
     <Text>Content</Text>
   </CheckboxMenuButton>,
+  <CheckboxTheme data={{}}>
+    <Text>Content</Text>
+  </CheckboxTheme>,
   <CheckedModeBanner>
     <Text>Content</Text>
   </CheckedModeBanner>,
@@ -531,6 +561,9 @@ export const examples = [
     <Text>Content</Text>
   </CheckedPopupMenuItem>,
   <Chip label={<Text>Content</Text>} />,
+  <ChipTheme data={{}}>
+    <Text>Content</Text>
+  </ChipTheme>,
   <ChoiceChip label={<Text>Content</Text>} selected={true} />,
   <CircleAvatar>
     <Text>Content</Text>
@@ -553,13 +586,16 @@ export const examples = [
   </ClipRect>,
   <CloseButton />,
   <CloseButtonIcon />,
-  <ColoredBox color={Colors.blue}>
+  <ColoredBox color="activeBlue">
     <Text>Content</Text>
   </ColoredBox>,
   <Column>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
   </Column>,
+  <ConstrainedBox constraints={{}}>
+    <Text>Content</Text>
+  </ConstrainedBox>,
   <Container>
     <Text>Content</Text>
   </Container>,
@@ -581,7 +617,7 @@ export const examples = [
     <Text>Content</Text>
   </CupertinoContextMenuAction>,
   <CupertinoDatePicker onDateTimeChanged={() => {}} />,
-  <CupertinoDesktopTextSelectionToolbar anchor={Offset.infinite}>
+  <CupertinoDesktopTextSelectionToolbar anchor="infinite">
     <Text>Item 1</Text>
     <Text>Item 2</Text>
   </CupertinoDesktopTextSelectionToolbar>,
@@ -621,7 +657,7 @@ export const examples = [
   <CupertinoPageScaffold>
     <Text>Content</Text>
   </CupertinoPageScaffold>,
-  <CupertinoPageScaffoldBackgroundColor color={Colors.blue}>
+  <CupertinoPageScaffoldBackgroundColor color="activeBlue">
     <Text>Content</Text>
   </CupertinoPageScaffoldBackgroundColor>,
   <CupertinoPicker itemExtent={16} onSelectedItemChanged={() => {}}>
@@ -644,16 +680,16 @@ export const examples = [
   <CupertinoTabView />,
   <CupertinoTextField />,
   <CupertinoTextFormFieldRow />,
-  <CupertinoTextSelectionToolbar
-    anchorAbove={Offset.infinite}
-    anchorBelow={Offset.infinite}
-  >
+  <CupertinoTextSelectionToolbar anchorAbove="infinite" anchorBelow="infinite">
     <Text>Item 1</Text>
     <Text>Item 2</Text>
   </CupertinoTextSelectionToolbar>,
   <CupertinoTextSelectionToolbarButton>
     <Text>Content</Text>
   </CupertinoTextSelectionToolbarButton>,
+  <CupertinoTheme data={{}}>
+    <Text>Content</Text>
+  </CupertinoTheme>,
   <CupertinoTimerPicker onTimerDurationChanged={() => {}} />,
   <CupertinoUserInterfaceLevel data="base">
     <Text>Content</Text>
@@ -663,6 +699,12 @@ export const examples = [
   </CustomPaint>,
   <CustomScrollView />,
   <DataTable columns={[]} rows={[]} />,
+  <DataTableTheme data={{}}>
+    <Text>Content</Text>
+  </DataTableTheme>,
+  <DatePickerTheme data={{}}>
+    <Text>Content</Text>
+  </DatePickerTheme>,
   <DefaultSelectionStyle>
     <Text>Content</Text>
   </DefaultSelectionStyle>,
@@ -672,10 +714,13 @@ export const examples = [
   <DefaultTextEditingShortcuts>
     <Text>Content</Text>
   </DefaultTextEditingShortcuts>,
-  <DefaultTextStyle style={CupertinoTextField.cupertinoMisspelledTextStyle}>
+  <DefaultTextHeightBehavior textHeightBehavior={{}}>
+    <Text>Content</Text>
+  </DefaultTextHeightBehavior>,
+  <DefaultTextStyle style="cupertinoMisspelledTextStyle">
     <Text>Content</Text>
   </DefaultTextStyle>,
-  <DesktopTextSelectionToolbar anchor={Offset.infinite}>
+  <DesktopTextSelectionToolbar anchor="infinite">
     <Text>Item 1</Text>
     <Text>Item 2</Text>
   </DesktopTextSelectionToolbar>,
@@ -701,6 +746,9 @@ export const examples = [
     <Text>Content</Text>
   </DisplayFeatureSubScreen>,
   <Divider />,
+  <DividerTheme data={{}}>
+    <Text>Content</Text>
+  </DividerTheme>,
   <DragBoundary>
     <Text>Content</Text>
   </DragBoundary>,
@@ -721,6 +769,9 @@ export const examples = [
   <DrawerHeader>
     <Text>Content</Text>
   </DrawerHeader>,
+  <DrawerTheme data={{}}>
+    <Text>Content</Text>
+  </DrawerTheme>,
   <DropdownButton items={[]} onChanged={() => {}} />,
   <DropdownButtonFormField items={[]} onChanged={() => {}} />,
   <DropdownButtonHideUnderline>
@@ -731,9 +782,15 @@ export const examples = [
   <DropdownMenuItem>
     <Text>Content</Text>
   </DropdownMenuItem>,
+  <DropdownMenuTheme data={{}}>
+    <Text>Content</Text>
+  </DropdownMenuTheme>,
   <ElevatedButton onClick={() => {}}>
     <Text>Content</Text>
   </ElevatedButton>,
+  <ElevatedButtonTheme data={{}}>
+    <Text>Content</Text>
+  </ElevatedButtonTheme>,
   <EnableWidgetInspectorScope>
     <Text>Content</Text>
   </EnableWidgetInspectorScope>,
@@ -757,9 +814,15 @@ export const examples = [
     <Text>Item 1</Text>
     <Text>Item 2</Text>
   </ExpansionTile>,
+  <ExpansionTileTheme data={{}}>
+    <Text>Content</Text>
+  </ExpansionTileTheme>,
   <FilledButton onClick={() => {}}>
     <Text>Content</Text>
   </FilledButton>,
+  <FilledButtonTheme data={{}}>
+    <Text>Content</Text>
+  </FilledButtonTheme>,
   <FilterChip label={<Text>Content</Text>} onSelected={() => {}} />,
   <FittedBox>
     <Text>Content</Text>
@@ -783,6 +846,9 @@ export const examples = [
   <FloatingActionButton onClick={() => {}}>
     <Text>Content</Text>
   </FloatingActionButton>,
+  <FloatingActionButtonTheme data={{}}>
+    <Text>Content</Text>
+  </FloatingActionButtonTheme>,
   <FlutterLogo />,
   <Focus>
     <Text>Content</Text>
@@ -799,7 +865,7 @@ export const examples = [
   <Form>
     <Text>Content</Text>
   </Form>,
-  <FractionalTranslation translation={Offset.infinite}>
+  <FractionalTranslation translation="infinite">
     <Text>Content</Text>
   </FractionalTranslation>,
   <FractionallySizedBox>
@@ -808,7 +874,7 @@ export const examples = [
   <GestureDetector>
     <Text>Content</Text>
   </GestureDetector>,
-  <GlowingOverscrollIndicator axisDirection="up" color={Colors.blue}>
+  <GlowingOverscrollIndicator axisDirection="up" color="activeBlue">
     <Text>Content</Text>
   </GlowingOverscrollIndicator>,
   <GridPaper>
@@ -822,8 +888,14 @@ export const examples = [
     <Text>Content</Text>
   </HeroMode>,
   <HtmlElementView viewType="example" />,
-  <Icon icon={Icons.add} />,
+  <Icon icon="abc" />,
   <IconButton onClick={() => {}} icon={<Text>Content</Text>} />,
+  <IconButtonTheme data={{}}>
+    <Text>Content</Text>
+  </IconButtonTheme>,
+  <IconTheme data={{}}>
+    <Text>Content</Text>
+  </IconTheme>,
   <IgnoreBaseline>
     <Text>Content</Text>
   </IgnoreBaseline>,
@@ -853,6 +925,9 @@ export const examples = [
   <InputDecorationTheme>
     <Text>Content</Text>
   </InputDecorationTheme>,
+  <InputDecorator decoration={{}}>
+    <Text>Content</Text>
+  </InputDecorator>,
   <InteractiveViewer>
     <Text>Content</Text>
   </InteractiveViewer>,
@@ -910,6 +985,9 @@ export const examples = [
   <MaterialButton onClick={() => {}}>
     <Text>Content</Text>
   </MaterialButton>,
+  <MediaQuery data={{}}>
+    <Text>Content</Text>
+  </MediaQuery>,
   <MenuAcceleratorCallbackBinding>
     <Text>Content</Text>
   </MenuAcceleratorCallbackBinding>,
@@ -921,9 +999,18 @@ export const examples = [
     <Text>Item 1</Text>
     <Text>Item 2</Text>
   </MenuBar>,
+  <MenuBarTheme data={{}}>
+    <Text>Content</Text>
+  </MenuBarTheme>,
+  <MenuButtonTheme data={{}}>
+    <Text>Content</Text>
+  </MenuButtonTheme>,
   <MenuItemButton>
     <Text>Content</Text>
   </MenuItemButton>,
+  <MenuTheme data={{}}>
+    <Text>Content</Text>
+  </MenuTheme>,
   <MergeSemantics>
     <Text>Content</Text>
   </MergeSemantics>,
@@ -936,6 +1023,9 @@ export const examples = [
     <Text>Content</Text>
   </MouseRegion>,
   <NavigationBar destinations={[]} />,
+  <NavigationBarTheme data={{}}>
+    <Text>Content</Text>
+  </NavigationBarTheme>,
   <NavigationDestination icon={<Text>Content</Text>} label="example" />,
   <NavigationDrawer>
     <Text>Item 1</Text>
@@ -945,7 +1035,13 @@ export const examples = [
     icon={<Text>Content</Text>}
     label={<Text>Content</Text>}
   />,
+  <NavigationDrawerTheme data={{}}>
+    <Text>Content</Text>
+  </NavigationDrawerTheme>,
   <NavigationRail destinations={[]} selectedIndex={8} />,
+  <NavigationRailTheme data={{}}>
+    <Text>Content</Text>
+  </NavigationRailTheme>,
   <NavigationToolbar />,
   <Navigator />,
   <NavigatorPopHandler>
@@ -963,6 +1059,9 @@ export const examples = [
   <OutlinedButton onClick={() => {}}>
     <Text>Content</Text>
   </OutlinedButton>,
+  <OutlinedButtonTheme data={{}}>
+    <Text>Content</Text>
+  </OutlinedButtonTheme>,
   <OverflowBar>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
@@ -971,7 +1070,7 @@ export const examples = [
     <Text>Content</Text>
   </OverflowBox>,
   <Overlay />,
-  <Padding padding={EdgeInsetsGeometry.infinity}>
+  <Padding padding="infinity">
     <Text>Content</Text>
   </Padding>,
   <PageView>
@@ -979,7 +1078,7 @@ export const examples = [
     <Text>Item 2</Text>
   </PageView>,
   <PerformanceOverlay />,
-  <PhysicalModel color={Colors.blue}>
+  <PhysicalModel color="activeBlue">
     <Text>Content</Text>
   </PhysicalModel>,
   <PinnedHeaderSliver>
@@ -1001,24 +1100,33 @@ export const examples = [
   <PopupMenuItem>
     <Text>Content</Text>
   </PopupMenuItem>,
+  <PopupMenuTheme data={{}}>
+    <Text>Content</Text>
+  </PopupMenuTheme>,
   <Positioned>
     <Text>Content</Text>
   </Positioned>,
   <PositionedDirectional>
     <Text>Content</Text>
   </PositionedDirectional>,
-  <PreferredSize preferredSize={CupertinoMagnifier.kDefaultSize}>
+  <PreferredSize preferredSize="infinite">
     <Text>Content</Text>
   </PreferredSize>,
+  <ProgressIndicatorTheme data={{}}>
+    <Text>Content</Text>
+  </ProgressIndicatorTheme>,
   <RadioGroup onChanged={() => {}}>
     <Text>Content</Text>
   </RadioGroup>,
+  <RadioTheme data={{}}>
+    <Text>Content</Text>
+  </RadioTheme>,
   <RawChip label={<Text>Content</Text>} />,
   <RawGestureDetector>
     <Text>Content</Text>
   </RawGestureDetector>,
   <RawImage />,
-  <RawMagnifier size={CupertinoMagnifier.kDefaultSize}>
+  <RawMagnifier size="infinite">
     <Text>Content</Text>
   </RawMagnifier>,
   <RawMaterialButton onClick={() => {}}>
@@ -1070,8 +1178,20 @@ export const examples = [
   <Scrollbar>
     <Text>Content</Text>
   </Scrollbar>,
+  <ScrollbarTheme data={{}}>
+    <Text>Content</Text>
+  </ScrollbarTheme>,
   <SearchBar />,
+  <SearchBarTheme data={{}}>
+    <Text>Content</Text>
+  </SearchBarTheme>,
+  <SearchViewTheme data={{}}>
+    <Text>Content</Text>
+  </SearchViewTheme>,
   <SegmentedButton segments={[]} selected={[]} />,
+  <SegmentedButtonTheme data={{}}>
+    <Text>Content</Text>
+  </SegmentedButtonTheme>,
   <SelectableText>Hello world</SelectableText>,
   <SelectionArea>
     <Text>Content</Text>
@@ -1107,14 +1227,14 @@ export const examples = [
   <SizedBox>
     <Text>Content</Text>
   </SizedBox>,
-  <SizedOverflowBox size={CupertinoMagnifier.kDefaultSize}>
+  <SizedOverflowBox size="infinite">
     <Text>Content</Text>
   </SizedOverflowBox>,
   <Slider value={16} onChanged={() => {}} />,
-  <SliverAnimatedOpacity
-    opacity={16}
-    duration={CircularProgressIndicator.defaultAnimationDuration}
-  />,
+  <SliderTheme data={{}}>
+    <Text>Content</Text>
+  </SliderTheme>,
+  <SliverAnimatedOpacity opacity={16} duration="defaultAnimationDuration" />,
   <SliverAppBar />,
   <SliverConstrainedCrossAxis maxExtent={16} sliver={<Text>Content</Text>} />,
   <SliverCrossAxisExpanded flex={8} sliver={<Text>Content</Text>} />,
@@ -1130,7 +1250,7 @@ export const examples = [
   <SliverMainAxisGroup slivers={[]} />,
   <SliverOffstage />,
   <SliverOpacity opacity={16} />,
-  <SliverPadding padding={EdgeInsetsGeometry.infinity} />,
+  <SliverPadding padding="infinity" />,
   <SliverResizingHeader>
     <Text>Content</Text>
   </SliverResizingHeader>,
@@ -1142,8 +1262,11 @@ export const examples = [
   <SliverVisibility sliver={<Text>Content</Text>} />,
   <SnackBar content={<Text>Content</Text>} />,
   <SnackBarAction label="example" onClick={() => {}} />,
+  <SnackBarTheme data={{}}>
+    <Text>Content</Text>
+  </SnackBarTheme>,
   <Spacer />,
-  <SpellCheckSuggestionsToolbar anchor={Offset.infinite} buttonItems={[]} />,
+  <SpellCheckSuggestionsToolbar anchor="infinite" buttonItems={[]} />,
   <Stack>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
@@ -1160,6 +1283,9 @@ export const examples = [
   </SubmenuButton>,
   <Switch value={true} onChanged={() => {}} />,
   <SwitchListTile value={true} onChanged={() => {}} />,
+  <SwitchTheme data={{}}>
+    <Text>Content</Text>
+  </SwitchTheme>,
   <Tab>
     <Text>Content</Text>
   </Tab>,
@@ -1173,8 +1299,8 @@ export const examples = [
   </TabBarView>,
   <TabPageSelector />,
   <TabPageSelectorIndicator
-    backgroundColor={Colors.blue}
-    borderColor={Colors.blue}
+    backgroundColor="activeBlue"
+    borderColor="activeBlue"
     size={16}
   />,
   <Table />,
@@ -1194,6 +1320,9 @@ export const examples = [
   <TextButton onClick={() => {}}>
     <Text>Content</Text>
   </TextButton>,
+  <TextButtonTheme data={{}}>
+    <Text>Content</Text>
+  </TextButtonTheme>,
   <TextField />,
   <TextFieldTapRegion>
     <Text>Content</Text>
@@ -1202,30 +1331,39 @@ export const examples = [
   <TextSelectionGestureDetector>
     <Text>Content</Text>
   </TextSelectionGestureDetector>,
-  <TextSelectionToolbar
-    anchorAbove={Offset.infinite}
-    anchorBelow={Offset.infinite}
-  >
+  <TextSelectionTheme data={{}}>
+    <Text>Content</Text>
+  </TextSelectionTheme>,
+  <TextSelectionToolbar anchorAbove="infinite" anchorBelow="infinite">
     <Text>Item 1</Text>
     <Text>Item 2</Text>
   </TextSelectionToolbar>,
-  <TextSelectionToolbarTextButton padding={EdgeInsetsGeometry.infinity}>
+  <TextSelectionToolbarTextButton padding="infinity">
     <Text>Content</Text>
   </TextSelectionToolbarTextButton>,
   <Texture textureId={8} />,
   <TickerMode enabled={true}>
     <Text>Content</Text>
   </TickerMode>,
-  <Title color={Colors.blue}>
+  <TimePickerTheme data={{}}>
+    <Text>Content</Text>
+  </TimePickerTheme>,
+  <Title color="activeBlue">
     <Text>Content</Text>
   </Title>,
   <ToggleButtons isSelected={[]}>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
   </ToggleButtons>,
+  <ToggleButtonsTheme data={{}}>
+    <Text>Content</Text>
+  </ToggleButtonsTheme>,
   <Tooltip>
     <Text>Content</Text>
   </Tooltip>,
+  <TooltipTheme data={{}}>
+    <Text>Content</Text>
+  </TooltipTheme>,
   <TooltipVisibility visible={true}>
     <Text>Content</Text>
   </TooltipVisibility>,
@@ -1249,7 +1387,7 @@ export const examples = [
   <Visibility>
     <Text>Content</Text>
   </Visibility>,
-  <WidgetsApp color={Colors.blue} />,
+  <WidgetsApp color="activeBlue" />,
   <Wrap>
     <Text>Item 1</Text>
     <Text>Item 2</Text>

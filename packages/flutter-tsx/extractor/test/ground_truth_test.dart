@@ -160,6 +160,30 @@ void main() {
       },
     );
 
+    test(
+      'the painting TextStyle wins the name collision with dart:ui',
+      () async {
+        final home = Platform.environment['HOME'];
+        final flutterRoot =
+            Platform.environment['FSX_FLUTTER_ROOT'] ??
+            path.join(home ?? '', '.fsx', 'flutter');
+        final snapshot = await extractFlutterApi(
+          layout: SdkLayout.resolve(flutterRoot),
+          libraries: const ['dart:ui', 'painting'],
+        );
+        final textStyle = snapshot.entities.singleWhere(
+          (entity) => entity.name == 'TextStyle',
+        ) as ClassEntity;
+        final defaultConstructor = textStyle.constructors.singleWhere(
+          (constructor) => constructor.name == '',
+        );
+
+        expect(textStyle.library, 'painting');
+        expect(defaultConstructor.isConst, true);
+        expect(defaultConstructor.params.first.name, 'inherit');
+      },
+    );
+
     test('hierarchy covers abstract widget interfaces and non-widgets', () {
       expect(hierarchy['PreferredSizeWidget'], [
         'Widget',

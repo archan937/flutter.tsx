@@ -17,9 +17,11 @@ const snapshot: ApiSnapshot = {
   hierarchy: {
     BadgeLike: ['Widget'],
     Color: [],
+    EdgeInsetsGeometry: [],
     MaterialColor: ['Color'],
     Frame: ['StatelessWidget', 'Widget'],
     Greeting: ['StatelessWidget', 'Widget'],
+    Style: [],
   },
   entities: [
     {
@@ -32,6 +34,7 @@ const snapshot: ApiSnapshot = {
         {
           name: '',
           doc: '/// Creates a frame.',
+          isConst: true,
           params: [
             {
               name: 'key',
@@ -119,6 +122,32 @@ const snapshot: ApiSnapshot = {
               doc: '/// The old label.',
               deprecated: true,
             },
+            {
+              name: 'padding',
+              type: {
+                kind: 'nullable',
+                inner: { kind: 'named', name: 'EdgeInsetsGeometry' },
+              },
+              display: 'EdgeInsetsGeometry?',
+              named: true,
+              required: false,
+              defaultValue: null,
+              doc: '/// The inner padding.',
+              deprecated: false,
+            },
+            {
+              name: 'style',
+              type: {
+                kind: 'nullable',
+                inner: { kind: 'named', name: 'Style' },
+              },
+              display: 'Style?',
+              named: true,
+              required: false,
+              defaultValue: null,
+              doc: '',
+              deprecated: false,
+            },
           ],
         },
       ],
@@ -134,6 +163,7 @@ const snapshot: ApiSnapshot = {
         {
           name: '',
           doc: '',
+          isConst: true,
           params: [
             {
               name: 'data',
@@ -169,6 +199,49 @@ const snapshot: ApiSnapshot = {
           doc: '/// The default line limit.',
         },
       ],
+    },
+    {
+      kind: 'class',
+      name: 'Style',
+      library: 'painting',
+      doc: '/// How to paint a frame.',
+      supertypes: [],
+      constructors: [
+        {
+          name: '',
+          doc: '/// Creates a style.',
+          isConst: true,
+          params: [
+            {
+              name: 'tint',
+              type: {
+                kind: 'nullable',
+                inner: { kind: 'named', name: 'Color' },
+              },
+              display: 'Color?',
+              named: true,
+              required: false,
+              defaultValue: null,
+              doc: '/// The tint color.',
+              deprecated: false,
+            },
+            {
+              name: 'size',
+              type: {
+                kind: 'nullable',
+                inner: { kind: 'scalar', name: 'double' },
+              },
+              display: 'double?',
+              named: true,
+              required: false,
+              defaultValue: null,
+              doc: '',
+              deprecated: false,
+            },
+          ],
+        },
+      ],
+      constants: [],
     },
     {
       kind: 'class',
@@ -235,6 +308,10 @@ export interface Color {
   readonly __fsxBrand?: { readonly Color: true };
 }
 
+export interface EdgeInsetsGeometry {
+  readonly __fsxBrand?: { readonly EdgeInsetsGeometry: true };
+}
+
 export interface Key {
   readonly __fsxBrand?: { readonly Key: true };
 }
@@ -242,6 +319,33 @@ export interface Key {
 export interface MaterialColor {
   readonly __fsxBrand?: { readonly Color: true; readonly MaterialColor: true };
 }
+
+export interface Style {
+  readonly __fsxBrand?: { readonly Style: true };
+}
+
+export type ColorValue =
+  | Color
+  | \`#\${string}\`
+  | 'main';
+
+export type EdgeInsetsGeometryValue =
+  | EdgeInsetsGeometry
+  | number
+  | { horizontal?: number; vertical?: number }
+  | { left?: number; top?: number; right?: number; bottom?: number };
+
+export interface StyleObject {
+  /**
+   * The tint color.
+   */
+  tint?: ColorValue;
+  size?: number;
+}
+
+export type StyleValue =
+  | Style
+  | StyleObject;
 
 /**
  * A frame around a child.
@@ -254,7 +358,7 @@ export interface FrameProps {
   /**
    * The fill color.
    */
-  color?: Color;
+  color?: ColorValue;
   alignment: TestAlign;
   /**
    * Called when the frame is pressed.
@@ -270,6 +374,11 @@ export interface FrameProps {
    * @deprecated
    */
   legacy?: string;
+  /**
+   * The inner padding.
+   */
+  padding?: EdgeInsetsGeometryValue;
+  style?: StyleValue;
 }
 
 /**
@@ -319,6 +428,7 @@ describe('emitWidgetsFile guards', () => {
                 {
                   name: '',
                   doc: '',
+                  isConst: true,
                   params: [
                     {
                       name: 'behavior',
@@ -342,6 +452,71 @@ describe('emitWidgetsFile guards', () => {
       new Error(
         'generated widgets: enum "MissingEnum" is referenced but not ' +
           'extracted — extend defaultFlutterLibraries in the extractor.',
+      ),
+    );
+  });
+});
+
+describe('emitWidgetsFile value-form guards', () => {
+  test('fails loudly when a generated alias collides with a real type', () => {
+    const colliding: ApiSnapshot = {
+      ...snapshot,
+      hierarchy: { ...snapshot.hierarchy, ColorValue: [] },
+      entities: [
+        ...snapshot.entities,
+        {
+          kind: 'class',
+          name: 'ColorValue',
+          library: 'painting',
+          doc: '',
+          supertypes: [],
+          constructors: [],
+          constants: [
+            {
+              name: 'stub',
+              type: { kind: 'named', name: 'ColorValue' },
+              display: 'ColorValue',
+              doc: '',
+            },
+          ],
+        },
+        {
+          kind: 'widget',
+          name: 'Splash',
+          library: 'widgets',
+          doc: '',
+          supertypes: ['StatelessWidget', 'Widget'],
+          constructors: [
+            {
+              name: '',
+              doc: '',
+              isConst: true,
+              params: [
+                {
+                  name: 'value',
+                  type: {
+                    kind: 'nullable',
+                    inner: { kind: 'named', name: 'ColorValue' },
+                  },
+                  display: 'ColorValue?',
+                  named: true,
+                  required: false,
+                  defaultValue: null,
+                  doc: '',
+                  deprecated: false,
+                },
+              ],
+            },
+          ],
+          constants: [],
+        },
+      ],
+    };
+
+    expect(() => emitWidgetsFile(colliding, slots)).toThrow(
+      new Error(
+        'generated widgets: "ColorValue" collides with an extracted ' +
+          'type name — rename the value-form suffix.',
       ),
     );
   });

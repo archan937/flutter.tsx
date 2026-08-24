@@ -8,6 +8,17 @@ const LIBRARY_IMPORTS = {
   material: "import 'package:flutter/material.dart';",
 } as const;
 
+const collectNamed = (
+  name: string,
+  context: CompileContext,
+  libraries: Set<string>,
+): void => {
+  const library = context.libraries.get(name);
+  if (library !== undefined) {
+    libraries.add(library);
+  }
+};
+
 const collectValue = (
   value: IrValue,
   context: CompileContext,
@@ -15,6 +26,17 @@ const collectValue = (
 ): void => {
   if (value.kind === 'widget') {
     collectWidget(value.widget, context, libraries);
+    return;
+  }
+  if (value.kind === 'constantRef') {
+    collectNamed(value.owner, context, libraries);
+    return;
+  }
+  if (value.kind === 'construct') {
+    collectNamed(value.className, context, libraries);
+    for (const argument of value.args) {
+      collectValue(argument.value, context, libraries);
+    }
     return;
   }
   if (value.kind === 'widgetList') {
@@ -33,10 +55,7 @@ const collectWidget = (
   context: CompileContext,
   libraries: Set<string>,
 ): void => {
-  const library = context.widgets.get(widget.name)?.library;
-  if (library !== undefined) {
-    libraries.add(library);
-  }
+  collectNamed(widget.name, context, libraries);
   for (const argument of widget.args) {
     collectValue(argument.value, context, libraries);
   }
@@ -53,17 +72,19 @@ const importsFor = (libraries: Set<string>): string[] => {
   return imports;
 };
 
+const RETURN_SITE = { indent: 4, used: 11, trailing: 1 };
+
 const emitStatelessClass = (component: IrComponent): string => {
   const body = printExpr(
     irWidgetToDart(component.body, { privateMembers: false }),
+    RETURN_SITE,
   );
-  const indentedBody = body.split('\n').join('\n    ');
   return `class ${component.name} extends StatelessWidget {
   const ${component.name}({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ${indentedBody};
+    return ${body};
   }
 }`;
 };

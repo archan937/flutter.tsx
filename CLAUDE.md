@@ -284,7 +284,35 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       never silent wrong Dart — so the camera fixture and its e2e stay RED.
       The 543-widget sweep now really transpiles + analyzes every probe in its
       own Dart package (`test/sweep/`, red until the probes analyze clean).
-- [ ] 15–21. The compiler core, one trait per step, each ending in a green golden
+- [x] 15. Value-type prop transforms — **golden #2 green** (`03-styled-container`:
+      padding/hex color/alignment/TextStyle object, byte-equal to `dart format`).
+      Data-driven from api.json, no hand lists: **constant unions**
+      (`src/derive/value-forms.ts` — every class type accepts the string names of
+      SDK constants assignable to it via `hierarchy`; owner resolution: exact type
+      → most members → alphabetical; so `color="deepPurple"`→`Colors.deepPurple`,
+      `alignment="center"`, `fontWeight: 'bold'`, curves, icons — ~100 color names
+      alone), **hex colors** (`#RGB/#RRGGBB/#RRGGBBAA`→`Color(0xAARRGGBB)`),
+      **EdgeInsets recipes** (number→`.all`, `{horizontal,vertical}`→`.symmetric`,
+      `{left,top,right,bottom}`→`.only`), **object literals → const constructors**
+      (any class whose default ctor is const + all-named-optional: TextStyle,
+      BoxDecoration… 166 classes; values recurse — `style={{ color: 'white' }}`
+      → `TextStyle(color: Colors.white)`; the vision's §Styling verbatim).
+      Generated types match exactly: `ColorValue`/`TextStyleObject`… aliases in
+      widgets.ts, negative cases pinned in type-safety.typecheck.ts. Enablers
+      that landed en route: **extractor records constructor const-ness**
+      (`"const"` in api.json — also fixed the latent const-inference bug:
+      `Container(...)` no longer emitted as `const`), **framework-beats-dart:ui
+      name collisions** (painting's TextStyle with its const ctor + `inherit`,
+      not ui's — 67 entities re-owned, ground-truth pinned), **column-aware
+      printer** (real 80-col fit at final position; collections split when their
+      call splits — byte-parity with `dart format` proven by all three goldens),
+      honest guards TSX0205–0208 (inexpressible value / bad insets shape /
+      unknown object property / children on a slotless widget — no silent wrong
+      Dart), and JSX elements as prop values (`appBar={<AppBar/>}` → named slot).
+      Docs examples now use the string forms (placeholders 190→145; the rest
+      need callbacks/controllers/Animation, later traits). Sweep: 394 probes
+      transpile, 40 analyze issues left (red, next traits).
+- [ ] 16–21. The compiler core, one trait per step, each ending in a green golden
       fixture; diagnostics with file/line + fix hints. Traits: JSX→constructor ·
       slots (child/children/named/text) · props/positional · string-children→Text ·
       enum/constant props ·

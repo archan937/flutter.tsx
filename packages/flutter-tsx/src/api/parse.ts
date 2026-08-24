@@ -119,6 +119,7 @@ const parseConstructor = (value: unknown, path: string): ConstructorModel => {
   return {
     name: asString(record.name, `${path}.name`),
     doc: asString(record.doc, `${path}.doc`),
+    isConst: asBoolean(record.const, `${path}.const`),
     params: asArray(record.params, `${path}.params`).map((param, index) =>
       parseParam(param, `${path}.params[${index}]`),
     ),

@@ -43,6 +43,7 @@ describe('lowerComponent — camera fixture', () => {
     expect(ir.kind).toBe('stateful');
     expect(ir.body).toEqual({
       name: 'Column',
+      constConstructor: true,
       args: [
         {
           param: 'children',
@@ -59,6 +60,7 @@ describe('lowerComponent — camera fixture', () => {
                     kind: 'widget',
                     widget: {
                       name: 'Text',
+                      constConstructor: true,
                       args: [
                         {
                           param: 'data',
@@ -76,6 +78,7 @@ describe('lowerComponent — camera fixture', () => {
                   kind: 'widget',
                   widget: {
                     name: 'ElevatedButton',
+                    constConstructor: true,
                     args: [
                       {
                         param: 'onPressed',
@@ -89,6 +92,7 @@ describe('lowerComponent — camera fixture', () => {
                           kind: 'widget',
                           widget: {
                             name: 'Text',
+                            constConstructor: true,
                             args: [
                               {
                                 param: 'data',
@@ -128,6 +132,7 @@ describe('lowerComponent — attribute values', () => {
     expect(ir.kind).toBe('stateless');
     expect(ir.body).toEqual({
       name: 'Column',
+      constConstructor: true,
       args: [
         {
           param: 'mainAxisAlignment',
@@ -150,6 +155,7 @@ describe('lowerComponent — attribute values', () => {
                   kind: 'widget',
                   widget: {
                     name: 'Center',
+                    constConstructor: true,
                     args: [
                       {
                         param: 'widthFactor',
@@ -168,6 +174,7 @@ describe('lowerComponent — attribute values', () => {
                           kind: 'widget',
                           widget: {
                             name: 'Text',
+                            constConstructor: true,
                             args: [
                               {
                                 param: 'data',
@@ -283,6 +290,7 @@ describe('lowerComponent — value edge cases', () => {
                 kind: 'widget',
                 widget: {
                   name: 'Text',
+                  constConstructor: true,
                   args: [
                     {
                       param: 'data',
@@ -382,6 +390,240 @@ describe('lowerComponent — value edge cases', () => {
   });
 });
 
+describe('lowerComponent — value forms', () => {
+  const constructOf = async (
+    source: string,
+    param: string,
+  ): Promise<unknown> => {
+    const ir = await lowerFirst(source, 'probe.tsx');
+    return ir.body.args.find((argument) => argument.param === param)?.value;
+  };
+
+  test('#RGB hex colors expand digit pairs', async () => {
+    expect(
+      await constructOf(
+        "import { Container, Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => <Container color="#abc"><Text>hi</Text></Container>;\n',
+        'color',
+      ),
+    ).toEqual({
+      kind: 'construct',
+      className: 'Color',
+      constructorName: '',
+      args: [
+        {
+          param: 'value',
+          positional: true,
+          value: { kind: 'number', value: '0xFFAABBCC' },
+        },
+      ],
+    });
+  });
+
+  test('#RRGGBBAA hex colors move alpha to the front', async () => {
+    expect(
+      await constructOf(
+        "import { Container, Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => <Container color="#7B1FA280"><Text>hi</Text></Container>;\n',
+        'color',
+      ),
+    ).toEqual({
+      kind: 'construct',
+      className: 'Color',
+      constructorName: '',
+      args: [
+        {
+          param: 'value',
+          positional: true,
+          value: { kind: 'number', value: '0x807B1FA2' },
+        },
+      ],
+    });
+  });
+
+  test('shorthand object properties lower their identifier', async () => {
+    const ir = await lowerFirst(
+      "import { Text } from 'flutter-tsx';\n" +
+        'export const Probe = () => {\n' +
+        '  const fontSize = 18;\n' +
+        '  return <Text style={{ fontSize }}>hi</Text>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+    const style = ir.body.args.find(
+      (argument) => argument.param === 'style',
+    )?.value;
+
+    if (style?.kind !== 'construct') {
+      throw new Error('expected a construct');
+    }
+    expect(style.args.map((argument) => argument.value.kind)).toEqual(['raw']);
+  });
+
+  test('member access on unknown owners stays raw', async () => {
+    const ir = await lowerFirst(
+      "import { Text } from 'flutter-tsx';\n" +
+        'export const Probe = () => {\n' +
+        '  const config = { factor: 2 };\n' +
+        '  return <Text textScaleFactor={config.factor}>hi</Text>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+
+    expect(
+      ir.body.args.find((argument) => argument.param === 'textScaleFactor')
+        ?.value.kind,
+    ).toBe('raw');
+  });
+
+  test('a string that fits no value form is a numbered error', () => {
+    expect(
+      lowerFirst(
+        "import { Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => <Text textScaleFactor="big">hi</Text>;\n',
+        'probe.tsx',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0205 probe.tsx:2:50 — `big` cannot express a double value.',
+      ),
+    );
+  });
+
+  test('an unknown color name is a numbered error', () => {
+    expect(
+      lowerFirst(
+        "import { Container, Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => <Container color="blurple"><Text>hi</Text></Container>;\n',
+        'probe.tsx',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0205 probe.tsx:2:45 — `blurple` cannot express a Color value.',
+      ),
+    );
+  });
+
+  test('a malformed hex color is a numbered error', () => {
+    expect(
+      lowerFirst(
+        "import { Container, Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => <Container color="#12"><Text>hi</Text></Container>;\n',
+        'probe.tsx',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0205 probe.tsx:2:45 — `#12` is not a hex color — use #RGB, ' +
+          '#RRGGBB, or #RRGGBBAA.',
+      ),
+    );
+  });
+
+  test('a number that fits no value form is a numbered error', () => {
+    expect(
+      lowerFirst(
+        "import { Container, Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => <Container color={5}><Text>hi</Text></Container>;\n',
+        'probe.tsx',
+      ),
+    ).rejects.toThrow(
+      new Error('TSX0205 probe.tsx:2:46 — `5` cannot express a Color value.'),
+    );
+  });
+
+  test('a boolean on a non-bool prop is a numbered error', () => {
+    expect(
+      lowerFirst(
+        "import { Container, Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => <Container color><Text>hi</Text></Container>;\n',
+        'probe.tsx',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0205 probe.tsx:2:39 — `true` cannot express a Color value.',
+      ),
+    );
+  });
+
+  test('mixed edge-inset keys are a numbered error', () => {
+    expect(
+      lowerFirst(
+        "import { Container, Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => <Container padding={{ top: 1, horizontal: 2 }}><Text>hi</Text></Container>;\n',
+        'probe.tsx',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0206 probe.tsx:2:48 — edge insets take `{horizontal?, ' +
+          'vertical?}` or `{left?, top?, right?, bottom?}` (numbers).',
+      ),
+    );
+  });
+
+  test('spread properties in object values are a numbered error', () => {
+    expect(
+      lowerFirst(
+        "import { Container, Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => {\n' +
+          '  const base = { top: 1 };\n' +
+          '  return <Container padding={{ ...base }}><Text>hi</Text></Container>;\n' +
+          '};\n',
+        'probe.tsx',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0206 probe.tsx:4:32 — object values must use plain ' +
+          '`key: value` properties.',
+      ),
+    );
+  });
+
+  test('an unknown constructible property is a numbered error', () => {
+    expect(
+      lowerFirst(
+        "import { Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => <Text style={{ glow: 1 }}>hi</Text>;\n',
+        'probe.tsx',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0207 probe.tsx:2:43 — TextStyle has no `glow` property. Check ' +
+          'the API reference for the available properties.',
+      ),
+    );
+  });
+
+  test('an object literal on a non-constructible class is a numbered error', () => {
+    expect(
+      lowerFirst(
+        "import { Container, Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => <Container transform={{}}><Text>hi</Text></Container>;\n',
+        'probe.tsx',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0205 probe.tsx:2:50 — an object literal cannot express a ' +
+          'Matrix4 value.',
+      ),
+    );
+  });
+
+  test('an object literal on a widget prop is a numbered error', () => {
+    expect(
+      lowerFirst(
+        "import { Center } from 'flutter-tsx';\n" +
+          'export const Probe = () => <Center child={{}} />;\n',
+        'probe.tsx',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0205 probe.tsx:2:43 — an object literal cannot express a ' +
+          'widget value.',
+      ),
+    );
+  });
+});
+
 describe('lowerComponent — diagnostics', () => {
   test('an unknown widget is a numbered error', () => {
     expect(
@@ -390,6 +632,38 @@ describe('lowerComponent — diagnostics', () => {
       new Error(
         'TSX0201 probe.tsx:1:29 — unknown widget <Blorb>: not a Flutter ' +
           'widget extracted from the SDK.',
+      ),
+    );
+  });
+
+  test('whitespace-only children on a slotless widget are fine', async () => {
+    const ir = await lowerFirst(
+      "import { Scaffold, Text } from 'flutter-tsx';\n" +
+        'export const Probe = () => (\n' +
+        '  <Scaffold body={<Text>hi</Text>}>\n' +
+        '  </Scaffold>\n' +
+        ');\n',
+      'probe.tsx',
+    );
+
+    expect(ir.body.args.map((argument) => argument.param)).toEqual(['body']);
+  });
+
+  test('children on a widget without a children slot are a numbered error', () => {
+    expect(
+      lowerFirst(
+        "import { Scaffold, Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => (\n' +
+          '  <Scaffold>\n' +
+          '    <Text>lost</Text>\n' +
+          '  </Scaffold>\n' +
+          ');\n',
+        'probe.tsx',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0208 probe.tsx:4:5 — <Scaffold> takes no children — check its ' +
+          'named slots in the API reference.',
       ),
     );
   });

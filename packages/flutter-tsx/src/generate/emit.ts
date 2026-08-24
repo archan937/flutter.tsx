@@ -7,8 +7,15 @@ import type {
   WidgetEntity,
 } from '../api/model';
 import type { ChildrenSlot, SlotMap, WidgetSlots } from '../derive/slots';
+import {
+  deriveValueForms,
+  EDGE_INSETS_TYPES,
+  HEX_COLOR_TYPE,
+  reachableValueFormNames,
+  type ValueForms,
+} from '../derive/value-forms';
 import { dartdocToJsdoc } from './doc';
-import { CHILDREN_TS_TYPES, propTsType } from './prop-type';
+import { CHILDREN_TS_TYPES, propTsType, valueFormTsType } from './prop-type';
 import { jsxPropName } from './renames';
 import { tsTypeOf } from './ts-types';
 
@@ -67,12 +74,15 @@ const docWithDeprecation = (param: ParamModel): string => {
     : `${param.doc}\n///\n/// @deprecated`;
 };
 
-const propLine = (
-  param: ParamModel,
-  widgetSlots: WidgetSlots,
-  takenNames: ReadonlySet<string>,
-): string => {
-  const tsType = propTsType(param, widgetSlots);
+interface PropScope {
+  widgetSlots: WidgetSlots;
+  takenNames: ReadonlySet<string>;
+  formNames: ReadonlySet<string>;
+}
+
+const propLine = (param: ParamModel, scope: PropScope): string => {
+  const { widgetSlots, takenNames, formNames } = scope;
+  const tsType = propTsType(param, widgetSlots, formNames);
   const optional = param.required ? '' : '?';
   const name = jsxPropName(param.name, takenNames);
   const jsdoc = dartdocToJsdoc(docWithDeprecation(param), '  ');
@@ -91,6 +101,7 @@ const childrenLine = (children: ChildrenSlot, params: ParamModel[]): string => {
 const widgetBlocks = (
   widget: WidgetEntity,
   widgetSlots: WidgetSlots,
+  formNames: ReadonlySet<string>,
 ): string[] => {
   const constructor = defaultConstructorOf(widget);
   if (constructor === undefined) {
@@ -106,7 +117,7 @@ const widgetBlocks = (
     if (param.name === 'key' || param.name === widgetSlots.children?.param) {
       continue;
     }
-    lines.push(propLine(param, widgetSlots, takenNames));
+    lines.push(propLine(param, { widgetSlots, takenNames, formNames }));
   }
 
   const doc = dartdocToJsdoc(widget.doc, '');
@@ -147,6 +158,60 @@ const brandInterface = (
   return `export interface ${name} {\n  readonly __fsxBrand?: { ${brand} };\n}`;
 };
 
+const unwrapNullable = (node: TypeNode): TypeNode =>
+  node.kind === 'nullable' ? node.inner : node;
+
+const objectInterfaceBlock = (
+  name: string,
+  params: ParamModel[],
+  formNames: ReadonlySet<string>,
+): string => {
+  const lines = params.map((param) => {
+    const jsdoc = dartdocToJsdoc(docWithDeprecation(param), '  ');
+    const tsType = valueFormTsType(unwrapNullable(param.type), formNames);
+    const declaration = `  ${param.name}?: ${tsType};`;
+    return jsdoc === '' ? declaration : `${jsdoc}\n${declaration}`;
+  });
+  return `export interface ${name}Object {\n${lines.join('\n')}\n}`;
+};
+
+const valueAliasBlock = (name: string, forms: ValueForms): string => {
+  const arms = [name];
+  if (forms.constructibles.has(name)) {
+    arms.push(`${name}Object`);
+  }
+  if (EDGE_INSETS_TYPES.has(name)) {
+    arms.push(
+      'number',
+      '{ horizontal?: number; vertical?: number }',
+      '{ left?: number; top?: number; right?: number; bottom?: number }',
+    );
+  }
+  if (name === HEX_COLOR_TYPE) {
+    arms.push('`#${string}`');
+  }
+  const members = forms.constantMembers.get(name);
+  if (members !== undefined) {
+    arms.push(...[...members.keys()].map((member) => `'${member}'`));
+  }
+  const union = arms.map((arm) => `  | ${arm}`).join('\n');
+  return `export type ${name}Value =\n${union};`;
+};
+
+const valueFormBlocks = (
+  name: string,
+  forms: ValueForms,
+  formNames: ReadonlySet<string>,
+): string[] => {
+  const params = forms.constructibles.get(name);
+  return params === undefined
+    ? [valueAliasBlock(name, forms)]
+    : [
+        objectInterfaceBlock(name, params, formNames),
+        valueAliasBlock(name, forms),
+      ];
+};
+
 const enumBlock = (entity: Entity & { kind: 'enum' }): string => {
   const doc = dartdocToJsdoc(entity.doc, '');
   const union = entity.values.map((value) => `'${value.name}'`).join(' | ');
@@ -179,6 +244,8 @@ export const emitWidgetsFile = (
   const widgets = snapshot.entities.filter(
     (entity): entity is WidgetEntity => entity.kind === 'widget',
   );
+  const forms = deriveValueForms(snapshot);
+  const formNames = reachableValueFormNames(snapshot, forms);
 
   const namedRefs = new Set<string>();
   const enumRefs = new Set<string>();
@@ -187,10 +254,26 @@ export const emitWidgetsFile = (
       collectRefs(param.type, namedRefs, enumRefs);
     }
   }
+  for (const name of formNames) {
+    namedRefs.add(name);
+    for (const param of forms.constructibles.get(name) ?? []) {
+      collectRefs(param.type, namedRefs, enumRefs);
+    }
+  }
   for (const entity of snapshot.entities) {
     if (entity.kind !== 'enum') {
       for (const constant of entity.constants) {
         collectRefs(constant.type, namedRefs, enumRefs);
+      }
+    }
+  }
+  for (const name of formNames) {
+    for (const generated of [`${name}Value`, `${name}Object`]) {
+      if (namedRefs.has(generated) || enumRefs.has(generated)) {
+        throw new Error(
+          `generated widgets: "${generated}" collides with an extracted ` +
+            'type name — rename the value-form suffix.',
+        );
       }
     }
   }
@@ -230,8 +313,13 @@ export const emitWidgetsFile = (
   for (const name of [...namedRefs].sort()) {
     blocks.push(brandInterface(name, snapshot.hierarchy));
   }
+  for (const name of formNames) {
+    blocks.push(...valueFormBlocks(name, forms, formNames));
+  }
   for (const widget of widgets) {
-    blocks.push(...widgetBlocks(widget, slots[widget.name] ?? EMPTY_SLOTS));
+    blocks.push(
+      ...widgetBlocks(widget, slots[widget.name] ?? EMPTY_SLOTS, formNames),
+    );
   }
 
   return `${blocks.join('\n\n')}\n`;

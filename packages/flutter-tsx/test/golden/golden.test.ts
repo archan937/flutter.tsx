@@ -11,7 +11,7 @@ import { listFixtures } from '@test/support/golden';
 // Fixtures outside GREEN_FIXTURES run as `test.failing`: the suite stays
 // green while their compiler support does not exist yet and fails loudly the
 // moment one unexpectedly passes — forcing the flip into GREEN_FIXTURES.
-const GREEN_FIXTURES = new Set(['02-hello-column']);
+const GREEN_FIXTURES = new Set(['02-hello-column', '03-styled-container']);
 
 const fixtures = await listFixtures();
 

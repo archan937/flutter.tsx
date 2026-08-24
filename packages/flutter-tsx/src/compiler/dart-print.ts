@@ -1,52 +1,31 @@
 import type { DartArgument, DartExpr, DartListItem } from './dart-ast';
 
-const INDENT = '  ';
+const MAX_WIDTH = 80;
+
+export interface PrintSite {
+  indent: number;
+  used: number;
+  trailing: number;
+}
+
+const ROOT_SITE: PrintSite = { indent: 0, used: 0, trailing: 0 };
 
 const escapeString = (value: string): string =>
   value.replaceAll('\\', '\\\\').replaceAll("'", "\\'").replaceAll('$', '\\$');
 
-const indentBlock = (block: string): string =>
-  block
-    .split('\n')
-    .map((line) => `${INDENT}${line}`)
-    .join('\n');
+const pad = (width: number): string => ' '.repeat(width);
 
-const printArgument = (argument: DartArgument): string => {
-  const value = printExpr(argument.value);
+const inlineArgument = (argument: DartArgument): string => {
+  const value = inlineExpr(argument.value);
   return argument.name === null ? value : `${argument.name}: ${value}`;
 };
 
-const printListItem = (item: DartListItem): string =>
+const inlineListItem = (item: DartListItem): string =>
   item.kind === 'element'
-    ? printExpr(item.value)
-    : `if (${printExpr(item.condition)}) ${printExpr(item.value)}`;
+    ? inlineExpr(item.value)
+    : `if (${inlineExpr(item.condition)}) ${inlineExpr(item.value)}`;
 
-const printCall = (expr: Extract<DartExpr, { kind: 'call' }>): string => {
-  const constPrefix = expr.isConst ? 'const ' : '';
-  const printedArgs = expr.args.map(printArgument);
-  const inline = `${constPrefix}${expr.target}(${printedArgs.join(', ')})`;
-  const fitsInline =
-    inline.length <= 60 && printedArgs.every((arg) => !arg.includes('\n'));
-  if (printedArgs.length === 0 || fitsInline) {
-    return inline;
-  }
-  const body = printedArgs
-    .map((argument) => `${indentBlock(argument)},`)
-    .join('\n');
-  return `${constPrefix}${expr.target}(\n${body}\n)`;
-};
-
-const printList = (expr: Extract<DartExpr, { kind: 'list' }>): string => {
-  if (expr.items.length === 0) {
-    return '[]';
-  }
-  const body = expr.items
-    .map((item) => `${indentBlock(printListItem(item))},`)
-    .join('\n');
-  return `[\n${body}\n]`;
-};
-
-export const printExpr = (expr: DartExpr): string => {
+const inlineExpr = (expr: DartExpr): string => {
   switch (expr.kind) {
     case 'string':
       return `'${escapeString(expr.value)}'`;
@@ -58,9 +37,78 @@ export const printExpr = (expr: DartExpr): string => {
       return expr.name;
     case 'enumMember':
       return `${expr.enumName}.${expr.member}`;
-    case 'call':
-      return printCall(expr);
+    case 'call': {
+      const constPrefix = expr.isConst ? 'const ' : '';
+      const args = expr.args.map(inlineArgument).join(', ');
+      return `${constPrefix}${expr.target}(${args})`;
+    }
     case 'list':
-      return printList(expr);
+      return expr.items.length === 0
+        ? '[]'
+        : `[${expr.items.map(inlineListItem).join(', ')}]`;
   }
+};
+
+// dart format's tall style splits a collection argument whenever its
+// enclosing argument list splits, even when the collection alone would fit.
+const printArgumentValue = (expr: DartExpr, site: PrintSite): string =>
+  expr.kind === 'list' && expr.items.length > 0
+    ? printListTall(expr, site)
+    : printExpr(expr, site);
+
+const printCallTall = (
+  expr: Extract<DartExpr, { kind: 'call' }>,
+  site: PrintSite,
+): string => {
+  const constPrefix = expr.isConst ? 'const ' : '';
+  const childIndent = site.indent + 2;
+  const lines = expr.args.map((argument) => {
+    const prefix = argument.name === null ? '' : `${argument.name}: `;
+    const value = printArgumentValue(argument.value, {
+      indent: childIndent,
+      used: childIndent + prefix.length,
+      trailing: 1,
+    });
+    return `${pad(childIndent)}${prefix}${value},`;
+  });
+  return (
+    `${constPrefix}${expr.target}(\n` +
+    `${lines.join('\n')}\n` +
+    `${pad(site.indent)})`
+  );
+};
+
+const printListTall = (
+  expr: Extract<DartExpr, { kind: 'list' }>,
+  site: PrintSite,
+): string => {
+  const childIndent = site.indent + 2;
+  const lines = expr.items.map((item) => {
+    const prefix =
+      item.kind === 'if' ? `if (${inlineExpr(item.condition)}) ` : '';
+    const value = printExpr(item.value, {
+      indent: childIndent,
+      used: childIndent + prefix.length,
+      trailing: 1,
+    });
+    return `${pad(childIndent)}${prefix}${value},`;
+  });
+  return `[\n${lines.join('\n')}\n${pad(site.indent)}]`;
+};
+
+export const printExpr = (
+  expr: DartExpr,
+  site: PrintSite = ROOT_SITE,
+): string => {
+  const inline = inlineExpr(expr);
+  if (site.used + inline.length + site.trailing <= MAX_WIDTH) {
+    return inline;
+  }
+  if (expr.kind === 'call' && expr.args.length > 0) {
+    return printCallTall(expr, site);
+  }
+  if (expr.kind === 'list' && expr.items.length > 0) {
+    return printListTall(expr, site);
+  }
+  return inline;
 };

@@ -43,6 +43,7 @@ export interface ParamModel {
 export interface ConstructorModel {
   name: string;
   doc: string;
+  isConst: boolean;
   params: ParamModel[];
 }
 

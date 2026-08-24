@@ -96,6 +96,7 @@ export {
   Size,
   SliverGeometry,
   StackFrame,
+  StrutStyle,
   SystemChannels,
   SystemMouseCursors,
   SystemUiOverlayStyle,

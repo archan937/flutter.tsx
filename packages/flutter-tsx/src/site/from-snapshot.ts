@@ -5,20 +5,17 @@ import type {
   WidgetEntity,
 } from '../api/model';
 import type { SlotMap, WidgetSlots } from '../derive/slots';
+import {
+  deriveValueForms,
+  reachableValueFormNames,
+  type ValueForms,
+} from '../derive/value-forms';
 import { CHILDREN_TS_TYPES, propTsType } from '../generate/prop-type';
 import { jsxPropName } from '../generate/renames';
 import type { SitePage, SiteProp, SiteWidget } from './model';
 import { type SynthesisContext, synthesizeTsx } from './synthesize';
 
 const EMPTY_SLOTS: WidgetSlots = { children: null, slots: [] };
-
-const WELL_KNOWN_VALUES: Record<string, string> = {
-  Color: 'Colors.blue',
-  MaterialColor: 'Colors.blue',
-  IconData: 'Icons.add',
-  Curve: 'Curves.easeIn',
-  Cubic: 'Curves.easeIn',
-};
 
 const dartParamLine = (param: ParamModel): string => {
   const requiredPrefix = param.named && param.required ? 'required ' : '';
@@ -57,37 +54,26 @@ export const dartSignature = (
   return lines.join('\n');
 };
 
-const synthesisContext = (snapshot: ApiSnapshot): SynthesisContext => {
+const synthesisContext = (
+  snapshot: ApiSnapshot,
+  forms: ValueForms,
+): SynthesisContext => {
   const enumValues: Record<string, string> = {};
-  const constantsByType: Record<string, string> = {};
-
   for (const entity of snapshot.entities) {
     if (entity.kind === 'enum') {
       const firstValue = entity.values[0];
       if (firstValue !== undefined) {
         enumValues[entity.name] = firstValue.name;
       }
-      continue;
-    }
-    for (const constant of entity.constants) {
-      if (
-        constant.type.kind === 'named' &&
-        constantsByType[constant.type.name] === undefined
-      ) {
-        constantsByType[constant.type.name] = `${entity.name}.${constant.name}`;
-      }
     }
   }
-
-  return {
-    enumValues,
-    constantsByType: { ...constantsByType, ...WELL_KNOWN_VALUES },
-  };
+  return { enumValues, forms };
 };
 
 const propRows = (
   constructor: ConstructorModel,
   widgetSlots: WidgetSlots,
+  formNames: ReadonlySet<string>,
 ): SiteProp[] => {
   const takenNames = new Set(constructor.params.map((param) => param.name));
   const rows: SiteProp[] = [];
@@ -110,7 +96,7 @@ const propRows = (
     }
     rows.push({
       tsxProp: jsxPropName(param.name, takenNames),
-      tsType: propTsType(param, widgetSlots),
+      tsType: propTsType(param, widgetSlots, formNames),
       dartType: param.display,
       required: param.required,
     });
@@ -122,7 +108,9 @@ export const buildSitePage = (
   snapshot: ApiSnapshot,
   slots: SlotMap,
 ): SitePage => {
-  const context = synthesisContext(snapshot);
+  const forms = deriveValueForms(snapshot);
+  const context = synthesisContext(snapshot, forms);
+  const formNames = reachableValueFormNames(snapshot, forms);
   const widgets: SiteWidget[] = [];
   const incompleteExamples: string[] = [];
 
@@ -152,7 +140,7 @@ export const buildSitePage = (
       name: widget.name,
       library: widget.library,
       doc: widget.doc,
-      props: propRows(constructor, widgetSlots),
+      props: propRows(constructor, widgetSlots, formNames),
       tsxExample: example.tsx,
       exampleComplete: example.complete,
       dartSignature: dartSignature(widget.name, constructor),

@@ -1,10 +1,11 @@
 import type { ParamModel, TypeNode } from '../api/model';
 import type { WidgetSlots } from '../derive/slots';
+import { EDGE_INSETS_TYPES, type ValueForms } from '../derive/value-forms';
 import { jsxPropName } from '../generate/renames';
 
 export interface SynthesisContext {
   enumValues: Record<string, string>;
-  constantsByType: Record<string, string>;
+  forms: ValueForms;
 }
 
 export interface SynthesizedExample {
@@ -36,8 +37,15 @@ const attrValue = (
       return value === undefined ? null : `"${value}"`;
     }
     case 'named': {
-      const constant = context.constantsByType[type.name];
-      return constant === undefined ? null : `{${constant}}`;
+      const [firstMember] =
+        context.forms.constantMembers.get(type.name)?.keys() ?? [];
+      if (firstMember !== undefined) {
+        return `"${firstMember}"`;
+      }
+      if (EDGE_INSETS_TYPES.has(type.name)) {
+        return '{8}';
+      }
+      return context.forms.constructibles.has(type.name) ? '{{}}' : null;
     }
     case 'function':
       return type.returnType.kind === 'void' ? '{() => {}}' : null;

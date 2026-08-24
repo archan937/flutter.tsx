@@ -31,6 +31,7 @@ void main() {
       expect(entities.map((entity) => '${entity.kind} ${entity.name}'), [
         'class NotAWidget',
         'enum TestAlignment',
+        'class TestController',
         'class TestPalette',
         'widget TestWidget',
         'widget Wrapper',
@@ -67,6 +68,20 @@ void main() {
 
     test('captures constructor documentation', () {
       expect(testWidget.constructors.last.doc, '/// A compact variant.');
+    });
+
+    test('records const-ness per constructor', () {
+      expect(
+        testWidget.constructors.map((constructor) => constructor.isConst),
+        [true, true],
+      );
+      final controller = entities.whereType<ClassEntity>().singleWhere(
+        (entity) => entity.name == 'TestController',
+      );
+      expect(
+        controller.constructors.map((constructor) => constructor.isConst),
+        [false],
+      );
     });
 
     test('keeps parameters in declaration order', () {
@@ -170,6 +185,7 @@ void main() {
         'PreferredSizeLike': ['Widget'],
         'StatelessWidget': ['Widget'],
         'Tappable': ['Widget'],
+        'TestController': <String>[],
         'TestPalette': <String>[],
         'TestWidget': ['StatelessWidget', 'Widget'],
         'Widget': <String>[],
