@@ -310,7 +310,11 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       curated set only — a hook's lifecycle semantics are never guessed). Fixture,
       README, and front-end switched at step 14;
       `test/fixtures/types/camera.d.ts` is the hand-written preview of the
-      generated declaration; the `flutter-tsx/plugins` subpath export is gone.**
+      generated declaration; the `flutter-tsx/plugins` subpath export is gone.
+      To discuss thoroughly with Paul at this step (deferred 2026-08-24): recipe
+      anatomy (state/teardown/method-rewrite templates) and hook options —
+      parameter slots like `useCamera({ resolution: 'high', lens: 'front' })`,
+      each speced with its own fixture before being documented.**
 - [ ] 24b. High-level abstractions from the vision (each gated by its own golden +
       e2e before being documented): `useAsync`/`Query`→FutureBuilder ·
       `useStream`→StreamBuilder · `createStore`/`useStore`→ChangeNotifier+Provider ·
