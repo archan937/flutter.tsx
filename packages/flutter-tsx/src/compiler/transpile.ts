@@ -32,14 +32,6 @@ const requireSupported = (component: ComponentAnalysis): void => {
       { sourceFile: component.sourceFile, node: component.nameNode },
     );
   }
-  if (component.effects.length > 0) {
-    throw tsxErrorAt(
-      'TSX0303',
-      `<${component.name}> uses useEffect — lifecycle compilation lands at ` +
-        'roadmap step 18.',
-      { sourceFile: component.sourceFile, node: component.nameNode },
-    );
-  }
 };
 
 export const transpileComponent = async (

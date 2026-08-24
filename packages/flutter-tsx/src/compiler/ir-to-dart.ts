@@ -1,5 +1,6 @@
 import type { DartExpr, DartListItem } from './dart-ast';
 import type { IrArgument, IrChild, IrValue, IrWidget } from './ir';
+import { closureBodyOf } from './statements';
 import { interpolate } from './translate';
 
 export interface DartNaming {
@@ -111,7 +112,18 @@ const valueToDart = (
         insideConst,
       );
     case 'closure':
-      return { kind: 'closure', params: value.params };
+      return {
+        kind: 'closure',
+        params: value.params,
+        body: closureBodyOf(value.statements),
+      };
+    case 'conditional':
+      return {
+        kind: 'conditional',
+        condition: valueToDart(value.condition, naming, insideConst),
+        whenTrue: valueToDart(value.whenTrue, naming, insideConst),
+        whenFalse: valueToDart(value.whenFalse, naming, insideConst),
+      };
     case 'interpolation':
       return { kind: 'identifier', name: interpolate(value.parts) };
     case 'dartExpr':

@@ -149,6 +149,63 @@ describe('printExpr — closures', () => {
     expect(printExpr(closure(['_']))).toBe('(_) {}');
     expect(printExpr(closure(['value', 'index']))).toBe('(value, index) {}');
   });
+
+  test('expression bodies print as arrows', () => {
+    expect(
+      printExpr(
+        closure([], { kind: 'expression', code: 'setState(() => _count++)' }),
+      ),
+    ).toBe('() => setState(() => _count++)');
+  });
+
+  test('block bodies indent at the closure site', () => {
+    expect(
+      printExpr(
+        closure(['value'], {
+          kind: 'block',
+          lines: ['setState(() {', '  _a++;', '});'],
+        }),
+        { indent: 2, used: 13, trailing: 1 },
+      ),
+    ).toBe(
+      ['(value) {', '    setState(() {', '      _a++;', '    });', '  }'].join(
+        '\n',
+      ),
+    );
+  });
+});
+
+describe('printExpr — conditionals', () => {
+  test('fitting conditionals print inline', () => {
+    expect(
+      printExpr({
+        kind: 'conditional',
+        condition: identifier('_online'),
+        whenTrue: call('Text', [stringLit('Online')], { isConst: true }),
+        whenFalse: call('Text', [stringLit('Offline')], { isConst: true }),
+      }),
+    ).toBe("_online ? const Text('Online') : const Text('Offline')");
+  });
+
+  test('conditionals past the limit split before ? and :', () => {
+    expect(
+      printExpr(
+        {
+          kind: 'conditional',
+          condition: identifier('_online'),
+          whenTrue: call('Text', [stringLit('Online')], { isConst: true }),
+          whenFalse: call('Text', [stringLit('Offline')], { isConst: true }),
+        },
+        { indent: 8, used: 30, trailing: 1 },
+      ),
+    ).toBe(
+      [
+        '_online',
+        "            ? const Text('Online')",
+        "            : const Text('Offline')",
+      ].join('\n'),
+    );
+  });
 });
 
 describe('printExpr — width edge cases', () => {

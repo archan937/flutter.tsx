@@ -139,6 +139,19 @@ describe('transpileComponent — stateful components', () => {
     );
   });
 
+  test('mount effects, ternaries, and inline handlers emit in full', async () => {
+    const source = await Bun.file(
+      new URL('../fixtures/06-mount-effect/input.tsx', import.meta.url),
+    ).text();
+    const expected = await Bun.file(
+      new URL('../fixtures/06-mount-effect/expected.dart', import.meta.url),
+    ).text();
+
+    expect(await transpileComponent({ source, filePath: 'status.tsx' })).toBe(
+      expected,
+    );
+  });
+
   test('async handlers become async methods', async () => {
     expect(
       await transpileComponent({
@@ -199,25 +212,6 @@ describe('transpileComponent — not yet supported', () => {
       new Error(
         'TSX0304 probe.tsx:3:14 — <Probe> uses plugin hooks — plugin ' +
           'compilation lands at roadmap step 22.',
-      ),
-    );
-  });
-
-  test('useEffect is an honest numbered error', () => {
-    expect(
-      transpileComponent({
-        source:
-          "import { Text, useEffect } from 'flutter-tsx';\n" +
-          'export const Probe = () => {\n' +
-          '  useEffect(() => {}, []);\n' +
-          '  return <Text>hi</Text>;\n' +
-          '};\n',
-        filePath: 'probe.tsx',
-      }),
-    ).rejects.toThrow(
-      new Error(
-        'TSX0303 probe.tsx:2:14 — <Probe> uses useEffect — lifecycle ' +
-          'compilation lands at roadmap step 18.',
       ),
     );
   });

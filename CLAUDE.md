@@ -353,7 +353,22 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       TSX0303 (step 18); TSX0301 is retired. `front-end.ts` renamed to
       `analyze.ts` (Paul: the old name was misleading); import resolution
       split out of emit-component into `compiler/imports.ts`.
-- [ ] 18–21. The compiler core, one trait per step, each ending in a green golden
+- [x] 18. useEffect → lifecycle + inline handler bodies + ternaries — **golden #5
+      green** (`06-mount-effect`, hand-written first and matched byte-for-byte on
+      the first compiler run) and its from-TSX e2e web build. Mount effects
+      (`useEffect(fn, [])`) emit `initState` with `super.initState()` and plain
+      assignments (no setState before build — senior Dart); dependency-driven
+      effects are TSX0306, cleanups TSX0307 (they need plugin controllers, step
+      22). Inline handler bodies now compile: single setter →
+      `() => setState(() => _checks++)`, multi-statement → block closures
+      (TSX0302 retired); shared statement rendering lives in
+      `compiler/statements.ts` (method-block form for State methods, arrow/block
+      for closures, plain lines for initState). Ternary children lower to Dart
+      conditionals (`{online ? <A/> : <B/>}`) — inline when they fit, split
+      before `?`/`:` like dart format — including single-child slots, whose
+      expression children were silently DROPPED before (found by TDD).
+      translate.ts gains ternaries and `??`. TSX0303 retired (effects compile).
+- [ ] 19–21. The compiler core, one trait per step, each ending in a green golden
       fixture; diagnostics with file/line + fix hints. Traits: JSX→constructor ·
       slots (child/children/named/text) · props/positional · string-children→Text ·
       enum/constant props ·

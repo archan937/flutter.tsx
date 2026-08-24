@@ -9,7 +9,7 @@ import {
   type ValueForms,
 } from '../derive/value-forms';
 import { jsxPropName } from '../generate/renames';
-import type { ComponentAnalysis, HandlerBinding } from './analyze';
+import type { ComponentAnalysis } from './analyze';
 import { tsxErrorAt } from './diagnostics';
 import type {
   IrArgument,
@@ -105,6 +105,7 @@ interface LowerContext {
   stateNames: Set<string>;
   handlerNames: Set<string>;
   stringStates: Set<string>;
+  settersToStates: Map<string, string>;
   translate: TranslateContext;
 }
 
@@ -422,19 +423,15 @@ const lowerArrowFunction = (
       { sourceFile: context.sourceFile, node: arrow },
     );
   }
-  if (!ts.isBlock(arrow.body) || arrow.body.statements.length > 0) {
-    throw tsxErrorAt(
-      'TSX0302',
-      'inline handler bodies are not compiled yet (roadmap step 18) — ' +
-        'extract the logic into a named handler.',
-      { sourceFile: context.sourceFile, node: arrow.body },
-    );
-  }
   const params = type.params.map((_, index) => {
     const name = arrow.parameters[index]?.name.getText() ?? '_';
     return name.startsWith('_') ? '_' : name;
   });
-  return { kind: 'closure', params };
+  return {
+    kind: 'closure',
+    params,
+    statements: lowerBodyStatements(arrow.body, context),
+  };
 };
 
 const lowerExpression = (
@@ -573,6 +570,19 @@ const lowerChildValue = (
   if (ts.isJsxElement(expression) || ts.isJsxSelfClosingElement(expression)) {
     return { kind: 'widget', widget: lowerJsxElement(expression, context) };
   }
+  if (ts.isConditionalExpression(expression)) {
+    return {
+      kind: 'conditional',
+      condition: ts.isIdentifier(expression.condition)
+        ? lowerIdentifier(expression.condition, context)
+        : {
+            kind: 'dartExpr',
+            dart: translateExpression(expression.condition, context.translate),
+          },
+      whenTrue: lowerChildValue(expression.whenTrue, context),
+      whenFalse: lowerChildValue(expression.whenFalse, context),
+    };
+  }
   return lowerScalarChild(expression, context);
 };
 
@@ -623,6 +633,9 @@ const singleChildValue = (
     }
     if (ts.isJsxElement(child) || ts.isJsxSelfClosingElement(child)) {
       return { kind: 'widget', widget: lowerJsxElement(child, context) };
+    }
+    if (ts.isJsxExpression(child) && child.expression !== undefined) {
+      return lowerChildValue(child.expression, context);
     }
   }
   return null;
@@ -784,12 +797,10 @@ const setterAssignment = (
   return `${member} = ${translateExpression(argument, context.translate)}`;
 };
 
-const lowerHandlerStatements = (
-  handler: HandlerBinding,
-  settersToStates: Map<string, string>,
+const lowerBodyStatements = (
+  body: ts.ConciseBody,
   context: LowerContext,
 ): IrStatement[] => {
-  const { body } = handler.body;
   const items: { expression: ts.Expression | undefined; errorNode: ts.Node }[] =
     ts.isBlock(body)
       ? body.statements.map((statement) => ({
@@ -806,7 +817,7 @@ const lowerHandlerStatements = (
       expression !== undefined &&
       ts.isCallExpression(expression) &&
       ts.isIdentifier(expression.expression)
-        ? settersToStates.get(expression.expression.text)
+        ? context.settersToStates.get(expression.expression.text)
         : undefined;
     if (
       expression === undefined ||
@@ -830,6 +841,41 @@ const lowerHandlerStatements = (
   return lowered;
 };
 
+const lowerEffects = (
+  effects: ts.CallExpression[],
+  context: LowerContext,
+): IrStatement[] =>
+  effects.flatMap((effect) => {
+    const [body, dependencies] = effect.arguments;
+    if (
+      body === undefined ||
+      !ts.isArrowFunction(body) ||
+      dependencies === undefined ||
+      !ts.isArrayLiteralExpression(dependencies) ||
+      dependencies.elements.length > 0
+    ) {
+      throw tsxErrorAt(
+        'TSX0306',
+        'only mount effects compile: pass an empty dependency array ' +
+          '(`useEffect(() => { ... }, [])`).',
+        { sourceFile: context.sourceFile, node: effect },
+      );
+    }
+    if (ts.isBlock(body.body)) {
+      const cleanup = body.body.statements.find((statement) =>
+        ts.isReturnStatement(statement),
+      );
+      if (cleanup !== undefined) {
+        throw tsxErrorAt(
+          'TSX0307',
+          'effect cleanups land with plugin controllers (roadmap step 22).',
+          { sourceFile: context.sourceFile, node: cleanup },
+        );
+      }
+    }
+    return lowerBodyStatements(body.body, context);
+  });
+
 export const lowerComponent = (
   component: ComponentAnalysis,
   compile: CompileContext,
@@ -847,6 +893,9 @@ export const lowerComponent = (
       component.states
         .filter((state) => state.dartType === 'String')
         .map((state) => state.name),
+    ),
+    settersToStates: new Map(
+      component.states.map((state) => [state.setterName, state.name]),
     ),
     translate: {
       sourceFile: component.sourceFile,
@@ -869,9 +918,6 @@ export const lowerComponent = (
     component.plugins.length > 0 ||
     component.effects.length > 0;
 
-  const settersToStates = new Map(
-    component.states.map((state) => [state.setterName, state.name]),
-  );
   // Handlers that talk to plugin bindings need the step-22 method rewrites;
   // transpile blocks plugin components before emission (TSX0304).
   const methods: IrMethod[] =
@@ -880,7 +926,7 @@ export const lowerComponent = (
       : component.handlers.map((handler) => ({
           name: handler.name,
           isAsync: handler.isAsync,
-          statements: lowerHandlerStatements(handler, settersToStates, context),
+          statements: lowerBodyStatements(handler.body.body, context),
         }));
 
   return {
@@ -896,6 +942,10 @@ export const lowerComponent = (
       initializer: translateExpression(state.initializer, context.translate),
     })),
     methods,
+    initStatements:
+      component.plugins.length > 0
+        ? []
+        : lowerEffects(component.effects, context),
     body: lowerJsxElement(root, context),
   };
 };

@@ -113,6 +113,7 @@ export default defineConfig(
     rules: {
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-empty-function': 'off',
+      '@typescript-eslint/no-confusing-void-expression': 'off',
     },
   },
 );

@@ -24,6 +24,7 @@ const BINARY_OPERATORS = new Map<ts.SyntaxKind, string>([
   [ts.SyntaxKind.GreaterThanEqualsToken, '>='],
   [ts.SyntaxKind.AmpersandAmpersandToken, '&&'],
   [ts.SyntaxKind.BarBarToken, '||'],
+  [ts.SyntaxKind.QuestionQuestionToken, '??'],
 ]);
 
 const DART_IDENTIFIER = /^[a-zA-Z_][a-zA-Z0-9_]*$/;
@@ -114,6 +115,12 @@ export const translateExpression = (
     const operator =
       expression.operator === ts.SyntaxKind.ExclamationToken ? '!' : '-';
     return `${operator}${translateExpression(expression.operand, context)}`;
+  }
+  if (ts.isConditionalExpression(expression)) {
+    const condition = translateExpression(expression.condition, context);
+    const whenTrue = translateExpression(expression.whenTrue, context);
+    const whenFalse = translateExpression(expression.whenFalse, context);
+    return `${condition} ? ${whenTrue} : ${whenFalse}`;
   }
   if (ts.isBinaryExpression(expression)) {
     const operator = BINARY_OPERATORS.get(expression.operatorToken.kind);

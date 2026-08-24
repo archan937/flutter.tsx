@@ -5,8 +5,19 @@ export type DartExpr =
   | { kind: 'identifier'; name: string }
   | { kind: 'enumMember'; enumName: string; member: string }
   | { kind: 'call'; target: string; isConst: boolean; args: DartArgument[] }
-  | { kind: 'closure'; params: string[] }
+  | { kind: 'closure'; params: string[]; body: ClosureBody }
+  | {
+      kind: 'conditional';
+      condition: DartExpr;
+      whenTrue: DartExpr;
+      whenFalse: DartExpr;
+    }
   | { kind: 'list'; isConst: boolean; items: DartListItem[] };
+
+export type ClosureBody =
+  | { kind: 'empty' }
+  | { kind: 'expression'; code: string }
+  | { kind: 'block'; lines: string[] };
 
 export interface DartArgument {
   name: string | null;
@@ -69,7 +80,11 @@ export const listLit = (
   items,
 });
 
-export const closure = (params: string[]): DartExpr => ({
+export const closure = (
+  params: string[],
+  body: ClosureBody = { kind: 'empty' },
+): DartExpr => ({
   kind: 'closure',
   params,
+  body,
 });

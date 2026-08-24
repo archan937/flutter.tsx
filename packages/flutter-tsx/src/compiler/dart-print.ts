@@ -42,8 +42,22 @@ const inlineExpr = (expr: DartExpr): string => {
       const args = expr.args.map(inlineArgument).join(', ');
       return `${constPrefix}${expr.target}(${args})`;
     }
-    case 'closure':
-      return `(${expr.params.join(', ')}) {}`;
+    case 'closure': {
+      const params = `(${expr.params.join(', ')})`;
+      if (expr.body.kind === 'expression') {
+        return `${params} => ${expr.body.code}`;
+      }
+      // A block body embeds newlines so any enclosing call is forced tall
+      // and re-renders it through printExpr with a real site.
+      return expr.body.kind === 'empty'
+        ? `${params} {}`
+        : `${params} {\n${expr.body.lines.join('\n')}\n}`;
+    }
+    case 'conditional':
+      return (
+        `${inlineExpr(expr.condition)} ? ` +
+        `${inlineExpr(expr.whenTrue)} : ${inlineExpr(expr.whenFalse)}`
+      );
     case 'list': {
       const constPrefix = expr.isConst ? 'const ' : '';
       return expr.items.length === 0
@@ -101,10 +115,34 @@ const printListTall = (
   return `${constPrefix}[\n${lines.join('\n')}\n${pad(site.indent)}]`;
 };
 
+const printClosureBlock = (
+  params: string[],
+  body: { lines: string[] },
+  site: PrintSite,
+): string => {
+  const lines = body.lines.map((line) => `${pad(site.indent + 2)}${line}`);
+  return `(${params.join(', ')}) {\n${lines.join('\n')}\n${pad(site.indent)}}`;
+};
+
+const printConditionalTall = (
+  expr: Extract<DartExpr, { kind: 'conditional' }>,
+  site: PrintSite,
+): string => {
+  const childIndent = site.indent + 4;
+  return (
+    `${inlineExpr(expr.condition)}\n` +
+    `${pad(childIndent)}? ${inlineExpr(expr.whenTrue)}\n` +
+    `${pad(childIndent)}: ${inlineExpr(expr.whenFalse)}`
+  );
+};
+
 export const printExpr = (
   expr: DartExpr,
   site: PrintSite = ROOT_SITE,
 ): string => {
+  if (expr.kind === 'closure' && expr.body.kind === 'block') {
+    return printClosureBlock(expr.params, expr.body, site);
+  }
   const inline = inlineExpr(expr);
   if (site.used + inline.length + site.trailing <= MAX_WIDTH) {
     return inline;
@@ -114,6 +152,9 @@ export const printExpr = (
   }
   if (expr.kind === 'list' && expr.items.length > 0) {
     return printListTall(expr, site);
+  }
+  if (expr.kind === 'conditional') {
+    return printConditionalTall(expr, site);
   }
   return inline;
 };

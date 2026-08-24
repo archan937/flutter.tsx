@@ -3,6 +3,7 @@ import { importsForComponents } from './imports';
 import type { IrComponent, IrMethod } from './ir';
 import { irWidgetToDart } from './ir-to-dart';
 import type { CompileContext } from './lower';
+import { initStateLines, methodStatementLines } from './statements';
 
 const RETURN_SITE = { indent: 4, used: 11, trailing: 1 };
 
@@ -10,14 +11,22 @@ const emitMethod = (method: IrMethod): string => {
   const signature = method.isAsync
     ? `Future<void> _${method.name}() async`
     : `void _${method.name}()`;
-  const statements = method.statements.map((statement) =>
-    [
-      '    setState(() {',
-      ...statement.assignments.map((assignment) => `      ${assignment};`),
-      '    });',
-    ].join('\n'),
+  const lines = methodStatementLines(method.statements).map(
+    (line) => `    ${line}`,
   );
-  return `  ${signature} {\n${statements.join('\n')}\n  }`;
+  return `  ${signature} {\n${lines.join('\n')}\n  }`;
+};
+
+const emitInitState = (component: IrComponent): string[] => {
+  if (component.initStatements.length === 0) {
+    return [];
+  }
+  const lines = initStateLines(component.initStatements).map(
+    (line) => `    ${line}`,
+  );
+  return [
+    `  @override\n  void initState() {\n    super.initState();\n${lines.join('\n')}\n  }`,
+  ];
 };
 
 const buildMethod = (component: IrComponent): string => {
@@ -50,6 +59,7 @@ const emitStatefulClass = (component: IrComponent): string => {
     .join('\n');
   const stateMembers = [
     fields,
+    ...emitInitState(component),
     ...component.methods.map(emitMethod),
     buildMethod(component),
   ];

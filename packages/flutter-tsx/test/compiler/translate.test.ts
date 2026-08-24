@@ -82,8 +82,13 @@ describe('translateExpression', () => {
     expect(translate('`plain`')).toBe("'plain'");
   });
 
+  test('conditional and null-coalescing expressions translate', () => {
+    expect(translate('count > 0 ? count : 0')).toBe('_count > 0 ? _count : 0');
+    expect(translate('count ?? 1')).toBe('_count ?? 1');
+  });
+
   test('an unsupported binary operator is a numbered error', () => {
-    expect(() => translate('count ?? 1')).toThrow(
+    expect(() => translate('count & 1')).toThrow(
       new Error(
         'TSX0305 probe.tsx:6:23 — this expression is not compiled yet ' +
           '(roadmap step 18).',

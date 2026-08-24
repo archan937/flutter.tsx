@@ -14,7 +14,13 @@ export type IrValue =
       constructorName: string;
       args: IrArgument[];
     }
-  | { kind: 'closure'; params: string[] }
+  | { kind: 'closure'; params: string[]; statements: IrStatement[] }
+  | {
+      kind: 'conditional';
+      condition: IrValue;
+      whenTrue: IrValue;
+      whenFalse: IrValue;
+    }
   | {
       kind: 'interpolation';
       parts: { kind: 'text' | 'expr'; value: string }[];
@@ -72,5 +78,6 @@ export interface IrComponent {
   effects: ts.CallExpression[];
   fields: IrField[];
   methods: IrMethod[];
+  initStatements: IrStatement[];
   body: IrWidget;
 }

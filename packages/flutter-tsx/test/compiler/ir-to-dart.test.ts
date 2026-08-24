@@ -234,6 +234,49 @@ describe('irWidgetToDart — const inference and value kinds', () => {
     ).toBe('Column(children: [Text(_label)])');
   });
 
+  test('multi-statement inline handlers print block closures', async () => {
+    expect(
+      await printFirstBody(
+        "import { ElevatedButton, useState } from 'flutter-tsx';\n" +
+          'export const Probe = () => {\n' +
+          '  const [a, setA] = useState(0);\n' +
+          '  const [b, setB] = useState(0);\n' +
+          '  return (\n' +
+          '    <ElevatedButton onClick={() => { setA(1); setB(2); }}>Go</ElevatedButton>\n' +
+          '  );\n' +
+          '};\n',
+        'probe.tsx',
+      ),
+    ).toBe(
+      [
+        'ElevatedButton(',
+        '  onPressed: () {',
+        '    setState(() {',
+        '      _a = 1;',
+        '      _b = 2;',
+        '    });',
+        '  },',
+        "  child: const Text('Go'),",
+        ')',
+      ].join('\n'),
+    );
+  });
+
+  test('ternaries with expression conditions and single-child slots', async () => {
+    expect(
+      await printFirstBody(
+        "import { Center, Text, useState } from 'flutter-tsx';\n" +
+          'export const Probe = () => {\n' +
+          '  const [count, setCount] = useState(0);\n' +
+          '  return <Center>{count > 0 ? <Text>Some</Text> : <Text>None</Text>}</Center>;\n' +
+          '};\n',
+        'probe.tsx',
+      ),
+    ).toBe(
+      "Center(child: _count > 0 ? const Text('Some') : const Text('None'))",
+    );
+  });
+
   test('public naming keeps state references bare', async () => {
     const analysis = analyzeSource(
       "import { Column, Text, useState } from 'flutter-tsx';\n" +

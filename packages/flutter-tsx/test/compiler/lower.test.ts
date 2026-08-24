@@ -621,19 +621,41 @@ describe('lowerComponent — value forms', () => {
     );
   });
 
-  test('an inline handler with a body is a numbered error', () => {
+  test('inline handler bodies lower to closures with setter statements', async () => {
+    const ir = await lowerFirst(
+      "import { ElevatedButton, useState } from 'flutter-tsx';\n" +
+        'export const Probe = () => {\n' +
+        '  const [count, setCount] = useState(0);\n' +
+        '  return (\n' +
+        '    <ElevatedButton onClick={() => setCount(count + 1)}>Go</ElevatedButton>\n' +
+        '  );\n' +
+        '};\n',
+      'probe.tsx',
+    );
+
+    expect(
+      ir.body.args.find((argument) => argument.param === 'onPressed')?.value,
+    ).toEqual({
+      kind: 'closure',
+      params: [],
+      statements: [{ kind: 'setState', assignments: ['_count++'] }],
+    });
+  });
+
+  test('an unsupported inline handler statement is a numbered error', () => {
     expect(
       lowerFirst(
-        "import { Switch } from 'flutter-tsx';\n" +
-          'export const Probe = () => (\n' +
-          '  <Switch value={true} onChanged={() => { console.log(1); }} />\n' +
-          ');\n',
+        "import { Switch, useState } from 'flutter-tsx';\n" +
+          'export const Probe = () => {\n' +
+          '  const [on, setOn] = useState(false);\n' +
+          '  return <Switch value={on} onChanged={() => { console.log(1); }} />;\n' +
+          '};\n',
         'probe.tsx',
       ),
     ).rejects.toThrow(
       new Error(
-        'TSX0302 probe.tsx:3:41 — inline handler bodies are not compiled ' +
-          'yet (roadmap step 18) — extract the logic into a named handler.',
+        'TSX0305 probe.tsx:4:48 — this statement is not compiled yet ' +
+          '(roadmap step 18).',
       ),
     );
   });
@@ -836,6 +858,101 @@ describe('lowerComponent — stateful pieces', () => {
       new Error(
         'TSX0305 probe.tsx:5:5 — this statement is not compiled yet ' +
           '(roadmap step 18).',
+      ),
+    );
+  });
+});
+
+describe('lowerComponent — effects and conditionals', () => {
+  test('mount effects lower to initState statements', async () => {
+    const ir = await lowerFirst(
+      "import { Text, useEffect, useState } from 'flutter-tsx';\n" +
+        'export const Probe = () => {\n' +
+        '  const [online, setOnline] = useState(false);\n' +
+        '  const [checks, setChecks] = useState(0);\n' +
+        '  useEffect(() => {\n' +
+        '    setOnline(true);\n' +
+        '    setChecks(1);\n' +
+        '  }, []);\n' +
+        '  return <Text>hi</Text>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+
+    expect(ir.initStatements).toEqual([
+      {
+        kind: 'setState',
+        assignments: ['_online = true', '_checks = 1'],
+      },
+    ]);
+  });
+
+  test('ternary children lower to conditional widgets', async () => {
+    const ir = await lowerFirst(
+      "import { Column, Text, useState } from 'flutter-tsx';\n" +
+        'export const Probe = () => {\n' +
+        '  const [on, setOn] = useState(false);\n' +
+        '  return <Column>{on ? <Text>Yes</Text> : <Text>No</Text>}</Column>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+
+    const [children] = ir.body.args;
+    if (children?.value.kind !== 'widgetList') {
+      throw new Error('expected a children list');
+    }
+    const [item] = children.value.items;
+    if (item?.kind !== 'value') {
+      throw new Error('expected a value item');
+    }
+    expect(item.value.kind).toBe('conditional');
+    if (item.value.kind !== 'conditional') {
+      throw new Error('narrow');
+    }
+    expect(item.value.condition).toEqual({ kind: 'stateRef', name: 'on' });
+    expect(item.value.whenTrue.kind).toBe('widget');
+    expect(item.value.whenFalse.kind).toBe('widget');
+  });
+
+  test('effects with dependencies are a numbered error', () => {
+    expect(
+      lowerFirst(
+        "import { Text, useEffect, useState } from 'flutter-tsx';\n" +
+          'export const Probe = () => {\n' +
+          '  const [n, setN] = useState(0);\n' +
+          '  useEffect(() => {\n' +
+          '    setN(1);\n' +
+          '  }, [n]);\n' +
+          '  return <Text>hi</Text>;\n' +
+          '};\n',
+        'probe.tsx',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0306 probe.tsx:4:3 — only mount effects compile: pass an empty ' +
+          'dependency array (`useEffect(() => { ... }, [])`).',
+      ),
+    );
+  });
+
+  test('effect cleanups are a numbered error until plugin controllers', () => {
+    expect(
+      lowerFirst(
+        "import { Text, useEffect, useState } from 'flutter-tsx';\n" +
+          'export const Probe = () => {\n' +
+          '  const [n, setN] = useState(0);\n' +
+          '  useEffect(() => {\n' +
+          '    setN(1);\n' +
+          '    return () => setN(0);\n' +
+          '  }, []);\n' +
+          '  return <Text>hi</Text>;\n' +
+          '};\n',
+        'probe.tsx',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0307 probe.tsx:6:5 — effect cleanups land with plugin ' +
+          'controllers (roadmap step 22).',
       ),
     );
   });
