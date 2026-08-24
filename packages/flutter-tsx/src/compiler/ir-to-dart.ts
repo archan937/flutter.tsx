@@ -1,5 +1,6 @@
 import type { DartExpr, DartListItem } from './dart-ast';
 import type { IrArgument, IrChild, IrValue, IrWidget } from './ir';
+import { interpolate } from './translate';
 
 export interface DartNaming {
   privateMembers: boolean;
@@ -111,6 +112,10 @@ const valueToDart = (
       );
     case 'closure':
       return { kind: 'closure', params: value.params };
+    case 'interpolation':
+      return { kind: 'identifier', name: interpolate(value.parts) };
+    case 'dartExpr':
+      return { kind: 'identifier', name: value.dart };
     case 'handlerRef':
     case 'stateRef':
       return { kind: 'identifier', name: memberName(value.name, naming) };

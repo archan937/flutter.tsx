@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'bun:test';
 
 import { loadApiSnapshot } from '@src/api/load';
-import { analyzeSource } from '@src/compiler/front-end';
+import { analyzeSource } from '@src/compiler/analyze';
 import type { IrComponent } from '@src/compiler/ir';
 import {
   buildCompileContext,
@@ -303,7 +303,20 @@ describe('lowerComponent — value edge cases', () => {
             },
             {
               kind: 'value',
-              value: { kind: 'stateRef', name: 'label' },
+              value: {
+                kind: 'widget',
+                widget: {
+                  name: 'Text',
+                  constConstructor: true,
+                  args: [
+                    {
+                      param: 'data',
+                      positional: true,
+                      value: { kind: 'dartExpr', dart: '_label' },
+                    },
+                  ],
+                },
+              },
             },
           ],
         },
@@ -332,7 +345,7 @@ describe('lowerComponent — value edge cases', () => {
     const kinds = children.value.items.map((item) =>
       item.kind === 'value' ? item.value.kind : item.kind,
     );
-    expect(kinds).toEqual(['widget', 'raw', 'widget']);
+    expect(kinds).toEqual(['widget', 'widget', 'widget']);
 
     const [textItem, , centerItem] = children.value.items;
     if (
@@ -650,6 +663,179 @@ describe('lowerComponent — value forms', () => {
       new Error(
         'TSX0205 probe.tsx:2:43 — an object literal cannot express a ' +
           'widget value.',
+      ),
+    );
+  });
+});
+
+describe('lowerComponent — stateful pieces', () => {
+  test('states become private fields, setters become setState methods', async () => {
+    const ir = await lowerFirst(
+      "import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';\n" +
+        'export const Probe = () => {\n' +
+        '  const [count, setCount] = useState(0);\n' +
+        "  const [label, setLabel] = useState('x');\n" +
+        '  const bump = () => {\n' +
+        '    setCount(count + 1);\n' +
+        "    setLabel('bumped');\n" +
+        '  };\n' +
+        '  const reset = () => setCount(0);\n' +
+        '  const grow = () => {\n' +
+        '    setCount(count + 5);\n' +
+        '  };\n' +
+        '  const drop = () => setCount(count - 1);\n' +
+        '  const shrink = () => setCount(count - 5);\n' +
+        '  const twice = () => setCount(count * 2);\n' +
+        '  return <Column><Text>hi</Text></Column>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+
+    expect(ir.kind).toBe('stateful');
+    expect(ir.fields).toEqual([
+      { name: '_count', dartType: 'int', initializer: '0' },
+      { name: '_label', dartType: 'String', initializer: "'x'" },
+    ]);
+    expect(ir.methods).toEqual([
+      {
+        name: 'bump',
+        isAsync: false,
+        statements: [
+          {
+            kind: 'setState',
+            assignments: ['_count++', "_label = 'bumped'"],
+          },
+        ],
+      },
+      {
+        name: 'reset',
+        isAsync: false,
+        statements: [{ kind: 'setState', assignments: ['_count = 0'] }],
+      },
+      {
+        name: 'grow',
+        isAsync: false,
+        statements: [{ kind: 'setState', assignments: ['_count += 5'] }],
+      },
+      {
+        name: 'drop',
+        isAsync: false,
+        statements: [{ kind: 'setState', assignments: ['_count--'] }],
+      },
+      {
+        name: 'shrink',
+        isAsync: false,
+        statements: [{ kind: 'setState', assignments: ['_count -= 5'] }],
+      },
+      {
+        name: 'twice',
+        isAsync: false,
+        statements: [
+          { kind: 'setState', assignments: ['_count = _count * 2'] },
+        ],
+      },
+    ]);
+  });
+
+  test('text slots interpolate expressions between text runs', async () => {
+    const ir = await lowerFirst(
+      "import { Text, useState } from 'flutter-tsx';\n" +
+        'export const Probe = () => {\n' +
+        '  const [count, setCount] = useState(0);\n' +
+        '  return <Text>Count: {count}!</Text>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+
+    expect(ir.body.args).toEqual([
+      {
+        param: 'data',
+        positional: true,
+        value: {
+          kind: 'interpolation',
+          parts: [
+            { kind: 'text', value: 'Count: ' },
+            { kind: 'expr', value: '_count' },
+            { kind: 'text', value: '!' },
+          ],
+        },
+      },
+    ]);
+  });
+
+  test('scalar children wrap in Text: interpolated unless a string state', async () => {
+    const ir = await lowerFirst(
+      "import { Column, useState } from 'flutter-tsx';\n" +
+        'export const Probe = () => {\n' +
+        '  const [count, setCount] = useState(0);\n' +
+        "  const [label, setLabel] = useState('x');\n" +
+        '  return (\n' +
+        '    <Column>\n' +
+        '      {count}\n' +
+        '      {label}\n' +
+        "      {'plain'}\n" +
+        '    </Column>\n' +
+        '  );\n' +
+        '};\n',
+      'probe.tsx',
+    );
+
+    const [children] = ir.body.args;
+    if (children?.value.kind !== 'widgetList') {
+      throw new Error('expected a children list');
+    }
+    const textArgs = children.value.items.map((item) => {
+      if (item.kind !== 'value' || item.value.kind !== 'widget') {
+        throw new Error('expected Text widgets');
+      }
+      return item.value.widget.args[0]?.value;
+    });
+    expect(textArgs).toEqual([
+      {
+        kind: 'interpolation',
+        parts: [{ kind: 'expr', value: '_count' }],
+      },
+      { kind: 'dartExpr', dart: '_label' },
+      { kind: 'string', value: 'plain' },
+    ]);
+  });
+
+  test('a setter call without an argument is a numbered error', () => {
+    expect(
+      lowerFirst(
+        "import { Text, useState } from 'flutter-tsx';\n" +
+          'export const Probe = () => {\n' +
+          '  const [count, setCount] = useState(0);\n' +
+          '  const boom = () => setCount();\n' +
+          '  return <Text>hi</Text>;\n' +
+          '};\n',
+        'probe.tsx',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0305 probe.tsx:4:22 — this statement is not compiled yet ' +
+          '(roadmap step 18).',
+      ),
+    );
+  });
+
+  test('a handler statement beyond state setters is a numbered error', () => {
+    expect(
+      lowerFirst(
+        "import { Text, useState } from 'flutter-tsx';\n" +
+          'export const Probe = () => {\n' +
+          '  const [count, setCount] = useState(0);\n' +
+          '  const boom = () => {\n' +
+          '    console.log(count);\n' +
+          '  };\n' +
+          '  return <Text>hi</Text>;\n' +
+          '};\n',
+        'probe.tsx',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0305 probe.tsx:5:5 — this statement is not compiled yet ' +
+          '(roadmap step 18).',
       ),
     );
   });

@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'bun:test';
 
 import { loadApiSnapshot } from '@src/api/load';
+import { analyzeSource } from '@src/compiler/analyze';
 import { printExpr } from '@src/compiler/dart-print';
-import { analyzeSource } from '@src/compiler/front-end';
 import { irWidgetToDart } from '@src/compiler/ir-to-dart';
 import {
   buildCompileContext,
@@ -83,14 +83,14 @@ describe('irWidgetToDart — const inference and value kinds', () => {
     );
   });
 
-  test('raw expressions print as their source text', async () => {
+  test('scalar expression children wrap in an interpolated Text', async () => {
     expect(
       await printFirstBody(
         "import { Column } from 'flutter-tsx';\n" +
           'export const Probe = () => <Column>{40 + 2}</Column>;\n',
         'probe.tsx',
       ),
-    ).toBe('Column(children: [40 + 2])');
+    ).toBe("Column(children: [Text('${40 + 2}')])");
   });
 
   test('non-const constructors stay bare while constable args get const', async () => {
@@ -221,12 +221,25 @@ describe('irWidgetToDart — const inference and value kinds', () => {
     );
   });
 
-  test('public naming keeps identifiers bare', async () => {
+  test('string-state children print as a plain Text argument', async () => {
+    expect(
+      await printFirstBody(
+        "import { Column, useState } from 'flutter-tsx';\n" +
+          'export const Probe = () => {\n' +
+          "  const [label, setLabel] = useState('x');\n" +
+          '  return <Column>{label}</Column>;\n' +
+          '};\n',
+        'probe.tsx',
+      ),
+    ).toBe('Column(children: [Text(_label)])');
+  });
+
+  test('public naming keeps state references bare', async () => {
     const analysis = analyzeSource(
       "import { Column, Text, useState } from 'flutter-tsx';\n" +
         'export const Probe = () => {\n' +
-        "  const [label, setLabel] = useState('x');\n" +
-        '  return <Column>{label}</Column>;\n' +
+        '  const [taken, setTaken] = useState(false);\n' +
+        '  return <Column>{taken && <Text>x</Text>}</Column>;\n' +
         '};\n',
       'probe.tsx',
     );
@@ -237,7 +250,7 @@ describe('irWidgetToDart — const inference and value kinds', () => {
     const ir = lowerComponent(component, await contextOnce());
 
     expect(printExpr(irWidgetToDart(ir.body, { privateMembers: false }))).toBe(
-      'Column(children: [label])',
+      "Column(children: [if (taken) const Text('x')])",
     );
   });
 });

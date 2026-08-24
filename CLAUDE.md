@@ -334,7 +334,26 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       BackdropFilter — value-dependent asserts over optional params
       (message-or-richMessage etc.); needs assert-aware example synthesis,
       revisit with the docs step.**
-- [ ] 17–21. The compiler core, one trait per step, each ending in a green golden
+- [x] 17. useState → StatefulWidget — **golden #4 green** (`05-counter`) and the
+      **first stateful from-TSX e2e web build**
+      (`e2e/test/build-counter-from-tsx.test.ts`). `useState` emits the
+      StatefulWidget/State pair (typed private fields with translated
+      initializers), named handlers become State methods (`async` →
+      `Future<void> … async`), and consecutive setter calls merge into ONE
+      `setState` with idiomatic assignments (`setCount(count + 1)` →
+      `_count++`, `+ n` → `+= n`, `- 1` → `--`, else `_x = expr`). New
+      `src/compiler/translate.ts`: the expression translator (literals,
+      state/handler renames, binary/unary with `===`→`==`, template literals →
+      Dart interpolation) — everything else is an honest TSX0305. Text slots
+      interpolate (`<Text>Count: {count}</Text>` → `Text('Count: $_count')`),
+      and scalar expression children wrap in Text per the DX contract
+      (`{count}` → `Text('$_count')`, string states → `Text(_label)` — bare
+      scalars in children lists were silently invalid Dart before). Guard
+      split: plugins → TSX0304 (step 22, keeps camera red), useEffect →
+      TSX0303 (step 18); TSX0301 is retired. `front-end.ts` renamed to
+      `analyze.ts` (Paul: the old name was misleading); import resolution
+      split out of emit-component into `compiler/imports.ts`.
+- [ ] 18–21. The compiler core, one trait per step, each ending in a green golden
       fixture; diagnostics with file/line + fix hints. Traits: JSX→constructor ·
       slots (child/children/named/text) · props/positional · string-children→Text ·
       enum/constant props ·

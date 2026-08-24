@@ -125,23 +125,99 @@ class Sensitive extends StatelessWidget {
   });
 });
 
+describe('transpileComponent — stateful components', () => {
+  test('useState and a named handler emit the full StatefulWidget', async () => {
+    const source = await Bun.file(
+      new URL('../fixtures/05-counter/input.tsx', import.meta.url),
+    ).text();
+    const expected = await Bun.file(
+      new URL('../fixtures/05-counter/expected.dart', import.meta.url),
+    ).text();
+
+    expect(await transpileComponent({ source, filePath: 'counter.tsx' })).toBe(
+      expected,
+    );
+  });
+
+  test('async handlers become async methods', async () => {
+    expect(
+      await transpileComponent({
+        source:
+          "import { ElevatedButton, useState } from 'flutter-tsx';\n" +
+          'export const Saver = () => {\n' +
+          '  const [saved, setSaved] = useState(false);\n' +
+          '  const save = async () => {\n' +
+          '    setSaved(true);\n' +
+          '  };\n' +
+          '  return <ElevatedButton onClick={save}>Save</ElevatedButton>;\n' +
+          '};\n',
+        filePath: 'saver.tsx',
+      }),
+    ).toBe(
+      `import 'package:flutter/material.dart';
+
+class Saver extends StatefulWidget {
+  const Saver({super.key});
+
+  @override
+  State<Saver> createState() => _SaverState();
+}
+
+class _SaverState extends State<Saver> {
+  bool _saved = false;
+
+  Future<void> _save() async {
+    setState(() {
+      _saved = true;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(onPressed: _save, child: const Text('Save'));
+  }
+}
+`,
+    );
+  });
+});
+
 describe('transpileComponent — not yet supported', () => {
-  test('stateful components are an honest numbered error', () => {
+  test('plugin hooks are an honest numbered error', () => {
     expect(
       transpileComponent({
         source:
-          "import { Text, useState } from 'flutter-tsx';\n" +
+          "import { Text } from 'flutter-tsx';\n" +
+          "import { useCamera } from 'plugin:camera';\n" +
           'export const Probe = () => {\n' +
-          '  const [count, setCount] = useState(0);\n' +
+          '  const cam = useCamera();\n' +
           '  return <Text>hi</Text>;\n' +
           '};\n',
         filePath: 'probe.tsx',
       }),
     ).rejects.toThrow(
       new Error(
-        'TSX0301 probe.tsx:2:14 — <Probe> uses state, plugins, effects, or ' +
-          'handlers — only plain stateless components compile yet (stateful ' +
-          'support lands at roadmap step 17).',
+        'TSX0304 probe.tsx:3:14 — <Probe> uses plugin hooks — plugin ' +
+          'compilation lands at roadmap step 22.',
+      ),
+    );
+  });
+
+  test('useEffect is an honest numbered error', () => {
+    expect(
+      transpileComponent({
+        source:
+          "import { Text, useEffect } from 'flutter-tsx';\n" +
+          'export const Probe = () => {\n' +
+          '  useEffect(() => {}, []);\n' +
+          '  return <Text>hi</Text>;\n' +
+          '};\n',
+        filePath: 'probe.tsx',
+      }),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0303 probe.tsx:2:14 — <Probe> uses useEffect — lifecycle ' +
+          'compilation lands at roadmap step 18.',
       ),
     );
   });

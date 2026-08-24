@@ -1,6 +1,6 @@
 import type ts from 'typescript';
 
-import type { HandlerBinding, PluginBinding, StateBinding } from './front-end';
+import type { HandlerBinding, PluginBinding, StateBinding } from './analyze';
 
 export type IrValue =
   | { kind: 'string'; value: string }
@@ -15,6 +15,11 @@ export type IrValue =
       args: IrArgument[];
     }
   | { kind: 'closure'; params: string[] }
+  | {
+      kind: 'interpolation';
+      parts: { kind: 'text' | 'expr'; value: string }[];
+    }
+  | { kind: 'dartExpr'; dart: string }
   | { kind: 'handlerRef'; name: string }
   | { kind: 'stateRef'; name: string }
   | { kind: 'raw'; node: ts.Expression }
@@ -41,6 +46,23 @@ export interface IrWidget {
   args: IrArgument[];
 }
 
+export interface IrField {
+  name: string;
+  dartType: string;
+  initializer: string;
+}
+
+export interface IrStatement {
+  kind: 'setState';
+  assignments: string[];
+}
+
+export interface IrMethod {
+  name: string;
+  isAsync: boolean;
+  statements: IrStatement[];
+}
+
 export interface IrComponent {
   name: string;
   kind: 'stateless' | 'stateful';
@@ -48,5 +70,7 @@ export interface IrComponent {
   plugins: PluginBinding[];
   handlers: HandlerBinding[];
   effects: ts.CallExpression[];
+  fields: IrField[];
+  methods: IrMethod[];
   body: IrWidget;
 }

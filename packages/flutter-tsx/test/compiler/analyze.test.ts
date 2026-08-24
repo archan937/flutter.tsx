@@ -5,7 +5,7 @@ import {
   analyzeSource,
   requireSourceFile,
   summarize,
-} from '@src/compiler/front-end';
+} from '@src/compiler/analyze';
 
 const fixturePath = new URL(
   '../fixtures/01-camera-screen/input.tsx',

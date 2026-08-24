@@ -10,7 +10,7 @@ export interface PrintSite {
 
 const ROOT_SITE: PrintSite = { indent: 0, used: 0, trailing: 0 };
 
-const escapeString = (value: string): string =>
+export const escapeDartString = (value: string): string =>
   value.replaceAll('\\', '\\\\').replaceAll("'", "\\'").replaceAll('$', '\\$');
 
 const pad = (width: number): string => ' '.repeat(width);
@@ -28,7 +28,7 @@ const inlineListItem = (item: DartListItem): string =>
 const inlineExpr = (expr: DartExpr): string => {
   switch (expr.kind) {
     case 'string':
-      return `'${escapeString(expr.value)}'`;
+      return `'${escapeDartString(expr.value)}'`;
     case 'number':
       return expr.value;
     case 'boolean':

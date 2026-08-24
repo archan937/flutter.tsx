@@ -9,9 +9,22 @@ import {
   type ValueForms,
 } from '../derive/value-forms';
 import { jsxPropName } from '../generate/renames';
+import type { ComponentAnalysis, HandlerBinding } from './analyze';
 import { tsxErrorAt } from './diagnostics';
-import type { ComponentAnalysis } from './front-end';
-import type { IrArgument, IrChild, IrComponent, IrValue, IrWidget } from './ir';
+import type {
+  IrArgument,
+  IrChild,
+  IrComponent,
+  IrMethod,
+  IrStatement,
+  IrValue,
+  IrWidget,
+} from './ir';
+import {
+  type TranslateContext,
+  translateExpression,
+  translateIdentifier,
+} from './translate';
 
 interface WidgetInfo {
   name: string;
@@ -91,6 +104,8 @@ interface LowerContext {
   sourceFile: ts.SourceFile;
   stateNames: Set<string>;
   handlerNames: Set<string>;
+  stringStates: Set<string>;
+  translate: TranslateContext;
 }
 
 const SYMMETRIC_INSETS_KEYS = new Set(['horizontal', 'vertical']);
@@ -519,6 +534,38 @@ const lowerConditionChild = (
   child: { kind: 'value', value: lowerChildValue(expression.right, context) },
 });
 
+const textValueWidget = (value: IrValue, context: LowerContext): IrValue => ({
+  kind: 'widget',
+  widget: {
+    name: 'Text',
+    constConstructor:
+      context.compile.widgets.get('Text')?.constConstructor ?? true,
+    args: [{ param: 'data', positional: true, value }],
+  },
+});
+
+// The DX contract: strings and numbers are valid children anywhere — scalar
+// expressions wrap in a Text, interpolated unless already a string.
+const lowerScalarChild = (
+  expression: ts.Expression,
+  context: LowerContext,
+): IrValue => {
+  if (ts.isStringLiteral(expression)) {
+    return textWidget(expression.text, context);
+  }
+  const dart = translateExpression(expression, context.translate);
+  if (
+    ts.isIdentifier(expression) &&
+    context.stringStates.has(expression.text)
+  ) {
+    return textValueWidget({ kind: 'dartExpr', dart }, context);
+  }
+  return textValueWidget(
+    { kind: 'interpolation', parts: [{ kind: 'expr', value: dart }] },
+    context,
+  );
+};
+
 const lowerChildValue = (
   expression: ts.Expression,
   context: LowerContext,
@@ -526,10 +573,7 @@ const lowerChildValue = (
   if (ts.isJsxElement(expression) || ts.isJsxSelfClosingElement(expression)) {
     return { kind: 'widget', widget: lowerJsxElement(expression, context) };
   }
-  if (ts.isIdentifier(expression)) {
-    return lowerIdentifier(expression, context);
-  }
-  return { kind: 'raw', node: expression };
+  return lowerScalarChild(expression, context);
 };
 
 const lowerListChildren = (
@@ -584,13 +628,37 @@ const singleChildValue = (
   return null;
 };
 
-const textContent = (children: readonly ts.JsxChild[]): string =>
-  children
-    .flatMap((child) => {
-      const text = meaningfulText(child);
-      return text === null ? [] : [text];
-    })
-    .join(' ');
+const jsxTextValue = (child: ts.JsxText): string =>
+  child.text.replace(/\s*\n\s*/g, '');
+
+const textSlotValue = (
+  children: readonly ts.JsxChild[],
+  context: LowerContext,
+): IrValue => {
+  const parts: { kind: 'text' | 'expr'; value: string }[] = [];
+  for (const child of children) {
+    if (ts.isJsxText(child)) {
+      const value = jsxTextValue(child);
+      if (value !== '') {
+        parts.push({ kind: 'text', value });
+      }
+      continue;
+    }
+    if (ts.isJsxExpression(child) && child.expression !== undefined) {
+      parts.push({
+        kind: 'expr',
+        value: translateExpression(child.expression, context.translate),
+      });
+    }
+  }
+  if (parts.every((part) => part.kind === 'text')) {
+    return {
+      kind: 'string',
+      value: parts.map((part) => part.value).join(' '),
+    };
+  }
+  return { kind: 'interpolation', parts };
+};
 
 const childrenArgument = (
   element: ts.JsxElement,
@@ -638,6 +706,13 @@ const lowerJsxElement = (
 
   const args: IrArgument[] = [];
   const childrenSlot = info.slots.children;
+  if (childrenSlot?.kind === 'text' && ts.isJsxElement(element)) {
+    args.push({
+      param: childrenSlot.param,
+      positional: true,
+      value: textSlotValue(element.children, context),
+    });
+  }
   if (childrenSlot === null && ts.isJsxElement(element)) {
     const orphan = element.children.find(
       (child) =>
@@ -654,13 +729,6 @@ const lowerJsxElement = (
         { sourceFile: context.sourceFile, node: orphan },
       );
     }
-  }
-  if (childrenSlot?.kind === 'text' && ts.isJsxElement(element)) {
-    args.push({
-      param: childrenSlot.param,
-      positional: true,
-      value: { kind: 'string', value: textContent(element.children) },
-    });
   }
   for (const attribute of opening.attributes.properties) {
     if (ts.isJsxAttribute(attribute)) {
@@ -680,15 +748,112 @@ const lowerJsxElement = (
   };
 };
 
+const setterAssignment = (
+  call: ts.CallExpression,
+  stateName: string,
+  context: LowerContext,
+): string => {
+  const argument = call.arguments[0];
+  if (argument === undefined) {
+    throw tsxErrorAt(
+      'TSX0305',
+      'this statement is not compiled yet (roadmap step 18).',
+      { sourceFile: context.sourceFile, node: call },
+    );
+  }
+  const member = translateIdentifier(stateName, context.translate);
+  if (
+    ts.isBinaryExpression(argument) &&
+    ts.isIdentifier(argument.left) &&
+    argument.left.text === stateName
+  ) {
+    const operator = argument.operatorToken.kind;
+    const { right } = argument;
+    const rightIsOne = ts.isNumericLiteral(right) && right.text === '1';
+    if (operator === ts.SyntaxKind.PlusToken) {
+      return rightIsOne
+        ? `${member}++`
+        : `${member} += ${translateExpression(right, context.translate)}`;
+    }
+    if (operator === ts.SyntaxKind.MinusToken) {
+      return rightIsOne
+        ? `${member}--`
+        : `${member} -= ${translateExpression(right, context.translate)}`;
+    }
+  }
+  return `${member} = ${translateExpression(argument, context.translate)}`;
+};
+
+const lowerHandlerStatements = (
+  handler: HandlerBinding,
+  settersToStates: Map<string, string>,
+  context: LowerContext,
+): IrStatement[] => {
+  const { body } = handler.body;
+  const items: { expression: ts.Expression | undefined; errorNode: ts.Node }[] =
+    ts.isBlock(body)
+      ? body.statements.map((statement) => ({
+          expression: ts.isExpressionStatement(statement)
+            ? statement.expression
+            : undefined,
+          errorNode: statement,
+        }))
+      : [{ expression: body, errorNode: body }];
+
+  const lowered: IrStatement[] = [];
+  for (const { expression, errorNode } of items) {
+    const stateName =
+      expression !== undefined &&
+      ts.isCallExpression(expression) &&
+      ts.isIdentifier(expression.expression)
+        ? settersToStates.get(expression.expression.text)
+        : undefined;
+    if (
+      expression === undefined ||
+      !ts.isCallExpression(expression) ||
+      stateName === undefined
+    ) {
+      throw tsxErrorAt(
+        'TSX0305',
+        'this statement is not compiled yet (roadmap step 18).',
+        { sourceFile: context.sourceFile, node: errorNode },
+      );
+    }
+    const assignment = setterAssignment(expression, stateName, context);
+    const previous = lowered[lowered.length - 1];
+    if (previous !== undefined) {
+      previous.assignments.push(assignment);
+    } else {
+      lowered.push({ kind: 'setState', assignments: [assignment] });
+    }
+  }
+  return lowered;
+};
+
 export const lowerComponent = (
   component: ComponentAnalysis,
   compile: CompileContext,
 ): IrComponent => {
+  const stateNames = new Set(component.states.map((state) => state.name));
+  const handlerNames = new Set(
+    component.handlers.map((handler) => handler.name),
+  );
   const context: LowerContext = {
     compile,
     sourceFile: component.sourceFile,
-    stateNames: new Set(component.states.map((state) => state.name)),
-    handlerNames: new Set(component.handlers.map((handler) => handler.name)),
+    stateNames,
+    handlerNames,
+    stringStates: new Set(
+      component.states
+        .filter((state) => state.dartType === 'String')
+        .map((state) => state.name),
+    ),
+    translate: {
+      sourceFile: component.sourceFile,
+      stateNames,
+      handlerNames,
+      privateMembers: true,
+    },
   };
 
   const root = component.returnJsx;
@@ -704,6 +869,20 @@ export const lowerComponent = (
     component.plugins.length > 0 ||
     component.effects.length > 0;
 
+  const settersToStates = new Map(
+    component.states.map((state) => [state.setterName, state.name]),
+  );
+  // Handlers that talk to plugin bindings need the step-22 method rewrites;
+  // transpile blocks plugin components before emission (TSX0304).
+  const methods: IrMethod[] =
+    component.plugins.length > 0
+      ? []
+      : component.handlers.map((handler) => ({
+          name: handler.name,
+          isAsync: handler.isAsync,
+          statements: lowerHandlerStatements(handler, settersToStates, context),
+        }));
+
   return {
     name: component.name,
     kind: isStateful ? 'stateful' : 'stateless',
@@ -711,6 +890,12 @@ export const lowerComponent = (
     plugins: component.plugins,
     handlers: component.handlers,
     effects: component.effects,
+    fields: component.states.map((state) => ({
+      name: translateIdentifier(state.name, context.translate),
+      dartType: state.dartType,
+      initializer: translateExpression(state.initializer, context.translate),
+    })),
+    methods,
     body: lowerJsxElement(root, context),
   };
 };

@@ -1,8 +1,8 @@
 import { loadApiSnapshot } from '../api/load';
 import { deriveSlots } from '../derive/slots';
+import { analyzeSource, type ComponentAnalysis } from './analyze';
 import { tsxErrorAt } from './diagnostics';
 import { emitDartFile } from './emit-component';
-import { analyzeSource, type ComponentAnalysis } from './front-end';
 import {
   buildCompileContext,
   type CompileContext,
@@ -23,18 +23,20 @@ const compileContext = (): Promise<CompileContext> => {
   return contextPromise;
 };
 
-const requirePlainStateless = (component: ComponentAnalysis): void => {
-  const isPlainStateless =
-    component.states.length === 0 &&
-    component.plugins.length === 0 &&
-    component.effects.length === 0 &&
-    component.handlers.length === 0;
-  if (!isPlainStateless) {
+const requireSupported = (component: ComponentAnalysis): void => {
+  if (component.plugins.length > 0) {
     throw tsxErrorAt(
-      'TSX0301',
-      `<${component.name}> uses state, plugins, effects, or handlers — only ` +
-        'plain stateless components compile yet (stateful support lands at ' +
-        'roadmap step 17).',
+      'TSX0304',
+      `<${component.name}> uses plugin hooks — plugin compilation lands at ` +
+        'roadmap step 22.',
+      { sourceFile: component.sourceFile, node: component.nameNode },
+    );
+  }
+  if (component.effects.length > 0) {
+    throw tsxErrorAt(
+      'TSX0303',
+      `<${component.name}> uses useEffect — lifecycle compilation lands at ` +
+        'roadmap step 18.',
       { sourceFile: component.sourceFile, node: component.nameNode },
     );
   }
@@ -46,7 +48,7 @@ export const transpileComponent = async (
   const context = await compileContext();
   const analysis = analyzeSource(input.source, input.filePath);
   const components = analysis.components.map((component) => {
-    requirePlainStateless(component);
+    requireSupported(component);
     return lowerComponent(component, context);
   });
   return emitDartFile(components, context);
