@@ -5,7 +5,8 @@ export type DartExpr =
   | { kind: 'identifier'; name: string }
   | { kind: 'enumMember'; enumName: string; member: string }
   | { kind: 'call'; target: string; isConst: boolean; args: DartArgument[] }
-  | { kind: 'list'; items: DartListItem[] };
+  | { kind: 'closure'; params: string[] }
+  | { kind: 'list'; isConst: boolean; items: DartListItem[] };
 
 export interface DartArgument {
   name: string | null;
@@ -59,7 +60,16 @@ export const call = (
   ],
 });
 
-export const listLit = (items: DartListItem[]): DartExpr => ({
+export const listLit = (
+  items: DartListItem[],
+  options: { isConst?: boolean } = {},
+): DartExpr => ({
   kind: 'list',
+  isConst: options.isConst ?? false,
   items,
+});
+
+export const closure = (params: string[]): DartExpr => ({
+  kind: 'closure',
+  params,
 });

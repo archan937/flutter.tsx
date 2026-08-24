@@ -10,6 +10,7 @@ const snapshot: ApiSnapshot = {
     frameworkRevision: 'abc123',
   },
   hierarchy: { Zeta: [], Alpha: ['Base'] },
+  exports: {},
   entities: [
     {
       kind: 'class',
@@ -44,6 +45,7 @@ describe('serializeApiSnapshot', () => {
     ],
     "Zeta": []
   },
+  "exports": {},
   "entities": [
     {
       "kind": "class",

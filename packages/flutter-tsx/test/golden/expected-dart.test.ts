@@ -20,6 +20,7 @@ describe('committed golden expected.dart files', () => {
       '01-camera-screen',
       '02-hello-column',
       '03-styled-container',
+      '04-inline-handler',
     ]);
   });
 

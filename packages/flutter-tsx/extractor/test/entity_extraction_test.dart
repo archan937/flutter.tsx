@@ -29,6 +29,7 @@ void main() {
   group('entity selection', () {
     test('extracts exactly the public entities, classified', () {
       expect(entities.map((entity) => '${entity.kind} ${entity.name}'), [
+        'class GuardedList',
         'class NotAWidget',
         'enum TestAlignment',
         'class TestController',
@@ -68,6 +69,19 @@ void main() {
 
     test('captures constructor documentation', () {
       expect(testWidget.constructors.last.doc, '/// A compact variant.');
+    });
+
+    test('flags asserts that access parameter members', () {
+      final guarded = entities.whereType<ClassEntity>().singleWhere(
+        (entity) => entity.name == 'GuardedList',
+      );
+      expect(guarded.constructors.single.paramMemberAsserts, true);
+      expect(
+        testWidget.constructors.map(
+          (constructor) => constructor.paramMemberAsserts,
+        ),
+        [false, false],
+      );
     });
 
     test('records const-ness per constructor', () {
@@ -181,6 +195,7 @@ void main() {
         'supertypes', () {
       expect(hierarchy, {
         'AbstractWidget': ['StatelessWidget', 'Widget'],
+        'GuardedList': <String>[],
         'NotAWidget': <String>[],
         'PreferredSizeLike': ['Widget'],
         'StatelessWidget': ['Widget'],

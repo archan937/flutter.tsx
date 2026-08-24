@@ -163,7 +163,7 @@ ${navList(page.enums.map((entry) => entry.name))}
 
 const verificationSection = `<article class="widget" id="verification" data-name="verification">
 <h3>✓ typechecked — what the badge means</h3>
-<p class="doc">Every example carrying the badge is generated into a probe module and compiled by the TypeScript compiler against the published <code>flutter-tsx</code> package surface on every CI run. Examples showing a <code>{…}</code> placeholder need a value kind that prop transforms will make expressible; they are excluded from the probe and carry no badge until then.</p>
+<p class="doc">Every example carrying the badge is generated into a probe module and compiled by the TypeScript compiler against the published <code>flutter-tsx</code> package surface on every CI run. Examples showing a <code>{…}</code> placeholder need a value kind a later compiler step makes expressible (callbacks with bodies, controllers, animations); they are excluded from the probe and carry no badge until then.</p>
 </article>`;
 
 export const pageContent = (page: SitePage): string => {

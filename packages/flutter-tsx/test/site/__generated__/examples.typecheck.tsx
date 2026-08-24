@@ -136,7 +136,6 @@ import {
   DialogTheme,
   Directionality,
   DisableWidgetInspectorScope,
-  Dismissible,
   DisplayFeatureSubScreen,
   Divider,
   DividerTheme,
@@ -202,7 +201,6 @@ import {
   IgnorePointer,
   IndexedSemantics,
   IndexedStack,
-  InheritedCupertinoTheme,
   Ink,
   InkResponse,
   InkWell,
@@ -307,7 +305,6 @@ import {
   SearchBar,
   SearchBarTheme,
   SearchViewTheme,
-  SegmentedButton,
   SegmentedButtonTheme,
   SelectableText,
   SelectionArea,
@@ -439,7 +436,7 @@ export const examples = [
   <AnimatedFractionallySizedBox duration="defaultAnimationDuration">
     <Text>Content</Text>
   </AnimatedFractionallySizedBox>,
-  <AnimatedOpacity opacity={16} duration="defaultAnimationDuration">
+  <AnimatedOpacity opacity={1} duration="defaultAnimationDuration">
     <Text>Content</Text>
   </AnimatedOpacity>,
   <AnimatedPadding padding="infinity" duration="defaultAnimationDuration">
@@ -458,10 +455,10 @@ export const examples = [
   <AnimatedPositionedDirectional duration="defaultAnimationDuration">
     <Text>Content</Text>
   </AnimatedPositionedDirectional>,
-  <AnimatedRotation turns={16} duration="defaultAnimationDuration">
+  <AnimatedRotation turns={1} duration="defaultAnimationDuration">
     <Text>Content</Text>
   </AnimatedRotation>,
-  <AnimatedScale scale={16} duration="defaultAnimationDuration">
+  <AnimatedScale scale={1} duration="defaultAnimationDuration">
     <Text>Content</Text>
   </AnimatedScale>,
   <AnimatedSize duration="defaultAnimationDuration">
@@ -478,7 +475,7 @@ export const examples = [
     <Text>Content</Text>
   </AppBarTheme>,
   <AppKitView viewType="example" />,
-  <AspectRatio aspectRatio={16}>
+  <AspectRatio aspectRatio={1}>
     <Text>Content</Text>
   </AspectRatio>,
   <AutofillGroup>
@@ -504,7 +501,7 @@ export const examples = [
   <Banner message="example" location="topStart">
     <Text>Content</Text>
   </Banner>,
-  <Baseline baseline={16} baselineType="alphabetic">
+  <Baseline baseline={1} baselineType="alphabetic">
     <Text>Content</Text>
   </Baseline>,
   <BlockSemantics>
@@ -536,7 +533,7 @@ export const examples = [
   <CardTheme>
     <Text>Content</Text>
   </CardTheme>,
-  <CarouselView itemExtent={16}>
+  <CarouselView itemExtent={1}>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
   </CarouselView>,
@@ -637,7 +634,7 @@ export const examples = [
     <Text>Item 1</Text>
     <Text>Item 2</Text>
   </CupertinoFormSection>,
-  <CupertinoLinearActivityIndicator progress={16} />,
+  <CupertinoLinearActivityIndicator progress={1} />,
   <CupertinoListSection>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
@@ -660,7 +657,7 @@ export const examples = [
   <CupertinoPageScaffoldBackgroundColor color="activeBlue">
     <Text>Content</Text>
   </CupertinoPageScaffoldBackgroundColor>,
-  <CupertinoPicker itemExtent={16} onSelectedItemChanged={() => {}}>
+  <CupertinoPicker itemExtent={1} onSelectedItemChanged={() => {}}>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
   </CupertinoPicker>,
@@ -672,7 +669,7 @@ export const examples = [
     <Text>Content</Text>
   </CupertinoScrollbar>,
   <CupertinoSearchTextField />,
-  <CupertinoSlider value={16} onChanged={() => {}} />,
+  <CupertinoSlider value={1} onChanged={() => {}} />,
   <CupertinoSliverNavigationBar />,
   <CupertinoSliverRefreshControl />,
   <CupertinoSwitch value={true} onChanged={() => {}} />,
@@ -739,9 +736,6 @@ export const examples = [
   <DisableWidgetInspectorScope>
     <Text>Content</Text>
   </DisableWidgetInspectorScope>,
-  <Dismissible>
-    <Text>Content</Text>
-  </Dismissible>,
   <DisplayFeatureSubScreen>
     <Text>Content</Text>
   </DisplayFeatureSubScreen>,
@@ -836,10 +830,10 @@ export const examples = [
   </Flexible>,
   <FlexibleSpaceBar />,
   <FlexibleSpaceBarSettings
-    toolbarOpacity={16}
-    minExtent={16}
-    maxExtent={16}
-    currentExtent={16}
+    toolbarOpacity={1}
+    minExtent={1}
+    maxExtent={1}
+    currentExtent={1}
   >
     <Text>Content</Text>
   </FlexibleSpaceBarSettings>,
@@ -909,9 +903,6 @@ export const examples = [
     <Text>Item 1</Text>
     <Text>Item 2</Text>
   </IndexedStack>,
-  <InheritedCupertinoTheme theme={<Text>Content</Text>}>
-    <Text>Content</Text>
-  </InheritedCupertinoTheme>,
   <Ink>
     <Text>Content</Text>
   </Ink>,
@@ -960,7 +951,7 @@ export const examples = [
     <Text>Item 1</Text>
     <Text>Item 2</Text>
   </ListView>,
-  <ListWheelScrollView itemExtent={16}>
+  <ListWheelScrollView itemExtent={1}>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
   </ListWheelScrollView>,
@@ -1053,7 +1044,7 @@ export const examples = [
   <Offstage>
     <Text>Content</Text>
   </Offstage>,
-  <Opacity opacity={16}>
+  <Opacity opacity={1}>
     <Text>Content</Text>
   </Opacity>,
   <OutlinedButton onClick={() => {}}>
@@ -1188,7 +1179,6 @@ export const examples = [
   <SearchViewTheme data={{}}>
     <Text>Content</Text>
   </SearchViewTheme>,
-  <SegmentedButton segments={[]} selected={[]} />,
   <SegmentedButtonTheme data={{}}>
     <Text>Content</Text>
   </SegmentedButtonTheme>,
@@ -1230,13 +1220,13 @@ export const examples = [
   <SizedOverflowBox size="infinite">
     <Text>Content</Text>
   </SizedOverflowBox>,
-  <Slider value={16} onChanged={() => {}} />,
+  <Slider value={1} onChanged={() => {}} />,
   <SliderTheme data={{}}>
     <Text>Content</Text>
   </SliderTheme>,
-  <SliverAnimatedOpacity opacity={16} duration="defaultAnimationDuration" />,
+  <SliverAnimatedOpacity opacity={1} duration="defaultAnimationDuration" />,
   <SliverAppBar />,
-  <SliverConstrainedCrossAxis maxExtent={16} sliver={<Text>Content</Text>} />,
+  <SliverConstrainedCrossAxis maxExtent={1} sliver={<Text>Content</Text>} />,
   <SliverCrossAxisExpanded flex={8} sliver={<Text>Content</Text>} />,
   <SliverCrossAxisGroup slivers={[]} />,
   <SliverEnsureSemantics sliver={<Text>Content</Text>} />,
@@ -1249,7 +1239,7 @@ export const examples = [
   <SliverIgnorePointer />,
   <SliverMainAxisGroup slivers={[]} />,
   <SliverOffstage />,
-  <SliverOpacity opacity={16} />,
+  <SliverOpacity opacity={1} />,
   <SliverPadding padding="infinity" />,
   <SliverResizingHeader>
     <Text>Content</Text>
@@ -1301,7 +1291,7 @@ export const examples = [
   <TabPageSelectorIndicator
     backgroundColor="activeBlue"
     borderColor="activeBlue"
-    size={16}
+    size={1}
   />,
   <Table />,
   <TableCell>

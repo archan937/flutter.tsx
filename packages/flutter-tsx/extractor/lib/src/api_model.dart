@@ -77,18 +77,21 @@ class ConstructorModel {
     required this.name,
     required this.doc,
     required this.isConst,
+    required this.paramMemberAsserts,
     required this.params,
   });
 
   final String name;
   final String doc;
   final bool isConst;
+  final bool paramMemberAsserts;
   final List<ParamModel> params;
 
   Map<String, Object?> toJson() => {
     'name': name,
     'doc': doc,
     'const': isConst,
+    'paramMemberAsserts': paramMemberAsserts,
     'params': params.map((param) => param.toJson()).toList(),
   };
 }
@@ -201,10 +204,12 @@ class ApiSnapshot {
   const ApiSnapshot({
     required this.meta,
     required this.hierarchy,
+    required this.exports,
     required this.entities,
   });
 
   final SdkMeta meta;
   final Map<String, List<String>> hierarchy;
+  final Map<String, List<String>> exports;
   final List<EntityModel> entities;
 }

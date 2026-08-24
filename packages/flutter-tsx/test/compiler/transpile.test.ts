@@ -93,6 +93,36 @@ class MixedScreen extends StatelessWidget {
 `,
     );
   });
+  test('names no barrel re-exports pull in their defining library', async () => {
+    expect(
+      await transpileComponent({
+        source:
+          "import { SensitiveContent, Text } from 'flutter-tsx';\n" +
+          'export const Sensitive = () => (\n' +
+          '  <SensitiveContent sensitivity="autoSensitive">\n' +
+          '    <Text>hi</Text>\n' +
+          '  </SensitiveContent>\n' +
+          ');\n',
+        filePath: 'sensitive.tsx',
+      }),
+    ).toBe(
+      `import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+class Sensitive extends StatelessWidget {
+  const Sensitive({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const SensitiveContent(
+      sensitivity: ContentSensitivity.autoSensitive,
+      child: Text('hi'),
+    );
+  }
+}
+`,
+    );
+  });
 });
 
 describe('transpileComponent — not yet supported', () => {

@@ -14,6 +14,7 @@ export type IrValue =
       constructorName: string;
       args: IrArgument[];
     }
+  | { kind: 'closure'; params: string[] }
   | { kind: 'handlerRef'; name: string }
   | { kind: 'stateRef'; name: string }
   | { kind: 'raw'; node: ts.Expression }

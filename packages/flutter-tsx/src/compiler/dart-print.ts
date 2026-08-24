@@ -42,10 +42,14 @@ const inlineExpr = (expr: DartExpr): string => {
       const args = expr.args.map(inlineArgument).join(', ');
       return `${constPrefix}${expr.target}(${args})`;
     }
-    case 'list':
+    case 'closure':
+      return `(${expr.params.join(', ')}) {}`;
+    case 'list': {
+      const constPrefix = expr.isConst ? 'const ' : '';
       return expr.items.length === 0
-        ? '[]'
-        : `[${expr.items.map(inlineListItem).join(', ')}]`;
+        ? `${constPrefix}[]`
+        : `${constPrefix}[${expr.items.map(inlineListItem).join(', ')}]`;
+    }
   }
 };
 
@@ -93,7 +97,8 @@ const printListTall = (
     });
     return `${pad(childIndent)}${prefix}${value},`;
   });
-  return `[\n${lines.join('\n')}\n${pad(site.indent)}]`;
+  const constPrefix = expr.isConst ? 'const ' : '';
+  return `${constPrefix}[\n${lines.join('\n')}\n${pad(site.indent)}]`;
 };
 
 export const printExpr = (

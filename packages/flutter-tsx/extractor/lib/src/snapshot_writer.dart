@@ -11,9 +11,15 @@ String encodeSnapshot(ApiSnapshot snapshot) {
     for (final name in sortedNames) name: snapshot.hierarchy[name],
   };
 
+  final sortedExportNames = snapshot.exports.keys.toList()..sort();
+  final sortedExports = {
+    for (final name in sortedExportNames) name: snapshot.exports[name],
+  };
+
   final document = {
     'meta': snapshot.meta.toJson(),
     'hierarchy': sortedHierarchy,
+    'exports': sortedExports,
     'entities': sortedEntities.map((entity) => entity.toJson()).toList(),
   };
   return '${const JsonEncoder.withIndent('  ').convert(document)}\n';

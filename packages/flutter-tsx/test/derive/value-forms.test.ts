@@ -38,7 +38,13 @@ const param = (
 const defaultConstructor = (
   params: ParamModel[],
   isConst = true,
-): ConstructorModel => ({ name: '', doc: '', isConst, params });
+): ConstructorModel => ({
+  name: '',
+  doc: '',
+  isConst,
+  paramMemberAsserts: false,
+  params,
+});
 
 const classEntity = (
   name: string,
@@ -64,6 +70,7 @@ const snapshotWith = (
     frameworkRevision: 'abc123',
   },
   hierarchy,
+  exports: {},
   entities,
 });
 

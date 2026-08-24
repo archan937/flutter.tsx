@@ -120,6 +120,10 @@ const parseConstructor = (value: unknown, path: string): ConstructorModel => {
     name: asString(record.name, `${path}.name`),
     doc: asString(record.doc, `${path}.doc`),
     isConst: asBoolean(record.const, `${path}.const`),
+    paramMemberAsserts: asBoolean(
+      record.paramMemberAsserts,
+      `${path}.paramMemberAsserts`,
+    ),
     params: asArray(record.params, `${path}.params`).map((param, index) =>
       parseParam(param, `${path}.params[${index}]`),
     ),
@@ -185,15 +189,15 @@ const parseEntity = (value: unknown, path: string): Entity => {
   }
 };
 
-const parseHierarchy = (value: unknown): Hierarchy => {
-  const record = asObject(value, 'hierarchy');
-  const hierarchy: Hierarchy = {};
-  for (const [name, supertypes] of Object.entries(record)) {
-    hierarchy[name] = asArray(supertypes, `hierarchy.${name}`).map(
-      (supertype, index) => asString(supertype, `hierarchy.${name}[${index}]`),
+const parseNameListMap = (value: unknown, path: string): Hierarchy => {
+  const record = asObject(value, path);
+  const parsed: Hierarchy = {};
+  for (const [name, names] of Object.entries(record)) {
+    parsed[name] = asArray(names, `${path}.${name}`).map((entry, index) =>
+      asString(entry, `${path}.${name}[${index}]`),
     );
   }
-  return hierarchy;
+  return parsed;
 };
 
 export const parseApiSnapshot = (value: unknown): ApiSnapshot => {
@@ -211,7 +215,8 @@ export const parseApiSnapshot = (value: unknown): ApiSnapshot => {
         'meta.frameworkRevision',
       ),
     },
-    hierarchy: parseHierarchy(record.hierarchy),
+    hierarchy: parseNameListMap(record.hierarchy, 'hierarchy'),
+    exports: parseNameListMap(record.exports, 'exports'),
     entities: asArray(record.entities, 'entities').map((entity, index) =>
       parseEntity(entity, `entities[${index}]`),
     ),

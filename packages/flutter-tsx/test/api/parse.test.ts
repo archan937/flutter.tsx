@@ -20,6 +20,7 @@ const widgetEntity = {
       name: '',
       doc: '/// Creates.',
       const: true,
+      paramMemberAsserts: false,
       params: [
         {
           name: 'child',
@@ -55,12 +56,14 @@ const enumEntity = {
 const document = {
   meta,
   hierarchy: { Align: ['Widget'], Widget: [] },
+  exports: {},
   entities: [widgetEntity, enumEntity],
 };
 
 const withEntity = (entity: object): object => ({
   meta,
   hierarchy: {},
+  exports: {},
   entities: [entity],
 });
 
@@ -69,6 +72,7 @@ describe('parseApiSnapshot', () => {
     const expected: ApiSnapshot = {
       meta,
       hierarchy: { Align: ['Widget'], Widget: [] },
+      exports: {},
       entities: [
         {
           kind: 'widget',
@@ -81,6 +85,7 @@ describe('parseApiSnapshot', () => {
               name: '',
               doc: '/// Creates.',
               isConst: true,
+              paramMemberAsserts: false,
               params: [
                 {
                   name: 'child',
@@ -183,8 +188,19 @@ describe('parseApiSnapshot', () => {
 
     test('non-array entities', () => {
       expect(() =>
-        parseApiSnapshot({ meta, hierarchy: {}, entities: 'nope' }),
+        parseApiSnapshot({
+          meta,
+          hierarchy: {},
+          exports: {},
+          entities: 'nope',
+        }),
       ).toThrow(new Error('api.json: entities: expected an array'));
+    });
+
+    test('missing exports', () => {
+      expect(() =>
+        parseApiSnapshot({ meta, hierarchy: {}, entities: [] }),
+      ).toThrow(new Error('api.json: exports: expected an object'));
     });
 
     test('missing hierarchy', () => {
@@ -198,6 +214,7 @@ describe('parseApiSnapshot', () => {
         parseApiSnapshot({
           meta,
           hierarchy: { Align: 'Widget' },
+          exports: {},
           entities: [],
         }),
       ).toThrow(new Error('api.json: hierarchy.Align: expected an array'));
@@ -226,7 +243,15 @@ describe('parseApiSnapshot', () => {
     });
 
     test('non-boolean constructor const flag', () => {
-      const constructors = [{ name: '', doc: '', const: 'yes', params: [] }];
+      const constructors = [
+        {
+          name: '',
+          doc: '',
+          const: 'yes',
+          paramMemberAsserts: false,
+          params: [],
+        },
+      ];
       expect(() =>
         parseApiSnapshot(withEntity({ ...widgetEntity, constructors })),
       ).toThrow(
@@ -242,6 +267,7 @@ describe('parseApiSnapshot', () => {
           name: '',
           doc: '',
           const: true,
+          paramMemberAsserts: false,
           params: [
             {
               name: 'child',
@@ -272,6 +298,7 @@ describe('parseApiSnapshot', () => {
           name: '',
           doc: '',
           const: true,
+          paramMemberAsserts: false,
           params: [
             {
               name: 'count',

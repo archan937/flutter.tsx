@@ -3,6 +3,7 @@ import { describe, expect, test } from 'bun:test';
 import {
   boolLit,
   call,
+  closure,
   enumMember,
   identifier,
   listLit,
@@ -139,6 +140,14 @@ describe('printExpr — calls', () => {
         ')',
       ].join('\n'),
     );
+  });
+});
+
+describe('printExpr — closures', () => {
+  test('closures print their parameter list and empty body', () => {
+    expect(printExpr(closure([]))).toBe('() {}');
+    expect(printExpr(closure(['_']))).toBe('(_) {}');
+    expect(printExpr(closure(['value', 'index']))).toBe('(value, index) {}');
   });
 });
 

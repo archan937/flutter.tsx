@@ -1,5 +1,5 @@
 import type { ParamModel, TypeNode } from '../api/model';
-import type { WidgetSlots } from '../derive/slots';
+import type { NamedSlot, WidgetSlots } from '../derive/slots';
 import { EDGE_INSETS_TYPES, type ValueForms } from '../derive/value-forms';
 import { jsxPropName } from '../generate/renames';
 
@@ -19,7 +19,7 @@ const SCALAR_VALUES: Record<string, string> = {
   String: '"example"',
   int: '{8}',
   num: '{8}',
-  double: '{16}',
+  double: '{1}',
   bool: '{true}',
 };
 
@@ -50,7 +50,6 @@ const attrValue = (
     case 'function':
       return type.returnType.kind === 'void' ? '{() => {}}' : null;
     case 'list':
-    case 'set':
       return '{[]}';
     case 'map':
       return type.key.kind === 'scalar' && type.key.name !== 'bool'
@@ -61,8 +60,12 @@ const attrValue = (
   }
 };
 
-const slotValue = (mode: 'single' | 'multi'): string =>
-  mode === 'single' ? '{<Text>Content</Text>}' : '{[]}';
+const slotValue = (slot: NamedSlot): string | null => {
+  if (slot.mode === 'multi') {
+    return '{[]}';
+  }
+  return slot.accepts === 'Widget' ? '{<Text>Content</Text>}' : null;
+};
 
 const childrenBlock = (kind: 'widgetList' | 'widget' | 'text'): string => {
   if (kind === 'text') {
@@ -88,19 +91,13 @@ export const synthesizeTsx = (input: SynthesisInput): SynthesizedExample => {
   let complete = true;
 
   for (const candidate of params) {
-    if (
-      !candidate.required ||
-      candidate.name === 'key' ||
-      candidate.name === slots.children?.param
-    ) {
+    if (!candidate.required || candidate.name === slots.children?.param) {
       continue;
     }
 
     const slot = slots.slots.find((entry) => entry.param === candidate.name);
     const value =
-      slot !== undefined
-        ? slotValue(slot.mode)
-        : attrValue(candidate.type, context);
+      slot !== undefined ? slotValue(slot) : attrValue(candidate.type, context);
     if (value === null) {
       complete = false;
     }

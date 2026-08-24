@@ -10,6 +10,7 @@ import 'package:test/test.dart';
 void main() {
   late Map<String, EntityModel> byName;
   late Map<String, List<String>> hierarchy;
+  late Map<String, List<String>> exports;
 
   setUpAll(() async {
     final home = Platform.environment['HOME'];
@@ -30,6 +31,7 @@ void main() {
     );
     byName = {for (final entity in snapshot.entities) entity.name: entity};
     hierarchy = snapshot.hierarchy;
+    exports = snapshot.exports;
 
     expect(reportedLibraries, ['widgets', 'material']);
     expect(reportedEntityCount, snapshot.entities.length);
@@ -183,6 +185,12 @@ void main() {
         expect(defaultConstructor.params.first.name, 'inherit');
       },
     );
+
+    test('exports record which barrels re-export each entity', () {
+      expect(exports['Column'], ['widgets', 'material']);
+      expect(exports['Scaffold'], ['material']);
+      expect(exports['Text'], ['widgets', 'material']);
+    });
 
     test('hierarchy covers abstract widget interfaces and non-widgets', () {
       expect(hierarchy['PreferredSizeWidget'], [

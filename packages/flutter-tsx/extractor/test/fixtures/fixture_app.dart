@@ -42,6 +42,15 @@ abstract final class TestPalette {
   static const int size = 3;
 }
 
+/// Rejects empty item lists at construction time.
+class GuardedList {
+  const GuardedList({this.items = const ['x']})
+    : assert(items.length > 0, 'items must not be empty');
+
+  /// The guarded items.
+  final List<String> items;
+}
+
 /// A stateful helper whose constructor is deliberately not const.
 class TestController {
   TestController({this.tick = 0});
@@ -85,7 +94,7 @@ class TestWidget extends StatelessWidget {
     this.extra,
     this.anything,
     @Deprecated('Use title instead.') this.legacyTitle,
-  });
+  }) : assert(count >= 0, 'count must not be negative');
 
   /// A compact variant.
   const TestWidget.compact({required this.title})

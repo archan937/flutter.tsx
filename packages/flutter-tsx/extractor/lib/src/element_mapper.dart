@@ -1,9 +1,14 @@
 import 'package:analyzer/dart/element/element.dart';
 
 import 'api_model.dart';
+import 'assert_inspector.dart';
 import 'type_encoder.dart';
 
-EntityModel? mapClass(ClassElement classElement, String libraryLabel) {
+EntityModel? mapClass(
+  ClassElement classElement,
+  String libraryLabel,
+  AssertInspector asserts,
+) {
   final name = classElement.name ?? '';
   if (name.isEmpty || name.startsWith('_')) {
     return null;
@@ -16,7 +21,7 @@ EntityModel? mapClass(ClassElement classElement, String libraryLabel) {
 
   final constructors = classElement.isAbstract
       ? const <ConstructorModel>[]
-      : _mapConstructors(classElement);
+      : _mapConstructors(classElement, asserts);
   final supertypes = publicSupertypeNames(classElement);
   final doc = classElement.documentationComment ?? '';
 
@@ -64,7 +69,10 @@ EnumEntity? mapEnum(EnumElement enumElement, String libraryLabel) {
   );
 }
 
-List<ConstructorModel> _mapConstructors(ClassElement classElement) {
+List<ConstructorModel> _mapConstructors(
+  ClassElement classElement,
+  AssertInspector asserts,
+) {
   final constructors = classElement.constructors
       .where((constructor) => constructor.isPublic)
       .map(
@@ -72,6 +80,7 @@ List<ConstructorModel> _mapConstructors(ClassElement classElement) {
           name: _constructorName(constructor),
           doc: constructor.documentationComment ?? '',
           isConst: constructor.isConst,
+          paramMemberAsserts: asserts.paramMemberAsserts(constructor),
           params: constructor.formalParameters
               .map((param) => _mapParam(classElement, param))
               .toList(),

@@ -608,6 +608,37 @@ describe('lowerComponent — value forms', () => {
     );
   });
 
+  test('an inline handler with a body is a numbered error', () => {
+    expect(
+      lowerFirst(
+        "import { Switch } from 'flutter-tsx';\n" +
+          'export const Probe = () => (\n' +
+          '  <Switch value={true} onChanged={() => { console.log(1); }} />\n' +
+          ');\n',
+        'probe.tsx',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0302 probe.tsx:3:41 — inline handler bodies are not compiled ' +
+          'yet (roadmap step 18) — extract the logic into a named handler.',
+      ),
+    );
+  });
+
+  test('a function on a non-function prop is a numbered error', () => {
+    expect(
+      lowerFirst(
+        "import { Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => <Text maxLines={() => {}}>hi</Text>;\n',
+        'probe.tsx',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0205 probe.tsx:2:44 — a function cannot express an int value.',
+      ),
+    );
+  });
+
   test('an object literal on a widget prop is a numbered error', () => {
     expect(
       lowerFirst(

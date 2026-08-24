@@ -23,6 +23,7 @@ const snapshot: ApiSnapshot = {
     Greeting: ['StatelessWidget', 'Widget'],
     Style: [],
   },
+  exports: {},
   entities: [
     {
       kind: 'widget',
@@ -35,6 +36,7 @@ const snapshot: ApiSnapshot = {
           name: '',
           doc: '/// Creates a frame.',
           isConst: true,
+          paramMemberAsserts: false,
           params: [
             {
               name: 'key',
@@ -164,6 +166,7 @@ const snapshot: ApiSnapshot = {
           name: '',
           doc: '',
           isConst: true,
+          paramMemberAsserts: false,
           params: [
             {
               name: 'data',
@@ -211,6 +214,7 @@ const snapshot: ApiSnapshot = {
           name: '',
           doc: '/// Creates a style.',
           isConst: true,
+          paramMemberAsserts: false,
           params: [
             {
               name: 'tint',
@@ -429,6 +433,7 @@ describe('emitWidgetsFile guards', () => {
                   name: '',
                   doc: '',
                   isConst: true,
+                  paramMemberAsserts: false,
                   params: [
                     {
                       name: 'behavior',
@@ -462,6 +467,7 @@ describe('emitWidgetsFile value-form guards', () => {
     const colliding: ApiSnapshot = {
       ...snapshot,
       hierarchy: { ...snapshot.hierarchy, ColorValue: [] },
+      exports: {},
       entities: [
         ...snapshot.entities,
         {
@@ -491,6 +497,7 @@ describe('emitWidgetsFile value-form guards', () => {
               name: '',
               doc: '',
               isConst: true,
+              paramMemberAsserts: false,
               params: [
                 {
                   name: 'value',

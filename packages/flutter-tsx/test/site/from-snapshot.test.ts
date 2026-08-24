@@ -26,6 +26,7 @@ describe('dartSignature', () => {
       name: '',
       doc: '',
       isConst: true,
+      paramMemberAsserts: false,
       params: [],
     };
     expect(dartSignature('Spacer', constructor)).toBe('Spacer()');
@@ -36,6 +37,7 @@ describe('dartSignature', () => {
       name: '',
       doc: '',
       isConst: true,
+      paramMemberAsserts: false,
       params: [
         param('key', 'Key?'),
         param('mainAxisAlignment', 'MainAxisAlignment', {
@@ -65,6 +67,7 @@ describe('dartSignature', () => {
       name: '',
       doc: '',
       isConst: true,
+      paramMemberAsserts: false,
       params: [
         param('data', 'String', { named: false, required: true }),
         param('key', 'Key?'),
@@ -81,6 +84,7 @@ describe('dartSignature', () => {
       name: '',
       doc: '',
       isConst: true,
+      paramMemberAsserts: false,
       params: [param('child', 'Widget', { named: false, required: true })],
     };
 
@@ -98,6 +102,7 @@ describe('buildSitePage', () => {
       frameworkRevision: 'abc123',
     },
     hierarchy: {},
+    exports: {},
     entities: [
       {
         kind: 'enum',
@@ -136,6 +141,7 @@ describe('buildSitePage', () => {
             name: '',
             doc: '',
             isConst: true,
+            paramMemberAsserts: false,
             params: [
               param('key', 'Key?'),
               param('child', 'Widget?'),

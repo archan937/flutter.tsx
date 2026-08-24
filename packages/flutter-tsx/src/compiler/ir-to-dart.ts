@@ -56,6 +56,22 @@ const callToDart = (
   };
 };
 
+// A fully-literal list inside a non-const call takes one `const` on the list
+// itself (prefer_const_literals_to_create_immutables), not per element.
+const listToDart = (
+  value: Extract<IrValue, { kind: 'widgetList' }>,
+  naming: DartNaming,
+  insideConst: boolean,
+): DartExpr => {
+  const isConst = !insideConst && isConstable(value);
+  const childConst = insideConst || isConst;
+  return {
+    kind: 'list',
+    isConst,
+    items: value.items.map((item) => childToDart(item, naming, childConst)),
+  };
+};
+
 const valueToDart = (
   value: IrValue,
   naming: DartNaming,
@@ -93,6 +109,8 @@ const valueToDart = (
         naming,
         insideConst,
       );
+    case 'closure':
+      return { kind: 'closure', params: value.params };
     case 'handlerRef':
     case 'stateRef':
       return { kind: 'identifier', name: memberName(value.name, naming) };
@@ -109,12 +127,7 @@ const valueToDart = (
         insideConst,
       );
     case 'widgetList':
-      return {
-        kind: 'list',
-        items: value.items.map((item) =>
-          childToDart(item, naming, insideConst),
-        ),
-      };
+      return listToDart(value, naming, insideConst);
   }
 };
 

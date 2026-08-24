@@ -27,6 +27,7 @@ export interface CompileContext {
   forms: ValueForms;
   constantOwners: Map<string, Set<string>>;
   libraries: Map<string, string>;
+  exports: Map<string, string[]>;
 }
 
 const EMPTY_SLOTS: WidgetSlots = { children: null, slots: [] };
@@ -69,7 +70,7 @@ export const buildCompileContext = (
     widgets.set(entity.name, {
       name: entity.name,
       library: entity.library,
-      constConstructor: constructor.isConst,
+      constConstructor: constructor.isConst && !constructor.paramMemberAsserts,
       paramsByJsxName,
       slots: slots[entity.name] ?? EMPTY_SLOTS,
     });
@@ -81,6 +82,7 @@ export const buildCompileContext = (
     forms: deriveValueForms(snapshot),
     constantOwners,
     libraries,
+    exports: new Map(Object.entries(snapshot.exports)),
   };
 };
 
@@ -99,10 +101,14 @@ const HEX_COLOR_PATTERN = /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/;
 const unwrapType = (type: TypeNode): TypeNode =>
   type.kind === 'nullable' ? type.inner : type;
 
-const typeLabel = (type: TypeNode): string =>
-  type.kind === 'named' || type.kind === 'enum' || type.kind === 'scalar'
-    ? type.name
-    : type.kind;
+const typeLabel = (type: TypeNode): string => {
+  const label =
+    type.kind === 'named' || type.kind === 'enum' || type.kind === 'scalar'
+      ? type.name
+      : type.kind;
+  const article = /^[aeiou]/i.test(label) ? 'an' : 'a';
+  return `${article} ${label}`;
+};
 
 const textWidget = (value: string, context: LowerContext): IrValue => ({
   kind: 'widget',
@@ -200,7 +206,7 @@ const lowerString = (text: string, site: ValueSite): IrValue => {
   }
   throw tsxErrorAt(
     'TSX0205',
-    `\`${text}\` cannot express a ${typeLabel(type)} value.`,
+    `\`${text}\` cannot express ${typeLabel(type)} value.`,
     { sourceFile: context.sourceFile, node },
   );
 };
@@ -229,7 +235,7 @@ const lowerNumber = (text: string, site: ValueSite): IrValue => {
   }
   throw tsxErrorAt(
     'TSX0205',
-    `\`${text}\` cannot express a ${typeLabel(type)} value.`,
+    `\`${text}\` cannot express ${typeLabel(type)} value.`,
     { sourceFile: context.sourceFile, node },
   );
 };
@@ -244,7 +250,7 @@ const lowerBoolean = (value: boolean, site: ValueSite): IrValue => {
   }
   throw tsxErrorAt(
     'TSX0205',
-    `\`${String(value)}\` cannot express a ${typeLabel(type)} value.`,
+    `\`${String(value)}\` cannot express ${typeLabel(type)} value.`,
     { sourceFile: context.sourceFile, node },
   );
 };
@@ -364,7 +370,7 @@ const lowerObjectLiteral = (
   }
   throw tsxErrorAt(
     'TSX0205',
-    `an object literal cannot express a ${typeLabel(type)} value.`,
+    `an object literal cannot express ${typeLabel(type)} value.`,
     { sourceFile: context.sourceFile, node: literal },
   );
 };
@@ -389,6 +395,33 @@ const lowerPropertyAccess = (
   return { kind: 'raw', node: expression };
 };
 
+const lowerArrowFunction = (
+  arrow: ts.ArrowFunction,
+  site: ValueSite,
+): IrValue => {
+  const { type, context } = site;
+  if (type.kind !== 'function') {
+    throw tsxErrorAt(
+      'TSX0205',
+      `a function cannot express ${typeLabel(type)} value.`,
+      { sourceFile: context.sourceFile, node: arrow },
+    );
+  }
+  if (!ts.isBlock(arrow.body) || arrow.body.statements.length > 0) {
+    throw tsxErrorAt(
+      'TSX0302',
+      'inline handler bodies are not compiled yet (roadmap step 18) — ' +
+        'extract the logic into a named handler.',
+      { sourceFile: context.sourceFile, node: arrow.body },
+    );
+  }
+  const params = type.params.map((_, index) => {
+    const name = arrow.parameters[index]?.name.getText() ?? '_';
+    return name.startsWith('_') ? '_' : name;
+  });
+  return { kind: 'closure', params };
+};
+
 const lowerExpression = (
   expression: ts.Expression,
   paramType: TypeNode,
@@ -398,6 +431,9 @@ const lowerExpression = (
   const site: ValueSite = { type, node: expression, context };
   if (ts.isJsxElement(expression) || ts.isJsxSelfClosingElement(expression)) {
     return { kind: 'widget', widget: lowerJsxElement(expression, context) };
+  }
+  if (ts.isArrowFunction(expression)) {
+    return lowerArrowFunction(expression, site);
   }
   if (ts.isNumericLiteral(expression)) {
     return lowerNumber(expression.getText(), site);

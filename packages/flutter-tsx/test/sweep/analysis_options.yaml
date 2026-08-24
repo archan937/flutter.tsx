@@ -1,3 +1,7 @@
+include: package:flutter_lints/flutter.yaml
+
+# Probes deliberately cover every widget once: deprecated widgets stay in the
+# breadth net, and a one-widget probe wraps its child by construction.
 analyzer:
   exclude:
     - build/**
@@ -7,4 +11,9 @@ analyzer:
     - windows/**
     - macos/**
     - linux/**
-include: package:flutter_lints/flutter.yaml
+  errors:
+    deprecated_member_use: ignore
+
+linter:
+  rules:
+    avoid_unnecessary_containers: false

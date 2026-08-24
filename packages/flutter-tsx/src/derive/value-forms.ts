@@ -151,6 +151,7 @@ export const deriveValueForms = (snapshot: ApiSnapshot): ValueForms => {
     if (
       defaultConstructor !== undefined &&
       defaultConstructor.isConst &&
+      !defaultConstructor.paramMemberAsserts &&
       defaultConstructor.params.length > 0 &&
       defaultConstructor.params.every(
         (candidate) => candidate.named && !candidate.required,

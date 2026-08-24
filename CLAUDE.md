@@ -312,7 +312,29 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       Docs examples now use the string forms (placeholders 190→145; the rest
       need callbacks/controllers/Animation, later traits). Sweep: 394 probes
       transpile, 40 analyze issues left (red, next traits).
-- [ ] 16–21. The compiler core, one trait per step, each ending in a green golden
+- [x] 16. Sweep hardening — **golden #3 green** (`04-inline-handler`) and the
+      543-widget sweep down to **3 known analyze issues from 40** (394 probes).
+      Landed: **inline handler closures** (`onChanged={() => {}}` →
+      `onChanged: (_) {}` — Dart arity from the param's function type, TS
+      `_`-prefixed params → Dart `_` wildcard; bodies are TSX0302 until step
+      18), **export-accurate imports** (extractor records which barrels
+      re-export each entity — `"exports"` in api.json; emit covers used names
+      minimally: material-all → cupertino-all → both + own defining barrel, so
+      `ContentSensitivity` pulls `package:flutter/services.dart`),
+      **assert-aware const inference** (extractor flags ctor asserts that
+      access parameter members like `children.length` — those can never be
+      const-invoked; 6 toolbar/section widgets now emit non-const), **const
+      collection literals** (`children: const [...]` on maximal-const lists
+      under non-const parents — prefer_const_literals compliant), and
+      synthesize honesty (double probes use 1 not 16 — opacity asserts; sets,
+      non-`Widget` single slots, and required keys are incomplete, not wrong).
+      Sweep package ignores deprecated_member_use + avoid_unnecessary_containers
+      (breadth probes cover deprecated widgets by design). **Sweep's known
+      remainder (3, red via test.failing): Tooltip, CupertinoActionSheet,
+      BackdropFilter — value-dependent asserts over optional params
+      (message-or-richMessage etc.); needs assert-aware example synthesis,
+      revisit with the docs step.**
+- [ ] 17–21. The compiler core, one trait per step, each ending in a green golden
       fixture; diagnostics with file/line + fix hints. Traits: JSX→constructor ·
       slots (child/children/named/text) · props/positional · string-children→Text ·
       enum/constant props ·

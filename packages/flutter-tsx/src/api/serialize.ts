@@ -60,6 +60,7 @@ const constructorToJson = (
   name: constructor.name,
   doc: constructor.doc,
   const: constructor.isConst,
+  paramMemberAsserts: constructor.paramMemberAsserts,
   params: constructor.params.map(paramToJson),
 });
 
@@ -94,19 +95,25 @@ const entityToJson = (entity: Entity): Record<string, unknown> => {
   };
 };
 
-export const serializeApiSnapshot = (snapshot: ApiSnapshot): string => {
-  const hierarchy: Record<string, string[]> = {};
-  for (const name of Object.keys(snapshot.hierarchy).sort()) {
-    hierarchy[name] = snapshot.hierarchy[name] ?? [];
+const sortedNameListMap = (
+  source: Record<string, string[]>,
+): Record<string, string[]> => {
+  const sorted: Record<string, string[]> = {};
+  for (const name of Object.keys(source).sort()) {
+    sorted[name] = source[name] ?? [];
   }
+  return sorted;
+};
 
+export const serializeApiSnapshot = (snapshot: ApiSnapshot): string => {
   const document = {
     meta: {
       frameworkVersion: snapshot.meta.frameworkVersion,
       dartSdkVersion: snapshot.meta.dartSdkVersion,
       frameworkRevision: snapshot.meta.frameworkRevision,
     },
-    hierarchy,
+    hierarchy: sortedNameListMap(snapshot.hierarchy),
+    exports: sortedNameListMap(snapshot.exports),
     entities: snapshot.entities.map(entityToJson),
   };
   return `${JSON.stringify(document, null, 2)}\n`;

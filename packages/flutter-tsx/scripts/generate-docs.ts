@@ -31,7 +31,8 @@ process.stdout.write(
 if (page.incompleteExamples.length > 0) {
   process.stdout.write(
     `${page.incompleteExamples.length} widget example(s) carry a {…} ` +
-      `placeholder for values that need prop transforms (step 15): ` +
+      `placeholder for value kinds later roadmap steps make expressible ` +
+      `(callbacks with bodies, controllers, animations): ` +
       `${page.incompleteExamples.join(', ')}\n`,
   );
 }

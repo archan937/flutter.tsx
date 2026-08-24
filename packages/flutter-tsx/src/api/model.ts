@@ -44,6 +44,7 @@ export interface ConstructorModel {
   name: string;
   doc: string;
   isConst: boolean;
+  paramMemberAsserts: boolean;
   params: ParamModel[];
 }
 
@@ -91,5 +92,6 @@ export type Hierarchy = Record<string, string[]>;
 export interface ApiSnapshot {
   meta: SdkMeta;
   hierarchy: Hierarchy;
+  exports: Hierarchy;
   entities: Entity[];
 }

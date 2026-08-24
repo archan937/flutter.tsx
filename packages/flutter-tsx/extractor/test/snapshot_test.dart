@@ -19,6 +19,10 @@ void main() {
         'Zeta': <String>[],
         'Alpha': ['Base'],
       },
+      exports: const {
+        'Zeta': ['material'],
+        'Alpha': ['widgets', 'material'],
+      },
       entities: [
         EnumEntity(
           name: 'Zeta',
@@ -50,6 +54,15 @@ void main() {
       "Base"
     ],
     "Zeta": []
+  },
+  "exports": {
+    "Alpha": [
+      "widgets",
+      "material"
+    ],
+    "Zeta": [
+      "material"
+    ]
   },
   "entities": [
     {
@@ -94,6 +107,7 @@ void main() {
             frameworkRevision: 'abc123',
           ),
           hierarchy: const {},
+          exports: const {},
           entities: const [],
         );
 

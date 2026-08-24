@@ -6,6 +6,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:path/path.dart' as path;
 
 import 'api_model.dart';
+import 'assert_inspector.dart';
 import 'element_mapper.dart';
 
 class LibraryExtraction {
@@ -44,6 +45,7 @@ Future<LibraryExtraction> extractLibrary({
   final entities = <EntityModel>[];
   final hierarchy = <String, List<String>>{};
   final seenNames = <String>{};
+  final asserts = AssertInspector();
 
   for (final element in result.element.exportNamespace.definedNames2.values) {
     final elementName = element.name ?? '';
@@ -58,7 +60,7 @@ Future<LibraryExtraction> extractLibrary({
     }
 
     final entity = switch (element) {
-      ClassElement() => mapClass(element, libraryLabel),
+      ClassElement() => mapClass(element, libraryLabel, asserts),
       EnumElement() => mapEnum(element, libraryLabel),
       _ => null,
     };

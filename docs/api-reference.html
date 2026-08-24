@@ -973,7 +973,7 @@ details details > ul { padding-left: 24px; }
 <h2 id="about-verification">Verification</h2>
 <article class="widget" id="verification" data-name="verification">
 <h3>✓ typechecked — what the badge means</h3>
-<p class="doc">Every example carrying the badge is generated into a probe module and compiled by the TypeScript compiler against the published <code>flutter-tsx</code> package surface on every CI run. Examples showing a <code>{…}</code> placeholder need a value kind that prop transforms will make expressible; they are excluded from the probe and carry no badge until then.</p>
+<p class="doc">Every example carrying the badge is generated into a probe module and compiled by the TypeScript compiler against the published <code>flutter-tsx</code> package surface on every CI run. Examples showing a <code>{…}</code> placeholder need a value kind a later compiler step makes expressible (callbacks with bodies, controllers, animations); they are excluded from the probe and carry no badge until then.</p>
 </article>
 <h2 id="lib-widgets">Widgets — widgets</h2>
 <article class="widget" id="AbsorbPointer" data-name="AbsorbPointer">
@@ -1193,7 +1193,7 @@ based on the child's size.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;AndroidViewSurface controller={…} hitTestBehavior=&quot;opaque&quot; gestureRecognizers={[]} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;AndroidViewSurface controller={…} hitTestBehavior=&quot;opaque&quot; gestureRecognizers={…} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart">AndroidViewSurface({
@@ -1625,7 +1625,7 @@ opacity over a given duration whenever the given opacity changes.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;AnimatedOpacity opacity={16} duration=&quot;defaultAnimationDuration&quot;&gt;
+<pre><code class="language-tsx">&lt;AnimatedOpacity opacity={1} duration=&quot;defaultAnimationDuration&quot;&gt;
   &lt;Text&gt;Content&lt;/Text&gt;
 &lt;/AnimatedOpacity&gt;</code></pre>
 </div>
@@ -1842,7 +1842,7 @@ rotation over a given duration whenever the given rotation changes.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;AnimatedRotation turns={16} duration=&quot;defaultAnimationDuration&quot;&gt;
+<pre><code class="language-tsx">&lt;AnimatedRotation turns={1} duration=&quot;defaultAnimationDuration&quot;&gt;
   &lt;Text&gt;Content&lt;/Text&gt;
 &lt;/AnimatedRotation&gt;</code></pre>
 </div>
@@ -1882,7 +1882,7 @@ scale over a given duration whenever the given scale changes.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;AnimatedScale scale={16} duration=&quot;defaultAnimationDuration&quot;&gt;
+<pre><code class="language-tsx">&lt;AnimatedScale scale={1} duration=&quot;defaultAnimationDuration&quot;&gt;
   &lt;Text&gt;Content&lt;/Text&gt;
 &lt;/AnimatedScale&gt;</code></pre>
 </div>
@@ -2100,7 +2100,7 @@ widget previously set on the [AnimatedSwitcher] as a child.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;AspectRatio aspectRatio={16}&gt;
+<pre><code class="language-tsx">&lt;AspectRatio aspectRatio={1}&gt;
   &lt;Text&gt;Content&lt;/Text&gt;
 &lt;/AspectRatio&gt;</code></pre>
 </div>
@@ -2354,7 +2354,7 @@ widgets that opt into using it.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;Baseline baseline={16} baselineType=&quot;alphabetic&quot;&gt;
+<pre><code class="language-tsx">&lt;Baseline baseline={1} baselineType=&quot;alphabetic&quot;&gt;
   &lt;Text&gt;Content&lt;/Text&gt;
 &lt;/Baseline&gt;</code></pre>
 </div>
@@ -3495,7 +3495,7 @@ text-direction-sensitive render objects.</p>
 </div>
 </article>
 <article class="widget" id="Dismissible" data-name="Dismissible">
-<h3>Dismissible<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
+<h3>Dismissible<span class="badge badge-lib">widgets</span></h3>
 <p class="doc">A widget that can be dismissed by dragging in the indicated [direction].</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -3522,7 +3522,7 @@ text-direction-sensitive render objects.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;Dismissible&gt;
+<pre><code class="language-tsx">&lt;Dismissible key={…}&gt;
   &lt;Text&gt;Content&lt;/Text&gt;
 &lt;/Dismissible&gt;</code></pre>
 </div>
@@ -6066,7 +6066,7 @@ them to the dimension of the parent in the other axis.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;ListWheelScrollView itemExtent={16}&gt;
+<pre><code class="language-tsx">&lt;ListWheelScrollView itemExtent={1}&gt;
   &lt;Text&gt;Item 1&lt;/Text&gt;
   &lt;Text&gt;Item 2&lt;/Text&gt;
 &lt;/ListWheelScrollView&gt;</code></pre>
@@ -6123,7 +6123,7 @@ them to the dimension of the parent in the other axis.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;ListWheelViewport itemExtent={16} offset={…} childDelegate={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;ListWheelViewport itemExtent={1} offset={…} childDelegate={…} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart">ListWheelViewport({
@@ -6833,7 +6833,7 @@ without taking any room in the parent.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;Opacity opacity={16}&gt;
+<pre><code class="language-tsx">&lt;Opacity opacity={1}&gt;
   &lt;Text&gt;Content&lt;/Text&gt;
 &lt;/Opacity&gt;</code></pre>
 </div>
@@ -7399,7 +7399,7 @@ menu described by a [PlatformMenu]/[PlatformMenuItem] hierarchy.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;PlatformViewSurface controller={…} hitTestBehavior=&quot;opaque&quot; gestureRecognizers={[]} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;PlatformViewSurface controller={…} hitTestBehavior=&quot;opaque&quot; gestureRecognizers={…} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart">PlatformViewSurface({
@@ -9685,7 +9685,7 @@ changes.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;SliverAnimatedOpacity opacity={16} duration=&quot;defaultAnimationDuration&quot; /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;SliverAnimatedOpacity opacity={1} duration=&quot;defaultAnimationDuration&quot; /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart">SliverAnimatedOpacity({
@@ -9716,7 +9716,7 @@ changes.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;SliverConstrainedCrossAxis maxExtent={16} sliver={&lt;Text&gt;Content&lt;/Text&gt;} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;SliverConstrainedCrossAxis maxExtent={1} sliver={&lt;Text&gt;Content&lt;/Text&gt;} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart">SliverConstrainedCrossAxis({
@@ -9914,7 +9914,7 @@ a linear array.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;SliverFixedExtentList delegate={…} itemExtent={16} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;SliverFixedExtentList delegate={…} itemExtent={1} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart">SliverFixedExtentList({
@@ -10136,7 +10136,7 @@ testing, and without taking any room in the parent.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;SliverOpacity opacity={16} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;SliverOpacity opacity={1} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart">SliverOpacity({
@@ -13275,7 +13275,7 @@ elevation shadow.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;CarouselView itemExtent={16}&gt;
+<pre><code class="language-tsx">&lt;CarouselView itemExtent={1}&gt;
   &lt;Text&gt;Item 1&lt;/Text&gt;
   &lt;Text&gt;Item 2&lt;/Text&gt;
 &lt;/CarouselView&gt;</code></pre>
@@ -15718,7 +15718,7 @@ stretches.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;FlexibleSpaceBarSettings toolbarOpacity={16} minExtent={16} maxExtent={16} currentExtent={16}&gt;
+<pre><code class="language-tsx">&lt;FlexibleSpaceBarSettings toolbarOpacity={1} minExtent={1} maxExtent={1} currentExtent={1}&gt;
   &lt;Text&gt;Content&lt;/Text&gt;
 &lt;/FlexibleSpaceBarSettings&gt;</code></pre>
 </div>
@@ -19279,7 +19279,7 @@ descendants for search view created by the [SearchAnchor] widget.</p>
 </div>
 </article>
 <article class="widget" id="SegmentedButton" data-name="SegmentedButton">
-<h3>SegmentedButton<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
+<h3>SegmentedButton<span class="badge badge-lib">material</span></h3>
 <p class="doc">A Material button that allows the user to select from limited set of options.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -19302,7 +19302,7 @@ descendants for search view created by the [SearchAnchor] widget.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;SegmentedButton segments={[]} selected={[]} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;SegmentedButton segments={[]} selected={…} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart">SegmentedButton({
@@ -19601,7 +19601,7 @@ controls.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;Slider value={16} onChanged={() =&gt; {}} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;Slider value={1} onChanged={() =&gt; {}} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart">Slider({
@@ -20533,7 +20533,7 @@ and background colors.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;TabPageSelectorIndicator backgroundColor=&quot;activeBlue&quot; borderColor=&quot;activeBlue&quot; size={16} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;TabPageSelectorIndicator backgroundColor=&quot;activeBlue&quot; borderColor=&quot;activeBlue&quot; size={1} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart">TabPageSelectorIndicator({
@@ -22335,7 +22335,7 @@ or collapses the tile to reveal or hide the [child].</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;CupertinoLinearActivityIndicator progress={16} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;CupertinoLinearActivityIndicator progress={1} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart">CupertinoLinearActivityIndicator({
@@ -22856,7 +22856,7 @@ a [CupertinoMenuAnchor].</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;CupertinoPicker itemExtent={16} onSelectedItemChanged={() =&gt; {}}&gt;
+<pre><code class="language-tsx">&lt;CupertinoPicker itemExtent={1} onSelectedItemChanged={() =&gt; {}}&gt;
   &lt;Text&gt;Item 1&lt;/Text&gt;
   &lt;Text&gt;Item 2&lt;/Text&gt;
 &lt;/CupertinoPicker&gt;</code></pre>
@@ -23231,7 +23231,7 @@ sheets.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;CupertinoSlider value={16} onChanged={() =&gt; {}} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;CupertinoSlider value={1} onChanged={() =&gt; {}} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart">CupertinoSlider({
@@ -23541,7 +23541,7 @@ sheets.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;CupertinoTabScaffold tabBar={&lt;Text&gt;Content&lt;/Text&gt;} tabBuilder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;CupertinoTabScaffold tabBar={…} tabBuilder={…} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart">CupertinoTabScaffold({
@@ -24095,7 +24095,7 @@ can be used to apply style differences based on a widget's elevation.</p>
 </div>
 </article>
 <article class="widget" id="InheritedCupertinoTheme" data-name="InheritedCupertinoTheme">
-<h3>InheritedCupertinoTheme<span class="badge badge-lib">cupertino</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
+<h3>InheritedCupertinoTheme<span class="badge badge-lib">cupertino</span></h3>
 <p class="doc">Provides a [CupertinoTheme] to all descendants.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -24110,7 +24110,7 @@ can be used to apply style differences based on a widget's elevation.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;InheritedCupertinoTheme theme={&lt;Text&gt;Content&lt;/Text&gt;}&gt;
+<pre><code class="language-tsx">&lt;InheritedCupertinoTheme theme={…}&gt;
   &lt;Text&gt;Content&lt;/Text&gt;
 &lt;/InheritedCupertinoTheme&gt;</code></pre>
 </div>

@@ -28,6 +28,7 @@ Future<ApiSnapshot> extractFlutterApi({
 }) async {
   final entitiesByName = <String, EntityModel>{};
   final hierarchy = <String, List<String>>{};
+  final exportedBy = <String, List<String>>{};
 
   for (final library in libraries) {
     final isDartCoreLibrary = library.startsWith('dart:');
@@ -42,8 +43,10 @@ Future<ApiSnapshot> extractFlutterApi({
       libraryLabel: isDartCoreLibrary ? library.substring(5) : library,
     );
 
+    final label = isDartCoreLibrary ? library.substring(5) : library;
     var freshCount = 0;
     for (final entity in extracted.entities) {
+      (exportedBy[entity.name] ??= []).add(label);
       final existing = entitiesByName[entity.name];
       // A bare name can be claimed by two Dart types (dart:ui Image vs the
       // Image widget, dart:ui TextStyle vs painting's). The JSX-facing widget
@@ -76,9 +79,13 @@ Future<ApiSnapshot> extractFlutterApi({
 
   final entities = entitiesByName.values.toList()
     ..sort((first, second) => first.name.compareTo(second.name));
+  final exports = {
+    for (final entity in entities) entity.name: exportedBy[entity.name]!,
+  };
   return ApiSnapshot(
     meta: layout.meta,
     hierarchy: hierarchy,
+    exports: exports,
     entities: entities,
   );
 }

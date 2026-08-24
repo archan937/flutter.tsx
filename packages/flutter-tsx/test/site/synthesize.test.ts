@@ -72,7 +72,7 @@ describe('synthesizeTsx', () => {
         context,
       }),
     ).toEqual({
-      tsx: '<Probe label="example" count={8} scale={16} enabled={true} align="start" />',
+      tsx: '<Probe label="example" count={8} scale={1} enabled={true} align="start" />',
       complete: true,
     });
   });

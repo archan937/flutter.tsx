@@ -195,6 +195,32 @@ describe('irWidgetToDart — const inference and value kinds', () => {
     );
   });
 
+  test('empty inline handlers become closures with the Dart arity', async () => {
+    expect(
+      await printFirstBody(
+        "import { Column, Switch } from 'flutter-tsx';\n" +
+          'export const Probe = () => (\n' +
+          '  <Column>\n' +
+          '    <Switch value={true} onChanged={() => {}} />\n' +
+          '    <Switch value={false} onChanged={(enabled) => {}} />\n' +
+          '    <Switch value={false} onChanged={(_ignored) => {}} />\n' +
+          '  </Column>\n' +
+          ');\n',
+        'probe.tsx',
+      ),
+    ).toBe(
+      [
+        'Column(',
+        '  children: [',
+        '    Switch(value: true, onChanged: (_) {}),',
+        '    Switch(value: false, onChanged: (enabled) {}),',
+        '    Switch(value: false, onChanged: (_) {}),',
+        '  ],',
+        ')',
+      ].join('\n'),
+    );
+  });
+
   test('public naming keeps identifiers bare', async () => {
     const analysis = analyzeSource(
       "import { Column, Text, useState } from 'flutter-tsx';\n" +

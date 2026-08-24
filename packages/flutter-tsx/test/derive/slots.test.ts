@@ -33,7 +33,9 @@ const widget = (name: string, params: ParamModel[]): WidgetEntity => ({
   library: 'widgets',
   doc: '',
   supertypes: ['StatelessWidget', 'Widget'],
-  constructors: [{ name: '', doc: '', isConst: true, params }],
+  constructors: [
+    { name: '', doc: '', isConst: true, paramMemberAsserts: false, params },
+  ],
   constants: [],
 });
 
@@ -47,6 +49,7 @@ const snapshotWith = (
     frameworkRevision: 'abc123',
   },
   hierarchy,
+  exports: {},
   entities,
 });
 
@@ -154,7 +157,15 @@ describe('deriveSlots (synthetic snapshots)', () => {
   test('a widget without a default constructor derives to a leaf', () => {
     const noDefault: WidgetEntity = {
       ...widget('FactoryOnly', []),
-      constructors: [{ name: 'custom', doc: '', isConst: true, params: [] }],
+      constructors: [
+        {
+          name: 'custom',
+          doc: '',
+          isConst: true,
+          paramMemberAsserts: false,
+          params: [],
+        },
+      ],
     };
 
     expect(deriveSlots(snapshotWith([noDefault]))).toEqual({
