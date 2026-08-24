@@ -262,7 +262,13 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       single child, lists with `&&` → collection-if, auto Text-wrapping, state refs),
       stateless/stateful classification. Diagnostics TSX0201–0204 pinned exactly.
       Camera fixture IR asserted in full.
-- [ ] 13–21. The compiler core: Dart AST → emitter, one
+- [x] 13. Dart AST + printer + IR→Dart (`dart-ast.ts`, `dart-print.ts`,
+      `ir-to-dart.ts`): expression tree with width-aware printing (inline ≤ 60 chars,
+      else tall with trailing commas; canonical form still comes from `dart format`
+      in the pipeline), string escaping, collection-if, const inference with
+      topmost-only `const` (no redundant inner consts), private member naming
+      (`_taken`, `_takePhoto`). Camera body prints exactly.
+- [ ] 14–21. The compiler core: component class emission → first green golden, one
       trait per step, each ending in a green golden fixture; diagnostics with
       file/line + fix hints. Traits: JSX→constructor · slots (child/children/
       named/text) · props/positional · string-children→Text · enum/constant props ·

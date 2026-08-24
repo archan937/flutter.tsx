@@ -15,7 +15,11 @@ export type IrValue =
 
 export type IrChild =
   | { kind: 'value'; value: IrValue }
-  | { kind: 'if'; condition: IrValue; child: IrChild };
+  | {
+      kind: 'if';
+      condition: IrValue;
+      child: { kind: 'value'; value: IrValue };
+    };
 
 export interface IrArgument {
   param: string;
