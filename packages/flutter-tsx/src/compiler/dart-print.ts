@@ -20,10 +20,18 @@ const inlineArgument = (argument: DartArgument): string => {
   return argument.name === null ? value : `${argument.name}: ${value}`;
 };
 
+const listItemPrefix = (item: DartListItem): string => {
+  if (item.kind === 'if') {
+    return `if (${inlineExpr(item.condition)}) `;
+  }
+  if (item.kind === 'for') {
+    return `for (final ${item.itemName} in ${inlineExpr(item.iterable)}) `;
+  }
+  return '';
+};
+
 const inlineListItem = (item: DartListItem): string =>
-  item.kind === 'element'
-    ? inlineExpr(item.value)
-    : `if (${inlineExpr(item.condition)}) ${inlineExpr(item.value)}`;
+  `${listItemPrefix(item)}${inlineExpr(item.value)}`;
 
 const inlineExpr = (expr: DartExpr): string => {
   switch (expr.kind) {
@@ -102,8 +110,7 @@ const printListTall = (
 ): string => {
   const childIndent = site.indent + 2;
   const lines = expr.items.map((item) => {
-    const prefix =
-      item.kind === 'if' ? `if (${inlineExpr(item.condition)}) ` : '';
+    const prefix = listItemPrefix(item);
     const value = printExpr(item.value, {
       indent: childIndent,
       used: childIndent + prefix.length,

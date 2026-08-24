@@ -56,6 +56,14 @@ export const wrongStyleProperty = (): unknown =>
 export const mixedInsetsCaughtAtCompileTime = (): unknown =>
   Container({ padding: { top: 1, horizontal: 2 } });
 
+export const nestedChildArrays = (): unknown =>
+  Column({
+    children: [
+      Text({ children: 'first' }),
+      ['a', 'b'].map((label) => Text({ children: label })),
+    ],
+  });
+
 export const brandedAssignability: Color = Colors.red;
 
 export const brandedIcon: IconData = Icons.add;

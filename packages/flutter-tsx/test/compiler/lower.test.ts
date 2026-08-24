@@ -958,6 +958,122 @@ describe('lowerComponent — effects and conditionals', () => {
   });
 });
 
+describe('lowerComponent — list rendering', () => {
+  test('.map() children lower to for items with typed loop locals', async () => {
+    const ir = await lowerFirst(
+      "import { Column, Text, useState } from 'flutter-tsx';\n" +
+        'export const Probe = () => {\n' +
+        "  const [items, setItems] = useState(['a']);\n" +
+        '  return <Column>{items.map((item) => <Text>{item}</Text>)}</Column>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+
+    const [children] = ir.body.args;
+    if (children?.value.kind !== 'widgetList') {
+      throw new Error('expected a children list');
+    }
+    expect(children.value.items).toEqual([
+      {
+        kind: 'for',
+        itemName: 'item',
+        iterable: { kind: 'stateRef', name: 'items' },
+        child: {
+          kind: 'value',
+          value: {
+            kind: 'widget',
+            widget: {
+              name: 'Text',
+              constConstructor: true,
+              args: [
+                {
+                  param: 'data',
+                  positional: true,
+                  value: { kind: 'dartExpr', dart: 'item' },
+                },
+              ],
+            },
+          },
+        },
+      },
+    ]);
+  });
+
+  test('array-literal iterables lower with a translated iterable', async () => {
+    const ir = await lowerFirst(
+      "import { Column, Text } from 'flutter-tsx';\n" +
+        'export const Probe = () => (\n' +
+        "  <Column>{['a', 'b'].map((item) => <Text>{item}</Text>)}</Column>\n" +
+        ');\n',
+      'probe.tsx',
+    );
+
+    const [children] = ir.body.args;
+    if (children?.value.kind !== 'widgetList') {
+      throw new Error('expected a children list');
+    }
+    const [item] = children.value.items;
+    if (item?.kind !== 'for') {
+      throw new Error('expected a for item');
+    }
+    expect(item.iterable).toEqual({ kind: 'dartExpr', dart: "['a', 'b']" });
+  });
+
+  test('a .map() with a block body is a numbered error', () => {
+    expect(
+      lowerFirst(
+        "import { Column, Text, useState } from 'flutter-tsx';\n" +
+          'export const Probe = () => {\n' +
+          "  const [items, setItems] = useState(['a']);\n" +
+          '  return <Column>{items.map((item) => { return <Text>{item}</Text>; })}</Column>;\n' +
+          '};\n',
+        'probe.tsx',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0305 probe.tsx:4:19 — this expression is not compiled yet ' +
+          '(roadmap step 18).',
+      ),
+    );
+  });
+
+  test('a non-map call child is a numbered error', () => {
+    expect(
+      lowerFirst(
+        "import { Column, useState } from 'flutter-tsx';\n" +
+          'export const Probe = () => {\n' +
+          "  const [items, setItems] = useState(['a']);\n" +
+          '  return <Column>{items.slice(1)}</Column>;\n' +
+          '};\n',
+        'probe.tsx',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0305 probe.tsx:4:19 — this expression is not compiled yet ' +
+          '(roadmap step 18).',
+      ),
+    );
+  });
+
+  test('a .map() with an index parameter is a numbered error', () => {
+    expect(
+      lowerFirst(
+        "import { Column, Text, useState } from 'flutter-tsx';\n" +
+          'export const Probe = () => {\n' +
+          "  const [items, setItems] = useState(['a']);\n" +
+          '  return <Column>{items.map((item, index) => <Text>{item}</Text>)}</Column>;\n' +
+          '};\n',
+        'probe.tsx',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0305 probe.tsx:4:19 — this expression is not compiled yet ' +
+          '(roadmap step 18).',
+      ),
+    );
+  });
+});
+
 describe('lowerComponent — diagnostics', () => {
   test('an unknown widget is a numbered error', () => {
     expect(

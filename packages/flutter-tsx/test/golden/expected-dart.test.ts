@@ -23,6 +23,7 @@ describe('committed golden expected.dart files', () => {
       '04-inline-handler',
       '05-counter',
       '06-mount-effect',
+      '07-list-rendering',
     ]);
   });
 

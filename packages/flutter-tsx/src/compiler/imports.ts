@@ -27,8 +27,11 @@ const collectValue = (
   }
   if (value.kind === 'widgetList') {
     for (const item of value.items) {
+      if (item.kind === 'for') {
+        collectValue(item.iterable, context, names);
+      }
       collectValue(
-        item.kind === 'if' ? item.child.value : item.value,
+        item.kind === 'value' ? item.value : item.child.value,
         context,
         names,
       );

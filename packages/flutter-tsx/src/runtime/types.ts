@@ -5,10 +5,18 @@ export interface WidgetNode {
 
 export type FlutterElement = WidgetNode;
 
-// Strings and numbers are valid children anywhere a widget fits: the
-// compiler wraps them in Text(...) — the React-like DX contract.
+// Strings and numbers are valid children anywhere a widget fits (the
+// compiler wraps them in Text(...)), and arrays nest recursively so
+// list-rendering expressions drop straight into a children list — the
+// React-like DX contract.
 export type FlutterChild =
-  FlutterElement | string | number | null | undefined | false;
+  | FlutterElement
+  | string
+  | number
+  | null
+  | undefined
+  | false
+  | readonly FlutterChild[];
 
 export type FlutterChildren = FlutterChild | FlutterChild[];
 

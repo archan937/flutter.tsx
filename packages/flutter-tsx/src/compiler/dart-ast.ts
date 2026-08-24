@@ -26,7 +26,8 @@ export interface DartArgument {
 
 export type DartListItem =
   | { kind: 'element'; value: DartExpr }
-  | { kind: 'if'; condition: DartExpr; value: DartExpr };
+  | { kind: 'if'; condition: DartExpr; value: DartExpr }
+  | { kind: 'for'; itemName: string; iterable: DartExpr; value: DartExpr };
 
 export const stringLit = (value: string): DartExpr => ({
   kind: 'string',

@@ -105,7 +105,9 @@ interface LowerContext {
   stateNames: Set<string>;
   handlerNames: Set<string>;
   stringStates: Set<string>;
+  stringLocals: Set<string>;
   settersToStates: Map<string, string>;
+  stateDartTypes: Map<string, string>;
   translate: TranslateContext;
 }
 
@@ -551,10 +553,7 @@ const lowerScalarChild = (
     return textWidget(expression.text, context);
   }
   const dart = translateExpression(expression, context.translate);
-  if (
-    ts.isIdentifier(expression) &&
-    context.stringStates.has(expression.text)
-  ) {
+  if (isStringIdentifier(expression, context)) {
     return textValueWidget({ kind: 'dartExpr', dart }, context);
   }
   return textValueWidget(
@@ -586,6 +585,66 @@ const lowerChildValue = (
   return lowerScalarChild(expression, context);
 };
 
+const unwrapParenthesized = (expression: ts.Expression): ts.Expression =>
+  ts.isParenthesizedExpression(expression)
+    ? unwrapParenthesized(expression.expression)
+    : expression;
+
+const elementDartType = (listDartType: string | undefined): string | null => {
+  const match = listDartType?.match(/^List<(.+)>$/);
+  return match?.[1] ?? null;
+};
+
+const lowerMapChild = (
+  call: ts.CallExpression,
+  context: LowerContext,
+): IrChild | null => {
+  const callee = call.expression;
+  if (
+    !ts.isPropertyAccessExpression(callee) ||
+    callee.name.text !== 'map' ||
+    call.arguments.length !== 1
+  ) {
+    return null;
+  }
+  const [mapper] = call.arguments;
+  if (
+    mapper === undefined ||
+    !ts.isArrowFunction(mapper) ||
+    mapper.parameters.length !== 1
+  ) {
+    return null;
+  }
+  const itemName = mapper.parameters[0]?.name.getText() ?? '';
+  if (ts.isBlock(mapper.body)) {
+    return null;
+  }
+  const body = unwrapParenthesized(mapper.body);
+
+  const iterable = ts.isIdentifier(callee.expression)
+    ? lowerIdentifier(callee.expression, context)
+    : {
+        kind: 'dartExpr' as const,
+        dart: translateExpression(callee.expression, context.translate),
+      };
+  const itemType =
+    ts.isIdentifier(callee.expression) &&
+    elementDartType(context.stateDartTypes.get(callee.expression.text));
+  const bodyContext: LowerContext = {
+    ...context,
+    stringLocals:
+      itemType === 'String'
+        ? new Set([...context.stringLocals, itemName])
+        : context.stringLocals,
+  };
+  return {
+    kind: 'for',
+    itemName,
+    iterable,
+    child: { kind: 'value', value: lowerChildValue(body, bodyContext) },
+  };
+};
+
 const lowerListChildren = (
   children: readonly ts.JsxChild[],
   context: LowerContext,
@@ -611,6 +670,13 @@ const lowerListChildren = (
         expression.operatorToken.kind === ts.SyntaxKind.AmpersandAmpersandToken
       ) {
         items.push(lowerConditionChild(expression, context));
+        continue;
+      }
+      const mapped = ts.isCallExpression(expression)
+        ? lowerMapChild(expression, context)
+        : null;
+      if (mapped !== null) {
+        items.push(mapped);
         continue;
       }
       items.push({
@@ -644,11 +710,20 @@ const singleChildValue = (
 const jsxTextValue = (child: ts.JsxText): string =>
   child.text.replace(/\s*\n\s*/g, '');
 
+const isStringIdentifier = (
+  expression: ts.Expression,
+  context: LowerContext,
+): expression is ts.Identifier =>
+  ts.isIdentifier(expression) &&
+  (context.stringStates.has(expression.text) ||
+    context.stringLocals.has(expression.text));
+
 const textSlotValue = (
   children: readonly ts.JsxChild[],
   context: LowerContext,
 ): IrValue => {
   const parts: { kind: 'text' | 'expr'; value: string }[] = [];
+  const expressions: ts.Expression[] = [];
   for (const child of children) {
     if (ts.isJsxText(child)) {
       const value = jsxTextValue(child);
@@ -658,6 +733,7 @@ const textSlotValue = (
       continue;
     }
     if (ts.isJsxExpression(child) && child.expression !== undefined) {
+      expressions.push(child.expression);
       parts.push({
         kind: 'expr',
         value: translateExpression(child.expression, context.translate),
@@ -668,6 +744,17 @@ const textSlotValue = (
     return {
       kind: 'string',
       value: parts.map((part) => part.value).join(' '),
+    };
+  }
+  const [only] = expressions;
+  if (
+    parts.length === 1 &&
+    only !== undefined &&
+    isStringIdentifier(only, context)
+  ) {
+    return {
+      kind: 'dartExpr',
+      dart: translateExpression(only, context.translate),
     };
   }
   return { kind: 'interpolation', parts };
@@ -893,6 +980,10 @@ export const lowerComponent = (
       component.states
         .filter((state) => state.dartType === 'String')
         .map((state) => state.name),
+    ),
+    stringLocals: new Set(),
+    stateDartTypes: new Map(
+      component.states.map((state) => [state.name, state.dartType]),
     ),
     settersToStates: new Map(
       component.states.map((state) => [state.setterName, state.name]),

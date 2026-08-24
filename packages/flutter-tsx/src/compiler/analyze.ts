@@ -105,9 +105,27 @@ const importedHookModules = (
 const dartTypeOfInitial = (
   checker: ts.TypeChecker,
   initializer: ts.Expression,
+  sourceFile: ts.SourceFile,
 ): string => {
   if (ts.isNumericLiteral(initializer)) {
     return initializer.text.includes('.') ? 'double' : 'int';
+  }
+  if (ts.isArrayLiteralExpression(initializer)) {
+    const elementTypes = new Set(
+      initializer.elements.map((element) =>
+        dartTypeOfInitial(checker, element, sourceFile),
+      ),
+    );
+    const [only] = elementTypes;
+    if (elementTypes.size !== 1 || only === undefined) {
+      throw tsxErrorAt(
+        'TSX0308',
+        'cannot infer the element type of this list state from an empty ' +
+          'literal.',
+        { sourceFile, node: initializer },
+      );
+    }
+    return `List<${only}>`;
   }
   const literalType = checker.getTypeAtLocation(initializer);
   const widened = checker.getBaseTypeOfLiteralType(literalType);
@@ -187,7 +205,11 @@ const analyzeStateDeclaration = (
     name: valueElement.name.getText(),
     setterName: setterElement.name.getText(),
     initialText: initializer.getText(),
-    dartType: dartTypeOfInitial(context.checker, initializer),
+    dartType: dartTypeOfInitial(
+      context.checker,
+      initializer,
+      context.sourceFile,
+    ),
     initializer,
   });
 };

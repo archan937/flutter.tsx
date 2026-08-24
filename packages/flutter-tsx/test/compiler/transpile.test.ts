@@ -152,6 +152,19 @@ describe('transpileComponent — stateful components', () => {
     );
   });
 
+  test('list rendering emits a collection-for', async () => {
+    const source = await Bun.file(
+      new URL('../fixtures/07-list-rendering/input.tsx', import.meta.url),
+    ).text();
+    const expected = await Bun.file(
+      new URL('../fixtures/07-list-rendering/expected.dart', import.meta.url),
+    ).text();
+
+    expect(
+      await transpileComponent({ source, filePath: 'groceries.tsx' }),
+    ).toBe(expected);
+  });
+
   test('async handlers become async methods', async () => {
     expect(
       await transpileComponent({

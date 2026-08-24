@@ -159,6 +159,14 @@ const childToDart = (
       value: valueToDart(child.value, naming, insideConst),
     };
   }
+  if (child.kind === 'for') {
+    return {
+      kind: 'for',
+      itemName: child.itemName,
+      iterable: valueToDart(child.iterable, naming, insideConst),
+      value: valueToDart(child.child.value, naming, insideConst),
+    };
+  }
   return {
     kind: 'if',
     condition: valueToDart(child.condition, naming, insideConst),

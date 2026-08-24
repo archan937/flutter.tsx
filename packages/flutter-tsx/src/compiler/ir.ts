@@ -38,6 +38,12 @@ export type IrChild =
       kind: 'if';
       condition: IrValue;
       child: { kind: 'value'; value: IrValue };
+    }
+  | {
+      kind: 'for';
+      itemName: string;
+      iterable: IrValue;
+      child: { kind: 'value'; value: IrValue };
     };
 
 export interface IrArgument {

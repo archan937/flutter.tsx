@@ -368,7 +368,18 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       before `?`/`:` like dart format — including single-child slots, whose
       expression children were silently DROPPED before (found by TDD).
       translate.ts gains ternaries and `??`. TSX0303 retired (effects compile).
-- [ ] 19–21. The compiler core, one trait per step, each ending in a green golden
+- [x] 19. List rendering — **golden #6 green** (`07-list-rendering`, hand-written
+      first) and its from-TSX e2e web build. `{items.map((item) => <Text>{item}</Text>)}`
+      → `for (final item in _items) Text(item)` (collection-for); loop locals are
+      typed from the iterable's state type so String items print as `Text(item)`,
+      not `Text('$item')`; array-literal iterables work (`['a','b'].map(...)`).
+      List states infer `List<T>` from their initializer (`useState(['a'])` →
+      `List<String>` field; empty literal → TSX0308); translate.ts gains array
+      literals + spreads (`setItems([...items, 'Milk'])` →
+      `_items = [..._items, 'Milk']`). `FlutterChild` is now recursive (arrays
+      nest, like React's ReactNode) so map expressions typecheck inside children.
+      Index-parameter maps, block bodies, and non-map calls are honest TSX0305s.
+- [ ] 20–21. The compiler core, one trait per step, each ending in a green golden
       fixture; diagnostics with file/line + fix hints. Traits: JSX→constructor ·
       slots (child/children/named/text) · props/positional · string-children→Text ·
       enum/constant props ·

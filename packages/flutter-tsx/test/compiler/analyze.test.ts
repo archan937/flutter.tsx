@@ -117,6 +117,42 @@ describe('analyzeSource — component shapes', () => {
     ]);
   });
 
+  test('list states infer List element types from their initializer', () => {
+    const analysis = analyzeSource(
+      "import { Text, useState } from 'flutter-tsx';\n" +
+        'export const Probe = () => {\n' +
+        "  const [names, setNames] = useState(['a', 'b']);\n" +
+        '  const [counts, setCounts] = useState([1, 2]);\n' +
+        '  const [scales, setScales] = useState([1.5]);\n' +
+        '  const [flags, setFlags] = useState([true]);\n' +
+        '  return <Text>hi</Text>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+
+    expect(
+      analysis.components[0]?.states.map((state) => state.dartType),
+    ).toEqual(['List<String>', 'List<int>', 'List<double>', 'List<bool>']);
+  });
+
+  test('an empty list state cannot infer its element type', () => {
+    expect(() =>
+      analyzeSource(
+        "import { Text, useState } from 'flutter-tsx';\n" +
+          'export const Probe = () => {\n' +
+          '  const [items, setItems] = useState([]);\n' +
+          '  return <Text>hi</Text>;\n' +
+          '};\n',
+        'probe.tsx',
+      ),
+    ).toThrow(
+      new Error(
+        'TSX0308 probe.tsx:3:38 — cannot infer the element type of this ' +
+          'list state from an empty literal.',
+      ),
+    );
+  });
+
   test('useEffect calls are counted', () => {
     const analysis = analyzeSource(
       "import { Text, useEffect } from 'flutter-tsx';\n" +

@@ -87,6 +87,12 @@ describe('translateExpression', () => {
     expect(translate('count ?? 1')).toBe('_count ?? 1');
   });
 
+  test('array literals and spreads translate to Dart collections', () => {
+    expect(translate("['a', 'b']")).toBe("['a', 'b']");
+    expect(translate("[...label, 'x']")).toBe("[..._label, 'x']");
+    expect(translate('[]')).toBe('[]');
+  });
+
   test('an unsupported binary operator is a numbered error', () => {
     expect(() => translate('count & 1')).toThrow(
       new Error(

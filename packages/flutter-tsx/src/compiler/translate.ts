@@ -116,6 +116,14 @@ export const translateExpression = (
       expression.operator === ts.SyntaxKind.ExclamationToken ? '!' : '-';
     return `${operator}${translateExpression(expression.operand, context)}`;
   }
+  if (ts.isArrayLiteralExpression(expression)) {
+    const elements = expression.elements.map((element) =>
+      ts.isSpreadElement(element)
+        ? `...${translateExpression(element.expression, context)}`
+        : translateExpression(element, context),
+    );
+    return `[${elements.join(', ')}]`;
+  }
   if (ts.isConditionalExpression(expression)) {
     const condition = translateExpression(expression.condition, context);
     const whenTrue = translateExpression(expression.whenTrue, context);

@@ -244,6 +244,32 @@ describe('printExpr — width edge cases', () => {
   });
 });
 
+describe('printExpr — collection-for', () => {
+  test('for items print their loop header inline with the element', () => {
+    expect(
+      printExpr(
+        listLit([
+          {
+            kind: 'for',
+            itemName: 'item',
+            iterable: identifier('_items'),
+            value: call('Text', [identifier('item')]),
+          },
+          { kind: 'element', value: call('Spacer', []) },
+        ]),
+        { indent: 0, used: 40, trailing: 1 },
+      ),
+    ).toBe(
+      [
+        '[',
+        '  for (final item in _items) Text(item),',
+        '  Spacer(),',
+        ']',
+      ].join('\n'),
+    );
+  });
+});
+
 describe('printExpr — lists and collection-if', () => {
   test('an empty list prints inline', () => {
     expect(printExpr(listLit([]))).toBe('[]');
