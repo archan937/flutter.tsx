@@ -36,7 +36,7 @@ describe('TSX builds as a real Flutter app (RED until the compiler exists)', () 
     'fixture #1 input.tsx transpiles and compiles into a web build',
     async () => {
       const source = await Bun.file(join(fixtureDir, 'input.tsx')).text();
-      const generated = transpileComponent({
+      const generated = await transpileComponent({
         source,
         filePath: join(fixtureDir, 'input.tsx'),
       });

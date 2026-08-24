@@ -13,6 +13,7 @@ export interface StateBinding {
 export interface PluginBinding {
   binding: string;
   hook: string;
+  package: string;
   call: ts.CallExpression;
 }
 
@@ -24,6 +25,7 @@ export interface HandlerBinding {
 
 export interface ComponentAnalysis {
   name: string;
+  nameNode: ts.Node;
   states: StateBinding[];
   plugins: PluginBinding[];
   handlers: HandlerBinding[];
@@ -40,7 +42,7 @@ export interface ComponentSummary {
     initialText: string;
     dartType: string;
   }[];
-  plugins: { binding: string; hook: string }[];
+  plugins: { binding: string; hook: string; package: string }[];
   handlers: { name: string; isAsync: boolean }[];
   effectCount: number;
   returnTag: string;
@@ -58,6 +60,8 @@ const COMPILER_OPTIONS: ts.CompilerOptions = {
   noResolve: true,
   skipLibCheck: true,
 };
+
+const PLUGIN_MODULE_PREFIX = 'plugin:';
 
 const SCALAR_DART_TYPES: Record<string, string> = {
   boolean: 'bool',
@@ -228,15 +232,17 @@ const analyzeBodyStatement = (
       ts.isIdentifier(initializer.expression)
     ) {
       const callee = initializer.expression.text;
+      const module = context.hookModules.get(callee);
       if (callee === 'useState') {
         analyzeStateDeclaration(declaration, initializer, context);
       } else if (
         callee.startsWith('use') &&
-        context.hookModules.get(callee) === 'flutter-tsx/plugins'
+        module?.startsWith(PLUGIN_MODULE_PREFIX) === true
       ) {
         context.analysis.plugins.push({
           binding: declaration.name.getText(),
           hook: callee,
+          package: module.slice(PLUGIN_MODULE_PREFIX.length),
           call: initializer,
         });
       }
@@ -245,7 +251,7 @@ const analyzeBodyStatement = (
 };
 
 const analyzeComponent = (
-  name: string,
+  nameNode: ts.BindingName,
   arrow: ts.ArrowFunction,
   context: Omit<BodyContext, 'analysis'>,
 ): ComponentAnalysis | null => {
@@ -255,7 +261,8 @@ const analyzeComponent = (
   }
 
   const analysis: ComponentAnalysis = {
-    name,
+    name: nameNode.getText(),
+    nameNode,
     states: [],
     plugins: [],
     handlers: [],
@@ -313,9 +320,13 @@ export const analyzeSource = (
         continue;
       }
       const component = analyzeComponent(
-        declaration.name.getText(),
+        declaration.name,
         declaration.initializer,
-        { sourceFile, checker, hookModules },
+        {
+          sourceFile,
+          checker,
+          hookModules,
+        },
       );
       if (component !== null) {
         components.push(component);
@@ -344,7 +355,11 @@ export const summarize = (component: ComponentAnalysis): ComponentSummary => ({
       dartType,
     }),
   ),
-  plugins: component.plugins.map(({ binding, hook }) => ({ binding, hook })),
+  plugins: component.plugins.map(({ binding, hook, package: pubPackage }) => ({
+    binding,
+    hook,
+    package: pubPackage,
+  })),
   handlers: component.handlers.map(({ name, isAsync }) => ({ name, isAsync })),
   effectCount: component.effects.length,
   returnTag: jsxRootTag(component.returnJsx) ?? '',

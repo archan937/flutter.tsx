@@ -221,7 +221,8 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       byte-for-byte in the test suite (the no-stale-docs rule, mechanized).
 - [x] 8. Runtime surface: jsx-runtime + jsx-dev-runtime (automatic JSX, typed JSX
       namespace, Fragment, key), useState/useEffect compile-target stubs, typed
-      `flutter-tsx/plugins` with `useCamera` (conformance target; codegen at 22–24),
+      `useCamera` conformance target (originally a `flutter-tsx/plugins` subpath;
+      replaced at step 14 by the `plugin:camera` import scheme — see step 22),
       public `index.ts`. **The camera snippet typechecks as a real fixture**
       (`test/fixtures/01-camera-screen/input.tsx`, package self-reference imports) —
       and immediately caught a generator precedence bug (`() => void | null`).
@@ -253,8 +254,8 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       ts.Program + checker over in-memory TSX; discovers exported arrow components;
       extracts useState bindings (value/setter/initial + Dart type inferred from the
       initial value: int/double/String/bool), plugin hooks (import-tracked from
-      `flutter-tsx/plugins`), handlers (async-aware), useEffect calls, and the JSX
-      root. Numbered diagnostics with file:line:column (TSX0100/0102/0103), pinned
+      `plugin:<pub-name>` modules, pub package captured), handlers (async-aware),
+      useEffect calls, and the JSX root. Numbered diagnostics with file:line:column (TSX0100/0102/0103), pinned
       exactly. Camera fixture analysis asserted in full.
 - [x] 12. Flutter IR + JSX→IR lowering (`src/compiler/ir.ts` + `lower.ts`): plain-data
       widget tree with slot-resolved arguments. Lowers attrs (string/number/boolean/
@@ -268,10 +269,25 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       in the pipeline), string escaping, collection-if, const inference with
       topmost-only `const` (no redundant inner consts), private member naming
       (`_taken`, `_takePhoto`). Camera body prints exactly.
-- [ ] 14–21. The compiler core: component class emission → first green golden, one
-      trait per step, each ending in a green golden fixture; diagnostics with
-      file/line + fix hints. Traits: JSX→constructor · slots (child/children/
-      named/text) · props/positional · string-children→Text · enum/constant props ·
+- [x] 14. Component class emission → **the first green golden**
+      (`02-hello-column`, plain `test` in the `GREEN_FIXTURES` set — no longer
+      `test.failing`) and **the first green from-TSX e2e**
+      (`e2e/test/build-hello-from-tsx.test.ts`: `input.tsx` → byte-equal to the
+      certified golden → real web build, ~17 s). `transpileComponent` is real
+      and async (`emit-component.ts`: StatelessWidget class, `build` with the
+      printed body re-indented; imports derived from the widget libraries
+      actually used — cupertino/material/both, `widgets`-only defaults to
+      material — cached CompileContext from api.json + slots). Emitter output
+      must BE formatted Dart — byte-equality against the golden, no
+      canonicalization pass. Anything non-stateless (state/plugins/effects/
+      handlers) is the honest numbered error TSX0301 at the component name —
+      never silent wrong Dart — so the camera fixture and its e2e stay RED.
+      The 543-widget sweep now really transpiles + analyzes every probe in its
+      own Dart package (`test/sweep/`, red until the probes analyze clean).
+- [ ] 15–21. The compiler core, one trait per step, each ending in a green golden
+      fixture; diagnostics with file/line + fix hints. Traits: JSX→constructor ·
+      slots (child/children/named/text) · props/positional · string-children→Text ·
+      enum/constant props ·
       value-type prop transforms (color/padding/TextStyle…) · sync+async handlers ·
       useState→StatefulWidget · useEffect→lifecycle · conditionals · lists ·
       composition · Fragment + key semantics · **the TSX Strict Mode expression
@@ -283,7 +299,18 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       error codes** (vision §11 — the full audited input-language inventory,
       2026-08-23; nothing from the vision docs is dropped silently)
 - [ ] 22–24. Plugins: codegen data, `useCamera` end to end (fixture #1 fully green —
-      the trust milestone), then one plugin at a time
+      the trust milestone), then one plugin at a time. **Decided (Paul,
+      2026-08-24): plugin hooks import from `plugin:<pub-name>` (e.g.
+      `import { useCamera } from 'plugin:camera'`) — collision-proof scheme prefix,
+      1:1 with the pub package. Versions live in a `"plugins": {"camera": "^0.12"}`
+      map in the project package.json; fsx syncs it to pubspec.yaml and generates
+      ambient `declare module 'plugin:x'` types per project via the Dart-analyzer
+      extraction pipeline, for the resolved plugin version. Two layers: typed API
+      surface (automatic, any plugin) vs `useXxx` hooks (hand-tuned codegen recipes,
+      curated set only — a hook's lifecycle semantics are never guessed). Fixture,
+      README, and front-end switched at step 14;
+      `test/fixtures/types/camera.d.ts` is the hand-written preview of the
+      generated declaration; the `flutter-tsx/plugins` subpath export is gone.**
 - [ ] 24b. High-level abstractions from the vision (each gated by its own golden +
       e2e before being documented): `useAsync`/`Query`→FutureBuilder ·
       `useStream`→StreamBuilder · `createStore`/`useStore`→ChangeNotifier+Provider ·

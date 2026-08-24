@@ -28,7 +28,7 @@ describe('analyzeSource — camera fixture', () => {
             dartType: 'bool',
           },
         ],
-        plugins: [{ binding: 'cam', hook: 'useCamera' }],
+        plugins: [{ binding: 'cam', hook: 'useCamera', package: 'camera' }],
         handlers: [{ name: 'takePhoto', isAsync: true }],
         effectCount: 0,
         returnTag: 'Column',

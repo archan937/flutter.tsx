@@ -1,12 +1,10 @@
 import { beforeAll, describe, expect, test } from 'bun:test';
 
-import { runCommand } from '@scripts/run-command';
 import {
   dartFormatCheck,
+  ensurePackageResolved,
   fixturesDir,
-  fixturesPackageConfigPath,
   flutterAnalyze,
-  flutterBin,
   listFixtures,
 } from '@test/support/golden';
 
@@ -14,22 +12,14 @@ const fixtures = await listFixtures();
 
 describe('committed golden expected.dart files', () => {
   beforeAll(async () => {
-    if (await Bun.file(fixturesPackageConfigPath).exists()) {
-      return;
-    }
-    const exitCode = await runCommand(
-      [flutterBin(), 'pub', 'get'],
-      fixturesDir,
-    );
-    if (exitCode !== 0) {
-      throw new Error(
-        `flutter pub get failed (exit ${exitCode}) in ${fixturesDir}`,
-      );
-    }
+    await ensurePackageResolved(fixturesDir);
   }, 300000);
 
-  test('at least conformance fixture #1 exists', () => {
-    expect(fixtures.map((fixture) => fixture.id)).toEqual(['01-camera-screen']);
+  test('the conformance fixtures are exactly the committed set', () => {
+    expect(fixtures.map((fixture) => fixture.id)).toEqual([
+      '01-camera-screen',
+      '02-hello-column',
+    ]);
   });
 
   for (const fixture of fixtures) {

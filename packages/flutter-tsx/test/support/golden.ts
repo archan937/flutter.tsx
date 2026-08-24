@@ -13,6 +13,8 @@ export interface GoldenFixture {
 
 export const fixturesDir = new URL('../fixtures/', import.meta.url).pathname;
 
+export const sweepPackageDir = new URL('../sweep/', import.meta.url).pathname;
+
 export const listFixtures = async (): Promise<GoldenFixture[]> => {
   const entries = await readdir(fixturesDir, { withFileTypes: true });
   const ids = entries
@@ -32,11 +34,20 @@ export const flutterBin = (): string =>
 const dartBin = (): string =>
   join(resolveFsxPaths(process.env, homedir()).sdkDir, 'bin', 'dart');
 
-export const fixturesPackageConfigPath = join(
-  fixturesDir,
-  '.dart_tool',
-  'package_config.json',
-);
+export const ensurePackageResolved = async (
+  packageDir: string,
+): Promise<void> => {
+  const configPath = join(packageDir, '.dart_tool', 'package_config.json');
+  if (await Bun.file(configPath).exists()) {
+    return;
+  }
+  const exitCode = await runCommand([flutterBin(), 'pub', 'get'], packageDir);
+  if (exitCode !== 0) {
+    throw new Error(
+      `flutter pub get failed (exit ${exitCode}) in ${packageDir}`,
+    );
+  }
+};
 
 export const dartFormatCheck = (path: string): Promise<number> =>
   runCommand(
@@ -44,5 +55,7 @@ export const dartFormatCheck = (path: string): Promise<number> =>
     fixturesDir,
   );
 
-export const flutterAnalyze = (): Promise<number> =>
-  runCommand([flutterBin(), 'analyze', '--no-pub'], fixturesDir);
+export const flutterAnalyze = (
+  packageDir: string = fixturesDir,
+): Promise<number> =>
+  runCommand([flutterBin(), 'analyze', '--no-pub'], packageDir);

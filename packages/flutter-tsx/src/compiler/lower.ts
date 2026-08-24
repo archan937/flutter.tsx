@@ -9,6 +9,7 @@ import type { IrArgument, IrChild, IrComponent, IrValue, IrWidget } from './ir';
 
 interface WidgetInfo {
   name: string;
+  library: string;
   paramsByJsxName: Map<string, ParamModel>;
   slots: WidgetSlots;
 }
@@ -48,6 +49,7 @@ export const buildCompileContext = (
     }
     widgets.set(entity.name, {
       name: entity.name,
+      library: entity.library,
       paramsByJsxName,
       slots: slots[entity.name] ?? EMPTY_SLOTS,
     });

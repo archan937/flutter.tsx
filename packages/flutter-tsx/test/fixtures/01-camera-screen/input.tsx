@@ -1,5 +1,5 @@
 import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
-import { useCamera } from 'flutter-tsx/plugins';
+import { useCamera } from 'plugin:camera';
 
 export const CameraScreen = () => {
   const cam = useCamera();
