@@ -716,8 +716,13 @@ describe('lowerComponent — stateful pieces', () => {
 
     expect(ir.kind).toBe('stateful');
     expect(ir.fields).toEqual([
-      { name: '_count', dartType: 'int', initializer: '0' },
-      { name: '_label', dartType: 'String', initializer: "'x'" },
+      { name: '_count', dartType: 'int', mutable: true, initializer: '0' },
+      {
+        name: '_label',
+        dartType: 'String',
+        mutable: true,
+        initializer: "'x'",
+      },
     ]);
     expect(ir.methods).toEqual([
       {
@@ -1104,6 +1109,78 @@ describe('lowerComponent — composition', () => {
         },
       ],
     });
+  });
+});
+
+describe('lowerComponent — fragments and typed text slots', () => {
+  test('fragment children splice into the parent list', async () => {
+    const ir = await lowerFirst(
+      "import { Column, Text } from 'flutter-tsx';\n" +
+        'export const Probe = () => (\n' +
+        '  <Column>\n' +
+        '    <Text>first</Text>\n' +
+        '    <>\n' +
+        '      <Text>second</Text>\n' +
+        '      <Text>third</Text>\n' +
+        '    </>\n' +
+        '  </Column>\n' +
+        ');\n',
+      'probe.tsx',
+    );
+
+    const [children] = ir.body.args;
+    if (children?.value.kind !== 'widgetList') {
+      throw new Error('expected a children list');
+    }
+    expect(children.value.items).toHaveLength(3);
+  });
+
+  test('a fragment root wraps in a Column (vision rule 4)', async () => {
+    const ir = await lowerFirst(
+      "import { Text } from 'flutter-tsx';\n" +
+        'export const Probe = () => (\n' +
+        '  <>\n' +
+        '    <Text>one</Text>\n' +
+        '    <Text>two</Text>\n' +
+        '  </>\n' +
+        ');\n',
+      'probe.tsx',
+    );
+
+    expect(ir.body.name).toBe('Column');
+    const [children] = ir.body.args;
+    if (children?.value.kind !== 'widgetList') {
+      throw new Error('expected a children list');
+    }
+    expect(children.value.items).toHaveLength(2);
+  });
+
+  test('string-typed ternary text slots print plain, not interpolated', async () => {
+    const analysis = analyzeSource(
+      "import { Text } from 'flutter-tsx';\n" +
+        'const Chip = ({ label, hot }: { label: string; hot: boolean }) => (\n' +
+        '  <Text>{hot ? `* ${label}` : label}</Text>\n' +
+        ');\n' +
+        'export const Probe = () => <Chip label="hi" hot={true} />;\n',
+      'probe.tsx',
+    );
+    const compile = await contextOnce();
+    const chip = analysis.components[0];
+    if (chip === undefined) {
+      throw new Error('expected the Chip component');
+    }
+    const ir = lowerComponent(chip, {
+      ...compile,
+      userWidgets: buildUserWidgets(analysis.components),
+    });
+
+    expect(ir.body.args).toEqual([
+      {
+        param: 'data',
+        positional: true,
+        value: { kind: 'dartExpr', dart: "hot ? '* $label' : label" },
+      },
+    ]);
   });
 });
 

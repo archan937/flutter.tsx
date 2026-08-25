@@ -178,6 +178,20 @@ const textWidget = (value: string, context: LowerContext): IrValue => ({
   },
 });
 
+// Vision rule 4: a fragment root wraps its children in a Column.
+const columnOf = (items: IrChild[], context: LowerContext): IrWidget => ({
+  name: 'Column',
+  constConstructor:
+    context.compile.widgets.get('Column')?.constConstructor ?? true,
+  args: [
+    {
+      param: 'children',
+      positional: false,
+      value: { kind: 'widgetList', items },
+    },
+  ],
+});
+
 const lowerIdentifier = (
   identifier: ts.Identifier,
   context: LowerContext,
@@ -591,9 +605,10 @@ const lowerScalarChild = (
     return textWidget(expression.text, context);
   }
   const dart = translateExpression(expression, context.translate);
-  if (isStringIdentifier(expression, context)) {
+  if (isStringExpression(expression, context)) {
     return textValueWidget({ kind: 'dartExpr', dart }, context);
   }
+
   return textValueWidget(
     { kind: 'interpolation', parts: [{ kind: 'expr', value: dart }] },
     context,
@@ -701,6 +716,10 @@ const lowerListChildren = (
       });
       continue;
     }
+    if (ts.isJsxFragment(child)) {
+      items.push(...lowerListChildren(child.children, context));
+      continue;
+    }
     if (ts.isJsxExpression(child) && child.expression !== undefined) {
       const { expression } = child;
       if (
@@ -748,13 +767,27 @@ const singleChildValue = (
 const jsxTextValue = (child: ts.JsxText): string =>
   child.text.replace(/\s*\n\s*/g, '');
 
-const isStringIdentifier = (
+const isStringExpression = (
   expression: ts.Expression,
   context: LowerContext,
-): expression is ts.Identifier =>
-  ts.isIdentifier(expression) &&
-  (context.stringStates.has(expression.text) ||
-    context.stringLocals.has(expression.text));
+): boolean => {
+  if (ts.isStringLiteral(expression) || ts.isTemplateLiteral(expression)) {
+    return true;
+  }
+  if (ts.isIdentifier(expression)) {
+    return (
+      context.stringStates.has(expression.text) ||
+      context.stringLocals.has(expression.text)
+    );
+  }
+  if (ts.isConditionalExpression(expression)) {
+    return (
+      isStringExpression(expression.whenTrue, context) &&
+      isStringExpression(expression.whenFalse, context)
+    );
+  }
+  return false;
+};
 
 const textSlotValue = (
   children: readonly ts.JsxChild[],
@@ -788,7 +821,7 @@ const textSlotValue = (
   if (
     parts.length === 1 &&
     only !== undefined &&
-    isStringIdentifier(only, context)
+    isStringExpression(only, context)
   ) {
     return {
       kind: 'dartExpr',
@@ -1041,7 +1074,11 @@ export const lowerComponent = (
   };
 
   const root = component.returnJsx;
-  if (!ts.isJsxElement(root) && !ts.isJsxSelfClosingElement(root)) {
+  if (
+    !ts.isJsxElement(root) &&
+    !ts.isJsxSelfClosingElement(root) &&
+    !ts.isJsxFragment(root)
+  ) {
     throw tsxErrorAt('TSX0204', 'a component must return a widget element.', {
       sourceFile: component.sourceFile,
       node: root,
@@ -1075,6 +1112,7 @@ export const lowerComponent = (
     fields: component.states.map((state) => ({
       name: translateIdentifier(state.name, context.translate),
       dartType: state.dartType,
+      mutable: state.mutable,
       initializer: translateExpression(state.initializer, context.translate),
     })),
     methods,
@@ -1082,6 +1120,8 @@ export const lowerComponent = (
       component.plugins.length > 0
         ? []
         : lowerEffects(component.effects, context),
-    body: lowerJsxElement(root, context),
+    body: ts.isJsxFragment(root)
+      ? columnOf(lowerListChildren(root.children, context), context)
+      : lowerJsxElement(root, context),
   };
 };

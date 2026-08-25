@@ -91,11 +91,13 @@ built test-first behind hard gates — 100% test coverage, golden fixtures verif
 Rewrite progress:
 
 - [x] Monorepo skeleton with enforced quality gates
-- [ ] SDK extractor (Dart analyzer → `api.json`)
-- [ ] Generated TypeScript API (every widget prop typed)
-- [ ] Golden + e2e verification harness
-- [ ] The compiler: TSX → IR → Dart AST → idiomatic Dart
-- [ ] Plugin hooks (`useCamera` first)
+- [x] SDK extractor (Dart analyzer → `api.json`, byte-deterministic)
+- [x] Generated TypeScript API (every widget prop typed, value forms included)
+- [x] Golden + e2e verification harness (fixtures build as real Flutter web apps)
+- [x] The compiler: TSX → IR → Dart AST → idiomatic Dart — stateless & stateful
+      components, typed props & composition, `useState`/`useEffect`, handlers,
+      conditionals, list rendering, fragments (8 traits proven end to end)
+- [ ] Plugin hooks (`useCamera` first — conformance fixture #1 goes green here)
 - [ ] `fsx` CLI (`install` · `init` · `dev` · `build` · `doctor`) and scaffolder
 - [ ] 1.0 on npm
 

@@ -7,6 +7,7 @@ export interface StateBinding {
   setterName: string;
   initialText: string;
   dartType: string;
+  mutable: boolean;
   initializer: ts.Expression;
 }
 
@@ -93,6 +94,41 @@ const propsError = (sourceFile: ts.SourceFile, node: ts.Node): never => {
   );
 };
 
+const localTypeMembers = (
+  name: string,
+  sourceFile: ts.SourceFile,
+): readonly ts.TypeElement[] | null => {
+  for (const statement of sourceFile.statements) {
+    if (ts.isInterfaceDeclaration(statement) && statement.name.text === name) {
+      return statement.members;
+    }
+    if (
+      ts.isTypeAliasDeclaration(statement) &&
+      statement.name.text === name &&
+      ts.isTypeLiteralNode(statement.type)
+    ) {
+      return statement.type.members;
+    }
+  }
+  return null;
+};
+
+const propsTypeMembers = (
+  annotation: ts.TypeNode,
+  sourceFile: ts.SourceFile,
+): readonly ts.TypeElement[] | null => {
+  if (ts.isTypeLiteralNode(annotation)) {
+    return annotation.members;
+  }
+  if (
+    ts.isTypeReferenceNode(annotation) &&
+    ts.isIdentifier(annotation.typeName)
+  ) {
+    return localTypeMembers(annotation.typeName.text, sourceFile);
+  }
+  return null;
+};
+
 const analyzeProps = (
   arrow: ts.ArrowFunction,
   sourceFile: ts.SourceFile,
@@ -102,14 +138,15 @@ const analyzeProps = (
     return [];
   }
   const annotation = parameter.type;
-  if (
-    !ts.isObjectBindingPattern(parameter.name) ||
-    annotation === undefined ||
-    !ts.isTypeLiteralNode(annotation)
-  ) {
+  const members =
+    annotation === undefined ? null : propsTypeMembers(annotation, sourceFile);
+  if (!ts.isObjectBindingPattern(parameter.name) || annotation === undefined) {
     return propsError(sourceFile, parameter.name);
   }
-  return annotation.members.map((member) => {
+  if (members === null) {
+    return propsError(sourceFile, annotation);
+  }
+  return members.map((member) => {
     if (
       !ts.isPropertySignature(member) ||
       !ts.isIdentifier(member.name) ||
@@ -205,6 +242,9 @@ const jsxRootTag = (expression: ts.Expression): string | null => {
   if (ts.isJsxSelfClosingElement(expression)) {
     return expression.tagName.getText();
   }
+  if (ts.isJsxFragment(expression)) {
+    return '<>';
+  }
   return null;
 };
 
@@ -237,7 +277,11 @@ const analyzeStateDeclaration = (
   context: BodyContext,
 ): void => {
   const { name } = declaration;
-  if (!ts.isArrayBindingPattern(name) || name.elements.length !== 2) {
+  if (
+    !ts.isArrayBindingPattern(name) ||
+    name.elements.length < 1 ||
+    name.elements.length > 2
+  ) {
     throw tsxErrorAt(
       'TSX0102',
       'useState must be destructured as ' +
@@ -249,9 +293,8 @@ const analyzeStateDeclaration = (
   const initializer = call.arguments[0];
   if (
     valueElement === undefined ||
-    setterElement === undefined ||
     !ts.isBindingElement(valueElement) ||
-    !ts.isBindingElement(setterElement) ||
+    (setterElement !== undefined && !ts.isBindingElement(setterElement)) ||
     initializer === undefined
   ) {
     throw tsxErrorAt(
@@ -263,13 +306,17 @@ const analyzeStateDeclaration = (
   }
   context.analysis.states.push({
     name: valueElement.name.getText(),
-    setterName: setterElement.name.getText(),
+    setterName:
+      setterElement !== undefined && ts.isBindingElement(setterElement)
+        ? setterElement.name.getText()
+        : '',
     initialText: initializer.getText(),
     dartType: dartTypeOfInitial(
       context.checker,
       initializer,
       context.sourceFile,
     ),
+    mutable: false,
     initializer,
   });
 };
@@ -359,7 +406,26 @@ const analyzeComponent = (
       analyzeBodyStatement(statement, { ...context, analysis });
     }
   }
+  for (const state of analysis.states) {
+    state.mutable =
+      state.setterName !== '' &&
+      identifierCount(arrow.body, state.setterName) >= 2;
+  }
   return analysis;
+};
+
+// The destructuring binding itself is one occurrence — a setter is used
+// only when it appears again somewhere in the body.
+const identifierCount = (root: ts.Node, name: string): number => {
+  let count = 0;
+  const visit = (node: ts.Node): void => {
+    if (ts.isIdentifier(node) && node.text === name) {
+      count += 1;
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(root);
+  return count;
 };
 
 export const requireSourceFile = (

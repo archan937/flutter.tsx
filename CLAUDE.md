@@ -392,7 +392,18 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       Honest guards: untyped/named prop types → TSX0309 (inline type literals
       only until step 21), props + state on one component → TSX0310. User
       widget names never pull imports.
-- [ ] 21. The compiler core remainder, each ending in a green golden fixture;
+- [x] 21. Typed props, fragments, final fields — **golden #8 green**
+      (`09-typed-props`, hand-written first) and its from-TSX e2e web build.
+      Named prop types resolve locally (`interface TaskProps { … }` and
+      `type X = { … }` — same TSX0309 for anything unresolvable); fragments
+      splice into parent children lists and a fragment ROOT auto-wraps in a
+      Column (vision rule 4); setter-less `const [titles] = useState(...)` and
+      unused setters emit `final` fields (prefer_final_fields-clean — setter
+      usage is counted in the component body); `.length` translates (shared
+      TS/Dart member allow-list, everything else TSX0305); string-typed
+      ternaries in text slots print plain (`Text(done ? '✓ \$title' : title)`),
+      not wrapped in interpolation.
+- [ ] 21b. Compiler-core remainder, each with its own golden when it lands;
       diagnostics with file/line + fix hints. Traits still open:
       value-type prop transforms (color/padding/TextStyle…) · sync+async handlers ·
       useState→StatefulWidget · useEffect→lifecycle · conditionals · lists ·
@@ -428,4 +439,7 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       gesture props (onTap/onLongPress→GestureDetector wrap) · `fetch()`→Dart HTTP
       (mapping choice, e.g. package:http, is an open design decision for Paul)
 - [ ] 25–28. `fsx` CLI (init/dev/build/doctor) + `create-flutter-tsx` scaffolder
-- [ ] 29–31. CI pipeline, docs from fixtures + site deploy, 1.0 publish (Paul triggers)
+- [ ] 29–31. CI pipeline, docs from fixtures + site deploy, 1.0 publish (Paul triggers).
+      **Paul (2026-08-25): the preserved v1 pages (docs/index.html, guide.md,
+      config-mapping.md) stay frozen and unmarked until the step-30 refresh —
+      they present v1 as current; fix belongs to the site refresh, not before.**

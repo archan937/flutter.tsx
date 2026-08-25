@@ -29,6 +29,9 @@ const BINARY_OPERATORS = new Map<ts.SyntaxKind, string>([
 
 const DART_IDENTIFIER = /^[a-zA-Z_][a-zA-Z0-9_]*$/;
 
+// Members that mean the same thing on TS and Dart values.
+const SHARED_MEMBERS = new Set(['length']);
+
 const notYetCompiled = (node: ts.Node, context: TranslateContext): never => {
   throw tsxErrorAt(
     'TSX0305',
@@ -129,6 +132,13 @@ export const translateExpression = (
     const whenTrue = translateExpression(expression.whenTrue, context);
     const whenFalse = translateExpression(expression.whenFalse, context);
     return `${condition} ? ${whenTrue} : ${whenFalse}`;
+  }
+  if (
+    ts.isPropertyAccessExpression(expression) &&
+    SHARED_MEMBERS.has(expression.name.text)
+  ) {
+    const target = translateExpression(expression.expression, context);
+    return `${target}.${expression.name.text}`;
   }
   if (ts.isBinaryExpression(expression)) {
     const operator = BINARY_OPERATORS.get(expression.operatorToken.kind);

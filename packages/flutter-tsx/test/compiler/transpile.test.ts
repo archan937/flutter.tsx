@@ -197,6 +197,19 @@ describe('transpileComponent — stateful components', () => {
     );
   });
 
+  test('named prop types, fragments, and final fields emit in full', async () => {
+    const source = await Bun.file(
+      new URL('../fixtures/09-typed-props/input.tsx', import.meta.url),
+    ).text();
+    const expected = await Bun.file(
+      new URL('../fixtures/09-typed-props/expected.dart', import.meta.url),
+    ).text();
+
+    expect(await transpileComponent({ source, filePath: 'tasks.tsx' })).toBe(
+      expected,
+    );
+  });
+
   test('async handlers become async methods', async () => {
     expect(
       await transpileComponent({

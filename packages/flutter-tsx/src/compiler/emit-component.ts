@@ -78,7 +78,10 @@ const emitStatelessClass = (component: IrComponent): string => {
 const emitStatefulClass = (component: IrComponent): string => {
   const { name } = component;
   const fields = component.fields
-    .map((field) => `  ${field.dartType} ${field.name} = ${field.initializer};`)
+    .map((field) => {
+      const modifier = field.mutable ? '' : 'final ';
+      return `  ${modifier}${field.dartType} ${field.name} = ${field.initializer};`;
+    })
     .join('\n');
   const stateMembers = [
     fields,

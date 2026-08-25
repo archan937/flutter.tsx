@@ -66,6 +66,7 @@ export interface IrWidget {
 export interface IrField {
   name: string;
   dartType: string;
+  mutable: boolean;
   initializer: string;
 }
 

@@ -178,6 +178,83 @@ describe('analyzeSource — component shapes', () => {
     ]);
   });
 
+  test('interface and type-alias prop types resolve locally', () => {
+    const analysis = analyzeSource(
+      "import { Text } from 'flutter-tsx';\n" +
+        'interface CardProps {\n' +
+        '  title: string;\n' +
+        '}\n' +
+        'type BadgeProps = { count: number };\n' +
+        'const Card = ({ title }: CardProps) => <Text>{title}</Text>;\n' +
+        'const Badge = ({ count }: BadgeProps) => <Text>{count}</Text>;\n' +
+        'export const Probe = () => <Card title="hi" />;\n',
+      'probe.tsx',
+    );
+
+    expect(analysis.components.map((component) => component.props)).toEqual([
+      [{ name: 'title', dartType: 'String', required: true }],
+      [{ name: 'count', dartType: 'double', required: true }],
+      [],
+    ]);
+  });
+
+  test('a non-object props annotation is a numbered error', () => {
+    expect(() =>
+      analyzeSource(
+        "import { Text } from 'flutter-tsx';\n" +
+          'export const Probe = ({ x }: string) => <Text>hi</Text>;\n',
+        'probe.tsx',
+      ),
+    ).toThrow(
+      new Error(
+        'TSX0309 probe.tsx:2:30 — props must be destructured with an inline ' +
+          'type: `({ name }: { name: string })` (named prop types land at ' +
+          'roadmap step 21).',
+      ),
+    );
+  });
+
+  test('an unknown named prop type is a numbered error', () => {
+    expect(() =>
+      analyzeSource(
+        "import { Text } from 'flutter-tsx';\n" +
+          'export const Probe = ({ x }: Mystery) => <Text>hi</Text>;\n',
+        'probe.tsx',
+      ),
+    ).toThrow(
+      new Error(
+        'TSX0309 probe.tsx:2:30 — props must be destructured with an inline ' +
+          'type: `({ name }: { name: string })` (named prop types land at ' +
+          'roadmap step 21).',
+      ),
+    );
+  });
+
+  test('setter-less useState marks the state immutable', () => {
+    const analysis = analyzeSource(
+      "import { Text, useState } from 'flutter-tsx';\n" +
+        'export const Probe = () => {\n' +
+        "  const [titles] = useState(['a']);\n" +
+        '  const [count, setCount] = useState(0);\n' +
+        '  const [idle, setIdle] = useState(true);\n' +
+        '  const bump = () => setCount(count + 1);\n' +
+        '  return <Text>hi</Text>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+
+    expect(
+      analysis.components[0]?.states.map((state) => ({
+        name: state.name,
+        mutable: state.mutable,
+      })),
+    ).toEqual([
+      { name: 'titles', mutable: false },
+      { name: 'count', mutable: true },
+      { name: 'idle', mutable: false },
+    ]);
+  });
+
   test('an untyped props parameter is a numbered error', () => {
     expect(() =>
       analyzeSource(

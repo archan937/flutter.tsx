@@ -93,6 +93,20 @@ describe('translateExpression', () => {
     expect(translate('[]')).toBe('[]');
   });
 
+  test('.length property access translates with renamed targets', () => {
+    expect(translate('label.length')).toBe('_label.length');
+    expect(translate('label.length + 1')).toBe('_label.length + 1');
+  });
+
+  test('an unsupported property access is a numbered error', () => {
+    expect(() => translate('label.size')).toThrow(
+      new Error(
+        'TSX0305 probe.tsx:6:17 — this expression is not compiled yet ' +
+          '(roadmap step 18).',
+      ),
+    );
+  });
+
   test('an unsupported binary operator is a numbered error', () => {
     expect(() => translate('count & 1')).toThrow(
       new Error(
