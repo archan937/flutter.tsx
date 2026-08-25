@@ -379,10 +379,21 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       `_items = [..._items, 'Milk']`). `FlutterChild` is now recursive (arrays
       nest, like React's ReactNode) so map expressions typecheck inside children.
       Index-parameter maps, block bodies, and non-map calls are honest TSX0305s.
-- [ ] 20–21. The compiler core, one trait per step, each ending in a green golden
-      fixture; diagnostics with file/line + fix hints. Traits: JSX→constructor ·
-      slots (child/children/named/text) · props/positional · string-children→Text ·
-      enum/constant props ·
+- [x] 20. Composition — **golden #7 green** (`08-composition`, hand-written first)
+      and its from-TSX e2e web build. User components render as widgets:
+      `<Greeting name="Paul" />` resolves through a per-file user-widget registry
+      (same lowering path as SDK widgets — value forms, TSX0202/0208 guards, and
+      const inference all apply; user ctors are const so composition trees fold
+      into `const`). Typed destructured props become Flutter constructor
+      params + final fields (`({ name }: { name: string })` →
+      `const Greeting({super.key, required this.name}); final String name;`,
+      optional `?:` → nullable non-required); String props print plain in Text.
+      Non-exported components compile too (TSX0103 now requires ≥1 *exported*).
+      Honest guards: untyped/named prop types → TSX0309 (inline type literals
+      only until step 21), props + state on one component → TSX0310. User
+      widget names never pull imports.
+- [ ] 21. The compiler core remainder, each ending in a green golden fixture;
+      diagnostics with file/line + fix hints. Traits still open:
       value-type prop transforms (color/padding/TextStyle…) · sync+async handlers ·
       useState→StatefulWidget · useEffect→lifecycle · conditionals · lists ·
       composition · Fragment + key semantics · **the TSX Strict Mode expression

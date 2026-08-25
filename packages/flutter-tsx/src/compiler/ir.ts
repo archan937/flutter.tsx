@@ -1,6 +1,11 @@
 import type ts from 'typescript';
 
-import type { HandlerBinding, PluginBinding, StateBinding } from './analyze';
+import type {
+  HandlerBinding,
+  PluginBinding,
+  PropBinding,
+  StateBinding,
+} from './analyze';
 
 export type IrValue =
   | { kind: 'string'; value: string }
@@ -78,6 +83,7 @@ export interface IrMethod {
 export interface IrComponent {
   name: string;
   kind: 'stateless' | 'stateful';
+  props: PropBinding[];
   states: StateBinding[];
   plugins: PluginBinding[];
   handlers: HandlerBinding[];

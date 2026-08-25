@@ -165,6 +165,38 @@ describe('transpileComponent — stateful components', () => {
     ).toBe(expected);
   });
 
+  test('user components compose with typed constructor props', async () => {
+    const source = await Bun.file(
+      new URL('../fixtures/08-composition/input.tsx', import.meta.url),
+    ).text();
+    const expected = await Bun.file(
+      new URL('../fixtures/08-composition/expected.dart', import.meta.url),
+    ).text();
+
+    expect(await transpileComponent({ source, filePath: 'welcome.tsx' })).toBe(
+      expected,
+    );
+  });
+
+  test('props on a stateful component are a numbered error', () => {
+    expect(
+      transpileComponent({
+        source:
+          "import { Text, useState } from 'flutter-tsx';\n" +
+          'export const Probe = ({ label }: { label: string }) => {\n' +
+          '  const [count, setCount] = useState(0);\n' +
+          '  return <Text>{label}</Text>;\n' +
+          '};\n',
+        filePath: 'probe.tsx',
+      }),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0310 probe.tsx:2:14 — <Probe> combines props and state — ' +
+          'stateful components with props land at a later roadmap step.',
+      ),
+    );
+  });
+
   test('async handlers become async methods', async () => {
     expect(
       await transpileComponent({

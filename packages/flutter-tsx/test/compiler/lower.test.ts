@@ -5,6 +5,7 @@ import { analyzeSource } from '@src/compiler/analyze';
 import type { IrComponent } from '@src/compiler/ir';
 import {
   buildCompileContext,
+  buildUserWidgets,
   type CompileContext,
   lowerComponent,
 } from '@src/compiler/lower';
@@ -1071,6 +1072,38 @@ describe('lowerComponent — list rendering', () => {
           '(roadmap step 18).',
       ),
     );
+  });
+});
+
+describe('lowerComponent — composition', () => {
+  test('string props print plain; children on a user component error', async () => {
+    const analysis = analyzeSource(
+      "import { Text } from 'flutter-tsx';\n" +
+        'const Chip = ({ label }: { label: string }) => <Text>{label}</Text>;\n' +
+        'export const Probe = () => <Chip label="hi" />;\n',
+      'probe.tsx',
+    );
+    const compile = await contextOnce();
+    const chip = analysis.components[0];
+    if (chip === undefined) {
+      throw new Error('expected the Chip component');
+    }
+    const ir = lowerComponent(chip, {
+      ...compile,
+      userWidgets: buildUserWidgets(analysis.components),
+    });
+
+    expect(ir.body).toEqual({
+      name: 'Text',
+      constConstructor: true,
+      args: [
+        {
+          param: 'data',
+          positional: true,
+          value: { kind: 'dartExpr', dart: 'label' },
+        },
+      ],
+    });
   });
 });
 

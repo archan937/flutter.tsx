@@ -23,9 +23,17 @@ export interface HandlerBinding {
   body: ts.ArrowFunction;
 }
 
+export interface PropBinding {
+  name: string;
+  dartType: string;
+  required: boolean;
+}
+
 export interface ComponentAnalysis {
   name: string;
   nameNode: ts.Node;
+  exported: boolean;
+  props: PropBinding[];
   states: StateBinding[];
   plugins: PluginBinding[];
   handlers: HandlerBinding[];
@@ -67,6 +75,58 @@ const SCALAR_DART_TYPES: Record<string, string> = {
   boolean: 'bool',
   string: 'String',
   number: 'double',
+};
+
+const PROP_DART_TYPES = new Map<ts.SyntaxKind, string>([
+  [ts.SyntaxKind.StringKeyword, 'String'],
+  [ts.SyntaxKind.NumberKeyword, 'double'],
+  [ts.SyntaxKind.BooleanKeyword, 'bool'],
+]);
+
+const propsError = (sourceFile: ts.SourceFile, node: ts.Node): never => {
+  throw tsxErrorAt(
+    'TSX0309',
+    'props must be destructured with an inline type: ' +
+      '`({ name }: { name: string })` (named prop types land at roadmap ' +
+      'step 21).',
+    { sourceFile, node },
+  );
+};
+
+const analyzeProps = (
+  arrow: ts.ArrowFunction,
+  sourceFile: ts.SourceFile,
+): PropBinding[] => {
+  const [parameter] = arrow.parameters;
+  if (parameter === undefined) {
+    return [];
+  }
+  const annotation = parameter.type;
+  if (
+    !ts.isObjectBindingPattern(parameter.name) ||
+    annotation === undefined ||
+    !ts.isTypeLiteralNode(annotation)
+  ) {
+    return propsError(sourceFile, parameter.name);
+  }
+  return annotation.members.map((member) => {
+    if (
+      !ts.isPropertySignature(member) ||
+      !ts.isIdentifier(member.name) ||
+      member.type === undefined
+    ) {
+      return propsError(sourceFile, member);
+    }
+    const dartType = PROP_DART_TYPES.get(member.type.kind);
+    if (dartType === undefined) {
+      return propsError(sourceFile, member.type);
+    }
+    return {
+      name: member.name.text,
+      dartType,
+      required: member.questionToken === undefined,
+    };
+  });
 };
 
 const createProgramFor = (source: string, filePath: string): ts.Program => {
@@ -275,7 +335,7 @@ const analyzeBodyStatement = (
 const analyzeComponent = (
   nameNode: ts.BindingName,
   arrow: ts.ArrowFunction,
-  context: Omit<BodyContext, 'analysis'>,
+  context: Omit<BodyContext, 'analysis'> & { exported: boolean },
 ): ComponentAnalysis | null => {
   const returnJsx = returnedJsx(arrow.body);
   if (returnJsx === null) {
@@ -285,6 +345,8 @@ const analyzeComponent = (
   const analysis: ComponentAnalysis = {
     name: nameNode.getText(),
     nameNode,
+    exported: context.exported,
+    props: analyzeProps(arrow, context.sourceFile),
     states: [],
     plugins: [],
     handlers: [],
@@ -326,14 +388,13 @@ export const analyzeSource = (
 
   const components: ComponentAnalysis[] = [];
   for (const statement of sourceFile.statements) {
-    if (
-      !ts.isVariableStatement(statement) ||
-      statement.modifiers?.some(
-        (modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword,
-      ) !== true
-    ) {
+    if (!ts.isVariableStatement(statement)) {
       continue;
     }
+    const exported =
+      statement.modifiers?.some(
+        (modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword,
+      ) === true;
     for (const declaration of statement.declarationList.declarations) {
       if (
         declaration.initializer === undefined ||
@@ -348,6 +409,7 @@ export const analyzeSource = (
           sourceFile,
           checker,
           hookModules,
+          exported,
         },
       );
       if (component !== null) {
@@ -356,7 +418,7 @@ export const analyzeSource = (
     }
   }
 
-  if (components.length === 0) {
+  if (!components.some((component) => component.exported)) {
     throw new TsxError(
       'TSX0103',
       'no exported component found: export a const arrow function that ' +

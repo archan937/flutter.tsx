@@ -60,7 +60,7 @@ const importDirective = (library: string): string =>
 // in its own defining library (e.g. services).
 const importsFor = (names: Set<string>, context: CompileContext): string[] => {
   const barrelsOf = (name: string): string[] => context.exports.get(name) ?? [];
-  const used = [...names];
+  const used = [...names].filter((name) => !context.userWidgets.has(name));
   const covers = (barrel: string): boolean =>
     used.every((name) => barrelsOf(name).includes(barrel));
 

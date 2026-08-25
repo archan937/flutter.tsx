@@ -153,6 +153,79 @@ describe('analyzeSource — component shapes', () => {
     );
   });
 
+  test('typed destructured props become prop bindings', () => {
+    const analysis = analyzeSource(
+      "import { Text } from 'flutter-tsx';\n" +
+        'const Greeting = ({ name, size, bold }: ' +
+        '{ name: string; size?: number; bold?: boolean }) => (\n' +
+        '  <Text>{name}</Text>\n' +
+        ');\n' +
+        'export const Probe = () => <Greeting name="hi" />;\n',
+      'probe.tsx',
+    );
+
+    const greeting = analysis.components.find(
+      (component) => component.name === 'Greeting',
+    );
+    expect(greeting?.props).toEqual([
+      { name: 'name', dartType: 'String', required: true },
+      { name: 'size', dartType: 'double', required: false },
+      { name: 'bold', dartType: 'bool', required: false },
+    ]);
+    expect(analysis.components.map((component) => component.name)).toEqual([
+      'Greeting',
+      'Probe',
+    ]);
+  });
+
+  test('an untyped props parameter is a numbered error', () => {
+    expect(() =>
+      analyzeSource(
+        "import { Text } from 'flutter-tsx';\n" +
+          'export const Probe = (props) => <Text>hi</Text>;\n',
+        'probe.tsx',
+      ),
+    ).toThrow(
+      new Error(
+        'TSX0309 probe.tsx:2:23 — props must be destructured with an inline ' +
+          'type: `({ name }: { name: string })` (named prop types land at ' +
+          'roadmap step 21).',
+      ),
+    );
+  });
+
+  test('a method member in a props type is a numbered error', () => {
+    expect(() =>
+      analyzeSource(
+        "import { Text } from 'flutter-tsx';\n" +
+          'export const Probe = ({ run }: { run(): void }) => <Text>hi</Text>;\n',
+        'probe.tsx',
+      ),
+    ).toThrow(
+      new Error(
+        'TSX0309 probe.tsx:2:34 — props must be destructured with an inline ' +
+          'type: `({ name }: { name: string })` (named prop types land at ' +
+          'roadmap step 21).',
+      ),
+    );
+  });
+
+  test('a non-scalar prop type is a numbered error', () => {
+    expect(() =>
+      analyzeSource(
+        "import { Text } from 'flutter-tsx';\n" +
+          'export const Probe = ({ when }: { when: Date }) => <Text>hi</Text>;\n',
+        'probe.tsx',
+      ),
+    ).toThrow(
+      new Error(
+        'TSX0309 probe.tsx:2:41 — props must be destructured with an inline ' +
+          'type: `({ name }: { name: string })` (named prop types land at ' +
+          'roadmap step 21).',
+      ),
+    );
+  });
+
   test('useEffect calls are counted', () => {
     const analysis = analyzeSource(
       "import { Text, useEffect } from 'flutter-tsx';\n" +

@@ -18,6 +18,7 @@ const GREEN_FIXTURES = new Set([
   '05-counter',
   '06-mount-effect',
   '07-list-rendering',
+  '08-composition',
 ]);
 
 const fixtures = await listFixtures();

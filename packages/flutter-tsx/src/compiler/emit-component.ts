@@ -40,9 +40,32 @@ const buildMethod = (component: IrComponent): string => {
   }`;
 };
 
+const constructorLine = (component: IrComponent): string => {
+  const propParams = component.props.map((prop) =>
+    prop.required ? `required this.${prop.name}` : `this.${prop.name}`,
+  );
+  const params = ['super.key', ...propParams].join(', ');
+  return `  const ${component.name}({${params}});`;
+};
+
+const propFields = (component: IrComponent): string[] => {
+  if (component.props.length === 0) {
+    return [];
+  }
+  return [
+    component.props
+      .map((prop) => {
+        const dartType = prop.required ? prop.dartType : `${prop.dartType}?`;
+        return `  final ${dartType} ${prop.name};`;
+      })
+      .join('\n'),
+  ];
+};
+
 const emitStatelessClass = (component: IrComponent): string => {
   const members = [
-    `  const ${component.name}({super.key});`,
+    constructorLine(component),
+    ...propFields(component),
     ...component.methods.map(emitMethod),
     buildMethod(component),
   ];

@@ -5,6 +5,7 @@ import { tsxErrorAt } from './diagnostics';
 import { emitDartFile } from './emit-component';
 import {
   buildCompileContext,
+  buildUserWidgets,
   type CompileContext,
   lowerComponent,
 } from './lower';
@@ -32,6 +33,17 @@ const requireSupported = (component: ComponentAnalysis): void => {
       { sourceFile: component.sourceFile, node: component.nameNode },
     );
   }
+  if (
+    component.props.length > 0 &&
+    (component.states.length > 0 || component.effects.length > 0)
+  ) {
+    throw tsxErrorAt(
+      'TSX0310',
+      `<${component.name}> combines props and state — stateful components ` +
+        'with props land at a later roadmap step.',
+      { sourceFile: component.sourceFile, node: component.nameNode },
+    );
+  }
 };
 
 export const transpileComponent = async (
@@ -39,9 +51,13 @@ export const transpileComponent = async (
 ): Promise<string> => {
   const context = await compileContext();
   const analysis = analyzeSource(input.source, input.filePath);
+  const fileContext = {
+    ...context,
+    userWidgets: buildUserWidgets(analysis.components),
+  };
   const components = analysis.components.map((component) => {
     requireSupported(component);
-    return lowerComponent(component, context);
+    return lowerComponent(component, fileContext);
   });
-  return emitDartFile(components, context);
+  return emitDartFile(components, fileContext);
 };

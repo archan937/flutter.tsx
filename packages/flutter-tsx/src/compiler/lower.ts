@@ -36,6 +36,7 @@ interface WidgetInfo {
 
 export interface CompileContext {
   widgets: Map<string, WidgetInfo>;
+  userWidgets: Map<string, WidgetInfo>;
   enums: Map<string, Set<string>>;
   forms: ValueForms;
   constantOwners: Map<string, Set<string>>;
@@ -91,6 +92,7 @@ export const buildCompileContext = (
 
   return {
     widgets,
+    userWidgets: new Map(),
     enums,
     forms: deriveValueForms(snapshot),
     constantOwners,
@@ -98,6 +100,42 @@ export const buildCompileContext = (
     exports: new Map(Object.entries(snapshot.exports)),
   };
 };
+
+const PROP_TYPE_NODES: Record<string, TypeNode> = {
+  String: { kind: 'scalar', name: 'String' },
+  double: { kind: 'scalar', name: 'double' },
+  bool: { kind: 'scalar', name: 'bool' },
+};
+
+export const buildUserWidgets = (
+  components: ComponentAnalysis[],
+): Map<string, WidgetInfo> =>
+  new Map(
+    components.map((component) => [
+      component.name,
+      {
+        name: component.name,
+        library: '',
+        constConstructor: true,
+        paramsByJsxName: new Map(
+          component.props.map((prop) => [
+            prop.name,
+            {
+              name: prop.name,
+              type: PROP_TYPE_NODES[prop.dartType] ?? { kind: 'unknown' },
+              display: prop.dartType,
+              named: true,
+              required: prop.required,
+              defaultValue: null,
+              doc: '',
+              deprecated: false,
+            },
+          ]),
+        ),
+        slots: EMPTY_SLOTS,
+      },
+    ]),
+  );
 
 interface LowerContext {
   compile: CompileContext;
@@ -794,7 +832,9 @@ const lowerJsxElement = (
 ): IrWidget => {
   const opening = ts.isJsxElement(element) ? element.openingElement : element;
   const widgetName = opening.tagName.getText();
-  const info = context.compile.widgets.get(widgetName);
+  const info =
+    context.compile.widgets.get(widgetName) ??
+    context.compile.userWidgets.get(widgetName);
   if (info === undefined) {
     throw tsxErrorAt(
       'TSX0201',
@@ -981,7 +1021,11 @@ export const lowerComponent = (
         .filter((state) => state.dartType === 'String')
         .map((state) => state.name),
     ),
-    stringLocals: new Set(),
+    stringLocals: new Set(
+      component.props
+        .filter((prop) => prop.dartType === 'String')
+        .map((prop) => prop.name),
+    ),
     stateDartTypes: new Map(
       component.states.map((state) => [state.name, state.dartType]),
     ),
@@ -1023,6 +1067,7 @@ export const lowerComponent = (
   return {
     name: component.name,
     kind: isStateful ? 'stateful' : 'stateless',
+    props: component.props,
     states: component.states,
     plugins: component.plugins,
     handlers: component.handlers,
