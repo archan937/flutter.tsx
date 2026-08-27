@@ -522,5 +522,18 @@
     }
   ],
   "enums": [],
-  "functions": []
+  "functions": [],
+  "permissions": {
+    "android": {
+      "manifestSource": "package_info_plus/android/src/main/AndroidManifest.xml",
+      "permissions": [],
+      "exampleSource": "example/android/app/src/main/AndroidManifest.xml",
+      "querySchemes": []
+    },
+    "ios": {
+      "exampleSource": "example/ios/Runner/Info.plist",
+      "usageDescriptionKeys": [],
+      "querySchemes": []
+    }
+  }
 }

@@ -533,14 +533,37 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       (`description`), so no name is invented. Golden #15 (`15-front-camera`)
       matched byte-for-byte on the first compiler run; e2e web build green;
       capture itself stays behind the real-device gate.
+- [x] 23 (permissions manifest data). **What a host app must declare is now
+      extracted from the plugin's real artifacts, not guessed.** Per plugin:
+      Android `uses-permission` names from the resolved `default_package`'s
+      own manifest (the file Gradle merges into the app) and the `<queries>`
+      schemes from its example app manifest, which merging cannot supply;
+      iOS `NS*UsageDescription` keys and `LSApplicationQueriesSchemes` from
+      the example Info.plist (only the KEYS are derivable — the strings are
+      app-specific copy a developer writes). The `default_package` per
+      platform comes from the plugin's own `flutter: plugin: platforms:`
+      block, so the implementation package is never guessed by name.
+      Ground truths pinned: camera → CAMERA/RECORD_AUDIO/
+      WRITE_EXTERNAL_STORAGE + NSCamera/NSMicrophoneUsageDescription;
+      url_launcher → no permissions but `https`/`sms`/`tel` query schemes
+      (reporting "nothing needed" there would have been a lie, which is why
+      `<queries>` extraction exists). **Absent artifacts are reported, never
+      silently empty:** each list carries its own source, and
+      `manifestRequirements(apis)` returns an `unknown[]` naming every
+      plugin whose artifact was missing, so a consumer can never read
+      "no data" as "no requirements". Writing these into a scaffolded app's
+      AndroidManifest.xml / Info.plist belongs to `fsx init` at steps 25–28
+      (there is no app manifest to write into before the scaffolder exists);
+      the data and the merge function are done and tested here.
 - [ ] 23 (breed matrix status). controller ✓ camera (goldens #1, #10);
       storage ✓ shared_preferences (golden #11); service/auth ✓
       flutter_secure_storage (golden #12); navigation-function ✓
       url_launcher (golden #13); staticFactory generality ✓ package_info_plus
       (golden #14 — property reads landed, so this breed is now proven
       end-to-end too); hardware runtime stays behind the real-device gate;
-      router navigation (go_router) deferred to 24b. Remaining:
-      permissions manifest data. Behavior tests
+      router navigation (go_router) deferred to 24b; permissions data ✓ (see
+      the permissions entry — manifest writing lands with the CLI at 25–28).
+      Behavior tests
       accompany each new stateful trait. **Decided (Paul,
       2026-08-24): plugin hooks import from `plugin:<pub-name>` (e.g.
       `import { useCamera } from 'plugin:camera'`) — collision-proof scheme prefix,

@@ -521,5 +521,22 @@
         }
       ]
     }
-  ]
+  ],
+  "permissions": {
+    "android": {
+      "manifestSource": "url_launcher_android/android/src/main/AndroidManifest.xml",
+      "permissions": [],
+      "exampleSource": "example/android/app/src/main/AndroidManifest.xml",
+      "querySchemes": [
+        "https",
+        "sms",
+        "tel"
+      ]
+    },
+    "ios": {
+      "exampleSource": "example/ios/Runner/Info.plist",
+      "usageDescriptionKeys": [],
+      "querySchemes": []
+    }
+  }
 }

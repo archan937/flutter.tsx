@@ -184,6 +184,64 @@ class PluginClass {
   };
 }
 
+/// What a host app must declare on Android: the permissions the plugin's own
+/// manifest contributes (Gradle merges these) plus the `<queries>` schemes
+/// its example app declares, which merging cannot supply. A null source means
+/// the artifact was not found — never the same as "declares none".
+class AndroidPermissions {
+  const AndroidPermissions({
+    required this.manifestSource,
+    required this.permissions,
+    required this.exampleSource,
+    required this.querySchemes,
+  });
+
+  final String? manifestSource;
+  final List<String> permissions;
+  final String? exampleSource;
+  final List<String> querySchemes;
+
+  Map<String, Object?> toJson() => {
+    'manifestSource': manifestSource,
+    'permissions': permissions,
+    'exampleSource': exampleSource,
+    'querySchemes': querySchemes,
+  };
+}
+
+/// What a host app must declare on iOS, read from the plugin's example app:
+/// usage-description keys (only the keys are derivable — the strings are
+/// app-specific copy) and `LSApplicationQueriesSchemes` entries.
+class IosPermissions {
+  const IosPermissions({
+    required this.exampleSource,
+    required this.usageDescriptionKeys,
+    required this.querySchemes,
+  });
+
+  final String? exampleSource;
+  final List<String> usageDescriptionKeys;
+  final List<String> querySchemes;
+
+  Map<String, Object?> toJson() => {
+    'exampleSource': exampleSource,
+    'usageDescriptionKeys': usageDescriptionKeys,
+    'querySchemes': querySchemes,
+  };
+}
+
+class PluginPermissions {
+  const PluginPermissions({required this.android, required this.ios});
+
+  final AndroidPermissions android;
+  final IosPermissions ios;
+
+  Map<String, Object?> toJson() => {
+    'android': android.toJson(),
+    'ios': ios.toJson(),
+  };
+}
+
 class PluginApi {
   const PluginApi({
     required this.package,
@@ -191,6 +249,7 @@ class PluginApi {
     required this.classes,
     required this.enums,
     required this.functions,
+    required this.permissions,
   });
 
   final String package;
@@ -198,6 +257,7 @@ class PluginApi {
   final List<PluginClass> classes;
   final List<EnumEntity> enums;
   final List<FunctionModel> functions;
+  final PluginPermissions permissions;
 }
 
 sealed class EntityModel {

@@ -95,6 +95,19 @@ describe('emitPluginDeclaration', () => {
         },
       ],
       enums: [{ name: 'DemoMode', values: ['off', 'on'] }],
+      permissions: {
+        android: {
+          manifestSource: null,
+          permissions: [],
+          exampleSource: null,
+          querySchemes: [],
+        },
+        ios: {
+          exampleSource: null,
+          usageDescriptionKeys: [],
+          querySchemes: [],
+        },
+      },
       functions: [
         {
           name: 'availableDemoControllers',
@@ -179,6 +192,19 @@ declare module 'plugin:demo' {
       version: '1.0.0',
       classes: [],
       enums: [],
+      permissions: {
+        android: {
+          manifestSource: null,
+          permissions: [],
+          exampleSource: null,
+          querySchemes: [],
+        },
+        ios: {
+          exampleSource: null,
+          usageDescriptionKeys: [],
+          querySchemes: [],
+        },
+      },
       functions: [
         {
           name: 'open',

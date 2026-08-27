@@ -9,6 +9,7 @@ import 'package:path/path.dart' as path;
 import 'api_model.dart';
 import 'assert_inspector.dart';
 import 'element_mapper.dart';
+import 'plugin_manifests.dart';
 
 /// Extracts a pub plugin's public API on demand, resolved through a project
 /// that already depends on it (`flutter pub get` has run there) — the same
@@ -77,6 +78,10 @@ Future<PluginApi> extractPluginApi({
     classes: classes,
     enums: enums,
     functions: functions,
+    permissions: readPluginPermissions(
+      packageName: packageName,
+      projectDir: projectDir,
+    ),
   );
 }
 

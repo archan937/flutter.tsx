@@ -32,6 +32,7 @@ String encodePluginApi(PluginApi api) {
     'classes': api.classes.map((entity) => entity.toJson()).toList(),
     'enums': api.enums.map((entity) => entity.toJson()).toList(),
     'functions': api.functions.map((entity) => entity.toJson()).toList(),
+    'permissions': api.permissions.toJson(),
   };
   return '${const JsonEncoder.withIndent('  ').convert(document)}\n';
 }

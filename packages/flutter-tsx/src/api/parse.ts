@@ -39,7 +39,7 @@ export const asString = (value: unknown, path: string): string =>
 const asBoolean = (value: unknown, path: string): boolean =>
   typeof value === 'boolean' ? value : fail(path, 'expected a boolean');
 
-const asStringOrNull = (value: unknown, path: string): string | null => {
+export const asStringOrNull = (value: unknown, path: string): string | null => {
   if (value === null || typeof value === 'string') {
     return value;
   }

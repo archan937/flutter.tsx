@@ -2914,5 +2914,25 @@
       },
       "params": []
     }
-  ]
+  ],
+  "permissions": {
+    "android": {
+      "manifestSource": "camera_android_camerax/android/src/main/AndroidManifest.xml",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
+      ],
+      "exampleSource": "example/android/app/src/main/AndroidManifest.xml",
+      "querySchemes": []
+    },
+    "ios": {
+      "exampleSource": "example/ios/Runner/Info.plist",
+      "usageDescriptionKeys": [
+        "NSCameraUsageDescription",
+        "NSMicrophoneUsageDescription"
+      ],
+      "querySchemes": []
+    }
+  }
 }

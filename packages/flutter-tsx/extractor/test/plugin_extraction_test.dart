@@ -314,6 +314,19 @@ void main() {
             params: [],
           ),
         ],
+        permissions: PluginPermissions(
+          android: AndroidPermissions(
+            manifestSource: null,
+            permissions: [],
+            exampleSource: null,
+            querySchemes: [],
+          ),
+          ios: IosPermissions(
+            exampleSource: null,
+            usageDescriptionKeys: [],
+            querySchemes: [],
+          ),
+        ),
       );
       final outputPath = path.join(temp.path, 'nested', 'camera.json');
 
@@ -352,6 +365,19 @@ void main() {
         ],
         enums: const [],
         functions: const [],
+        permissions: const PluginPermissions(
+          android: AndroidPermissions(
+            manifestSource: 'demo_android/android/src/main/AndroidManifest.xml',
+            permissions: ['android.permission.VIBRATE'],
+            exampleSource: null,
+            querySchemes: [],
+          ),
+          ios: IosPermissions(
+            exampleSource: null,
+            usageDescriptionKeys: [],
+            querySchemes: [],
+          ),
+        ),
       );
 
       expect(encodePluginApi(api), '''
@@ -391,7 +417,22 @@ void main() {
     }
   ],
   "enums": [],
-  "functions": []
+  "functions": [],
+  "permissions": {
+    "android": {
+      "manifestSource": "demo_android/android/src/main/AndroidManifest.xml",
+      "permissions": [
+        "android.permission.VIBRATE"
+      ],
+      "exampleSource": null,
+      "querySchemes": []
+    },
+    "ios": {
+      "exampleSource": null,
+      "usageDescriptionKeys": [],
+      "querySchemes": []
+    }
+  }
 }
 ''');
     });
@@ -526,6 +567,80 @@ void main() {
       }
     });
 
+    test('platform manifest requirements come from the real artifacts', () {
+      // Android: the resolved default_package's own AndroidManifest.xml —
+      // the file Gradle merges into the app.
+      expect(
+        api.permissions.android.manifestSource,
+        contains('camera_android_camerax'),
+      );
+      expect(api.permissions.android.permissions, [
+        'android.permission.CAMERA',
+        'android.permission.RECORD_AUDIO',
+        'android.permission.WRITE_EXTERNAL_STORAGE',
+      ]);
+      expect(api.permissions.android.querySchemes, isEmpty);
+
+      // iOS: the plugin's own example app declares the usage-description
+      // keys a host app must supply. Only the keys are derivable — the
+      // strings are app-specific copy.
+      expect(api.permissions.ios.exampleSource, isNotNull);
+      expect(api.permissions.ios.usageDescriptionKeys, [
+        'NSCameraUsageDescription',
+        'NSMicrophoneUsageDescription',
+      ]);
+    });
+
+    test('host-app query schemes come from the example app manifest', () async {
+      final projectDir = path.normalize(
+        path.join(Directory.current.path, '..', 'test', 'fixtures'),
+      );
+      final home = Platform.environment['HOME'];
+      final flutterRoot =
+          Platform.environment['FSX_FLUTTER_ROOT'] ??
+          path.join(home ?? '', '.fsx', 'flutter');
+      final launcher = await extractPluginApi(
+        packageName: 'url_launcher',
+        projectDir: projectDir,
+        sdkPath: SdkLayout.resolve(flutterRoot).dartSdkPath,
+      );
+
+      // url_launcher needs no permission, but canLaunchUrl does need
+      // <queries> entries that manifest merging cannot supply — reporting
+      // an empty android requirement here would be a lie.
+      expect(launcher.permissions.android.permissions, isEmpty);
+      expect(launcher.permissions.android.querySchemes, [
+        'https',
+        'sms',
+        'tel',
+      ]);
+    });
+
+    test(
+      'a plugin with no platform artifacts reports absent sources',
+      () async {
+        final projectDir = path.normalize(
+          path.join(Directory.current.path, '..', 'test', 'fixtures'),
+        );
+        final home = Platform.environment['HOME'];
+        final flutterRoot =
+            Platform.environment['FSX_FLUTTER_ROOT'] ??
+            path.join(home ?? '', '.fsx', 'flutter');
+        final prefs = await extractPluginApi(
+          packageName: 'shared_preferences',
+          projectDir: projectDir,
+          sdkPath: SdkLayout.resolve(flutterRoot).dartSdkPath,
+        );
+
+        // An absent source is distinguishable from "declares none" — a null
+        // source means no artifact was found, never "no permissions needed".
+        expect(prefs.permissions.android.manifestSource, isNotNull);
+        expect(prefs.permissions.android.permissions, isEmpty);
+        expect(prefs.permissions.android.querySchemes, isEmpty);
+        expect(prefs.permissions.ios.usageDescriptionKeys, isEmpty);
+      },
+    );
+
     test('top-level functions are extracted with signatures', () {
       final available = api.functions.singleWhere(
         (candidate) => candidate.name == 'availableCameras',
@@ -538,6 +653,157 @@ void main() {
           'item': {'kind': 'named', 'name': 'CameraDescription'},
         },
       });
+    });
+  });
+  group('readPluginPermissions — synthetic plugin layout', () {
+    test('reads every artifact a federated plugin can contribute', () {
+      final temp = Directory.systemTemp.createTempSync('fsx-perms-');
+      addTearDown(() => temp.delete(recursive: true));
+
+      void write(List<String> segments, String content) {
+        File(path.join(temp.path, path.joinAll(segments)))
+          ..createSync(recursive: true)
+          ..writeAsStringSync(content);
+      }
+
+      write(
+        ['.dart_tool', 'package_config.json'],
+        '{"configVersion": 2, '
+        '"packages": [{"name": "faker", "rootUri": "../faker"}, '
+        '{"name": "faker_android", "rootUri": "../faker_android"}]}',
+      );
+
+      write(
+        ['faker', 'pubspec.yaml'],
+        [
+          'name: faker',
+          'flutter:',
+          '  plugin:',
+          '    platforms:',
+          '      android:',
+          '        default_package: faker_android',
+          '      ios:',
+          '        default_package: faker_ios',
+          '',
+        ].join('\n'),
+      );
+
+      write(
+        ['faker_android', 'android', 'src', 'main', 'AndroidManifest.xml'],
+        [
+          '<manifest>',
+          '  <uses-permission android:name="android.permission.VIBRATE"/>',
+          '  <uses-permission android:name="android.permission.INTERNET"/>',
+          '</manifest>',
+        ].join('\n'),
+      );
+
+      write(
+        [
+          'faker',
+          'example',
+          'android',
+          'app',
+          'src',
+          'main',
+          'AndroidManifest.xml',
+        ],
+        [
+          '<manifest>',
+          '  <queries>',
+          '    <intent>',
+          '      <data android:scheme="fax" />',
+          '    </intent>',
+          '  </queries>',
+          '  <application>',
+          '    <activity>',
+          '      <intent-filter>',
+          '        <data android:scheme="notaquery" />',
+          '      </intent-filter>',
+          '    </activity>',
+          '  </application>',
+          '</manifest>',
+        ].join('\n'),
+      );
+
+      write(
+        ['faker', 'example', 'ios', 'Runner', 'Info.plist'],
+        [
+          '<plist version="1.0">',
+          '<dict>',
+          '  <key>NSFakerUsageDescription</key>',
+          '  <string>Demo copy</string>',
+          '  <key>LSApplicationQueriesSchemes</key>',
+          '  <array>',
+          '    <string>fax</string>',
+          '    <string>telex</string>',
+          '  </array>',
+          '</dict>',
+          '</plist>',
+        ].join('\n'),
+      );
+
+      final permissions = readPluginPermissions(
+        packageName: 'faker',
+        projectDir: temp.path,
+      );
+
+      expect(
+        permissions.android.manifestSource,
+        'faker_android/android/src/main/AndroidManifest.xml',
+      );
+      expect(permissions.android.permissions, [
+        'android.permission.INTERNET',
+        'android.permission.VIBRATE',
+      ]);
+      expect(
+        permissions.android.exampleSource,
+        path.join(
+          'example',
+          'android',
+          'app',
+          'src',
+          'main',
+          'AndroidManifest.xml',
+        ),
+      );
+      // Only <queries> schemes count — an intent-filter scheme says what the
+      // app handles, not what it looks up.
+      expect(permissions.android.querySchemes, ['fax']);
+      expect(permissions.ios.usageDescriptionKeys, ['NSFakerUsageDescription']);
+      expect(permissions.ios.querySchemes, ['fax', 'telex']);
+    });
+
+    test('an unresolved plugin reports every artifact as absent', () {
+      final temp = _tempProject('{"configVersion": 2, "packages": []}');
+      addTearDown(() => temp.delete(recursive: true));
+
+      final permissions = readPluginPermissions(
+        packageName: 'ghost',
+        projectDir: temp.path,
+      );
+
+      expect(permissions.android.manifestSource, isNull);
+      expect(permissions.android.exampleSource, isNull);
+      expect(permissions.ios.exampleSource, isNull);
+      expect(permissions.android.querySchemes, isEmpty);
+      expect(permissions.ios.querySchemes, isEmpty);
+    });
+
+    test('an unreadable package_config is a loud error', () {
+      final temp = _tempProject('[]');
+      addTearDown(() => temp.delete(recursive: true));
+
+      expect(
+        () => readPluginPermissions(packageName: 'x', projectDir: temp.path),
+        throwsA(
+          isA<StateError>().having(
+            (error) => error.message,
+            'message',
+            contains('Unreadable package_config.json'),
+          ),
+        ),
+      );
     });
   });
 }

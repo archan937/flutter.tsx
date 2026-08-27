@@ -8,6 +8,7 @@ import {
   asArray,
   asObject,
   asString,
+  asStringOrNull,
   parseConstant,
   parseConstructor,
   parseParam,
@@ -42,12 +43,31 @@ export interface PluginEnum {
   values: string[];
 }
 
+export interface AndroidManifestNeeds {
+  manifestSource: string | null;
+  permissions: string[];
+  exampleSource: string | null;
+  querySchemes: string[];
+}
+
+export interface IosManifestNeeds {
+  exampleSource: string | null;
+  usageDescriptionKeys: string[];
+  querySchemes: string[];
+}
+
+export interface PluginPermissions {
+  android: AndroidManifestNeeds;
+  ios: IosManifestNeeds;
+}
+
 export interface PluginApi {
   package: string;
   version: string;
   classes: PluginClass[];
   enums: PluginEnum[];
   functions: PluginMethod[];
+  permissions: PluginPermissions;
 }
 
 const parseCallable = (value: unknown, path: string): PluginMethod => {
@@ -121,6 +141,98 @@ export const parsePluginApi = (value: unknown, label: string): PluginApi => {
     functions: asArray(record.functions, `${label}: functions`).map(
       (entity, index) => parseCallable(entity, `${label}: functions[${index}]`),
     ),
+    permissions: parsePermissions(record.permissions, `${label}: permissions`),
+  };
+};
+
+const asStringList = (value: unknown, path: string): string[] =>
+  asArray(value, path).map((entry, index) =>
+    asString(entry, `${path}[${index}]`),
+  );
+
+const parsePermissions = (value: unknown, path: string): PluginPermissions => {
+  const record = asObject(value, path);
+  const android = asObject(record.android, `${path}.android`);
+  const ios = asObject(record.ios, `${path}.ios`);
+  return {
+    android: {
+      manifestSource: asStringOrNull(
+        android.manifestSource,
+        `${path}.android.manifestSource`,
+      ),
+      permissions: asStringList(
+        android.permissions,
+        `${path}.android.permissions`,
+      ),
+      exampleSource: asStringOrNull(
+        android.exampleSource,
+        `${path}.android.exampleSource`,
+      ),
+      querySchemes: asStringList(
+        android.querySchemes,
+        `${path}.android.querySchemes`,
+      ),
+    },
+    ios: {
+      exampleSource: asStringOrNull(
+        ios.exampleSource,
+        `${path}.ios.exampleSource`,
+      ),
+      usageDescriptionKeys: asStringList(
+        ios.usageDescriptionKeys,
+        `${path}.ios.usageDescriptionKeys`,
+      ),
+      querySchemes: asStringList(ios.querySchemes, `${path}.ios.querySchemes`),
+    },
+  };
+};
+
+export interface ManifestRequirements {
+  android: { permissions: string[]; querySchemes: string[] };
+  ios: { usageDescriptionKeys: string[]; querySchemes: string[] };
+  // Plugins whose artifacts were missing: their requirements are unknown,
+  // not empty. A scaffolder must surface these rather than assume nothing.
+  unknown: string[];
+}
+
+const sorted = (values: Iterable<string>): string[] =>
+  [...new Set(values)].sort();
+
+/// Merges what every used plugin needs a host app to declare.
+export const manifestRequirements = (
+  apis: PluginApi[],
+): ManifestRequirements => {
+  const permissions: string[] = [];
+  const androidSchemes: string[] = [];
+  const usageKeys: string[] = [];
+  const iosSchemes: string[] = [];
+  const unknown: string[] = [];
+  for (const api of apis) {
+    const { android, ios } = api.permissions;
+    permissions.push(...android.permissions);
+    androidSchemes.push(...android.querySchemes);
+    usageKeys.push(...ios.usageDescriptionKeys);
+    iosSchemes.push(...ios.querySchemes);
+    if (android.manifestSource === null) {
+      unknown.push(`${api.package}: no Android manifest found`);
+    }
+    if (android.exampleSource === null) {
+      unknown.push(`${api.package}: no example Android manifest found`);
+    }
+    if (ios.exampleSource === null) {
+      unknown.push(`${api.package}: no example Info.plist found`);
+    }
+  }
+  return {
+    android: {
+      permissions: sorted(permissions),
+      querySchemes: sorted(androidSchemes),
+    },
+    ios: {
+      usageDescriptionKeys: sorted(usageKeys),
+      querySchemes: sorted(iosSchemes),
+    },
+    unknown,
   };
 };
 

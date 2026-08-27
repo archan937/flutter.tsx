@@ -193,6 +193,19 @@ describe('deriveHooks — underivable shapes', () => {
     ],
     enums: [],
     functions: [],
+    permissions: {
+      android: {
+        manifestSource: null,
+        permissions: [],
+        exampleSource: null,
+        querySchemes: [],
+      },
+      ios: {
+        exampleSource: null,
+        usageDescriptionKeys: [],
+        querySchemes: [],
+      },
+    },
   });
 
   test('no default constructor derives nothing', () => {

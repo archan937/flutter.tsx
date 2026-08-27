@@ -1,6 +1,10 @@
 import { describe, expect, test } from 'bun:test';
 
-import { loadPluginApi, parsePluginApi } from '@src/plugins/api';
+import {
+  loadPluginApi,
+  manifestRequirements,
+  parsePluginApi,
+} from '@src/plugins/api';
 
 describe('loadPluginApi — committed camera api', () => {
   test('parses the full document with exact ground truths', async () => {
@@ -69,6 +73,28 @@ describe('loadPluginApi — committed camera api', () => {
       'sensorOrientation',
     ]);
 
+    expect(api.permissions).toEqual({
+      android: {
+        manifestSource:
+          'camera_android_camerax/android/src/main/AndroidManifest.xml',
+        permissions: [
+          'android.permission.CAMERA',
+          'android.permission.RECORD_AUDIO',
+          'android.permission.WRITE_EXTERNAL_STORAGE',
+        ],
+        exampleSource: 'example/android/app/src/main/AndroidManifest.xml',
+        querySchemes: [],
+      },
+      ios: {
+        exampleSource: 'example/ios/Runner/Info.plist',
+        usageDescriptionKeys: [
+          'NSCameraUsageDescription',
+          'NSMicrophoneUsageDescription',
+        ],
+        querySchemes: [],
+      },
+    });
+
     expect(api.functions.map((entity) => entity.name)).toEqual([
       'availableCameras',
     ]);
@@ -125,5 +151,63 @@ describe('parsePluginApi — malformed documents', () => {
           'expected an object',
       ),
     );
+  });
+});
+describe('manifestRequirements — what a host app must declare', () => {
+  test('merges every used plugin, keeping each requirement sourced', async () => {
+    const camera = await loadPluginApi('camera');
+    const launcher = await loadPluginApi('url_launcher');
+
+    expect(manifestRequirements([camera, launcher])).toEqual({
+      android: {
+        permissions: [
+          'android.permission.CAMERA',
+          'android.permission.RECORD_AUDIO',
+          'android.permission.WRITE_EXTERNAL_STORAGE',
+        ],
+        querySchemes: ['https', 'sms', 'tel'],
+      },
+      ios: {
+        usageDescriptionKeys: [
+          'NSCameraUsageDescription',
+          'NSMicrophoneUsageDescription',
+        ],
+        querySchemes: [],
+      },
+      unknown: [],
+    });
+  });
+
+  test('a plugin with no artifact is reported, never silently empty', () => {
+    const blind = {
+      package: 'ghost',
+      version: '1.0.0',
+      classes: [],
+      enums: [],
+      functions: [],
+      permissions: {
+        android: {
+          manifestSource: null,
+          permissions: [],
+          exampleSource: null,
+          querySchemes: [],
+        },
+        ios: {
+          exampleSource: null,
+          usageDescriptionKeys: [],
+          querySchemes: [],
+        },
+      },
+    };
+
+    expect(manifestRequirements([blind])).toEqual({
+      android: { permissions: [], querySchemes: [] },
+      ios: { usageDescriptionKeys: [], querySchemes: [] },
+      unknown: [
+        'ghost: no Android manifest found',
+        'ghost: no example Android manifest found',
+        'ghost: no example Info.plist found',
+      ],
+    });
   });
 });
