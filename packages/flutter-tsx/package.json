@@ -42,6 +42,8 @@
     "test": "bun test",
     "test:coverage": "bun test --coverage",
     "extract": "bun scripts/extract-api.ts",
+    "extract:plugin": "bun scripts/extract-plugin.ts",
+    "generate:plugin": "bun scripts/generate-plugin-types.ts",
     "derive": "bun scripts/derive-slots.ts",
     "generate": "bun scripts/generate-types.ts",
     "docs": "bun scripts/generate-docs.ts",

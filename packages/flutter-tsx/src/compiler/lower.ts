@@ -9,12 +9,14 @@ import {
   type ValueForms,
 } from '../derive/value-forms';
 import { jsxPropName } from '../generate/renames';
-import type { ComponentAnalysis } from './analyze';
+import type { DerivedHook } from '../plugins/hooks';
+import type { ComponentAnalysis, PluginBinding } from './analyze';
 import { tsxErrorAt } from './diagnostics';
 import type {
   IrArgument,
   IrChild,
   IrComponent,
+  IrField,
   IrMethod,
   IrStatement,
   IrValue,
@@ -34,9 +36,15 @@ interface WidgetInfo {
   slots: WidgetSlots;
 }
 
+export interface PluginHookInfo {
+  hook: DerivedHook;
+  methods: Set<string>;
+}
+
 export interface CompileContext {
   widgets: Map<string, WidgetInfo>;
   userWidgets: Map<string, WidgetInfo>;
+  pluginHooks: Map<string, PluginHookInfo>;
   enums: Map<string, Set<string>>;
   forms: ValueForms;
   constantOwners: Map<string, Set<string>>;
@@ -93,6 +101,7 @@ export const buildCompileContext = (
   return {
     widgets,
     userWidgets: new Map(),
+    pluginHooks: new Map(),
     enums,
     forms: deriveValueForms(snapshot),
     constantOwners,
@@ -144,6 +153,7 @@ interface LowerContext {
   handlerNames: Set<string>;
   stringStates: Set<string>;
   stringLocals: Set<string>;
+  pluginBindings: Map<string, PluginHookInfo>;
   settersToStates: Map<string, string>;
   stateDartTypes: Map<string, string>;
   translate: TranslateContext;
@@ -960,6 +970,7 @@ const setterAssignment = (
 const lowerBodyStatements = (
   body: ts.ConciseBody,
   context: LowerContext,
+  allowPluginCalls = false,
 ): IrStatement[] => {
   const items: { expression: ts.Expression | undefined; errorNode: ts.Node }[] =
     ts.isBlock(body)
@@ -973,6 +984,14 @@ const lowerBodyStatements = (
 
   const lowered: IrStatement[] = [];
   for (const { expression, errorNode } of items) {
+    const pluginLine =
+      allowPluginCalls && expression !== undefined
+        ? pluginCallLine(expression, context, errorNode)
+        : null;
+    if (pluginLine !== null) {
+      lowered.push({ kind: 'dart', line: pluginLine });
+      continue;
+    }
     const stateName =
       expression !== undefined &&
       ts.isCallExpression(expression) &&
@@ -992,13 +1011,48 @@ const lowerBodyStatements = (
     }
     const assignment = setterAssignment(expression, stateName, context);
     const previous = lowered[lowered.length - 1];
-    if (previous !== undefined) {
+    if (previous?.kind === 'setState') {
       previous.assignments.push(assignment);
     } else {
       lowered.push({ kind: 'setState', assignments: [assignment] });
     }
   }
   return lowered;
+};
+
+const pluginCallLine = (
+  expression: ts.Expression,
+  context: LowerContext,
+  errorNode: ts.Node,
+): string | null => {
+  const awaited = ts.isAwaitExpression(expression);
+  const call = awaited ? expression.expression : expression;
+  if (
+    !ts.isCallExpression(call) ||
+    !ts.isPropertyAccessExpression(call.expression) ||
+    !ts.isIdentifier(call.expression.expression)
+  ) {
+    return null;
+  }
+  const binding = call.expression.expression.text;
+  const info = context.pluginBindings.get(binding);
+  if (info === undefined) {
+    return null;
+  }
+  const methodName = call.expression.name.text;
+  if (!info.methods.has(methodName)) {
+    throw tsxErrorAt(
+      'TSX0312',
+      `${info.hook.className} has no method \`${methodName}\`. Check the ` +
+        'API reference for the available methods.',
+      { sourceFile: context.sourceFile, node: errorNode },
+    );
+  }
+  const args = call.arguments
+    .map((argument) => translateExpression(argument, context.translate))
+    .join(', ');
+  const prefix = awaited ? 'await ' : '';
+  return `${prefix}_${binding}?.${methodName}(${args});`;
 };
 
 const lowerEffects = (
@@ -1036,6 +1090,68 @@ const lowerEffects = (
     return lowerBodyStatements(body.body, context);
   });
 
+const capitalize = (name: string): string =>
+  name === '' ? name : `${name[0]?.toUpperCase() ?? ''}${name.slice(1)}`;
+
+const lowerFirst = (name: string): string =>
+  name === '' ? name : `${name[0]?.toLowerCase() ?? ''}${name.slice(1)}`;
+
+const supplierLocalName = (functionName: string, paramType: string): string =>
+  functionName.startsWith('available')
+    ? lowerFirst(functionName.slice('available'.length))
+    : `${lowerFirst(paramType)}s`;
+
+interface LoweredPlugin {
+  field: IrField;
+  setup: { name: string; lines: string[] };
+  initCall: IrStatement;
+  disposeLine: string;
+  pluginImport: string;
+}
+
+const lowerPluginBinding = (
+  binding: PluginBinding,
+  info: PluginHookInfo,
+): LoweredPlugin => {
+  const fieldName = `_${binding.binding}`;
+  const constructArgs: string[] = [];
+  const lines: string[] = [];
+  for (const arg of info.hook.construct) {
+    if (arg.kind === 'supplierFirst') {
+      const local = supplierLocalName(arg.functionName, arg.paramType);
+      lines.push(`final ${local} = await ${arg.functionName}();`);
+      constructArgs.push(`${local}.first`);
+    } else {
+      constructArgs.push(`${arg.enumName}.${arg.member}`);
+    }
+  }
+  lines.push(
+    `final controller = ${info.hook.className}(${constructArgs.join(', ')});`,
+    'await controller.initialize();',
+    'if (!mounted) {',
+    '  await controller.dispose();',
+    '  return;',
+    '}',
+    'setState(() {',
+    `  ${fieldName} = controller;`,
+    '});',
+  );
+
+  const setupName = `init${capitalize(binding.binding)}`;
+  return {
+    field: {
+      name: fieldName,
+      dartType: `${info.hook.className}?`,
+      mutable: true,
+      initializer: null,
+    },
+    setup: { name: setupName, lines },
+    initCall: { kind: 'dart', line: `_${setupName}();` },
+    disposeLine: `${fieldName}?.dispose();`,
+    pluginImport: info.hook.dartImport,
+  };
+};
+
 export const lowerComponent = (
   component: ComponentAnalysis,
   compile: CompileContext,
@@ -1044,6 +1160,17 @@ export const lowerComponent = (
   const handlerNames = new Set(
     component.handlers.map((handler) => handler.name),
   );
+  const loweredPlugins = component.plugins.map((binding) => {
+    const info = compile.pluginHooks.get(binding.hook);
+    if (info === undefined) {
+      throw tsxErrorAt(
+        'TSX0311',
+        `plugin:${binding.package} derives no \`${binding.hook}\` hook.`,
+        { sourceFile: component.sourceFile, node: binding.call },
+      );
+    }
+    return { binding, info, lowered: lowerPluginBinding(binding, info) };
+  });
   const context: LowerContext = {
     compile,
     sourceFile: component.sourceFile,
@@ -1058,6 +1185,9 @@ export const lowerComponent = (
       component.props
         .filter((prop) => prop.dartType === 'String')
         .map((prop) => prop.name),
+    ),
+    pluginBindings: new Map(
+      loweredPlugins.map(({ binding, info }) => [binding.binding, info]),
     ),
     stateDartTypes: new Map(
       component.states.map((state) => [state.name, state.dartType]),
@@ -1090,16 +1220,11 @@ export const lowerComponent = (
     component.plugins.length > 0 ||
     component.effects.length > 0;
 
-  // Handlers that talk to plugin bindings need the step-22 method rewrites;
-  // transpile blocks plugin components before emission (TSX0304).
-  const methods: IrMethod[] =
-    component.plugins.length > 0
-      ? []
-      : component.handlers.map((handler) => ({
-          name: handler.name,
-          isAsync: handler.isAsync,
-          statements: lowerBodyStatements(handler.body.body, context),
-        }));
+  const methods: IrMethod[] = component.handlers.map((handler) => ({
+    name: handler.name,
+    isAsync: handler.isAsync,
+    statements: lowerBodyStatements(handler.body.body, context, true),
+  }));
 
   return {
     name: component.name,
@@ -1109,17 +1234,25 @@ export const lowerComponent = (
     plugins: component.plugins,
     handlers: component.handlers,
     effects: component.effects,
-    fields: component.states.map((state) => ({
-      name: translateIdentifier(state.name, context.translate),
-      dartType: state.dartType,
-      mutable: state.mutable,
-      initializer: translateExpression(state.initializer, context.translate),
-    })),
+    fields: [
+      ...loweredPlugins.map(({ lowered }) => lowered.field),
+      ...component.states.map((state) => ({
+        name: translateIdentifier(state.name, context.translate),
+        dartType: state.dartType,
+        mutable: state.mutable,
+        initializer: translateExpression(state.initializer, context.translate),
+      })),
+    ],
     methods,
-    initStatements:
-      component.plugins.length > 0
-        ? []
-        : lowerEffects(component.effects, context),
+    setupMethods: loweredPlugins.map(({ lowered }) => lowered.setup),
+    initStatements: [
+      ...loweredPlugins.map(({ lowered }) => lowered.initCall),
+      ...lowerEffects(component.effects, context),
+    ],
+    disposeLines: loweredPlugins.map(({ lowered }) => lowered.disposeLine),
+    pluginImports: [
+      ...new Set(loweredPlugins.map(({ lowered }) => lowered.pluginImport)),
+    ],
     body: ts.isJsxFragment(root)
       ? columnOf(lowerListChildren(root.children, context), context)
       : lowerJsxElement(root, context),

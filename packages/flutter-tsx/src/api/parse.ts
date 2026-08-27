@@ -13,24 +13,27 @@ import {
 } from './model';
 
 const fail = (path: string, problem: string): never => {
-  throw new Error(`api.json: ${path}: ${problem}`);
+  throw new Error(`${path}: ${problem}`);
 };
 
-const asObject = (value: unknown, path: string): Record<string, unknown> => {
+export const asObject = (
+  value: unknown,
+  path: string,
+): Record<string, unknown> => {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) {
     return fail(path, 'expected an object');
   }
   return value as Record<string, unknown>;
 };
 
-const asArray = (value: unknown, path: string): unknown[] => {
+export const asArray = (value: unknown, path: string): unknown[] => {
   if (!Array.isArray(value)) {
     return fail(path, 'expected an array');
   }
   return value as unknown[];
 };
 
-const asString = (value: unknown, path: string): string =>
+export const asString = (value: unknown, path: string): string =>
   typeof value === 'string' ? value : fail(path, 'expected a string');
 
 const asBoolean = (value: unknown, path: string): boolean =>
@@ -100,7 +103,7 @@ export const parseTypeNode = (value: unknown, path: string): TypeNode => {
   }
 };
 
-const parseParam = (value: unknown, path: string): ParamModel => {
+export const parseParam = (value: unknown, path: string): ParamModel => {
   const record = asObject(value, path);
   return {
     name: asString(record.name, `${path}.name`),
@@ -114,7 +117,10 @@ const parseParam = (value: unknown, path: string): ParamModel => {
   };
 };
 
-const parseConstructor = (value: unknown, path: string): ConstructorModel => {
+export const parseConstructor = (
+  value: unknown,
+  path: string,
+): ConstructorModel => {
   const record = asObject(value, path);
   return {
     name: asString(record.name, `${path}.name`),
@@ -130,7 +136,7 @@ const parseConstructor = (value: unknown, path: string): ConstructorModel => {
   };
 };
 
-const parseConstant = (value: unknown, path: string): ConstantModel => {
+export const parseConstant = (value: unknown, path: string): ConstantModel => {
   const record = asObject(value, path);
   return {
     name: asString(record.name, `${path}.name`),
@@ -140,7 +146,7 @@ const parseConstant = (value: unknown, path: string): ConstantModel => {
   };
 };
 
-const parseEnumValue = (value: unknown, path: string): EnumValue => {
+export const parseEnumValue = (value: unknown, path: string): EnumValue => {
   const record = asObject(value, path);
   return {
     name: asString(record.name, `${path}.name`),
@@ -201,24 +207,27 @@ const parseNameListMap = (value: unknown, path: string): Hierarchy => {
 };
 
 export const parseApiSnapshot = (value: unknown): ApiSnapshot => {
-  const record = asObject(value, 'root');
-  const meta = asObject(record.meta, 'meta');
+  const record = asObject(value, 'api.json: root');
+  const meta = asObject(record.meta, 'api.json: meta');
   return {
     meta: {
       frameworkVersion: asString(
         meta.frameworkVersion,
-        'meta.frameworkVersion',
+        'api.json: meta.frameworkVersion',
       ),
-      dartSdkVersion: asString(meta.dartSdkVersion, 'meta.dartSdkVersion'),
+      dartSdkVersion: asString(
+        meta.dartSdkVersion,
+        'api.json: meta.dartSdkVersion',
+      ),
       frameworkRevision: asString(
         meta.frameworkRevision,
-        'meta.frameworkRevision',
+        'api.json: meta.frameworkRevision',
       ),
     },
-    hierarchy: parseNameListMap(record.hierarchy, 'hierarchy'),
-    exports: parseNameListMap(record.exports, 'exports'),
-    entities: asArray(record.entities, 'entities').map((entity, index) =>
-      parseEntity(entity, `entities[${index}]`),
+    hierarchy: parseNameListMap(record.hierarchy, 'api.json: hierarchy'),
+    exports: parseNameListMap(record.exports, 'api.json: exports'),
+    entities: asArray(record.entities, 'api.json: entities').map(
+      (entity, index) => parseEntity(entity, `api.json: entities[${index}]`),
     ),
   };
 };

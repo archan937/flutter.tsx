@@ -69,6 +69,60 @@ EnumEntity? mapEnum(EnumElement enumElement, String libraryLabel) {
   );
 }
 
+PluginClass mapPluginClass(ClassElement classElement, AssertInspector asserts) {
+  final methods =
+      classElement.methods
+          .where(
+            (method) =>
+                method.isPublic &&
+                !method.isStatic &&
+                (method.name ?? '') != '',
+          )
+          .map(
+            (method) => MethodModel(
+              name: method.name ?? '',
+              doc: method.documentationComment ?? '',
+              returnType: encodeType(method.returnType),
+              params: method.formalParameters
+                  .map((param) => _mapParam(classElement, param))
+                  .toList(),
+            ),
+          )
+          .toList()
+        ..sort((first, second) => first.name.compareTo(second.name));
+
+  return PluginClass(
+    name: classElement.name ?? '',
+    doc: classElement.documentationComment ?? '',
+    constructors: classElement.isAbstract
+        ? const <ConstructorModel>[]
+        : _mapConstructors(classElement, asserts),
+    methods: methods,
+    constants: _mapConstants(classElement),
+  );
+}
+
+FunctionModel mapTopLevelFunction(TopLevelFunctionElement element) =>
+    FunctionModel(
+      name: element.name ?? '',
+      doc: element.documentationComment ?? '',
+      returnType: encodeType(element.returnType),
+      params: element.formalParameters
+          .map((param) => _mapFunctionParam(param))
+          .toList(),
+    );
+
+ParamModel _mapFunctionParam(FormalParameterElement param) => ParamModel(
+  name: param.name ?? '',
+  type: encodeType(param.type),
+  display: param.type.getDisplayString(),
+  isNamed: param.isNamed,
+  isRequired: param.isRequired,
+  defaultValue: param.defaultValueCode,
+  doc: '',
+  isDeprecated: param.metadata.hasDeprecated,
+);
+
 List<ConstructorModel> _mapConstructors(
   ClassElement classElement,
   AssertInspector asserts,

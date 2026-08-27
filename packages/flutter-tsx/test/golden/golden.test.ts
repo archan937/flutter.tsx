@@ -12,6 +12,7 @@ import { listFixtures } from '@test/support/golden';
 // green while their compiler support does not exist yet and fails loudly the
 // moment one unexpectedly passes — forcing the flip into GREEN_FIXTURES.
 const GREEN_FIXTURES = new Set([
+  '01-camera-screen',
   '02-hello-column',
   '03-styled-container',
   '04-inline-handler',

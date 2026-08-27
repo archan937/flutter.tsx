@@ -46,6 +46,8 @@ describe('543-widget analyze sweep (RED until every probe analyzes clean)', () =
 
       expect(await flutterAnalyze(sweepPackageDir)).toBe(0);
     },
-    900000,
+    // Coverage instrumentation makes the 394 fresh ts.Programs slow; the
+    // sweep must never fail on time alone.
+    1800000,
   );
 });

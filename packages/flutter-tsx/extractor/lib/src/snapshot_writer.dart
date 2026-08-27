@@ -25,6 +25,23 @@ String encodeSnapshot(ApiSnapshot snapshot) {
   return '${const JsonEncoder.withIndent('  ').convert(document)}\n';
 }
 
+String encodePluginApi(PluginApi api) {
+  final document = {
+    'package': api.package,
+    'version': api.version,
+    'classes': api.classes.map((entity) => entity.toJson()).toList(),
+    'enums': api.enums.map((entity) => entity.toJson()).toList(),
+    'functions': api.functions.map((entity) => entity.toJson()).toList(),
+  };
+  return '${const JsonEncoder.withIndent('  ').convert(document)}\n';
+}
+
+Future<void> writePluginApi(PluginApi api, String outputPath) async {
+  final outputFile = File(outputPath);
+  await outputFile.parent.create(recursive: true);
+  await outputFile.writeAsString(encodePluginApi(api));
+}
+
 Future<void> writeSnapshot(ApiSnapshot snapshot, String outputPath) async {
   final outputFile = File(outputPath);
   await outputFile.parent.create(recursive: true);

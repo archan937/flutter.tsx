@@ -415,8 +415,34 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       app entry (`runApp` + MaterialApp wiring) · **TSX1001–3002 forbidden-feature
       error codes** (vision §11 — the full audited input-language inventory,
       2026-08-23; nothing from the vision docs is dropped silently)
-- [ ] 22–24. Plugins: codegen data, `useCamera` end to end (fixture #1 fully green —
-      the trust milestone), then one plugin at a time. **Decided (Paul,
+- [x] 22. **THE TRUST MILESTONE: conformance fixture #1 is green.** The flagship
+      camera snippet transpiles byte-for-byte to its hand-certified golden and
+      builds as a real Flutter web app from TSX (`build-from-tsx.test.ts` flipped
+      to a plain test). Architecture as agreed with Paul (generic, on-demand — no
+      hand-curated plugin catalog): **plugin extraction** (`extractPluginApi` —
+      the Dart analyzer reads the plugin source resolved through a depending
+      project, exactly as fsx will do in user projects; instance methods +
+      top-level functions now extracted; `ref/plugins/camera.json` committed and
+      byte-freshness-pinned in the Dart tests; `bun run extract:plugin <pkg>`),
+      **derived hooks** (`deriveHooks` — controller pattern detected from
+      `initialize()`/`dispose()` signatures; constructor args resolved
+      mechanically: `availableCameras() → cameras.first` supplier rule, enum
+      defaults from tier-3 overrides), **hand overrides** shrunk to judgment only
+      (`src/plugins/overrides.ts`: camera = `ResolutionPreset: 'high'`, one
+      line), **generated ambient typings** (`bun run generate:plugin camera` →
+      `test/fixtures/types/camera.d.ts`, freshness-pinned; the hook returns
+      `Omit<CameraController, 'initialize' | 'dispose'>` so managed lifecycle
+      members are IDE errors; Dart operator methods filtered; SDK enum/widget
+      refs import from flutter-tsx), and **compiler integration** (plugin field
+      `CameraController? _cam`, `_initCam()` with mounted guard, `dispose()`
+      override, `await cam.takePicture()` → `await _cam?.takePicture();`,
+      plugin imports merged and sorted). Honest errors: TSX0311 unknown hook,
+      TSX0312 unknown plugin method, loud error for unextracted plugins;
+      TSX0304 retired.
+- [ ] 22b–24. Plugin breadth: hook options (`useCamera({ resolution })` — design
+      agreed, parameter slots over the same value-form machinery), one plugin per
+      breed with its own golden + e2e per the guarantee model, permissions
+      manifest data. **Decided (Paul,
       2026-08-24): plugin hooks import from `plugin:<pub-name>` (e.g.
       `import { useCamera } from 'plugin:camera'`) — collision-proof scheme prefix,
       1:1 with the pub package. Versions live in a `"plugins": {"camera": "^0.12"}`

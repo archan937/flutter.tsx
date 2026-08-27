@@ -7,8 +7,11 @@ know. Flutter provides the stable, truly cross-platform runtime. Flutter.tsx bri
 two: you write TSX, the compiler emits the Dart a senior Flutter developer would have
 written by hand.
 
-> 🚧 **Not usable yet.** Flutter.tsx is being rewritten from the ground up (see
-> [Status](#status)); the snippet below is the rewrite's target, not a working example.
+> 🚧 **Not installable yet.** Flutter.tsx is being rewritten from the ground up (see
+> [Status](#status)). The snippet below **compiles today**: the test suite transpiles
+> this exact file, verifies the emitted Dart byte-for-byte against a hand-certified
+> golden, and builds it as a real Flutter web app on every run. What's missing before
+> you can run it yourself is the `fsx` CLI and scaffolder — the last unchecked boxes.
 
 ```tsx
 import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
@@ -32,10 +35,11 @@ export const CameraScreen = () => {
 };
 ```
 
-This is **conformance fixture #1** of the compiler test suite. Native camera access,
-React state, an async event handler, and conditional rendering in twenty lines: every
-Flutter.tsx API is held to this level of ergonomics, and 1.0 ships only when CI
-transpiles this file, `dart analyze`s the output, and builds it as a real Flutter app.
+This is **conformance fixture #1** of the compiler test suite — the trust milestone.
+Native camera access, React state, an async event handler, and conditional rendering
+in twenty lines: every Flutter.tsx API is held to this level of ergonomics. The suite
+transpiles this file, `dart analyze`s the output, and builds it as a real Flutter app
+on every run; 1.0 ships only once the same proof runs in CI plus the real-device gate.
 
 ## Why
 
@@ -97,7 +101,9 @@ Rewrite progress:
 - [x] The compiler: TSX → IR → Dart AST → idiomatic Dart — stateless & stateful
       components, typed props & composition, `useState`/`useEffect`, handlers,
       conditionals, list rendering, fragments (8 traits proven end to end)
-- [ ] Plugin hooks (`useCamera` first — conformance fixture #1 goes green here)
+- [x] Plugin hooks: on-demand extraction from the installed plugin's source, derived
+      `useX` lifecycle hooks, generated `plugin:*` typings — `useCamera` is live and
+      conformance fixture #1 is green (remaining plugins land breed-by-breed)
 - [ ] `fsx` CLI (`install` · `init` · `dev` · `build` · `doctor`) and scaffolder
 - [ ] 1.0 on npm
 

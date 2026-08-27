@@ -10,6 +10,9 @@ import {
   lowerComponent,
 } from '@src/compiler/lower';
 import { deriveSlots } from '@src/derive/slots';
+import { loadPluginApi } from '@src/plugins/api';
+import { deriveHooks } from '@src/plugins/hooks';
+import { PLUGIN_OVERRIDES } from '@src/plugins/overrides';
 
 const fixturePath = new URL(
   '../fixtures/01-camera-screen/input.tsx',
@@ -39,8 +42,35 @@ const printFirstBody = async (
 describe('irWidgetToDart — camera fixture', () => {
   test('prints the exact widget tree', async () => {
     const source = await Bun.file(fixturePath).text();
+    const api = await loadPluginApi('camera');
+    const [hook] = deriveHooks(api, PLUGIN_OVERRIDES.camera);
+    if (hook === undefined) {
+      throw new Error('expected the derived useCamera hook');
+    }
+    const controller = api.classes.find(
+      (entity) => entity.name === 'CameraController',
+    );
+    const analysis = analyzeSource(source, 'input.tsx');
+    const [component] = analysis.components;
+    if (component === undefined) {
+      throw new Error('expected the camera component');
+    }
+    const ir = lowerComponent(component, {
+      ...(await contextOnce()),
+      pluginHooks: new Map([
+        [
+          'useCamera',
+          {
+            hook,
+            methods: new Set(
+              controller?.methods.map((method) => method.name) ?? [],
+            ),
+          },
+        ],
+      ]),
+    });
 
-    expect(await printFirstBody(source, 'input.tsx')).toBe(
+    expect(printExpr(irWidgetToDart(ir.body, { privateMembers: true }))).toBe(
       [
         'Column(',
         '  children: [',

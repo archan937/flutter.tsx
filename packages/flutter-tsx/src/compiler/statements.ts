@@ -2,15 +2,21 @@ import type { ClosureBody } from './dart-ast';
 import type { IrStatement } from './ir';
 
 export const methodStatementLines = (statements: IrStatement[]): string[] =>
-  statements.flatMap((statement) => [
-    'setState(() {',
-    ...statement.assignments.map((assignment) => `  ${assignment};`),
-    '});',
-  ]);
+  statements.flatMap((statement) =>
+    statement.kind === 'dart'
+      ? [statement.line]
+      : [
+          'setState(() {',
+          ...statement.assignments.map((assignment) => `  ${assignment};`),
+          '});',
+        ],
+  );
 
 export const initStateLines = (statements: IrStatement[]): string[] =>
   statements.flatMap((statement) =>
-    statement.assignments.map((assignment) => `${assignment};`),
+    statement.kind === 'dart'
+      ? [statement.line]
+      : statement.assignments.map((assignment) => `${assignment};`),
   );
 
 export const closureBodyOf = (statements: IrStatement[]): ClosureBody => {
@@ -18,7 +24,7 @@ export const closureBodyOf = (statements: IrStatement[]): ClosureBody => {
     return { kind: 'empty' };
   }
   const [first] = statements;
-  if (statements.length === 1 && first !== undefined) {
+  if (statements.length === 1 && first?.kind === 'setState') {
     const [assignment] = first.assignments;
     if (first.assignments.length === 1 && assignment !== undefined) {
       return { kind: 'expression', code: `setState(() => ${assignment})` };

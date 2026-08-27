@@ -10,6 +10,9 @@ import {
   lowerComponent,
 } from '@src/compiler/lower';
 import { deriveSlots } from '@src/derive/slots';
+import { loadPluginApi } from '@src/plugins/api';
+import { deriveHooks } from '@src/plugins/hooks';
+import { PLUGIN_OVERRIDES } from '@src/plugins/overrides';
 
 const fixturePath = new URL(
   '../fixtures/01-camera-screen/input.tsx',
@@ -35,10 +38,45 @@ const lowerFirst = async (
   return lowerComponent(component, await contextOnce());
 };
 
+const cameraHooksContext = async (
+  base: CompileContext,
+): Promise<CompileContext> => {
+  const api = await loadPluginApi('camera');
+  const [hook] = deriveHooks(api, PLUGIN_OVERRIDES.camera);
+  if (hook === undefined) {
+    throw new Error('expected the derived useCamera hook');
+  }
+  const controller = api.classes.find(
+    (entity) => entity.name === 'CameraController',
+  );
+  return {
+    ...base,
+    pluginHooks: new Map([
+      [
+        'useCamera',
+        {
+          hook,
+          methods: new Set(
+            controller?.methods.map((method) => method.name) ?? [],
+          ),
+        },
+      ],
+    ]),
+  };
+};
+
 describe('lowerComponent — camera fixture', () => {
   test('produces the complete IR', async () => {
     const source = await Bun.file(fixturePath).text();
-    const ir = await lowerFirst(source, 'input.tsx');
+    const analysis = analyzeSource(source, 'input.tsx');
+    const [component] = analysis.components;
+    if (component === undefined) {
+      throw new Error('expected the camera component');
+    }
+    const ir = lowerComponent(
+      component,
+      await cameraHooksContext(await contextOnce()),
+    );
 
     expect(ir.name).toBe('CameraScreen');
     expect(ir.kind).toBe('stateful');
@@ -1181,6 +1219,167 @@ describe('lowerComponent — fragments and typed text slots', () => {
         value: { kind: 'dartExpr', dart: "hot ? '* $label' : label" },
       },
     ]);
+  });
+});
+
+describe('lowerComponent — plugin hooks', () => {
+  const cameraContext = async (): Promise<CompileContext> =>
+    cameraHooksContext(await contextOnce());
+
+  test('the camera fixture lowers to the full stateful plugin IR', async () => {
+    const source = await Bun.file(fixturePath).text();
+    const analysis = analyzeSource(source, 'input.tsx');
+    const [component] = analysis.components;
+    if (component === undefined) {
+      throw new Error('expected the camera component');
+    }
+    const ir = lowerComponent(component, await cameraContext());
+
+    expect(ir.fields).toEqual([
+      {
+        name: '_cam',
+        dartType: 'CameraController?',
+        mutable: true,
+        initializer: null,
+      },
+      { name: '_taken', dartType: 'bool', mutable: true, initializer: 'false' },
+    ]);
+    expect(ir.setupMethods).toEqual([
+      {
+        name: 'initCam',
+        lines: [
+          'final cameras = await availableCameras();',
+          'final controller = CameraController(cameras.first, ResolutionPreset.high);',
+          'await controller.initialize();',
+          'if (!mounted) {',
+          '  await controller.dispose();',
+          '  return;',
+          '}',
+          'setState(() {',
+          '  _cam = controller;',
+          '});',
+        ],
+      },
+    ]);
+    expect(ir.initStatements).toEqual([{ kind: 'dart', line: '_initCam();' }]);
+    expect(ir.disposeLines).toEqual(['_cam?.dispose();']);
+    expect(ir.methods).toEqual([
+      {
+        name: 'takePhoto',
+        isAsync: true,
+        statements: [
+          { kind: 'dart', line: 'await _cam?.takePicture();' },
+          { kind: 'setState', assignments: ['_taken = true'] },
+        ],
+      },
+    ]);
+    expect(ir.pluginImports).toEqual(['package:camera/camera.dart']);
+  });
+
+  test('non-available suppliers name their local after the param type', async () => {
+    const analysis = analyzeSource(
+      "import { Text } from 'flutter-tsx';\n" +
+        "import { useEngine } from 'plugin:motors';\n" +
+        'export const Probe = () => {\n' +
+        '  const engine = useEngine();\n' +
+        '  const rev = () => {\n' +
+        '    engine.start(3);\n' +
+        '  };\n' +
+        '  return <Text>hi</Text>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+    const [component] = analysis.components;
+    if (component === undefined) {
+      throw new Error('expected a component');
+    }
+    const ir = lowerComponent(component, {
+      ...(await contextOnce()),
+      pluginHooks: new Map([
+        [
+          'useEngine',
+          {
+            hook: {
+              hookName: 'useEngine',
+              className: 'EngineController',
+              dartImport: 'package:motors/motors.dart',
+              construct: [
+                {
+                  kind: 'supplierFirst',
+                  functionName: 'listEngines',
+                  paramType: 'Engine',
+                },
+              ],
+              managed: ['initialize', 'dispose'],
+            },
+            methods: new Set(['initialize', 'dispose', 'start']),
+          },
+        ],
+      ]),
+    });
+
+    expect(ir.setupMethods[0]?.lines.slice(0, 2)).toEqual([
+      'final engines = await listEngines();',
+      'final controller = EngineController(engines.first);',
+    ]);
+    expect(ir.methods).toEqual([
+      {
+        name: 'rev',
+        isAsync: false,
+        statements: [{ kind: 'dart', line: '_engine?.start(3);' }],
+      },
+    ]);
+  });
+
+  test('an unknown plugin method is a numbered error', async () => {
+    const analysis = analyzeSource(
+      "import { Text, useState } from 'flutter-tsx';\n" +
+        "import { useCamera } from 'plugin:camera';\n" +
+        'export const Probe = () => {\n' +
+        '  const cam = useCamera();\n' +
+        '  const boom = () => {\n' +
+        '    cam.levitate();\n' +
+        '  };\n' +
+        '  return <Text>hi</Text>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+    const [component] = analysis.components;
+    if (component === undefined) {
+      throw new Error('expected a component');
+    }
+    const context = await cameraContext();
+
+    expect(() => lowerComponent(component, context)).toThrow(
+      new Error(
+        'TSX0312 probe.tsx:6:5 — CameraController has no method ' +
+          '`levitate`. Check the API reference for the available methods.',
+      ),
+    );
+  });
+
+  test('an unavailable hook is a numbered error', async () => {
+    const analysis = analyzeSource(
+      "import { Text } from 'flutter-tsx';\n" +
+        "import { useTeleport } from 'plugin:camera';\n" +
+        'export const Probe = () => {\n' +
+        '  const beam = useTeleport();\n' +
+        '  return <Text>hi</Text>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+    const [component] = analysis.components;
+    if (component === undefined) {
+      throw new Error('expected a component');
+    }
+    const context = await cameraContext();
+
+    expect(() => lowerComponent(component, context)).toThrow(
+      new Error(
+        'TSX0311 probe.tsx:4:16 — plugin:camera derives no `useTeleport` ' +
+          'hook.',
+      ),
+    );
   });
 });
 

@@ -1,0 +1,2369 @@
+{
+  "package": "camera",
+  "version": "0.12.0+2",
+  "classes": [
+    {
+      "name": "CameraController",
+      "doc": "/// Controls a device camera.\n///\n/// Use [availableCameras] to get a list of available cameras.\n///\n/// Before using a [CameraController] a call to [initialize] must complete.\n///\n/// To show the camera preview on the screen use a [CameraPreview] widget.",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "/// Creates a new camera controller in an uninitialized state.\n///\n/// - [resolutionPreset] affect the quality of video recording and image capture.\n/// - [enableAudio] controls audio presence in recorded video.\n///\n/// Following parameters (if present) will overwrite [resolutionPreset] settings:\n/// - [fps] controls rate at which frames should be captured by the camera in frames per second.\n/// - [videoBitrate] controls the video encoding bit rate for recording.\n/// - [audioBitrate] controls the audio encoding bit rate for recording.",
+          "const": false,
+          "paramMemberAsserts": false,
+          "params": [
+            {
+              "name": "description",
+              "type": {
+                "kind": "named",
+                "name": "CameraDescription"
+              },
+              "display": "CameraDescription",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "resolutionPreset",
+              "type": {
+                "kind": "enum",
+                "name": "ResolutionPreset"
+              },
+              "display": "ResolutionPreset",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "enableAudio",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": false,
+              "defaultValue": "true",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "fps",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "int"
+                }
+              },
+              "display": "int?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "videoBitrate",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "int"
+                }
+              },
+              "display": "int?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "audioBitrate",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "int"
+                }
+              },
+              "display": "int?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "imageFormatGroup",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "enum",
+                  "name": "ImageFormatGroup"
+                }
+              },
+              "display": "ImageFormatGroup?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The [ImageFormatGroup] describes the output of the raw image format.\n///\n/// When null the imageFormat will fallback to the platforms default.",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "methods": [
+        {
+          "name": "buildPreview",
+          "doc": "/// Returns a widget showing a live camera preview.",
+          "returnType": {
+            "kind": "widget"
+          },
+          "params": []
+        },
+        {
+          "name": "debugCheckIsDisposed",
+          "doc": "/// Checks whether [CameraController.dispose] has completed successfully.\n///\n/// This is a no-op when asserts are disabled.",
+          "returnType": {
+            "kind": "void"
+          },
+          "params": []
+        },
+        {
+          "name": "dispose",
+          "doc": "/// Releases the resources of this camera.",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "getExposureOffsetStepSize",
+          "doc": "/// Gets the supported step size for exposure offset for the selected camera in EV units.\n///\n/// Returns 0 when the camera supports using a free value without stepping.",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "scalar",
+              "name": "double"
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "getMaxExposureOffset",
+          "doc": "/// Gets the maximum supported exposure offset for the selected camera in EV units.",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "scalar",
+              "name": "double"
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "getMaxZoomLevel",
+          "doc": "/// Gets the maximum supported zoom level for the selected camera.",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "scalar",
+              "name": "double"
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "getMinExposureOffset",
+          "doc": "/// Gets the minimum supported exposure offset for the selected camera in EV units.",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "scalar",
+              "name": "double"
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "getMinZoomLevel",
+          "doc": "/// Gets the minimum supported zoom level for the selected camera.",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "scalar",
+              "name": "double"
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "getSupportedVideoStabilizationModes",
+          "doc": "/// Gets a list of video stabilization modes that are supported\n/// for the selected camera.\n///\n/// [VideoStabilizationMode.off] will always be listed.",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "list",
+              "item": {
+                "kind": "enum",
+                "name": "VideoStabilizationMode"
+              }
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "initialize",
+          "doc": "/// Initializes the camera on the device.\n///\n/// Throws a [CameraException] if the initialization fails.",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "lockCaptureOrientation",
+          "doc": "/// Locks the capture orientation.\n///\n/// If [orientation] is omitted, the current device orientation is used.",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "orientation",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "enum",
+                  "name": "DeviceOrientation"
+                }
+              },
+              "display": "DeviceOrientation?",
+              "named": false,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "pausePreview",
+          "doc": "/// Pauses the current camera preview",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "pauseVideoRecording",
+          "doc": "/// Pause video recording.\n///\n/// This feature is only available on iOS and Android sdk 24+.",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "prepareForVideoRecording",
+          "doc": "/// Prepare the capture session for video recording.\n///\n/// Use of this method is optional, but it may be called for performance\n/// reasons on iOS.\n///\n/// Preparing audio can cause a minor delay in the CameraPreview view on iOS.\n/// If video recording is intended, calling this early eliminates this delay\n/// that would otherwise be experienced when video recording is started.\n/// This operation is a no-op on Android and Web.\n///\n/// Throws a [CameraException] if the prepare fails.",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "removeListener",
+          "doc": "",
+          "returnType": {
+            "kind": "void"
+          },
+          "params": [
+            {
+              "name": "listener",
+              "type": {
+                "kind": "function",
+                "returnType": {
+                  "kind": "void"
+                },
+                "params": []
+              },
+              "display": "void Function()",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "resumePreview",
+          "doc": "/// Resumes the current camera preview",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "resumeVideoRecording",
+          "doc": "/// Resume video recording after pausing.\n///\n/// This feature is only available on iOS and Android sdk 24+.",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "setDescription",
+          "doc": "/// Sets the description of the camera.\n///\n/// On Android, you must start the recording with [startVideoRecording]\n/// with `enablePersistentRecording` set to `true`\n/// to avoid cancelling any active recording.\n///\n/// Throws a [CameraException] if setting the description fails.",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "description",
+              "type": {
+                "kind": "named",
+                "name": "CameraDescription"
+              },
+              "display": "CameraDescription",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setExposureMode",
+          "doc": "/// Sets the exposure mode for taking pictures.",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "mode",
+              "type": {
+                "kind": "enum",
+                "name": "ExposureMode"
+              },
+              "display": "ExposureMode",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setExposureOffset",
+          "doc": "/// Sets the exposure offset for the selected camera.\n///\n/// The supplied [offset] value should be in EV units. 1 EV unit represents a\n/// doubling in brightness. It should be between the minimum and maximum offsets\n/// obtained through `getMinExposureOffset` and `getMaxExposureOffset` respectively.\n/// Throws a `CameraException` when an illegal offset is supplied.\n///\n/// When the supplied [offset] value does not align with the step size obtained\n/// through `getExposureStepSize`, it will automatically be rounded to the nearest step.\n///\n/// Returns the (rounded) offset value that was set.",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "scalar",
+              "name": "double"
+            }
+          },
+          "params": [
+            {
+              "name": "offset",
+              "type": {
+                "kind": "scalar",
+                "name": "double"
+              },
+              "display": "double",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setExposurePoint",
+          "doc": "/// Sets the exposure point for automatically determining the exposure value.\n///\n/// Supplying a `null` value will reset the exposure point to it's default\n/// value.",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "point",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Offset"
+                }
+              },
+              "display": "Offset?",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setFlashMode",
+          "doc": "/// Sets the flash mode for taking pictures.",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "mode",
+              "type": {
+                "kind": "enum",
+                "name": "FlashMode"
+              },
+              "display": "FlashMode",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setFocusMode",
+          "doc": "/// Sets the focus mode for taking pictures.",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "mode",
+              "type": {
+                "kind": "enum",
+                "name": "FocusMode"
+              },
+              "display": "FocusMode",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setFocusPoint",
+          "doc": "/// Sets the focus point for automatically determining the focus value.\n///\n/// Supplying a `null` value will reset the focus point to it's default\n/// value.",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "point",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Offset"
+                }
+              },
+              "display": "Offset?",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setVideoStabilizationMode",
+          "doc": "/// Set the video stabilization mode for the selected camera.\n///\n/// When [allowFallback] is true (default) the camera will be set to the best\n/// video stabilization mode up to, and including, [mode].\n///\n/// When [allowFallback] is false and if [mode] is not one of the supported\n/// modes (see [getSupportedVideoStabilizationModes]), then it throws an\n/// [ArgumentError].\n///\n/// This feature is only available if [getSupportedVideoStabilizationModes]\n/// returns at least one value other than [VideoStabilizationMode.off].",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "mode",
+              "type": {
+                "kind": "enum",
+                "name": "VideoStabilizationMode"
+              },
+              "display": "VideoStabilizationMode",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "allowFallback",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": false,
+              "defaultValue": "true",
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setZoomLevel",
+          "doc": "/// Set the zoom level for the selected camera.\n///\n/// The supplied [zoom] value should be between 1.0 and the maximum supported\n/// zoom level returned by the `getMaxZoomLevel`. Throws an `CameraException`\n/// when an illegal zoom level is suplied.",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "zoom",
+              "type": {
+                "kind": "scalar",
+                "name": "double"
+              },
+              "display": "double",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "startImageStream",
+          "doc": "/// Start streaming images from platform camera.\n///\n/// Settings for capturing images on iOS and Android is set to always use the\n/// latest image available from the camera and will drop all other images.\n///\n/// When running continuously with [CameraPreview] widget, this function runs\n/// best with [ResolutionPreset.low]. Running on [ResolutionPreset.high] can\n/// have significant frame rate drops for [CameraPreview] on lower end\n/// devices.\n///\n/// Throws a [CameraException] if image streaming or video recording has\n/// already started.\n///\n/// The `startImageStream` method is only available on platforms that\n/// report support for image streaming via [supportsImageStreaming].\n///",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "onAvailable",
+              "type": {
+                "kind": "function",
+                "returnType": {
+                  "kind": "void"
+                },
+                "params": [
+                  {
+                    "name": "image",
+                    "type": {
+                      "kind": "named",
+                      "name": "CameraImage"
+                    },
+                    "named": false,
+                    "required": true
+                  }
+                ]
+              },
+              "display": "void Function(CameraImage)",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "startVideoRecording",
+          "doc": "/// Start a video recording.\n///\n/// You may optionally pass an [onAvailable] callback to also have the\n/// video frames streamed to this callback.\n///\n/// The video is returned as a [XFile] after calling [stopVideoRecording].\n/// Throws a [CameraException] if the capture fails.\n///\n/// `enablePersistentRecording` parameter configures the recording to be a persistent recording.\n/// A persistent recording can only be stopped by explicitly calling [stopVideoRecording]\n/// and will ignore events that would normally cause recording to stop,\n/// such as lifecycle events or explicit calls to [setDescription] while recording is in progress.\n/// Currently a no-op on platforms other than Android.",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "onAvailable",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "function",
+                  "returnType": {
+                    "kind": "void"
+                  },
+                  "params": [
+                    {
+                      "name": "image",
+                      "type": {
+                        "kind": "named",
+                        "name": "CameraImage"
+                      },
+                      "named": false,
+                      "required": true
+                    }
+                  ]
+                }
+              },
+              "display": "void Function(CameraImage)?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "enablePersistentRecording",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": false,
+              "defaultValue": "true",
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "stopImageStream",
+          "doc": "/// Stop streaming images from platform camera.\n///\n/// Throws a [CameraException] if image streaming was not started or video\n/// recording was started.\n///\n/// The `stopImageStream` method is only available on platforms that\n/// report support for image streaming via [supportsImageStreaming].",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "stopVideoRecording",
+          "doc": "/// Stops the video recording and returns the file where it was saved.\n///\n/// Throws a [CameraException] if the capture failed.",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "named",
+              "name": "XFile"
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "supportsImageStreaming",
+          "doc": "/// Check whether the camera platform supports image streaming.",
+          "returnType": {
+            "kind": "scalar",
+            "name": "bool"
+          },
+          "params": []
+        },
+        {
+          "name": "takePicture",
+          "doc": "/// Captures an image and returns the file where it was saved.\n///\n/// Throws a [CameraException] if the capture fails.",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "named",
+              "name": "XFile"
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "unlockCaptureOrientation",
+          "doc": "/// Unlocks the capture orientation.",
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": []
+        }
+      ],
+      "constants": [
+        {
+          "name": "kUninitializedCameraId",
+          "type": {
+            "kind": "scalar",
+            "name": "int"
+          },
+          "display": "int",
+          "doc": "/// The id of a camera that hasn't been initialized."
+        }
+      ]
+    },
+    {
+      "name": "CameraDescription",
+      "doc": "/// Properties of a camera device.",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "/// Creates a new camera description with the given properties.",
+          "const": true,
+          "paramMemberAsserts": false,
+          "params": [
+            {
+              "name": "name",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The name of the camera device.",
+              "deprecated": false
+            },
+            {
+              "name": "lensDirection",
+              "type": {
+                "kind": "enum",
+                "name": "CameraLensDirection"
+              },
+              "display": "CameraLensDirection",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The direction the camera is facing.",
+              "deprecated": false
+            },
+            {
+              "name": "sensorOrientation",
+              "type": {
+                "kind": "scalar",
+                "name": "int"
+              },
+              "display": "int",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// Clockwise angle through which the output image needs to be rotated to be upright on the device screen in its native orientation.\n///\n/// **Range of valid values:**\n/// 0, 90, 180, 270\n///\n/// On Android, also defines the direction of rolling shutter readout, which\n/// is from top to bottom in the sensor's coordinate system.",
+              "deprecated": false
+            },
+            {
+              "name": "lensType",
+              "type": {
+                "kind": "enum",
+                "name": "CameraLensType"
+              },
+              "display": "CameraLensType",
+              "named": true,
+              "required": false,
+              "defaultValue": "CameraLensType.unknown",
+              "doc": "/// The type of lens the camera has.",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "methods": [
+        {
+          "name": "==",
+          "doc": "",
+          "returnType": {
+            "kind": "scalar",
+            "name": "bool"
+          },
+          "params": [
+            {
+              "name": "other",
+              "type": {
+                "kind": "named",
+                "name": "Object"
+              },
+              "display": "Object",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "toString",
+          "doc": "",
+          "returnType": {
+            "kind": "scalar",
+            "name": "String"
+          },
+          "params": []
+        }
+      ],
+      "constants": []
+    },
+    {
+      "name": "CameraException",
+      "doc": "/// This is thrown when the plugin reports an error.",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "/// Creates a new camera exception with the given error code and description.",
+          "const": false,
+          "paramMemberAsserts": false,
+          "params": [
+            {
+              "name": "code",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// Error code.",
+              "deprecated": false
+            },
+            {
+              "name": "description",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// Textual description of the error.",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "methods": [
+        {
+          "name": "toString",
+          "doc": "",
+          "returnType": {
+            "kind": "scalar",
+            "name": "String"
+          },
+          "params": []
+        }
+      ],
+      "constants": []
+    },
+    {
+      "name": "CameraImage",
+      "doc": "/// A single complete image buffer from the platform camera.\n///\n/// This class allows for direct application access to the pixel data of an\n/// Image through one or more [Uint8List]. Each buffer is encapsulated in a\n/// [Plane] that describes the layout of the pixel data in that plane. The\n/// [CameraImage] is not directly usable as a UI resource.\n///\n/// Although not all image formats are planar on iOS, we treat 1-dimensional\n/// images as single planar images.",
+      "constructors": [
+        {
+          "name": "fromPlatformData",
+          "doc": "/// Creates a [CameraImage] from method channel data.",
+          "const": false,
+          "paramMemberAsserts": false,
+          "params": [
+            {
+              "name": "data",
+              "type": {
+                "kind": "map",
+                "key": {
+                  "kind": "unknown"
+                },
+                "value": {
+                  "kind": "unknown"
+                }
+              },
+              "display": "Map<dynamic, dynamic>",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "fromPlatformInterface",
+          "doc": "/// Creates a [CameraImage] from the platform interface version.",
+          "const": false,
+          "paramMemberAsserts": false,
+          "params": [
+            {
+              "name": "data",
+              "type": {
+                "kind": "named",
+                "name": "CameraImageData"
+              },
+              "display": "CameraImageData",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "methods": [],
+      "constants": []
+    },
+    {
+      "name": "CameraPreview",
+      "doc": "/// A widget showing a live camera preview.",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "/// Creates a preview widget for the given camera controller.",
+          "const": true,
+          "paramMemberAsserts": false,
+          "params": [
+            {
+              "name": "controller",
+              "type": {
+                "kind": "named",
+                "name": "CameraController"
+              },
+              "display": "CameraController",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The controller for the camera that the preview is shown for.",
+              "deprecated": false
+            },
+            {
+              "name": "key",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Key"
+                }
+              },
+              "display": "Key?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// Controls how one widget replaces another widget in the tree.\n///\n/// If the [runtimeType] and [key] properties of the two widgets are\n/// [operator==], respectively, then the new widget replaces the old widget by\n/// updating the underlying element (i.e., by calling [Element.update] with the\n/// new widget). Otherwise, the old element is removed from the tree, the new\n/// widget is inflated into an element, and the new element is inserted into the\n/// tree.\n///\n/// In addition, using a [GlobalKey] as the widget's [key] allows the element\n/// to be moved around the tree (changing parent) without losing state. When a\n/// new widget is found (its key and type do not match a previous widget in\n/// the same location), but there was a widget with that same global key\n/// elsewhere in the tree in the previous frame, then that widget's element is\n/// moved to the new location.\n///\n/// Generally, a widget that is the only child of another widget does not need\n/// an explicit key.\n///\n/// See also:\n///\n///  * The discussions at [Key] and [GlobalKey].",
+              "deprecated": false
+            },
+            {
+              "name": "child",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "widget"
+                }
+              },
+              "display": "Widget?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// A widget to overlay on top of the camera preview",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "methods": [
+        {
+          "name": "build",
+          "doc": "",
+          "returnType": {
+            "kind": "widget"
+          },
+          "params": [
+            {
+              "name": "context",
+              "type": {
+                "kind": "named",
+                "name": "BuildContext"
+              },
+              "display": "BuildContext",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "constants": []
+    },
+    {
+      "name": "CameraValue",
+      "doc": "/// The state of a [CameraController].",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "/// Creates a new camera controller state.",
+          "const": true,
+          "paramMemberAsserts": false,
+          "params": [
+            {
+              "name": "isInitialized",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// True after [CameraController.initialize] has completed successfully.",
+              "deprecated": false
+            },
+            {
+              "name": "errorDescription",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// Description of an error state.\n///\n/// This is null while the controller is not in an error state.\n/// When [hasError] is true this contains the error description.",
+              "deprecated": false
+            },
+            {
+              "name": "previewSize",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Size"
+                }
+              },
+              "display": "Size?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The size of the preview in pixels.\n///\n/// Is `null` until [isInitialized] is `true`.",
+              "deprecated": false
+            },
+            {
+              "name": "isRecordingVideo",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// True when the camera is recording (not the same as previewing).",
+              "deprecated": false
+            },
+            {
+              "name": "isTakingPicture",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// True when a picture capture request has been sent but as not yet returned.",
+              "deprecated": false
+            },
+            {
+              "name": "isStreamingImages",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// True when images from the camera are being streamed.",
+              "deprecated": false
+            },
+            {
+              "name": "isRecordingPaused",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "flashMode",
+              "type": {
+                "kind": "enum",
+                "name": "FlashMode"
+              },
+              "display": "FlashMode",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The flash mode the camera is currently set to.",
+              "deprecated": false
+            },
+            {
+              "name": "exposureMode",
+              "type": {
+                "kind": "enum",
+                "name": "ExposureMode"
+              },
+              "display": "ExposureMode",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The exposure mode the camera is currently set to.",
+              "deprecated": false
+            },
+            {
+              "name": "focusMode",
+              "type": {
+                "kind": "enum",
+                "name": "FocusMode"
+              },
+              "display": "FocusMode",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The focus mode the camera is currently set to.",
+              "deprecated": false
+            },
+            {
+              "name": "exposurePointSupported",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// Whether setting the exposure point is supported.",
+              "deprecated": false
+            },
+            {
+              "name": "focusPointSupported",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// Whether setting the focus point is supported.",
+              "deprecated": false
+            },
+            {
+              "name": "deviceOrientation",
+              "type": {
+                "kind": "enum",
+                "name": "DeviceOrientation"
+              },
+              "display": "DeviceOrientation",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The current device UI orientation.",
+              "deprecated": false
+            },
+            {
+              "name": "description",
+              "type": {
+                "kind": "named",
+                "name": "CameraDescription"
+              },
+              "display": "CameraDescription",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The properties of the camera device controlled by this controller.",
+              "deprecated": false
+            },
+            {
+              "name": "lockedCaptureOrientation",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "enum",
+                  "name": "DeviceOrientation"
+                }
+              },
+              "display": "DeviceOrientation?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The currently locked capture orientation.",
+              "deprecated": false
+            },
+            {
+              "name": "recordingOrientation",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "enum",
+                  "name": "DeviceOrientation"
+                }
+              },
+              "display": "DeviceOrientation?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The orientation of the currently running video recording.",
+              "deprecated": false
+            },
+            {
+              "name": "isPreviewPaused",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": false,
+              "defaultValue": "false",
+              "doc": "/// True when the preview widget has been paused manually.",
+              "deprecated": false
+            },
+            {
+              "name": "previewPauseOrientation",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "enum",
+                  "name": "DeviceOrientation"
+                }
+              },
+              "display": "DeviceOrientation?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// Set to the orientation the preview was paused in, if it is currently paused.",
+              "deprecated": false
+            },
+            {
+              "name": "videoStabilizationMode",
+              "type": {
+                "kind": "enum",
+                "name": "VideoStabilizationMode"
+              },
+              "display": "VideoStabilizationMode",
+              "named": true,
+              "required": false,
+              "defaultValue": "VideoStabilizationMode.off",
+              "doc": "/// The current video stabilization mode.",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "uninitialized",
+          "doc": "/// Creates a new camera controller state for an uninitialized controller.",
+          "const": true,
+          "paramMemberAsserts": false,
+          "params": [
+            {
+              "name": "description",
+              "type": {
+                "kind": "named",
+                "name": "CameraDescription"
+              },
+              "display": "CameraDescription",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The properties of the camera device controlled by this controller.",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "methods": [
+        {
+          "name": "copyWith",
+          "doc": "/// Creates a modified copy of the object.\n///\n/// Explicitly specified fields get the specified value, all other fields get\n/// the same value of the current object.",
+          "returnType": {
+            "kind": "named",
+            "name": "CameraValue"
+          },
+          "params": [
+            {
+              "name": "isInitialized",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "bool"
+                }
+              },
+              "display": "bool?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// True after [CameraController.initialize] has completed successfully.",
+              "deprecated": false
+            },
+            {
+              "name": "isRecordingVideo",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "bool"
+                }
+              },
+              "display": "bool?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// True when the camera is recording (not the same as previewing).",
+              "deprecated": false
+            },
+            {
+              "name": "isTakingPicture",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "bool"
+                }
+              },
+              "display": "bool?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// True when a picture capture request has been sent but as not yet returned.",
+              "deprecated": false
+            },
+            {
+              "name": "isStreamingImages",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "bool"
+                }
+              },
+              "display": "bool?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// True when images from the camera are being streamed.",
+              "deprecated": false
+            },
+            {
+              "name": "errorDescription",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// Description of an error state.\n///\n/// This is null while the controller is not in an error state.\n/// When [hasError] is true this contains the error description.",
+              "deprecated": false
+            },
+            {
+              "name": "previewSize",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Size"
+                }
+              },
+              "display": "Size?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The size of the preview in pixels.\n///\n/// Is `null` until [isInitialized] is `true`.",
+              "deprecated": false
+            },
+            {
+              "name": "isRecordingPaused",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "bool"
+                }
+              },
+              "display": "bool?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "flashMode",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "enum",
+                  "name": "FlashMode"
+                }
+              },
+              "display": "FlashMode?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The flash mode the camera is currently set to.",
+              "deprecated": false
+            },
+            {
+              "name": "exposureMode",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "enum",
+                  "name": "ExposureMode"
+                }
+              },
+              "display": "ExposureMode?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The exposure mode the camera is currently set to.",
+              "deprecated": false
+            },
+            {
+              "name": "focusMode",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "enum",
+                  "name": "FocusMode"
+                }
+              },
+              "display": "FocusMode?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The focus mode the camera is currently set to.",
+              "deprecated": false
+            },
+            {
+              "name": "exposurePointSupported",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "bool"
+                }
+              },
+              "display": "bool?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// Whether setting the exposure point is supported.",
+              "deprecated": false
+            },
+            {
+              "name": "focusPointSupported",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "bool"
+                }
+              },
+              "display": "bool?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// Whether setting the focus point is supported.",
+              "deprecated": false
+            },
+            {
+              "name": "deviceOrientation",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "enum",
+                  "name": "DeviceOrientation"
+                }
+              },
+              "display": "DeviceOrientation?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The current device UI orientation.",
+              "deprecated": false
+            },
+            {
+              "name": "lockedCaptureOrientation",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Optional"
+                }
+              },
+              "display": "Optional<DeviceOrientation>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The currently locked capture orientation.",
+              "deprecated": false
+            },
+            {
+              "name": "recordingOrientation",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Optional"
+                }
+              },
+              "display": "Optional<DeviceOrientation>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The orientation of the currently running video recording.",
+              "deprecated": false
+            },
+            {
+              "name": "isPreviewPaused",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "bool"
+                }
+              },
+              "display": "bool?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// True when the preview widget has been paused manually.",
+              "deprecated": false
+            },
+            {
+              "name": "description",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "CameraDescription"
+                }
+              },
+              "display": "CameraDescription?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The properties of the camera device controlled by this controller.",
+              "deprecated": false
+            },
+            {
+              "name": "previewPauseOrientation",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Optional"
+                }
+              },
+              "display": "Optional<DeviceOrientation>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// Set to the orientation the preview was paused in, if it is currently paused.",
+              "deprecated": false
+            },
+            {
+              "name": "videoStabilizationMode",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "enum",
+                  "name": "VideoStabilizationMode"
+                }
+              },
+              "display": "VideoStabilizationMode?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The current video stabilization mode.",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "toString",
+          "doc": "",
+          "returnType": {
+            "kind": "scalar",
+            "name": "String"
+          },
+          "params": []
+        }
+      ],
+      "constants": []
+    },
+    {
+      "name": "ImageFormat",
+      "doc": "/// Describes how pixels are represented in an image.",
+      "constructors": [],
+      "methods": [],
+      "constants": []
+    },
+    {
+      "name": "Optional",
+      "doc": "/// A value that might be absent.\n///\n/// Used to represent [DeviceOrientation]s that are optional but also able\n/// to be cleared.",
+      "constructors": [
+        {
+          "name": "absent",
+          "doc": "/// Constructs an empty Optional.",
+          "const": true,
+          "paramMemberAsserts": false,
+          "params": []
+        },
+        {
+          "name": "fromNullable",
+          "doc": "/// Constructs an Optional of the given [value].\n///\n/// If [value] is null, returns [absent()].",
+          "const": true,
+          "paramMemberAsserts": false,
+          "params": [
+            {
+              "name": "value",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "unknown"
+                }
+              },
+              "display": "T?",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "of",
+          "doc": "/// Constructs an Optional of the given [value].",
+          "const": true,
+          "paramMemberAsserts": false,
+          "params": [
+            {
+              "name": "value",
+              "type": {
+                "kind": "unknown"
+              },
+              "display": "T",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "methods": [
+        {
+          "name": "==",
+          "doc": "/// Delegates to the underlying [value] operator==.",
+          "returnType": {
+            "kind": "scalar",
+            "name": "bool"
+          },
+          "params": [
+            {
+              "name": "o",
+              "type": {
+                "kind": "named",
+                "name": "Object"
+              },
+              "display": "Object",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "ifAbsent",
+          "doc": "/// Execution a function if the Optional value is absent.",
+          "returnType": {
+            "kind": "void"
+          },
+          "params": [
+            {
+              "name": "ifAbsent",
+              "type": {
+                "kind": "function",
+                "returnType": {
+                  "kind": "void"
+                },
+                "params": []
+              },
+              "display": "void Function()",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "ifPresent",
+          "doc": "/// Executes a function if the Optional value is present.",
+          "returnType": {
+            "kind": "void"
+          },
+          "params": [
+            {
+              "name": "ifPresent",
+              "type": {
+                "kind": "function",
+                "returnType": {
+                  "kind": "void"
+                },
+                "params": [
+                  {
+                    "name": "value",
+                    "type": {
+                      "kind": "unknown"
+                    },
+                    "named": false,
+                    "required": true
+                  }
+                ]
+              },
+              "display": "void Function(T)",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "or",
+          "doc": "/// Gets the Optional value with a default.\n///\n/// The default is returned if the Optional is [absent()].\n///\n/// Throws [ArgumentError] if [defaultValue] is null.",
+          "returnType": {
+            "kind": "unknown"
+          },
+          "params": [
+            {
+              "name": "defaultValue",
+              "type": {
+                "kind": "unknown"
+              },
+              "display": "T",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "toString",
+          "doc": "",
+          "returnType": {
+            "kind": "scalar",
+            "name": "String"
+          },
+          "params": []
+        },
+        {
+          "name": "transform",
+          "doc": "/// Transforms the Optional value.\n///\n/// If the Optional is [absent()], returns [absent()] without applying the transformer.\n///\n/// The transformer must not return `null`. If it does, an [ArgumentError] is thrown.",
+          "returnType": {
+            "kind": "named",
+            "name": "Optional"
+          },
+          "params": [
+            {
+              "name": "transformer",
+              "type": {
+                "kind": "function",
+                "returnType": {
+                  "kind": "unknown"
+                },
+                "params": [
+                  {
+                    "name": "value",
+                    "type": {
+                      "kind": "unknown"
+                    },
+                    "named": false,
+                    "required": true
+                  }
+                ]
+              },
+              "display": "S Function(T)",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "transformNullable",
+          "doc": "/// Transforms the Optional value.\n///\n/// If the Optional is [absent()], returns [absent()] without applying the transformer.\n///\n/// Returns [absent()] if the transformer returns `null`.",
+          "returnType": {
+            "kind": "named",
+            "name": "Optional"
+          },
+          "params": [
+            {
+              "name": "transformer",
+              "type": {
+                "kind": "function",
+                "returnType": {
+                  "kind": "nullable",
+                  "inner": {
+                    "kind": "unknown"
+                  }
+                },
+                "params": [
+                  {
+                    "name": "value",
+                    "type": {
+                      "kind": "unknown"
+                    },
+                    "named": false,
+                    "required": true
+                  }
+                ]
+              },
+              "display": "S? Function(T)",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "constants": []
+    },
+    {
+      "name": "Plane",
+      "doc": "/// A single color plane of image data.\n///\n/// The number and meaning of the planes in an image are determined by the\n/// format of the Image.",
+      "constructors": [],
+      "methods": [],
+      "constants": []
+    },
+    {
+      "name": "XFile",
+      "doc": "/// A CrossFile is a cross-platform, simplified File abstraction.\n///\n/// It wraps the bytes of a selected file, and its (platform-dependant) path.",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "/// Construct a CrossFile object from its path.\n///\n/// Optionally, this can be initialized with `bytes` and `length`\n/// so no http requests are performed to retrieve data later.\n///\n/// `name` may be passed from the outside, for those cases where the effective\n/// `path` of the file doesn't match what the user sees when selecting it\n/// (like in web)",
+          "const": false,
+          "paramMemberAsserts": false,
+          "params": [
+            {
+              "name": "path",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "mimeType",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "name",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "length",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "int"
+                }
+              },
+              "display": "int?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "bytes",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Uint8List"
+                }
+              },
+              "display": "Uint8List?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "lastModified",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "DateTime"
+                }
+              },
+              "display": "DateTime?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "overrides",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "CrossFileTestOverrides"
+                }
+              },
+              "display": "CrossFileTestOverrides?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "fromData",
+          "doc": "/// Construct a CrossFile object from its data.\n///\n/// On the web, the [path] is ignored if the [bytes] are provided,\n/// as the underlying Blob URL is used as the path.",
+          "const": false,
+          "paramMemberAsserts": false,
+          "params": [
+            {
+              "name": "bytes",
+              "type": {
+                "kind": "named",
+                "name": "Uint8List"
+              },
+              "display": "Uint8List",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "mimeType",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "name",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "length",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "int"
+                }
+              },
+              "display": "int?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "lastModified",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "DateTime"
+                }
+              },
+              "display": "DateTime?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "path",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "overrides",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "CrossFileTestOverrides"
+                }
+              },
+              "display": "CrossFileTestOverrides?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "methods": [],
+      "constants": []
+    }
+  ],
+  "enums": [
+    {
+      "kind": "enum",
+      "name": "CameraLensDirection",
+      "library": "camera",
+      "doc": "/// The direction the camera is facing.",
+      "values": [
+        {
+          "name": "front",
+          "doc": "/// Front facing camera (a user looking at the screen is seen by the camera)."
+        },
+        {
+          "name": "back",
+          "doc": "/// Back facing camera (a user looking at the screen is not seen by the camera)."
+        },
+        {
+          "name": "external",
+          "doc": "/// External camera which may not be mounted to the device."
+        }
+      ]
+    },
+    {
+      "kind": "enum",
+      "name": "CameraLensType",
+      "library": "camera",
+      "doc": "/// Represents various built-in camera lens types available on a device.\n///\n/// Each lens type offers different focal lengths and capabilities for capturing images.",
+      "values": [
+        {
+          "name": "wide",
+          "doc": "/// A built-in wide-angle camera device type."
+        },
+        {
+          "name": "telephoto",
+          "doc": "/// A built-in camera device type with a longer focal length than a wide-angle camera."
+        },
+        {
+          "name": "ultraWide",
+          "doc": "/// A built-in camera device type with a shorter focal length than a wide-angle camera."
+        },
+        {
+          "name": "unknown",
+          "doc": "/// Unknown camera device type."
+        }
+      ]
+    },
+    {
+      "kind": "enum",
+      "name": "ExposureMode",
+      "library": "camera",
+      "doc": "/// The possible exposure modes that can be set for a camera.",
+      "values": [
+        {
+          "name": "auto",
+          "doc": "/// Automatically determine exposure settings."
+        },
+        {
+          "name": "locked",
+          "doc": "/// Lock the currently determined exposure settings."
+        }
+      ]
+    },
+    {
+      "kind": "enum",
+      "name": "FlashMode",
+      "library": "camera",
+      "doc": "/// The possible flash modes that can be set for a camera",
+      "values": [
+        {
+          "name": "off",
+          "doc": "/// Do not use the flash when taking a picture."
+        },
+        {
+          "name": "auto",
+          "doc": "/// Let the device decide whether to flash the camera when taking a picture."
+        },
+        {
+          "name": "always",
+          "doc": "/// Always use the flash when taking a picture."
+        },
+        {
+          "name": "torch",
+          "doc": "/// Turns on the flash light and keeps it on until switched off."
+        }
+      ]
+    },
+    {
+      "kind": "enum",
+      "name": "FocusMode",
+      "library": "camera",
+      "doc": "/// The possible focus modes that can be set for a camera.",
+      "values": [
+        {
+          "name": "auto",
+          "doc": "/// Automatically determine focus settings."
+        },
+        {
+          "name": "locked",
+          "doc": "/// Lock the currently determined focus settings."
+        }
+      ]
+    },
+    {
+      "kind": "enum",
+      "name": "ImageFormatGroup",
+      "library": "camera",
+      "doc": "/// Group of image formats that are comparable across Android and iOS platforms.",
+      "values": [
+        {
+          "name": "unknown",
+          "doc": "/// The image format does not fit into any specific group."
+        },
+        {
+          "name": "yuv420",
+          "doc": "/// Multi-plane YUV 420 format.\n///\n/// This format is a generic YCbCr format, capable of describing any 4:2:0\n/// chroma-subsampled planar or semiplanar buffer (but not fully interleaved),\n/// with 8 bits per color sample.\n///\n/// On Android, this is `android.graphics.ImageFormat.YUV_420_888`. See\n/// https://developer.android.com/reference/android/graphics/ImageFormat.html#YUV_420_888\n///\n/// On iOS, this is `kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange`. See\n/// https://developer.apple.com/documentation/corevideo/1563591-pixel_format_identifiers/kcvpixelformattype_420ypcbcr8biplanarvideorange?language=objc"
+        },
+        {
+          "name": "bgra8888",
+          "doc": "/// 32-bit BGRA.\n///\n/// On iOS, this is `kCVPixelFormatType_32BGRA`. See\n/// https://developer.apple.com/documentation/corevideo/1563591-pixel_format_identifiers/kcvpixelformattype_32bgra?language=objc"
+        },
+        {
+          "name": "jpeg",
+          "doc": "/// 32-big RGB image encoded into JPEG bytes.\n///\n/// On Android, this is `android.graphics.ImageFormat.JPEG`. See\n/// https://developer.android.com/reference/android/graphics/ImageFormat#JPEG"
+        },
+        {
+          "name": "nv21",
+          "doc": "/// YCrCb format used for images, which uses the NV21 encoding format.\n///\n/// On Android, this is `android.graphics.ImageFormat.NV21`. See\n/// https://developer.android.com/reference/android/graphics/ImageFormat#NV21"
+        }
+      ]
+    },
+    {
+      "kind": "enum",
+      "name": "ResolutionPreset",
+      "library": "camera",
+      "doc": "/// Affect the quality of video recording and image capture:\n///\n/// A preset is treated as a target resolution, and exact values are not\n/// guaranteed. Platform implementations may fall back to a higher or lower\n/// resolution if a specific preset is not available.",
+      "values": [
+        {
+          "name": "low",
+          "doc": "/// 352x288 on iOS, ~240p on Android and Web"
+        },
+        {
+          "name": "medium",
+          "doc": "/// ~480p"
+        },
+        {
+          "name": "high",
+          "doc": "/// ~720p"
+        },
+        {
+          "name": "veryHigh",
+          "doc": "/// ~1080p"
+        },
+        {
+          "name": "ultraHigh",
+          "doc": "/// ~2160p"
+        },
+        {
+          "name": "max",
+          "doc": "/// The highest resolution available."
+        }
+      ]
+    },
+    {
+      "kind": "enum",
+      "name": "VideoStabilizationMode",
+      "library": "camera",
+      "doc": "/// The possible video stabilization modes that can be capturing video.",
+      "values": [
+        {
+          "name": "off",
+          "doc": "/// Video stabilization is disabled."
+        },
+        {
+          "name": "level1",
+          "doc": "/// Least stabilized video stabilization mode with the least latency."
+        },
+        {
+          "name": "level2",
+          "doc": "/// More stabilized video with more latency."
+        },
+        {
+          "name": "level3",
+          "doc": "/// Most stabilized video with the most latency."
+        }
+      ]
+    }
+  ],
+  "functions": [
+    {
+      "name": "availableCameras",
+      "doc": "/// Completes with a list of available cameras.\n///\n/// May throw a [CameraException].",
+      "returnType": {
+        "kind": "future",
+        "item": {
+          "kind": "list",
+          "item": {
+            "kind": "named",
+            "name": "CameraDescription"
+          }
+        }
+      },
+      "params": []
+    }
+  ]
+}

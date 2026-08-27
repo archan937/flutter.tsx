@@ -16,6 +16,7 @@ export default defineConfig(
       // Machine-written, gated by tsc + the generated-freshness test.
       'src/generated/',
       'test/site/__generated__/',
+      'test/fixtures/types/',
     ],
   },
   {

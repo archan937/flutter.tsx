@@ -17,6 +17,22 @@ const emitMethod = (method: IrMethod): string => {
   return `  ${signature} {\n${lines.join('\n')}\n  }`;
 };
 
+const emitSetupMethods = (component: IrComponent): string[] =>
+  component.setupMethods.map((setup) => {
+    const lines = setup.lines.map((line) => `    ${line}`);
+    return `  Future<void> _${setup.name}() async {\n${lines.join('\n')}\n  }`;
+  });
+
+const emitDispose = (component: IrComponent): string[] => {
+  if (component.disposeLines.length === 0) {
+    return [];
+  }
+  const lines = component.disposeLines.map((line) => `    ${line}`);
+  return [
+    `  @override\n  void dispose() {\n${lines.join('\n')}\n    super.dispose();\n  }`,
+  ];
+};
+
 const emitInitState = (component: IrComponent): string[] => {
   if (component.initStatements.length === 0) {
     return [];
@@ -80,12 +96,16 @@ const emitStatefulClass = (component: IrComponent): string => {
   const fields = component.fields
     .map((field) => {
       const modifier = field.mutable ? '' : 'final ';
-      return `  ${modifier}${field.dartType} ${field.name} = ${field.initializer};`;
+      const initializer =
+        field.initializer === null ? '' : ` = ${field.initializer}`;
+      return `  ${modifier}${field.dartType} ${field.name}${initializer};`;
     })
     .join('\n');
   const stateMembers = [
     fields,
     ...emitInitState(component),
+    ...emitSetupMethods(component),
+    ...emitDispose(component),
     ...component.methods.map(emitMethod),
     buildMethod(component),
   ];
@@ -110,6 +130,14 @@ export const emitDartFile = (
   context: CompileContext,
 ): string => {
   const classes = components.map(emitComponentClass);
-  const imports = importsForComponents(components, context);
+  const pluginImports = components
+    .flatMap((component) => component.pluginImports)
+    .map((dartImport) => `import '${dartImport}';`);
+  const imports = [
+    ...new Set([
+      ...importsForComponents(components, context),
+      ...pluginImports,
+    ]),
+  ].sort((first, second) => first.localeCompare(second));
   return `${imports.join('\n')}\n\n${classes.join('\n\n')}\n`;
 };

@@ -253,23 +253,36 @@ class _SaverState extends State<Saver> {
   });
 });
 
-describe('transpileComponent — not yet supported', () => {
-  test('plugin hooks are an honest numbered error', () => {
+describe('transpileComponent — plugins', () => {
+  test('the camera conformance fixture emits its certified golden', async () => {
+    const source = await Bun.file(
+      new URL('../fixtures/01-camera-screen/input.tsx', import.meta.url),
+    ).text();
+    const expected = await Bun.file(
+      new URL('../fixtures/01-camera-screen/expected.dart', import.meta.url),
+    ).text();
+
+    expect(
+      await transpileComponent({ source, filePath: 'camera_screen.tsx' }),
+    ).toBe(expected);
+  });
+
+  test('an unextracted plugin is a loud error', () => {
     expect(
       transpileComponent({
         source:
           "import { Text } from 'flutter-tsx';\n" +
-          "import { useCamera } from 'plugin:camera';\n" +
+          "import { useRocket } from 'plugin:rocketry';\n" +
           'export const Probe = () => {\n' +
-          '  const cam = useCamera();\n' +
+          '  const rocket = useRocket();\n' +
           '  return <Text>hi</Text>;\n' +
           '};\n',
         filePath: 'probe.tsx',
       }),
     ).rejects.toThrow(
       new Error(
-        'TSX0304 probe.tsx:3:14 — <Probe> uses plugin hooks — plugin ' +
-          'compilation lands at roadmap step 22.',
+        'plugins/rocketry.json does not exist — run ' +
+          '`bun run extract:plugin rocketry` first.',
       ),
     );
   });

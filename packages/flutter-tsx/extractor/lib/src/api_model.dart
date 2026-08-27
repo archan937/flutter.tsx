@@ -96,6 +96,90 @@ class ConstructorModel {
   };
 }
 
+class MethodModel {
+  const MethodModel({
+    required this.name,
+    required this.doc,
+    required this.returnType,
+    required this.params,
+  });
+
+  final String name;
+  final String doc;
+  final TypeNode returnType;
+  final List<ParamModel> params;
+
+  Map<String, Object?> toJson() => {
+    'name': name,
+    'doc': doc,
+    'returnType': returnType.toJson(),
+    'params': params.map((param) => param.toJson()).toList(),
+  };
+}
+
+class FunctionModel {
+  const FunctionModel({
+    required this.name,
+    required this.doc,
+    required this.returnType,
+    required this.params,
+  });
+
+  final String name;
+  final String doc;
+  final TypeNode returnType;
+  final List<ParamModel> params;
+
+  Map<String, Object?> toJson() => {
+    'name': name,
+    'doc': doc,
+    'returnType': returnType.toJson(),
+    'params': params.map((param) => param.toJson()).toList(),
+  };
+}
+
+class PluginClass {
+  const PluginClass({
+    required this.name,
+    required this.doc,
+    required this.constructors,
+    required this.methods,
+    required this.constants,
+  });
+
+  final String name;
+  final String doc;
+  final List<ConstructorModel> constructors;
+  final List<MethodModel> methods;
+  final List<ConstantModel> constants;
+
+  Map<String, Object?> toJson() => {
+    'name': name,
+    'doc': doc,
+    'constructors': constructors
+        .map((constructor) => constructor.toJson())
+        .toList(),
+    'methods': methods.map((method) => method.toJson()).toList(),
+    'constants': constants.map((constant) => constant.toJson()).toList(),
+  };
+}
+
+class PluginApi {
+  const PluginApi({
+    required this.package,
+    required this.version,
+    required this.classes,
+    required this.enums,
+    required this.functions,
+  });
+
+  final String package;
+  final String version;
+  final List<PluginClass> classes;
+  final List<EnumEntity> enums;
+  final List<FunctionModel> functions;
+}
+
 sealed class EntityModel {
   const EntityModel({
     required this.name,

@@ -67,13 +67,11 @@ export interface IrField {
   name: string;
   dartType: string;
   mutable: boolean;
-  initializer: string;
+  initializer: string | null;
 }
 
-export interface IrStatement {
-  kind: 'setState';
-  assignments: string[];
-}
+export type IrStatement =
+  { kind: 'setState'; assignments: string[] } | { kind: 'dart'; line: string };
 
 export interface IrMethod {
   name: string;
@@ -91,6 +89,9 @@ export interface IrComponent {
   effects: ts.CallExpression[];
   fields: IrField[];
   methods: IrMethod[];
+  setupMethods: { name: string; lines: string[] }[];
   initStatements: IrStatement[];
+  disposeLines: string[];
+  pluginImports: string[];
   body: IrWidget;
 }
