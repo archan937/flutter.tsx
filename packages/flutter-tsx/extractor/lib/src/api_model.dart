@@ -100,18 +100,21 @@ class MethodModel {
   const MethodModel({
     required this.name,
     required this.doc,
+    required this.isStatic,
     required this.returnType,
     required this.params,
   });
 
   final String name;
   final String doc;
+  final bool isStatic;
   final TypeNode returnType;
   final List<ParamModel> params;
 
   Map<String, Object?> toJson() => {
     'name': name,
     'doc': doc,
+    'static': isStatic,
     'returnType': returnType.toJson(),
     'params': params.map((param) => param.toJson()).toList(),
   };

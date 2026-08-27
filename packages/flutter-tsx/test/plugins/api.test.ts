@@ -32,12 +32,15 @@ describe('loadPluginApi — committed camera api', () => {
       'resolutionPreset',
     ]);
 
-    const methodNamed = (name: string): { returnType: unknown } | undefined =>
+    const methodNamed = (
+      name: string,
+    ): { returnType: unknown; isStatic: boolean } | undefined =>
       controller?.methods.find((method) => method.name === name);
     expect(methodNamed('initialize')?.returnType).toEqual({
       kind: 'future',
       item: { kind: 'void' },
     });
+    expect(methodNamed('initialize')?.isStatic).toBe(false);
     expect(methodNamed('takePicture')?.returnType).toEqual({
       kind: 'future',
       item: { kind: 'named', name: 'XFile' },
@@ -91,7 +94,7 @@ describe('parsePluginApi — malformed documents', () => {
               name: 'Demo',
               doc: '',
               constructors: [],
-              methods: [{ name: 'run', doc: '', params: [] }],
+              methods: [{ name: 'run', doc: '', static: false, params: [] }],
               constants: [],
             },
           ],

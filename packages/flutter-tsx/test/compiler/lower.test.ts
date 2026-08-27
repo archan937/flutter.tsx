@@ -1303,6 +1303,7 @@ describe('lowerComponent — plugin hooks', () => {
               hookName: 'useEngine',
               className: 'EngineController',
               dartImport: 'package:motors/motors.dart',
+              acquisition: { kind: 'constructor' },
               construct: [
                 {
                   kind: 'supplierFirst',

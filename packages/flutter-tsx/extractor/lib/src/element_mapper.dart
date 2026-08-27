@@ -72,16 +72,12 @@ EnumEntity? mapEnum(EnumElement enumElement, String libraryLabel) {
 PluginClass mapPluginClass(ClassElement classElement, AssertInspector asserts) {
   final methods =
       classElement.methods
-          .where(
-            (method) =>
-                method.isPublic &&
-                !method.isStatic &&
-                (method.name ?? '') != '',
-          )
+          .where((method) => method.isPublic && (method.name ?? '') != '')
           .map(
             (method) => MethodModel(
               name: method.name ?? '',
               doc: method.documentationComment ?? '',
+              isStatic: method.isStatic,
               returnType: encodeType(method.returnType),
               params: method.formalParameters
                   .map((param) => _mapParam(classElement, param))

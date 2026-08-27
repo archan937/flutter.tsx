@@ -1,0 +1,1686 @@
+{
+  "package": "shared_preferences",
+  "version": "2.5.5",
+  "classes": [
+    {
+      "name": "SharedPreferences",
+      "doc": "/// Wraps NSUserDefaults (on iOS) and SharedPreferences (on Android), providing\n/// a persistent store for simple data.\n///\n/// Data is persisted to disk asynchronously.\n///\n/// This is a legacy API. For new code, consider [SharedPreferencesAsync] or [SharedPreferencesWithCache].",
+      "constructors": [],
+      "methods": [
+        {
+          "name": "clear",
+          "doc": "/// Completes with true once the user preferences for the app has been cleared.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "scalar",
+              "name": "bool"
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "commit",
+          "doc": "/// Always returns true.\n/// On iOS, synchronize is marked deprecated. On Android, we commit every set.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "scalar",
+              "name": "bool"
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "containsKey",
+          "doc": "/// Returns true if the persistent storage contains the given [key].",
+          "static": false,
+          "returnType": {
+            "kind": "scalar",
+            "name": "bool"
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "doc": "/// Reads a value of any type from persistent storage.",
+          "static": false,
+          "returnType": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "named",
+              "name": "Object"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "getBool",
+          "doc": "/// Reads a value from persistent storage, throwing an exception if it's not a\n/// bool.",
+          "static": false,
+          "returnType": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "bool"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "getDouble",
+          "doc": "/// Reads a value from persistent storage, throwing an exception if it's not a\n/// double.",
+          "static": false,
+          "returnType": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "double"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "getInstance",
+          "doc": "/// Loads and parses the [SharedPreferences] for this app from disk.\n///\n/// Because this is reading from disk, it shouldn't be awaited in\n/// performance-sensitive blocks.",
+          "static": true,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "named",
+              "name": "SharedPreferences"
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "getInt",
+          "doc": "/// Reads a value from persistent storage, throwing an exception if it's not\n/// an int.",
+          "static": false,
+          "returnType": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "int"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "getKeys",
+          "doc": "/// Returns all keys in the persistent storage.",
+          "static": false,
+          "returnType": {
+            "kind": "set",
+            "item": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "getString",
+          "doc": "/// Reads a value from persistent storage, throwing an exception if it's not a\n/// String.",
+          "static": false,
+          "returnType": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "getStringList",
+          "doc": "/// Reads a set of string values from persistent storage, throwing an\n/// exception if it's not a string list.",
+          "static": false,
+          "returnType": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "list",
+              "item": {
+                "kind": "scalar",
+                "name": "String"
+              }
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "reload",
+          "doc": "/// Fetches the latest values from the host platform.\n///\n/// Use this method to observe modifications that were made in native code\n/// (without using the plugin) while the app is running.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "remove",
+          "doc": "/// Removes an entry from persistent storage.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "scalar",
+              "name": "bool"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "resetStatic",
+          "doc": "/// Resets class's static values to allow for testing of setPrefix flow.",
+          "static": true,
+          "returnType": {
+            "kind": "void"
+          },
+          "params": []
+        },
+        {
+          "name": "setBool",
+          "doc": "/// Saves a boolean [value] to persistent storage in the background.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "scalar",
+              "name": "bool"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "value",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setDouble",
+          "doc": "/// Saves a double [value] to persistent storage in the background.\n///\n/// Android doesn't support storing doubles, so it will be stored as a float.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "scalar",
+              "name": "bool"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "value",
+              "type": {
+                "kind": "scalar",
+                "name": "double"
+              },
+              "display": "double",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setInt",
+          "doc": "/// Saves an integer [value] to persistent storage in the background.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "scalar",
+              "name": "bool"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "value",
+              "type": {
+                "kind": "scalar",
+                "name": "int"
+              },
+              "display": "int",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setMockInitialValues",
+          "doc": "/// Initializes the shared preferences with mock values for testing.\n///\n/// If the singleton instance has been initialized already, it is nullified.",
+          "static": true,
+          "returnType": {
+            "kind": "void"
+          },
+          "params": [
+            {
+              "name": "values",
+              "type": {
+                "kind": "map",
+                "key": {
+                  "kind": "scalar",
+                  "name": "String"
+                },
+                "value": {
+                  "kind": "named",
+                  "name": "Object"
+                }
+              },
+              "display": "Map<String, Object>",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setPrefix",
+          "doc": "/// Sets the prefix that is attached to all keys for all shared preferences\n/// read or written via this class.\n///\n/// This changes the inputs when adding data to preferences as well as\n/// setting the filter that determines what data will be returned\n/// from the `getInstance` method.\n///\n/// By default, the prefix is 'flutter.', which is compatible with the\n/// previous behavior of this plugin. To use preferences with no prefix,\n/// set [prefix] to ''.\n///\n/// If [prefix] is set to '', you may encounter preferences that are\n/// incompatible with shared_preferences. The optional parameter\n/// [allowList] will cause the plugin to only return preferences that\n/// are both contained in the list AND match the provided prefix.\n///\n/// If [prefix] is changed, and an [allowList] is used, the prefix must be included\n/// on the keys added to the [allowList].\n///\n/// No migration of existing preferences is performed by this method.\n/// If you set a different prefix, and have previously stored preferences,\n/// you will need to handle any migration yourself.\n///\n/// This cannot be called after `getInstance`.",
+          "static": true,
+          "returnType": {
+            "kind": "void"
+          },
+          "params": [
+            {
+              "name": "prefix",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "allowList",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "set",
+                  "item": {
+                    "kind": "scalar",
+                    "name": "String"
+                  }
+                }
+              },
+              "display": "Set<String>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setString",
+          "doc": "/// Saves a string [value] to persistent storage in the background.\n///\n/// Note: Due to limitations in Android's SharedPreferences,\n/// values cannot start with any one of the following:\n///\n/// - 'VGhpcyBpcyB0aGUgcHJlZml4IGZvciBhIGxpc3Qu'\n/// - 'VGhpcyBpcyB0aGUgcHJlZml4IGZvciBCaWdJbnRlZ2Vy'\n/// - 'VGhpcyBpcyB0aGUgcHJlZml4IGZvciBEb3VibGUu'",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "scalar",
+              "name": "bool"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "value",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setStringList",
+          "doc": "/// Saves a list of strings [value] to persistent storage in the background.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "scalar",
+              "name": "bool"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "value",
+              "type": {
+                "kind": "list",
+                "item": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "List<String>",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "constants": []
+    },
+    {
+      "name": "SharedPreferencesAsync",
+      "doc": "/// Provides a persistent store for simple data.\n///\n/// Data is persisted to and fetched from the disk asynchronously.\n/// If synchronous access to preferences in a locally cached version of preferences\n/// is preferred, consider using [SharedPreferencesWithCache] instead.",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "/// Creates a new instance with the given [options].",
+          "const": false,
+          "paramMemberAsserts": false,
+          "params": [
+            {
+              "name": "options",
+              "type": {
+                "kind": "named",
+                "name": "SharedPreferencesOptions"
+              },
+              "display": "SharedPreferencesOptions",
+              "named": true,
+              "required": false,
+              "defaultValue": "const SharedPreferencesOptions()",
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "methods": [
+        {
+          "name": "clear",
+          "doc": "/// Clears all preferences from the platform.\n///\n/// If no [parameters] are provided, and [SharedPreferencesAsync] has no filter,\n/// all preferences will be removed. This may include values not set by this instance,\n/// such as those stored by native code or by other packages using\n/// shared_preferences internally, which may cause unintended side effects.\n///\n/// It is highly recommended that an [allowList] be provided to this call.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "allowList",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "set",
+                  "item": {
+                    "kind": "scalar",
+                    "name": "String"
+                  }
+                }
+              },
+              "display": "Set<String>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "containsKey",
+          "doc": "/// Returns true if the the platform contains the given [key].",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "scalar",
+              "name": "bool"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "getAll",
+          "doc": "/// Returns all keys and values on the the platform that match provided [parameters].\n///\n/// If no restrictions are provided, fetches all entries stored on the platform.\n///\n/// Ignores any entries of types which are incompatible with shared_preferences.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "map",
+              "key": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "value": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Object"
+                }
+              }
+            }
+          },
+          "params": [
+            {
+              "name": "allowList",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "set",
+                  "item": {
+                    "kind": "scalar",
+                    "name": "String"
+                  }
+                }
+              },
+              "display": "Set<String>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "getBool",
+          "doc": "/// Reads a value from the platform, throwing a [TypeError] if the value is\n/// not a `bool`.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "nullable",
+              "inner": {
+                "kind": "scalar",
+                "name": "bool"
+              }
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "getDouble",
+          "doc": "/// Reads a value from the platform, throwing a [TypeError] if the value is\n/// not a `double`.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "nullable",
+              "inner": {
+                "kind": "scalar",
+                "name": "double"
+              }
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "getInt",
+          "doc": "/// Reads a value from the platform, throwing a [TypeError] if the value is\n/// not an `int`.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "nullable",
+              "inner": {
+                "kind": "scalar",
+                "name": "int"
+              }
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "getKeys",
+          "doc": "/// Returns all keys on the the platform that match provided [parameters].\n///\n/// If no restrictions are provided, fetches all keys stored on the platform.\n///\n/// Ignores any keys whose values are types which are incompatible with shared_preferences.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "set",
+              "item": {
+                "kind": "scalar",
+                "name": "String"
+              }
+            }
+          },
+          "params": [
+            {
+              "name": "allowList",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "set",
+                  "item": {
+                    "kind": "scalar",
+                    "name": "String"
+                  }
+                }
+              },
+              "display": "Set<String>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "getString",
+          "doc": "/// Reads a value from the platform, throwing a [TypeError] if the value is\n/// not a `String`.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "nullable",
+              "inner": {
+                "kind": "scalar",
+                "name": "String"
+              }
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "getStringList",
+          "doc": "/// Reads a list of string values from the platform, throwing a [TypeError]\n/// if the value is not a `List<String>`.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "nullable",
+              "inner": {
+                "kind": "list",
+                "item": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              }
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "remove",
+          "doc": "/// Removes an entry from the platform.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setBool",
+          "doc": "/// Saves a boolean [value] to the platform.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "value",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setDouble",
+          "doc": "/// Saves a double [value] to the platform.\n///\n/// On platforms that do not support storing doubles,\n/// the value will be stored as a float.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "value",
+              "type": {
+                "kind": "scalar",
+                "name": "double"
+              },
+              "display": "double",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setInt",
+          "doc": "/// Saves an integer [value] to the platform.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "value",
+              "type": {
+                "kind": "scalar",
+                "name": "int"
+              },
+              "display": "int",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setString",
+          "doc": "/// Saves a string [value] to the platform.\n///\n/// Some platforms have special values that cannot be stored, please refer to\n/// the README for more information.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "value",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setStringList",
+          "doc": "/// Saves a list of strings [value] to the platform.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "value",
+              "type": {
+                "kind": "list",
+                "item": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "List<String>",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "constants": []
+    },
+    {
+      "name": "SharedPreferencesOptions",
+      "doc": "/// Basic options for creating SharedPreferencesAsync classes.\n///\n/// This class exists to provide extension to platform specific options as\n/// there are currently no general options that are not platform specific.",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "/// Constructor for SharedPreferencesOptions.",
+          "const": true,
+          "paramMemberAsserts": false,
+          "params": []
+        }
+      ],
+      "methods": [],
+      "constants": []
+    },
+    {
+      "name": "SharedPreferencesWithCache",
+      "doc": "/// Provides a persistent store for simple data.\n///\n/// Cache provided to allow for synchronous gets.\n///\n/// If preferences on the platform may be altered by other means than through\n/// this instance, consider using [SharedPreferencesAsync] instead. You may also\n/// refresh the cached data using [reloadCache] prior to a get request to prevent\n/// missed changes that may have occurred since the cache was last updated.",
+      "constructors": [],
+      "methods": [
+        {
+          "name": "clear",
+          "doc": "/// Clears cache and platform preferences that match filter options.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "containsKey",
+          "doc": "/// Returns true if cache contains the given [key].\n///\n/// Throws an [ArgumentError] if [key] is not in this instance's filter.",
+          "static": false,
+          "returnType": {
+            "kind": "scalar",
+            "name": "bool"
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "create",
+          "doc": "/// Creates a new instance with the given options and reloads the cache from\n/// the platform data.",
+          "static": true,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "named",
+              "name": "SharedPreferencesWithCache"
+            }
+          },
+          "params": [
+            {
+              "name": "sharedPreferencesOptions",
+              "type": {
+                "kind": "named",
+                "name": "SharedPreferencesOptions"
+              },
+              "display": "SharedPreferencesOptions",
+              "named": true,
+              "required": false,
+              "defaultValue": "const SharedPreferencesOptions()",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "cacheOptions",
+              "type": {
+                "kind": "named",
+                "name": "SharedPreferencesWithCacheOptions"
+              },
+              "display": "SharedPreferencesWithCacheOptions",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "cache",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "map",
+                  "key": {
+                    "kind": "scalar",
+                    "name": "String"
+                  },
+                  "value": {
+                    "kind": "nullable",
+                    "inner": {
+                      "kind": "named",
+                      "name": "Object"
+                    }
+                  }
+                }
+              },
+              "display": "Map<String, Object?>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "doc": "/// Reads a value of any type from the cache.\n///\n/// Throws an [ArgumentError] if [key] is not in this instance's filter.",
+          "static": false,
+          "returnType": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "named",
+              "name": "Object"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "getBool",
+          "doc": "/// Reads a value from the cache, throwing a [TypeError] if the value is not a\n/// bool.\n///\n/// Throws an [ArgumentError] if [key] is not in this instance's filter.",
+          "static": false,
+          "returnType": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "bool"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "getDouble",
+          "doc": "/// Reads a value from the cache, throwing a [TypeError] if the value is not a\n/// double.\n///\n/// Throws an [ArgumentError] if [key] is not in this instance's filter.",
+          "static": false,
+          "returnType": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "double"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "getInt",
+          "doc": "/// Reads a value from the cache, throwing a [TypeError] if the value is not\n/// an int.\n///\n/// Throws an [ArgumentError] if [key] is not in this instance's filter.",
+          "static": false,
+          "returnType": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "int"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "getString",
+          "doc": "/// Reads a value from the cache, throwing a [TypeError] if the value is not a\n/// String.\n///\n/// Throws an [ArgumentError] if [key] is not in this instance's filter.",
+          "static": false,
+          "returnType": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "getStringList",
+          "doc": "/// Reads a list of string values from the cache, throwing an\n/// exception if it's not a string list.\n///\n/// Throws an [ArgumentError] if [key] is not in this instance's filter.",
+          "static": false,
+          "returnType": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "list",
+              "item": {
+                "kind": "scalar",
+                "name": "String"
+              }
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "reloadCache",
+          "doc": "/// Updates cache with latest values from platform.\n///\n/// This should be called before reading any values if the values may have\n/// been changed by anything other than this cache instance,\n/// such as from another isolate or native code that changes the underlying\n/// preference storage directly.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "remove",
+          "doc": "/// Removes an entry from cache and platform.\n///\n/// Throws an [ArgumentError] if [key] is not in this instance's filter.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setBool",
+          "doc": "/// Saves a boolean [value] to the cache and platform.\n///\n/// Throws an [ArgumentError] if [key] is not in this instance's filter.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "value",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setDouble",
+          "doc": "/// Saves a double [value] to the cache and platform.\n///\n/// On platforms that do not support storing doubles,\n/// the value will be stored as a float instead.\n///\n/// Throws an [ArgumentError] if [key] is not in this instance's filter.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "value",
+              "type": {
+                "kind": "scalar",
+                "name": "double"
+              },
+              "display": "double",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setInt",
+          "doc": "/// Saves an integer [value] to the cache and platform.\n///\n/// Throws an [ArgumentError] if [key] is not in this instance's filter.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "value",
+              "type": {
+                "kind": "scalar",
+                "name": "int"
+              },
+              "display": "int",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setString",
+          "doc": "/// Saves a string [value] to the cache and platform.\n///\n/// Note: Due to limitations on some platforms,\n/// values cannot start with the following:\n///\n/// - 'VGhpcyBpcyB0aGUgcHJlZml4IGZvciBhIGxpc3Qu'\n///\n/// Throws an [ArgumentError] if [key] is not in this instance's filter.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "value",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setStringList",
+          "doc": "/// Saves a list of strings [value] to the cache and platform.\n///\n/// Throws an [ArgumentError] if [key] is not in this instance's filter.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "value",
+              "type": {
+                "kind": "list",
+                "item": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "List<String>",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "constants": []
+    },
+    {
+      "name": "SharedPreferencesWithCacheOptions",
+      "doc": "/// Options necessary to create a [SharedPreferencesWithCache].",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "/// Creates a new instance with the given options.",
+          "const": true,
+          "paramMemberAsserts": false,
+          "params": [
+            {
+              "name": "allowList",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "set",
+                  "item": {
+                    "kind": "scalar",
+                    "name": "String"
+                  }
+                }
+              },
+              "display": "Set<String>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// Information about what data will be fetched during `get` and `init`\n/// methods, what data can be `set`, as well as what data will be removed by `clear`.\n///\n/// A `null` allowList will prevent filtering, allowing all items to be cached.\n/// An empty allowList will prevent all caching as well as getting and setting.\n///\n/// Setting an allowList is strongly recommended, to prevent getting and\n/// caching unneeded or unexpected data.",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "methods": [],
+      "constants": []
+    }
+  ],
+  "enums": [],
+  "functions": []
+}

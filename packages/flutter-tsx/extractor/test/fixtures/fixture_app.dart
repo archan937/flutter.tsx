@@ -51,6 +51,17 @@ class GuardedList {
   final List<String> items;
 }
 
+/// A singleton service acquired asynchronously.
+class TestVault {
+  TestVault._();
+
+  /// Returns the shared vault.
+  static Future<TestVault> getInstance() async => TestVault._();
+
+  /// Stores a value.
+  Future<bool> put(String key, String value) async => true;
+}
+
 /// A stateful helper whose constructor is deliberately not const.
 class TestController {
   TestController({this.tick = 0});

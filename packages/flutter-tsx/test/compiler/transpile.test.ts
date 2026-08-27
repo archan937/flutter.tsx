@@ -280,6 +280,19 @@ describe('transpileComponent — plugins', () => {
     ).toBe(expected);
   });
 
+  test('singleton services derive with zero hand data', async () => {
+    const source = await Bun.file(
+      new URL('../fixtures/11-preferences/input.tsx', import.meta.url),
+    ).text();
+    const expected = await Bun.file(
+      new URL('../fixtures/11-preferences/expected.dart', import.meta.url),
+    ).text();
+
+    expect(await transpileComponent({ source, filePath: 'profile.tsx' })).toBe(
+      expected,
+    );
+  });
+
   test('an unextracted plugin is a loud error', () => {
     expect(
       transpileComponent({

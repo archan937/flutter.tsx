@@ -122,6 +122,7 @@
         {
           "name": "buildPreview",
           "doc": "/// Returns a widget showing a live camera preview.",
+          "static": false,
           "returnType": {
             "kind": "widget"
           },
@@ -130,6 +131,7 @@
         {
           "name": "debugCheckIsDisposed",
           "doc": "/// Checks whether [CameraController.dispose] has completed successfully.\n///\n/// This is a no-op when asserts are disabled.",
+          "static": false,
           "returnType": {
             "kind": "void"
           },
@@ -138,6 +140,7 @@
         {
           "name": "dispose",
           "doc": "/// Releases the resources of this camera.",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -149,6 +152,7 @@
         {
           "name": "getExposureOffsetStepSize",
           "doc": "/// Gets the supported step size for exposure offset for the selected camera in EV units.\n///\n/// Returns 0 when the camera supports using a free value without stepping.",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -161,6 +165,7 @@
         {
           "name": "getMaxExposureOffset",
           "doc": "/// Gets the maximum supported exposure offset for the selected camera in EV units.",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -173,6 +178,7 @@
         {
           "name": "getMaxZoomLevel",
           "doc": "/// Gets the maximum supported zoom level for the selected camera.",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -185,6 +191,7 @@
         {
           "name": "getMinExposureOffset",
           "doc": "/// Gets the minimum supported exposure offset for the selected camera in EV units.",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -197,6 +204,7 @@
         {
           "name": "getMinZoomLevel",
           "doc": "/// Gets the minimum supported zoom level for the selected camera.",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -209,6 +217,7 @@
         {
           "name": "getSupportedVideoStabilizationModes",
           "doc": "/// Gets a list of video stabilization modes that are supported\n/// for the selected camera.\n///\n/// [VideoStabilizationMode.off] will always be listed.",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -224,6 +233,7 @@
         {
           "name": "initialize",
           "doc": "/// Initializes the camera on the device.\n///\n/// Throws a [CameraException] if the initialization fails.",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -235,6 +245,7 @@
         {
           "name": "lockCaptureOrientation",
           "doc": "/// Locks the capture orientation.\n///\n/// If [orientation] is omitted, the current device orientation is used.",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -263,6 +274,7 @@
         {
           "name": "pausePreview",
           "doc": "/// Pauses the current camera preview",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -274,6 +286,7 @@
         {
           "name": "pauseVideoRecording",
           "doc": "/// Pause video recording.\n///\n/// This feature is only available on iOS and Android sdk 24+.",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -285,6 +298,7 @@
         {
           "name": "prepareForVideoRecording",
           "doc": "/// Prepare the capture session for video recording.\n///\n/// Use of this method is optional, but it may be called for performance\n/// reasons on iOS.\n///\n/// Preparing audio can cause a minor delay in the CameraPreview view on iOS.\n/// If video recording is intended, calling this early eliminates this delay\n/// that would otherwise be experienced when video recording is started.\n/// This operation is a no-op on Android and Web.\n///\n/// Throws a [CameraException] if the prepare fails.",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -296,6 +310,7 @@
         {
           "name": "removeListener",
           "doc": "",
+          "static": false,
           "returnType": {
             "kind": "void"
           },
@@ -321,6 +336,7 @@
         {
           "name": "resumePreview",
           "doc": "/// Resumes the current camera preview",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -332,6 +348,7 @@
         {
           "name": "resumeVideoRecording",
           "doc": "/// Resume video recording after pausing.\n///\n/// This feature is only available on iOS and Android sdk 24+.",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -343,6 +360,7 @@
         {
           "name": "setDescription",
           "doc": "/// Sets the description of the camera.\n///\n/// On Android, you must start the recording with [startVideoRecording]\n/// with `enablePersistentRecording` set to `true`\n/// to avoid cancelling any active recording.\n///\n/// Throws a [CameraException] if setting the description fails.",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -368,6 +386,7 @@
         {
           "name": "setExposureMode",
           "doc": "/// Sets the exposure mode for taking pictures.",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -393,6 +412,7 @@
         {
           "name": "setExposureOffset",
           "doc": "/// Sets the exposure offset for the selected camera.\n///\n/// The supplied [offset] value should be in EV units. 1 EV unit represents a\n/// doubling in brightness. It should be between the minimum and maximum offsets\n/// obtained through `getMinExposureOffset` and `getMaxExposureOffset` respectively.\n/// Throws a `CameraException` when an illegal offset is supplied.\n///\n/// When the supplied [offset] value does not align with the step size obtained\n/// through `getExposureStepSize`, it will automatically be rounded to the nearest step.\n///\n/// Returns the (rounded) offset value that was set.",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -419,6 +439,7 @@
         {
           "name": "setExposurePoint",
           "doc": "/// Sets the exposure point for automatically determining the exposure value.\n///\n/// Supplying a `null` value will reset the exposure point to it's default\n/// value.",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -447,6 +468,7 @@
         {
           "name": "setFlashMode",
           "doc": "/// Sets the flash mode for taking pictures.",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -472,6 +494,7 @@
         {
           "name": "setFocusMode",
           "doc": "/// Sets the focus mode for taking pictures.",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -497,6 +520,7 @@
         {
           "name": "setFocusPoint",
           "doc": "/// Sets the focus point for automatically determining the focus value.\n///\n/// Supplying a `null` value will reset the focus point to it's default\n/// value.",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -525,6 +549,7 @@
         {
           "name": "setVideoStabilizationMode",
           "doc": "/// Set the video stabilization mode for the selected camera.\n///\n/// When [allowFallback] is true (default) the camera will be set to the best\n/// video stabilization mode up to, and including, [mode].\n///\n/// When [allowFallback] is false and if [mode] is not one of the supported\n/// modes (see [getSupportedVideoStabilizationModes]), then it throws an\n/// [ArgumentError].\n///\n/// This feature is only available if [getSupportedVideoStabilizationModes]\n/// returns at least one value other than [VideoStabilizationMode.off].",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -563,6 +588,7 @@
         {
           "name": "setZoomLevel",
           "doc": "/// Set the zoom level for the selected camera.\n///\n/// The supplied [zoom] value should be between 1.0 and the maximum supported\n/// zoom level returned by the `getMaxZoomLevel`. Throws an `CameraException`\n/// when an illegal zoom level is suplied.",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -588,6 +614,7 @@
         {
           "name": "startImageStream",
           "doc": "/// Start streaming images from platform camera.\n///\n/// Settings for capturing images on iOS and Android is set to always use the\n/// latest image available from the camera and will drop all other images.\n///\n/// When running continuously with [CameraPreview] widget, this function runs\n/// best with [ResolutionPreset.low]. Running on [ResolutionPreset.high] can\n/// have significant frame rate drops for [CameraPreview] on lower end\n/// devices.\n///\n/// Throws a [CameraException] if image streaming or video recording has\n/// already started.\n///\n/// The `startImageStream` method is only available on platforms that\n/// report support for image streaming via [supportsImageStreaming].\n///",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -626,6 +653,7 @@
         {
           "name": "startVideoRecording",
           "doc": "/// Start a video recording.\n///\n/// You may optionally pass an [onAvailable] callback to also have the\n/// video frames streamed to this callback.\n///\n/// The video is returned as a [XFile] after calling [stopVideoRecording].\n/// Throws a [CameraException] if the capture fails.\n///\n/// `enablePersistentRecording` parameter configures the recording to be a persistent recording.\n/// A persistent recording can only be stopped by explicitly calling [stopVideoRecording]\n/// and will ignore events that would normally cause recording to stop,\n/// such as lifecycle events or explicit calls to [setDescription] while recording is in progress.\n/// Currently a no-op on platforms other than Android.",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -680,6 +708,7 @@
         {
           "name": "stopImageStream",
           "doc": "/// Stop streaming images from platform camera.\n///\n/// Throws a [CameraException] if image streaming was not started or video\n/// recording was started.\n///\n/// The `stopImageStream` method is only available on platforms that\n/// report support for image streaming via [supportsImageStreaming].",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -691,6 +720,7 @@
         {
           "name": "stopVideoRecording",
           "doc": "/// Stops the video recording and returns the file where it was saved.\n///\n/// Throws a [CameraException] if the capture failed.",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -703,6 +733,7 @@
         {
           "name": "supportsImageStreaming",
           "doc": "/// Check whether the camera platform supports image streaming.",
+          "static": false,
           "returnType": {
             "kind": "scalar",
             "name": "bool"
@@ -712,6 +743,7 @@
         {
           "name": "takePicture",
           "doc": "/// Captures an image and returns the file where it was saved.\n///\n/// Throws a [CameraException] if the capture fails.",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -724,6 +756,7 @@
         {
           "name": "unlockCaptureOrientation",
           "doc": "/// Unlocks the capture orientation.",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -814,6 +847,7 @@
         {
           "name": "==",
           "doc": "",
+          "static": false,
           "returnType": {
             "kind": "scalar",
             "name": "bool"
@@ -837,6 +871,7 @@
         {
           "name": "toString",
           "doc": "",
+          "static": false,
           "returnType": {
             "kind": "scalar",
             "name": "String"
@@ -892,6 +927,7 @@
         {
           "name": "toString",
           "doc": "",
+          "static": false,
           "returnType": {
             "kind": "scalar",
             "name": "String"
@@ -1017,6 +1053,7 @@
         {
           "name": "build",
           "doc": "",
+          "static": false,
           "returnType": {
             "kind": "widget"
           },
@@ -1339,6 +1376,7 @@
         {
           "name": "copyWith",
           "doc": "/// Creates a modified copy of the object.\n///\n/// Explicitly specified fields get the specified value, all other fields get\n/// the same value of the current object.",
+          "static": false,
           "returnType": {
             "kind": "named",
             "name": "CameraValue"
@@ -1653,6 +1691,7 @@
         {
           "name": "toString",
           "doc": "",
+          "static": false,
           "returnType": {
             "kind": "scalar",
             "name": "String"
@@ -1728,6 +1767,7 @@
         {
           "name": "==",
           "doc": "/// Delegates to the underlying [value] operator==.",
+          "static": false,
           "returnType": {
             "kind": "scalar",
             "name": "bool"
@@ -1751,6 +1791,7 @@
         {
           "name": "ifAbsent",
           "doc": "/// Execution a function if the Optional value is absent.",
+          "static": false,
           "returnType": {
             "kind": "void"
           },
@@ -1776,6 +1817,7 @@
         {
           "name": "ifPresent",
           "doc": "/// Executes a function if the Optional value is present.",
+          "static": false,
           "returnType": {
             "kind": "void"
           },
@@ -1810,6 +1852,7 @@
         {
           "name": "or",
           "doc": "/// Gets the Optional value with a default.\n///\n/// The default is returned if the Optional is [absent()].\n///\n/// Throws [ArgumentError] if [defaultValue] is null.",
+          "static": false,
           "returnType": {
             "kind": "unknown"
           },
@@ -1831,6 +1874,7 @@
         {
           "name": "toString",
           "doc": "",
+          "static": false,
           "returnType": {
             "kind": "scalar",
             "name": "String"
@@ -1840,6 +1884,7 @@
         {
           "name": "transform",
           "doc": "/// Transforms the Optional value.\n///\n/// If the Optional is [absent()], returns [absent()] without applying the transformer.\n///\n/// The transformer must not return `null`. If it does, an [ArgumentError] is thrown.",
+          "static": false,
           "returnType": {
             "kind": "named",
             "name": "Optional"
@@ -1875,6 +1920,7 @@
         {
           "name": "transformNullable",
           "doc": "/// Transforms the Optional value.\n///\n/// If the Optional is [absent()], returns [absent()] without applying the transformer.\n///\n/// Returns [absent()] if the transformer returns `null`.",
+          "static": false,
           "returnType": {
             "kind": "named",
             "name": "Optional"

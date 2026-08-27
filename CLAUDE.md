@@ -461,11 +461,22 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       "compiles-but-does-it-behave" gap from the 2026-08-27 assessment;
       hardware plugin behavior (camera) remains honestly behind the
       real-device gate — widget tests can't drive platform channels.
-- [ ] 23–24. Plugin breadth: one plugin per breed with its own golden + e2e per
-      the guarantee model (storage-like, service/auth-like, controller-like,
-      navigation; hardware breeds behind the real-device gate), permissions
-      manifest data, `lens` supplier filters. Behavior tests accompany each
-      new stateful trait from now on. **Decided (Paul,
+- [x] 23 (storage breed). **Singleton services derive with ZERO hand data** —
+      golden #11 green (`11-preferences`, hand-written first, matched on the
+      first compiler run) + e2e web build + **runtime persistence proof**
+      (widget test taps Save and asserts `prefs.getString('name') == 'Paul'`
+      through the mock store — the derived hook really stores data).
+      Derivation pattern #2: a static async factory
+      (`static Future<Self> getInstance()`) → singleton hook (acquire in
+      initState with mounted guard, no dispose, plain class handle — no Omit).
+      Enablers: static methods now extract (`"static"` on methods in plugin
+      JSON — schema caught by the camera freshness pin, both plugin APIs
+      regenerated); `DerivedHook.acquisition` discriminates constructor vs
+      staticFactory; `ref/plugins/shared_preferences.json` committed +
+      freshness-pinned; generated declaration emits `static` members.
+- [ ] 23 (remaining breeds) –24. Service/auth-like, navigation; hardware
+      breeds behind the real-device gate; permissions manifest data; `lens`
+      supplier filters. Behavior tests accompany each new stateful trait. **Decided (Paul,
       2026-08-24): plugin hooks import from `plugin:<pub-name>` (e.g.
       `import { useCamera } from 'plugin:camera'`) — collision-proof scheme prefix,
       1:1 with the pub package. Versions live in a `"plugins": {"camera": "^0.12"}`

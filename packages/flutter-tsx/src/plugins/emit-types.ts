@@ -69,8 +69,10 @@ const signatureParams = (params: ParamModel[]): string => {
   ].join(', ');
 };
 
-const methodLine = (method: PluginMethod): string =>
-  `    ${method.name}(${signatureParams(method.params)}): ${tsTypeOf(method.returnType)};`;
+const methodLine = (method: PluginMethod): string => {
+  const modifier = method.isStatic ? 'static ' : '';
+  return `    ${modifier}${method.name}(${signatureParams(method.params)}): ${tsTypeOf(method.returnType)};`;
+};
 
 export const emitPluginDeclaration = (
   api: PluginApi,
@@ -156,14 +158,18 @@ export const emitPluginDeclaration = (
   }
 
   for (const hook of hooks) {
-    const managed = hook.managed.map((name) => `'${name}'`).join(' | ');
     const optionMembers = hook.options
       .map((option) => `${option.name}?: ${option.enumName}`)
       .join('; ');
     const parameters =
       hook.options.length === 0 ? '' : `options?: { ${optionMembers} }`;
+    const managed = hook.managed.map((name) => `'${name}'`).join(' | ');
+    const handle =
+      hook.managed.length === 0
+        ? hook.className
+        : `Omit<${hook.className}, ${managed}>`;
     blocks.push(
-      `  export const ${hook.hookName}: (${parameters}) => Omit<${hook.className}, ${managed}>;`,
+      `  export const ${hook.hookName}: (${parameters}) => ${handle};`,
     );
   }
 

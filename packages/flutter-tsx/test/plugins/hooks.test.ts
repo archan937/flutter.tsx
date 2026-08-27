@@ -14,6 +14,7 @@ describe('deriveHooks — camera', () => {
         hookName: 'useCamera',
         className: 'CameraController',
         dartImport: 'package:camera/camera.dart',
+        acquisition: { kind: 'constructor' },
         construct: [
           {
             kind: 'supplierFirst',
@@ -47,17 +48,37 @@ describe('deriveHooks — camera', () => {
   });
 });
 
+describe('deriveHooks — singleton services (shared_preferences)', () => {
+  test('a static async factory derives a singleton hook, zero overrides', async () => {
+    const api = await loadPluginApi('shared_preferences');
+
+    expect(deriveHooks(api, PLUGIN_OVERRIDES.shared_preferences)).toEqual([
+      {
+        hookName: 'useSharedPreferences',
+        className: 'SharedPreferences',
+        dartImport: 'package:shared_preferences/shared_preferences.dart',
+        acquisition: { kind: 'staticFactory', method: 'getInstance' },
+        construct: [],
+        managed: [],
+        options: [],
+      },
+    ]);
+  });
+});
+
 describe('deriveHooks — underivable shapes', () => {
   const lifecycleMethods = [
     {
       name: 'initialize',
       doc: '',
+      isStatic: false,
       returnType: { kind: 'future', item: { kind: 'void' } } as const,
       params: [],
     },
     {
       name: 'dispose',
       doc: '',
+      isStatic: false,
       returnType: { kind: 'future', item: { kind: 'void' } } as const,
       params: [],
     },

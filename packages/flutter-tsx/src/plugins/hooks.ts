@@ -17,10 +17,14 @@ export interface HookOption {
   defaultMember: string;
 }
 
+export type HookAcquisition =
+  { kind: 'constructor' } | { kind: 'staticFactory'; method: string };
+
 export interface DerivedHook {
   hookName: string;
   className: string;
   dartImport: string;
+  acquisition: HookAcquisition;
   construct: ConstructArg[];
   managed: string[];
   options: HookOption[];
@@ -33,6 +37,18 @@ export interface HookOverrides {
 
 const isFutureVoid = (type: TypeNode): boolean =>
   type.kind === 'future' && type.item.kind === 'void';
+
+const staticFactoryOf = (entity: PluginClass): string | null => {
+  const factory = entity.methods.find(
+    (method) =>
+      method.isStatic &&
+      method.params.length === 0 &&
+      method.returnType.kind === 'future' &&
+      method.returnType.item.kind === 'named' &&
+      method.returnType.item.name === entity.name,
+  );
+  return factory?.name ?? null;
+};
 
 const hasLifecycle = (entity: PluginClass): boolean => {
   const returnTypeOf = (name: string): TypeNode | undefined =>
@@ -125,11 +141,28 @@ export const deriveHooks = (
   api: PluginApi,
   overrides: Record<string, HookOverrides> | undefined,
 ): DerivedHook[] =>
-  api.classes.flatMap((entity) => {
+  api.classes.flatMap((entity): DerivedHook[] => {
+    const hookName = `use${entity.name.replace(/Controller$/, '')}`;
+    const dartImport = `package:${api.package}/${api.package}.dart`;
+
+    const factory = staticFactoryOf(entity);
+    if (factory !== null) {
+      return [
+        {
+          hookName,
+          className: entity.name,
+          dartImport,
+          acquisition: { kind: 'staticFactory' as const, method: factory },
+          construct: [],
+          managed: [],
+          options: [],
+        },
+      ];
+    }
+
     if (!hasLifecycle(entity)) {
       return [];
     }
-    const hookName = `use${entity.name.replace(/Controller$/, '')}`;
     const derived = constructPlan(api, entity, overrides?.[hookName]);
     if (derived === null) {
       return [];
@@ -138,7 +171,8 @@ export const deriveHooks = (
       {
         hookName,
         className: entity.name,
-        dartImport: `package:${api.package}/${api.package}.dart`,
+        dartImport,
+        acquisition: { kind: 'constructor' as const },
         construct: derived.plan,
         managed: ['initialize', 'dispose'],
         options: derived.options,

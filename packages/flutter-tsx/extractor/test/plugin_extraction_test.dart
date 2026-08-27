@@ -335,6 +335,7 @@ void main() {
               MethodModel(
                 name: 'run',
                 doc: '',
+                isStatic: false,
                 returnType: FutureTypeNode(VoidTypeNode()),
                 params: [],
               ),
@@ -359,6 +360,7 @@ void main() {
         {
           "name": "run",
           "doc": "",
+          "static": false,
           "returnType": {
             "kind": "future",
             "item": {
@@ -375,6 +377,51 @@ void main() {
   "functions": []
 }
 ''');
+    });
+
+    test('static factory methods are extracted and flagged', () async {
+      final projectDir = path.normalize(
+        path.join(Directory.current.path, '..', 'test', 'fixtures'),
+      );
+      final home = Platform.environment['HOME'];
+      final flutterRoot =
+          Platform.environment['FSX_FLUTTER_ROOT'] ??
+          path.join(home ?? '', '.fsx', 'flutter');
+      final prefs = await extractPluginApi(
+        packageName: 'shared_preferences',
+        projectDir: projectDir,
+        sdkPath: SdkLayout.resolve(flutterRoot).dartSdkPath,
+      );
+      final sharedPreferences = prefs.classes.singleWhere(
+        (candidate) => candidate.name == 'SharedPreferences',
+      );
+      final getInstance = sharedPreferences.methods.singleWhere(
+        (method) => method.name == 'getInstance',
+      );
+
+      expect(getInstance.isStatic, true);
+      expect(getInstance.params, isEmpty);
+      expect(getInstance.returnType.toJson(), {
+        'kind': 'future',
+        'item': {'kind': 'named', 'name': 'SharedPreferences'},
+      });
+      expect(
+        sharedPreferences.methods
+            .singleWhere((method) => method.name == 'setString')
+            .isStatic,
+        false,
+      );
+
+      final committed = File(
+        path.join(
+          Directory.current.path,
+          '..',
+          'ref',
+          'plugins',
+          'shared_preferences.json',
+        ),
+      ).readAsStringSync();
+      expect(committed, encodePluginApi(prefs));
     });
 
     test('top-level functions are extracted with signatures', () {

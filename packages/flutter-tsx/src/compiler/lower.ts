@@ -1105,7 +1105,7 @@ interface LoweredPlugin {
   field: IrField;
   setup: { name: string; lines: string[] };
   initCall: IrStatement;
-  disposeLine: string;
+  disposeLine: string | null;
   pluginImport: string;
 }
 
@@ -1166,11 +1166,11 @@ const constructLines = (className: string, args: string[]): string[] => {
   ];
 };
 
-const lowerPluginBinding = (
+const constructorSetupLines = (
   binding: PluginBinding,
   info: PluginHookInfo,
   context: LowerContext,
-): LoweredPlugin => {
+): string[] => {
   const fieldName = `_${binding.binding}`;
   const selections = hookOptionSelections(binding, info, context);
   const constructArgs: string[] = [];
@@ -1196,6 +1196,34 @@ const lowerPluginBinding = (
     `  ${fieldName} = controller;`,
     '});',
   );
+  return lines;
+};
+
+const singletonSetupLines = (
+  binding: PluginBinding,
+  info: PluginHookInfo,
+  method: string,
+): string[] => [
+  `final instance = await ${info.hook.className}.${method}();`,
+  'if (!mounted) {',
+  '  return;',
+  '}',
+  'setState(() {',
+  `  _${binding.binding} = instance;`,
+  '});',
+];
+
+const lowerPluginBinding = (
+  binding: PluginBinding,
+  info: PluginHookInfo,
+  context: LowerContext,
+): LoweredPlugin => {
+  const fieldName = `_${binding.binding}`;
+  const { acquisition } = info.hook;
+  const lines =
+    acquisition.kind === 'staticFactory'
+      ? singletonSetupLines(binding, info, acquisition.method)
+      : constructorSetupLines(binding, info, context);
 
   const setupName = `init${capitalize(binding.binding)}`;
   return {
@@ -1207,7 +1235,9 @@ const lowerPluginBinding = (
     },
     setup: { name: setupName, lines },
     initCall: { kind: 'dart', line: `_${setupName}();` },
-    disposeLine: `${fieldName}?.dispose();`,
+    disposeLine: info.hook.managed.includes('dispose')
+      ? `${fieldName}?.dispose();`
+      : null,
     pluginImport: info.hook.dartImport,
   };
 };
@@ -1312,7 +1342,9 @@ export const lowerComponent = (
       ...loweredPlugins.map(({ lowered }) => lowered.initCall),
       ...lowerEffects(component.effects, context),
     ],
-    disposeLines: loweredPlugins.map(({ lowered }) => lowered.disposeLine),
+    disposeLines: loweredPlugins.flatMap(({ lowered }) =>
+      lowered.disposeLine === null ? [] : [lowered.disposeLine],
+    ),
     pluginImports: [
       ...new Set(loweredPlugins.map(({ lowered }) => lowered.pluginImport)),
     ],

@@ -48,18 +48,21 @@ describe('emitPluginDeclaration', () => {
             {
               name: 'dispose',
               doc: '',
+              isStatic: false,
               returnType: { kind: 'future', item: { kind: 'void' } },
               params: [],
             },
             {
               name: 'initialize',
               doc: '',
+              isStatic: false,
               returnType: { kind: 'future', item: { kind: 'void' } },
               params: [],
             },
             {
               name: 'run',
               doc: '/// Runs once.',
+              isStatic: false,
               returnType: {
                 kind: 'future',
                 item: { kind: 'named', name: 'Report' },
@@ -75,6 +78,7 @@ describe('emitPluginDeclaration', () => {
         {
           name: 'availableDemoControllers',
           doc: '',
+          isStatic: false,
           returnType: {
             kind: 'future',
             item: {
@@ -102,6 +106,7 @@ describe('emitPluginDeclaration', () => {
         hookName: 'useDemo',
         className: 'DemoController',
         dartImport: 'package:demo/demo.dart',
+        acquisition: { kind: 'constructor' as const },
         construct: [],
         managed: ['initialize', 'dispose'],
         options: [

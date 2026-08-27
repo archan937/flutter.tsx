@@ -34,6 +34,7 @@ void main() {
         'enum TestAlignment',
         'class TestController',
         'class TestPalette',
+        'class TestVault',
         'widget TestWidget',
         'widget Wrapper',
       ]);
@@ -202,6 +203,7 @@ void main() {
         'Tappable': ['Widget'],
         'TestController': <String>[],
         'TestPalette': <String>[],
+        'TestVault': <String>[],
         'TestWidget': ['StatelessWidget', 'Widget'],
         'Widget': <String>[],
         'Wrapper': ['StatelessWidget', 'Widget'],

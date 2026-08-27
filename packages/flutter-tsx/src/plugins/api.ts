@@ -17,6 +17,7 @@ import {
 export interface PluginMethod {
   name: string;
   doc: string;
+  isStatic: boolean;
   returnType: TypeNode;
   params: ParamModel[];
 }
@@ -47,6 +48,7 @@ const parseCallable = (value: unknown, path: string): PluginMethod => {
   return {
     name: asString(record.name, `${path}.name`),
     doc: asString(record.doc, `${path}.doc`),
+    isStatic: record.static === true,
     returnType: parseTypeNode(record.returnType, `${path}.returnType`),
     params: asArray(record.params, `${path}.params`).map((param, index) =>
       parseParam(param, `${path}.params[${index}]`),
