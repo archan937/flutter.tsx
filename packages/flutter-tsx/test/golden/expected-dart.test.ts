@@ -26,6 +26,7 @@ describe('committed golden expected.dart files', () => {
       '07-list-rendering',
       '08-composition',
       '09-typed-props',
+      '10-camera-options',
     ]);
   });
 

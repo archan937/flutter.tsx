@@ -439,10 +439,22 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       plugin imports merged and sorted). Honest errors: TSX0311 unknown hook,
       TSX0312 unknown plugin method, loud error for unextracted plugins;
       TSX0304 retired.
-- [ ] 22b–24. Plugin breadth: hook options (`useCamera({ resolution })` — design
-      agreed, parameter slots over the same value-form machinery), one plugin per
-      breed with its own golden + e2e per the guarantee model, permissions
-      manifest data. **Decided (Paul,
+- [x] 22b. Hook options — **golden #10 green** (`10-camera-options`, hand-written
+      first, matched on the first compiler run) and its from-TSX e2e web build.
+      `useCamera({ resolution: 'veryHigh' })` → `ResolutionPreset.veryHigh`:
+      options derive mechanically from the constructor's enum params (values
+      from the plugin's own enums; DX names via a one-line override,
+      `resolutionPreset` → `resolution`); the generated declaration types them
+      (`useCamera(options?: { resolution?: ResolutionPreset })`); defaults keep
+      `useCamera()` byte-identical. Construct lines wrap width-aware when they
+      exceed 80 columns (dart-format-conformant). Honest errors: TSX0313
+      unknown option, TSX0203 invalid member, TSX0206 non-literal options.
+      **Deferred within 22b (needs a supplier-filter design): `lens: 'front'`
+      — selecting the camera by `lensDirection` field filter.**
+- [ ] 23–24. Plugin breadth: one plugin per breed with its own golden + e2e per
+      the guarantee model (storage-like, service/auth-like, controller-like,
+      navigation; hardware breeds behind the real-device gate), permissions
+      manifest data, `lens` supplier filters. **Decided (Paul,
       2026-08-24): plugin hooks import from `plugin:<pub-name>` (e.g.
       `import { useCamera } from 'plugin:camera'`) — collision-proof scheme prefix,
       1:1 with the pub package. Versions live in a `"plugins": {"camera": "^0.12"}`

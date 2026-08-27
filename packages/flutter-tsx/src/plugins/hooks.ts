@@ -3,7 +3,19 @@ import type { PluginApi, PluginClass } from './api';
 
 export type ConstructArg =
   | { kind: 'supplierFirst'; functionName: string; paramType: string }
-  | { kind: 'enumDefault'; enumName: string; member: string };
+  | {
+      kind: 'enumDefault';
+      enumName: string;
+      member: string;
+      optionName: string;
+    };
+
+export interface HookOption {
+  name: string;
+  enumName: string;
+  values: string[];
+  defaultMember: string;
+}
 
 export interface DerivedHook {
   hookName: string;
@@ -11,10 +23,12 @@ export interface DerivedHook {
   dartImport: string;
   construct: ConstructArg[];
   managed: string[];
+  options: HookOption[];
 }
 
 export interface HookOverrides {
   enumDefaults: Record<string, string>;
+  optionNames?: Record<string, string>;
 }
 
 const isFutureVoid = (type: TypeNode): boolean =>
@@ -54,11 +68,16 @@ const supplierFor = (
       };
 };
 
+interface ConstructDerivation {
+  plan: ConstructArg[];
+  options: HookOption[];
+}
+
 const constructPlan = (
   api: PluginApi,
   entity: PluginClass,
   overrides: HookOverrides | undefined,
-): ConstructArg[] | null => {
+): ConstructDerivation | null => {
   const constructor = entity.constructors.find(
     (candidate) => candidate.name === '',
   );
@@ -66,6 +85,7 @@ const constructPlan = (
     return null;
   }
   const plan: ConstructArg[] = [];
+  const options: HookOption[] = [];
   for (const param of constructor.params) {
     if (!param.required) {
       continue;
@@ -79,20 +99,26 @@ const constructPlan = (
       continue;
     }
     if (param.type.kind === 'enum') {
-      const member = overrides?.enumDefaults[param.type.name];
+      const enumName = param.type.name;
+      const member = overrides?.enumDefaults[enumName];
       if (member === undefined) {
         return null;
       }
-      plan.push({
-        kind: 'enumDefault',
-        enumName: param.type.name,
-        member,
+      const optionName = overrides?.optionNames?.[param.name] ?? param.name;
+      plan.push({ kind: 'enumDefault', enumName, member, optionName });
+      options.push({
+        name: optionName,
+        enumName,
+        values:
+          api.enums.find((candidate) => candidate.name === enumName)?.values ??
+          [],
+        defaultMember: member,
       });
       continue;
     }
     return null;
   }
-  return plan;
+  return { plan, options };
 };
 
 export const deriveHooks = (
@@ -104,8 +130,8 @@ export const deriveHooks = (
       return [];
     }
     const hookName = `use${entity.name.replace(/Controller$/, '')}`;
-    const construct = constructPlan(api, entity, overrides?.[hookName]);
-    if (construct === null) {
+    const derived = constructPlan(api, entity, overrides?.[hookName]);
+    if (derived === null) {
       return [];
     }
     return [
@@ -113,8 +139,9 @@ export const deriveHooks = (
         hookName,
         className: entity.name,
         dartImport: `package:${api.package}/${api.package}.dart`,
-        construct,
+        construct: derived.plan,
         managed: ['initialize', 'dispose'],
+        options: derived.options,
       },
     ];
   });

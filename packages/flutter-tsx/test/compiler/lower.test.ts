@@ -1311,6 +1311,7 @@ describe('lowerComponent — plugin hooks', () => {
                 },
               ],
               managed: ['initialize', 'dispose'],
+              options: [],
             },
             methods: new Set(['initialize', 'dispose', 'start']),
           },
@@ -1329,6 +1330,118 @@ describe('lowerComponent — plugin hooks', () => {
         statements: [{ kind: 'dart', line: '_engine?.start(3);' }],
       },
     ]);
+  });
+
+  test('hook options select enum members and wrap long construct lines', async () => {
+    const analysis = analyzeSource(
+      "import { Text } from 'flutter-tsx';\n" +
+        "import { useCamera } from 'plugin:camera';\n" +
+        'export const Probe = () => {\n' +
+        "  const cam = useCamera({ resolution: 'veryHigh' });\n" +
+        '  return <Text>hi</Text>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+    const [component] = analysis.components;
+    if (component === undefined) {
+      throw new Error('expected a component');
+    }
+    const ir = lowerComponent(
+      component,
+      await cameraHooksContext(await contextOnce()),
+    );
+
+    expect(ir.setupMethods[0]?.lines.slice(0, 5)).toEqual([
+      'final cameras = await availableCameras();',
+      'final controller = CameraController(',
+      '  cameras.first,',
+      '  ResolutionPreset.veryHigh,',
+      ');',
+    ]);
+  });
+
+  test('an invalid option member is a numbered error', () => {
+    const probe = async (): Promise<unknown> => {
+      const analysis = analyzeSource(
+        "import { Text } from 'flutter-tsx';\n" +
+          "import { useCamera } from 'plugin:camera';\n" +
+          'export const Probe = () => {\n' +
+          "  const cam = useCamera({ resolution: 'grainy' });\n" +
+          '  return <Text>hi</Text>;\n' +
+          '};\n',
+        'probe.tsx',
+      );
+      const [component] = analysis.components;
+      if (component === undefined) {
+        throw new Error('expected a component');
+      }
+      return lowerComponent(
+        component,
+        await cameraHooksContext(await contextOnce()),
+      );
+    };
+
+    expect(probe()).rejects.toThrow(
+      new Error(
+        'TSX0203 probe.tsx:4:27 — `grainy` is not a ResolutionPreset member.',
+      ),
+    );
+  });
+
+  test('a non-literal options argument is a numbered error', () => {
+    const probe = async (): Promise<unknown> => {
+      const analysis = analyzeSource(
+        "import { Text } from 'flutter-tsx';\n" +
+          "import { useCamera } from 'plugin:camera';\n" +
+          'export const Probe = () => {\n' +
+          "  const settings = { resolution: 'high' };\n" +
+          '  const cam = useCamera(settings);\n' +
+          '  return <Text>hi</Text>;\n' +
+          '};\n',
+        'probe.tsx',
+      );
+      const [component] = analysis.components;
+      if (component === undefined) {
+        throw new Error('expected a component');
+      }
+      return lowerComponent(
+        component,
+        await cameraHooksContext(await contextOnce()),
+      );
+    };
+
+    expect(probe()).rejects.toThrow(
+      new Error(
+        'TSX0206 probe.tsx:5:25 — object values must use plain ' +
+          '`key: value` properties.',
+      ),
+    );
+  });
+
+  test('an unknown hook option is a numbered error', () => {
+    const probe = async (): Promise<unknown> => {
+      const analysis = analyzeSource(
+        "import { Text } from 'flutter-tsx';\n" +
+          "import { useCamera } from 'plugin:camera';\n" +
+          'export const Probe = () => {\n' +
+          "  const cam = useCamera({ zoom: 'in' });\n" +
+          '  return <Text>hi</Text>;\n' +
+          '};\n',
+        'probe.tsx',
+      );
+      const [component] = analysis.components;
+      if (component === undefined) {
+        throw new Error('expected a component');
+      }
+      return lowerComponent(
+        component,
+        await cameraHooksContext(await contextOnce()),
+      );
+    };
+
+    expect(probe()).rejects.toThrow(
+      new Error('TSX0313 probe.tsx:4:27 — useCamera has no option `zoom`.'),
+    );
   });
 
   test('an unknown plugin method is a numbered error', async () => {

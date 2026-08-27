@@ -24,9 +24,18 @@ describe('deriveHooks — camera', () => {
             kind: 'enumDefault',
             enumName: 'ResolutionPreset',
             member: 'high',
+            optionName: 'resolution',
           },
         ],
         managed: ['initialize', 'dispose'],
+        options: [
+          {
+            name: 'resolution',
+            enumName: 'ResolutionPreset',
+            values: ['low', 'medium', 'high', 'veryHigh', 'ultraHigh', 'max'],
+            defaultMember: 'high',
+          },
+        ],
       },
     ]);
   });

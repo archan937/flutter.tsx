@@ -104,6 +104,14 @@ describe('emitPluginDeclaration', () => {
         dartImport: 'package:demo/demo.dart',
         construct: [],
         managed: ['initialize', 'dispose'],
+        options: [
+          {
+            name: 'mode',
+            enumName: 'DemoMode',
+            values: ['off', 'on'],
+            defaultMember: 'off',
+          },
+        ],
       },
     ];
 
@@ -131,7 +139,7 @@ declare module 'plugin:demo' {
 
   export const availableDemoControllers: (region: Region) => Promise<DemoController[]>;
 
-  export const useDemo: () => Omit<DemoController, 'initialize' | 'dispose'>;
+  export const useDemo: (options?: { mode?: DemoMode }) => Omit<DemoController, 'initialize' | 'dispose'>;
 }
 `,
     );

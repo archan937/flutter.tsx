@@ -267,6 +267,19 @@ describe('transpileComponent — plugins', () => {
     ).toBe(expected);
   });
 
+  test('hook options override the derived defaults', async () => {
+    const source = await Bun.file(
+      new URL('../fixtures/10-camera-options/input.tsx', import.meta.url),
+    ).text();
+    const expected = await Bun.file(
+      new URL('../fixtures/10-camera-options/expected.dart', import.meta.url),
+    ).text();
+
+    expect(
+      await transpileComponent({ source, filePath: 'hi_res_camera.tsx' }),
+    ).toBe(expected);
+  });
+
   test('an unextracted plugin is a loud error', () => {
     expect(
       transpileComponent({

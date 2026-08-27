@@ -157,8 +157,13 @@ export const emitPluginDeclaration = (
 
   for (const hook of hooks) {
     const managed = hook.managed.map((name) => `'${name}'`).join(' | ');
+    const optionMembers = hook.options
+      .map((option) => `${option.name}?: ${option.enumName}`)
+      .join('; ');
+    const parameters =
+      hook.options.length === 0 ? '' : `options?: { ${optionMembers} }`;
     blocks.push(
-      `  export const ${hook.hookName}: () => Omit<${hook.className}, ${managed}>;`,
+      `  export const ${hook.hookName}: (${parameters}) => Omit<${hook.className}, ${managed}>;`,
     );
   }
 

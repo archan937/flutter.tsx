@@ -21,6 +21,7 @@ const GREEN_FIXTURES = new Set([
   '07-list-rendering',
   '08-composition',
   '09-typed-props',
+  '10-camera-options',
 ]);
 
 const fixtures = await listFixtures();

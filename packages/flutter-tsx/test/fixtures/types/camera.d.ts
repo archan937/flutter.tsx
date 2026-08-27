@@ -131,5 +131,5 @@ declare module 'plugin:camera' {
 
   export const availableCameras: () => Promise<CameraDescription[]>;
 
-  export const useCamera: () => Omit<CameraController, 'initialize' | 'dispose'>;
+  export const useCamera: (options?: { resolution?: ResolutionPreset }) => Omit<CameraController, 'initialize' | 'dispose'>;
 }

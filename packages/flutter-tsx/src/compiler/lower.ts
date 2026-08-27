@@ -1109,11 +1109,70 @@ interface LoweredPlugin {
   pluginImport: string;
 }
 
+const hookOptionSelections = (
+  binding: PluginBinding,
+  info: PluginHookInfo,
+  context: LowerContext,
+): Map<string, string> => {
+  const selections = new Map<string, string>();
+  const [argument] = binding.call.arguments;
+  if (argument === undefined) {
+    return selections;
+  }
+  if (!ts.isObjectLiteralExpression(argument)) {
+    throw tsxErrorAt(
+      'TSX0206',
+      'object values must use plain `key: value` properties.',
+      { sourceFile: context.sourceFile, node: argument },
+    );
+  }
+  const optionsByName = new Map(
+    info.hook.options.map((option) => [option.name, option]),
+  );
+  for (const entry of objectEntries(argument, 'TSX0206', context)) {
+    const option = optionsByName.get(entry.key);
+    if (option === undefined) {
+      throw tsxErrorAt(
+        'TSX0313',
+        `${info.hook.hookName} has no option \`${entry.key}\`.`,
+        { sourceFile: context.sourceFile, node: entry.node },
+      );
+    }
+    if (
+      !ts.isStringLiteral(entry.initializer) ||
+      !option.values.includes(entry.initializer.text)
+    ) {
+      throw tsxErrorAt(
+        'TSX0203',
+        `\`${entry.initializer.getText().replaceAll("'", '')}\` is not a ` +
+          `${option.enumName} member.`,
+        { sourceFile: context.sourceFile, node: entry.node },
+      );
+    }
+    selections.set(entry.key, entry.initializer.text);
+  }
+  return selections;
+};
+
+const constructLines = (className: string, args: string[]): string[] => {
+  const inline = `final controller = ${className}(${args.join(', ')});`;
+  if (4 + inline.length <= 80) {
+    return [inline];
+  }
+  return [
+    `final controller = ${className}(`,
+    ...args.map((argument) => `  ${argument},`),
+    ');',
+  ];
+};
+
 const lowerPluginBinding = (
   binding: PluginBinding,
   info: PluginHookInfo,
+  context: LowerContext,
 ): LoweredPlugin => {
   const fieldName = `_${binding.binding}`;
+  const selections = hookOptionSelections(binding, info, context);
   const constructArgs: string[] = [];
   const lines: string[] = [];
   for (const arg of info.hook.construct) {
@@ -1122,11 +1181,12 @@ const lowerPluginBinding = (
       lines.push(`final ${local} = await ${arg.functionName}();`);
       constructArgs.push(`${local}.first`);
     } else {
-      constructArgs.push(`${arg.enumName}.${arg.member}`);
+      const member = selections.get(arg.optionName) ?? arg.member;
+      constructArgs.push(`${arg.enumName}.${member}`);
     }
   }
   lines.push(
-    `final controller = ${info.hook.className}(${constructArgs.join(', ')});`,
+    ...constructLines(info.hook.className, constructArgs),
     'await controller.initialize();',
     'if (!mounted) {',
     '  await controller.dispose();',
@@ -1160,17 +1220,6 @@ export const lowerComponent = (
   const handlerNames = new Set(
     component.handlers.map((handler) => handler.name),
   );
-  const loweredPlugins = component.plugins.map((binding) => {
-    const info = compile.pluginHooks.get(binding.hook);
-    if (info === undefined) {
-      throw tsxErrorAt(
-        'TSX0311',
-        `plugin:${binding.package} derives no \`${binding.hook}\` hook.`,
-        { sourceFile: component.sourceFile, node: binding.call },
-      );
-    }
-    return { binding, info, lowered: lowerPluginBinding(binding, info) };
-  });
   const context: LowerContext = {
     compile,
     sourceFile: component.sourceFile,
@@ -1186,9 +1235,7 @@ export const lowerComponent = (
         .filter((prop) => prop.dartType === 'String')
         .map((prop) => prop.name),
     ),
-    pluginBindings: new Map(
-      loweredPlugins.map(({ binding, info }) => [binding.binding, info]),
-    ),
+    pluginBindings: new Map(),
     stateDartTypes: new Map(
       component.states.map((state) => [state.name, state.dartType]),
     ),
@@ -1202,6 +1249,22 @@ export const lowerComponent = (
       privateMembers: true,
     },
   };
+
+  const loweredPlugins = component.plugins.map((binding) => {
+    const info = compile.pluginHooks.get(binding.hook);
+    if (info === undefined) {
+      throw tsxErrorAt(
+        'TSX0311',
+        `plugin:${binding.package} derives no \`${binding.hook}\` hook.`,
+        { sourceFile: component.sourceFile, node: binding.call },
+      );
+    }
+    context.pluginBindings.set(binding.binding, info);
+    return {
+      binding,
+      lowered: lowerPluginBinding(binding, info, context),
+    };
+  });
 
   const root = component.returnJsx;
   if (
