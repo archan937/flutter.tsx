@@ -1,6 +1,7 @@
 import ts from 'typescript';
 
 import type { ApiSnapshot, ParamModel, TypeNode } from '../api/model';
+import { dartTypeOf } from '../derive/dart-types';
 import type { SlotMap, WidgetSlots } from '../derive/slots';
 import {
   deriveValueForms,
@@ -11,7 +12,7 @@ import {
 import { jsxPropName } from '../generate/renames';
 import type { PluginMethod } from '../plugins/api';
 import type { DerivedHook } from '../plugins/hooks';
-import type { ComponentAnalysis, PluginBinding } from './analyze';
+import type { AsyncBinding, ComponentAnalysis, PluginBinding } from './analyze';
 import { tsxErrorAt } from './diagnostics';
 import type {
   IrArgument,
@@ -1165,27 +1166,30 @@ const lowerBodyStatements = (
   return lowered;
 };
 
-const pluginCallLine = (
-  expression: ts.Expression,
+interface PluginCall {
+  invocation: string;
+  args: string[];
+  returnType: TypeNode;
+}
+
+// Resolves a plugin call to its Dart invocation and return type; null when the
+// expression is not a plugin call at all.
+const resolvePluginCall = (
+  call: ts.CallExpression,
   context: LowerContext,
   errorNode: ts.Node,
-): string | null => {
-  const awaited = ts.isAwaitExpression(expression);
-  const call = awaited ? expression.expression : expression;
-  if (!ts.isCallExpression(call)) {
-    return null;
-  }
-  const prefix = awaited ? 'await ' : '';
+): PluginCall | null => {
   if (ts.isIdentifier(call.expression)) {
     const fnInfo = context.compile.pluginFunctions.get(call.expression.text);
     if (fnInfo === undefined) {
       return null;
     }
     context.usedPluginImports.add(fnInfo.dartImport);
-    return statementCall(
-      `${prefix}${fnInfo.fn.name}`,
-      pluginCallArguments(call, fnInfo.fn, context),
-    );
+    return {
+      invocation: fnInfo.fn.name,
+      args: pluginCallArguments(call, fnInfo.fn, context),
+      returnType: fnInfo.fn.returnType,
+    };
   }
   if (
     !ts.isPropertyAccessExpression(call.expression) ||
@@ -1209,10 +1213,29 @@ const pluginCallLine = (
     );
   }
   const accessor = info.hook.acquisition.kind === 'constField' ? '.' : '?.';
-  return statementCall(
-    `${prefix}_${binding}${accessor}${methodName}`,
-    pluginCallArguments(call, method, context),
-  );
+  return {
+    invocation: `_${binding}${accessor}${methodName}`,
+    args: pluginCallArguments(call, method, context),
+    returnType: method.returnType,
+  };
+};
+
+const pluginCallLine = (
+  expression: ts.Expression,
+  context: LowerContext,
+  errorNode: ts.Node,
+): string | null => {
+  const awaited = ts.isAwaitExpression(expression);
+  const call = awaited ? expression.expression : expression;
+  if (!ts.isCallExpression(call)) {
+    return null;
+  }
+  const resolved = resolvePluginCall(call, context, errorNode);
+  if (resolved === null) {
+    return null;
+  }
+  const prefix = awaited ? 'await ' : '';
+  return statementCall(`${prefix}${resolved.invocation}`, resolved.args);
 };
 
 // Statement-position invocations sit at method-body indent (4): inline when
@@ -1305,6 +1328,123 @@ const pluginCallArguments = (
     }
   }
   return rendered;
+};
+
+interface LoweredAsync {
+  field: IrField;
+  initStatement: IrStatement;
+  body: IrWidget;
+}
+
+// `await useAsync(load, { loading, error })` becomes a late future assigned in
+// initState plus a FutureBuilder whose three states each render something.
+const lowerAsyncBinding = (
+  binding: AsyncBinding,
+  returnJsx: ts.Expression,
+  context: LowerContext,
+): LoweredAsync => {
+  const { load } = binding;
+  const resolved = ts.isCallExpression(load)
+    ? resolvePluginCall(load, context, load)
+    : null;
+  const dataType =
+    resolved?.returnType.kind === 'future'
+      ? dartTypeOf(resolved.returnType.item)
+      : null;
+  if (resolved === null || dataType === null) {
+    throw tsxErrorAt(
+      'TSX0321',
+      '`useAsync` needs a future whose type the compiler knows: call a ' +
+        'plugin method, e.g. `useAsync(() => storage.readAll(), …)`.',
+      { sourceFile: context.sourceFile, node: load },
+    );
+  }
+  // Both binds are locals with known Dart types: the error is always a
+  // String, and the data's type comes from the future. Registering them keeps
+  // `{err}` rendering as `err`, not a redundant `'$err'`.
+  const branchContext: LowerContext = {
+    ...context,
+    stringLocals: new Set([
+      ...context.stringLocals,
+      binding.errorParam,
+      ...(dataType === 'String' ? [binding.name] : []),
+    ]),
+  };
+  const fieldName = `_${binding.name}Future`;
+  return {
+    field: {
+      name: fieldName,
+      dartType: `Future<${dataType}>`,
+      mutable: false,
+      initializer: null,
+      lateFinal: true,
+    },
+    initStatement: {
+      kind: 'dart',
+      line: statementCall(
+        `${fieldName} = ${resolved.invocation}`,
+        resolved.args,
+      ),
+    },
+    body: {
+      name: `FutureBuilder<${dataType}>`,
+      constConstructor: false,
+      args: [
+        {
+          param: 'future',
+          positional: false,
+          value: { kind: 'dartExpr', dart: fieldName },
+        },
+        {
+          param: 'builder',
+          positional: false,
+          value: {
+            kind: 'builder',
+            params: ['context', 'snapshot'],
+            guards: [
+              {
+                condition: 'snapshot.hasError',
+                bind: {
+                  name: binding.errorParam,
+                  dart: "'${snapshot.error}'",
+                },
+                value: lowerFallbackJsx(binding.errorJsx, branchContext),
+              },
+              {
+                condition: '!snapshot.hasData',
+                bind: null,
+                value: lowerFallbackJsx(binding.loadingJsx, branchContext),
+              },
+            ],
+            bind: { name: binding.name, dart: 'snapshot.data!' },
+            value: lowerFallbackJsx(returnJsx, branchContext),
+          },
+        },
+      ],
+    },
+  };
+};
+
+const lowerFallbackJsx = (
+  expression: ts.Expression,
+  context: LowerContext,
+): IrValue => {
+  if (
+    !ts.isJsxElement(expression) &&
+    !ts.isJsxSelfClosingElement(expression) &&
+    !ts.isJsxFragment(expression)
+  ) {
+    throw tsxErrorAt('TSX0204', 'a component must return a widget element.', {
+      sourceFile: context.sourceFile,
+      node: expression,
+    });
+  }
+  return {
+    kind: 'widget',
+    widget: ts.isJsxFragment(expression)
+      ? columnOf(lowerListChildren(expression.children, context), context)
+      : lowerJsxElement(expression, context),
+  };
 };
 
 const lowerEffects = (
@@ -1625,13 +1765,19 @@ export const lowerComponent = (
   const isStateful =
     component.states.length > 0 ||
     component.plugins.length > 0 ||
-    component.effects.length > 0;
+    component.effects.length > 0 ||
+    component.asyncBinding !== null;
 
   const methods: IrMethod[] = component.handlers.map((handler) => ({
     name: handler.name,
     isAsync: handler.isAsync,
     statements: lowerBodyStatements(handler.body.body, context, true),
   }));
+
+  const lowered =
+    component.asyncBinding === null
+      ? null
+      : lowerAsyncBinding(component.asyncBinding, root, context);
 
   return {
     name: component.name,
@@ -1642,7 +1788,8 @@ export const lowerComponent = (
     handlers: component.handlers,
     effects: component.effects,
     fields: [
-      ...loweredPlugins.map(({ lowered }) => lowered.field),
+      ...loweredPlugins.map(({ lowered: plugin }) => plugin.field),
+      ...(lowered === null ? [] : [lowered.field]),
       ...component.states.map((state) => ({
         name: translateIdentifier(state.name, context.translate),
         dartType: state.dartType,
@@ -1655,9 +1802,10 @@ export const lowerComponent = (
       lowered.setup === null ? [] : [lowered.setup],
     ),
     initStatements: [
-      ...loweredPlugins.flatMap(({ lowered }) =>
-        lowered.initCall === null ? [] : [lowered.initCall],
+      ...loweredPlugins.flatMap(({ lowered: plugin }) =>
+        plugin.initCall === null ? [] : [plugin.initCall],
       ),
+      ...(lowered === null ? [] : [lowered.initStatement]),
       ...lowerEffects(component.effects, context),
     ],
     disposeLines: loweredPlugins.flatMap(({ lowered }) =>
@@ -1669,8 +1817,10 @@ export const lowerComponent = (
         ...context.usedPluginImports,
       ]),
     ],
-    body: ts.isJsxFragment(root)
-      ? columnOf(lowerListChildren(root.children, context), context)
-      : lowerJsxElement(root, context),
+    body:
+      lowered?.body ??
+      (ts.isJsxFragment(root)
+        ? columnOf(lowerListChildren(root.children, context), context)
+        : lowerJsxElement(root, context)),
   };
 };

@@ -4,6 +4,7 @@ import ts from 'typescript';
 import {
   analyzeSource,
   requireSourceFile,
+  type SourceAnalysis,
   summarize,
 } from '@src/compiler/analyze';
 
@@ -422,5 +423,105 @@ describe('analyzeSource — plugin imports', () => {
     );
 
     expect(analysis.pluginImports).toEqual(new Map());
+  });
+});
+describe('analyzeSource — useAsync', () => {
+  const probe = (body: string): SourceAnalysis =>
+    analyzeSource(
+      "import { CircularProgressIndicator, Text, useAsync } from 'flutter-tsx';\n" +
+        "import { useSecureStorage } from 'plugin:flutter_secure_storage';\n" +
+        'export const Probe = async () => {\n' +
+        '  const storage = useSecureStorage();\n' +
+        body +
+        '  return <Text>done</Text>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+
+  test('captures the future, the data name and both fallbacks', () => {
+    const analysis = probe(
+      '  const hasToken = await useAsync(\n' +
+        "    () => storage.containsKey({ key: 'token' }),\n" +
+        '    {\n' +
+        '      loading: () => <CircularProgressIndicator />,\n' +
+        '      error: (err) => <Text>{err}</Text>,\n' +
+        '    },\n' +
+        '  );\n',
+    );
+    const [component] = analysis.components;
+
+    expect(component?.asyncBinding?.name).toBe('hasToken');
+    expect(component?.asyncBinding?.load.getText()).toBe(
+      "storage.containsKey({ key: 'token' })",
+    );
+    expect(component?.asyncBinding?.loadingJsx.getText()).toBe(
+      '<CircularProgressIndicator />',
+    );
+    expect(component?.asyncBinding?.errorParam).toBe('err');
+    expect(component?.asyncBinding?.errorJsx.getText()).toBe(
+      '<Text>{err}</Text>',
+    );
+  });
+
+  test('a component without useAsync has no binding', () => {
+    const analysis = probe('');
+
+    expect(analysis.components[0]?.asyncBinding).toBeNull();
+  });
+
+  test('a second useAsync is a numbered error', () => {
+    expect(() =>
+      probe(
+        '  const a = await useAsync(() => storage.readAll(), {\n' +
+          '    loading: () => <CircularProgressIndicator />,\n' +
+          '    error: (err) => <Text>{err}</Text>,\n' +
+          '  });\n' +
+          '  const b = await useAsync(() => storage.readAll(), {\n' +
+          '    loading: () => <CircularProgressIndicator />,\n' +
+          '    error: (err) => <Text>{err}</Text>,\n' +
+          '  });\n',
+      ),
+    ).toThrow(
+      new Error(
+        'TSX0318 probe.tsx:9:9 — a component compiles one `useAsync`; ' +
+          'move the second into a child component.',
+      ),
+    );
+  });
+
+  test('awaiting anything else is a numbered error', () => {
+    expect(() => probe('  const a = await storage.readAll();\n')).toThrow(
+      new Error(
+        'TSX0305 probe.tsx:5:13 — this expression is not compiled yet ' +
+          '(roadmap step 18).',
+      ),
+    );
+  });
+
+  test('a malformed useAsync call is a numbered error', () => {
+    expect(() =>
+      probe('  const a = await useAsync(storage.readAll());\n'),
+    ).toThrow(
+      new Error(
+        'TSX0320 probe.tsx:5:19 — `useAsync` takes an arrow returning the ' +
+          'future and an options object: `useAsync(() => load(), ' +
+          '{ loading, error })`.',
+      ),
+    );
+  });
+
+  test('missing loading or error fallbacks is a numbered error', () => {
+    expect(() =>
+      probe(
+        '  const a = await useAsync(() => storage.readAll(), {\n' +
+          '    loading: () => <CircularProgressIndicator />,\n' +
+          '  });\n',
+      ),
+    ).toThrow(
+      new Error(
+        'TSX0319 probe.tsx:5:9 — `useAsync` needs both a `loading` and an ' +
+          '`error` fallback: every FutureBuilder state must render something.',
+      ),
+    );
   });
 });

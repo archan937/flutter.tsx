@@ -12,7 +12,26 @@ export type DartExpr =
       whenTrue: DartExpr;
       whenFalse: DartExpr;
     }
-  | { kind: 'list'; isConst: boolean; items: DartListItem[] };
+  | { kind: 'list'; isConst: boolean; items: DartListItem[] }
+  | {
+      kind: 'builder';
+      params: string[];
+      guards: BuilderGuard[];
+      bind: BuilderBind | null;
+      value: DartExpr;
+    };
+
+/// `final <name> = <code>;` ahead of a return inside a builder block.
+export interface BuilderBind {
+  name: string;
+  code: string;
+}
+
+export interface BuilderGuard {
+  condition: string;
+  bind: BuilderBind | null;
+  value: DartExpr;
+}
 
 export type ClosureBody =
   | { kind: 'empty' }
@@ -89,3 +108,10 @@ export const closure = (
   params,
   body,
 });
+
+export const builderClosure = (builder: {
+  params: string[];
+  guards: BuilderGuard[];
+  bind: BuilderBind | null;
+  value: DartExpr;
+}): DartExpr => ({ kind: 'builder', ...builder });

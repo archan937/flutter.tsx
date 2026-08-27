@@ -622,6 +622,29 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       `extends GestureProps`, or `extends Omit<GestureProps, 'onClick'>`
       where the widget declares that prop itself, so its own signature
       always wins and TS never sees a clash.
+- [x] 24b (useAsync → FutureBuilder). **The vision's headline async story,
+      proven end-to-end.** An `async` component with
+      `const x = await useAsync(() => <future>, { loading, error })` becomes a
+      StatefulWidget whose build is a `FutureBuilder<T>`: a
+      `late final Future<T> _xFuture` assigned in initState, then guarded
+      branches — `snapshot.hasError` (binds the error as a String),
+      `!snapshot.hasData` (the loading fallback), and the fall-through binding
+      `final x = snapshot.data!` before the component's own JSX. T is derived
+      from the future's own Dart type, so `FutureBuilder<bool>` and
+      `snapshot.data!` are correctly typed with no annotation in the TSX.
+      New printer capability: a `builder` AST node that always renders tall
+      with real column-aware nesting (StreamBuilder will reuse it), plus a
+      fix to the fit rule — a form that already spans lines can never "fit"
+      on one, which also hardens block-bodied closures.
+      Honest bounds, all numbered: TSX0318 one useAsync per component,
+      TSX0319 both fallbacks required (every FutureBuilder state must render
+      something), TSX0320 the call shape, TSX0321 the future must be one
+      whose Dart type the compiler knows — today a plugin method call.
+      A local async function body (and therefore `fetch()`) needs the HTTP
+      mapping decision that the roadmap parks with Paul, so it errors loudly
+      instead of guessing. Golden #17 (`17-async-token`) certified and
+      byte-equal; widget tests prove the loading fallback renders on the
+      first frame and that both resolved branches follow.
 - [ ] 24b. Remaining high-level abstractions from the vision (each gated by its own golden +
       e2e before being documented): `useAsync`/`Query`→FutureBuilder ·
       `useStream`→StreamBuilder · `createStore`/`useStore`→ChangeNotifier+Provider ·

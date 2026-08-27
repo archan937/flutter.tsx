@@ -33,6 +33,7 @@ describe('committed golden expected.dart files', () => {
       '14-app-info',
       '15-front-camera',
       '16-tap-target',
+      '17-async-token',
     ]);
   });
 

@@ -2178,3 +2178,186 @@ describe('buildCompileContext — gesture derivation rules', () => {
     );
   });
 });
+describe('lowerComponent — useAsync', () => {
+  const storageContext = async (): Promise<CompileContext> => {
+    const api = await loadPluginApi('flutter_secure_storage');
+    const [hook] = deriveHooks(api, undefined);
+    if (hook === undefined) {
+      throw new Error('expected the derived useSecureStorage hook');
+    }
+    const storage = api.classes.find(
+      (entity) => entity.name === 'FlutterSecureStorage',
+    );
+    return {
+      ...(await contextOnce()),
+      pluginHooks: new Map([
+        [
+          'useSecureStorage',
+          {
+            hook,
+            methods: new Map(
+              storage?.methods.map((method) => [method.name, method]) ?? [],
+            ),
+            fields: new Map(
+              storage?.fields.map((field) => [field.name, field.type]) ?? [],
+            ),
+          },
+        ],
+      ]),
+    };
+  };
+
+  const lowerProbe = async (): Promise<IrComponent> => {
+    const analysis = analyzeSource(
+      "import { CircularProgressIndicator, Text, useAsync } from 'flutter-tsx';\n" +
+        "import { useSecureStorage } from 'plugin:flutter_secure_storage';\n" +
+        'export const Probe = async () => {\n' +
+        '  const storage = useSecureStorage();\n' +
+        '  const hasToken = await useAsync(\n' +
+        "    () => storage.containsKey({ key: 'token' }),\n" +
+        '    {\n' +
+        '      loading: () => <CircularProgressIndicator />,\n' +
+        '      error: (err) => <Text>{err}</Text>,\n' +
+        '    },\n' +
+        '  );\n' +
+        '  return <Text>{hasToken}</Text>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+    const [component] = analysis.components;
+    if (component === undefined) {
+      throw new Error('expected a component');
+    }
+    return lowerComponent(component, await storageContext());
+  };
+
+  test('the future is a late field assigned in initState', async () => {
+    const ir = await lowerProbe();
+
+    expect(ir.kind).toBe('stateful');
+    expect(ir.fields).toEqual([
+      {
+        name: '_storage',
+        dartType: 'FlutterSecureStorage',
+        mutable: false,
+        initializer: 'const FlutterSecureStorage()',
+      },
+      {
+        name: '_hasTokenFuture',
+        dartType: 'Future<bool>',
+        mutable: false,
+        initializer: null,
+        lateFinal: true,
+      },
+    ]);
+    expect(ir.initStatements).toEqual([
+      {
+        kind: 'dart',
+        line: "_hasTokenFuture = _storage.containsKey(key: 'token');",
+      },
+    ]);
+  });
+
+  const lowerCustom = async (asyncBody: string): Promise<IrComponent> => {
+    const analysis = analyzeSource(
+      "import { CircularProgressIndicator, Text, useAsync } from 'flutter-tsx';\n" +
+        "import { useSecureStorage } from 'plugin:flutter_secure_storage';\n" +
+        'export const Probe = async () => {\n' +
+        '  const storage = useSecureStorage();\n' +
+        asyncBody +
+        '  return <Text>done</Text>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+    const [component] = analysis.components;
+    if (component === undefined) {
+      throw new Error('expected a component');
+    }
+    return lowerComponent(component, await storageContext());
+  };
+
+  test('a future the compiler cannot type is a numbered error', () => {
+    expect(
+      lowerCustom(
+        '  const value = await useAsync(() => fetchSomething(), {\n' +
+          '    loading: () => <CircularProgressIndicator />,\n' +
+          '    error: (err) => <Text>{err}</Text>,\n' +
+          '  });\n',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0321 probe.tsx:5:38 — `useAsync` needs a future whose type the ' +
+          'compiler knows: call a plugin method, e.g. ' +
+          '`useAsync(() => storage.readAll(), …)`.',
+      ),
+    );
+  });
+
+  test('a void plugin method cannot back a future', () => {
+    expect(
+      lowerCustom(
+        '  const value = await useAsync(\n' +
+          "    () => storage.write({ key: 'k', value: 'v' }),\n" +
+          '    {\n' +
+          '      loading: () => <CircularProgressIndicator />,\n' +
+          '      error: (err) => <Text>{err}</Text>,\n' +
+          '    },\n' +
+          '  );\n',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0321 probe.tsx:6:11 — `useAsync` needs a future whose type the ' +
+          'compiler knows: call a plugin method, e.g. ' +
+          '`useAsync(() => storage.readAll(), …)`.',
+      ),
+    );
+  });
+
+  test('a fallback that is not a widget is a numbered error', () => {
+    expect(
+      lowerCustom(
+        '  const value = await useAsync(() => storage.readAll(), {\n' +
+          "    loading: () => 'nope',\n" +
+          '    error: (err) => <Text>{err}</Text>,\n' +
+          '  });\n',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0204 probe.tsx:6:20 — a component must return a widget element.',
+      ),
+    );
+  });
+
+  test('the body becomes a typed FutureBuilder with all three states', async () => {
+    const ir = await lowerProbe();
+
+    expect(ir.body.name).toBe('FutureBuilder<bool>');
+    expect(ir.body.args.map((argument) => argument.param)).toEqual([
+      'future',
+      'builder',
+    ]);
+    expect(ir.body.args[0]?.value).toEqual({
+      kind: 'dartExpr',
+      dart: '_hasTokenFuture',
+    });
+
+    const builder = ir.body.args[1]?.value;
+    if (builder?.kind !== 'builder') {
+      throw new Error('expected a builder value');
+    }
+    expect(builder.params).toEqual(['context', 'snapshot']);
+    expect(builder.guards.map((guard) => guard.condition)).toEqual([
+      'snapshot.hasError',
+      '!snapshot.hasData',
+    ]);
+    expect(builder.guards[0]?.bind).toEqual({
+      name: 'err',
+      dart: "'${snapshot.error}'",
+    });
+    expect(builder.guards[1]?.bind).toBeNull();
+    expect(builder.bind).toEqual({
+      name: 'hasToken',
+      dart: 'snapshot.data!',
+    });
+  });
+});

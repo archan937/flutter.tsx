@@ -145,6 +145,24 @@ const valueToDart = (
       );
     case 'widgetList':
       return listToDart(value, naming, insideConst);
+    case 'builder':
+      return {
+        kind: 'builder',
+        params: value.params,
+        guards: value.guards.map((guard) => ({
+          condition: guard.condition,
+          bind:
+            guard.bind === null
+              ? null
+              : { name: guard.bind.name, code: guard.bind.dart },
+          value: valueToDart(guard.value, naming, insideConst),
+        })),
+        bind:
+          value.bind === null
+            ? null
+            : { name: value.bind.name, code: value.bind.dart },
+        value: valueToDart(value.value, naming, insideConst),
+      };
   }
 };
 

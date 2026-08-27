@@ -1,4 +1,9 @@
-import type { DartArgument, DartExpr, DartListItem } from './dart-ast';
+import type {
+  BuilderBind,
+  DartArgument,
+  DartExpr,
+  DartListItem,
+} from './dart-ast';
 
 const MAX_WIDTH = 80;
 
@@ -72,6 +77,10 @@ const inlineExpr = (expr: DartExpr): string => {
         ? `${constPrefix}[]`
         : `${constPrefix}[${expr.items.map(inlineListItem).join(', ')}]`;
     }
+    // Never inline: the newlines force every enclosing call tall, which is
+    // what dart format does with a block-bodied closure argument.
+    case 'builder':
+      return `(${expr.params.join(', ')}) {\n}`;
   }
 };
 
@@ -140,6 +149,42 @@ const printListTall = (
   return `${constPrefix}[\n${lines.join('\n')}\n${pad(site.indent)}]`;
 };
 
+const printBuilder = (
+  expr: Extract<DartExpr, { kind: 'builder' }>,
+  site: PrintSite,
+): string => {
+  const bodyIndent = site.indent + 2;
+  const returnLine = (value: DartExpr, indent: number): string => {
+    const printed = printExpr(value, {
+      indent,
+      used: indent + 'return '.length,
+      trailing: 1,
+    });
+    return `${pad(indent)}return ${printed};`;
+  };
+  const bindLine = (bind: BuilderBind, indent: number): string =>
+    `${pad(indent)}final ${bind.name} = ${bind.code};`;
+
+  const lines: string[] = [];
+  for (const guard of expr.guards) {
+    const guardIndent = bodyIndent + 2;
+    lines.push(`${pad(bodyIndent)}if (${guard.condition}) {`);
+    if (guard.bind !== null) {
+      lines.push(bindLine(guard.bind, guardIndent));
+    }
+    lines.push(returnLine(guard.value, guardIndent), `${pad(bodyIndent)}}`);
+  }
+  if (expr.bind !== null) {
+    lines.push(bindLine(expr.bind, bodyIndent));
+  }
+  lines.push(returnLine(expr.value, bodyIndent));
+  return (
+    `(${expr.params.join(', ')}) {\n` +
+    `${lines.join('\n')}\n` +
+    `${pad(site.indent)}}`
+  );
+};
+
 const printClosureBlock = (
   params: string[],
   body: { lines: string[] },
@@ -168,8 +213,16 @@ export const printExpr = (
   if (expr.kind === 'closure' && expr.body.kind === 'block') {
     return printClosureBlock(expr.params, expr.body, site);
   }
+  if (expr.kind === 'builder') {
+    return printBuilder(expr, site);
+  }
   const inline = inlineExpr(expr);
-  if (site.used + inline.length + site.trailing <= MAX_WIDTH) {
+  // A form that already spans lines can never fit on one, however short its
+  // first line looks — block-bodied closures and builders rely on this.
+  if (
+    !inline.includes('\n') &&
+    site.used + inline.length + site.trailing <= MAX_WIDTH
+  ) {
     return inline;
   }
   if (expr.kind === 'call' && expr.args.length > 0) {

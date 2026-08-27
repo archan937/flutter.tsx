@@ -2,6 +2,7 @@ import { describe, expect, test } from 'bun:test';
 
 import {
   boolLit,
+  builderClosure,
   call,
   closure,
   enumMember,
@@ -449,6 +450,75 @@ describe('printExpr — sole collection argument hugs', () => {
         "        Text(_a ?? ''),",
         "        Text(_b ?? ''),",
         '      ],',
+        '    )',
+      ].join('\n'),
+    );
+  });
+});
+// A builder closure is always tall: guarded early returns, then the
+// fall-through. FutureBuilder and StreamBuilder both render through it.
+describe('printExpr — builder closures', () => {
+  test('guards, bindings and the fall-through print as a block', () => {
+    const builder = builderClosure({
+      params: ['context', 'snapshot'],
+      guards: [
+        {
+          condition: 'snapshot.hasError',
+          bind: { name: 'err', code: "'${snapshot.error}'" },
+          value: call('Text', [identifier('err')]),
+        },
+        {
+          condition: '!snapshot.hasData',
+          bind: null,
+          value: call('CircularProgressIndicator', [], { isConst: true }),
+        },
+      ],
+      bind: { name: 'hasToken', code: 'snapshot.data!' },
+      value: call('Text', [identifier('hasToken')]),
+    });
+
+    expect(printExpr(builder, { indent: 6, used: 15, trailing: 1 })).toBe(
+      [
+        '(context, snapshot) {',
+        '        if (snapshot.hasError) {',
+        "          final err = '${snapshot.error}';",
+        '          return Text(err);',
+        '        }',
+        '        if (!snapshot.hasData) {',
+        '          return const CircularProgressIndicator();',
+        '        }',
+        '        final hasToken = snapshot.data!;',
+        '        return Text(hasToken);',
+        '      }',
+      ].join('\n'),
+    );
+  });
+
+  test('an enclosing call is forced tall by the builder body', () => {
+    const builder = builderClosure({
+      params: ['context', 'snapshot'],
+      guards: [],
+      bind: null,
+      value: call('Text', [stringLit('hi')]),
+    });
+
+    expect(
+      printExpr(
+        call('FutureBuilder<bool>', [], {
+          named: [
+            { name: 'future', value: identifier('_f') },
+            { name: 'builder', value: builder },
+          ],
+        }),
+        { indent: 4, used: 11, trailing: 1 },
+      ),
+    ).toBe(
+      [
+        'FutureBuilder<bool>(',
+        '      future: _f,',
+        '      builder: (context, snapshot) {',
+        "        return Text('hi');",
+        '      },',
         '    )',
       ].join('\n'),
     );

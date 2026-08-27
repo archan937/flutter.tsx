@@ -95,7 +95,12 @@ const emitStatefulClass = (component: IrComponent): string => {
   const { name } = component;
   const fields = component.fields
     .map((field) => {
-      const modifier = field.mutable ? '' : 'final ';
+      const modifier =
+        field.lateFinal === true
+          ? 'late final '
+          : field.mutable
+            ? ''
+            : 'final ';
       const initializer =
         field.initializer === null ? '' : ` = ${field.initializer}`;
       return `  ${modifier}${field.dartType} ${field.name}${initializer};`;

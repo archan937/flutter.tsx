@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 
-import { useEffect, useState } from '@src/runtime/hooks';
+import { useAsync, useEffect, useState } from '@src/runtime/hooks';
 
 describe('useState (compile-target stub)', () => {
   test('returns the initial value and an inert setter', () => {
@@ -19,5 +19,16 @@ describe('useEffect (compile-target stub)', () => {
     }, []);
 
     expect(ran).toBe(false);
+  });
+});
+
+describe('useAsync (compile-target stub)', () => {
+  test('rejects at runtime: it only exists for the compiler to read', () => {
+    expect(
+      useAsync(() => Promise.resolve(1), {
+        loading: () => ({ widgetName: 'Text', props: {} }),
+        error: () => ({ widgetName: 'Text', props: {} }),
+      }),
+    ).rejects.toThrow(new Error('useAsync is compile-time'));
   });
 });

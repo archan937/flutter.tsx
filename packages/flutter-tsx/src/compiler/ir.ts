@@ -35,7 +35,25 @@ export type IrValue =
   | { kind: 'stateRef'; name: string }
   | { kind: 'raw'; node: ts.Expression }
   | { kind: 'widget'; widget: IrWidget }
-  | { kind: 'widgetList'; items: IrChild[] };
+  | { kind: 'widgetList'; items: IrChild[] }
+  | {
+      kind: 'builder';
+      params: string[];
+      guards: IrBuilderGuard[];
+      bind: IrBuilderBind | null;
+      value: IrValue;
+    };
+
+export interface IrBuilderBind {
+  name: string;
+  dart: string;
+}
+
+export interface IrBuilderGuard {
+  condition: string;
+  bind: IrBuilderBind | null;
+  value: IrValue;
+}
 
 export type IrChild =
   | { kind: 'value'; value: IrValue }
@@ -68,6 +86,8 @@ export interface IrField {
   dartType: string;
   mutable: boolean;
   initializer: string | null;
+  // `late final` — assigned once in initState (a useAsync future).
+  lateFinal?: boolean;
 }
 
 export type IrStatement =

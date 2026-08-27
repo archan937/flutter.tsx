@@ -18,6 +18,16 @@ export interface PluginBinding {
   call: ts.CallExpression;
 }
 
+/// One `await useAsync(load, { loading, error })` per component: the data
+/// name binds the resolved value inside the generated FutureBuilder.
+export interface AsyncBinding {
+  name: string;
+  load: ts.Expression;
+  loadingJsx: ts.Expression;
+  errorParam: string;
+  errorJsx: ts.Expression;
+}
+
 export interface HandlerBinding {
   name: string;
   isAsync: boolean;
@@ -37,6 +47,7 @@ export interface ComponentAnalysis {
   props: PropBinding[];
   states: StateBinding[];
   plugins: PluginBinding[];
+  asyncBinding: AsyncBinding | null;
   handlers: HandlerBinding[];
   effects: ts.CallExpression[];
   returnJsx: ts.Expression;
@@ -346,6 +357,10 @@ const analyzeBodyStatement = (
     if (initializer === undefined) {
       continue;
     }
+    if (ts.isAwaitExpression(initializer)) {
+      analyzeAsyncDeclaration(declaration, initializer, context);
+      continue;
+    }
     if (ts.isArrowFunction(initializer)) {
       context.analysis.handlers.push({
         name: declaration.name.getText(),
@@ -380,6 +395,85 @@ const analyzeBodyStatement = (
   }
 };
 
+// `const data = await useAsync(load, { loading, error })`
+const analyzeAsyncDeclaration = (
+  declaration: ts.VariableDeclaration,
+  awaited: ts.AwaitExpression,
+  context: BodyContext,
+): void => {
+  const call = awaited.expression;
+  if (
+    !ts.isCallExpression(call) ||
+    !ts.isIdentifier(call.expression) ||
+    call.expression.text !== 'useAsync'
+  ) {
+    throw tsxErrorAt(
+      'TSX0305',
+      'this expression is not compiled yet (roadmap step 18).',
+      { sourceFile: context.sourceFile, node: awaited },
+    );
+  }
+  if (context.analysis.asyncBinding !== null) {
+    throw tsxErrorAt(
+      'TSX0318',
+      'a component compiles one `useAsync`; move the second into a child ' +
+        'component.',
+      { sourceFile: context.sourceFile, node: declaration.name },
+    );
+  }
+  const [load, options] = call.arguments;
+  if (
+    load === undefined ||
+    !ts.isArrowFunction(load) ||
+    ts.isBlock(load.body) ||
+    options === undefined ||
+    !ts.isObjectLiteralExpression(options)
+  ) {
+    throw tsxErrorAt(
+      'TSX0320',
+      '`useAsync` takes an arrow returning the future and an options ' +
+        'object: `useAsync(() => load(), { loading, error })`.',
+      { sourceFile: context.sourceFile, node: call },
+    );
+  }
+  const loading = asyncFallback(options, 'loading');
+  const error = asyncFallback(options, 'error');
+  if (loading === null || error === null) {
+    throw tsxErrorAt(
+      'TSX0319',
+      '`useAsync` needs both a `loading` and an `error` fallback: every ' +
+        'FutureBuilder state must render something.',
+      { sourceFile: context.sourceFile, node: declaration.name },
+    );
+  }
+  const [errorParam] = error.parameters;
+  context.analysis.asyncBinding = {
+    name: declaration.name.getText(),
+    load: load.body,
+    loadingJsx: loading.body as ts.Expression,
+    errorParam: errorParam?.name.getText() ?? 'error',
+    errorJsx: error.body as ts.Expression,
+  };
+};
+
+const asyncFallback = (
+  options: ts.ObjectLiteralExpression,
+  key: string,
+): ts.ArrowFunction | null => {
+  for (const property of options.properties) {
+    if (
+      ts.isPropertyAssignment(property) &&
+      ts.isIdentifier(property.name) &&
+      property.name.text === key &&
+      ts.isArrowFunction(property.initializer) &&
+      !ts.isBlock(property.initializer.body)
+    ) {
+      return property.initializer;
+    }
+  }
+  return null;
+};
+
 const analyzeComponent = (
   nameNode: ts.BindingName,
   arrow: ts.ArrowFunction,
@@ -397,6 +491,7 @@ const analyzeComponent = (
     props: analyzeProps(arrow, context.sourceFile),
     states: [],
     plugins: [],
+    asyncBinding: null,
     handlers: [],
     effects: [],
     returnJsx,

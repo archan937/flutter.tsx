@@ -28,6 +28,7 @@ const GREEN_FIXTURES = new Set([
   '14-app-info',
   '15-front-camera',
   '16-tap-target',
+  '17-async-token',
 ]);
 
 const fixtures = await listFixtures();
