@@ -42,10 +42,17 @@ export interface PluginHookInfo {
   methods: Map<string, PluginMethod>;
 }
 
+export interface PluginFunctionInfo {
+  fn: PluginMethod;
+  dartImport: string;
+}
+
 export interface CompileContext {
   widgets: Map<string, WidgetInfo>;
   userWidgets: Map<string, WidgetInfo>;
   pluginHooks: Map<string, PluginHookInfo>;
+  pluginFunctions: Map<string, PluginFunctionInfo>;
+  pluginEnums: Map<string, Set<string>>;
   enums: Map<string, Set<string>>;
   forms: ValueForms;
   constantOwners: Map<string, Set<string>>;
@@ -103,6 +110,8 @@ export const buildCompileContext = (
     widgets,
     userWidgets: new Map(),
     pluginHooks: new Map(),
+    pluginFunctions: new Map(),
+    pluginEnums: new Map(),
     enums,
     forms: deriveValueForms(snapshot),
     constantOwners,
@@ -155,6 +164,7 @@ interface LowerContext {
   stringStates: Set<string>;
   stringLocals: Set<string>;
   pluginBindings: Map<string, PluginHookInfo>;
+  usedPluginImports: Set<string>;
   settersToStates: Map<string, string>;
   stateDartTypes: Map<string, string>;
   translate: TranslateContext;
@@ -1028,8 +1038,22 @@ const pluginCallLine = (
 ): string | null => {
   const awaited = ts.isAwaitExpression(expression);
   const call = awaited ? expression.expression : expression;
+  if (!ts.isCallExpression(call)) {
+    return null;
+  }
+  const prefix = awaited ? 'await ' : '';
+  if (ts.isIdentifier(call.expression)) {
+    const fnInfo = context.compile.pluginFunctions.get(call.expression.text);
+    if (fnInfo === undefined) {
+      return null;
+    }
+    context.usedPluginImports.add(fnInfo.dartImport);
+    return statementCall(
+      `${prefix}${fnInfo.fn.name}`,
+      pluginCallArguments(call, fnInfo.fn, context),
+    );
+  }
   if (
-    !ts.isCallExpression(call) ||
     !ts.isPropertyAccessExpression(call.expression) ||
     !ts.isIdentifier(call.expression.expression)
   ) {
@@ -1050,10 +1074,54 @@ const pluginCallLine = (
       { sourceFile: context.sourceFile, node: errorNode },
     );
   }
-  const args = pluginCallArguments(call, method, context);
-  const prefix = awaited ? 'await ' : '';
   const accessor = info.hook.acquisition.kind === 'constField' ? '.' : '?.';
-  return `${prefix}_${binding}${accessor}${methodName}(${args});`;
+  return statementCall(
+    `${prefix}_${binding}${accessor}${methodName}`,
+    pluginCallArguments(call, method, context),
+  );
+};
+
+// Statement-position invocations sit at method-body indent (4): inline when
+// the whole call fits 80 columns, else one argument per line — the dart
+// format canonical split.
+const statementCall = (invocation: string, args: string[]): string => {
+  const inline = `${invocation}(${args.join(', ')});`;
+  if (4 + inline.length <= 80) {
+    return inline;
+  }
+  return [
+    `${invocation}(`,
+    ...args.map((argument) => `  ${argument},`),
+    ');',
+  ].join('\n');
+};
+
+const bareType = (type: TypeNode | undefined): TypeNode | undefined =>
+  type?.kind === 'nullable' ? type.inner : type;
+
+// Dart-type-directed rendering: core Uri params accept a plain string
+// (wrapped in Uri.parse) and enum params accept the member name.
+const pluginArgumentValue = (
+  argument: ts.Expression,
+  param: ParamModel | undefined,
+  context: LowerContext,
+): string => {
+  const paramType = bareType(param?.type);
+  if (paramType?.kind === 'named' && paramType.name === 'Uri') {
+    return `Uri.parse(${translateExpression(argument, context.translate)})`;
+  }
+  if (paramType?.kind === 'enum' && ts.isStringLiteralLike(argument)) {
+    const members = context.compile.pluginEnums.get(paramType.name);
+    if (members !== undefined && !members.has(argument.text)) {
+      throw tsxErrorAt(
+        'TSX0203',
+        `\`${argument.text}\` is not a ${paramType.name} member.`,
+        { sourceFile: context.sourceFile, node: argument },
+      );
+    }
+    return `${paramType.name}.${argument.text}`;
+  }
+  return translateExpression(argument, context.translate);
 };
 
 // A trailing object literal maps onto the Dart method's named parameters —
@@ -1062,22 +1130,34 @@ const pluginCallArguments = (
   call: ts.CallExpression,
   method: PluginMethod,
   context: LowerContext,
-): string => {
-  const namedParams = new Set(
-    method.params.filter((param) => param.named).map((param) => param.name),
+): string[] => {
+  const namedParams = new Map(
+    method.params
+      .filter((param) => param.named)
+      .map((param) => [param.name, param]),
   );
+  const positionalParams = method.params.filter((param) => !param.named);
   const rendered: string[] = [];
+  let positionalIndex = 0;
   for (const [index, argument] of call.arguments.entries()) {
     const isTrailingObject =
       index === call.arguments.length - 1 &&
       ts.isObjectLiteralExpression(argument) &&
       namedParams.size > 0;
     if (!isTrailingObject || !ts.isObjectLiteralExpression(argument)) {
-      rendered.push(translateExpression(argument, context.translate));
+      rendered.push(
+        pluginArgumentValue(
+          argument,
+          positionalParams[positionalIndex],
+          context,
+        ),
+      );
+      positionalIndex += 1;
       continue;
     }
     for (const entry of objectEntries(argument, 'TSX0206', context)) {
-      if (!namedParams.has(entry.key)) {
+      const param = namedParams.get(entry.key);
+      if (param === undefined) {
         throw tsxErrorAt(
           'TSX0314',
           `\`${method.name}\` has no named argument \`${entry.key}\`. ` +
@@ -1086,11 +1166,11 @@ const pluginCallArguments = (
         );
       }
       rendered.push(
-        `${entry.key}: ${translateExpression(entry.initializer, context.translate)}`,
+        `${entry.key}: ${pluginArgumentValue(entry.initializer, param, context)}`,
       );
     }
   }
-  return rendered.join(', ');
+  return rendered;
 };
 
 const lowerEffects = (
@@ -1321,6 +1401,7 @@ export const lowerComponent = (
         .map((prop) => prop.name),
     ),
     pluginBindings: new Map(),
+    usedPluginImports: new Set(),
     stateDartTypes: new Map(
       component.states.map((state) => [state.name, state.dartType]),
     ),
@@ -1405,7 +1486,10 @@ export const lowerComponent = (
       lowered.disposeLine === null ? [] : [lowered.disposeLine],
     ),
     pluginImports: [
-      ...new Set(loweredPlugins.map(({ lowered }) => lowered.pluginImport)),
+      ...new Set([
+        ...loweredPlugins.map(({ lowered }) => lowered.pluginImport),
+        ...context.usedPluginImports,
+      ]),
     ],
     body: ts.isJsxFragment(root)
       ? columnOf(lowerListChildren(root.children, context), context)

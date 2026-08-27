@@ -1,9 +1,13 @@
 import { loadApiSnapshot } from '../api/load';
 import { deriveSlots } from '../derive/slots';
-import { loadPluginApi } from '../plugins/api';
+import { loadPluginApi, type PluginApi } from '../plugins/api';
 import { deriveHooks } from '../plugins/hooks';
 import { PLUGIN_OVERRIDES } from '../plugins/overrides';
-import { analyzeSource, type ComponentAnalysis } from './analyze';
+import {
+  analyzeSource,
+  type ComponentAnalysis,
+  type SourceAnalysis,
+} from './analyze';
 import { tsxErrorAt } from './diagnostics';
 import { emitDartFile } from './emit-component';
 import {
@@ -11,6 +15,7 @@ import {
   buildUserWidgets,
   type CompileContext,
   lowerComponent,
+  type PluginFunctionInfo,
   type PluginHookInfo,
 } from './lower';
 
@@ -42,24 +47,37 @@ const requireSupported = (component: ComponentAnalysis): void => {
   }
 };
 
-const loadPluginHooks = async (
-  components: ComponentAnalysis[],
-): Promise<Map<string, PluginHookInfo>> => {
+interface LoadedPlugins {
+  pluginHooks: Map<string, PluginHookInfo>;
+  pluginFunctions: Map<string, PluginFunctionInfo>;
+  pluginEnums: Map<string, Set<string>>;
+}
+
+const loadPlugins = async (
+  analysis: SourceAnalysis,
+): Promise<LoadedPlugins> => {
   const packages = [
-    ...new Set(
-      components.flatMap((component) =>
+    ...new Set([
+      ...analysis.components.flatMap((component) =>
         component.plugins.map((binding) => binding.package),
       ),
-    ),
+      ...analysis.pluginImports.values(),
+    ]),
   ];
-  const hooks = new Map<string, PluginHookInfo>();
+  const pluginHooks = new Map<string, PluginHookInfo>();
+  const pluginEnums = new Map<string, Set<string>>();
+  const apis = new Map<string, PluginApi>();
   for (const packageName of packages) {
     const api = await loadPluginApi(packageName);
+    apis.set(packageName, api);
+    for (const entity of api.enums) {
+      pluginEnums.set(entity.name, new Set(entity.values));
+    }
     for (const hook of deriveHooks(api, PLUGIN_OVERRIDES[packageName])) {
       const entity = api.classes.find(
         (candidate) => candidate.name === hook.className,
       );
-      hooks.set(hook.hookName, {
+      pluginHooks.set(hook.hookName, {
         hook,
         methods: new Map(
           entity?.methods.map((method) => [method.name, method]) ?? [],
@@ -67,7 +85,18 @@ const loadPluginHooks = async (
       });
     }
   }
-  return hooks;
+  const pluginFunctions = new Map<string, PluginFunctionInfo>();
+  for (const [localName, packageName] of analysis.pluginImports) {
+    const api = apis.get(packageName);
+    const fn = api?.functions.find((candidate) => candidate.name === localName);
+    if (api !== undefined && fn !== undefined) {
+      pluginFunctions.set(localName, {
+        fn,
+        dartImport: `package:${api.package}/${api.package}.dart`,
+      });
+    }
+  }
+  return { pluginHooks, pluginFunctions, pluginEnums };
 };
 
 export const transpileComponent = async (
@@ -78,7 +107,7 @@ export const transpileComponent = async (
   const fileContext = {
     ...context,
     userWidgets: buildUserWidgets(analysis.components),
-    pluginHooks: await loadPluginHooks(analysis.components),
+    ...(await loadPlugins(analysis)),
   };
   const components = analysis.components.map((component) => {
     requireSupported(component);

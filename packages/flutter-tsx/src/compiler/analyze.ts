@@ -61,6 +61,7 @@ export interface SourceAnalysis {
   components: ComponentAnalysis[];
   checker: ts.TypeChecker;
   sourceFile: ts.SourceFile;
+  pluginImports: Map<string, string>;
 }
 
 const COMPILER_OPTIONS: ts.CompilerOptions = {
@@ -492,7 +493,15 @@ export const analyzeSource = (
       { file: filePath, line: 1, column: 1 },
     );
   }
-  return { components, checker, sourceFile };
+  const pluginImports = new Map(
+    [...hookModules]
+      .filter(([, module]) => module.startsWith(PLUGIN_MODULE_PREFIX))
+      .map(([name, module]) => [
+        name,
+        module.slice(PLUGIN_MODULE_PREFIX.length),
+      ]),
+  );
+  return { components, checker, sourceFile, pluginImports };
 };
 
 export const summarize = (component: ComponentAnalysis): ComponentSummary => ({

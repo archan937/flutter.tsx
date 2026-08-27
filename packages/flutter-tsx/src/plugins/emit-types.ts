@@ -12,7 +12,9 @@ interface TypeRefs {
 const collectRefs = (node: TypeNode, refs: TypeRefs): void => {
   switch (node.kind) {
     case 'named':
-      refs.named.add(node.name);
+      if (!CORE_STRING_TYPES.has(node.name)) {
+        refs.named.add(node.name);
+      }
       break;
     case 'enum':
       refs.enums.add(node.name);
@@ -43,6 +45,42 @@ const collectRefs = (node: TypeNode, refs: TypeRefs): void => {
   }
 };
 
+// Dart core types with an idiomatic TS spelling: a Uri parameter is a URL
+// string in TSX (the compiler wraps it in Uri.parse).
+const CORE_STRING_TYPES = new Set(['Uri']);
+
+const withCoreStrings = (node: TypeNode): TypeNode => {
+  switch (node.kind) {
+    case 'named':
+      return CORE_STRING_TYPES.has(node.name)
+        ? { kind: 'scalar', name: 'String' }
+        : node;
+    case 'nullable':
+      return { kind: 'nullable', inner: withCoreStrings(node.inner) };
+    case 'list':
+    case 'set':
+    case 'future':
+      return { ...node, item: withCoreStrings(node.item) };
+    case 'map':
+      return {
+        kind: 'map',
+        key: withCoreStrings(node.key),
+        value: withCoreStrings(node.value),
+      };
+    case 'function':
+      return {
+        ...node,
+        returnType: withCoreStrings(node.returnType),
+        params: node.params.map((param) => ({
+          ...param,
+          type: withCoreStrings(param.type),
+        })),
+      };
+    default:
+      return node;
+  }
+};
+
 const TS_IDENTIFIER = /^[A-Za-z_][A-Za-z0-9_]*$/;
 
 const signatureParams = (params: ParamModel[]): string => {
@@ -50,7 +88,7 @@ const signatureParams = (params: ParamModel[]): string => {
     .filter((param) => !param.named)
     .map((param) => {
       const optional = param.required ? '' : '?';
-      return `${param.name}${optional}: ${tsTypeOf(param.type)}`;
+      return `${param.name}${optional}: ${tsTypeOf(withCoreStrings(param.type))}`;
     });
   const named = params.filter((param) => param.named);
   if (named.length === 0) {
@@ -59,7 +97,7 @@ const signatureParams = (params: ParamModel[]): string => {
   const members = named
     .map((param) => {
       const optional = param.required ? '' : '?';
-      return `${param.name}${optional}: ${tsTypeOf(param.type)}`;
+      return `${param.name}${optional}: ${tsTypeOf(withCoreStrings(param.type))}`;
     })
     .join('; ');
   const allNamedOptional = named.every((param) => !param.required);
@@ -71,7 +109,7 @@ const signatureParams = (params: ParamModel[]): string => {
 
 const methodLine = (method: PluginMethod): string => {
   const modifier = method.isStatic ? 'static ' : '';
-  return `    ${modifier}${method.name}(${signatureParams(method.params)}): ${tsTypeOf(method.returnType)};`;
+  return `    ${modifier}${method.name}(${signatureParams(method.params)}): ${tsTypeOf(withCoreStrings(method.returnType))};`;
 };
 
 export const emitPluginDeclaration = (
@@ -153,7 +191,7 @@ export const emitPluginDeclaration = (
 
   for (const fn of api.functions) {
     blocks.push(
-      `  export const ${fn.name}: (${signatureParams(fn.params)}) => ${tsTypeOf(fn.returnType)};`,
+      `  export const ${fn.name}: (${signatureParams(fn.params)}) => ${tsTypeOf(withCoreStrings(fn.returnType))};`,
     );
   }
 

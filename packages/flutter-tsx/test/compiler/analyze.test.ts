@@ -391,3 +391,36 @@ describe('analyzeSource — diagnostics', () => {
     );
   });
 });
+describe('analyzeSource — plugin imports', () => {
+  test('named imports from plugin modules are exposed per package', () => {
+    const analysis = analyzeSource(
+      "import { Text } from 'flutter-tsx';\n" +
+        "import { canLaunchUrl, launchUrl } from 'plugin:url_launcher';\n" +
+        "import { useSecureStorage } from 'plugin:flutter_secure_storage';\n" +
+        'export const Probe = () => {\n' +
+        '  return <Text>hi</Text>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+
+    expect(analysis.pluginImports).toEqual(
+      new Map([
+        ['canLaunchUrl', 'url_launcher'],
+        ['launchUrl', 'url_launcher'],
+        ['useSecureStorage', 'flutter_secure_storage'],
+      ]),
+    );
+  });
+
+  test('flutter-tsx imports are not plugin imports', () => {
+    const analysis = analyzeSource(
+      "import { Text } from 'flutter-tsx';\n" +
+        'export const Probe = () => {\n' +
+        '  return <Text>hi</Text>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+
+    expect(analysis.pluginImports).toEqual(new Map());
+  });
+});

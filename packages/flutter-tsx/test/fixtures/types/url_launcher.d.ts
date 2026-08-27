@@ -6,10 +6,6 @@ declare module 'plugin:url_launcher' {
 
   export type LaunchMode = 'platformDefault' | 'inAppWebView' | 'inAppBrowserView' | 'externalApplication' | 'externalNonBrowserApplication';
 
-  export interface Uri {
-    readonly __external: 'Uri';
-  }
-
   export class BrowserConfiguration {
     constructor(options?: { showTitle?: boolean });
   }
@@ -20,7 +16,7 @@ declare module 'plugin:url_launcher' {
 
   export const canLaunch: (urlString: string) => Promise<boolean>;
 
-  export const canLaunchUrl: (url: Uri) => Promise<boolean>;
+  export const canLaunchUrl: (url: string) => Promise<boolean>;
 
   export const closeInAppWebView: () => Promise<void>;
 
@@ -28,7 +24,7 @@ declare module 'plugin:url_launcher' {
 
   export const launch: (urlString: string, options?: { forceSafariVC?: boolean | null; forceWebView?: boolean; enableJavaScript?: boolean; enableDomStorage?: boolean; universalLinksOnly?: boolean; headers?: Record<string, string>; statusBarBrightness?: Brightness | null; webOnlyWindowName?: string | null }) => Promise<boolean>;
 
-  export const launchUrl: (url: Uri, options?: { mode?: LaunchMode; webViewConfiguration?: WebViewConfiguration; browserConfiguration?: BrowserConfiguration; webOnlyWindowName?: string | null }) => Promise<boolean>;
+  export const launchUrl: (url: string, options?: { mode?: LaunchMode; webViewConfiguration?: WebViewConfiguration; browserConfiguration?: BrowserConfiguration; webOnlyWindowName?: string | null }) => Promise<boolean>;
 
   export const supportsCloseForLaunchMode: (mode: LaunchMode) => Promise<boolean>;
 

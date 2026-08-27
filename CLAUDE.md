@@ -474,9 +474,37 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       regenerated); `DerivedHook.acquisition` discriminates constructor vs
       staticFactory; `ref/plugins/shared_preferences.json` committed +
       freshness-pinned; generated declaration emits `static` members.
-- [ ] 23 (remaining breeds) –24. Service/auth-like, navigation; hardware
-      breeds behind the real-device gate; permissions manifest data; `lens`
-      supplier filters. Behavior tests accompany each new stateful trait. **Decided (Paul,
+- [x] 23 (service breed). **Const-field services + named arguments** — golden
+      #12 green (`12-secure-storage`) + e2e web build + runtime persistence
+      proof (widget test taps Save, reads `'secret'` back through
+      `FlutterSecureStorage.setMockInitialValues`). Derivation pattern #3: a
+      class named after the package with a zero-required constructor and
+      instance methods → `final X _x = const X();`, no lifecycle at all.
+      A trailing TSX object literal expands into Dart named arguments
+      validated against the extracted method signature (TSX0314 unknown
+      name). staticFactory relaxed to all-optional params
+      (`PackageInfo.fromPlatform` derives — pinned in hooks tests). Every
+      extracted plugin's d.ts is now byte-fresh-pinned (closed the unpinned
+      shared_preferences gap). Import directives sort in code-unit order.
+- [x] 23 (navigation breed). **Top-level plugin functions** — golden #13 green
+      (`13-open-link`) + e2e web build + runtime proof through a fake
+      `UrlLauncherPlatform` (asserts the URL AND the enum named argument
+      reach the platform). `import { launchUrl } from 'plugin:url_launcher'`
+      → direct Dart function call with the package import recorded. Dart
+      core `Uri` params surface as `string` in typings and the compiler
+      wraps with `Uri.parse(...)`; enum-typed arguments translate
+      (`'externalApplication'` → `LaunchMode.externalApplication`, TSX0203
+      for unknown members). Statement-position calls wrap at 80 columns in
+      the dart-format canonical one-arg-per-line split.
+- [ ] 23 (breed matrix status). controller ✓ camera (goldens #1, #10);
+      storage ✓ shared_preferences (golden #11); service/auth ✓
+      flutter_secure_storage (golden #12); navigation-function ✓
+      url_launcher (golden #13); staticFactory generality ✓ package_info_plus
+      (derive pin only — a fixture needs property reads, not yet in the
+      expression language); hardware runtime stays behind the real-device
+      gate; router navigation (go_router) deferred to 24b. Remaining:
+      permissions manifest data; `lens` supplier filters. Behavior tests
+      accompany each new stateful trait. **Decided (Paul,
       2026-08-24): plugin hooks import from `plugin:<pub-name>` (e.g.
       `import { useCamera } from 'plugin:camera'`) — collision-proof scheme prefix,
       1:1 with the pub package. Versions live in a `"plugins": {"camera": "^0.12"}`

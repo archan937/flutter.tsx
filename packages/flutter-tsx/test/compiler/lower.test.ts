@@ -1657,3 +1657,114 @@ describe('lowerComponent — diagnostics', () => {
     );
   });
 });
+describe('lowerComponent — plugin functions', () => {
+  const launcherContext = async (): Promise<CompileContext> => {
+    const api = await loadPluginApi('url_launcher');
+    const launchUrl = api.functions.find(
+      (candidate) => candidate.name === 'launchUrl',
+    );
+    if (launchUrl === undefined) {
+      throw new Error('expected the extracted launchUrl function');
+    }
+    return {
+      ...(await contextOnce()),
+      pluginFunctions: new Map([
+        [
+          'launchUrl',
+          {
+            fn: launchUrl,
+            dartImport: 'package:url_launcher/url_launcher.dart',
+          },
+        ],
+      ]),
+      pluginEnums: new Map(
+        api.enums.map((entity) => [entity.name, new Set(entity.values)]),
+      ),
+    };
+  };
+
+  const lowerProbe = async (callLine: string): Promise<IrComponent> => {
+    const analysis = analyzeSource(
+      "import { Text, useState } from 'flutter-tsx';\n" +
+        "import { launchUrl } from 'plugin:url_launcher';\n" +
+        'export const Probe = () => {\n' +
+        '  const [opened, setOpened] = useState(false);\n' +
+        '  const open = async () => {\n' +
+        `    ${callLine}\n` +
+        '    setOpened(true);\n' +
+        '  };\n' +
+        '  return <Text>hi</Text>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+    const [component] = analysis.components;
+    if (component === undefined) {
+      throw new Error('expected a component');
+    }
+    return lowerComponent(component, await launcherContext());
+  };
+
+  test('function calls wrap Uri arguments and record the import', async () => {
+    const ir = await lowerProbe("await launchUrl('https://flutter.dev');");
+
+    expect(ir.methods[0]?.statements[0]).toEqual({
+      kind: 'dart',
+      line: "await launchUrl(Uri.parse('https://flutter.dev'));",
+    });
+    expect(ir.pluginImports).toEqual([
+      'package:url_launcher/url_launcher.dart',
+    ]);
+  });
+
+  test('named arguments translate plugin enum values', async () => {
+    const ir = await lowerProbe(
+      "await launchUrl('https://flutter.dev', { mode: 'externalApplication' });",
+    );
+
+    expect(ir.methods[0]?.statements[0]).toEqual({
+      kind: 'dart',
+      line:
+        'await launchUrl(\n' +
+        "  Uri.parse('https://flutter.dev'),\n" +
+        '  mode: LaunchMode.externalApplication,\n' +
+        ');',
+    });
+  });
+
+  test('an unknown named argument is a numbered error', () => {
+    expect(
+      lowerProbe("await launchUrl('https://flutter.dev', { modee: 'x' });"),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0314 probe.tsx:6:46 — `launchUrl` has no named argument ' +
+          '`modee`. Check the API reference for the available arguments.',
+      ),
+    );
+  });
+
+  test('a bare expression statement in a handler is a numbered error', () => {
+    expect(lowerProbe('opened;')).rejects.toThrow(
+      new Error(
+        'TSX0305 probe.tsx:6:5 — this statement is not compiled yet ' +
+          '(roadmap step 18).',
+      ),
+    );
+  });
+
+  test('a nested member call in a handler is a numbered error', () => {
+    expect(lowerProbe('window.history.back();')).rejects.toThrow(
+      new Error(
+        'TSX0305 probe.tsx:6:5 — this statement is not compiled yet ' +
+          '(roadmap step 18).',
+      ),
+    );
+  });
+
+  test('an unknown plugin enum value is a numbered error', () => {
+    expect(
+      lowerProbe("await launchUrl('https://flutter.dev', { mode: 'nope' });"),
+    ).rejects.toThrow(
+      new Error('TSX0203 probe.tsx:6:52 — `nope` is not a LaunchMode member.'),
+    );
+  });
+});

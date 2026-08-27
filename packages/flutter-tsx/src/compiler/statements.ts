@@ -4,7 +4,7 @@ import type { IrStatement } from './ir';
 export const methodStatementLines = (statements: IrStatement[]): string[] =>
   statements.flatMap((statement) =>
     statement.kind === 'dart'
-      ? [statement.line]
+      ? statement.line.split('\n')
       : [
           'setState(() {',
           ...statement.assignments.map((assignment) => `  ${assignment};`),
@@ -15,7 +15,7 @@ export const methodStatementLines = (statements: IrStatement[]): string[] =>
 export const initStateLines = (statements: IrStatement[]): string[] =>
   statements.flatMap((statement) =>
     statement.kind === 'dart'
-      ? [statement.line]
+      ? statement.line.split('\n')
       : statement.assignments.map((assignment) => `${assignment};`),
   );
 
