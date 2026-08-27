@@ -35,6 +35,7 @@ const GREEN_FIXTURES = new Set([
   '21-modal',
   '22-mount-dialog',
   '23-tabs',
+  '24-animated',
 ]);
 
 const fixtures = await listFixtures();

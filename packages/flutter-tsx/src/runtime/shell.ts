@@ -30,3 +30,28 @@ export interface TabViewProps {
 
 export const TabView: FlutterComponent<TabViewProps> =
   declareWidget<TabViewProps>('TabView');
+
+/**
+ * An implicit animation. The driving value is part of the API on purpose: an
+ * `<Animated>` with nothing changing would compile to a widget that never
+ * animates.
+ */
+export type AnimatedProps =
+  | {
+      type: 'fade';
+      /** Fades to transparent when false. */
+      visible: boolean;
+      /** Milliseconds the animation runs. */
+      duration: number;
+      children: FlutterChild;
+    }
+  | {
+      type: 'scale';
+      /** 1 is natural size. */
+      scale: number;
+      duration: number;
+      children: FlutterChild;
+    };
+
+export const Animated: FlutterComponent<AnimatedProps> =
+  declareWidget<AnimatedProps>('Animated');

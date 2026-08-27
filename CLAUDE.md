@@ -775,7 +775,28 @@ bun run test:extractor             # dart tests + 100% coverage gate
       Golden #23 (`23-tabs`) certified and byte-equal; the widget test taps
       the bar and asserts the IndexedStack index moves while both pages stay
       mounted.
-- [ ] 24b. Remaining high-level abstractions from the vision (each gated by its own golden +
+- [x] 24b (Animated). `<Animated type="fade" visible={shown} duration={300}>`
+      → `AnimatedOpacity(opacity: _shown ? 1 : 0, duration: const
+      Duration(milliseconds: 300), child: …)`, and `type="scale"` with
+      `scale={…}` → `AnimatedScale`. TSX0333 covers every wrong shape
+      (unknown type, missing duration, missing driving value, no child).
+      **Deviation from the vision doc, and the reason:** it shows
+      `<Animated type="fade" duration={300}>` with nothing driving it, which
+      would compile to `AnimatedOpacity(opacity: 1)` — a widget that never
+      animates, i.e. exactly the kind of facade this project forbids. The
+      driving value is therefore part of the API and the TS type is a
+      discriminated union, so `type="fade"` demands `visible` and
+      `type="scale"` demands `scale` at compile time.
+      Golden #24 (`24-animated`) certified and byte-equal; the widget test
+      asserts the opacity target flips 1 → 0 on tap with the declared
+      duration, so the animation is real and not a static render.
+- [ ] 24b. Remaining: `fetch()` → Dart HTTP. **Paul's decision (roadmap):**
+      the package mapping (`package:http`, `dio`, or the SDK's own
+      `HttpClient`) is an open design choice and will not be picked
+      unilaterally. Everything else in the 24b list is done: `useAsync`,
+      `useStream`, `createStore`/`useStore`, `useNavigation`/`createRouter`,
+      `Modal`, `TabView`, `Animated`, gesture props.
+- [ ] 24b (former list, kept for reference). High-level abstractions (each gated by its own golden +
       e2e before being documented): `useAsync`/`Query`→FutureBuilder ·
       `useStream`→StreamBuilder · `createStore`/`useStore`→ChangeNotifier+Provider ·
       `useNavigation`/`<Router>`→GoRouter · `Modal` · `TabView` · `<Animated>` ·

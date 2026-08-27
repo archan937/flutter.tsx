@@ -182,4 +182,11 @@ export const FIXTURE_APPS: FixtureApp[] = [
     deps: [],
     behavior: true,
   },
+  {
+    id: '24-animated',
+    component: 'Fader',
+    dartFile: 'fader.dart',
+    deps: [],
+    behavior: true,
+  },
 ];

@@ -986,7 +986,35 @@ const stringAttribute = (
   return null;
 };
 
-// Each <Tab label icon> contributes one destination and one page. The icon is
+const numberAttribute = (
+  element: ts.JsxOpeningElement,
+  name: string,
+): string | null => {
+  const expression = expressionAttribute(element, name);
+  return expression !== null && ts.isNumericLiteral(expression)
+    ? expression.text
+    : null;
+};
+
+const expressionAttribute = (
+  element: ts.JsxOpeningElement,
+  name: string,
+): ts.Expression | null => {
+  for (const attribute of element.attributes.properties) {
+    if (
+      ts.isJsxAttribute(attribute) &&
+      attribute.name.getText() === name &&
+      attribute.initializer !== undefined &&
+      ts.isJsxExpression(attribute.initializer) &&
+      attribute.initializer.expression !== undefined
+    ) {
+      return attribute.initializer.expression;
+    }
+  }
+  return null;
+};
+
+// Each <TabItem label icon> contributes one destination and one page. The icon is
 // checked against the SDK's own Icons constants, so a typo fails here rather
 // than in Dart.
 const lowerTab = (child: ts.JsxChild, context: LowerContext): LoweredTab => {
@@ -1127,12 +1155,96 @@ const lowerTabView = (
   };
 };
 
+const ANIMATED = 'Animated';
+
+const ANIMATED_SHAPE_ERROR =
+  `<${ANIMATED}> takes type="fade" with visible={…}, or type="scale" with ` +
+  'scale={…}, plus duration={ms} and one child.';
+
+// The driving value is required: an implicit animation with nothing changing
+// would compile to a widget that never animates.
+const ANIMATED_KINDS: Record<string, { widget: string; param: string }> = {
+  fade: { widget: 'AnimatedOpacity', param: 'opacity' },
+  scale: { widget: 'AnimatedScale', param: 'scale' },
+};
+
+const animatedError = (node: ts.Node, context: LowerContext): never => {
+  throw tsxErrorAt('TSX0333', ANIMATED_SHAPE_ERROR, {
+    sourceFile: context.sourceFile,
+    node,
+  });
+};
+
+const lowerAnimated = (
+  element: ts.JsxElement,
+  context: LowerContext,
+): IrWidget => {
+  const opening = element.openingElement;
+  const kind = ANIMATED_KINDS[stringAttribute(opening, 'type') ?? ''];
+  if (kind === undefined) {
+    return animatedError(opening, context);
+  }
+  const duration = numberAttribute(opening, 'duration');
+  const child = singleChildValue(element.children, context);
+  if (duration === null || child === null) {
+    return animatedError(opening, context);
+  }
+  const driver = expressionAttribute(
+    opening,
+    kind.widget === 'AnimatedOpacity' ? 'visible' : 'scale',
+  );
+  if (driver === null) {
+    return animatedError(opening, context);
+  }
+  // A boolean drives opacity through a ternary; a number is already the value.
+  const value: IrValue =
+    kind.widget === 'AnimatedOpacity'
+      ? {
+          kind: 'dartExpr',
+          dart: `${translateExpression(driver, context.translate)} ? 1 : 0`,
+        }
+      : {
+          kind: 'dartExpr',
+          dart: translateExpression(driver, context.translate),
+        };
+  return {
+    name: kind.widget,
+    constConstructor: false,
+    args: [
+      { param: kind.param, positional: false, value },
+      {
+        param: 'duration',
+        positional: false,
+        value: {
+          kind: 'construct',
+          className: 'Duration',
+          constructorName: '',
+          args: [
+            {
+              param: 'milliseconds',
+              positional: false,
+              value: { kind: 'number', value: duration },
+            },
+          ],
+        },
+      },
+      { param: 'child', positional: false, value: child },
+    ],
+  };
+};
+
 const lowerJsxElement = (
   element: ts.JsxElement | ts.JsxSelfClosingElement,
   context: LowerContext,
 ): IrWidget => {
   const opening = ts.isJsxElement(element) ? element.openingElement : element;
   const widgetName = opening.tagName.getText();
+  if (widgetName === ANIMATED) {
+    if (!ts.isJsxElement(element)) {
+      return animatedError(opening, context);
+    }
+    return lowerAnimated(element, context);
+  }
   if (widgetName === TAB_VIEW) {
     if (!ts.isJsxElement(element)) {
       throw tsxErrorAt('TSX0331', TAB_SHAPE_ERROR, {

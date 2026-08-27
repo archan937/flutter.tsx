@@ -2575,3 +2575,73 @@ describe('lowerComponent — TabView diagnostics', () => {
     );
   });
 });
+describe('lowerComponent — Animated diagnostics', () => {
+  // Line 1 is the import, line 2 opens Probe, so `body` starts at line 3.
+  const lowerAnimatedProbe = async (body: string): Promise<IrComponent> => {
+    const analysis = analyzeSource(
+      "import { Animated, Text } from 'flutter-tsx';\n" +
+        `export const Probe = () => (\n${body});\n`,
+      'probe.tsx',
+    );
+    const [component] = analysis.components;
+    if (component === undefined) {
+      throw new Error('expected a component');
+    }
+    return lowerComponent(component, await contextOnce());
+  };
+
+  const SHAPE =
+    '<Animated> takes type="fade" with visible={…}, or type="scale" with ' +
+    'scale={…}, plus duration={ms} and one child.';
+
+  test('scale animates on a number', async () => {
+    const ir = await lowerAnimatedProbe(
+      '  <Animated type="scale" scale={2} duration={150}>\n' +
+        '    <Text>Big</Text>\n' +
+        '  </Animated>\n',
+    );
+
+    expect(ir.body.name).toBe('AnimatedScale');
+    expect(ir.body.args[0]).toEqual({
+      param: 'scale',
+      positional: false,
+      value: { kind: 'dartExpr', dart: '2' },
+    });
+  });
+
+  test('an unknown type is a numbered error', () => {
+    expect(
+      lowerAnimatedProbe(
+        '  <Animated type="warp" duration={150}>\n' +
+          '    <Text>Hi</Text>\n' +
+          '  </Animated>\n',
+      ),
+    ).rejects.toThrow(new Error(`TSX0333 probe.tsx:3:3 — ${SHAPE}`));
+  });
+
+  test('a missing duration is a numbered error', () => {
+    expect(
+      lowerAnimatedProbe(
+        '  <Animated type="fade" visible={true}>\n' +
+          '    <Text>Hi</Text>\n' +
+          '  </Animated>\n',
+      ),
+    ).rejects.toThrow(new Error(`TSX0333 probe.tsx:3:3 — ${SHAPE}`));
+  });
+
+  test('a missing driving value is a numbered error', () => {
+    expect(
+      lowerAnimatedProbe(
+        '  <Animated type="fade" duration={150}>\n' +
+          '    <Text>Hi</Text>\n' +
+          '  </Animated>\n',
+      ),
+    ).rejects.toThrow(new Error(`TSX0333 probe.tsx:3:3 — ${SHAPE}`));
+  });
+
+  test('a self-closing Animated is a numbered error', () => {
+    expect(
+      lowerAnimatedProbe('  <Animated type="fade" duration={150} />\n'),
+    ).rejects.toThrow(new Error(`TSX0333 probe.tsx:3:3 — ${SHAPE}`));
+  });
+});

@@ -40,6 +40,7 @@ describe('committed golden expected.dart files', () => {
       '21-modal',
       '22-mount-dialog',
       '23-tabs',
+      '24-animated',
     ]);
   });
 
