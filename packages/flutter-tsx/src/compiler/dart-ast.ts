@@ -36,6 +36,9 @@ export interface BuilderGuard {
 export type ClosureBody =
   | { kind: 'empty' }
   | { kind: 'expression'; code: string }
+  // An expression body that must be printed column-aware, because the value
+  // itself may wrap: `(context) => showDialog(\n  …,\n)`.
+  | { kind: 'value'; value: DartExpr }
   | { kind: 'block'; lines: string[] };
 
 export interface DartArgument {

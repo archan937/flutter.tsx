@@ -720,6 +720,39 @@ bun run test:extractor             # dart tests + 100% coverage gate
       setState already did.
       Golden #20 (`20-router`) certified and byte-equal; the widget test taps
       through push and pop and asserts the pages actually swap.
+- [x] 24b (Modal). `nav.present(<ConfirmDialog />)` → `showDialog(context:
+      context, builder: (context) => const ConfirmDialog())`, and
+      `nav.presentSheet(<SheetBody />)` → `showModalBottomSheet(…)` — both
+      through the navigation handle added with the router, so the widget to
+      open is ordinary JSX and gets lowered like any other. TSX0330 when the
+      argument is not a widget.
+      **Enabler, and a real gap closed:** statements were strings, so a call
+      that needs to wrap could only be indented by assumption. `IrStatement`
+      now has an `expr` kind carrying an `IrValue`, and `ClosureBody` a
+      `value` kind, both printed column-aware — which is the only way to get
+      the golden's `onPressed: () => showDialog(\n  context: context,\n  …,\n)`
+      byte-exact. A lone expression statement in a closure therefore becomes
+      an arrow body automatically.
+      Golden #21 (`21-modal`) certified and byte-equal on the first run; the
+      widget test opens the dialog, dismisses it by tapping the barrier
+      (which only a real modal route allows) and then opens the sheet.
+- [x] 24b (presenting from a mount effect — a facade found and closed).
+      `nav.present()` inside `useEffect` was generating `showDialog(...)`
+      straight into `initState`, which **throws at runtime in Flutter** (the
+      Navigator lookup is illegal before initState completes). Found by
+      chasing an uncovered line rather than by a failing test, and fixed
+      properly instead of being reported: an effect containing a presentation
+      is wrapped in
+      `WidgetsBinding.instance.addPostFrameCallback((_) { … })`, which is the
+      idiom a senior Flutter developer writes for exactly this. The whole
+      effect body goes inside the callback, so a `setState` after the
+      presentation still runs (and setState after the first frame is legal).
+      Golden #22 (`22-mount-dialog`) certified and byte-equal; the widget
+      test asserts nothing is presented on the first frame and that the
+      dialog plus the following state change both land after it settles.
+      Also unified: `initStateLines` and `methodStatementLines` were two
+      walks over the same statements differing only in setState wrapping —
+      now one walk, so every statement kind has exactly one renderer.
 - [ ] 24b. Remaining high-level abstractions from the vision (each gated by its own golden +
       e2e before being documented): `useAsync`/`Query`→FutureBuilder ·
       `useStream`→StreamBuilder · `createStore`/`useStore`→ChangeNotifier+Provider ·

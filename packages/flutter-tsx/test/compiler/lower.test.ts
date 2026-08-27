@@ -2454,6 +2454,35 @@ describe('lowerComponent — store diagnostics', () => {
     );
   });
 });
+describe('lowerComponent — presentation diagnostics', () => {
+  test('presenting something that is no widget is a numbered error', async () => {
+    const analysis = analyzeSource(
+      "import { ElevatedButton, useNavigation } from 'flutter-tsx';\n" +
+        'export const Probe = () => {\n' +
+        '  const nav = useNavigation();\n' +
+        '  return (\n' +
+        "    <ElevatedButton onClick={() => nav.present('nope')}>\n" +
+        '      Open\n' +
+        '    </ElevatedButton>\n' +
+        '  );\n' +
+        '};\n',
+      'probe.tsx',
+    );
+    const [component] = analysis.components;
+    if (component === undefined) {
+      throw new Error('expected a component');
+    }
+    const context = await contextOnce();
+
+    expect(() => lowerComponent(component, context)).toThrow(
+      new Error(
+        'TSX0330 probe.tsx:5:36 — `present` takes the widget to open: ' +
+          '`nav.present(<ConfirmDialog />)`.',
+      ),
+    );
+  });
+});
+
 describe('lowerComponent — navigation diagnostics', () => {
   test('an unknown navigation method is a numbered error', async () => {
     const analysis = analyzeSource(

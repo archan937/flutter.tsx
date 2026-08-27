@@ -20,6 +20,9 @@ export type IrValue =
       args: IrArgument[];
     }
   | { kind: 'closure'; params: string[]; statements: IrStatement[] }
+  // A closure whose body is one expression, kept as a value so the printer
+  // can wrap it: `(context) => showDialog(…)`.
+  | { kind: 'closureValue'; params: string[]; value: IrValue }
   | {
       kind: 'conditional';
       condition: IrValue;
@@ -105,7 +108,14 @@ export interface IrField {
 }
 
 export type IrStatement =
-  { kind: 'setState'; assignments: string[] } | { kind: 'dart'; line: string };
+  | { kind: 'setState'; assignments: string[] }
+  | { kind: 'dart'; line: string }
+  // An expression the printer renders at its real column, so a call that has
+  // to wrap does so correctly wherever the statement sits.
+  | { kind: 'expr'; value: IrValue }
+  // Work that must wait for the first frame — opening a route from a mount
+  // effect, for instance, which throws if done during initState.
+  | { kind: 'postFrame'; statements: IrStatement[] };
 
 export interface IrMethod {
   name: string;

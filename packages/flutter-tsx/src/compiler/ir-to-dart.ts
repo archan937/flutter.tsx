@@ -115,7 +115,16 @@ const valueToDart = (
       return {
         kind: 'closure',
         params: value.params,
-        body: closureBodyOf(value.statements),
+        body: closureBodyOf(value.statements, naming),
+      };
+    case 'closureValue':
+      return {
+        kind: 'closure',
+        params: value.params,
+        body: {
+          kind: 'value',
+          value: valueToDart(value.value, naming, insideConst),
+        },
       };
     case 'conditional':
       return {
@@ -191,6 +200,9 @@ const childToDart = (
     value: valueToDart(child.child.value, naming, insideConst),
   };
 };
+
+export const irValueToDart = (value: IrValue, naming: DartNaming): DartExpr =>
+  valueToDart(value, naming, false);
 
 export const irWidgetToDart = (
   widget: IrWidget,

@@ -37,6 +37,8 @@ describe('committed golden expected.dart files', () => {
       '18-connectivity-stream',
       '19-store-counter',
       '20-router',
+      '21-modal',
+      '22-mount-dialog',
     ]);
   });
 

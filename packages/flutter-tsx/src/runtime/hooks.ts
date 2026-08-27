@@ -66,6 +66,10 @@ export interface Navigation {
   replace: (location: string) => void;
   go: (location: string) => void;
   pop: () => void;
+  /** Opens the widget as a dialog (`showDialog`). */
+  present: (modal: FlutterElement) => void;
+  /** Opens the widget as a bottom sheet (`showModalBottomSheet`). */
+  presentSheet: (sheet: FlutterElement) => void;
 }
 
 export const useNavigation = (): Navigation => ({
@@ -73,6 +77,8 @@ export const useNavigation = (): Navigation => ({
   replace: (): void => undefined,
   go: (): void => undefined,
   pop: (): void => undefined,
+  present: (): void => undefined,
+  presentSheet: (): void => undefined,
 });
 
 /**

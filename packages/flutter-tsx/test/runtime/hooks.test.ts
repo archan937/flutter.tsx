@@ -84,7 +84,16 @@ describe('useNavigation / createRouter (compile-target stubs)', () => {
     nav.replace('/y');
     nav.go('/z');
     nav.pop();
-    expect(Object.keys(nav).sort()).toEqual(['go', 'pop', 'push', 'replace']);
+    nav.present({ widgetName: 'AlertDialog', props: {} });
+    nav.presentSheet({ widgetName: 'Text', props: {} });
+    expect(Object.keys(nav).sort()).toEqual([
+      'go',
+      'pop',
+      'present',
+      'presentSheet',
+      'push',
+      'replace',
+    ]);
   });
 
   test('a route table keeps the paths it was given', () => {

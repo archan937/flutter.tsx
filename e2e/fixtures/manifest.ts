@@ -161,4 +161,18 @@ export const FIXTURE_APPS: FixtureApp[] = [
     deps: ['go_router'],
     behavior: true,
   },
+  {
+    id: '21-modal',
+    component: 'DeleteButton',
+    dartFile: 'delete_button.dart',
+    deps: [],
+    behavior: true,
+  },
+  {
+    id: '22-mount-dialog',
+    component: 'Onboarding',
+    dartFile: 'onboarding.dart',
+    deps: [],
+    behavior: true,
+  },
 ];

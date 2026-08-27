@@ -1095,6 +1095,64 @@ const requireOneOfSatisfied = (
 // in the build method's own context, so it needs no navigator plumbing.
 const NAVIGATION_METHODS = new Set(['push', 'pop', 'replace', 'go']);
 
+// `nav.present(<X/>)` opens the widget: showDialog for a dialog,
+// showModalBottomSheet for a sheet. Both take the build context and a builder.
+const PRESENTATION_METHODS: Record<string, string> = {
+  present: 'showDialog',
+  presentSheet: 'showModalBottomSheet',
+};
+
+const presentationValue = (
+  expression: ts.Expression,
+  context: LowerContext,
+): IrValue | null => {
+  if (
+    !ts.isCallExpression(expression) ||
+    !ts.isPropertyAccessExpression(expression.expression) ||
+    !ts.isIdentifier(expression.expression.expression) ||
+    !context.navigators.has(expression.expression.expression.text)
+  ) {
+    return null;
+  }
+  const opener = PRESENTATION_METHODS[expression.expression.name.text];
+  if (opener === undefined) {
+    return null;
+  }
+  const [modal] = expression.arguments;
+  if (
+    modal === undefined ||
+    (!ts.isJsxElement(modal) && !ts.isJsxSelfClosingElement(modal))
+  ) {
+    throw tsxErrorAt(
+      'TSX0330',
+      `\`${expression.expression.name.text}\` takes the widget to open: ` +
+        '`nav.present(<ConfirmDialog />)`.',
+      { sourceFile: context.sourceFile, node: expression },
+    );
+  }
+  return {
+    kind: 'construct',
+    className: opener,
+    constructorName: '',
+    args: [
+      {
+        param: 'context',
+        positional: false,
+        value: { kind: 'dartExpr', dart: 'context' },
+      },
+      {
+        param: 'builder',
+        positional: false,
+        value: {
+          kind: 'closureValue',
+          params: ['context'],
+          value: { kind: 'widget', widget: lowerJsxElement(modal, context) },
+        },
+      },
+    ],
+  };
+};
+
 const navigationLine = (
   expression: ts.Expression,
   context: LowerContext,
@@ -1220,6 +1278,12 @@ const lowerBodyStatements = (
         : null;
     if (pluginLine !== null) {
       lowered.push({ kind: 'dart', line: pluginLine });
+      continue;
+    }
+    const presentation =
+      expression === undefined ? null : presentationValue(expression, context);
+    if (presentation !== null) {
+      lowered.push({ kind: 'expr', value: presentation });
       continue;
     }
     const navLine =
@@ -1604,6 +1668,21 @@ const lowerFallbackJsx = (
   };
 };
 
+// showDialog and friends look up the Navigator, which is illegal while
+// initState runs — a mount effect that presents must wait one frame.
+const needsPostFrame = (statements: IrStatement[]): boolean =>
+  statements.some(
+    (statement) =>
+      statement.kind === 'expr' &&
+      statement.value.kind === 'construct' &&
+      statement.value.className in PRESENTATION_OPENERS,
+  );
+
+const PRESENTATION_OPENERS: Record<string, true> = {
+  showDialog: true,
+  showModalBottomSheet: true,
+};
+
 const lowerEffects = (
   effects: ts.CallExpression[],
   context: LowerContext,
@@ -1636,7 +1715,10 @@ const lowerEffects = (
         );
       }
     }
-    return lowerBodyStatements(body.body, context);
+    const statements = lowerBodyStatements(body.body, context);
+    return needsPostFrame(statements)
+      ? [{ kind: 'postFrame', statements }]
+      : statements;
   });
 
 const capitalize = (name: string): string =>

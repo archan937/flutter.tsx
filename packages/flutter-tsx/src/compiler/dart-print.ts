@@ -60,6 +60,9 @@ const inlineExpr = (expr: DartExpr): string => {
       if (expr.body.kind === 'expression') {
         return `${params} => ${expr.body.code}`;
       }
+      if (expr.body.kind === 'value') {
+        return `${params} => ${inlineExpr(expr.body.value)}`;
+      }
       // A block body embeds newlines so any enclosing call is forced tall
       // and re-renders it through printExpr with a real site.
       return expr.body.kind === 'empty'
@@ -212,6 +215,17 @@ export const printExpr = (
 ): string => {
   if (expr.kind === 'closure' && expr.body.kind === 'block') {
     return printClosureBlock(expr.params, expr.body, site);
+  }
+  if (expr.kind === 'closure' && expr.body.kind === 'value') {
+    const params = `(${expr.params.join(', ')}) => `;
+    return (
+      params +
+      printExpr(expr.body.value, {
+        indent: site.indent,
+        used: site.used + params.length,
+        trailing: site.trailing,
+      })
+    );
   }
   if (expr.kind === 'builder') {
     return printBuilder(expr, site);

@@ -32,6 +32,8 @@ const GREEN_FIXTURES = new Set([
   '18-connectivity-stream',
   '19-store-counter',
   '20-router',
+  '21-modal',
+  '22-mount-dialog',
 ]);
 
 const fixtures = await listFixtures();
