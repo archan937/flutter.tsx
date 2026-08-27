@@ -22,10 +22,17 @@ export interface PluginMethod {
   params: ParamModel[];
 }
 
+export interface PluginField {
+  name: string;
+  doc: string;
+  type: TypeNode;
+}
+
 export interface PluginClass {
   name: string;
   doc: string;
   constructors: ConstructorModel[];
+  fields: PluginField[];
   methods: PluginMethod[];
   constants: ConstantModel[];
 }
@@ -56,6 +63,15 @@ const parseCallable = (value: unknown, path: string): PluginMethod => {
   };
 };
 
+const parseField = (value: unknown, path: string): PluginField => {
+  const record = asObject(value, path);
+  return {
+    name: asString(record.name, `${path}.name`),
+    doc: asString(record.doc, `${path}.doc`),
+    type: parseTypeNode(record.type, `${path}.type`),
+  };
+};
+
 const parseClass = (value: unknown, path: string): PluginClass => {
   const record = asObject(value, path);
   return {
@@ -64,6 +80,9 @@ const parseClass = (value: unknown, path: string): PluginClass => {
     constructors: asArray(record.constructors, `${path}.constructors`).map(
       (constructor, index) =>
         parseConstructor(constructor, `${path}.constructors[${index}]`),
+    ),
+    fields: asArray(record.fields, `${path}.fields`).map((field, index) =>
+      parseField(field, `${path}.fields[${index}]`),
     ),
     methods: asArray(record.methods, `${path}.methods`).map((method, index) =>
       parseCallable(method, `${path}.methods[${index}]`),

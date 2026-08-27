@@ -305,7 +305,9 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       name collisions** (painting's TextStyle with its const ctor + `inherit`,
       not ui's — 67 entities re-owned, ground-truth pinned), **column-aware
       printer** (real 80-col fit at final position; collections split when their
-      call splits — byte-parity with `dart format` proven by all three goldens),
+      call splits — refined at step 23 to dart_style's actual hug rule, see the
+      property-reads entry — byte-parity with `dart format` proven by the
+      goldens),
       honest guards TSX0205–0208 (inexpressible value / bad insets shape /
       unknown object property / children on a slotless widget — no silent wrong
       Dart), and JSX elements as prop values (`appBar={<AppBar/>}` → named slot).
@@ -496,13 +498,34 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       (`'externalApplication'` → `LaunchMode.externalApplication`, TSX0203
       for unknown members). Statement-position calls wrap at 80 columns in
       the dart-format canonical one-arg-per-line split.
+- [x] 23 (property reads + printer hug rule). **Plugin properties read
+      straight in JSX** — golden #14 green (`14-app-info`) + e2e web build +
+      runtime proof (widget test asserts the pre-resolution fallback renders,
+      then the resolved `appName`/`version` after `pumpAndSettle`). The
+      extractor now captures instance fields and getters (analyzer
+      `isOriginVariable` picks up both; `hashCode`/`runtimeType` excluded),
+      generated typings expose them as `readonly` members, and a read through
+      a nullable handle carries its own Dart zero-value fallback
+      (`_info?.appName ?? ''`) so no downstream context needs coercion.
+      Honest bounds: TSX0315 unknown property, TSX0316 a field type with no
+      zero value (read it in a handler and store it in state).
+      **Printer correction:** the old rule ("collections split whenever their
+      call splits") was wrong. Established from `dart format` itself: a SOLE
+      block-like argument hugs — the collection stays on the argument line
+      when it fits — UNLESS an element carries named arguments of its own
+      (only the element's own argument list counts, not one nested deeper).
+      That rule reproduces every committed golden, including #08's split
+      `Greeting(name: ...)` list and #14's inline `Text(...)` list.
+      Also closed: every committed `ref/plugins/*.json` snapshot is now
+      byte-fresh-pinned by the Dart suite (was camera + shared_preferences
+      only), so a schema change can never leave a stale snapshot behind.
 - [ ] 23 (breed matrix status). controller ✓ camera (goldens #1, #10);
       storage ✓ shared_preferences (golden #11); service/auth ✓
       flutter_secure_storage (golden #12); navigation-function ✓
       url_launcher (golden #13); staticFactory generality ✓ package_info_plus
-      (derive pin only — a fixture needs property reads, not yet in the
-      expression language); hardware runtime stays behind the real-device
-      gate; router navigation (go_router) deferred to 24b. Remaining:
+      (golden #14 — property reads landed, so this breed is now proven
+      end-to-end too); hardware runtime stays behind the real-device gate;
+      router navigation (go_router) deferred to 24b. Remaining:
       permissions manifest data; `lens` supplier filters. Behavior tests
       accompany each new stateful trait. **Decided (Paul,
       2026-08-24): plugin hooks import from `plugin:<pub-name>` (e.g.

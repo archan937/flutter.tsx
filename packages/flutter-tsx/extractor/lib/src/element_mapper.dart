@@ -93,9 +93,40 @@ PluginClass mapPluginClass(ClassElement classElement, AssertInspector asserts) {
     constructors: classElement.isAbstract
         ? const <ConstructorModel>[]
         : _mapConstructors(classElement, asserts),
+    fields: _mapInstanceFields(classElement),
     methods: methods,
     constants: _mapConstants(classElement),
   );
+}
+
+// Object overrides carry no plugin data — a class redeclaring hashCode
+// must not surface it as a readable property.
+const _objectMemberNames = {'hashCode', 'runtimeType'};
+
+List<FieldModel> _mapInstanceFields(ClassElement classElement) {
+  final fields = classElement.getters
+      .where(
+        (getter) =>
+            getter.isPublic &&
+            !getter.isStatic &&
+            (getter.name ?? '').isNotEmpty &&
+            !_objectMemberNames.contains(getter.name),
+      )
+      .map(
+        (getter) => FieldModel(
+          name: getter.name ?? '',
+          doc:
+              (getter.isOriginVariable
+                  ? getter.variable.documentationComment
+                  : getter.documentationComment) ??
+              '',
+          type: encodeType(getter.returnType),
+        ),
+      )
+      .toList();
+
+  fields.sort((first, second) => first.name.compareTo(second.name));
+  return fields;
 }
 
 FunctionModel mapTopLevelFunction(TopLevelFunctionElement element) =>

@@ -331,6 +331,13 @@ void main() {
             name: 'DemoController',
             doc: '/// Controls demos.',
             constructors: [],
+            fields: [
+              FieldModel(
+                name: 'frameRate',
+                doc: '/// Frames per second.',
+                type: ScalarTypeNode('double'),
+              ),
+            ],
             methods: [
               MethodModel(
                 name: 'run',
@@ -356,6 +363,16 @@ void main() {
       "name": "DemoController",
       "doc": "/// Controls demos.",
       "constructors": [],
+      "fields": [
+        {
+          "name": "frameRate",
+          "doc": "/// Frames per second.",
+          "type": {
+            "kind": "scalar",
+            "name": "double"
+          }
+        }
+      ],
       "methods": [
         {
           "name": "run",
@@ -422,6 +439,91 @@ void main() {
         ),
       ).readAsStringSync();
       expect(committed, encodePluginApi(prefs));
+    });
+
+    test('instance fields and getters are extracted with types', () async {
+      final projectDir = path.normalize(
+        path.join(Directory.current.path, '..', 'test', 'fixtures'),
+      );
+      final home = Platform.environment['HOME'];
+      final flutterRoot =
+          Platform.environment['FSX_FLUTTER_ROOT'] ??
+          path.join(home ?? '', '.fsx', 'flutter');
+      final layout = SdkLayout.resolve(flutterRoot);
+      final info = await extractPluginApi(
+        packageName: 'package_info_plus',
+        projectDir: projectDir,
+        sdkPath: layout.dartSdkPath,
+      );
+      final packageInfo = info.classes.singleWhere(
+        (candidate) => candidate.name == 'PackageInfo',
+      );
+      FieldModel fieldNamed(String name) =>
+          packageInfo.fields.singleWhere((field) => field.name == name);
+
+      expect(fieldNamed('appName').type.toJson(), {
+        'kind': 'scalar',
+        'name': 'String',
+      });
+      expect(fieldNamed('version').type.toJson(), {
+        'kind': 'scalar',
+        'name': 'String',
+      });
+      expect(fieldNamed('installTime').type.toJson(), {
+        'kind': 'nullable',
+        'inner': {'kind': 'named', 'name': 'DateTime'},
+      });
+      expect(fieldNamed('data').type.toJson(), {
+        'kind': 'map',
+        'key': {'kind': 'scalar', 'name': 'String'},
+        'value': {'kind': 'unknown'},
+      });
+      expect(
+        packageInfo.fields.map((field) => field.name),
+        isNot(contains('hashCode')),
+      );
+      expect(
+        packageInfo.fields.map((field) => field.name),
+        isNot(contains('runtimeType')),
+      );
+    });
+
+    test('every committed plugin snapshot is byte-fresh', () async {
+      final projectDir = path.normalize(
+        path.join(Directory.current.path, '..', 'test', 'fixtures'),
+      );
+      final home = Platform.environment['HOME'];
+      final flutterRoot =
+          Platform.environment['FSX_FLUTTER_ROOT'] ??
+          path.join(home ?? '', '.fsx', 'flutter');
+      final layout = SdkLayout.resolve(flutterRoot);
+      final pluginsDir = Directory(
+        path.join(Directory.current.path, '..', 'ref', 'plugins'),
+      );
+      final snapshots =
+          pluginsDir
+              .listSync()
+              .whereType<File>()
+              .where((file) => file.path.endsWith('.json'))
+              .toList()
+            ..sort((first, second) => first.path.compareTo(second.path));
+      expect(snapshots, isNotEmpty);
+
+      for (final snapshot in snapshots) {
+        final packageName = path.basenameWithoutExtension(snapshot.path);
+        final extracted = await extractPluginApi(
+          packageName: packageName,
+          projectDir: projectDir,
+          sdkPath: layout.dartSdkPath,
+        );
+        expect(
+          snapshot.readAsStringSync(),
+          encodePluginApi(extracted),
+          reason:
+              '$packageName.json is stale — run '
+              '`bun run extract:plugin $packageName`.',
+        );
+      }
     });
 
     test('top-level functions are extracted with signatures', () {

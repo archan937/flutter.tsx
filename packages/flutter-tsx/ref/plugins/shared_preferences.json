@@ -6,6 +6,7 @@
       "name": "SharedPreferences",
       "doc": "/// Wraps NSUserDefaults (on iOS) and SharedPreferences (on Android), providing\n/// a persistent store for simple data.\n///\n/// Data is persisted to disk asynchronously.\n///\n/// This is a legacy API. For new code, consider [SharedPreferencesAsync] or [SharedPreferencesWithCache].",
       "constructors": [],
+      "fields": [],
       "methods": [
         {
           "name": "clear",
@@ -600,6 +601,7 @@
           ]
         }
       ],
+      "fields": [],
       "methods": [
         {
           "name": "clear",
@@ -1131,6 +1133,7 @@
           "params": []
         }
       ],
+      "fields": [],
       "methods": [],
       "constants": []
     },
@@ -1138,6 +1141,19 @@
       "name": "SharedPreferencesWithCache",
       "doc": "/// Provides a persistent store for simple data.\n///\n/// Cache provided to allow for synchronous gets.\n///\n/// If preferences on the platform may be altered by other means than through\n/// this instance, consider using [SharedPreferencesAsync] instead. You may also\n/// refresh the cached data using [reloadCache] prior to a get request to prevent\n/// missed changes that may have occurred since the cache was last updated.",
       "constructors": [],
+      "fields": [
+        {
+          "name": "keys",
+          "doc": "/// Returns all keys in the cache.",
+          "type": {
+            "kind": "set",
+            "item": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        }
+      ],
       "methods": [
         {
           "name": "clear",
@@ -1675,6 +1691,22 @@
               "deprecated": false
             }
           ]
+        }
+      ],
+      "fields": [
+        {
+          "name": "allowList",
+          "doc": "/// Information about what data will be fetched during `get` and `init`\n/// methods, what data can be `set`, as well as what data will be removed by `clear`.\n///\n/// A `null` allowList will prevent filtering, allowing all items to be cached.\n/// An empty allowList will prevent all caching as well as getting and setting.\n///\n/// Setting an allowList is strongly recommended, to prevent getting and\n/// caching unneeded or unexpected data.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "set",
+              "item": {
+                "kind": "scalar",
+                "name": "String"
+              }
+            }
+          }
         }
       ],
       "methods": [],

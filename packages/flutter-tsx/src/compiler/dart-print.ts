@@ -75,12 +75,26 @@ const inlineExpr = (expr: DartExpr): string => {
   }
 };
 
-// dart format's tall style splits a collection argument whenever its
-// enclosing argument list splits, even when the collection alone would fit.
-const printArgumentValue = (expr: DartExpr, site: PrintSite): string =>
-  expr.kind === 'list' && expr.items.length > 0
-    ? printListTall(expr, site)
-    : printExpr(expr, site);
+// An element that carries named arguments of its own keeps a collection
+// tall — only the element's own argument list counts, not one nested deeper.
+const blocksHug = (item: DartListItem): boolean =>
+  item.value.kind === 'call' &&
+  item.value.args.some((argument) => argument.name !== null);
+
+// dart format's tall style hugs a SOLE block-like argument: the collection
+// stays on the argument line when it fits there and no element blocks it.
+// With more than one argument a collection argument always splits.
+const printArgumentValue = (
+  expr: DartExpr,
+  site: PrintSite,
+  isSoleArgument: boolean,
+): string => {
+  if (expr.kind !== 'list' || expr.items.length === 0) {
+    return printExpr(expr, site);
+  }
+  const hugs = isSoleArgument && !expr.items.some(blocksHug);
+  return hugs ? printExpr(expr, site) : printListTall(expr, site);
+};
 
 const printCallTall = (
   expr: Extract<DartExpr, { kind: 'call' }>,
@@ -90,11 +104,15 @@ const printCallTall = (
   const childIndent = site.indent + 2;
   const lines = expr.args.map((argument) => {
     const prefix = argument.name === null ? '' : `${argument.name}: `;
-    const value = printArgumentValue(argument.value, {
-      indent: childIndent,
-      used: childIndent + prefix.length,
-      trailing: 1,
-    });
+    const value = printArgumentValue(
+      argument.value,
+      {
+        indent: childIndent,
+        used: childIndent + prefix.length,
+        trailing: 1,
+      },
+      expr.args.length === 1,
+    );
     return `${pad(childIndent)}${prefix}${value},`;
   });
   return (

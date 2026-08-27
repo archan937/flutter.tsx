@@ -99,6 +99,30 @@
           ]
         }
       ],
+      "fields": [
+        {
+          "name": "preferencesKeyPrefix",
+          "doc": "/// The prefix for a shared preference key. The prefix is used to make sure\n/// the key is unique to your application. If not provided, a default prefix\n/// will be used.\n///\n/// WARNING: If you change this you can't retrieve already saved preferences.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "sharedPreferencesName",
+          "doc": "/// The name of the sharedPreference database to use.\n/// You can select your own name if you want. A default name will\n/// be used if nothing is provided here.\n///\n/// WARNING: If you change this you can't retrieve already saved preferences.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        }
+      ],
       "methods": [
         {
           "name": "copyWith",
@@ -241,6 +265,7 @@
       "name": "AppleOptions",
       "doc": "",
       "constructors": [],
+      "fields": [],
       "methods": [
         {
           "name": "toMap",
@@ -361,6 +386,67 @@
               "deprecated": false
             }
           ]
+        }
+      ],
+      "fields": [
+        {
+          "name": "aOptions",
+          "doc": "",
+          "type": {
+            "kind": "named",
+            "name": "AndroidOptions"
+          }
+        },
+        {
+          "name": "iOptions",
+          "doc": "",
+          "type": {
+            "kind": "named",
+            "name": "IOSOptions"
+          }
+        },
+        {
+          "name": "lOptions",
+          "doc": "",
+          "type": {
+            "kind": "named",
+            "name": "LinuxOptions"
+          }
+        },
+        {
+          "name": "mOptions",
+          "doc": "",
+          "type": {
+            "kind": "named",
+            "name": "MacOsOptions"
+          }
+        },
+        {
+          "name": "onCupertinoProtectedDataAvailabilityChanged",
+          "doc": "/// iOS only feature\n///\n/// On all unsupported platforms returns null",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "named",
+              "name": "Stream"
+            }
+          }
+        },
+        {
+          "name": "wOptions",
+          "doc": "",
+          "type": {
+            "kind": "named",
+            "name": "WindowsOptions"
+          }
+        },
+        {
+          "name": "webOptions",
+          "doc": "",
+          "type": {
+            "kind": "named",
+            "name": "WebOptions"
+          }
         }
       ],
       "methods": [
@@ -1368,6 +1454,7 @@
           ]
         }
       ],
+      "fields": [],
       "methods": [
         {
           "name": "copyWith",
@@ -1469,6 +1556,7 @@
           "params": []
         }
       ],
+      "fields": [],
       "methods": [
         {
           "name": "toMap",
@@ -1587,6 +1675,7 @@
           ]
         }
       ],
+      "fields": [],
       "methods": [
         {
           "name": "copyWith",
@@ -1774,6 +1863,40 @@
           ]
         }
       ],
+      "fields": [
+        {
+          "name": "dbName",
+          "doc": "",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          }
+        },
+        {
+          "name": "publicKey",
+          "doc": "",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          }
+        },
+        {
+          "name": "wrapKey",
+          "doc": "",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          }
+        },
+        {
+          "name": "wrapKeyIv",
+          "doc": "",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          }
+        }
+      ],
       "methods": [
         {
           "name": "toMap",
@@ -1831,6 +1954,7 @@
           ]
         }
       ],
+      "fields": [],
       "methods": [
         {
           "name": "copyWith",

@@ -65,6 +65,9 @@ describe('irWidgetToDart — camera fixture', () => {
             methods: new Map(
               controller?.methods.map((method) => [method.name, method]) ?? [],
             ),
+            fields: new Map(
+              controller?.fields.map((field) => [field.name, field.type]) ?? [],
+            ),
           },
         ],
       ]),

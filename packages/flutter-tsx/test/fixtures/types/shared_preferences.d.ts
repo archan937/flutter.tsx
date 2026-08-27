@@ -54,6 +54,7 @@ declare module 'plugin:shared_preferences' {
   }
 
   export class SharedPreferencesWithCache {
+    readonly keys: string[];
     clear(): Promise<void>;
     containsKey(key: string): boolean;
     static create(options: { sharedPreferencesOptions?: SharedPreferencesOptions; cacheOptions: SharedPreferencesWithCacheOptions; cache?: Record<string, Object | null> | null }): Promise<SharedPreferencesWithCache>;
@@ -74,6 +75,7 @@ declare module 'plugin:shared_preferences' {
 
   export class SharedPreferencesWithCacheOptions {
     constructor(options?: { allowList?: string[] | null });
+    readonly allowList: string[] | null;
   }
 
   export const useSharedPreferences: () => SharedPreferences;

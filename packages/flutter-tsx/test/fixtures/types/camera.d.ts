@@ -36,8 +36,16 @@ declare module 'plugin:camera' {
     readonly __external: 'DateTime';
   }
 
+  export interface Iterator {
+    readonly __external: 'Iterator';
+  }
+
   export interface Key {
     readonly __external: 'Key';
+  }
+
+  export interface MediaSettings {
+    readonly __external: 'MediaSettings';
   }
 
   export interface Offset {
@@ -54,6 +62,12 @@ declare module 'plugin:camera' {
 
   export class CameraController {
     constructor(description: CameraDescription, resolutionPreset: ResolutionPreset, options?: { enableAudio?: boolean; fps?: number | null; videoBitrate?: number | null; audioBitrate?: number | null; imageFormatGroup?: ImageFormatGroup | null });
+    readonly cameraId: number;
+    readonly description: CameraDescription;
+    readonly enableAudio: boolean;
+    readonly imageFormatGroup: ImageFormatGroup | null;
+    readonly mediaSettings: MediaSettings;
+    readonly resolutionPreset: ResolutionPreset;
     buildPreview(): FlutterElement;
     debugCheckIsDisposed(): void;
     dispose(): Promise<void>;
@@ -91,30 +105,76 @@ declare module 'plugin:camera' {
 
   export class CameraDescription {
     constructor(options: { name: string; lensDirection: CameraLensDirection; sensorOrientation: number; lensType?: CameraLensType });
+    readonly lensDirection: CameraLensDirection;
+    readonly lensType: CameraLensType;
+    readonly name: string;
+    readonly sensorOrientation: number;
     toString(): string;
   }
 
   export class CameraException {
     constructor(code: string, description: string | null);
+    readonly code: string;
+    readonly description: string | null;
     toString(): string;
   }
 
-  export class CameraImage {}
+  export class CameraImage {
+    readonly format: ImageFormat;
+    readonly height: number;
+    readonly lensAperture: number | null;
+    readonly planes: Plane[];
+    readonly sensorExposureTime: number | null;
+    readonly sensorSensitivity: number | null;
+    readonly width: number;
+  }
 
   export class CameraPreview {
     constructor(controller: CameraController, options?: { key?: Key | null; child?: FlutterElement | null });
+    readonly child: FlutterElement | null;
+    readonly controller: CameraController;
     build(context: BuildContext): FlutterElement;
   }
 
   export class CameraValue {
     constructor(options: { isInitialized: boolean; errorDescription?: string | null; previewSize?: Size | null; isRecordingVideo: boolean; isTakingPicture: boolean; isStreamingImages: boolean; isRecordingPaused: boolean; flashMode: FlashMode; exposureMode: ExposureMode; focusMode: FocusMode; exposurePointSupported: boolean; focusPointSupported: boolean; deviceOrientation: DeviceOrientation; description: CameraDescription; lockedCaptureOrientation?: DeviceOrientation | null; recordingOrientation?: DeviceOrientation | null; isPreviewPaused?: boolean; previewPauseOrientation?: DeviceOrientation | null; videoStabilizationMode?: VideoStabilizationMode });
+    readonly aspectRatio: number;
+    readonly description: CameraDescription;
+    readonly deviceOrientation: DeviceOrientation;
+    readonly errorDescription: string | null;
+    readonly exposureMode: ExposureMode;
+    readonly exposurePointSupported: boolean;
+    readonly flashMode: FlashMode;
+    readonly focusMode: FocusMode;
+    readonly focusPointSupported: boolean;
+    readonly hasError: boolean;
+    readonly isCaptureOrientationLocked: boolean;
+    readonly isInitialized: boolean;
+    readonly isPreviewPaused: boolean;
+    readonly isRecordingPaused: boolean;
+    readonly isRecordingVideo: boolean;
+    readonly isStreamingImages: boolean;
+    readonly isTakingPicture: boolean;
+    readonly lockedCaptureOrientation: DeviceOrientation | null;
+    readonly previewPauseOrientation: DeviceOrientation | null;
+    readonly previewSize: Size | null;
+    readonly recordingOrientation: DeviceOrientation | null;
+    readonly videoStabilizationMode: VideoStabilizationMode;
     copyWith(options?: { isInitialized?: boolean | null; isRecordingVideo?: boolean | null; isTakingPicture?: boolean | null; isStreamingImages?: boolean | null; errorDescription?: string | null; previewSize?: Size | null; isRecordingPaused?: boolean | null; flashMode?: FlashMode | null; exposureMode?: ExposureMode | null; focusMode?: FocusMode | null; exposurePointSupported?: boolean | null; focusPointSupported?: boolean | null; deviceOrientation?: DeviceOrientation | null; lockedCaptureOrientation?: Optional | null; recordingOrientation?: Optional | null; isPreviewPaused?: boolean | null; description?: CameraDescription | null; previewPauseOrientation?: Optional | null; videoStabilizationMode?: VideoStabilizationMode | null }): CameraValue;
     toString(): string;
   }
 
-  export class ImageFormat {}
+  export class ImageFormat {
+    readonly group: ImageFormatGroup;
+    readonly raw: unknown;
+  }
 
   export class Optional {
+    readonly isNotPresent: boolean;
+    readonly isPresent: boolean;
+    readonly iterator: Iterator;
+    readonly orNull: unknown | null;
+    readonly value: unknown;
     ifAbsent(ifAbsent: () => void): void;
     ifPresent(ifPresent: (value: unknown) => void): void;
     or(defaultValue: unknown): unknown;
@@ -123,7 +183,13 @@ declare module 'plugin:camera' {
     transformNullable(transformer: (value: unknown) => unknown | null): Optional;
   }
 
-  export class Plane {}
+  export class Plane {
+    readonly bytes: Uint8List;
+    readonly bytesPerPixel: number | null;
+    readonly bytesPerRow: number;
+    readonly height: number | null;
+    readonly width: number | null;
+  }
 
   export class XFile {
     constructor(path: string, options?: { mimeType?: string | null; name?: string | null; length?: number | null; bytes?: Uint8List | null; lastModified?: DateTime | null; overrides?: CrossFileTestOverrides | null });

@@ -59,6 +59,9 @@ const cameraHooksContext = async (
           methods: new Map(
             controller?.methods.map((method) => [method.name, method]) ?? [],
           ),
+          fields: new Map(
+            controller?.fields.map((field) => [field.name, field.type]) ?? [],
+          ),
         },
       ],
     ]),
@@ -1314,6 +1317,7 @@ describe('lowerComponent — plugin hooks', () => {
               managed: ['initialize', 'dispose'],
               options: [],
             },
+            fields: new Map(),
             methods: new Map(
               ['initialize', 'dispose', 'start'].map((name) => [
                 name,
@@ -1474,6 +1478,9 @@ describe('lowerComponent — plugin hooks', () => {
             hook,
             methods: new Map(
               storage?.methods.map((method) => [method.name, method]) ?? [],
+            ),
+            fields: new Map(
+              storage?.fields.map((field) => [field.name, field.type]) ?? [],
             ),
           },
         ],
@@ -1766,5 +1773,82 @@ describe('lowerComponent — plugin functions', () => {
     ).rejects.toThrow(
       new Error('TSX0203 probe.tsx:6:52 — `nope` is not a LaunchMode member.'),
     );
+  });
+});
+describe('lowerComponent — plugin property reads', () => {
+  const infoContext = async (): Promise<CompileContext> => {
+    const api = await loadPluginApi('package_info_plus');
+    const [hook] = deriveHooks(api, undefined);
+    if (hook === undefined) {
+      throw new Error('expected the derived usePackageInfo hook');
+    }
+    const packageInfo = api.classes.find(
+      (entity) => entity.name === 'PackageInfo',
+    );
+    return {
+      ...(await contextOnce()),
+      pluginHooks: new Map([
+        [
+          'usePackageInfo',
+          {
+            hook,
+            methods: new Map(
+              packageInfo?.methods.map((method) => [method.name, method]) ?? [],
+            ),
+            fields: new Map(
+              packageInfo?.fields.map((field) => [field.name, field.type]) ??
+                [],
+            ),
+          },
+        ],
+      ]),
+    };
+  };
+
+  test('a String property renders as a raw text argument', async () => {
+    const analysis = analyzeSource(
+      "import { Text } from 'flutter-tsx';\n" +
+        "import { usePackageInfo } from 'plugin:package_info_plus';\n" +
+        'export const Probe = () => {\n' +
+        '  const info = usePackageInfo();\n' +
+        '  return <Text>{info.appName}</Text>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+    const [component] = analysis.components;
+    if (component === undefined) {
+      throw new Error('expected a component');
+    }
+    const ir = lowerComponent(component, await infoContext());
+
+    expect(ir.body.args[0]?.value).toEqual({
+      kind: 'dartExpr',
+      dart: "_info?.appName ?? ''",
+    });
+  });
+
+  test('a String property interpolates alongside text', async () => {
+    const analysis = analyzeSource(
+      "import { Text } from 'flutter-tsx';\n" +
+        "import { usePackageInfo } from 'plugin:package_info_plus';\n" +
+        'export const Probe = () => {\n' +
+        '  const info = usePackageInfo();\n' +
+        '  return <Text>v{info.version}</Text>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+    const [component] = analysis.components;
+    if (component === undefined) {
+      throw new Error('expected a component');
+    }
+    const ir = lowerComponent(component, await infoContext());
+
+    expect(ir.body.args[0]?.value).toEqual({
+      kind: 'interpolation',
+      parts: [
+        { kind: 'text', value: 'v' },
+        { kind: 'expr', value: "_info?.version ?? ''" },
+      ],
+    });
   });
 });

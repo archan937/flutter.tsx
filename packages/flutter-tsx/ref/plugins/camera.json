@@ -118,6 +118,59 @@
           ]
         }
       ],
+      "fields": [
+        {
+          "name": "cameraId",
+          "doc": "/// The camera identifier with which the controller is associated.",
+          "type": {
+            "kind": "scalar",
+            "name": "int"
+          }
+        },
+        {
+          "name": "description",
+          "doc": "/// The properties of the camera device controlled by this controller.",
+          "type": {
+            "kind": "named",
+            "name": "CameraDescription"
+          }
+        },
+        {
+          "name": "enableAudio",
+          "doc": "/// Whether to include audio when recording a video.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "imageFormatGroup",
+          "doc": "/// The [ImageFormatGroup] describes the output of the raw image format.\n///\n/// When null the imageFormat will fallback to the platforms default.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "enum",
+              "name": "ImageFormatGroup"
+            }
+          }
+        },
+        {
+          "name": "mediaSettings",
+          "doc": "/// The media settings this controller is targeting.\n///\n/// This media settings are not guaranteed to be available on the device,\n/// if unavailable a [resolutionPreset] default values will be used.\n///\n/// See also: [MediaSettings].",
+          "type": {
+            "kind": "named",
+            "name": "MediaSettings"
+          }
+        },
+        {
+          "name": "resolutionPreset",
+          "doc": "/// The resolution this controller is targeting.\n///\n/// This resolution preset is not guaranteed to be available on the device,\n/// if unavailable a lower resolution will be used.\n///\n/// See also: [ResolutionPreset].",
+          "type": {
+            "kind": "enum",
+            "name": "ResolutionPreset"
+          }
+        }
+      ],
       "methods": [
         {
           "name": "buildPreview",
@@ -843,6 +896,40 @@
           ]
         }
       ],
+      "fields": [
+        {
+          "name": "lensDirection",
+          "doc": "/// The direction the camera is facing.",
+          "type": {
+            "kind": "enum",
+            "name": "CameraLensDirection"
+          }
+        },
+        {
+          "name": "lensType",
+          "doc": "/// The type of lens the camera has.",
+          "type": {
+            "kind": "enum",
+            "name": "CameraLensType"
+          }
+        },
+        {
+          "name": "name",
+          "doc": "/// The name of the camera device.",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          }
+        },
+        {
+          "name": "sensorOrientation",
+          "doc": "/// Clockwise angle through which the output image needs to be rotated to be upright on the device screen in its native orientation.\n///\n/// **Range of valid values:**\n/// 0, 90, 180, 270\n///\n/// On Android, also defines the direction of rolling shutter readout, which\n/// is from top to bottom in the sensor's coordinate system.",
+          "type": {
+            "kind": "scalar",
+            "name": "int"
+          }
+        }
+      ],
       "methods": [
         {
           "name": "==",
@@ -923,6 +1010,27 @@
           ]
         }
       ],
+      "fields": [
+        {
+          "name": "code",
+          "doc": "/// Error code.",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          }
+        },
+        {
+          "name": "description",
+          "doc": "/// Textual description of the error.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        }
+      ],
       "methods": [
         {
           "name": "toString",
@@ -989,6 +1097,76 @@
           ]
         }
       ],
+      "fields": [
+        {
+          "name": "format",
+          "doc": "/// Format of the image provided.\n///\n/// Determines the number of planes needed to represent the image, and\n/// the general layout of the pixel data in each [Uint8List].",
+          "type": {
+            "kind": "named",
+            "name": "ImageFormat"
+          }
+        },
+        {
+          "name": "height",
+          "doc": "/// Height of the image in pixels.\n///\n/// For formats where some color channels are subsampled, this is the height\n/// of the largest-resolution plane.",
+          "type": {
+            "kind": "scalar",
+            "name": "int"
+          }
+        },
+        {
+          "name": "lensAperture",
+          "doc": "/// The aperture settings for this image.\n///\n/// Represented as an f-stop value.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "double"
+            }
+          }
+        },
+        {
+          "name": "planes",
+          "doc": "/// The pixels planes for this image.\n///\n/// The number of planes is determined by the format of the image.",
+          "type": {
+            "kind": "list",
+            "item": {
+              "kind": "named",
+              "name": "Plane"
+            }
+          }
+        },
+        {
+          "name": "sensorExposureTime",
+          "doc": "/// The sensor exposure time for this image in nanoseconds.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "int"
+            }
+          }
+        },
+        {
+          "name": "sensorSensitivity",
+          "doc": "/// The sensor sensitivity in standard ISO arithmetic units.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "double"
+            }
+          }
+        },
+        {
+          "name": "width",
+          "doc": "/// Width of the image in pixels.\n///\n/// For formats where some color channels are subsampled, this is the width\n/// of the largest-resolution plane.",
+          "type": {
+            "kind": "scalar",
+            "name": "int"
+          }
+        }
+      ],
       "methods": [],
       "constants": []
     },
@@ -1047,6 +1225,26 @@
               "deprecated": false
             }
           ]
+        }
+      ],
+      "fields": [
+        {
+          "name": "child",
+          "doc": "/// A widget to overlay on top of the camera preview",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "widget"
+            }
+          }
+        },
+        {
+          "name": "controller",
+          "doc": "/// The controller for the camera that the preview is shown for.",
+          "type": {
+            "kind": "named",
+            "name": "CameraController"
+          }
         }
       ],
       "methods": [
@@ -1370,6 +1568,199 @@
               "deprecated": false
             }
           ]
+        }
+      ],
+      "fields": [
+        {
+          "name": "aspectRatio",
+          "doc": "/// Convenience getter for `previewSize.width / previewSize.height`.\n///\n/// Can only be called when [initialize] is done.",
+          "type": {
+            "kind": "scalar",
+            "name": "double"
+          }
+        },
+        {
+          "name": "description",
+          "doc": "/// The properties of the camera device controlled by this controller.",
+          "type": {
+            "kind": "named",
+            "name": "CameraDescription"
+          }
+        },
+        {
+          "name": "deviceOrientation",
+          "doc": "/// The current device UI orientation.",
+          "type": {
+            "kind": "enum",
+            "name": "DeviceOrientation"
+          }
+        },
+        {
+          "name": "errorDescription",
+          "doc": "/// Description of an error state.\n///\n/// This is null while the controller is not in an error state.\n/// When [hasError] is true this contains the error description.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "exposureMode",
+          "doc": "/// The exposure mode the camera is currently set to.",
+          "type": {
+            "kind": "enum",
+            "name": "ExposureMode"
+          }
+        },
+        {
+          "name": "exposurePointSupported",
+          "doc": "/// Whether setting the exposure point is supported.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "flashMode",
+          "doc": "/// The flash mode the camera is currently set to.",
+          "type": {
+            "kind": "enum",
+            "name": "FlashMode"
+          }
+        },
+        {
+          "name": "focusMode",
+          "doc": "/// The focus mode the camera is currently set to.",
+          "type": {
+            "kind": "enum",
+            "name": "FocusMode"
+          }
+        },
+        {
+          "name": "focusPointSupported",
+          "doc": "/// Whether setting the focus point is supported.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "hasError",
+          "doc": "/// Whether the controller is in an error state.\n///\n/// When true [errorDescription] describes the error.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "isCaptureOrientationLocked",
+          "doc": "/// Whether the capture orientation is currently locked.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "isInitialized",
+          "doc": "/// True after [CameraController.initialize] has completed successfully.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "isPreviewPaused",
+          "doc": "/// True when the preview widget has been paused manually.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "isRecordingPaused",
+          "doc": "/// True when camera [isRecordingVideo] and recording is paused.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "isRecordingVideo",
+          "doc": "/// True when the camera is recording (not the same as previewing).",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "isStreamingImages",
+          "doc": "/// True when images from the camera are being streamed.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "isTakingPicture",
+          "doc": "/// True when a picture capture request has been sent but as not yet returned.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "lockedCaptureOrientation",
+          "doc": "/// The currently locked capture orientation.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "enum",
+              "name": "DeviceOrientation"
+            }
+          }
+        },
+        {
+          "name": "previewPauseOrientation",
+          "doc": "/// Set to the orientation the preview was paused in, if it is currently paused.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "enum",
+              "name": "DeviceOrientation"
+            }
+          }
+        },
+        {
+          "name": "previewSize",
+          "doc": "/// The size of the preview in pixels.\n///\n/// Is `null` until [isInitialized] is `true`.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "named",
+              "name": "Size"
+            }
+          }
+        },
+        {
+          "name": "recordingOrientation",
+          "doc": "/// The orientation of the currently running video recording.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "enum",
+              "name": "DeviceOrientation"
+            }
+          }
+        },
+        {
+          "name": "videoStabilizationMode",
+          "doc": "/// The current video stabilization mode.",
+          "type": {
+            "kind": "enum",
+            "name": "VideoStabilizationMode"
+          }
         }
       ],
       "methods": [
@@ -1705,6 +2096,23 @@
       "name": "ImageFormat",
       "doc": "/// Describes how pixels are represented in an image.",
       "constructors": [],
+      "fields": [
+        {
+          "name": "group",
+          "doc": "/// Describes the format group the raw image format falls into.",
+          "type": {
+            "kind": "enum",
+            "name": "ImageFormatGroup"
+          }
+        },
+        {
+          "name": "raw",
+          "doc": "/// Raw version of the format from the Android or iOS platform.\n///\n/// On Android, this is an `int` from class `android.graphics.ImageFormat`. See\n/// https://developer.android.com/reference/android/graphics/ImageFormat\n///\n/// On iOS, this is a `FourCharCode` constant from Pixel Format Identifiers.\n/// See https://developer.apple.com/documentation/corevideo/1563591-pixel_format_identifiers?language=objc",
+          "type": {
+            "kind": "unknown"
+          }
+        }
+      ],
       "methods": [],
       "constants": []
     },
@@ -1761,6 +2169,49 @@
               "deprecated": false
             }
           ]
+        }
+      ],
+      "fields": [
+        {
+          "name": "isNotPresent",
+          "doc": "/// True when this optional contains no value.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "isPresent",
+          "doc": "/// True when this optional contains a value.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "iterator",
+          "doc": "",
+          "type": {
+            "kind": "named",
+            "name": "Iterator"
+          }
+        },
+        {
+          "name": "orNull",
+          "doc": "/// Gets the Optional value, or `null` if there is none.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "unknown"
+            }
+          }
+        },
+        {
+          "name": "value",
+          "doc": "/// Gets the Optional value.\n///\n/// Throws [StateError] if [value] is null.",
+          "type": {
+            "kind": "unknown"
+          }
         }
       ],
       "methods": [
@@ -1963,6 +2414,57 @@
       "name": "Plane",
       "doc": "/// A single color plane of image data.\n///\n/// The number and meaning of the planes in an image are determined by the\n/// format of the Image.",
       "constructors": [],
+      "fields": [
+        {
+          "name": "bytes",
+          "doc": "/// Bytes representing this plane.",
+          "type": {
+            "kind": "named",
+            "name": "Uint8List"
+          }
+        },
+        {
+          "name": "bytesPerPixel",
+          "doc": "/// The distance between adjacent pixel samples on Android, in bytes.\n///\n/// Will be `null` on iOS.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "int"
+            }
+          }
+        },
+        {
+          "name": "bytesPerRow",
+          "doc": "/// The row stride for this color plane, in bytes.",
+          "type": {
+            "kind": "scalar",
+            "name": "int"
+          }
+        },
+        {
+          "name": "height",
+          "doc": "/// Height of the pixel buffer on iOS.\n///\n/// Will be `null` on Android",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "int"
+            }
+          }
+        },
+        {
+          "name": "width",
+          "doc": "/// Width of the pixel buffer on iOS.\n///\n/// Will be `null` on Android.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "int"
+            }
+          }
+        }
+      ],
       "methods": [],
       "constants": []
     },
@@ -2205,6 +2707,7 @@
           ]
         }
       ],
+      "fields": [],
       "methods": [],
       "constants": []
     }

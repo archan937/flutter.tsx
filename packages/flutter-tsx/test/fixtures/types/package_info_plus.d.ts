@@ -12,6 +12,15 @@ declare module 'plugin:package_info_plus' {
 
   export class PackageInfo {
     constructor(options: { appName: string; packageName: string; version: string; buildNumber: string; buildSignature?: string; installerStore?: string | null; installTime?: DateTime | null; updateTime?: DateTime | null });
+    readonly appName: string;
+    readonly buildNumber: string;
+    readonly buildSignature: string;
+    readonly data: Record<string, unknown>;
+    readonly installTime: DateTime | null;
+    readonly installerStore: string | null;
+    readonly packageName: string;
+    readonly updateTime: DateTime | null;
+    readonly version: string;
     static fromPlatform(options?: { baseUrl?: string | null }): Promise<PackageInfo>;
     static setMockInitialValues(options: { appName: string; packageName: string; version: string; buildNumber: string; buildSignature: string; installerStore?: string | null; installTime?: DateTime | null; updateTime?: DateTime | null }): void;
     toString(): string;

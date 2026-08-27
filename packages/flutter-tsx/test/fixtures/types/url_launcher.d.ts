@@ -8,10 +8,14 @@ declare module 'plugin:url_launcher' {
 
   export class BrowserConfiguration {
     constructor(options?: { showTitle?: boolean });
+    readonly showTitle: boolean;
   }
 
   export class WebViewConfiguration {
     constructor(options?: { enableJavaScript?: boolean; enableDomStorage?: boolean; headers?: Record<string, string> });
+    readonly enableDomStorage: boolean;
+    readonly enableJavaScript: boolean;
+    readonly headers: Record<string, string>;
   }
 
   export const canLaunch: (urlString: string) => Promise<boolean>;

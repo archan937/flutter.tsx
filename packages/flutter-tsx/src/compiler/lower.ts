@@ -24,6 +24,7 @@ import type {
   IrWidget,
 } from './ir';
 import {
+  type PluginReadInfo,
   type TranslateContext,
   translateExpression,
   translateIdentifier,
@@ -40,6 +41,7 @@ interface WidgetInfo {
 export interface PluginHookInfo {
   hook: DerivedHook;
   methods: Map<string, PluginMethod>;
+  fields: Map<string, TypeNode>;
 }
 
 export interface PluginFunctionInfo {
@@ -807,6 +809,15 @@ const isStringExpression = (
       isStringExpression(expression.whenFalse, context)
     );
   }
+  if (
+    ts.isPropertyAccessExpression(expression) &&
+    ts.isIdentifier(expression.expression)
+  ) {
+    const field = context.translate.pluginReads
+      .get(expression.expression.text)
+      ?.fields.get(expression.name.text);
+    return field?.kind === 'scalar' && field.name === 'String';
+  }
   return false;
 };
 
@@ -1381,6 +1392,7 @@ export const lowerComponent = (
   component: ComponentAnalysis,
   compile: CompileContext,
 ): IrComponent => {
+  const pluginReads = new Map<string, PluginReadInfo>();
   const stateNames = new Set(component.states.map((state) => state.name));
   const handlerNames = new Set(
     component.handlers.map((handler) => handler.name),
@@ -1413,6 +1425,7 @@ export const lowerComponent = (
       stateNames,
       handlerNames,
       privateMembers: true,
+      pluginReads,
     },
   };
 
@@ -1426,6 +1439,11 @@ export const lowerComponent = (
       );
     }
     context.pluginBindings.set(binding.binding, info);
+    pluginReads.set(binding.binding, {
+      className: info.hook.className,
+      nullable: info.hook.acquisition.kind !== 'constField',
+      fields: info.fields,
+    });
     return {
       binding,
       lowered: lowerPluginBinding(binding, info, context),

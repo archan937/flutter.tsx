@@ -134,6 +134,9 @@ export const emitPluginDeclaration = (
         collectRefs(param.type, refs);
       }
     }
+    for (const field of entity.fields) {
+      collectRefs(field.type, refs);
+    }
     for (const method of tsMethods(entity)) {
       collectRefs(method.returnType, refs);
       for (const param of method.params) {
@@ -181,6 +184,14 @@ export const emitPluginDeclaration = (
     if (constructor !== undefined) {
       lines.push(`    constructor(${signatureParams(constructor.params)});`);
     }
+    lines.push(
+      ...entity.fields
+        .filter((field) => TS_IDENTIFIER.test(field.name))
+        .map(
+          (field) =>
+            `    readonly ${field.name}: ${tsTypeOf(withCoreStrings(field.type))};`,
+        ),
+    );
     lines.push(...tsMethods(entity).map(methodLine));
     blocks.push(
       lines.length === 0

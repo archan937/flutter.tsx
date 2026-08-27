@@ -79,6 +79,18 @@ describe('emitPluginDeclaration', () => {
               params: [],
             },
           ],
+          fields: [
+            {
+              name: 'frameRate',
+              doc: '/// Frames per second.',
+              type: { kind: 'scalar', name: 'double' },
+            },
+            {
+              name: 'manual',
+              doc: '',
+              type: { kind: 'named', name: 'Uri' },
+            },
+          ],
           constants: [],
         },
       ],
@@ -146,6 +158,8 @@ declare module 'plugin:demo' {
 
   export class DemoController {
     constructor(mode: DemoMode, options?: { loud?: boolean });
+    readonly frameRate: number;
+    readonly manual: string;
     dispose(): Promise<void>;
     initialize(): Promise<void>;
     run(): Promise<Report>;

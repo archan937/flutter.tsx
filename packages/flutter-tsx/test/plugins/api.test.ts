@@ -54,6 +54,21 @@ describe('loadPluginApi — committed camera api', () => {
       api.enums.find((entity) => entity.name === 'ResolutionPreset')?.values,
     ).toEqual(['low', 'medium', 'high', 'veryHigh', 'ultraHigh', 'max']);
 
+    const description = api.classes.find(
+      (entity) => entity.name === 'CameraDescription',
+    );
+    expect(description?.fields.find((field) => field.name === 'name')).toEqual({
+      name: 'name',
+      doc: '/// The name of the camera device.',
+      type: { kind: 'scalar', name: 'String' },
+    });
+    expect(description?.fields.map((field) => field.name)).toEqual([
+      'lensDirection',
+      'lensType',
+      'name',
+      'sensorOrientation',
+    ]);
+
     expect(api.functions.map((entity) => entity.name)).toEqual([
       'availableCameras',
     ]);
@@ -94,6 +109,7 @@ describe('parsePluginApi — malformed documents', () => {
               name: 'Demo',
               doc: '',
               constructors: [],
+              fields: [],
               methods: [{ name: 'run', doc: '', static: false, params: [] }],
               constants: [],
             },

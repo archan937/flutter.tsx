@@ -317,3 +317,140 @@ describe('printExpr — lists and collection-if', () => {
     );
   });
 });
+// dart format (dart_style 3.x tall style) hugs a SOLE block-like argument:
+// the collection stays on the argument line when it fits there, and an
+// author's split is collapsed. With more than one argument a split
+// collection is preserved instead — the shape every multi-arg golden has.
+describe('printExpr — sole collection argument hugs', () => {
+  const twoTexts = listLit([
+    { kind: 'element', value: call('Text', [identifier("_a ?? ''")]) },
+    { kind: 'element', value: call('Text', [identifier("_b ?? ''")]) },
+  ]);
+
+  test('a fitting sole collection argument stays on its line', () => {
+    expect(
+      printExpr(
+        call('Column', [], { named: [{ name: 'children', value: twoTexts }] }),
+        { indent: 4, used: 45, trailing: 1 },
+      ),
+    ).toBe(
+      [
+        'Column(',
+        "      children: [Text(_a ?? ''), Text(_b ?? '')],",
+        '    )',
+      ].join('\n'),
+    );
+  });
+
+  test('an overlong sole collection argument still splits', () => {
+    const wide = listLit([
+      {
+        kind: 'element',
+        value: call('Text', [stringLit('a'.repeat(70))]),
+      },
+      { kind: 'element', value: call('Text', [stringLit('b')]) },
+    ]);
+    expect(
+      printExpr(
+        call('Column', [], { named: [{ name: 'children', value: wide }] }),
+        { indent: 4, used: 45, trailing: 1 },
+      ),
+    ).toBe(
+      [
+        'Column(',
+        '      children: [',
+        '        Text(',
+        `          '${'a'.repeat(70)}',`,
+        '        ),',
+        "        Text('b'),",
+        '      ],',
+        '    )',
+      ].join('\n'),
+    );
+  });
+
+  test('an element with named arguments blocks the hug', () => {
+    const namedElements = listLit([
+      {
+        kind: 'element',
+        value: call('Greeting', [], {
+          named: [{ name: 'name', value: stringLit('Paul') }],
+        }),
+      },
+      {
+        kind: 'element',
+        value: call('Greeting', [], {
+          named: [{ name: 'name', value: stringLit('World') }],
+        }),
+      },
+    ]);
+    expect(
+      printExpr(
+        call('Column', [], {
+          named: [{ name: 'children', value: namedElements }],
+        }),
+        { indent: 4, used: 45, trailing: 1 },
+      ),
+    ).toBe(
+      [
+        'Column(',
+        '      children: [',
+        "        Greeting(name: 'Paul'),",
+        "        Greeting(name: 'World'),",
+        '      ],',
+        '    )',
+      ].join('\n'),
+    );
+  });
+
+  test('named arguments nested deeper still allow the hug', () => {
+    const nested = listLit([
+      {
+        kind: 'element',
+        value: call('Text', [
+          call('fmt', [], { named: [{ name: 'pad', value: numberLit('2') }] }),
+        ]),
+      },
+      { kind: 'element', value: call('Text', [identifier('_b')]) },
+    ]);
+    expect(
+      printExpr(
+        call('Column', [], { named: [{ name: 'children', value: nested }] }),
+        { indent: 4, used: 45, trailing: 1 },
+      ),
+    ).toBe(
+      [
+        'Column(',
+        '      children: [Text(fmt(pad: 2)), Text(_b)],',
+        '    )',
+      ].join('\n'),
+    );
+  });
+
+  test('with a second argument a fitting collection keeps its split', () => {
+    expect(
+      printExpr(
+        call('Column', [], {
+          named: [
+            {
+              name: 'mainAxisAlignment',
+              value: enumMember('MainAxisAlignment', 'center'),
+            },
+            { name: 'children', value: twoTexts },
+          ],
+        }),
+        { indent: 4, used: 11, trailing: 1 },
+      ),
+    ).toBe(
+      [
+        'Column(',
+        '      mainAxisAlignment: MainAxisAlignment.center,',
+        '      children: [',
+        "        Text(_a ?? ''),",
+        "        Text(_b ?? ''),",
+        '      ],',
+        '    )',
+      ].join('\n'),
+    );
+  });
+});

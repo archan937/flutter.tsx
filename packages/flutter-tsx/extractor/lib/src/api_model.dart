@@ -141,11 +141,26 @@ class FunctionModel {
   };
 }
 
+class FieldModel {
+  const FieldModel({required this.name, required this.doc, required this.type});
+
+  final String name;
+  final String doc;
+  final TypeNode type;
+
+  Map<String, Object?> toJson() => {
+    'name': name,
+    'doc': doc,
+    'type': type.toJson(),
+  };
+}
+
 class PluginClass {
   const PluginClass({
     required this.name,
     required this.doc,
     required this.constructors,
+    required this.fields,
     required this.methods,
     required this.constants,
   });
@@ -153,6 +168,7 @@ class PluginClass {
   final String name;
   final String doc;
   final List<ConstructorModel> constructors;
+  final List<FieldModel> fields;
   final List<MethodModel> methods;
   final List<ConstantModel> constants;
 
@@ -162,6 +178,7 @@ class PluginClass {
     'constructors': constructors
         .map((constructor) => constructor.toJson())
         .toList(),
+    'fields': fields.map((field) => field.toJson()).toList(),
     'methods': methods.map((method) => method.toJson()).toList(),
     'constants': constants.map((constant) => constant.toJson()).toList(),
   };

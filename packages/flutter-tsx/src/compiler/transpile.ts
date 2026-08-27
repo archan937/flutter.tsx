@@ -82,6 +82,9 @@ const loadPlugins = async (
         methods: new Map(
           entity?.methods.map((method) => [method.name, method]) ?? [],
         ),
+        fields: new Map(
+          entity?.fields.map((field) => [field.name, field.type]) ?? [],
+        ),
       });
     }
   }

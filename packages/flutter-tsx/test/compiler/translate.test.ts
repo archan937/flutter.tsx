@@ -3,6 +3,7 @@ import ts from 'typescript';
 
 import { analyzeSource } from '@src/compiler/analyze';
 import {
+  type PluginReadInfo,
   type TranslateContext,
   translateExpression,
 } from '@src/compiler/translate';
@@ -40,6 +41,34 @@ const parseExpression = (
   return { expression: found, sourceFile };
 };
 
+const pluginReads = (): Map<string, PluginReadInfo> =>
+  new Map([
+    [
+      'info',
+      {
+        className: 'PackageInfo',
+        nullable: true,
+        fields: new Map([
+          ['appName', { kind: 'scalar' as const, name: 'String' as const }],
+          ['buildCount', { kind: 'scalar' as const, name: 'int' as const }],
+          ['ratio', { kind: 'scalar' as const, name: 'double' as const }],
+          ['debug', { kind: 'scalar' as const, name: 'bool' as const }],
+          ['stamp', { kind: 'named' as const, name: 'DateTime' }],
+        ]),
+      },
+    ],
+    [
+      'storage',
+      {
+        className: 'FlutterSecureStorage',
+        nullable: false,
+        fields: new Map([
+          ['label', { kind: 'scalar' as const, name: 'String' as const }],
+        ]),
+      },
+    ],
+  ]);
+
 const translate = (source: string): string => {
   const { expression, sourceFile } = parseExpression(source);
   const context: TranslateContext = {
@@ -47,6 +76,7 @@ const translate = (source: string): string => {
     stateNames: new Set(['count', 'label']),
     handlerNames: new Set(['tick']),
     privateMembers: true,
+    pluginReads: pluginReads(),
   };
   return translateExpression(expression, context);
 };
@@ -121,6 +151,37 @@ describe('translateExpression', () => {
       new Error(
         'TSX0305 probe.tsx:6:17 — this expression is not compiled yet ' +
           '(roadmap step 18).',
+      ),
+    );
+  });
+});
+describe('translateExpression — plugin property reads', () => {
+  test('a non-null handle reads the property directly', () => {
+    expect(translate('storage.label')).toBe('_storage.label');
+  });
+
+  test('a nullable handle reads with the zero-value fallback', () => {
+    expect(translate('info.appName')).toBe("_info?.appName ?? ''");
+    expect(translate('info.buildCount')).toBe('_info?.buildCount ?? 0');
+    expect(translate('info.ratio')).toBe('_info?.ratio ?? 0');
+    expect(translate('info.debug')).toBe('_info?.debug ?? false');
+  });
+
+  test('an unknown property is a numbered error', () => {
+    expect(() => translate('info.appNam')).toThrow(
+      new Error(
+        'TSX0315 probe.tsx:6:22 — `PackageInfo` has no property ' +
+          '`appNam`. Check the API reference for the available properties.',
+      ),
+    );
+  });
+
+  test('a property without a zero value is a numbered error', () => {
+    expect(() => translate('info.stamp')).toThrow(
+      new Error(
+        'TSX0316 probe.tsx:6:22 — reading `stamp` needs a DateTime ' +
+          'fallback, which is not compiled yet. Read it inside a handler ' +
+          'and store the result in state.',
       ),
     );
   });

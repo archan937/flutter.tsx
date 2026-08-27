@@ -28,6 +28,16 @@
           ]
         }
       ],
+      "fields": [
+        {
+          "name": "showTitle",
+          "doc": "/// Whether or not to show the webpage title.\n///\n/// May not be supported on all platforms.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        }
+      ],
       "methods": [],
       "constants": []
     },
@@ -88,6 +98,39 @@
               "deprecated": false
             }
           ]
+        }
+      ],
+      "fields": [
+        {
+          "name": "enableDomStorage",
+          "doc": "/// Whether or not DOM storage is enabled for the web content.\n///\n/// Disabling this may not be supported on all platforms.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "enableJavaScript",
+          "doc": "/// Whether or not JavaScript is enabled for the web content.\n///\n/// Disabling this may not be supported on all platforms.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "headers",
+          "doc": "/// Additional headers to pass in the load request.\n///\n/// On Android, this may work even when not loading in an in-app web view.\n/// When loading in an external browsers, this sets\n/// [Browser.EXTRA_HEADERS](https://developer.android.com/reference/android/provider/Browser#EXTRA_HEADERS)\n/// Not all browsers support this, so it is not guaranteed to be honored.",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
         }
       ],
       "methods": [],
