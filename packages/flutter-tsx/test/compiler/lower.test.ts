@@ -2454,3 +2454,31 @@ describe('lowerComponent — store diagnostics', () => {
     );
   });
 });
+describe('lowerComponent — navigation diagnostics', () => {
+  test('an unknown navigation method is a numbered error', async () => {
+    const analysis = analyzeSource(
+      "import { ElevatedButton, Text, useNavigation } from 'flutter-tsx';\n" +
+        'export const Probe = () => {\n' +
+        '  const nav = useNavigation();\n' +
+        '  return (\n' +
+        "    <ElevatedButton onClick={() => nav.teleport('/x')}>\n" +
+        '      Go\n' +
+        '    </ElevatedButton>\n' +
+        '  );\n' +
+        '};\n',
+      'probe.tsx',
+    );
+    const [component] = analysis.components;
+    if (component === undefined) {
+      throw new Error('expected a component');
+    }
+    const context = await contextOnce();
+
+    expect(() => lowerComponent(component, context)).toThrow(
+      new Error(
+        'TSX0329 probe.tsx:5:40 — navigation has no `teleport`: use push, ' +
+          'replace, go or pop.',
+      ),
+    );
+  });
+});

@@ -43,6 +43,12 @@ export interface StoreUse {
   setterName: string;
 }
 
+/// `createRouter({ '/': Home })` — one route table per file.
+export interface RouterBinding {
+  name: string;
+  routes: { path: string; component: string }[];
+}
+
 export interface HandlerBinding {
   name: string;
   isAsync: boolean;
@@ -64,6 +70,8 @@ export interface ComponentAnalysis {
   plugins: PluginBinding[];
   asyncBinding: AsyncBinding | null;
   storeUse: StoreUse | null;
+  /// Names bound by `useNavigation()` in this component.
+  navigators: string[];
   handlers: HandlerBinding[];
   effects: ts.CallExpression[];
   returnJsx: ts.Expression;
@@ -87,6 +95,7 @@ export interface ComponentSummary {
 export interface SourceAnalysis {
   components: ComponentAnalysis[];
   stores: StoreBinding[];
+  router: RouterBinding | null;
   checker: ts.TypeChecker;
   sourceFile: ts.SourceFile;
   pluginImports: Map<string, string>;
@@ -398,6 +407,8 @@ const analyzeBodyStatement = (
       const module = context.hookModules.get(callee);
       if (callee === 'useState') {
         analyzeStateDeclaration(declaration, initializer, context);
+      } else if (callee === 'useNavigation') {
+        context.analysis.navigators.push(declaration.name.getText());
       } else if (callee === 'useStore') {
         analyzeStoreUse(declaration, initializer, context);
       } else if (
@@ -574,6 +585,65 @@ const storeFieldType = (
   );
 };
 
+// The route table names components declared in the same file, so a typo or a
+// string in place of a component is caught here rather than in Dart.
+const analyzeRouter = (
+  sourceFile: ts.SourceFile,
+  componentNames: ReadonlySet<string>,
+): RouterBinding | null => {
+  for (const statement of sourceFile.statements) {
+    if (!ts.isVariableStatement(statement)) {
+      continue;
+    }
+    for (const declaration of statement.declarationList.declarations) {
+      const { initializer } = declaration;
+      if (
+        initializer === undefined ||
+        !ts.isCallExpression(initializer) ||
+        !ts.isIdentifier(initializer.expression) ||
+        initializer.expression.text !== 'createRouter'
+      ) {
+        continue;
+      }
+      const [table] = initializer.arguments;
+      if (table === undefined || !ts.isObjectLiteralExpression(table)) {
+        throw tsxErrorAt(
+          'TSX0327',
+          '`createRouter` takes a table of paths to components: ' +
+            "`createRouter({ '/': Home })`.",
+          { sourceFile, node: initializer },
+        );
+      }
+      return {
+        name: declaration.name.getText(),
+        routes: table.properties.map((property) => {
+          if (
+            !ts.isPropertyAssignment(property) ||
+            !ts.isStringLiteral(property.name)
+          ) {
+            throw tsxErrorAt(
+              'TSX0327',
+              '`createRouter` takes a table of paths to components: ' +
+                "`createRouter({ '/': Home })`.",
+              { sourceFile, node: property },
+            );
+          }
+          const target = property.initializer;
+          if (!ts.isIdentifier(target) || !componentNames.has(target.text)) {
+            throw tsxErrorAt(
+              'TSX0328',
+              'a route must point at a component declared in this file.',
+              { sourceFile, node: target },
+            );
+          }
+          return { path: property.name.text, component: target.text };
+        }),
+      };
+    }
+  }
+  return null;
+};
+
 const analyzeStores = (sourceFile: ts.SourceFile): StoreBinding[] => {
   const stores: StoreBinding[] = [];
   for (const statement of sourceFile.statements) {
@@ -644,6 +714,7 @@ const analyzeComponent = (
     plugins: [],
     asyncBinding: null,
     storeUse: null,
+    navigators: [],
     handlers: [],
     effects: [],
     returnJsx,
@@ -751,7 +822,11 @@ export const analyzeSource = (
         module.slice(PLUGIN_MODULE_PREFIX.length),
       ]),
   );
-  return { components, stores, checker, sourceFile, pluginImports };
+  const router = analyzeRouter(
+    sourceFile,
+    new Set(components.map((component) => component.name)),
+  );
+  return { components, stores, router, checker, sourceFile, pluginImports };
 };
 
 export const summarize = (component: ComponentAnalysis): ComponentSummary => ({

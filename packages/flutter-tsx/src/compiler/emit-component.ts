@@ -1,6 +1,6 @@
 import { printExpr } from './dart-print';
 import { importsForComponents } from './imports';
-import type { IrComponent, IrMethod, IrStore } from './ir';
+import type { IrComponent, IrMethod, IrRouter, IrStore } from './ir';
 import { irWidgetToDart } from './ir-to-dart';
 import type { CompileContext } from './lower';
 import { initStateLines, methodStatementLines } from './statements';
@@ -196,14 +196,49 @@ const emitStore = (store: IrStore): string => {
   return `${lines.join('\n')}\n\n${instance.join('\n')}`;
 };
 
+export const GO_ROUTER_IMPORT = 'package:go_router/go_router.dart';
+
+// dart format keeps each GoRoute on one line while it fits, and the routes
+// list always splits because the router call does.
+const emitRouter = (router: IrRouter): string => {
+  const routes = router.routes.map((route) => {
+    const inline =
+      `    GoRoute(path: '${route.path}', ` +
+      `builder: (context, state) => const ${route.component}()),`;
+    if (inline.length <= 80) {
+      return inline;
+    }
+    return [
+      `    GoRoute(`,
+      `      path: '${route.path}',`,
+      `      builder: (context, state) => const ${route.component}(),`,
+      '    ),',
+    ].join('\n');
+  });
+  return [
+    `final GoRouter ${router.name} = GoRouter(`,
+    '  routes: [',
+    ...routes,
+    '  ],',
+    ');',
+  ].join('\n');
+};
+
+export interface DartFileParts {
+  stores?: IrStore[];
+  router?: IrRouter | null;
+}
+
 export const emitDartFile = (
   components: IrComponent[],
   context: CompileContext,
-  stores: IrStore[] = [],
+  parts: DartFileParts = {},
 ): string => {
+  const { stores = [], router = null } = parts;
   const classes = [
     ...stores.map(emitStore),
     ...components.map(emitComponentClass),
+    ...(router === null ? [] : [emitRouter(router)]),
   ];
   const pluginImports = components
     .flatMap((component) => component.pluginImports)
@@ -212,6 +247,9 @@ export const emitDartFile = (
     ...new Set([
       ...importsForComponents(components, context),
       ...pluginImports,
+      // GoRouter and GoRoute themselves need the import, even in a file whose
+      // components never navigate.
+      ...(router === null ? [] : [`import '${GO_ROUTER_IMPORT}';`]),
     ]),
   ].sort();
   return `${imports.join('\n')}\n\n${classes.join('\n\n')}\n`;

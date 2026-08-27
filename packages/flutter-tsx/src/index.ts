@@ -4,14 +4,19 @@ export * from './generated';
 export type {
   AsyncOptions,
   EffectCleanup,
+  Navigation,
+  RouterConfig,
+  RouteTarget,
   StateSetter,
   Store,
   StorePatch,
 } from './runtime/hooks';
 export {
+  createRouter,
   createStore,
   useAsync,
   useEffect,
+  useNavigation,
   useState,
   useStore,
   useStream,

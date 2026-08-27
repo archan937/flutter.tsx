@@ -89,6 +89,12 @@ export interface IrStore {
   fields: { name: string; dartType: string; initializer: string }[];
 }
 
+/// A GoRouter built from `createRouter({ … })`.
+export interface IrRouter {
+  name: string;
+  routes: { path: string; component: string }[];
+}
+
 export interface IrField {
   name: string;
   dartType: string;

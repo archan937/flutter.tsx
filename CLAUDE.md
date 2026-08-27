@@ -699,6 +699,27 @@ bun run test:extractor             # dart tests + 100% coverage gate
       Golden #19 (`19-store-counter`) certified and byte-equal; widget tests
       prove taps rebuild a stateless widget and that two widgets on one store
       always show the same value.
+- [x] 24b (useNavigation / createRouter → GoRouter). **Real routing, proven
+      by an actual page transition.** `createRouter({ '/': HomePage })` at
+      module level generates `final GoRouter router = GoRouter(routes: [...])`
+      with one `GoRoute` per entry; `const nav = useNavigation()` plus
+      `nav.push('/detail')` / `nav.pop()` compile onto go_router's
+      BuildContext extension (`context.push('/detail')`) — the build method
+      already has the context, so no navigator is threaded by hand and the
+      `go_router` import is recorded from use.
+      Typed guardrail: a route target is `() => FlutterElement`, so a
+      component needing props is rejected by TypeScript rather than by the
+      Dart compiler. Numbered bounds: TSX0327 the route-table shape, TSX0328
+      a route pointing at something that is not a component in this file,
+      TSX0329 an unknown navigation method (push/replace/go/pop).
+      Two fixes found while building it: `pluginImports` was read from the
+      object literal BEFORE the body was lowered, so any import discovered
+      while lowering a handler was recorded too late (the body is now lowered
+      first); and a closure holding one single-line statement now renders as
+      an expression body (`() => context.push('/detail')`) the way a lone
+      setState already did.
+      Golden #20 (`20-router`) certified and byte-equal; the widget test taps
+      through push and pop and asserts the pages actually swap.
 - [ ] 24b. Remaining high-level abstractions from the vision (each gated by its own golden +
       e2e before being documented): `useAsync`/`Query`→FutureBuilder ·
       `useStream`→StreamBuilder · `createStore`/`useStore`→ChangeNotifier+Provider ·

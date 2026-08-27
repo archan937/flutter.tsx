@@ -663,3 +663,89 @@ describe('analyzeSource — createStore / useStore', () => {
     );
   });
 });
+describe('analyzeSource — createRouter / useNavigation', () => {
+  const routerSource = (table: string): string =>
+    "import { Text, createRouter, useNavigation } from 'flutter-tsx';\n" +
+    'export const HomePage = () => {\n' +
+    '  const nav = useNavigation();\n' +
+    '  return <Text>Home</Text>;\n' +
+    '};\n' +
+    'export const DetailPage = () => <Text>Detail</Text>;\n' +
+    `export const router = createRouter(${table});\n`;
+
+  test('a route table records each path and its component', () => {
+    const analysis = analyzeSource(
+      routerSource("{ '/': HomePage, '/detail': DetailPage }"),
+      'probe.tsx',
+    );
+
+    expect(analysis.router).toEqual({
+      name: 'router',
+      routes: [
+        { path: '/', component: 'HomePage' },
+        { path: '/detail', component: 'DetailPage' },
+      ],
+    });
+  });
+
+  test('useNavigation binds a navigator name', () => {
+    const analysis = analyzeSource(
+      routerSource("{ '/': HomePage }"),
+      'probe.tsx',
+    );
+
+    expect(analysis.components[0]?.navigators).toEqual(['nav']);
+  });
+
+  test('a file without a router has none', () => {
+    const analysis = analyzeSource(
+      "import { Text } from 'flutter-tsx';\n" +
+        'export const Probe = () => <Text>hi</Text>;\n',
+      'probe.tsx',
+    );
+
+    expect(analysis.router).toBeNull();
+  });
+
+  test('a route table that is no object literal is a numbered error', () => {
+    expect(() => analyzeSource(routerSource('routes'), 'probe.tsx')).toThrow(
+      new Error(
+        'TSX0327 probe.tsx:7:23 — `createRouter` takes a table of paths to ' +
+          "components: `createRouter({ '/': Home })`.",
+      ),
+    );
+  });
+
+  test('a route key that is no string path is a numbered error', () => {
+    expect(() =>
+      analyzeSource(routerSource('{ [key]: HomePage }'), 'probe.tsx'),
+    ).toThrow(
+      new Error(
+        'TSX0327 probe.tsx:7:38 — `createRouter` takes a table of paths to ' +
+          "components: `createRouter({ '/': Home })`.",
+      ),
+    );
+  });
+
+  test('a route whose target is not a component is a numbered error', () => {
+    expect(() =>
+      analyzeSource(routerSource("{ '/': 'HomePage' }"), 'probe.tsx'),
+    ).toThrow(
+      new Error(
+        'TSX0328 probe.tsx:7:43 — a route must point at a component ' +
+          'declared in this file.',
+      ),
+    );
+  });
+
+  test('a route pointing at an unknown component is a numbered error', () => {
+    expect(() =>
+      analyzeSource(routerSource("{ '/': GhostPage }"), 'probe.tsx'),
+    ).toThrow(
+      new Error(
+        'TSX0328 probe.tsx:7:43 — a route must point at a component ' +
+          'declared in this file.',
+      ),
+    );
+  });
+});

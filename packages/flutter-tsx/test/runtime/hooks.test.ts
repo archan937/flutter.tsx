@@ -1,13 +1,16 @@
 import { describe, expect, test } from 'bun:test';
 
 import {
+  createRouter,
   createStore,
   useAsync,
   useEffect,
+  useNavigation,
   useState,
   useStore,
   useStream,
 } from '@src/runtime/hooks';
+import type { FlutterElement } from '@src/runtime/types';
 
 describe('useState (compile-target stub)', () => {
   test('returns the initial value and an inert setter', () => {
@@ -68,5 +71,26 @@ describe('createStore / useStore (compile-target stubs)', () => {
     // The stub never mutates: the generated Dart owns the state.
     setState({ count: 9 });
     expect(store.initial.count).toBe(3);
+  });
+});
+
+describe('useNavigation / createRouter (compile-target stubs)', () => {
+  test('the navigation handle is inert: the compiler rewrites each call', () => {
+    const nav = useNavigation();
+
+    // Every method is inert: the compiler rewrites the call sites, so these
+    // must not throw and must not carry state.
+    nav.push('/x');
+    nav.replace('/y');
+    nav.go('/z');
+    nav.pop();
+    expect(Object.keys(nav).sort()).toEqual(['go', 'pop', 'push', 'replace']);
+  });
+
+  test('a route table keeps the paths it was given', () => {
+    const Home = (): FlutterElement => ({ widgetName: 'Text', props: {} });
+    const config = createRouter({ '/': Home });
+
+    expect(Object.keys(config.routes)).toEqual(['/']);
   });
 });

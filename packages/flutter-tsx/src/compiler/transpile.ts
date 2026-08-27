@@ -15,6 +15,7 @@ import {
   buildUserWidgets,
   type CompileContext,
   lowerComponent,
+  lowerRouter,
   lowerStore,
   type PluginFunctionInfo,
   type PluginHookInfo,
@@ -120,7 +121,8 @@ export const transpileComponent = async (
     requireSupported(component);
     return lowerComponent(component, fileContext);
   });
-  return emitDartFile(components, fileContext, [
-    ...fileContext.stores.values(),
-  ]);
+  return emitDartFile(components, fileContext, {
+    stores: [...fileContext.stores.values()],
+    router: analysis.router === null ? null : lowerRouter(analysis.router),
+  });
 };

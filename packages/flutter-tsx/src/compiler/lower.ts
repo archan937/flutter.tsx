@@ -16,15 +16,18 @@ import type {
   AsyncBinding,
   ComponentAnalysis,
   PluginBinding,
+  RouterBinding,
   StoreBinding,
 } from './analyze';
 import { tsxErrorAt } from './diagnostics';
+import { GO_ROUTER_IMPORT } from './emit-component';
 import type {
   IrArgument,
   IrChild,
   IrComponent,
   IrField,
   IrMethod,
+  IrRouter,
   IrStatement,
   IrStore,
   IrValue,
@@ -218,6 +221,7 @@ interface LowerContext {
   pluginBindings: Map<string, PluginHookInfo>;
   usedPluginImports: Set<string>;
   storeSetters: Map<string, IrStore>;
+  navigators: ReadonlySet<string>;
   settersToStates: Map<string, string>;
   stateDartTypes: Map<string, string>;
   translate: TranslateContext;
@@ -1087,6 +1091,38 @@ const requireOneOfSatisfied = (
   }
 };
 
+// go_router's BuildContext extension: `nav.push('/x')` is `context.push('/x')`
+// in the build method's own context, so it needs no navigator plumbing.
+const NAVIGATION_METHODS = new Set(['push', 'pop', 'replace', 'go']);
+
+const navigationLine = (
+  expression: ts.Expression,
+  context: LowerContext,
+): string | null => {
+  if (
+    !ts.isCallExpression(expression) ||
+    !ts.isPropertyAccessExpression(expression.expression) ||
+    !ts.isIdentifier(expression.expression.expression) ||
+    !context.navigators.has(expression.expression.expression.text)
+  ) {
+    return null;
+  }
+  const method = expression.expression.name.text;
+  if (!NAVIGATION_METHODS.has(method)) {
+    throw tsxErrorAt(
+      'TSX0329',
+      `navigation has no \`${method}\`: use push, replace, go or pop.`,
+      { sourceFile: context.sourceFile, node: expression.expression.name },
+    );
+  }
+  // The rewrite only works with go_router's extension in scope.
+  context.usedPluginImports.add(GO_ROUTER_IMPORT);
+  const args = expression.arguments.map((argument) =>
+    translateExpression(argument, context.translate),
+  );
+  return statementCall(`context.${method}`, args);
+};
+
 // `setState({ count: … })` on a store setter becomes one update() call, which
 // patches the given fields and notifies listeners once.
 const storeUpdateLine = (
@@ -1184,6 +1220,12 @@ const lowerBodyStatements = (
         : null;
     if (pluginLine !== null) {
       lowered.push({ kind: 'dart', line: pluginLine });
+      continue;
+    }
+    const navLine =
+      expression === undefined ? null : navigationLine(expression, context);
+    if (navLine !== null) {
+      lowered.push({ kind: 'dart', line: navLine });
       continue;
     }
     const storeLine =
@@ -1386,6 +1428,11 @@ const pluginCallArguments = (
 
 const pascalCase = (name: string): string =>
   `${name[0]?.toUpperCase() ?? ''}${name.slice(1)}`;
+
+export const lowerRouter = (router: RouterBinding): IrRouter => ({
+  name: router.name,
+  routes: router.routes,
+});
 
 export const lowerStore = (store: StoreBinding): IrStore => ({
   className: `_${pascalCase(store.name)}`,
@@ -1809,6 +1856,7 @@ export const lowerComponent = (
   );
   const context: LowerContext = {
     compile,
+    navigators: new Set(component.navigators),
     sourceFile: component.sourceFile,
     stateNames,
     handlerNames,
@@ -1893,6 +1941,17 @@ export const lowerComponent = (
       ? null
       : lowerAsyncBinding(component.asyncBinding, root, context);
 
+  // The body must be lowered before the literal below reads
+  // usedPluginImports: an import discovered while lowering a handler (a
+  // navigation call, say) would otherwise be recorded too late.
+  const body = storeWrapped(
+    lowered?.body ??
+      (ts.isJsxFragment(root)
+        ? columnOf(lowerListChildren(root.children, context), context)
+        : lowerJsxElement(root, context)),
+    store,
+  );
+
   return {
     name: component.name,
     kind: isStateful ? 'stateful' : 'stateless',
@@ -1931,13 +1990,7 @@ export const lowerComponent = (
         ...context.usedPluginImports,
       ]),
     ],
-    body: storeWrapped(
-      lowered?.body ??
-        (ts.isJsxFragment(root)
-          ? columnOf(lowerListChildren(root.children, context), context)
-          : lowerJsxElement(root, context)),
-      store,
-    ),
+    body,
   };
 };
 

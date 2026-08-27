@@ -31,6 +31,7 @@ const GREEN_FIXTURES = new Set([
   '17-async-token',
   '18-connectivity-stream',
   '19-store-counter',
+  '20-router',
 ]);
 
 const fixtures = await listFixtures();

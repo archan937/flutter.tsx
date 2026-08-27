@@ -154,4 +154,11 @@ export const FIXTURE_APPS: FixtureApp[] = [
     deps: [],
     behavior: true,
   },
+  {
+    id: '20-router',
+    component: 'HomePage',
+    dartFile: 'router_pages.dart',
+    deps: ['go_router'],
+    behavior: true,
+  },
 ];

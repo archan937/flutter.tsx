@@ -383,3 +383,38 @@ class Settings extends StatelessWidget {
 `);
   });
 });
+// A route too wide for one line splits exactly the way dart format splits it
+// (verified against the formatter, not assumed).
+describe('transpileComponent — a route that must wrap', () => {
+  test('splits the GoRoute across lines', async () => {
+    const source =
+      "import { Text, createRouter } from 'flutter-tsx';\n" +
+      'export const SettingsAndPreferencesPage = () => <Text>Settings</Text>;\n' +
+      'export const router = createRouter({\n' +
+      "  '/settings-and-preferences': SettingsAndPreferencesPage,\n" +
+      '});\n';
+
+    expect(await transpileComponent({ source, filePath: 'routes.tsx' }))
+      .toBe(`import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+class SettingsAndPreferencesPage extends StatelessWidget {
+  const SettingsAndPreferencesPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('Settings');
+  }
+}
+
+final GoRouter router = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/settings-and-preferences',
+      builder: (context, state) => const SettingsAndPreferencesPage(),
+    ),
+  ],
+);
+`);
+  });
+});

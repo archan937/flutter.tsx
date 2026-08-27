@@ -56,3 +56,37 @@ export const useStore = <TState extends object>(
   store.initial,
   (): void => undefined,
 ];
+
+/**
+ * Navigation inside a component. The transpiler rewrites each call onto
+ * go_router's BuildContext extension, so no navigator is threaded by hand.
+ */
+export interface Navigation {
+  push: (location: string) => void;
+  replace: (location: string) => void;
+  go: (location: string) => void;
+  pop: () => void;
+}
+
+export const useNavigation = (): Navigation => ({
+  push: (): void => undefined,
+  replace: (): void => undefined,
+  go: (): void => undefined,
+  pop: (): void => undefined,
+});
+
+/**
+ * A routable component takes no props: the router supplies nothing but the
+ * location, so a component needing props cannot be a route target — TypeScript
+ * rejects it rather than the Dart compiler.
+ */
+export type RouteTarget = () => FlutterElement;
+
+/** A route table: each path renders one component. */
+export interface RouterConfig {
+  readonly routes: Record<string, RouteTarget>;
+}
+
+export const createRouter = (
+  routes: Record<string, RouteTarget>,
+): RouterConfig => ({ routes });
