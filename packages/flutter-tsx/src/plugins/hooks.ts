@@ -1,8 +1,20 @@
 import type { TypeNode } from '../api/model';
 import type { PluginApi, PluginClass } from './api';
 
+export interface SupplierFilter {
+  fieldName: string;
+  enumName: string;
+  optionName: string;
+}
+
 export type ConstructArg =
-  | { kind: 'supplierFirst'; functionName: string; paramType: string }
+  | {
+      kind: 'supplierFirst';
+      functionName: string;
+      paramName: string;
+      paramType: string;
+      filters: SupplierFilter[];
+    }
   | {
       kind: 'enumDefault';
       enumName: string;
@@ -14,7 +26,8 @@ export interface HookOption {
   name: string;
   enumName: string;
   values: string[];
-  defaultMember: string;
+  // null for a supplier filter: omitting it keeps the supplier's first item.
+  defaultMember: string | null;
 }
 
 export type HookAcquisition =
@@ -92,10 +105,28 @@ const hasLifecycle = (entity: PluginClass): boolean => {
   );
 };
 
-const supplierFor = (
+// Every enum-typed field on the supplied type becomes an optional filter:
+// omitting it keeps the supplier's first item, passing it selects by that
+// field. Naming follows the same optionNames override as enum defaults.
+const supplierFilters = (
   api: PluginApi,
   paramType: string,
+  overrides: HookOverrides | undefined,
+): SupplierFilter[] =>
+  (api.classes.find((candidate) => candidate.name === paramType)?.fields ?? [])
+    .filter((field) => field.type.kind === 'enum')
+    .map((field) => ({
+      fieldName: field.name,
+      enumName: field.type.kind === 'enum' ? field.type.name : '',
+      optionName: overrides?.optionNames?.[field.name] ?? field.name,
+    }));
+
+const supplierFor = (
+  api: PluginApi,
+  param: { name: string; typeName: string },
+  overrides: HookOverrides | undefined,
 ): ConstructArg | null => {
+  const { name: paramName, typeName: paramType } = param;
   const supplier = api.functions.find(
     (candidate) =>
       candidate.params.length === 0 &&
@@ -109,7 +140,9 @@ const supplierFor = (
     : {
         kind: 'supplierFirst',
         functionName: supplier.name,
+        paramName,
         paramType,
+        filters: supplierFilters(api, paramType, overrides),
       };
 };
 
@@ -136,11 +169,27 @@ const constructPlan = (
       continue;
     }
     if (param.type.kind === 'named') {
-      const supplied = supplierFor(api, param.type.name);
+      const supplied = supplierFor(
+        api,
+        { name: param.name, typeName: param.type.name },
+        overrides,
+      );
       if (supplied === null) {
         return null;
       }
       plan.push(supplied);
+      if (supplied.kind === 'supplierFirst') {
+        for (const filter of supplied.filters) {
+          options.push({
+            name: filter.optionName,
+            enumName: filter.enumName,
+            values:
+              api.enums.find((candidate) => candidate.name === filter.enumName)
+                ?.values ?? [],
+            defaultMember: null,
+          });
+        }
+      }
       continue;
     }
     if (param.type.kind === 'enum') {

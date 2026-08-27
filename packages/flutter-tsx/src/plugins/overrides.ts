@@ -6,7 +6,7 @@ export const PLUGIN_OVERRIDES: Record<string, Record<string, HookOverrides>> = {
   camera: {
     useCamera: {
       enumDefaults: { ResolutionPreset: 'high' },
-      optionNames: { resolutionPreset: 'resolution' },
+      optionNames: { resolutionPreset: 'resolution', lensDirection: 'lens' },
     },
   },
 };

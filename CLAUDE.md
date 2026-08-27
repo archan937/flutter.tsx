@@ -451,8 +451,8 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       `useCamera()` byte-identical. Construct lines wrap width-aware when they
       exceed 80 columns (dart-format-conformant). Honest errors: TSX0313
       unknown option, TSX0203 invalid member, TSX0206 non-literal options.
-      **Deferred within 22b (needs a supplier-filter design): `lens: 'front'`
-      — selecting the camera by `lensDirection` field filter.**
+      (Supplier filters — `lens: 'front'` — landed at step 23; see the
+      supplier-filter entry.)
 - [x] 23a. **Runtime behavior tests — the top rung of the sign-off ladder has
       real weight now.** `e2e/test/behavior.test.ts`: the transpiled fixtures
       EXECUTE headlessly via Flutter widget tests (`flutter test`, no device,
@@ -519,6 +519,20 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       Also closed: every committed `ref/plugins/*.json` snapshot is now
       byte-fresh-pinned by the Dart suite (was camera + shared_preferences
       only), so a schema change can never leave a stale snapshot behind.
+- [x] 23 (supplier filters). **`useCamera({ lens: 'front' })` — the 22b
+      deferral is closed, and derived, not hand-written.** Every enum-typed
+      field on a supplier's element type becomes an optional filter: omit it
+      and the supplier's first item is used (fixtures #1/#10 unchanged), pass
+      it and codegen emits `firstWhere` with an `orElse: () => xs.first`
+      fallback so a missing device never throws. Two filters combine into one
+      `&&` predicate wrapped exactly as `dart format` wraps it (verified
+      against the formatter before implementing). `CameraDescription` yields
+      `lens` (lensDirection, renamed by the existing one-line optionNames
+      override) and `lensType` — zero new hand data beyond that rename. The
+      selected local is named after the constructor's own parameter
+      (`description`), so no name is invented. Golden #15 (`15-front-camera`)
+      matched byte-for-byte on the first compiler run; e2e web build green;
+      capture itself stays behind the real-device gate.
 - [ ] 23 (breed matrix status). controller ✓ camera (goldens #1, #10);
       storage ✓ shared_preferences (golden #11); service/auth ✓
       flutter_secure_storage (golden #12); navigation-function ✓
@@ -526,7 +540,7 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       (golden #14 — property reads landed, so this breed is now proven
       end-to-end too); hardware runtime stays behind the real-device gate;
       router navigation (go_router) deferred to 24b. Remaining:
-      permissions manifest data; `lens` supplier filters. Behavior tests
+      permissions manifest data. Behavior tests
       accompany each new stateful trait. **Decided (Paul,
       2026-08-24): plugin hooks import from `plugin:<pub-name>` (e.g.
       `import { useCamera } from 'plugin:camera'`) — collision-proof scheme prefix,

@@ -19,7 +19,20 @@ describe('deriveHooks — camera', () => {
           {
             kind: 'supplierFirst',
             functionName: 'availableCameras',
+            paramName: 'description',
             paramType: 'CameraDescription',
+            filters: [
+              {
+                fieldName: 'lensDirection',
+                enumName: 'CameraLensDirection',
+                optionName: 'lens',
+              },
+              {
+                fieldName: 'lensType',
+                enumName: 'CameraLensType',
+                optionName: 'lensType',
+              },
+            ],
           },
           {
             kind: 'enumDefault',
@@ -30,6 +43,18 @@ describe('deriveHooks — camera', () => {
         ],
         managed: ['initialize', 'dispose'],
         options: [
+          {
+            name: 'lens',
+            enumName: 'CameraLensDirection',
+            values: ['front', 'back', 'external'],
+            defaultMember: null,
+          },
+          {
+            name: 'lensType',
+            enumName: 'CameraLensType',
+            values: ['wide', 'telephoto', 'ultraWide', 'unknown'],
+            defaultMember: null,
+          },
           {
             name: 'resolution',
             enumName: 'ResolutionPreset',
@@ -161,6 +186,7 @@ describe('deriveHooks — underivable shapes', () => {
               },
             ]
           : [],
+        fields: [],
         methods: lifecycleMethods,
         constants: [],
       },

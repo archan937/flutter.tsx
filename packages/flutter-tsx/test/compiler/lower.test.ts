@@ -1311,6 +1311,8 @@ describe('lowerComponent — plugin hooks', () => {
                 {
                   kind: 'supplierFirst',
                   functionName: 'listEngines',
+                  paramName: 'engine',
+                  filters: [],
                   paramType: 'Engine',
                 },
               ],
@@ -1373,6 +1375,65 @@ describe('lowerComponent — plugin hooks', () => {
       '  cameras.first,',
       '  ResolutionPreset.veryHigh,',
       ');',
+    ]);
+  });
+
+  test('a supplier filter selects by field with a first fallback', async () => {
+    const analysis = analyzeSource(
+      "import { Text } from 'flutter-tsx';\n" +
+        "import { useCamera } from 'plugin:camera';\n" +
+        'export const Probe = () => {\n' +
+        "  const cam = useCamera({ lens: 'front' });\n" +
+        '  return <Text>hi</Text>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+    const [component] = analysis.components;
+    if (component === undefined) {
+      throw new Error('expected a component');
+    }
+    const ir = lowerComponent(
+      component,
+      await cameraHooksContext(await contextOnce()),
+    );
+
+    expect(ir.setupMethods[0]?.lines.slice(0, 7)).toEqual([
+      'final cameras = await availableCameras();',
+      'final description = cameras.firstWhere(',
+      '  (candidate) => candidate.lensDirection == CameraLensDirection.front,',
+      '  orElse: () => cameras.first,',
+      ');',
+      'final controller = CameraController(description, ResolutionPreset.high);',
+      'await controller.initialize();',
+    ]);
+  });
+
+  test('two supplier filters combine into one predicate', async () => {
+    const analysis = analyzeSource(
+      "import { Text } from 'flutter-tsx';\n" +
+        "import { useCamera } from 'plugin:camera';\n" +
+        'export const Probe = () => {\n' +
+        "  const cam = useCamera({ lens: 'back', lensType: 'wide' });\n" +
+        '  return <Text>hi</Text>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+    const [component] = analysis.components;
+    if (component === undefined) {
+      throw new Error('expected a component');
+    }
+    const ir = lowerComponent(
+      component,
+      await cameraHooksContext(await contextOnce()),
+    );
+
+    expect(ir.setupMethods[0]?.lines.slice(0, 6)).toEqual([
+      'final cameras = await availableCameras();',
+      'final description = cameras.firstWhere(',
+      '  (candidate) =>',
+      '      candidate.lensDirection == CameraLensDirection.back &&',
+      '      candidate.lensType == CameraLensType.wide,',
+      '  orElse: () => cameras.first,',
     ]);
   });
 

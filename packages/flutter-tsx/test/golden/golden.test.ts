@@ -26,6 +26,7 @@ const GREEN_FIXTURES = new Set([
   '12-secure-storage',
   '13-open-link',
   '14-app-info',
+  '15-front-camera',
 ]);
 
 const fixtures = await listFixtures();

@@ -1283,6 +1283,32 @@ const hookOptionSelections = (
   return selections;
 };
 
+// dart format keeps a single predicate on the closure line and wraps a
+// conjunction onto continuation lines indented four past the closure body.
+const selectionLines = (
+  paramName: string,
+  collection: string,
+  predicates: string[],
+): string[] => {
+  const [single] = predicates;
+  const head =
+    predicates.length === 1 && single !== undefined
+      ? [`  (candidate) => ${single},`]
+      : [
+          '  (candidate) =>',
+          ...predicates.map(
+            (predicate, index) =>
+              `      ${predicate}${index === predicates.length - 1 ? ',' : ' &&'}`,
+          ),
+        ];
+  return [
+    `final ${paramName} = ${collection}.firstWhere(`,
+    ...head,
+    `  orElse: () => ${collection}.first,`,
+    ');',
+  ];
+};
+
 const constructLines = (className: string, args: string[]): string[] => {
   const inline = `final controller = ${className}(${args.join(', ')});`;
   if (4 + inline.length <= 80) {
@@ -1308,7 +1334,18 @@ const constructorSetupLines = (
     if (arg.kind === 'supplierFirst') {
       const local = supplierLocalName(arg.functionName, arg.paramType);
       lines.push(`final ${local} = await ${arg.functionName}();`);
-      constructArgs.push(`${local}.first`);
+      const chosen = arg.filters
+        .filter((filter) => selections.has(filter.optionName))
+        .map((filter) => {
+          const member = selections.get(filter.optionName) ?? '';
+          return `candidate.${filter.fieldName} == ${filter.enumName}.${member}`;
+        });
+      if (chosen.length === 0) {
+        constructArgs.push(`${local}.first`);
+      } else {
+        lines.push(...selectionLines(arg.paramName, local, chosen));
+        constructArgs.push(arg.paramName);
+      }
     } else {
       const member = selections.get(arg.optionName) ?? arg.member;
       constructArgs.push(`${arg.enumName}.${member}`);
