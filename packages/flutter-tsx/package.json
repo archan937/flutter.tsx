@@ -48,8 +48,9 @@
     "generate": "bun scripts/generate-types.ts",
     "docs": "bun scripts/generate-docs.ts",
     "verify:api": "bun scripts/verify-api.ts",
-    "quality:extractor": "bun scripts/extractor-quality.ts",
-    "quality": "bun run typecheck && bun run format && bun run lint && bun run test:coverage && bun run quality:extractor"
+    "lint:extractor": "bun scripts/extractor-quality.ts lint",
+    "test:extractor": "bun scripts/extractor-quality.ts test",
+    "quality": "bun run typecheck && bun run format && bun run lint && bun run lint:extractor && bun run test:coverage && bun run test:extractor"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

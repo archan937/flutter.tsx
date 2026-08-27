@@ -161,7 +161,8 @@ bun run extract                    # SDK source → ref/api.json (runs flutter
 bun run derive                     # api.json → ref/derived/slots.json
 bun run generate                   # api.json + slots → src/generated/*.ts
 bun run verify:api                 # prove committed api.json == fresh extraction
-bun run quality:extractor          # dart format + analyze + tests + 100% coverage gate
+bun run lint:extractor             # dart format + analyze (seconds)
+bun run test:extractor             # dart tests + 100% coverage gate
 ```
 
 ## Rewrite Roadmap (only checked items exist)

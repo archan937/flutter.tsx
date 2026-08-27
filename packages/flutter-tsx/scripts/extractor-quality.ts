@@ -9,9 +9,16 @@ const paths = resolveFsxPaths(process.env, homedir());
 const dartBin = join(paths.sdkDir, 'bin', 'dart');
 const extractorDir = new URL('../extractor', import.meta.url).pathname;
 
-const steps: string[][] = [
+// Split so the whole gate runs its seconds-long checks before any test suite:
+// a Dart formatting nit must never cost a full TypeScript test run first.
+const mode = process.argv[2] === 'lint' ? 'lint' : 'test';
+
+const LINT_STEPS: string[][] = [
   [dartBin, 'format', '--set-exit-if-changed', '.'],
   [dartBin, 'analyze', '--fatal-infos'],
+];
+
+const TEST_STEPS: string[][] = [
   [dartBin, 'test', '--coverage=coverage'],
   [
     dartBin,
@@ -24,11 +31,16 @@ const steps: string[][] = [
   ],
 ];
 
-for (const step of steps) {
+for (const step of mode === 'lint' ? LINT_STEPS : TEST_STEPS) {
   const exitCode = await runCommand(step, extractorDir);
   if (exitCode !== 0) {
     process.exit(exitCode);
   }
+}
+
+if (mode === 'lint') {
+  process.stdout.write('✓ extractor lint: dart format + analyze clean\n');
+  process.exit(0);
 }
 
 const lcovContent = await Bun.file(

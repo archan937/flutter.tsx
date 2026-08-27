@@ -67,17 +67,27 @@ export const createFlutterWebApp = async (): Promise<string> => {
       `flutter create failed (exit ${created.exitCode}):\n${created.stderr}`,
     );
   }
+  // The scaffold ships a widget test for its own template app, which stops
+  // compiling the moment we replace main.dart. Tests here always bring their
+  // own, so the template's would only ever be noise.
+  await rm(join(appDir, 'test', 'widget_test.dart'), { force: true });
   return appDir;
 };
 
-export const addPubDependency = async (
+// One `pub add` for the whole set: each invocation re-resolves the pubspec,
+// so adding nine packages one by one costs nine resolutions.
+export const addPubDependencies = async (
   appDir: string,
-  dependency: string,
+  dependencies: string[],
 ): Promise<void> => {
-  const added = await run([flutterBin, 'pub', 'add', dependency], appDir);
+  if (dependencies.length === 0) {
+    return;
+  }
+  const added = await run([flutterBin, 'pub', 'add', ...dependencies], appDir);
   if (added.exitCode !== 0) {
     throw new Error(
-      `flutter pub add ${dependency} failed (exit ${added.exitCode}):\n${added.stderr}`,
+      `flutter pub add ${dependencies.join(' ')} failed ` +
+        `(exit ${added.exitCode}):\n${added.stderr}`,
     );
   }
 };

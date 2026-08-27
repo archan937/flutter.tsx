@@ -1,0 +1,150 @@
+// Every conformance fixture, and what a real Flutter app needs to host it.
+// One app hosts them all: `flutter create`, `pub add`, `flutter test` and
+// `flutter build web` each run ONCE for the whole suite instead of per
+// fixture, which is the difference between a ten-minute gate and a
+// one-minute gate. Per-fixture compilability is still proven exactly — the
+// goldens are byte-equal and the 543-widget sweep analyzes every probe on
+// its own.
+export interface FixtureApp {
+  /** Fixture directory under packages/flutter-tsx/test/fixtures. */
+  id: string;
+  /** Component the fixture exports. */
+  component: string;
+  /** File the generated Dart is written to, under lib/. */
+  dartFile: string;
+  /** Pub packages the generated Dart imports. */
+  deps: string[];
+  /**
+   * Extra pub packages a behavior test needs (platform fakes), kept apart
+   * from what the generated code itself requires.
+   */
+  testDeps?: string[];
+  /** True when fixtures/behavior/<id>.dart drives it at runtime. */
+  behavior?: boolean;
+}
+
+export const FIXTURE_APPS: FixtureApp[] = [
+  {
+    id: '01-camera-screen',
+    component: 'CameraScreen',
+    dartFile: 'camera_screen.dart',
+    deps: ['camera'],
+  },
+  {
+    id: '02-hello-column',
+    component: 'HelloScreen',
+    dartFile: 'hello_screen.dart',
+    deps: [],
+  },
+  {
+    id: '03-styled-container',
+    component: 'StyledCard',
+    dartFile: 'styled_card.dart',
+    deps: [],
+  },
+  {
+    id: '04-inline-handler',
+    component: 'Toggles',
+    dartFile: 'toggles.dart',
+    deps: [],
+  },
+  {
+    id: '05-counter',
+    component: 'Counter',
+    dartFile: 'counter.dart',
+    deps: [],
+    behavior: true,
+  },
+  {
+    id: '06-mount-effect',
+    component: 'Status',
+    dartFile: 'status.dart',
+    deps: [],
+    behavior: true,
+  },
+  {
+    id: '07-list-rendering',
+    component: 'Groceries',
+    dartFile: 'groceries.dart',
+    deps: [],
+    behavior: true,
+  },
+  {
+    id: '08-composition',
+    component: 'Welcome',
+    dartFile: 'welcome.dart',
+    deps: [],
+  },
+  {
+    id: '09-typed-props',
+    component: 'TaskBoard',
+    dartFile: 'task_board.dart',
+    deps: [],
+  },
+  {
+    id: '10-camera-options',
+    component: 'HiResCamera',
+    dartFile: 'hi_res_camera.dart',
+    deps: ['camera'],
+  },
+  {
+    id: '11-preferences',
+    component: 'Profile',
+    dartFile: 'profile.dart',
+    deps: ['shared_preferences'],
+    behavior: true,
+  },
+  {
+    id: '12-secure-storage',
+    component: 'Vault',
+    dartFile: 'vault.dart',
+    deps: ['flutter_secure_storage'],
+    behavior: true,
+  },
+  {
+    id: '13-open-link',
+    component: 'OpenLink',
+    dartFile: 'open_link.dart',
+    deps: ['url_launcher'],
+    testDeps: ['url_launcher_platform_interface', 'plugin_platform_interface'],
+    behavior: true,
+  },
+  {
+    id: '14-app-info',
+    component: 'AppInfo',
+    dartFile: 'app_info.dart',
+    deps: ['package_info_plus'],
+    behavior: true,
+  },
+  {
+    id: '15-front-camera',
+    component: 'Selfie',
+    dartFile: 'selfie.dart',
+    deps: ['camera'],
+  },
+  {
+    id: '16-tap-target',
+    component: 'TapTarget',
+    dartFile: 'tap_target.dart',
+    deps: [],
+    behavior: true,
+  },
+  {
+    id: '17-async-token',
+    component: 'TokenCheck',
+    dartFile: 'token_check.dart',
+    deps: ['flutter_secure_storage'],
+    behavior: true,
+  },
+  {
+    id: '18-connectivity-stream',
+    component: 'ConnectionBanner',
+    dartFile: 'connection_banner.dart',
+    deps: ['connectivity_plus'],
+    testDeps: [
+      'connectivity_plus_platform_interface',
+      'plugin_platform_interface',
+    ],
+    behavior: true,
+  },
+];
