@@ -451,10 +451,21 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       unknown option, TSX0203 invalid member, TSX0206 non-literal options.
       **Deferred within 22b (needs a supplier-filter design): `lens: 'front'`
       — selecting the camera by `lensDirection` field filter.**
+- [x] 23a. **Runtime behavior tests — the top rung of the sign-off ladder has
+      real weight now.** `e2e/test/behavior.test.ts`: the transpiled fixtures
+      EXECUTE headlessly via Flutter widget tests (`flutter test`, no device,
+      no chromedriver, ~16s for all three): the counter increments through
+      real setState taps (`Count: 0 → 1 → 2`), the mount effect runs in
+      initState (`Online` renders, `Offline` never does), and list rendering
+      rebuilds after the spread-append (`Milk` appears). This closes the
+      "compiles-but-does-it-behave" gap from the 2026-08-27 assessment;
+      hardware plugin behavior (camera) remains honestly behind the
+      real-device gate — widget tests can't drive platform channels.
 - [ ] 23–24. Plugin breadth: one plugin per breed with its own golden + e2e per
       the guarantee model (storage-like, service/auth-like, controller-like,
       navigation; hardware breeds behind the real-device gate), permissions
-      manifest data, `lens` supplier filters. **Decided (Paul,
+      manifest data, `lens` supplier filters. Behavior tests accompany each
+      new stateful trait from now on. **Decided (Paul,
       2026-08-24): plugin hooks import from `plugin:<pub-name>` (e.g.
       `import { useCamera } from 'plugin:camera'`) — collision-proof scheme prefix,
       1:1 with the pub package. Versions live in a `"plugins": {"camera": "^0.12"}`

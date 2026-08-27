@@ -60,3 +60,6 @@ export const addPubDependency = async (
 
 export const buildWeb = (appDir: string): Promise<CommandResult> =>
   run([flutterBin, 'build', 'web'], appDir);
+
+export const runFlutterTest = (appDir: string): Promise<CommandResult> =>
+  run([flutterBin, 'test'], appDir);
