@@ -525,3 +525,141 @@ describe('analyzeSource — useAsync', () => {
     );
   });
 });
+describe('analyzeSource — createStore / useStore', () => {
+  const analysis = (): SourceAnalysis =>
+    analyzeSource(
+      "import { Text, createStore, useStore } from 'flutter-tsx';\n" +
+        'const counterStore = createStore({\n' +
+        '  count: 0,\n' +
+        "  label: 'Taps',\n" +
+        '  ratio: 1.5,\n' +
+        '  live: true,\n' +
+        '});\n' +
+        'export const Probe = () => {\n' +
+        '  const [state, setState] = useStore(counterStore);\n' +
+        '  return <Text>{state.count}</Text>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+
+  test('a module-level store records its typed initial shape', () => {
+    expect(analysis().stores).toEqual([
+      {
+        name: 'counterStore',
+        fields: [
+          { name: 'count', dartType: 'int', initialText: '0' },
+          { name: 'label', dartType: 'String', initialText: "'Taps'" },
+          { name: 'ratio', dartType: 'double', initialText: '1.5' },
+          { name: 'live', dartType: 'bool', initialText: 'true' },
+        ],
+      },
+    ]);
+  });
+
+  test('useStore binds the state and setter names to the store', () => {
+    expect(analysis().components[0]?.storeUse).toEqual({
+      storeName: 'counterStore',
+      stateName: 'state',
+      setterName: 'setState',
+    });
+  });
+
+  test('an unknown store is a numbered error', () => {
+    expect(() =>
+      analyzeSource(
+        "import { Text, useStore } from 'flutter-tsx';\n" +
+          'export const Probe = () => {\n' +
+          '  const [state, setState] = useStore(ghostStore);\n' +
+          '  return <Text>{state.count}</Text>;\n' +
+          '};\n',
+        'probe.tsx',
+      ),
+    ).toThrow(
+      new Error(
+        'TSX0322 probe.tsx:3:38 — `ghostStore` is not a store created in ' +
+          'this file with `createStore({ … })`.',
+      ),
+    );
+  });
+
+  const storeProbe =
+    (source: string): (() => SourceAnalysis) =>
+    (): SourceAnalysis =>
+      analyzeSource(source, 'probe.tsx');
+
+  test('a malformed useStore destructuring is a numbered error', () => {
+    const shapes = [
+      '  const state = useStore(counterStore);\n',
+      '  const [state] = useStore(counterStore);\n',
+      '  const [state, setState] = useStore({ count: 0 });\n',
+      '  const [, setState] = useStore(counterStore);\n',
+    ];
+    for (const shape of shapes) {
+      expect(
+        storeProbe(
+          "import { Text, createStore, useStore } from 'flutter-tsx';\n" +
+            'const counterStore = createStore({ count: 0 });\n' +
+            'export const Probe = () => {\n' +
+            shape +
+            '  return <Text>hi</Text>;\n' +
+            '};\n',
+        ),
+      ).toThrow(
+        new Error(
+          'TSX0324 probe.tsx:4:9 — `useStore` must be destructured as ' +
+            '`const [state, setState] = useStore(someStore)`.',
+        ),
+      );
+    }
+  });
+
+  test('a store without an object literal is a numbered error', () => {
+    expect(
+      storeProbe(
+        "import { Text, createStore } from 'flutter-tsx';\n" +
+          'const bad = createStore();\n' +
+          'export const Probe = () => <Text>hi</Text>;\n',
+      ),
+    ).toThrow(
+      new Error(
+        'TSX0323 probe.tsx:2:13 — a store field needs a literal the ' +
+          'compiler can type: string, number or boolean.',
+      ),
+    );
+  });
+
+  test('a spread store field is a numbered error', () => {
+    expect(
+      storeProbe(
+        "import { Text, createStore } from 'flutter-tsx';\n" +
+          'const base = { count: 0 };\n' +
+          'const bad = createStore({ ...base });\n' +
+          'export const Probe = () => <Text>hi</Text>;\n',
+      ),
+    ).toThrow(
+      new Error(
+        'TSX0323 probe.tsx:3:27 — a store field needs a literal the ' +
+          'compiler can type: string, number or boolean.',
+      ),
+    );
+  });
+
+  test('a store field the compiler cannot type is a numbered error', () => {
+    expect(() =>
+      analyzeSource(
+        "import { Text, createStore, useStore } from 'flutter-tsx';\n" +
+          'const badStore = createStore({ when: new Date() });\n' +
+          'export const Probe = () => {\n' +
+          '  const [state, setState] = useStore(badStore);\n' +
+          '  return <Text>hi</Text>;\n' +
+          '};\n',
+        'probe.tsx',
+      ),
+    ).toThrow(
+      new Error(
+        'TSX0323 probe.tsx:2:38 — a store field needs a literal the ' +
+          'compiler can type: string, number or boolean.',
+      ),
+    );
+  });
+});

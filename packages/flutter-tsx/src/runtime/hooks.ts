@@ -34,3 +34,25 @@ export const useStream = <TValue>(
   _source: () => AsyncIterable<TValue>,
   _options: AsyncOptions,
 ): Promise<TValue> => Promise.reject(new Error('useStream is compile-time'));
+
+/**
+ * A module-level store. The transpiler reads the initial shape from the AST
+ * and generates a ChangeNotifier plus one instance; at TypeScript runtime the
+ * handle only needs to carry the value's type.
+ */
+export interface Store<TState extends object> {
+  readonly initial: TState;
+}
+
+export const createStore = <TState extends object>(
+  initial: TState,
+): Store<TState> => ({ initial });
+
+export type StorePatch<TState> = Partial<TState>;
+
+export const useStore = <TState extends object>(
+  store: Store<TState>,
+): [TState, (patch: StorePatch<TState>) => void] => [
+  store.initial,
+  (): void => undefined,
+];

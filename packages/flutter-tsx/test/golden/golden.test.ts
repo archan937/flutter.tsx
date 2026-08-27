@@ -30,6 +30,7 @@ const GREEN_FIXTURES = new Set([
   '16-tap-target',
   '17-async-token',
   '18-connectivity-stream',
+  '19-store-counter',
 ]);
 
 const fixtures = await listFixtures();

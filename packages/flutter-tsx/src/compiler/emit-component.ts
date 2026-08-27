@@ -1,6 +1,6 @@
 import { printExpr } from './dart-print';
 import { importsForComponents } from './imports';
-import type { IrComponent, IrMethod } from './ir';
+import type { IrComponent, IrMethod, IrStore } from './ir';
 import { irWidgetToDart } from './ir-to-dart';
 import type { CompileContext } from './lower';
 import { initStateLines, methodStatementLines } from './statements';
@@ -130,11 +130,81 @@ const emitComponentClass = (component: IrComponent): string =>
     ? emitStatefulClass(component)
     : emitStatelessClass(component);
 
+// dart format keeps a constructor's params on one line while they fit, then
+// splits one per line — the same rule as any other call.
+const storeConstructorLines = (store: IrStore): string[] => {
+  const params = store.fields.map((field) => `required this.${field.name}`);
+  const inline = `  ${store.className}({${params.join(', ')}});`;
+  if (inline.length <= 80) {
+    return [inline];
+  }
+  return [
+    `  ${store.className}({`,
+    ...params.map((param) => `    ${param},`),
+    '  });',
+  ];
+};
+
+const storeUpdateMethod = (store: IrStore): string[] => {
+  const params = store.fields.map(
+    (field) => `${field.dartType}? ${field.name}`,
+  );
+  const signature = `  void update({${params.join(', ')}}) {`;
+  const header =
+    signature.length <= 80
+      ? [signature]
+      : [
+          '  void update({',
+          ...params.map((param) => `    ${param},`),
+          '  }) {',
+        ];
+  return [
+    ...header,
+    ...store.fields.flatMap((field) => [
+      `    if (${field.name} != null) {`,
+      `      this.${field.name} = ${field.name};`,
+      '    }',
+    ]),
+    '    notifyListeners();',
+    '  }',
+  ];
+};
+
+const emitStore = (store: IrStore): string => {
+  const lines = [
+    `class ${store.className} extends ChangeNotifier {`,
+    ...storeConstructorLines(store),
+    '',
+    ...store.fields.map((field) => `  ${field.dartType} ${field.name};`),
+    '',
+    ...storeUpdateMethod(store),
+    '}',
+  ];
+  const args = store.fields.map(
+    (field) => `${field.name}: ${field.initializer}`,
+  );
+  const declaration = `final ${store.className} ${store.instanceName} = `;
+  const inline = `${declaration}${store.className}(${args.join(', ')});`;
+  const instance =
+    inline.length <= 80
+      ? [inline]
+      : [
+          `${declaration}${store.className}(`,
+          ...args.map((argument) => `  ${argument},`),
+          ');',
+        ];
+  return `${lines.join('\n')}\n\n${instance.join('\n')}`;
+};
+
 export const emitDartFile = (
   components: IrComponent[],
   context: CompileContext,
+  stores: IrStore[] = [],
 ): string => {
-  const classes = components.map(emitComponentClass);
+  const classes = [
+    ...stores.map(emitStore),
+    ...components.map(emitComponentClass),
+  ];
   const pluginImports = components
     .flatMap((component) => component.pluginImports)
     .map((dartImport) => `import '${dartImport}';`);

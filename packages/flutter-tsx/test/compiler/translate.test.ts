@@ -3,7 +3,7 @@ import ts from 'typescript';
 
 import { analyzeSource } from '@src/compiler/analyze';
 import {
-  type PluginReadInfo,
+  type MemberReadInfo,
   type TranslateContext,
   translateExpression,
 } from '@src/compiler/translate';
@@ -41,12 +41,13 @@ const parseExpression = (
   return { expression: found, sourceFile };
 };
 
-const pluginReads = (): Map<string, PluginReadInfo> =>
+const memberReads = (): Map<string, MemberReadInfo> =>
   new Map([
     [
       'info',
       {
         className: 'PackageInfo',
+        receiver: '_info',
         nullable: true,
         fields: new Map([
           ['appName', { kind: 'scalar' as const, name: 'String' as const }],
@@ -61,6 +62,7 @@ const pluginReads = (): Map<string, PluginReadInfo> =>
       'storage',
       {
         className: 'FlutterSecureStorage',
+        receiver: '_storage',
         nullable: false,
         fields: new Map([
           ['label', { kind: 'scalar' as const, name: 'String' as const }],
@@ -76,7 +78,7 @@ const translate = (source: string): string => {
     stateNames: new Set(['count', 'label']),
     handlerNames: new Set(['tick']),
     privateMembers: true,
-    pluginReads: pluginReads(),
+    memberReads: memberReads(),
   };
   return translateExpression(expression, context);
 };

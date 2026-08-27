@@ -147,4 +147,11 @@ export const FIXTURE_APPS: FixtureApp[] = [
     ],
     behavior: true,
   },
+  {
+    id: '19-store-counter',
+    component: 'StoreCounter',
+    dartFile: 'store_counter.dart',
+    deps: [],
+    behavior: true,
+  },
 ];

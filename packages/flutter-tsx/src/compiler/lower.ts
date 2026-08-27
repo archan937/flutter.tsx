@@ -12,7 +12,12 @@ import {
 import { jsxPropName } from '../generate/renames';
 import type { PluginMethod } from '../plugins/api';
 import type { DerivedHook } from '../plugins/hooks';
-import type { AsyncBinding, ComponentAnalysis, PluginBinding } from './analyze';
+import type {
+  AsyncBinding,
+  ComponentAnalysis,
+  PluginBinding,
+  StoreBinding,
+} from './analyze';
 import { tsxErrorAt } from './diagnostics';
 import type {
   IrArgument,
@@ -21,11 +26,12 @@ import type {
   IrField,
   IrMethod,
   IrStatement,
+  IrStore,
   IrValue,
   IrWidget,
 } from './ir';
 import {
-  type PluginReadInfo,
+  type MemberReadInfo,
   type TranslateContext,
   translateExpression,
   translateIdentifier,
@@ -56,6 +62,8 @@ export interface CompileContext {
   // Everything needed to wrap a widget in a GestureDetector, derived from the
   // detector itself so the prop set and the wrapper can never disagree.
   gestures: GestureWrap | null;
+  // Stores declared at module level, by TSX name.
+  stores: Map<string, IrStore>;
   userWidgets: Map<string, WidgetInfo>;
   pluginHooks: Map<string, PluginHookInfo>;
   pluginFunctions: Map<string, PluginFunctionInfo>;
@@ -150,6 +158,7 @@ export const buildCompileContext = (
   return {
     widgets,
     gestures: gestureWrapOf(widgets.get(GESTURE_WIDGET)),
+    stores: new Map(),
     userWidgets: new Map(),
     pluginHooks: new Map(),
     pluginFunctions: new Map(),
@@ -208,6 +217,7 @@ interface LowerContext {
   stringLocals: Set<string>;
   pluginBindings: Map<string, PluginHookInfo>;
   usedPluginImports: Set<string>;
+  storeSetters: Map<string, IrStore>;
   settersToStates: Map<string, string>;
   stateDartTypes: Map<string, string>;
   translate: TranslateContext;
@@ -862,7 +872,7 @@ const isStringExpression = (
     ts.isPropertyAccessExpression(expression) &&
     ts.isIdentifier(expression.expression)
   ) {
-    const field = context.translate.pluginReads
+    const field = context.translate.memberReads
       .get(expression.expression.text)
       ?.fields.get(expression.name.text);
     return field?.kind === 'scalar' && field.name === 'String';
@@ -1077,6 +1087,44 @@ const requireOneOfSatisfied = (
   }
 };
 
+// `setState({ count: … })` on a store setter becomes one update() call, which
+// patches the given fields and notifies listeners once.
+const storeUpdateLine = (
+  expression: ts.Expression,
+  context: LowerContext,
+): string | null => {
+  if (
+    !ts.isCallExpression(expression) ||
+    !ts.isIdentifier(expression.expression)
+  ) {
+    return null;
+  }
+  const store = context.storeSetters.get(expression.expression.text);
+  if (store === undefined) {
+    return null;
+  }
+  const [patch] = expression.arguments;
+  if (patch === undefined || !ts.isObjectLiteralExpression(patch)) {
+    throw tsxErrorAt(
+      'TSX0325',
+      'a store setter takes an object of the fields to change: ' +
+        '`setState({ count: 1 })`.',
+      { sourceFile: context.sourceFile, node: expression },
+    );
+  }
+  const known = new Set(store.fields.map((field) => field.name));
+  const args = objectEntries(patch, 'TSX0206', context).map((entry) => {
+    if (!known.has(entry.key)) {
+      throw tsxErrorAt('TSX0326', `the store has no field \`${entry.key}\`.`, {
+        sourceFile: context.sourceFile,
+        node: entry.node,
+      });
+    }
+    return `${entry.key}: ${translateExpression(entry.initializer, context.translate)}`;
+  });
+  return statementCall(`${store.instanceName}.update`, args);
+};
+
 const setterAssignment = (
   call: ts.CallExpression,
   stateName: string,
@@ -1136,6 +1184,12 @@ const lowerBodyStatements = (
         : null;
     if (pluginLine !== null) {
       lowered.push({ kind: 'dart', line: pluginLine });
+      continue;
+    }
+    const storeLine =
+      expression === undefined ? null : storeUpdateLine(expression, context);
+    if (storeLine !== null) {
+      lowered.push({ kind: 'dart', line: storeLine });
       continue;
     }
     const stateName =
@@ -1329,6 +1383,19 @@ const pluginCallArguments = (
   }
   return rendered;
 };
+
+const pascalCase = (name: string): string =>
+  `${name[0]?.toUpperCase() ?? ''}${name.slice(1)}`;
+
+export const lowerStore = (store: StoreBinding): IrStore => ({
+  className: `_${pascalCase(store.name)}`,
+  instanceName: `_${store.name}`,
+  fields: store.fields.map((field) => ({
+    name: field.name,
+    dartType: field.dartType,
+    initializer: field.initialText,
+  })),
+});
 
 interface AsyncSource {
   invocation: string;
@@ -1735,7 +1802,7 @@ export const lowerComponent = (
   component: ComponentAnalysis,
   compile: CompileContext,
 ): IrComponent => {
-  const pluginReads = new Map<string, PluginReadInfo>();
+  const memberReads = new Map<string, MemberReadInfo>();
   const stateNames = new Set(component.states.map((state) => state.name));
   const handlerNames = new Set(
     component.handlers.map((handler) => handler.name),
@@ -1757,6 +1824,7 @@ export const lowerComponent = (
     ),
     pluginBindings: new Map(),
     usedPluginImports: new Set(),
+    storeSetters: new Map(),
     stateDartTypes: new Map(
       component.states.map((state) => [state.name, state.dartType]),
     ),
@@ -1768,9 +1836,11 @@ export const lowerComponent = (
       stateNames,
       handlerNames,
       privateMembers: true,
-      pluginReads,
+      memberReads,
     },
   };
+
+  const store = storeFor(component, compile, context);
 
   const loweredPlugins = component.plugins.map((binding) => {
     const info = compile.pluginHooks.get(binding.hook);
@@ -1782,8 +1852,9 @@ export const lowerComponent = (
       );
     }
     context.pluginBindings.set(binding.binding, info);
-    pluginReads.set(binding.binding, {
+    memberReads.set(binding.binding, {
       className: info.hook.className,
+      receiver: `_${binding.binding}`,
       nullable: info.hook.acquisition.kind !== 'constField',
       fields: info.fields,
     });
@@ -1860,10 +1931,79 @@ export const lowerComponent = (
         ...context.usedPluginImports,
       ]),
     ],
-    body:
+    body: storeWrapped(
       lowered?.body ??
-      (ts.isJsxFragment(root)
-        ? columnOf(lowerListChildren(root.children, context), context)
-        : lowerJsxElement(root, context)),
+        (ts.isJsxFragment(root)
+          ? columnOf(lowerListChildren(root.children, context), context)
+          : lowerJsxElement(root, context)),
+      store,
+    ),
   };
 };
+
+// Registers the store's reads and its setter so the body and the handlers can
+// be lowered against them; returns the store this component listens to.
+const storeFor = (
+  component: ComponentAnalysis,
+  compile: CompileContext,
+  context: LowerContext,
+): IrStore | null => {
+  const use = component.storeUse;
+  if (use === null) {
+    return null;
+  }
+  const store = compile.stores.get(use.storeName);
+  if (store === undefined) {
+    throw tsxErrorAt(
+      'TSX0322',
+      `\`${use.storeName}\` is not a store created in this file with ` +
+        '`createStore({ … })`.',
+      { sourceFile: context.sourceFile, node: component.nameNode },
+    );
+  }
+  context.translate.memberReads.set(use.stateName, {
+    className: store.className,
+    receiver: store.instanceName,
+    nullable: false,
+    fields: new Map(
+      store.fields.map((field) => [field.name, dartFieldType(field.dartType)]),
+    ),
+  });
+  context.storeSetters.set(use.setterName, store);
+  return store;
+};
+
+// The store's Dart type is already resolved; reads only need to know whether
+// a field is a String, so the node carries just enough to answer that.
+const dartFieldType = (dartType: string): TypeNode =>
+  dartType === 'String'
+    ? { kind: 'scalar', name: 'String' }
+    : { kind: 'named', name: dartType };
+
+// A store-driven component stays stateless: the ChangeNotifier drives the
+// rebuild through ListenableBuilder.
+const storeWrapped = (body: IrWidget, store: IrStore | null): IrWidget =>
+  store === null
+    ? body
+    : {
+        name: 'ListenableBuilder',
+        constConstructor: false,
+        args: [
+          {
+            param: 'listenable',
+            positional: false,
+            value: { kind: 'dartExpr', dart: store.instanceName },
+          },
+          {
+            param: 'builder',
+            positional: false,
+            value: {
+              kind: 'builder',
+              params: ['context', 'child'],
+              guards: [],
+              bind: null,
+              value: { kind: 'widget', widget: body },
+            },
+          },
+        ],
+      };

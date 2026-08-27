@@ -4,8 +4,11 @@ import type { TypeNode } from '../api/model';
 import { escapeDartString } from './dart-print';
 import { tsxErrorAt } from './diagnostics';
 
-export interface PluginReadInfo {
+/// A receiver whose properties translate to Dart member reads: a plugin
+/// handle (nullable until acquired) or a store instance (always present).
+export interface MemberReadInfo {
   className: string;
+  receiver: string;
   nullable: boolean;
   fields: Map<string, TypeNode>;
 }
@@ -15,7 +18,7 @@ export interface TranslateContext {
   stateNames: Set<string>;
   handlerNames: Set<string>;
   privateMembers: boolean;
-  pluginReads: Map<string, PluginReadInfo>;
+  memberReads: Map<string, MemberReadInfo>;
 }
 
 const BINARY_OPERATORS = new Map<ts.SyntaxKind, string>([
@@ -56,9 +59,9 @@ const zeroValueOf = (type: TypeNode): string | null =>
 const typeLabel = (type: TypeNode): string =>
   'name' in type ? type.name : type.kind;
 
-const pluginReadDart = (
+const memberReadDart = (
   expression: ts.PropertyAccessExpression,
-  info: PluginReadInfo,
+  info: MemberReadInfo,
   context: TranslateContext,
 ): string => {
   const member = expression.name.text;
@@ -71,9 +74,8 @@ const pluginReadDart = (
       { sourceFile: context.sourceFile, node: expression.name },
     );
   }
-  const target = `_${expression.expression.getText()}`;
   if (!info.nullable) {
-    return `${target}.${member}`;
+    return `${info.receiver}.${member}`;
   }
   const zero = zeroValueOf(field);
   if (zero === null) {
@@ -85,7 +87,7 @@ const pluginReadDart = (
       { sourceFile: context.sourceFile, node: expression.name },
     );
   }
-  return `${target}?.${member} ?? ${zero}`;
+  return `${info.receiver}?.${member} ?? ${zero}`;
 };
 
 const notYetCompiled = (node: ts.Node, context: TranslateContext): never => {
@@ -193,9 +195,9 @@ export const translateExpression = (
     ts.isPropertyAccessExpression(expression) &&
     ts.isIdentifier(expression.expression)
   ) {
-    const readInfo = context.pluginReads.get(expression.expression.text);
+    const readInfo = context.memberReads.get(expression.expression.text);
     if (readInfo !== undefined) {
-      return pluginReadDart(expression, readInfo, context);
+      return memberReadDart(expression, readInfo, context);
     }
   }
   if (

@@ -3,12 +3,13 @@ import { describe, expect, test } from 'bun:test';
 import { loadApiSnapshot } from '@src/api/load';
 import type { ApiSnapshot, ParamModel } from '@src/api/model';
 import { analyzeSource } from '@src/compiler/analyze';
-import type { IrComponent } from '@src/compiler/ir';
+import type { IrComponent, IrStore } from '@src/compiler/ir';
 import {
   buildCompileContext,
   buildUserWidgets,
   type CompileContext,
   lowerComponent,
+  lowerStore,
 } from '@src/compiler/lower';
 import { deriveSlots } from '@src/derive/slots';
 import { loadPluginApi } from '@src/plugins/api';
@@ -2393,5 +2394,63 @@ describe('lowerComponent — useAsync', () => {
       name: 'hasToken',
       dart: 'snapshot.data!',
     });
+  });
+});
+describe('lowerComponent — store diagnostics', () => {
+  const storeSource = (handlerBody: string): string =>
+    "import { Text, createStore, useStore } from 'flutter-tsx';\n" +
+    "const counterStore = createStore({ count: 0, label: 'Taps' });\n" +
+    'export const Probe = () => {\n' +
+    '  const [state, setState] = useStore(counterStore);\n' +
+    '  const bump = () => {\n' +
+    handlerBody +
+    '  };\n' +
+    '  return <Text>{state.count}</Text>;\n' +
+    '};\n';
+
+  const lowerStoreProbe = async (
+    handlerBody: string,
+    stores?: Map<string, IrStore>,
+  ): Promise<IrComponent> => {
+    const analysis = analyzeSource(storeSource(handlerBody), 'probe.tsx');
+    const [component] = analysis.components;
+    if (component === undefined) {
+      throw new Error('expected a component');
+    }
+    const base = await contextOnce();
+    return lowerComponent(component, {
+      ...base,
+      stores:
+        stores ??
+        new Map(
+          analysis.stores.map((store) => [store.name, lowerStore(store)]),
+        ),
+    });
+  };
+
+  test('a setter without an object patch is a numbered error', () => {
+    expect(lowerStoreProbe('    setState(1);\n')).rejects.toThrow(
+      new Error(
+        'TSX0325 probe.tsx:6:5 — a store setter takes an object of the ' +
+          'fields to change: `setState({ count: 1 })`.',
+      ),
+    );
+  });
+
+  test('patching an unknown field is a numbered error', () => {
+    expect(lowerStoreProbe('    setState({ ghost: 1 });\n')).rejects.toThrow(
+      new Error('TSX0326 probe.tsx:6:16 — the store has no field `ghost`.'),
+    );
+  });
+
+  test('a store missing from the context is a numbered error', () => {
+    expect(
+      lowerStoreProbe('    setState({ count: 1 });\n', new Map()),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0322 probe.tsx:3:14 — `counterStore` is not a store created in ' +
+          'this file with `createStore({ … })`.',
+      ),
+    );
   });
 });

@@ -313,3 +313,73 @@ describe('transpileComponent — plugins', () => {
     );
   });
 });
+// A store wide enough to overflow 80 columns takes the tall form on both its
+// constructor and its update signature — the same rule as any Dart call.
+describe('transpileComponent — a store that must wrap', () => {
+  test('splits the constructor and update params one per line', async () => {
+    const source =
+      "import { Text, createStore, useStore } from 'flutter-tsx';\n" +
+      'const settingsStore = createStore({\n' +
+      "  firstUserFacingLabel: 'one',\n" +
+      "  secondUserFacingLabel: 'two',\n" +
+      "  thirdUserFacingLabel: 'three',\n" +
+      '});\n' +
+      'export const Settings = () => {\n' +
+      '  const [state, setState] = useStore(settingsStore);\n' +
+      '  return <Text>{state.firstUserFacingLabel}</Text>;\n' +
+      '};\n';
+
+    expect(await transpileComponent({ source, filePath: 'settings.tsx' }))
+      .toBe(`import 'package:flutter/material.dart';
+
+class _SettingsStore extends ChangeNotifier {
+  _SettingsStore({
+    required this.firstUserFacingLabel,
+    required this.secondUserFacingLabel,
+    required this.thirdUserFacingLabel,
+  });
+
+  String firstUserFacingLabel;
+  String secondUserFacingLabel;
+  String thirdUserFacingLabel;
+
+  void update({
+    String? firstUserFacingLabel,
+    String? secondUserFacingLabel,
+    String? thirdUserFacingLabel,
+  }) {
+    if (firstUserFacingLabel != null) {
+      this.firstUserFacingLabel = firstUserFacingLabel;
+    }
+    if (secondUserFacingLabel != null) {
+      this.secondUserFacingLabel = secondUserFacingLabel;
+    }
+    if (thirdUserFacingLabel != null) {
+      this.thirdUserFacingLabel = thirdUserFacingLabel;
+    }
+    notifyListeners();
+  }
+}
+
+final _SettingsStore _settingsStore = _SettingsStore(
+  firstUserFacingLabel: 'one',
+  secondUserFacingLabel: 'two',
+  thirdUserFacingLabel: 'three',
+);
+
+class Settings extends StatelessWidget {
+  const Settings({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: _settingsStore,
+      builder: (context, child) {
+        return Text(_settingsStore.firstUserFacingLabel);
+      },
+    );
+  }
+}
+`);
+  });
+});

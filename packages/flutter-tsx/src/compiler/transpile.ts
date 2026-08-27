@@ -15,6 +15,7 @@ import {
   buildUserWidgets,
   type CompileContext,
   lowerComponent,
+  lowerStore,
   type PluginFunctionInfo,
   type PluginHookInfo,
 } from './lower';
@@ -110,11 +111,16 @@ export const transpileComponent = async (
   const fileContext = {
     ...context,
     userWidgets: buildUserWidgets(analysis.components),
+    stores: new Map(
+      analysis.stores.map((store) => [store.name, lowerStore(store)]),
+    ),
     ...(await loadPlugins(analysis)),
   };
   const components = analysis.components.map((component) => {
     requireSupported(component);
     return lowerComponent(component, fileContext);
   });
-  return emitDartFile(components, fileContext);
+  return emitDartFile(components, fileContext, [
+    ...fileContext.stores.values(),
+  ]);
 };

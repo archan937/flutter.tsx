@@ -30,6 +30,19 @@ export interface AsyncBinding {
   errorJsx: ts.Expression;
 }
 
+/// A module-level `createStore({ … })`: one ChangeNotifier per store.
+export interface StoreBinding {
+  name: string;
+  fields: { name: string; dartType: string; initialText: string }[];
+}
+
+/// `const [state, setState] = useStore(someStore)` inside a component.
+export interface StoreUse {
+  storeName: string;
+  stateName: string;
+  setterName: string;
+}
+
 export interface HandlerBinding {
   name: string;
   isAsync: boolean;
@@ -50,6 +63,7 @@ export interface ComponentAnalysis {
   states: StateBinding[];
   plugins: PluginBinding[];
   asyncBinding: AsyncBinding | null;
+  storeUse: StoreUse | null;
   handlers: HandlerBinding[];
   effects: ts.CallExpression[];
   returnJsx: ts.Expression;
@@ -72,6 +86,7 @@ export interface ComponentSummary {
 
 export interface SourceAnalysis {
   components: ComponentAnalysis[];
+  stores: StoreBinding[];
   checker: ts.TypeChecker;
   sourceFile: ts.SourceFile;
   pluginImports: Map<string, string>;
@@ -282,6 +297,7 @@ interface BodyContext {
   sourceFile: ts.SourceFile;
   checker: ts.TypeChecker;
   hookModules: Map<string, string>;
+  storeNames: ReadonlySet<string>;
   analysis: ComponentAnalysis;
 }
 
@@ -382,6 +398,8 @@ const analyzeBodyStatement = (
       const module = context.hookModules.get(callee);
       if (callee === 'useState') {
         analyzeStateDeclaration(declaration, initializer, context);
+      } else if (callee === 'useStore') {
+        analyzeStoreUse(declaration, initializer, context);
       } else if (
         callee.startsWith('use') &&
         module?.startsWith(PLUGIN_MODULE_PREFIX) === true
@@ -480,6 +498,133 @@ const asyncFallback = (
   return null;
 };
 
+const analyzeStoreUse = (
+  declaration: ts.VariableDeclaration,
+  call: ts.CallExpression,
+  context: BodyContext,
+): void => {
+  const { name } = declaration;
+  const [store] = call.arguments;
+  if (
+    !ts.isArrayBindingPattern(name) ||
+    name.elements.length !== 2 ||
+    store === undefined ||
+    !ts.isIdentifier(store)
+  ) {
+    throw tsxErrorAt(
+      'TSX0324',
+      '`useStore` must be destructured as ' +
+        '`const [state, setState] = useStore(someStore)`.',
+      { sourceFile: context.sourceFile, node: declaration.name },
+    );
+  }
+  if (!context.storeNames.has(store.text)) {
+    throw tsxErrorAt(
+      'TSX0322',
+      `\`${store.text}\` is not a store created in this file with ` +
+        '`createStore({ … })`.',
+      { sourceFile: context.sourceFile, node: store },
+    );
+  }
+  const [stateElement, setterElement] = name.elements;
+  if (
+    stateElement === undefined ||
+    !ts.isBindingElement(stateElement) ||
+    setterElement === undefined ||
+    !ts.isBindingElement(setterElement)
+  ) {
+    throw tsxErrorAt(
+      'TSX0324',
+      '`useStore` must be destructured as ' +
+        '`const [state, setState] = useStore(someStore)`.',
+      { sourceFile: context.sourceFile, node: declaration.name },
+    );
+  }
+  context.analysis.storeUse = {
+    storeName: store.text,
+    stateName: stateElement.name.getText(),
+    setterName: setterElement.name.getText(),
+  };
+};
+
+// Only the literal shapes the compiler can turn into typed Dart fields; a
+// `new Date()` or a nested object would silently lose its type otherwise. The
+// syntax kind settles the type, so no type checker is involved.
+const storeFieldType = (
+  initializer: ts.Expression,
+  sourceFile: ts.SourceFile,
+): string => {
+  if (ts.isNumericLiteral(initializer)) {
+    return initializer.text.includes('.') ? 'double' : 'int';
+  }
+  if (ts.isStringLiteral(initializer)) {
+    return 'String';
+  }
+  if (
+    initializer.kind === ts.SyntaxKind.TrueKeyword ||
+    initializer.kind === ts.SyntaxKind.FalseKeyword
+  ) {
+    return 'bool';
+  }
+  throw tsxErrorAt(
+    'TSX0323',
+    'a store field needs a literal the compiler can type: string, number ' +
+      'or boolean.',
+    { sourceFile, node: initializer },
+  );
+};
+
+const analyzeStores = (sourceFile: ts.SourceFile): StoreBinding[] => {
+  const stores: StoreBinding[] = [];
+  for (const statement of sourceFile.statements) {
+    if (!ts.isVariableStatement(statement)) {
+      continue;
+    }
+    for (const declaration of statement.declarationList.declarations) {
+      const { initializer } = declaration;
+      if (
+        initializer === undefined ||
+        !ts.isCallExpression(initializer) ||
+        !ts.isIdentifier(initializer.expression) ||
+        initializer.expression.text !== 'createStore'
+      ) {
+        continue;
+      }
+      const [shape] = initializer.arguments;
+      if (shape === undefined || !ts.isObjectLiteralExpression(shape)) {
+        throw tsxErrorAt(
+          'TSX0323',
+          'a store field needs a literal the compiler can type: string, ' +
+            'number or boolean.',
+          { sourceFile, node: initializer },
+        );
+      }
+      stores.push({
+        name: declaration.name.getText(),
+        fields: shape.properties.map((property) => {
+          if (
+            !ts.isPropertyAssignment(property) ||
+            !ts.isIdentifier(property.name)
+          ) {
+            throw tsxErrorAt(
+              'TSX0323',
+              'a store field needs a literal the compiler can type: ' +
+                'string, number or boolean.',
+              { sourceFile, node: property },
+            );
+          }
+          return {
+            name: property.name.text,
+            dartType: storeFieldType(property.initializer, sourceFile),
+            initialText: property.initializer.getText(),
+          };
+        }),
+      });
+    }
+  }
+  return stores;
+};
+
 const analyzeComponent = (
   nameNode: ts.BindingName,
   arrow: ts.ArrowFunction,
@@ -498,6 +643,7 @@ const analyzeComponent = (
     states: [],
     plugins: [],
     asyncBinding: null,
+    storeUse: null,
     handlers: [],
     effects: [],
     returnJsx,
@@ -553,6 +699,8 @@ export const analyzeSource = (
   const sourceFile = requireSourceFile(program, filePath);
   const checker = program.getTypeChecker();
   const hookModules = importedHookModules(sourceFile);
+  const stores = analyzeStores(sourceFile);
+  const storeNames = new Set(stores.map((store) => store.name));
 
   const components: ComponentAnalysis[] = [];
   for (const statement of sourceFile.statements) {
@@ -577,6 +725,7 @@ export const analyzeSource = (
           sourceFile,
           checker,
           hookModules,
+          storeNames,
           exported,
         },
       );
@@ -602,7 +751,7 @@ export const analyzeSource = (
         module.slice(PLUGIN_MODULE_PREFIX.length),
       ]),
   );
-  return { components, checker, sourceFile, pluginImports };
+  return { components, stores, checker, sourceFile, pluginImports };
 };
 
 export const summarize = (component: ComponentAnalysis): ComponentSummary => ({

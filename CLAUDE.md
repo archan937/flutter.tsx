@@ -671,6 +671,34 @@ bun run test:extractor             # dart tests + 100% coverage gate
       Golden #18 (`18-connectivity-stream`) certified and byte-equal on the
       first compiler run; the widget test proves the loading fallback renders
       before the first event and that EVERY event rebuilds.
+- [x] 24b (createStore / useStore). **Global state without a dependency.**
+      `const s = createStore({ count: 0, label: 'Taps' })` at module level
+      generates a `ChangeNotifier` with typed fields and one `update({…})`
+      that patches the given fields and notifies once, plus a single
+      top-level instance. In a component,
+      `const [state, setState] = useStore(s)` makes `state.count` read
+      `_counterStore.count` and `setState({ count: … })` call
+      `_counterStore.update(count: …)`; the component's body is wrapped in a
+      `ListenableBuilder`, so a store-driven widget **stays a
+      StatelessWidget** — the notifier drives the rebuild.
+      **Deliberate deviation from the vision doc, with reason:** it specifies
+      `ChangeNotifierProvider(create:) + Consumer` from the `provider`
+      package. `create:` builds the store INSIDE the widget tree — one
+      instance per provider — whereas `createStore` at module scope is a
+      single shared instance, so provider would have changed the semantics,
+      not just the plumbing. SDK-native `ListenableBuilder` is the faithful
+      translation and adds no third-party dependency. A tree-scoped variant
+      (provider or riverpod) remains open if Paul wants scoped stores later.
+      Honest bounds, numbered: TSX0322 unknown store, TSX0323 a field whose
+      literal the compiler cannot type (string/number/boolean only — no
+      nested objects or `new Date()`), TSX0324 the destructuring shape,
+      TSX0325 the setter's argument shape, TSX0326 an unknown field in a
+      patch. Reads generalised: the plugin-read machinery became
+      `memberReads`, so plugin handles (nullable, zero-value fallback) and
+      store instances (always present) share one path.
+      Golden #19 (`19-store-counter`) certified and byte-equal; widget tests
+      prove taps rebuild a stateless widget and that two widgets on one store
+      always show the same value.
 - [ ] 24b. Remaining high-level abstractions from the vision (each gated by its own golden +
       e2e before being documented): `useAsync`/`Query`→FutureBuilder ·
       `useStream`→StreamBuilder · `createStore`/`useStore`→ChangeNotifier+Provider ·

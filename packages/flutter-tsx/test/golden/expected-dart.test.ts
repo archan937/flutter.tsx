@@ -35,6 +35,7 @@ describe('committed golden expected.dart files', () => {
       '16-tap-target',
       '17-async-token',
       '18-connectivity-stream',
+      '19-store-counter',
     ]);
   });
 

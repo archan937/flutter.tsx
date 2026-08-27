@@ -1,6 +1,13 @@
 import { describe, expect, test } from 'bun:test';
 
-import { useAsync, useEffect, useState, useStream } from '@src/runtime/hooks';
+import {
+  createStore,
+  useAsync,
+  useEffect,
+  useState,
+  useStore,
+  useStream,
+} from '@src/runtime/hooks';
 
 describe('useState (compile-target stub)', () => {
   test('returns the initial value and an inert setter', () => {
@@ -48,5 +55,18 @@ describe('useStream (compile-target stub)', () => {
         error: () => ({ widgetName: 'Text', props: {} }),
       }),
     ).rejects.toThrow(new Error('useStream is compile-time'));
+  });
+});
+
+describe('createStore / useStore (compile-target stubs)', () => {
+  test('the handle carries the initial value and the setter is inert', () => {
+    const store = createStore({ count: 3, label: 'Taps' });
+    const [state, setState] = useStore(store);
+
+    expect(store.initial).toEqual({ count: 3, label: 'Taps' });
+    expect(state).toEqual({ count: 3, label: 'Taps' });
+    // The stub never mutates: the generated Dart owns the state.
+    setState({ count: 9 });
+    expect(store.initial.count).toBe(3);
   });
 });

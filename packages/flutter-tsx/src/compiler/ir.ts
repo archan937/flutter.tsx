@@ -81,6 +81,14 @@ export interface IrWidget {
   args: IrArgument[];
 }
 
+/// A ChangeNotifier generated from a module-level `createStore({ … })`,
+/// plus the single instance every component in the file shares.
+export interface IrStore {
+  className: string;
+  instanceName: string;
+  fields: { name: string; dartType: string; initializer: string }[];
+}
+
 export interface IrField {
   name: string;
   dartType: string;
