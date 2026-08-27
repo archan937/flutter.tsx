@@ -35,6 +35,10 @@ export const dartTypeOf = (type: TypeNode): string | null => {
       const item = dartTypeOf(type.item);
       return item === null ? null : `Future<${item}>`;
     }
+    case 'stream': {
+      const item = dartTypeOf(type.item);
+      return item === null ? null : `Stream<${item}>`;
+    }
     case 'map': {
       const key = dartTypeOf(type.key);
       const value = dartTypeOf(type.value);

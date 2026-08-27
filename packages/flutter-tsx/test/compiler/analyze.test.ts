@@ -504,7 +504,7 @@ describe('analyzeSource — useAsync', () => {
     ).toThrow(
       new Error(
         'TSX0320 probe.tsx:5:19 — `useAsync` takes an arrow returning the ' +
-          'future and an options object: `useAsync(() => load(), ' +
+          'source and an options object: `useAsync(() => load(), ' +
           '{ loading, error })`.',
       ),
     );
@@ -520,7 +520,7 @@ describe('analyzeSource — useAsync', () => {
     ).toThrow(
       new Error(
         'TSX0319 probe.tsx:5:9 — `useAsync` needs both a `loading` and an ' +
-          '`error` fallback: every FutureBuilder state must render something.',
+          '`error` fallback: every builder state must render something.',
       ),
     );
   });

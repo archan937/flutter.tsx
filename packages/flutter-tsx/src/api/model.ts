@@ -20,6 +20,7 @@ export type TypeNode =
   | { kind: 'set'; item: TypeNode }
   | { kind: 'map'; key: TypeNode; value: TypeNode }
   | { kind: 'future'; item: TypeNode }
+  | { kind: 'stream'; item: TypeNode }
   | { kind: 'function'; returnType: TypeNode; params: FunctionParam[] };
 
 export interface FunctionParam {

@@ -4740,10 +4740,6 @@ export interface Step {
   readonly __fsxBrand?: { readonly Step: true };
 }
 
-export interface Stream {
-  readonly __fsxBrand?: { readonly Stream: true };
-}
-
 export interface StrutStyle {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -97024,7 +97020,7 @@ export interface StreamBuilderProps extends GestureProps {
    * [afterDisconnected], if the previous stream was not null, followed by
    * [afterConnected], if the new stream is not null.
    */
-  stream: Stream | null;
+  stream: AsyncIterable<unknown> | null;
   /**
    * The build strategy currently used by this builder.
    *

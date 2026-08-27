@@ -8,10 +8,6 @@ declare module 'plugin:flutter_secure_storage' {
 
   export type StorageCipherAlgorithm = 'AES_CBC_PKCS7Padding' | 'AES_GCM_NoPadding';
 
-  export interface Stream {
-    readonly __external: 'Stream';
-  }
-
   export class AndroidOptions {
     constructor(options?: { encryptedSharedPreferences?: boolean; resetOnError?: boolean; keyCipherAlgorithm?: KeyCipherAlgorithm; storageCipherAlgorithm?: StorageCipherAlgorithm; sharedPreferencesName?: string | null; preferencesKeyPrefix?: string | null });
     readonly preferencesKeyPrefix: string | null;
@@ -30,7 +26,7 @@ declare module 'plugin:flutter_secure_storage' {
     readonly iOptions: IOSOptions;
     readonly lOptions: LinuxOptions;
     readonly mOptions: MacOsOptions;
-    readonly onCupertinoProtectedDataAvailabilityChanged: Stream | null;
+    readonly onCupertinoProtectedDataAvailabilityChanged: AsyncIterable<boolean> | null;
     readonly wOptions: WindowsOptions;
     readonly webOptions: WebOptions;
     containsKey(options: { key: string; iOptions?: IOSOptions | null; aOptions?: AndroidOptions | null; lOptions?: LinuxOptions | null; webOptions?: WebOptions | null; mOptions?: MacOsOptions | null; wOptions?: WindowsOptions | null }): Promise<boolean>;

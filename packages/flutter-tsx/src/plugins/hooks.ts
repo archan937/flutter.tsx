@@ -53,8 +53,11 @@ export interface HookOverrides {
 const isFutureVoid = (type: TypeNode): boolean =>
   type.kind === 'future' && type.item.kind === 'void';
 
-const pascalCase = (packageName: string): string =>
+// The pub "plus family" (connectivity_plus, battery_plus, sensors_plus) names
+// its classes without the suffix, so drop it before matching.
+const serviceClassName = (packageName: string): string =>
   packageName
+    .replace(/_plus$/, '')
     .split('_')
     .map((part) => `${part[0]?.toUpperCase() ?? ''}${part.slice(1)}`)
     .join('');
@@ -63,7 +66,7 @@ const serviceConstructor = (
   api: PluginApi,
   entity: PluginClass,
 ): { isConst: boolean } | null => {
-  if (entity.name !== pascalCase(api.package)) {
+  if (entity.name !== serviceClassName(api.package)) {
     return null;
   }
   const constructor = entity.constructors.find(

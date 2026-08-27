@@ -2286,8 +2286,8 @@ describe('lowerComponent — useAsync', () => {
       ),
     ).rejects.toThrow(
       new Error(
-        'TSX0321 probe.tsx:5:38 — `useAsync` needs a future whose type the ' +
-          'compiler knows: call a plugin method, e.g. ' +
+        'TSX0321 probe.tsx:5:38 — `useAsync` needs a Future whose type the ' +
+          'compiler knows: read it off a plugin, e.g. ' +
           '`useAsync(() => storage.readAll(), …)`.',
       ),
     );
@@ -2306,9 +2306,43 @@ describe('lowerComponent — useAsync', () => {
       ),
     ).rejects.toThrow(
       new Error(
-        'TSX0321 probe.tsx:6:11 — `useAsync` needs a future whose type the ' +
-          'compiler knows: call a plugin method, e.g. ' +
+        'TSX0321 probe.tsx:6:11 — `useAsync` needs a Future whose type the ' +
+          'compiler knows: read it off a plugin, e.g. ' +
           '`useAsync(() => storage.readAll(), …)`.',
+      ),
+    );
+  });
+
+  test('a stream source that is no plugin read is a numbered error', () => {
+    expect(
+      lowerCustom(
+        '  const value = await useStream(() => someStream, {\n' +
+          '    loading: () => <CircularProgressIndicator />,\n' +
+          '    error: (err) => <Text>{err}</Text>,\n' +
+          '  });\n',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0321 probe.tsx:5:39 — `useStream` needs a Stream whose type the ' +
+          'compiler knows: read it off a plugin, e.g. ' +
+          '`useStream(() => storage.readAll(), …)`.',
+      ),
+    );
+  });
+
+  test('an unknown property on a plugin cannot back a stream', () => {
+    expect(
+      lowerCustom(
+        '  const value = await useStream(() => storage.nope, {\n' +
+          '    loading: () => <CircularProgressIndicator />,\n' +
+          '    error: (err) => <Text>{err}</Text>,\n' +
+          '  });\n',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0321 probe.tsx:5:39 — `useStream` needs a Stream whose type the ' +
+          'compiler knows: read it off a plugin, e.g. ' +
+          '`useStream(() => storage.readAll(), …)`.',
       ),
     );
   });

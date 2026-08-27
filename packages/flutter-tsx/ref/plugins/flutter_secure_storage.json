@@ -429,8 +429,11 @@
           "type": {
             "kind": "nullable",
             "inner": {
-              "kind": "named",
-              "name": "Stream"
+              "kind": "stream",
+              "item": {
+                "kind": "scalar",
+                "name": "bool"
+              }
             }
           }
         },

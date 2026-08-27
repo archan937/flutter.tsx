@@ -247757,8 +247757,11 @@
               "type": {
                 "kind": "nullable",
                 "inner": {
-                  "kind": "named",
-                  "name": "Stream"
+                  "kind": "stream",
+                  "item": {
+                    "kind": "named",
+                    "name": "ImageChunkEvent"
+                  }
                 }
               },
               "display": "Stream<ImageChunkEvent>?",
@@ -329765,8 +329768,10 @@
               "type": {
                 "kind": "nullable",
                 "inner": {
-                  "kind": "named",
-                  "name": "Stream"
+                  "kind": "stream",
+                  "item": {
+                    "kind": "unknown"
+                  }
                 }
               },
               "display": "Stream<T>?",

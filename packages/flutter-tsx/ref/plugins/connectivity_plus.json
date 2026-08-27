@@ -1,0 +1,183 @@
+{
+  "package": "connectivity_plus",
+  "version": "7.3.1",
+  "classes": [
+    {
+      "name": "Connectivity",
+      "doc": "/// Discover network connectivity configurations: Distinguish between WI-FI and cellular, check WI-FI status and more.",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "/// Constructs a singleton instance of [Connectivity].\n///\n/// [Connectivity] is designed to work as a singleton.",
+          "const": false,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": []
+        }
+      ],
+      "fields": [
+        {
+          "name": "onConnectivityChanged",
+          "doc": "/// Exposes connectivity update events from the platform.\n///\n/// On iOS, the connectivity status might not update when WiFi\n/// status changes, this is a known issue that only affects simulators.\n/// For details see https://github.com/fluttercommunity/plus_plugins/issues/479.\n///\n/// The emitted list is never empty. In case of no connectivity, the list contains\n/// a single element of [ConnectivityResult.none]. Note also that this is the only\n/// case where [ConnectivityResult.none] is present.\n///\n/// This method applies [Stream.distinct] over the received events to ensure\n/// only emitting when connectivity changes.",
+          "type": {
+            "kind": "stream",
+            "item": {
+              "kind": "list",
+              "item": {
+                "kind": "enum",
+                "name": "ConnectivityResult"
+              }
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "checkConnectivity",
+          "doc": "/// Checks the connection status of the device.\n///\n/// Do not use the result of this function to decide whether you can reliably\n/// make a network request, it only gives you the radio status. Instead, listen\n/// for connectivity changes via [onConnectivityChanged] stream.\n///\n/// The returned list is never empty. In case of no connectivity, the list contains\n/// a single element of [ConnectivityResult.none]. Note also that this is the only\n/// case where [ConnectivityResult.none] is present.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "list",
+              "item": {
+                "kind": "enum",
+                "name": "ConnectivityResult"
+              }
+            }
+          },
+          "params": []
+        }
+      ],
+      "constants": []
+    },
+    {
+      "name": "ConnectivityPlusLinuxPlugin",
+      "doc": "/// The Linux implementation of ConnectivityPlatform.",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "",
+          "const": false,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": []
+        }
+      ],
+      "fields": [
+        {
+          "name": "createClient",
+          "doc": "",
+          "type": {
+            "kind": "function",
+            "returnType": {
+              "kind": "named",
+              "name": "NetworkManagerClient"
+            },
+            "params": []
+          }
+        },
+        {
+          "name": "onConnectivityChanged",
+          "doc": "/// Returns a Stream of ConnectivityResults changes.",
+          "type": {
+            "kind": "stream",
+            "item": {
+              "kind": "list",
+              "item": {
+                "kind": "enum",
+                "name": "ConnectivityResult"
+              }
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "checkConnectivity",
+          "doc": "/// Checks the connection status of the device.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "list",
+              "item": {
+                "kind": "enum",
+                "name": "ConnectivityResult"
+              }
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "registerWith",
+          "doc": "/// Register this dart class as the platform implementation for linux",
+          "static": true,
+          "returnType": {
+            "kind": "void"
+          },
+          "params": []
+        }
+      ],
+      "constants": []
+    }
+  ],
+  "enums": [
+    {
+      "kind": "enum",
+      "name": "ConnectivityResult",
+      "library": "connectivity_plus",
+      "doc": "/// Connection status check result.",
+      "values": [
+        {
+          "name": "bluetooth",
+          "doc": "/// Bluetooth: Device connected via bluetooth"
+        },
+        {
+          "name": "wifi",
+          "doc": "/// WiFi: Device connected via Wi-Fi"
+        },
+        {
+          "name": "ethernet",
+          "doc": "/// Ethernet: Device connected to ethernet network"
+        },
+        {
+          "name": "mobile",
+          "doc": "/// Mobile: Device connected to cellular network"
+        },
+        {
+          "name": "none",
+          "doc": "/// None: Device not connected to any network"
+        },
+        {
+          "name": "vpn",
+          "doc": "/// VPN: Device connected to a VPN\n///\n/// Note for iOS and macOS:\n/// There is no separate network interface type for [vpn].\n/// It returns [other] on any device (also simulator)."
+        },
+        {
+          "name": "satellite",
+          "doc": "/// Satellite: Device is connected via a highly constrained satellite link.\n///\n/// On iOS and macOS, reported when [NWPath.isUltraConstrained] is true.\n/// Appears alongside [mobile] (e.g. `[mobile, satellite]`).\n///\n/// On Android 15 (API 35) and newer, reported when [TRANSPORT_SATELLITE] capability\n/// is present.\n///\n/// Not reported on other platforms."
+        },
+        {
+          "name": "other",
+          "doc": "/// Other: Device is connected to an unknown network"
+        }
+      ]
+    }
+  ],
+  "functions": [],
+  "permissions": {
+    "android": {
+      "manifestSource": "connectivity_plus/android/src/main/AndroidManifest.xml",
+      "permissions": [
+        "android.permission.ACCESS_NETWORK_STATE"
+      ],
+      "exampleSource": "example/android/app/src/main/AndroidManifest.xml",
+      "querySchemes": []
+    },
+    "ios": {
+      "exampleSource": "example/ios/Runner/Info.plist",
+      "usageDescriptionKeys": [],
+      "querySchemes": []
+    }
+  }
+}

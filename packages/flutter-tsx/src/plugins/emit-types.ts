@@ -28,6 +28,7 @@ const collectRefs = (node: TypeNode, refs: TypeRefs): void => {
     case 'list':
     case 'set':
     case 'future':
+    case 'stream':
       collectRefs(node.item, refs);
       break;
     case 'map':
@@ -60,6 +61,7 @@ const withCoreStrings = (node: TypeNode): TypeNode => {
     case 'list':
     case 'set':
     case 'future':
+    case 'stream':
       return { ...node, item: withCoreStrings(node.item) };
     case 'map':
       return {

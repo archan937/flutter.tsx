@@ -1,4 +1,4 @@
-import { mkdtemp } from 'node:fs/promises';
+import { mkdtemp, readdir, rm } from 'node:fs/promises';
 import { homedir, tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -24,8 +24,32 @@ export const run = async (
   return { exitCode, stdout, stderr };
 };
 
+const APP_PREFIX = 'fsx-e2e-app-';
+
+const ownApps = new Set<string>();
+
+// Each scaffolded app carries a pub cache and a web build (~50MB), so leaving
+// them behind costs about a gigabyte per suite run and slowly starves the
+// machine the builds run on. Previous runs' apps are swept on first use; this
+// run's are kept, because a failed build's directory is worth inspecting.
+const sweepStaleApps = async (): Promise<void> => {
+  const root = tmpdir();
+  const entries = await readdir(root).catch(() => []);
+  await Promise.all(
+    entries
+      .filter((entry) => entry.startsWith(APP_PREFIX))
+      .map((entry) => join(root, entry))
+      .filter((appDir) => !ownApps.has(appDir))
+      .map((appDir) => rm(appDir, { recursive: true, force: true })),
+  );
+};
+
 export const createFlutterWebApp = async (): Promise<string> => {
-  const appDir = await mkdtemp(join(tmpdir(), 'fsx-e2e-app-'));
+  if (ownApps.size === 0) {
+    await sweepStaleApps();
+  }
+  const appDir = await mkdtemp(join(tmpdir(), APP_PREFIX));
+  ownApps.add(appDir);
   const created = await run(
     [
       flutterBin,

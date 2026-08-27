@@ -96,6 +96,15 @@ class MapTypeNode extends TypeNode {
   };
 }
 
+class StreamTypeNode extends TypeNode {
+  const StreamTypeNode(this.item);
+
+  final TypeNode item;
+
+  @override
+  Map<String, Object?> toJson() => {'kind': 'stream', 'item': item.toJson()};
+}
+
 class FutureTypeNode extends TypeNode {
   const FutureTypeNode(this.item);
 

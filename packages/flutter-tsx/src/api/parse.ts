@@ -83,6 +83,7 @@ export const parseTypeNode = (value: unknown, path: string): TypeNode => {
     case 'list':
     case 'set':
     case 'future':
+    case 'stream':
       return { kind, item: parseTypeNode(record.item, `${path}.item`) };
     case 'map':
       return {

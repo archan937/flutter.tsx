@@ -27,3 +27,10 @@ export const useAsync = <TValue>(
   _load: () => Promise<TValue>,
   _options: AsyncOptions,
 ): Promise<TValue> => Promise.reject(new Error('useAsync is compile-time'));
+
+// Same compile-time contract as useAsync, over a Dart Stream: the awaited
+// value is the latest event inside the generated StreamBuilder.
+export const useStream = <TValue>(
+  _source: () => AsyncIterable<TValue>,
+  _options: AsyncOptions,
+): Promise<TValue> => Promise.reject(new Error('useStream is compile-time'));

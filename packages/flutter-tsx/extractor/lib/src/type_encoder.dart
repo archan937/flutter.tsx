@@ -52,6 +52,9 @@ TypeNode _encodeInterface(InterfaceType type) {
   if (name == 'Future' && type.typeArguments.isNotEmpty) {
     return FutureTypeNode(encodeType(type.typeArguments.first));
   }
+  if (name == 'Stream' && type.typeArguments.isNotEmpty) {
+    return StreamTypeNode(encodeType(type.typeArguments.first));
+  }
   if (_scalarNames.contains(name)) {
     return ScalarTypeNode(name);
   }

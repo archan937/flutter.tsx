@@ -29,6 +29,7 @@ const GREEN_FIXTURES = new Set([
   '15-front-camera',
   '16-tap-target',
   '17-async-token',
+  '18-connectivity-stream',
 ]);
 
 const fixtures = await listFixtures();

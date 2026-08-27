@@ -56,6 +56,10 @@ export const tsTypeOf = (node: TypeNode): string => {
       return mapType(node.key, node.value);
     case 'future':
       return `Promise<${tsTypeOf(node.item)}>`;
+    // A Dart Stream is many values over time; TSX only ever hands it to
+    // useStream, and AsyncIterable carries the item type correctly.
+    case 'stream':
+      return `AsyncIterable<${tsTypeOf(node.item)}>`;
     case 'function':
       return `(${node.params.map(functionParam).join(', ')}) => ${tsTypeOf(
         node.returnType,

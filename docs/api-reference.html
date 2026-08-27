@@ -10821,7 +10821,7 @@ a [Stream].</p>
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
 <tbody>
 <tr><td>initialData</td><td>unknown</td><td>T?</td><td class="req"></td></tr>
-<tr><td>stream</td><td>Stream | null</td><td>Stream&lt;T&gt;?</td><td class="req">✓</td></tr>
+<tr><td>stream</td><td>AsyncIterable&lt;unknown&gt; | null</td><td>Stream&lt;T&gt;?</td><td class="req">✓</td></tr>
 <tr><td>builder</td><td>(context: BuildContext, snapshot: AsyncSnapshot) =&gt; FlutterElement</td><td>Widget Function(BuildContext, AsyncSnapshot&lt;T&gt;)</td><td class="req">✓</td></tr>
 </tbody>
 </table>

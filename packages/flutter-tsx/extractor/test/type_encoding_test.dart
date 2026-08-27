@@ -91,6 +91,13 @@ void main() {
     });
 
     test('futures', () {
+      expect(typeOf('ticks'), {
+        'kind': 'nullable',
+        'inner': {
+          'kind': 'stream',
+          'item': {'kind': 'scalar', 'name': 'String'},
+        },
+      });
       expect(typeOf('loader'), {
         'kind': 'nullable',
         'inner': {

@@ -21,6 +21,8 @@ export interface PluginBinding {
 /// One `await useAsync(load, { loading, error })` per component: the data
 /// name binds the resolved value inside the generated FutureBuilder.
 export interface AsyncBinding {
+  // `useAsync` builds a FutureBuilder, `useStream` a StreamBuilder.
+  hook: 'useAsync' | 'useStream';
   name: string;
   load: ts.Expression;
   loadingJsx: ts.Expression;
@@ -402,10 +404,13 @@ const analyzeAsyncDeclaration = (
   context: BodyContext,
 ): void => {
   const call = awaited.expression;
+  const hook =
+    ts.isCallExpression(call) && ts.isIdentifier(call.expression)
+      ? call.expression.text
+      : '';
   if (
     !ts.isCallExpression(call) ||
-    !ts.isIdentifier(call.expression) ||
-    call.expression.text !== 'useAsync'
+    (hook !== 'useAsync' && hook !== 'useStream')
   ) {
     throw tsxErrorAt(
       'TSX0305',
@@ -416,7 +421,7 @@ const analyzeAsyncDeclaration = (
   if (context.analysis.asyncBinding !== null) {
     throw tsxErrorAt(
       'TSX0318',
-      'a component compiles one `useAsync`; move the second into a child ' +
+      `a component compiles one \`${hook}\`; move the second into a child ` +
         'component.',
       { sourceFile: context.sourceFile, node: declaration.name },
     );
@@ -431,8 +436,8 @@ const analyzeAsyncDeclaration = (
   ) {
     throw tsxErrorAt(
       'TSX0320',
-      '`useAsync` takes an arrow returning the future and an options ' +
-        'object: `useAsync(() => load(), { loading, error })`.',
+      `\`${hook}\` takes an arrow returning the source and an options ` +
+        `object: \`${hook}(() => load(), { loading, error })\`.`,
       { sourceFile: context.sourceFile, node: call },
     );
   }
@@ -441,13 +446,14 @@ const analyzeAsyncDeclaration = (
   if (loading === null || error === null) {
     throw tsxErrorAt(
       'TSX0319',
-      '`useAsync` needs both a `loading` and an `error` fallback: every ' +
-        'FutureBuilder state must render something.',
+      `\`${hook}\` needs both a \`loading\` and an \`error\` fallback: ` +
+        'every builder state must render something.',
       { sourceFile: context.sourceFile, node: declaration.name },
     );
   }
   const [errorParam] = error.parameters;
   context.analysis.asyncBinding = {
+    hook,
     name: declaration.name.getText(),
     load: load.body,
     loadingJsx: loading.body as ts.Expression,

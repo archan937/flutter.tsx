@@ -34,6 +34,15 @@ describe('dartTypeOf', () => {
     ).toBe('Future<bool>');
     expect(
       dartTypeOf({
+        kind: 'stream',
+        item: {
+          kind: 'list',
+          item: { kind: 'enum', name: 'ConnectivityResult' },
+        },
+      }),
+    ).toBe('Stream<List<ConnectivityResult>>');
+    expect(
+      dartTypeOf({
         kind: 'map',
         key: { kind: 'scalar', name: 'String' },
         value: { kind: 'scalar', name: 'String' },
@@ -59,6 +68,9 @@ describe('dartTypeOf', () => {
     expect(dartTypeOf({ kind: 'set', item: { kind: 'unknown' } })).toBeNull();
     expect(
       dartTypeOf({ kind: 'future', item: { kind: 'unknown' } }),
+    ).toBeNull();
+    expect(
+      dartTypeOf({ kind: 'stream', item: { kind: 'unknown' } }),
     ).toBeNull();
     expect(
       dartTypeOf({

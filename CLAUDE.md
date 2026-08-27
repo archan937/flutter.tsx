@@ -645,6 +645,31 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       instead of guessing. Golden #17 (`17-async-token`) certified and
       byte-equal; widget tests prove the loading fallback renders on the
       first frame and that both resolved branches follow.
+- [x] 24b (useStream → StreamBuilder). Same shape as useAsync over a Dart
+      Stream: `await useStream(() => connectivity.onConnectivityChanged, {…})`
+      → `late final Stream<T>` assigned in initState plus a
+      `StreamBuilder<T>` reusing the builder AST node. The source may now be
+      a plugin PROPERTY read, not just a method call (a stream is usually a
+      getter), and the diagnostics generalised to name whichever hook and
+      wrapper is involved. **Two real extraction gaps closed on the way:**
+      (1) type arguments of `Stream<…>` were silently dropped —
+      `Stream<List<ConnectivityResult>>` came out as a bare `named: Stream`,
+      so a `stream` TypeNode kind now mirrors `future` end to end (Dart
+      encoder → snapshot → parse/serialize → dartTypeOf → generated
+      typings, where it surfaces as `AsyncIterable<T>` and carries the item
+      type into `useStream`'s inference); (2) the service-hook match compared
+      the class name against the full package name, so the pub "plus family"
+      (connectivity_plus, battery_plus, sensors_plus) derived nothing — the
+      suffix is now stripped, which is why `useConnectivity` exists, while
+      package_info_plus still derives its static factory rather than a
+      service. Known remaining limitation, recorded rather than hidden:
+      type arguments of OTHER generic named types are still dropped
+      (`ValueNotifier<int>` → `ValueNotifier`); nothing in the fixtures or
+      the 543-widget sweep depends on one, and any use would fail loudly at
+      `flutter analyze` rather than silently miscompile.
+      Golden #18 (`18-connectivity-stream`) certified and byte-equal on the
+      first compiler run; the widget test proves the loading fallback renders
+      before the first event and that EVERY event rebuilds.
 - [ ] 24b. Remaining high-level abstractions from the vision (each gated by its own golden +
       e2e before being documented): `useAsync`/`Query`→FutureBuilder ·
       `useStream`→StreamBuilder · `createStore`/`useStore`→ChangeNotifier+Provider ·

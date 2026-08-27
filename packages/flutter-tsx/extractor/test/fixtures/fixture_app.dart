@@ -102,6 +102,7 @@ class TestWidget extends StatelessWidget {
     this.labels = const <String, int>{},
     this.tags = const <String>{},
     this.loader,
+    this.ticks,
     this.extra,
     this.anything,
     @Deprecated('Use title instead.') this.legacyTitle,
@@ -158,6 +159,9 @@ class TestWidget extends StatelessWidget {
 
   /// Loads the count asynchronously.
   final Future<int>? loader;
+
+  /// Emits every tick.
+  final Stream<String>? ticks;
 
   /// An arbitrary companion value.
   final NotAWidget? extra;

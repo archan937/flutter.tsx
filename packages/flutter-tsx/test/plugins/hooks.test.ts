@@ -233,3 +233,33 @@ describe('deriveHooks — underivable shapes', () => {
     ).toEqual([]);
   });
 });
+// The pub "plus family" (connectivity_plus, battery_plus, sensors_plus) drops
+// the suffix in its class names, so the service match has to as well.
+describe('deriveHooks — plus-family services', () => {
+  test('connectivity_plus derives useConnectivity as a service', async () => {
+    const api = await loadPluginApi('connectivity_plus');
+
+    expect(deriveHooks(api, PLUGIN_OVERRIDES.connectivity_plus)).toEqual([
+      {
+        hookName: 'useConnectivity',
+        className: 'Connectivity',
+        dartImport: 'package:connectivity_plus/connectivity_plus.dart',
+        acquisition: { kind: 'constField', isConst: false },
+        construct: [],
+        managed: [],
+        options: [],
+      },
+    ]);
+  });
+
+  test('package_info_plus still derives its static factory, not a service', async () => {
+    const api = await loadPluginApi('package_info_plus');
+    const [hook] = deriveHooks(api, undefined);
+
+    expect(hook?.hookName).toBe('usePackageInfo');
+    expect(hook?.acquisition).toEqual({
+      kind: 'staticFactory',
+      method: 'fromPlatform',
+    });
+  });
+});

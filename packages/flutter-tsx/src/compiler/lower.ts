@@ -1330,6 +1330,49 @@ const pluginCallArguments = (
   return rendered;
 };
 
+interface AsyncSource {
+  invocation: string;
+  // null for a property read: there is no argument list to render.
+  args: string[] | null;
+  type: TypeNode;
+}
+
+// The source of a future or stream: a plugin method call, or a plugin
+// property read (`connectivity.onConnectivityChanged`).
+const resolveAsyncSource = (
+  load: ts.Expression,
+  context: LowerContext,
+): AsyncSource | null => {
+  if (ts.isCallExpression(load)) {
+    const resolved = resolvePluginCall(load, context, load);
+    return resolved === null
+      ? null
+      : {
+          invocation: resolved.invocation,
+          args: resolved.args,
+          type: resolved.returnType,
+        };
+  }
+  if (
+    !ts.isPropertyAccessExpression(load) ||
+    !ts.isIdentifier(load.expression)
+  ) {
+    return null;
+  }
+  const binding = load.expression.text;
+  const info = context.pluginBindings.get(binding);
+  const field = info?.fields.get(load.name.text);
+  if (info === undefined || field === undefined) {
+    return null;
+  }
+  const accessor = info.hook.acquisition.kind === 'constField' ? '.' : '?.';
+  return {
+    invocation: `_${binding}${accessor}${load.name.text}`,
+    args: null,
+    type: field,
+  };
+};
+
 interface LoweredAsync {
   field: IrField;
   initStatement: IrStatement;
@@ -1344,18 +1387,18 @@ const lowerAsyncBinding = (
   context: LowerContext,
 ): LoweredAsync => {
   const { load } = binding;
-  const resolved = ts.isCallExpression(load)
-    ? resolvePluginCall(load, context, load)
-    : null;
+  const isStream = binding.hook === 'useStream';
+  const sourceKind = isStream ? 'stream' : 'future';
+  const source = resolveAsyncSource(load, context);
   const dataType =
-    resolved?.returnType.kind === 'future'
-      ? dartTypeOf(resolved.returnType.item)
-      : null;
-  if (resolved === null || dataType === null) {
+    source?.type.kind === sourceKind ? dartTypeOf(source.type.item) : null;
+  if (source === null || dataType === null) {
+    const wrapper = isStream ? 'Stream' : 'Future';
     throw tsxErrorAt(
       'TSX0321',
-      '`useAsync` needs a future whose type the compiler knows: call a ' +
-        'plugin method, e.g. `useAsync(() => storage.readAll(), …)`.',
+      `\`${binding.hook}\` needs a ${wrapper} whose type the compiler ` +
+        'knows: read it off a plugin, e.g. ' +
+        `\`${binding.hook}(() => storage.readAll(), …)\`.`,
       { sourceFile: context.sourceFile, node: load },
     );
   }
@@ -1370,28 +1413,28 @@ const lowerAsyncBinding = (
       ...(dataType === 'String' ? [binding.name] : []),
     ]),
   };
-  const fieldName = `_${binding.name}Future`;
+  const fieldName = `_${binding.name}${isStream ? 'Stream' : 'Future'}`;
   return {
     field: {
       name: fieldName,
-      dartType: `Future<${dataType}>`,
+      dartType: `${isStream ? 'Stream' : 'Future'}<${dataType}>`,
       mutable: false,
       initializer: null,
       lateFinal: true,
     },
     initStatement: {
       kind: 'dart',
-      line: statementCall(
-        `${fieldName} = ${resolved.invocation}`,
-        resolved.args,
-      ),
+      line:
+        source.args === null
+          ? `${fieldName} = ${source.invocation};`
+          : statementCall(`${fieldName} = ${source.invocation}`, source.args),
     },
     body: {
-      name: `FutureBuilder<${dataType}>`,
+      name: `${isStream ? 'Stream' : 'Future'}Builder<${dataType}>`,
       constConstructor: false,
       args: [
         {
-          param: 'future',
+          param: isStream ? 'stream' : 'future',
           positional: false,
           value: { kind: 'dartExpr', dart: fieldName },
         },

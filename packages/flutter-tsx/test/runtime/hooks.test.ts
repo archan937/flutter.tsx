@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 
-import { useAsync, useEffect, useState } from '@src/runtime/hooks';
+import { useAsync, useEffect, useState, useStream } from '@src/runtime/hooks';
 
 describe('useState (compile-target stub)', () => {
   test('returns the initial value and an inert setter', () => {
@@ -30,5 +30,23 @@ describe('useAsync (compile-target stub)', () => {
         error: () => ({ widgetName: 'Text', props: {} }),
       }),
     ).rejects.toThrow(new Error('useAsync is compile-time'));
+  });
+});
+
+describe('useStream (compile-target stub)', () => {
+  test('rejects at runtime: it only exists for the compiler to read', () => {
+    const source = (): AsyncIterable<number> => ({
+      [Symbol.asyncIterator]: (): AsyncIterator<number> => ({
+        next: (): Promise<IteratorResult<number>> =>
+          Promise.resolve({ done: true, value: 0 }),
+      }),
+    });
+
+    expect(
+      useStream(source, {
+        loading: () => ({ widgetName: 'Text', props: {} }),
+        error: () => ({ widgetName: 'Text', props: {} }),
+      }),
+    ).rejects.toThrow(new Error('useStream is compile-time'));
   });
 });

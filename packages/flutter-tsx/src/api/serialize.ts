@@ -22,6 +22,7 @@ const typeNodeToJson = (node: TypeNode): Record<string, unknown> => {
     case 'list':
     case 'set':
     case 'future':
+    case 'stream':
       return { kind: node.kind, item: typeNodeToJson(node.item) };
     case 'map':
       return {
