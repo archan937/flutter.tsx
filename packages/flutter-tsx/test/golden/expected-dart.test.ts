@@ -32,6 +32,7 @@ describe('committed golden expected.dart files', () => {
       '13-open-link',
       '14-app-info',
       '15-front-camera',
+      '16-tap-target',
     ]);
   });
 

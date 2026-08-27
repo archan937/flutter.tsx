@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 
-import type { ApiSnapshot } from '@src/api/model';
+import type { ApiSnapshot, WidgetEntity } from '@src/api/model';
 import type { SlotMap } from '@src/derive/slots';
 import {
   emitConstantsFile,
@@ -567,5 +567,184 @@ export const TestPalette = declareConstants<{
 `;
 
     expect(emitConstantsFile(snapshot)).toBe(expected);
+  });
+});
+// Any widget may carry gesture props (the compiler wraps in a
+// GestureDetector), so the generated types must accept them — derived from
+// GestureDetector's own constructor, never a hand-written list.
+describe('emitWidgetsFile — gesture props', () => {
+  const gestureDetector: WidgetEntity = {
+    kind: 'widget',
+    name: 'GestureDetector',
+    library: 'widgets',
+    doc: '',
+    supertypes: ['StatelessWidget', 'Widget'],
+    constructors: [
+      {
+        name: '',
+        doc: '',
+        isConst: true,
+        paramMemberAsserts: false,
+        requiredOneOf: [],
+        params: [
+          {
+            name: 'child',
+            type: { kind: 'nullable', inner: { kind: 'widget' } },
+            display: 'Widget?',
+            named: true,
+            required: false,
+            defaultValue: null,
+            doc: '',
+            deprecated: false,
+          },
+          {
+            name: 'onTap',
+            type: {
+              kind: 'nullable',
+              inner: {
+                kind: 'function',
+                returnType: { kind: 'void' },
+                params: [],
+              },
+            },
+            display: 'VoidCallback?',
+            named: true,
+            required: false,
+            defaultValue: null,
+            doc: '/// Called on tap.',
+            deprecated: false,
+          },
+          {
+            name: 'onLongPress',
+            type: {
+              kind: 'nullable',
+              inner: {
+                kind: 'function',
+                returnType: { kind: 'void' },
+                params: [],
+              },
+            },
+            display: 'VoidCallback?',
+            named: true,
+            required: false,
+            defaultValue: null,
+            doc: '',
+            deprecated: false,
+          },
+          {
+            name: 'behavior',
+            type: { kind: 'nullable', inner: { kind: 'named', name: 'Key' } },
+            display: 'Key?',
+            named: true,
+            required: false,
+            defaultValue: null,
+            doc: '',
+            deprecated: false,
+          },
+        ],
+      },
+    ],
+    constants: [],
+  };
+
+  const withDetector: ApiSnapshot = {
+    ...snapshot,
+    entities: [...snapshot.entities, gestureDetector],
+  };
+
+  const emitWithDetector = (): string =>
+    emitWidgetsFile(withDetector, {
+      ...slots,
+      GestureDetector: {
+        children: { kind: 'widget', param: 'child' },
+        slots: [],
+      },
+    });
+
+  test('emits GestureProps from the detector callbacks only', () => {
+    const emitted = emitWithDetector();
+    const block = emitted.slice(
+      emitted.indexOf('/**\n * Gestures any widget'),
+      emitted.indexOf('/**\n * A frame around a child.'),
+    );
+
+    expect(block).toBe(
+      '/**\n' +
+        ' * Gestures any widget accepts: the compiler wraps it in a' +
+        ' GestureDetector.\n' +
+        ' */\n' +
+        'export interface GestureProps {\n' +
+        '  /**\n' +
+        '   * Called on tap.\n' +
+        '   */\n' +
+        '  onClick?: () => void;\n' +
+        '  onLongPress?: () => void;\n' +
+        '}\n\n',
+    );
+  });
+
+  const detectorParams =
+    gestureDetector.constructors.find((constructor) => constructor.name === '')
+      ?.params ?? [];
+
+  test('a widget declaring every gesture prop inherits nothing', () => {
+    const collidingWidget: WidgetEntity = {
+      kind: 'widget',
+      name: 'Pad',
+      library: 'widgets',
+      doc: '',
+      supertypes: ['StatelessWidget', 'Widget'],
+      constructors: [
+        {
+          name: '',
+          doc: '',
+          isConst: true,
+          paramMemberAsserts: false,
+          requiredOneOf: [],
+          params: detectorParams.filter(
+            (param) => param.name !== 'child' && param.name !== 'behavior',
+          ),
+        },
+      ],
+      constants: [],
+    };
+    const emitted = emitWidgetsFile(
+      {
+        ...withDetector,
+        entities: [...withDetector.entities, collidingWidget],
+      },
+      {
+        ...slots,
+        GestureDetector: {
+          children: { kind: 'widget', param: 'child' },
+          slots: [],
+        },
+      },
+    );
+
+    expect(emitted).toContain('export interface PadProps {\n');
+  });
+
+  test('every widget extends GestureProps, minus its own collisions', () => {
+    const emitted = emitWithDetector();
+    const headers = emitted
+      .split('\n')
+      .filter(
+        (line) => line.startsWith('export interface') && line.endsWith('{'),
+      );
+
+    expect(headers).toEqual([
+      'export interface BadgeLike {',
+      'export interface Color {',
+      'export interface EdgeInsetsGeometry {',
+      'export interface Key {',
+      'export interface MaterialColor {',
+      'export interface Style {',
+      'export interface StyleObject {',
+      'export interface GestureProps {',
+      "export interface FrameProps extends Omit<GestureProps, 'onClick'> {",
+      'export interface GreetingProps extends GestureProps {',
+      'export interface GestureDetectorProps {',
+    ]);
   });
 });

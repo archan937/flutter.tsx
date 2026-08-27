@@ -24079,6 +24079,728 @@ export type WidgetStatePropertyValue =
   | 'transparent';
 
 /**
+ * Gestures any widget accepts: the compiler wraps it in a GestureDetector.
+ */
+export interface GestureProps {
+  /**
+   * A pointer that might cause a tap with a primary button has contacted the
+   * screen at a particular location.
+   *
+   * This is called after a short timeout, even if the winning gesture has not
+   * yet been selected. If the tap gesture wins, [onTapUp] will be called,
+   * otherwise [onTapCancel] will be called.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   */
+  onTapDown?: (details: TapDownDetails) => void;
+  /**
+   * A pointer that will trigger a tap with a primary button has stopped
+   * contacting the screen at a particular location.
+   *
+   * This triggers immediately before [onTap] in the case of the tap gesture
+   * winning. If the tap gesture did not win, [onTapCancel] is called instead.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   */
+  onTapUp?: (details: TapUpDetails) => void;
+  /**
+   * A tap with a primary button has occurred.
+   *
+   * This triggers when the tap gesture wins. If the tap gesture did not win,
+   * [onTapCancel] is called instead.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   *  * [onTapUp], which is called at the same time but includes details
+   *    regarding the pointer position.
+   */
+  onClick?: () => void;
+  /**
+   * A pointer that triggered a tap has moved.
+   *
+   * This triggers when the pointer moves after the tap gesture has been recognized.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   */
+  onTapMove?: (details: TapMoveDetails) => void;
+  /**
+   * The pointer that previously triggered [onTapDown] will not end up causing
+   * a tap.
+   *
+   * This is called after [onTapDown], and instead of [onTapUp] and [onTap], if
+   * the tap gesture did not win.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   */
+  onTapCancel?: () => void;
+  /**
+   * A tap with a secondary button has occurred.
+   *
+   * This triggers when the tap gesture wins. If the tap gesture did not win,
+   * [onSecondaryTapCancel] is called instead.
+   *
+   * See also:
+   *
+   *  * [kSecondaryButton], the button this callback responds to.
+   *  * [onSecondaryTapUp], which is called at the same time but includes details
+   *    regarding the pointer position.
+   */
+  onSecondaryTap?: () => void;
+  /**
+   * A pointer that might cause a tap with a secondary button has contacted the
+   * screen at a particular location.
+   *
+   * This is called after a short timeout, even if the winning gesture has not
+   * yet been selected. If the tap gesture wins, [onSecondaryTapUp] will be
+   * called, otherwise [onSecondaryTapCancel] will be called.
+   *
+   * See also:
+   *
+   *  * [kSecondaryButton], the button this callback responds to.
+   */
+  onSecondaryTapDown?: (details: TapDownDetails) => void;
+  /**
+   * A pointer that will trigger a tap with a secondary button has stopped
+   * contacting the screen at a particular location.
+   *
+   * This triggers in the case of the tap gesture winning. If the tap gesture
+   * did not win, [onSecondaryTapCancel] is called instead.
+   *
+   * See also:
+   *
+   *  * [onSecondaryTap], a handler triggered right after this one that doesn't
+   *    pass any details about the tap.
+   *  * [kSecondaryButton], the button this callback responds to.
+   */
+  onSecondaryTapUp?: (details: TapUpDetails) => void;
+  /**
+   * The pointer that previously triggered [onSecondaryTapDown] will not end up
+   * causing a tap.
+   *
+   * This is called after [onSecondaryTapDown], and instead of
+   * [onSecondaryTapUp], if the tap gesture did not win.
+   *
+   * See also:
+   *
+   *  * [kSecondaryButton], the button this callback responds to.
+   */
+  onSecondaryTapCancel?: () => void;
+  /**
+   * A pointer that might cause a tap with a tertiary button has contacted the
+   * screen at a particular location.
+   *
+   * This is called after a short timeout, even if the winning gesture has not
+   * yet been selected. If the tap gesture wins, [onTertiaryTapUp] will be
+   * called, otherwise [onTertiaryTapCancel] will be called.
+   *
+   * See also:
+   *
+   *  * [kTertiaryButton], the button this callback responds to.
+   */
+  onTertiaryTapDown?: (details: TapDownDetails) => void;
+  /**
+   * A pointer that will trigger a tap with a tertiary button has stopped
+   * contacting the screen at a particular location.
+   *
+   * This triggers in the case of the tap gesture winning. If the tap gesture
+   * did not win, [onTertiaryTapCancel] is called instead.
+   *
+   * See also:
+   *
+   *  * [kTertiaryButton], the button this callback responds to.
+   */
+  onTertiaryTapUp?: (details: TapUpDetails) => void;
+  /**
+   * The pointer that previously triggered [onTertiaryTapDown] will not end up
+   * causing a tap.
+   *
+   * This is called after [onTertiaryTapDown], and instead of
+   * [onTertiaryTapUp], if the tap gesture did not win.
+   *
+   * See also:
+   *
+   *  * [kTertiaryButton], the button this callback responds to.
+   */
+  onTertiaryTapCancel?: () => void;
+  /**
+   * A pointer that might cause a double tap has contacted the screen at a
+   * particular location.
+   *
+   * Triggered immediately after the down event of the second tap.
+   *
+   * If the user completes the double tap and the gesture wins, [onDoubleTap]
+   * will be called after this callback. Otherwise, [onDoubleTapCancel] will
+   * be called after this callback.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   */
+  onDoubleTapDown?: (details: TapDownDetails) => void;
+  /**
+   * The user has tapped the screen with a primary button at the same location
+   * twice in quick succession.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   */
+  onDoubleTap?: () => void;
+  /**
+   * The pointer that previously triggered [onDoubleTapDown] will not end up
+   * causing a double tap.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   */
+  onDoubleTapCancel?: () => void;
+  /**
+   * The pointer has contacted the screen with a primary button, which might
+   * be the start of a long-press.
+   *
+   * This triggers after the pointer down event.
+   *
+   * If the user completes the long-press, and this gesture wins,
+   * [onLongPressStart] will be called after this callback. Otherwise,
+   * [onLongPressCancel] will be called after this callback.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   *  * [onSecondaryLongPressDown], a similar callback but for a secondary button.
+   *  * [onTertiaryLongPressDown], a similar callback but for a tertiary button.
+   *  * [LongPressGestureRecognizer.onLongPressDown], which exposes this
+   *    callback at the gesture layer.
+   */
+  onLongPressDown?: (details: LongPressDownDetails) => void;
+  /**
+   * A pointer that previously triggered [onLongPressDown] will not end up
+   * causing a long-press.
+   *
+   * This triggers once the gesture loses if [onLongPressDown] has previously
+   * been triggered.
+   *
+   * If the user completed the long-press, and the gesture won, then
+   * [onLongPressStart] and [onLongPress] are called instead.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   *  * [LongPressGestureRecognizer.onLongPressCancel], which exposes this
+   *    callback at the gesture layer.
+   */
+  onLongPressCancel?: () => void;
+  /**
+   * Called when a long press gesture with a primary button has been recognized.
+   *
+   * Triggered when a pointer has remained in contact with the screen at the
+   * same location for a long period of time.
+   *
+   * This is equivalent to (and is called immediately after) [onLongPressStart].
+   * The only difference between the two is that this callback does not
+   * contain details of the position at which the pointer initially contacted
+   * the screen.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   *  * [LongPressGestureRecognizer.onLongPress], which exposes this
+   *    callback at the gesture layer.
+   */
+  onLongPress?: () => void;
+  /**
+   * Called when a long press gesture with a primary button has been recognized.
+   *
+   * Triggered when a pointer has remained in contact with the screen at the
+   * same location for a long period of time.
+   *
+   * This is equivalent to (and is called immediately before) [onLongPress].
+   * The only difference between the two is that this callback contains
+   * details of the position at which the pointer initially contacted the
+   * screen, whereas [onLongPress] does not.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   *  * [LongPressGestureRecognizer.onLongPressStart], which exposes this
+   *    callback at the gesture layer.
+   */
+  onLongPressStart?: (details: LongPressStartDetails) => void;
+  /**
+   * A pointer has been drag-moved after a long-press with a primary button.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   *  * [LongPressGestureRecognizer.onLongPressMoveUpdate], which exposes this
+   *    callback at the gesture layer.
+   */
+  onLongPressMoveUpdate?: (details: LongPressMoveUpdateDetails) => void;
+  /**
+   * A pointer that has triggered a long-press with a primary button has
+   * stopped contacting the screen.
+   *
+   * This is equivalent to (and is called immediately after) [onLongPressEnd].
+   * The only difference between the two is that this callback does not
+   * contain details of the state of the pointer when it stopped contacting
+   * the screen.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   *  * [LongPressGestureRecognizer.onLongPressUp], which exposes this
+   *    callback at the gesture layer.
+   */
+  onLongPressUp?: () => void;
+  /**
+   * A pointer that has triggered a long-press with a primary button has
+   * stopped contacting the screen.
+   *
+   * This is equivalent to (and is called immediately before) [onLongPressUp].
+   * The only difference between the two is that this callback contains
+   * details of the state of the pointer when it stopped contacting the
+   * screen, whereas [onLongPressUp] does not.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   *  * [LongPressGestureRecognizer.onLongPressEnd], which exposes this
+   *    callback at the gesture layer.
+   */
+  onLongPressEnd?: (details: LongPressEndDetails) => void;
+  /**
+   * The pointer has contacted the screen with a secondary button, which might
+   * be the start of a long-press.
+   *
+   * This triggers after the pointer down event.
+   *
+   * If the user completes the long-press, and this gesture wins,
+   * [onSecondaryLongPressStart] will be called after this callback. Otherwise,
+   * [onSecondaryLongPressCancel] will be called after this callback.
+   *
+   * See also:
+   *
+   *  * [kSecondaryButton], the button this callback responds to.
+   *  * [onLongPressDown], a similar callback but for a secondary button.
+   *  * [onTertiaryLongPressDown], a similar callback but for a tertiary button.
+   *  * [LongPressGestureRecognizer.onSecondaryLongPressDown], which exposes
+   *    this callback at the gesture layer.
+   */
+  onSecondaryLongPressDown?: (details: LongPressDownDetails) => void;
+  /**
+   * A pointer that previously triggered [onSecondaryLongPressDown] will not
+   * end up causing a long-press.
+   *
+   * This triggers once the gesture loses if [onSecondaryLongPressDown] has
+   * previously been triggered.
+   *
+   * If the user completed the long-press, and the gesture won, then
+   * [onSecondaryLongPressStart] and [onSecondaryLongPress] are called instead.
+   *
+   * See also:
+   *
+   *  * [kSecondaryButton], the button this callback responds to.
+   *  * [LongPressGestureRecognizer.onSecondaryLongPressCancel], which exposes
+   *    this callback at the gesture layer.
+   */
+  onSecondaryLongPressCancel?: () => void;
+  /**
+   * Called when a long press gesture with a secondary button has been
+   * recognized.
+   *
+   * Triggered when a pointer has remained in contact with the screen at the
+   * same location for a long period of time.
+   *
+   * This is equivalent to (and is called immediately after)
+   * [onSecondaryLongPressStart]. The only difference between the two is that
+   * this callback does not contain details of the position at which the
+   * pointer initially contacted the screen.
+   *
+   * See also:
+   *
+   *  * [kSecondaryButton], the button this callback responds to.
+   *  * [LongPressGestureRecognizer.onSecondaryLongPress], which exposes
+   *    this callback at the gesture layer.
+   */
+  onSecondaryLongPress?: () => void;
+  /**
+   * Called when a long press gesture with a secondary button has been
+   * recognized.
+   *
+   * Triggered when a pointer has remained in contact with the screen at the
+   * same location for a long period of time.
+   *
+   * This is equivalent to (and is called immediately before)
+   * [onSecondaryLongPress]. The only difference between the two is that this
+   * callback contains details of the position at which the pointer initially
+   * contacted the screen, whereas [onSecondaryLongPress] does not.
+   *
+   * See also:
+   *
+   *  * [kSecondaryButton], the button this callback responds to.
+   *  * [LongPressGestureRecognizer.onSecondaryLongPressStart], which exposes
+   *    this callback at the gesture layer.
+   */
+  onSecondaryLongPressStart?: (details: LongPressStartDetails) => void;
+  /**
+   * A pointer has been drag-moved after a long press with a secondary button.
+   *
+   * See also:
+   *
+   *  * [kSecondaryButton], the button this callback responds to.
+   *  * [LongPressGestureRecognizer.onSecondaryLongPressMoveUpdate], which exposes
+   *    this callback at the gesture layer.
+   */
+  onSecondaryLongPressMoveUpdate?: (
+    details: LongPressMoveUpdateDetails,
+  ) => void;
+  /**
+   * A pointer that has triggered a long-press with a secondary button has
+   * stopped contacting the screen.
+   *
+   * This is equivalent to (and is called immediately after)
+   * [onSecondaryLongPressEnd]. The only difference between the two is that
+   * this callback does not contain details of the state of the pointer when
+   * it stopped contacting the screen.
+   *
+   * See also:
+   *
+   *  * [kSecondaryButton], the button this callback responds to.
+   *  * [LongPressGestureRecognizer.onSecondaryLongPressUp], which exposes
+   *    this callback at the gesture layer.
+   */
+  onSecondaryLongPressUp?: () => void;
+  /**
+   * A pointer that has triggered a long-press with a secondary button has
+   * stopped contacting the screen.
+   *
+   * This is equivalent to (and is called immediately before)
+   * [onSecondaryLongPressUp]. The only difference between the two is that
+   * this callback contains details of the state of the pointer when it
+   * stopped contacting the screen, whereas [onSecondaryLongPressUp] does not.
+   *
+   * See also:
+   *
+   *  * [kSecondaryButton], the button this callback responds to.
+   *  * [LongPressGestureRecognizer.onSecondaryLongPressEnd], which exposes
+   *    this callback at the gesture layer.
+   */
+  onSecondaryLongPressEnd?: (details: LongPressEndDetails) => void;
+  /**
+   * The pointer has contacted the screen with a tertiary button, which might
+   * be the start of a long-press.
+   *
+   * This triggers after the pointer down event.
+   *
+   * If the user completes the long-press, and this gesture wins,
+   * [onTertiaryLongPressStart] will be called after this callback. Otherwise,
+   * [onTertiaryLongPressCancel] will be called after this callback.
+   *
+   * See also:
+   *
+   *  * [kTertiaryButton], the button this callback responds to.
+   *  * [onLongPressDown], a similar callback but for a primary button.
+   *  * [onSecondaryLongPressDown], a similar callback but for a secondary button.
+   *  * [LongPressGestureRecognizer.onTertiaryLongPressDown], which exposes
+   *    this callback at the gesture layer.
+   */
+  onTertiaryLongPressDown?: (details: LongPressDownDetails) => void;
+  /**
+   * A pointer that previously triggered [onTertiaryLongPressDown] will not
+   * end up causing a long-press.
+   *
+   * This triggers once the gesture loses if [onTertiaryLongPressDown] has
+   * previously been triggered.
+   *
+   * If the user completed the long-press, and the gesture won, then
+   * [onTertiaryLongPressStart] and [onTertiaryLongPress] are called instead.
+   *
+   * See also:
+   *
+   *  * [kTertiaryButton], the button this callback responds to.
+   *  * [LongPressGestureRecognizer.onTertiaryLongPressCancel], which exposes
+   *    this callback at the gesture layer.
+   */
+  onTertiaryLongPressCancel?: () => void;
+  /**
+   * Called when a long press gesture with a tertiary button has been
+   * recognized.
+   *
+   * Triggered when a pointer has remained in contact with the screen at the
+   * same location for a long period of time.
+   *
+   * This is equivalent to (and is called immediately after)
+   * [onTertiaryLongPressStart]. The only difference between the two is that
+   * this callback does not contain details of the position at which the
+   * pointer initially contacted the screen.
+   *
+   * See also:
+   *
+   *  * [kTertiaryButton], the button this callback responds to.
+   *  * [LongPressGestureRecognizer.onTertiaryLongPress], which exposes
+   *    this callback at the gesture layer.
+   */
+  onTertiaryLongPress?: () => void;
+  /**
+   * Called when a long press gesture with a tertiary button has been
+   * recognized.
+   *
+   * Triggered when a pointer has remained in contact with the screen at the
+   * same location for a long period of time.
+   *
+   * This is equivalent to (and is called immediately before)
+   * [onTertiaryLongPress]. The only difference between the two is that this
+   * callback contains details of the position at which the pointer initially
+   * contacted the screen, whereas [onTertiaryLongPress] does not.
+   *
+   * See also:
+   *
+   *  * [kTertiaryButton], the button this callback responds to.
+   *  * [LongPressGestureRecognizer.onTertiaryLongPressStart], which exposes
+   *    this callback at the gesture layer.
+   */
+  onTertiaryLongPressStart?: (details: LongPressStartDetails) => void;
+  /**
+   * A pointer has been drag-moved after a long press with a tertiary button.
+   *
+   * See also:
+   *
+   *  * [kTertiaryButton], the button this callback responds to.
+   *  * [LongPressGestureRecognizer.onTertiaryLongPressMoveUpdate], which exposes
+   *    this callback at the gesture layer.
+   */
+  onTertiaryLongPressMoveUpdate?: (details: LongPressMoveUpdateDetails) => void;
+  /**
+   * A pointer that has triggered a long-press with a tertiary button has
+   * stopped contacting the screen.
+   *
+   * This is equivalent to (and is called immediately after)
+   * [onTertiaryLongPressEnd]. The only difference between the two is that
+   * this callback does not contain details of the state of the pointer when
+   * it stopped contacting the screen.
+   *
+   * See also:
+   *
+   *  * [kTertiaryButton], the button this callback responds to.
+   *  * [LongPressGestureRecognizer.onTertiaryLongPressUp], which exposes
+   *    this callback at the gesture layer.
+   */
+  onTertiaryLongPressUp?: () => void;
+  /**
+   * A pointer that has triggered a long-press with a tertiary button has
+   * stopped contacting the screen.
+   *
+   * This is equivalent to (and is called immediately before)
+   * [onTertiaryLongPressUp]. The only difference between the two is that
+   * this callback contains details of the state of the pointer when it
+   * stopped contacting the screen, whereas [onTertiaryLongPressUp] does not.
+   *
+   * See also:
+   *
+   *  * [kTertiaryButton], the button this callback responds to.
+   *  * [LongPressGestureRecognizer.onTertiaryLongPressEnd], which exposes
+   *    this callback at the gesture layer.
+   */
+  onTertiaryLongPressEnd?: (details: LongPressEndDetails) => void;
+  /**
+   * A pointer has contacted the screen with a primary button and might begin
+   * to move vertically.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   */
+  onVerticalDragDown?: (details: DragDownDetails) => void;
+  /**
+   * A pointer has contacted the screen with a primary button and has begun to
+   * move vertically.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   */
+  onVerticalDragStart?: (details: DragStartDetails) => void;
+  /**
+   * A pointer that is in contact with the screen with a primary button and
+   * moving vertically has moved in the vertical direction.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   */
+  onVerticalDragUpdate?: (details: DragUpdateDetails) => void;
+  /**
+   * A pointer that was previously in contact with the screen with a primary
+   * button and moving vertically is no longer in contact with the screen and
+   * was moving at a specific velocity when it stopped contacting the screen.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   */
+  onVerticalDragEnd?: (details: DragEndDetails) => void;
+  /**
+   * The pointer that previously triggered [onVerticalDragDown] did not
+   * complete.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   */
+  onVerticalDragCancel?: () => void;
+  /**
+   * A pointer has contacted the screen with a primary button and might begin
+   * to move horizontally.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   */
+  onHorizontalDragDown?: (details: DragDownDetails) => void;
+  /**
+   * A pointer has contacted the screen with a primary button and has begun to
+   * move horizontally.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   */
+  onHorizontalDragStart?: (details: DragStartDetails) => void;
+  /**
+   * A pointer that is in contact with the screen with a primary button and
+   * moving horizontally has moved in the horizontal direction.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   */
+  onHorizontalDragUpdate?: (details: DragUpdateDetails) => void;
+  /**
+   * A pointer that was previously in contact with the screen with a primary
+   * button and moving horizontally is no longer in contact with the screen and
+   * was moving at a specific velocity when it stopped contacting the screen.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   */
+  onHorizontalDragEnd?: (details: DragEndDetails) => void;
+  /**
+   * The pointer that previously triggered [onHorizontalDragDown] did not
+   * complete.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   */
+  onHorizontalDragCancel?: () => void;
+  /**
+   * The pointer is in contact with the screen and has pressed with sufficient
+   * force to initiate a force press. The amount of force is at least
+   * [ForcePressGestureRecognizer.startPressure].
+   *
+   * This callback will only be fired on devices with pressure
+   * detecting screens.
+   */
+  onForcePressStart?: (details: ForcePressDetails) => void;
+  /**
+   * The pointer is in contact with the screen and has pressed with the maximum
+   * force. The amount of force is at least
+   * [ForcePressGestureRecognizer.peakPressure].
+   *
+   * This callback will only be fired on devices with pressure
+   * detecting screens.
+   */
+  onForcePressPeak?: (details: ForcePressDetails) => void;
+  /**
+   * A pointer is in contact with the screen, has previously passed the
+   * [ForcePressGestureRecognizer.startPressure] and is either moving on the
+   * plane of the screen, pressing the screen with varying forces or both
+   * simultaneously.
+   *
+   * This callback will only be fired on devices with pressure
+   * detecting screens.
+   */
+  onForcePressUpdate?: (details: ForcePressDetails) => void;
+  /**
+   * The pointer tracked by [onForcePressStart] is no longer in contact with the screen.
+   *
+   * This callback will only be fired on devices with pressure
+   * detecting screens.
+   */
+  onForcePressEnd?: (details: ForcePressDetails) => void;
+  /**
+   * A pointer has contacted the screen with a primary button and might begin
+   * to move.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   */
+  onPanDown?: (details: DragDownDetails) => void;
+  /**
+   * A pointer has contacted the screen with a primary button and has begun to
+   * move.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   */
+  onPanStart?: (details: DragStartDetails) => void;
+  /**
+   * A pointer that is in contact with the screen with a primary button and
+   * moving has moved again.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   */
+  onPanUpdate?: (details: DragUpdateDetails) => void;
+  /**
+   * A pointer that was previously in contact with the screen with a primary
+   * button and moving is no longer in contact with the screen and was moving
+   * at a specific velocity when it stopped contacting the screen.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   */
+  onPanEnd?: (details: DragEndDetails) => void;
+  /**
+   * The pointer that previously triggered [onPanDown] did not complete.
+   *
+   * See also:
+   *
+   *  * [kPrimaryButton], the button this callback responds to.
+   */
+  onPanCancel?: () => void;
+  /**
+   * The pointers in contact with the screen have established a focal point and
+   * initial scale of 1.0.
+   */
+  onScaleStart?: (details: ScaleStartDetails) => void;
+  /**
+   * The pointers in contact with the screen have indicated a new focal point
+   * and/or scale.
+   */
+  onScaleUpdate?: (details: ScaleUpdateDetails) => void;
+  /**
+   * The pointers are no longer in contact with the screen.
+   */
+  onScaleEnd?: (details: ScaleEndDetails) => void;
+}
+
+/**
  * An about box. This is a dialog box with the application's icon, name,
  * version number, and copyright, plus a button to show licenses for software
  * used by the application.
@@ -24095,7 +24817,7 @@ export type WidgetStatePropertyValue =
  * The licenses shown on the [LicensePage] are those returned by the
  * [LicenseRegistry] API, which can be used to add more licenses to the list.
  */
-export interface AboutDialogProps {
+export interface AboutDialogProps extends GestureProps {
   /**
    * Widgets to add to the dialog box after the name, version, and legalese.
    *
@@ -24177,7 +24899,7 @@ export const AboutDialog: FlutterComponent<AboutDialogProps> =
  *
  * ** See code in examples/api/lib/material/about/about_list_tile.0.dart **
  */
-export interface AboutListTileProps {
+export interface AboutListTileProps extends GestureProps {
   /**
    * The label to show on this drawer item.
    *
@@ -24323,7 +25045,7 @@ export const AboutListTile: FlutterComponent<AboutListTileProps> =
  *  * [IgnorePointer], which also prevents its children from receiving pointer
  *    events but is itself invisible to hit testing.
  */
-export interface AbsorbPointerProps {
+export interface AbsorbPointerProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -24465,7 +25187,7 @@ export const AbsorbPointer: FlutterComponent<AbsorbPointerProps> =
  *    vertical runs.
  *  * <https://material.io/design/components/chips.html>
  */
-export interface ActionChipProps {
+export interface ActionChipProps extends Omit<GestureProps, 'onClick'> {
   avatar?: FlutterChild;
   label: FlutterChild;
   labelStyle?: TextStyleValue;
@@ -24566,7 +25288,7 @@ export const ActionChip: FlutterComponent<ActionChipProps> =
  *
  * ** See code in examples/api/lib/material/action_buttons/action_icon_theme.0.dart **
  */
-export interface ActionIconThemeProps {
+export interface ActionIconThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -24613,7 +25335,7 @@ export const ActionIconTheme: FlutterComponent<ActionIconThemeProps> =
  *
  * ** See code in examples/api/lib/widgets/actions/action_listener.0.dart **
  */
-export interface ActionListenerProps {
+export interface ActionListenerProps extends GestureProps {
   children: FlutterChild;
   /**
    * The [ActionListenerCallback] callback to register with the [action].
@@ -24680,7 +25402,7 @@ export const ActionListener: FlutterComponent<ActionListenerProps> =
  *    action.
  *  * [ActionDispatcher], the object that this widget uses to manage actions.
  */
-export interface ActionsProps {
+export interface ActionsProps extends GestureProps {
   children: FlutterChild;
   /**
    * The [ActionDispatcher] object that invokes actions.
@@ -24767,7 +25489,7 @@ export const Actions: FlutterComponent<ActionsProps> =
  * * [CupertinoTextSelectionToolbar], the default toolbar for iOS.
  * * [CupertinoDesktopTextSelectionToolbar], the default toolbar for MacOS.
  */
-export interface AdaptiveTextSelectionToolbarProps {
+export interface AdaptiveTextSelectionToolbarProps extends GestureProps {
   /**
    * The children of the toolbar, typically buttons.
    */
@@ -24897,7 +25619,7 @@ export const AdaptiveTextSelectionToolbar: FlutterComponent<AdaptiveTextSelectio
  *  * <https://material.io/design/components/dialogs.html#alert-dialog>
  *  * <https://m3.material.io/components/dialogs>
  */
-export interface AlertDialogProps {
+export interface AlertDialogProps extends GestureProps {
   /**
    * An optional icon to display at the top of the dialog.
    *
@@ -25364,7 +26086,7 @@ export const AlertDialog: FlutterComponent<AlertDialogProps> =
  *    own size and positions the child according to an [Alignment] value.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface AlignProps {
+export interface AlignProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -25562,7 +26284,7 @@ export const Align: FlutterComponent<AlignProps> =
  *  * [SlideTransition], a widget that animates the position of a widget
  *    relative to its normal position.
  */
-export interface AlignTransitionProps {
+export interface AlignTransitionProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -25645,7 +26367,7 @@ export const AlignTransition: FlutterComponent<AlignTransitionProps> =
  * moved within the tree. If the stateful widget has a key and it's only moved relative to its siblings,
  * or it has a [GlobalKey] and it's moved within the tree, it will not be disposed.
  */
-export interface AndroidViewProps {
+export interface AndroidViewProps extends GestureProps {
   /**
    * The unique identifier for Android view type to be embedded by this widget.
    *
@@ -25810,7 +26532,7 @@ export const AndroidView: FlutterComponent<AndroidViewProps> =
  *  * [AndroidView] which embeds an Android platform view in the widget hierarchy.
  *  * [UiKitView] which embeds an iOS platform view in the widget hierarchy.
  */
-export interface AndroidViewSurfaceProps {
+export interface AndroidViewSurfaceProps extends GestureProps {
   /**
    * The controller for the platform view integrated by this [AndroidViewSurface].
    *
@@ -25876,7 +26598,7 @@ export const AndroidViewSurface: FlutterComponent<AndroidViewSurfaceProps> =
  *    transitions its child's position over a given duration whenever the given
  *    position changes.
  */
-export interface AnimatedAlignProps {
+export interface AnimatedAlignProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -26006,7 +26728,7 @@ export const AnimatedAlign: FlutterComponent<AnimatedAlignProps> =
  * * [TweenAnimationBuilder], which animates a property to a target value
  *   without requiring manual management of an [AnimationController].
  */
-export interface AnimatedBuilderProps {
+export interface AnimatedBuilderProps extends GestureProps {
   /**
    * The child widget to pass to the [builder].
    */
@@ -26105,7 +26827,7 @@ export const AnimatedBuilder: FlutterComponent<AnimatedBuilderProps> =
  *  * [AnimatedSwitcher], which switches out a child for a new one with a customizable transition.
  *  * [AnimatedCrossFade], which fades between two children and interpolates their sizes.
  */
-export interface AnimatedContainerProps {
+export interface AnimatedContainerProps extends GestureProps {
   /**
    * The [child] contained by the container.
    *
@@ -26292,7 +27014,7 @@ export const AnimatedContainer: FlutterComponent<AnimatedContainerProps> =
  *  * [AnimatedSize], the lower-level widget which [AnimatedCrossFade] uses to
  *    automatically change size.
  */
-export interface AnimatedCrossFadeProps {
+export interface AnimatedCrossFadeProps extends GestureProps {
   /**
    * The child that is visible when [crossFadeState] is
    * [CrossFadeState.showFirst]. It fades out when transitioning
@@ -26475,7 +27197,7 @@ export const AnimatedCrossFade: FlutterComponent<AnimatedCrossFadeProps> =
  * it also requires more development overhead as you have to manually manage
  * the lifecycle of the underlying [AnimationController].
  */
-export interface AnimatedDefaultTextStyleProps {
+export interface AnimatedDefaultTextStyleProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -26587,7 +27309,7 @@ export const AnimatedDefaultTextStyle: FlutterComponent<AnimatedDefaultTextStyle
  *    transitions its child's position over a given duration whenever the given
  *    position changes.
  */
-export interface AnimatedFractionallySizedBoxProps {
+export interface AnimatedFractionallySizedBoxProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -26696,7 +27418,7 @@ export const AnimatedFractionallySizedBox: FlutterComponent<AnimatedFractionally
  * * [AnimatedList], which animates items added and removed from a list instead
  *   of a grid.
  */
-export interface AnimatedGridProps {
+export interface AnimatedGridProps extends GestureProps {
   /**
    * Called, as needed, to build children widgets.
    *
@@ -26872,7 +27594,7 @@ export const AnimatedGrid: FlutterComponent<AnimatedGridProps> =
  *
  *  * [Icons], for the list of available static Material Icons.
  */
-export interface AnimatedIconProps {
+export interface AnimatedIconProps extends GestureProps {
   /**
    * The icon to display. Available icons are listed in [AnimatedIcons].
    */
@@ -27003,7 +27725,7 @@ export const AnimatedIcon: FlutterComponent<AnimatedIconProps> =
  *  * [AnimatedGrid], a non-sliver scrolling container that animates items when
  *    they are inserted or removed in a grid.
  */
-export interface AnimatedListProps {
+export interface AnimatedListProps extends GestureProps {
   /**
    * Called, as needed, to build children widgets.
    *
@@ -27184,7 +27906,7 @@ export const AnimatedList: FlutterComponent<AnimatedListProps> =
  *
  *  * [ModalRoute], which uses this widget.
  */
-export interface AnimatedModalBarrierProps {
+export interface AnimatedModalBarrierProps extends GestureProps {
   color: Animation;
   /**
    * Whether touching the barrier will pop the current route off the [Navigator].
@@ -27325,7 +28047,7 @@ export const AnimatedModalBarrier: FlutterComponent<AnimatedModalBarrierProps> =
  *  * [SliverAnimatedOpacity], for automatically transitioning a _sliver's_
  *    opacity over a given duration whenever the given opacity changes.
  */
-export interface AnimatedOpacityProps {
+export interface AnimatedOpacityProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -27462,7 +28184,7 @@ export const AnimatedOpacity: FlutterComponent<AnimatedOpacityProps> =
  *    position over a given duration whenever the given
  *    [AnimatedAlign.alignment] changes.
  */
-export interface AnimatedPaddingProps {
+export interface AnimatedPaddingProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -27526,7 +28248,7 @@ export const AnimatedPadding: FlutterComponent<AnimatedPaddingProps> =
  * Here's an illustration of what using this widget looks like, using a [curve]
  * of [Curves.fastOutSlowIn].
  */
-export interface AnimatedPhysicalModelProps {
+export interface AnimatedPhysicalModelProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -27642,7 +28364,7 @@ export const AnimatedPhysicalModel: FlutterComponent<AnimatedPhysicalModelProps>
  *    [Directionality] (the same as this widget, but for animating
  *    [PositionedDirectional]).
  */
-export interface AnimatedPositionedProps {
+export interface AnimatedPositionedProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -27759,7 +28481,7 @@ export const AnimatedPositioned: FlutterComponent<AnimatedPositionedProps> =
  *  * [AnimatedPositioned], which specifies the widget's position visually (the
  *    same as this widget, but for animating [Positioned]).
  */
-export interface AnimatedPositionedDirectionalProps {
+export interface AnimatedPositionedDirectionalProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -27893,7 +28615,7 @@ export const AnimatedPositionedDirectional: FlutterComponent<AnimatedPositionedD
  *  * [RotationTransition], an explicitly animated version of this widget, where
  *    an [Animation] is provided by the caller instead of being built in.
  */
-export interface AnimatedRotationProps {
+export interface AnimatedRotationProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -28044,7 +28766,7 @@ export const AnimatedRotation: FlutterComponent<AnimatedRotationProps> =
  *  * [ScaleTransition], an explicitly animated version of this widget, where
  *    an [Animation] is provided by the caller instead of being built in.
  */
-export interface AnimatedScaleProps {
+export interface AnimatedScaleProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -28153,7 +28875,7 @@ export const AnimatedScale: FlutterComponent<AnimatedScaleProps> =
  *
  *  * [SizeTransition], which changes its size based on an [Animation].
  */
-export interface AnimatedSizeProps {
+export interface AnimatedSizeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -28247,7 +28969,7 @@ export const AnimatedSize: FlutterComponent<AnimatedSizeProps> =
  *  * [AnimatedAlign], which automatically transitions its child's
  *    position over a given duration whenever the given [AnimatedAlign.alignment] changes.
  */
-export interface AnimatedSlideProps {
+export interface AnimatedSlideProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -28338,7 +29060,7 @@ export const AnimatedSlide: FlutterComponent<AnimatedSlideProps> =
  *    a given child by fading the child in and out.
  *  * [FadeTransition], which [AnimatedSwitcher] uses to perform the transition.
  */
-export interface AnimatedSwitcherProps {
+export interface AnimatedSwitcherProps extends GestureProps {
   /**
    * The current child widget to display. If there was a previous child, then
    * that child will be faded out using the [switchOutCurve], while the new
@@ -28499,7 +29221,7 @@ export const AnimatedSwitcher: FlutterComponent<AnimatedSwitcherProps> =
  *  * [MaterialApp], which includes an [AnimatedTheme] widget configured via
  *    the [MaterialApp.theme] argument.
  */
-export interface AnimatedThemeProps {
+export interface AnimatedThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -28551,7 +29273,7 @@ export const AnimatedTheme: FlutterComponent<AnimatedThemeProps> =
  *  * [Layer.find], for an example of how this value is retrieved.
  *  * [AnnotatedRegionLayer], the layer pushed into the layer tree.
  */
-export interface AnnotatedRegionProps {
+export interface AnnotatedRegionProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -28684,7 +29406,7 @@ export const AnnotatedRegion: FlutterComponent<AnnotatedRegionProps> =
  *  * <https://m3.material.io/components/top-app-bar>
  *  * Cookbook: [Place a floating app bar above a list](https://docs.flutter.dev/cookbook/lists/floating-app-bar)
  */
-export interface AppBarProps {
+export interface AppBarProps extends GestureProps {
   /**
    * A widget to display before the toolbar's [title].
    *
@@ -29320,7 +30042,7 @@ export const AppBar: FlutterComponent<AppBarProps> =
  *  * [ThemeData], which describes the overall theme information for the
  *    application.
  */
-export interface AppBarThemeProps {
+export interface AppBarThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -29392,7 +30114,7 @@ export const AppBarTheme: FlutterComponent<AppBarThemeProps> =
  * NSView is ready this widget paints nothing while maintaining the same
  * layout constraints.
  */
-export interface AppKitViewProps {
+export interface AppKitViewProps extends GestureProps {
   /**
    * The unique identifier for iOS view type to be embedded by this widget.
    *
@@ -29551,7 +30273,7 @@ export const AppKitView: FlutterComponent<AppKitViewProps> =
  *    constraints.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface AspectRatioProps {
+export interface AspectRatioProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -29674,7 +30396,7 @@ export const AspectRatio: FlutterComponent<AspectRatioProps> =
  *  * [RawAutocomplete], which is what Autocomplete is built upon, and which
  *    contains more detailed examples.
  */
-export interface AutocompleteProps {
+export interface AutocompleteProps extends GestureProps {
   optionsBuilder: (textEditingValue: TextEditingValue) => FutureOr;
   displayStringForOption?: (option: unknown) => string;
   /**
@@ -29780,7 +30502,7 @@ export const Autocomplete: FlutterComponent<AutocompleteProps> =
  * which can then be used to tell which option should be given a visual
  * indication that will be the option selected with the keyboard.
  */
-export interface AutocompleteHighlightedOptionProps {
+export interface AutocompleteHighlightedOptionProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -29852,7 +30574,7 @@ export const AutocompleteHighlightedOption: FlutterComponent<AutocompleteHighlig
  * * [AutofillContextAction], an enum that contains predefined autofill context
  *   clean up actions to be run when a topmost [AutofillGroup] is disposed.
  */
-export interface AutofillGroupProps {
+export interface AutofillGroupProps extends GestureProps {
   children: FlutterChild;
   /**
    * The [AutofillContextAction] to be run when this [AutofillGroup] is the
@@ -29958,7 +30680,7 @@ export const AutofillGroup: FlutterComponent<AutofillGroupProps> =
  *  * [KeepAlive] which marks a child as needing to stay alive even when it's
  *    in a lazy list that would otherwise remove it.
  */
-export interface AutomaticKeepAliveProps {
+export interface AutomaticKeepAliveProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -30056,7 +30778,7 @@ export const AutomaticKeepAlive: FlutterComponent<AutomaticKeepAliveProps> =
  *  * [CloseButton], an alternative which may be more appropriate for leaf
  *    node pages in the navigation tree.
  */
-export interface BackButtonProps {
+export interface BackButtonProps extends Omit<GestureProps, 'onClick'> {
   /**
    * The color to use for the icon inside the button, if the icon is enabled.
    * Defaults to leaving this up to the [icon] widget.
@@ -30155,7 +30877,7 @@ export const BackButton: FlutterComponent<BackButtonProps> =
  *  * [Icon], a Material Design icon.
  *  * [ThemeData.platform], which specifies the current platform.
  */
-export interface BackButtonIconProps {}
+export interface BackButtonIconProps extends GestureProps {}
 
 /**
  * A "back" icon that's appropriate for the current [TargetPlatform].
@@ -30186,7 +30908,7 @@ export const BackButtonIcon: FlutterComponent<BackButtonIconProps> =
  * It can be useful for scenarios, in which you create a different state in your
  * screen but don't want to use a new page for that.
  */
-export interface BackButtonListenerProps {
+export interface BackButtonListenerProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -30354,7 +31076,7 @@ export const BackButtonListener: FlutterComponent<BackButtonListenerProps> =
  *  * [Opacity], which changes the opacity of the widget itself.
  *  * https://flutter.dev/go/ios-platformview-backdrop-filter-blur for details and restrictions when an iOS PlatformView needs to be blurred.
  */
-export interface BackdropFilterProps {
+export interface BackdropFilterProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -30554,7 +31276,7 @@ export const BackdropFilter: FlutterComponent<BackdropFilterProps> =
  * backdrop filters. To opt into using a shared [BackdropGroup], the special
  * [BackdropFilter.grouped] constructor must be used.
  */
-export interface BackdropGroupProps {
+export interface BackdropGroupProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -30600,7 +31322,7 @@ export const BackdropGroup: FlutterComponent<BackdropGroupProps> =
  *
  * ** See code in examples/api/lib/material/badge/badge.0.dart **
  */
-export interface BadgeProps {
+export interface BadgeProps extends GestureProps {
   /**
    * The widget that the badge is stacked on top of.
    *
@@ -30735,7 +31457,7 @@ export const Badge: FlutterComponent<BadgeProps> =
  * Values specified here override the defaults for [Badge] properties which
  * are not given an explicit non-null value.
  */
-export interface BadgeThemeProps {
+export interface BadgeThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -30771,7 +31493,7 @@ export const BadgeTheme: FlutterComponent<BadgeThemeProps> =
  *  * [CheckedModeBanner], which the [WidgetsApp] widget includes by default in
  *    debug mode, to show a banner that says "DEBUG".
  */
-export interface BannerProps {
+export interface BannerProps extends GestureProps {
   /**
    * The widget to show behind the banner.
    */
@@ -30863,7 +31585,7 @@ export const Banner: FlutterComponent<BannerProps> =
  *  * [Center], a widget that centers its child within itself.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface BaselineProps {
+export interface BaselineProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -30914,7 +31636,7 @@ export const Baseline: FlutterComponent<BaselineProps> =
  *
  *  * [ExcludeSemantics] which drops all semantics of its descendants.
  */
-export interface BlockSemanticsProps {
+export interface BlockSemanticsProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -30977,7 +31699,7 @@ export const BlockSemantics: FlutterComponent<BlockSemanticsProps> =
  *  * [FloatingActionButton] which the [BottomAppBar] makes a notch for.
  *  * [AppBar] for a toolbar that is shown at the top of the screen.
  */
-export interface BottomAppBarProps {
+export interface BottomAppBarProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -31126,7 +31848,7 @@ export const BottomAppBar: FlutterComponent<BottomAppBarProps> =
  *  * [ThemeData], which describes the overall theme information for the
  *    application.
  */
-export interface BottomAppBarThemeProps {
+export interface BottomAppBarThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -31277,7 +31999,10 @@ export const BottomAppBarTheme: FlutterComponent<BottomAppBarThemeProps> =
  *  * <https://material.io/design/components/bottom-navigation.html>
  *  * [NavigationBar], this widget's replacement in Material Design 3.
  */
-export interface BottomNavigationBarProps {
+export interface BottomNavigationBarProps extends Omit<
+  GestureProps,
+  'onClick'
+> {
   /**
    * Defines the appearance of the button items that are arrayed within the
    * bottom navigation bar.
@@ -31601,7 +32326,7 @@ export const BottomNavigationBar: FlutterComponent<BottomNavigationBarProps> =
  *  * [BottomNavigationBarThemeData], which describes the actual configuration
  *    of a bottom navigation bar theme.
  */
-export interface BottomNavigationBarThemeProps {
+export interface BottomNavigationBarThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -31668,7 +32393,7 @@ export const BottomNavigationBarTheme: FlutterComponent<BottomNavigationBarTheme
  *  * The Material 2 spec at <https://m2.material.io/components/sheets-bottom>.
  *  * The Material 3 spec at <https://m3.material.io/components/bottom-sheets/overview>.
  */
-export interface BottomSheetProps {
+export interface BottomSheetProps extends GestureProps {
   /**
    * The animation controller that controls the bottom sheet's entrance and
    * exit animations.
@@ -31942,7 +32667,7 @@ export const BottomSheet: FlutterComponent<BottomSheetProps> =
  *  * [StatefulBuilder], A stateful utility widget whose [build] method uses its
  *    [builder] callback to create the widget's child.
  */
-export interface BuilderProps {
+export interface BuilderProps extends GestureProps {
   /**
    * Called to obtain the child widget.
    *
@@ -32119,7 +32844,7 @@ export const Builder: FlutterComponent<BuilderProps> =
  *  * [Dialog], which uses a [ButtonBar] for its actions.
  *  * [ButtonBarTheme], which configures the [ButtonBar].
  */
-export interface ButtonBarProps {
+export interface ButtonBarProps extends GestureProps {
   /**
    * The buttons to arrange horizontally.
    *
@@ -32321,7 +33046,7 @@ export const ButtonBar: FlutterComponent<ButtonBarProps> =
  *  * [ButtonBarThemeData], which describes the actual configuration of a button
  *    bar theme.
  */
-export interface ButtonBarThemeProps {
+export interface ButtonBarThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -32380,7 +33105,7 @@ export const ButtonBarTheme: FlutterComponent<ButtonBarThemeProps> =
  *  * [RawMaterialButton], which can be used to configure a button that doesn't
  *    depend on any inherited themes.
  */
-export interface ButtonThemeProps {
+export interface ButtonThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -32452,7 +33177,7 @@ export const ButtonTheme: FlutterComponent<ButtonThemeProps> =
  *  * [showTimePicker], which shows a dialog that contains a Material Design
  *    time picker.
  */
-export interface CalendarDatePickerProps {
+export interface CalendarDatePickerProps extends GestureProps {
   /**
    * The initially selected [DateTime] that the picker should display.
    *
@@ -32556,7 +33281,7 @@ export const CalendarDatePicker: FlutterComponent<CalendarDatePickerProps> =
  *  * [Shortcuts], a more powerful widget for defining key bindings.
  *  * [Focus], a widget that defines which widgets can receive keyboard focus.
  */
-export interface CallbackShortcutsProps {
+export interface CallbackShortcutsProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -32669,7 +33394,7 @@ export const CallbackShortcuts: FlutterComponent<CallbackShortcutsProps> =
  *  * <https://material.io/design/components/cards.html>
  *  * <https://m3.material.io/components/cards>
  */
-export interface CardProps {
+export interface CardProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -32841,7 +33566,7 @@ export const Card: FlutterComponent<CardProps> =
  *  * [ThemeData], which describes the overall theme information for the
  *    application.
  */
-export interface CardThemeProps {
+export interface CardThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -32987,7 +33712,7 @@ export const CardTheme: FlutterComponent<CardThemeProps> =
  *    view.
  *  * [PageView], which is a scrollable list that works page by page.
  */
-export interface CarouselViewProps {
+export interface CarouselViewProps extends Omit<GestureProps, 'onClick'> {
   /**
    * The child widgets for the carousel.
    */
@@ -33277,7 +34002,7 @@ export const CarouselView: FlutterComponent<CarouselViewProps> =
  *    theme.
  *  * [Theme], which controls the overall theme inheritance.
  */
-export interface CarouselViewThemeProps {
+export interface CarouselViewThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -33332,7 +34057,7 @@ export const CarouselViewTheme: FlutterComponent<CarouselViewThemeProps> =
  *    positioning, and sizing widgets.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface CenterProps {
+export interface CenterProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -33412,7 +34137,7 @@ export const Center: FlutterComponent<CenterProps> =
  *  * <https://material.io/design/components/selection-controls.html#checkboxes>
  *  * <https://material.io/design/components/lists.html#types>
  */
-export interface CheckboxProps {
+export interface CheckboxProps extends GestureProps {
   /**
    * Whether this checkbox is checked.
    *
@@ -33822,7 +34547,7 @@ export const Checkbox = Object.assign(
  *  * [SwitchListTile], a similar widget for switches.
  *  * [ListTile] and [Checkbox], the widgets from which this widget is made.
  */
-export interface CheckboxListTileProps {
+export interface CheckboxListTileProps extends GestureProps {
   /**
    * Whether this checkbox is checked.
    */
@@ -34204,7 +34929,7 @@ export const CheckboxListTile: FlutterComponent<CheckboxListTileProps> =
  * - [MenuAnchor], a widget that defines a region which can host a cascading
  *   menu.
  */
-export interface CheckboxMenuButtonProps {
+export interface CheckboxMenuButtonProps extends GestureProps {
   /**
    * The widget displayed in the center of this button.
    *
@@ -34350,7 +35075,7 @@ export const CheckboxMenuButton: FlutterComponent<CheckboxMenuButtonProps> =
  *  * [CheckboxThemeData], which describes the actual configuration of a
  *  checkbox theme.
  */
-export interface CheckboxThemeProps {
+export interface CheckboxThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -34389,7 +35114,7 @@ export const CheckboxTheme: FlutterComponent<CheckboxThemeProps> =
  *
  * Does nothing in release mode.
  */
-export interface CheckedModeBannerProps {
+export interface CheckedModeBannerProps extends GestureProps {
   /**
    * The widget to show behind the banner.
    */
@@ -34466,7 +35191,10 @@ export const CheckedModeBanner: FlutterComponent<CheckedModeBannerProps> =
  *  * [PopupMenuButton], an [IconButton] that automatically shows a menu when
  *    it is tapped.
  */
-export interface CheckedPopupMenuItemProps {
+export interface CheckedPopupMenuItemProps extends Omit<
+  GestureProps,
+  'onClick'
+> {
   /**
    * The widget below this widget in the tree.
    *
@@ -34652,7 +35380,7 @@ export const CheckedPopupMenuItem: FlutterComponent<CheckedPopupMenuItemProps> =
  *    vertical runs.
  *  * <https://material.io/design/components/chips.html>
  */
-export interface ChipProps {
+export interface ChipProps extends GestureProps {
   avatar?: FlutterChild;
   label: FlutterChild;
   labelStyle?: TextStyleValue;
@@ -34753,7 +35481,7 @@ export const Chip: FlutterComponent<ChipProps> =
  *  * [ThemeData], which describes the overall theme information for the
  *    application.
  */
-export interface ChipThemeProps {
+export interface ChipThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -34835,7 +35563,7 @@ export const ChipTheme: FlutterComponent<ChipThemeProps> =
  *    vertical runs.
  *  * <https://material.io/design/components/chips.html>
  */
-export interface ChoiceChipProps {
+export interface ChoiceChipProps extends GestureProps {
   avatar?: FlutterChild;
   label: FlutterChild;
   labelStyle?: TextStyleValue;
@@ -34950,7 +35678,7 @@ export const ChoiceChip: FlutterComponent<ChoiceChipProps> =
  *    some text for a fixed height list entry.
  *  * <https://material.io/design/components/chips.html#input-chips>
  */
-export interface CircleAvatarProps {
+export interface CircleAvatarProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -35180,7 +35908,7 @@ export const CircleAvatar: FlutterComponent<CircleAvatarProps> =
  *    when the underlying vertical scrollable is overscrolled.
  *  * <https://material.io/design/components/progress-indicators.html#circular-progress-indicators>
  */
-export interface CircularProgressIndicatorProps {
+export interface CircularProgressIndicatorProps extends GestureProps {
   /**
    * If non-null, the value of this progress indicator.
    *
@@ -35460,7 +36188,7 @@ export const CircularProgressIndicator = Object.assign(
  *  * [ClipRRect], for a clip with rounded corners.
  *  * [ClipPath], for an arbitrarily shaped clip.
  */
-export interface ClipOvalProps {
+export interface ClipOvalProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -35529,7 +36257,7 @@ export const ClipOval: FlutterComponent<ClipOvalProps> =
  * [ClipPath.shape] static method or the [ShapeBorderClipper] custom clipper
  * class.
  */
-export interface ClipPathProps {
+export interface ClipPathProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -35607,7 +36335,7 @@ export const ClipPath: FlutterComponent<ClipPathProps> =
  *  * [ClipOval], for an elliptical clip.
  *  * [ClipPath], for an arbitrarily shaped clip.
  */
-export interface ClipRRectProps {
+export interface ClipRRectProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -35694,7 +36422,7 @@ export const ClipRRect: FlutterComponent<ClipRRectProps> =
  *  * [ClipOval], for an elliptical clip.
  *  * [ClipPath], for an arbitrarily shaped clip.
  */
-export interface ClipRSuperellipseProps {
+export interface ClipRSuperellipseProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -35783,7 +36511,7 @@ export const ClipRSuperellipse: FlutterComponent<ClipRSuperellipseProps> =
  *  * [ClipOval], for an elliptical clip.
  *  * [ClipPath], for an arbitrarily shaped clip.
  */
-export interface ClipRectProps {
+export interface ClipRectProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -35866,7 +36594,7 @@ export const ClipRect: FlutterComponent<ClipRectProps> =
  *    no user data consequence.
  *  * [IconButton], to create other Material Design icon buttons.
  */
-export interface CloseButtonProps {
+export interface CloseButtonProps extends Omit<GestureProps, 'onClick'> {
   /**
    * The color to use for the icon inside the button, if the icon is enabled.
    * Defaults to leaving this up to the [icon] widget.
@@ -35955,7 +36683,7 @@ export const CloseButton: FlutterComponent<CloseButtonProps> =
  *  * [Icon], a Material Design icon.
  *  * [ThemeData.platform], which specifies the current platform.
  */
-export interface CloseButtonIconProps {}
+export interface CloseButtonIconProps extends GestureProps {}
 
 /**
  * A "close" icon that's appropriate for the current [TargetPlatform].
@@ -35994,7 +36722,7 @@ export const CloseButtonIcon: FlutterComponent<CloseButtonIconProps> =
  *  * [BlendMode], describes how to blend a source image with the destination image.
  *  * [ColorFilter], which describes a function that modify a color to a different color.
  */
-export interface ColorFilteredProps {
+export interface ColorFilteredProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -36032,7 +36760,7 @@ export const ColorFiltered: FlutterComponent<ColorFilteredProps> =
  * A widget that paints its area with a specified [Color] and then draws its
  * child on top of that color.
  */
-export interface ColoredBoxProps {
+export interface ColoredBoxProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -36237,7 +36965,7 @@ export const ColoredBox: FlutterComponent<ColoredBoxProps> =
  *  * [Spacer], a widget that takes up space proportional to its flex value.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface ColumnProps {
+export interface ColumnProps extends GestureProps {
   /**
    * The widgets below this widget in the tree.
    *
@@ -36595,7 +37323,7 @@ export const Column: FlutterComponent<ColumnProps> =
  *    target-following effect, but also allows the follower to be sized and
  *    positioned dynamically based on the target's size and position.
  */
-export interface CompositedTransformFollowerProps {
+export interface CompositedTransformFollowerProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -36714,7 +37442,7 @@ export const CompositedTransformFollower: FlutterComponent<CompositedTransformFo
  *    target-following effect, but also allows the follower to be sized and
  *    positioned dynamically based on the target's size and position.
  */
-export interface CompositedTransformTargetProps {
+export interface CompositedTransformTargetProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -36790,7 +37518,7 @@ export const CompositedTransformTarget: FlutterComponent<CompositedTransformTarg
  *    constraints while also sizing its child to match a given aspect ratio.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface ConstrainedBoxProps {
+export interface ConstrainedBoxProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -36892,7 +37620,7 @@ export const ConstrainedBox: FlutterComponent<ConstrainedBoxProps> =
  *  * [UnconstrainedBox] which allows its children to render themselves
  *    unconstrained and expands to fit them.
  */
-export interface ConstraintsTransformBoxProps {
+export interface ConstraintsTransformBoxProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -37128,7 +37856,7 @@ export const ConstraintsTransformBox: FlutterComponent<ConstraintsTransformBoxPr
  *  * Cookbook: [Animate the properties of a container](https://docs.flutter.dev/cookbook/animation/animated-container)
  *  * The [catalog of layout widgets](https://docs.flutter.dev/ui/widgets/layout).
  */
-export interface ContainerProps {
+export interface ContainerProps extends GestureProps {
   /**
    * The [child] contained by the container.
    *
@@ -37400,7 +38128,7 @@ export const Container: FlutterComponent<ContainerProps> =
  *  * [CupertinoActionSheetAction], which is an iOS-style action sheet button.
  *  * <https://developer.apple.com/design/human-interface-guidelines/ios/views/action-sheets/>
  */
-export interface CupertinoActionSheetProps {
+export interface CupertinoActionSheetProps extends GestureProps {
   /**
    * An optional title of the action sheet. When the [message] is non-null,
    * the font of the [title] is bold.
@@ -37498,7 +38226,10 @@ export const CupertinoActionSheet: FlutterComponent<CupertinoActionSheetProps> =
  *  * [CupertinoActionSheet], an alert that presents the user with a set of two or
  *    more choices related to the current context.
  */
-export interface CupertinoActionSheetActionProps {
+export interface CupertinoActionSheetActionProps extends Omit<
+  GestureProps,
+  'onClick'
+> {
   /**
    * The widget below this widget in the tree.
    *
@@ -37572,7 +38303,7 @@ export const CupertinoActionSheetAction: FlutterComponent<CupertinoActionSheetAc
  *  * [CupertinoLinearActivityIndicator], which displays progress along a line.
  *  * <https://developer.apple.com/design/human-interface-guidelines/progress-indicators/>
  */
-export interface CupertinoActivityIndicatorProps {
+export interface CupertinoActivityIndicatorProps extends GestureProps {
   /**
    * Color of the activity indicator.
    *
@@ -37626,7 +38357,7 @@ export const CupertinoActivityIndicator: FlutterComponent<CupertinoActivityIndic
  *   the Cupertino button Widgets for the current platform given
  *   [ContextMenuButtonItem]s.
  */
-export interface CupertinoAdaptiveTextSelectionToolbarProps {
+export interface CupertinoAdaptiveTextSelectionToolbarProps extends GestureProps {
   /**
    * The children of the toolbar, typically buttons.
    */
@@ -37690,7 +38421,7 @@ export const CupertinoAdaptiveTextSelectionToolbar: FlutterComponent<CupertinoAd
  *  * [AlertDialog], a Material Design alert dialog.
  *  * <https://developer.apple.com/design/human-interface-guidelines/alerts/>
  */
-export interface CupertinoAlertDialogProps {
+export interface CupertinoAlertDialogProps extends GestureProps {
   /**
    * The (optional) title of the dialog is displayed in a large font at the top
    * of the dialog.
@@ -37895,7 +38626,7 @@ export const CupertinoAlertDialog: FlutterComponent<CupertinoAlertDialogProps> =
  *  * [WidgetsApp], which defines the basic app elements but does not depend
  *    on the Cupertino library.
  */
-export interface CupertinoAppProps {
+export interface CupertinoAppProps extends GestureProps {
   navigatorKey?: GlobalKey;
   home?: FlutterChild;
   /**
@@ -38190,7 +38921,10 @@ export const CupertinoApp: FlutterComponent<CupertinoAppProps> =
  *
  *  * <https://developer.apple.com/design/human-interface-guidelines/buttons/>
  */
-export interface CupertinoButtonProps {
+export interface CupertinoButtonProps extends Omit<
+  GestureProps,
+  'onClick' | 'onLongPress'
+> {
   /**
    * The widget below this widget in the tree.
    *
@@ -38391,7 +39125,7 @@ export const CupertinoButton: FlutterComponent<CupertinoButtonProps> =
  *  * [CupertinoSlider], for selecting a value in a range.
  *  * <https://developer.apple.com/design/human-interface-guidelines/components/selection-and-input/toggles/>
  */
-export interface CupertinoCheckboxProps {
+export interface CupertinoCheckboxProps extends GestureProps {
   /**
    * Whether this checkbox is checked.
    *
@@ -38660,7 +39394,7 @@ export const CupertinoCheckbox = Object.assign(
  *
  *  * <https://developer.apple.com/design/human-interface-guidelines/ios/controls/context-menus/>
  */
-export interface CupertinoContextMenuProps {
+export interface CupertinoContextMenuProps extends GestureProps {
   /**
    * The widget that can be "opened" with the [CupertinoContextMenu].
    *
@@ -38811,7 +39545,10 @@ export const CupertinoContextMenu = Object.assign(
  * use [TextOverflow.ellipsis] for the [Text.overflow] field if the text may be
  * long, as without it the text will wrap to the next line.
  */
-export interface CupertinoContextMenuActionProps {
+export interface CupertinoContextMenuActionProps extends Omit<
+  GestureProps,
+  'onClick'
+> {
   /**
    * The widget that will be placed inside the action.
    */
@@ -38883,7 +39620,7 @@ export const CupertinoContextMenuAction: FlutterComponent<CupertinoContextMenuAc
  *  * [CupertinoPicker], the class that implements a content agnostic spinner UI.
  *  * <https://developer.apple.com/design/human-interface-guidelines/ios/controls/pickers/>
  */
-export interface CupertinoDatePickerProps {
+export interface CupertinoDatePickerProps extends GestureProps {
   /**
    * The mode of the date picker as one of [CupertinoDatePickerMode]. Defaults
    * to [CupertinoDatePickerMode.dateAndTime]. Value cannot change after
@@ -39110,7 +39847,7 @@ export const CupertinoDatePicker: FlutterComponent<CupertinoDatePickerProps> =
  *  * [DesktopTextSelectionToolbar], which is similar but builds a
  *    Material-style desktop toolbar.
  */
-export interface CupertinoDesktopTextSelectionToolbarProps {
+export interface CupertinoDesktopTextSelectionToolbarProps extends GestureProps {
   /**
    * See also:
    *   * [CupertinoDesktopTextSelectionToolbarButton], which builds a default
@@ -39146,7 +39883,10 @@ export const CupertinoDesktopTextSelectionToolbar: FlutterComponent<CupertinoDes
 /**
  * A button in the style of the Mac context menu buttons.
  */
-export interface CupertinoDesktopTextSelectionToolbarButtonProps {
+export interface CupertinoDesktopTextSelectionToolbarButtonProps extends Omit<
+  GestureProps,
+  'onClick'
+> {
   children: FlutterChild;
   onClick: (() => void) | null;
 }
@@ -39167,7 +39907,10 @@ export const CupertinoDesktopTextSelectionToolbarButton: FlutterComponent<Cupert
  *  * [CupertinoAlertDialog], a dialog that informs the user about situations
  *    that require acknowledgment.
  */
-export interface CupertinoDialogActionProps {
+export interface CupertinoDialogActionProps extends Omit<
+  GestureProps,
+  'onClick'
+> {
   /**
    * The widget below this widget in the tree.
    *
@@ -39244,7 +39987,7 @@ export const CupertinoDialogAction: FlutterComponent<CupertinoDialogActionProps>
  *  * [CupertinoListTile], the header of a [CupertinoExpansionTile].
  *  * <https://developer.apple.com/design/human-interface-guidelines/disclosure-controls/>
  */
-export interface CupertinoExpansionTileProps {
+export interface CupertinoExpansionTileProps extends GestureProps {
   /**
    * The body of the [CupertinoExpansionTile].
    */
@@ -39319,7 +40062,7 @@ export const CupertinoExpansionTile: FlutterComponent<CupertinoExpansionTileProp
  *
  * ** See code in examples/api/lib/cupertino/form_row/cupertino_form_row.0.dart **
  */
-export interface CupertinoFormRowProps {
+export interface CupertinoFormRowProps extends GestureProps {
   /**
    * Child widget.
    *
@@ -39441,7 +40184,7 @@ export const CupertinoFormRow: FlutterComponent<CupertinoFormRowProps> =
  *    [CupertinoFormSection].
  *  * [CupertinoListSection], an iOS-style list section.
  */
-export interface CupertinoFormSectionProps {
+export interface CupertinoFormSectionProps extends GestureProps {
   /**
    * The list of rows in the section.
    *
@@ -39545,7 +40288,7 @@ export const CupertinoFormSection: FlutterComponent<CupertinoFormSectionProps> =
  * For example, used when creating a new calendar event by bringing in the next
  * screen from the bottom.
  */
-export interface CupertinoFullscreenDialogTransitionProps {
+export interface CupertinoFullscreenDialogTransitionProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -39593,7 +40336,7 @@ export const CupertinoFullscreenDialogTransition: FlutterComponent<CupertinoFull
  *  * [CupertinoActivityIndicator], which is an iOS-style activity indicator that spins clockwise.
  *  * <https://developer.apple.com/design/human-interface-guidelines/progress-indicators/>
  */
-export interface CupertinoLinearActivityIndicatorProps {
+export interface CupertinoLinearActivityIndicatorProps extends GestureProps {
   /**
    * The current progress of the linear activity indicator.
    *
@@ -39700,7 +40443,7 @@ export const CupertinoLinearActivityIndicator: FlutterComponent<CupertinoLinearA
  *    [CupertinoListSection].
  *  * [CupertinoFormSection], an iOS-style form section.
  */
-export interface CupertinoListSectionProps {
+export interface CupertinoListSectionProps extends GestureProps {
   /**
    * The list of rows in the section. Usually a list of [CupertinoListTile]s.
    *
@@ -39883,7 +40626,7 @@ export const CupertinoListSection: FlutterComponent<CupertinoListSectionProps> =
  *    [CupertinoListTile].
  *  * [ListTile], a Material Design list tile.
  */
-export interface CupertinoListTileProps {
+export interface CupertinoListTileProps extends Omit<GestureProps, 'onClick'> {
   /**
    * A [title] is used to convey the central information. Usually a [Text].
    */
@@ -39997,7 +40740,7 @@ export const CupertinoListTile: FlutterComponent<CupertinoListTileProps> =
  * The [CupertinoListTileChevron] is meant as a convenience implementation of
  * trailing right chevron.
  */
-export interface CupertinoListTileChevronProps {}
+export interface CupertinoListTileChevronProps extends GestureProps {}
 
 /**
  * A typical iOS trailing widget used to denote that a `CupertinoListTile` is a
@@ -40028,7 +40771,7 @@ export const CupertinoListTileChevron: FlutterComponent<CupertinoListTileChevron
  * [MagnifierInfo].
  * * [MagnifierController], the controller for this magnifier.
  */
-export interface CupertinoMagnifierProps {
+export interface CupertinoMagnifierProps extends GestureProps {
   /**
    * The size of this magnifier.
    *
@@ -40178,7 +40921,7 @@ export const CupertinoMagnifier = Object.assign(
  * * [CupertinoMenuEntry], an interface that can be implemented to customize
  *   the appearance of menu items in a [CupertinoMenuAnchor].
  */
-export interface CupertinoMenuAnchorProps {
+export interface CupertinoMenuAnchorProps extends GestureProps {
   /**
    * An optional child to be passed to the [builder].
    *
@@ -40383,7 +41126,7 @@ export const CupertinoMenuAnchor: FlutterComponent<CupertinoMenuAnchorProps> =
  * * [CupertinoMenuEntry], an interface that can be used to control whether
  *   dividers are shown before or after a menu item.
  */
-export interface CupertinoMenuDividerProps {
+export interface CupertinoMenuDividerProps extends GestureProps {
   /**
    * The color of the divider.
    *
@@ -40476,7 +41219,7 @@ export const CupertinoMenuDivider = Object.assign(
  * * [PlatformMenuBar], which creates a menu bar that is rendered by the host
  *   platform instead of by Flutter (on macOS, for example).
  */
-export interface CupertinoMenuItemProps {
+export interface CupertinoMenuItemProps extends Omit<GestureProps, 'onClick'> {
   /**
    * The widget displayed in the center of this button.
    *
@@ -40728,7 +41471,7 @@ export const CupertinoMenuItem = Object.assign(
  *    scrolling list and that supports iOS-11-style large titles.
  *  * <https://developer.apple.com/design/human-interface-guidelines/ios/bars/navigation-bars/>
  */
-export interface CupertinoNavigationBarProps {
+export interface CupertinoNavigationBarProps extends GestureProps {
   /**
    * Widget to place at the start of the navigation bar. Normally a back button
    * for a normal page or a cancel button for full page dialogs.
@@ -41004,7 +41747,10 @@ export const CupertinoNavigationBar: FlutterComponent<CupertinoNavigationBarProp
  * the previous [CupertinoPageRoute.title]. If [previousPageTitle] is specified,
  * it will be shown instead.
  */
-export interface CupertinoNavigationBarBackButtonProps {
+export interface CupertinoNavigationBarBackButtonProps extends Omit<
+  GestureProps,
+  'onClick'
+> {
   /**
    * The [Color] of the back button.
    *
@@ -41076,7 +41822,7 @@ export const CupertinoNavigationBarBackButton: FlutterComponent<CupertinoNavigat
  *  * [CupertinoPageRoute], a modal page route that typically hosts a
  *    [CupertinoPageScaffold] with support for iOS-style page transitions.
  */
-export interface CupertinoPageScaffoldProps {
+export interface CupertinoPageScaffoldProps extends GestureProps {
   /**
    * Widget to show in the main content area.
    *
@@ -41152,7 +41898,7 @@ export const CupertinoPageScaffold: FlutterComponent<CupertinoPageScaffoldProps>
  * This is used by the [CupertinoNavigationBar] and the [CupertinoSliverNavigationBar] widgets
  * to paint themselves with the parent page scaffold color when no content is scrolled under.
  */
-export interface CupertinoPageScaffoldBackgroundColorProps {
+export interface CupertinoPageScaffoldBackgroundColorProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -41184,7 +41930,7 @@ export const CupertinoPageScaffoldBackgroundColor: FlutterComponent<CupertinoPag
  * The page slides in from the right and exits in reverse. It also shifts to the left in
  * a parallax motion when another page enters to cover it.
  */
-export interface CupertinoPageTransitionProps {
+export interface CupertinoPageTransitionProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -41245,7 +41991,7 @@ export const CupertinoPageTransition: FlutterComponent<CupertinoPageTransitionPr
  *    the iOS design specific chrome.
  *  * <https://developer.apple.com/design/human-interface-guidelines/pickers/>
  */
-export interface CupertinoPickerProps {
+export interface CupertinoPickerProps extends GestureProps {
   children: FlutterChildren;
   /**
    * Relative ratio between this picker's height and the simulated cylinder's diameter.
@@ -41374,7 +42120,7 @@ export const CupertinoPicker: FlutterComponent<CupertinoPickerProps> =
  *
  *  * [CupertinoPicker], which uses this widget as its default [CupertinoPicker.selectionOverlay].
  */
-export interface CupertinoPickerDefaultSelectionOverlayProps {
+export interface CupertinoPickerDefaultSelectionOverlayProps extends GestureProps {
   /**
    * The color to fill in the background of the [CupertinoPickerDefaultSelectionOverlay].
    * It Support for use [CupertinoDynamicColor].
@@ -41455,7 +42201,7 @@ export const CupertinoPickerDefaultSelectionOverlay: FlutterComponent<CupertinoP
  *    actions.
  *  * <https://developer.apple.com/design/human-interface-guidelines/alerts/>
  */
-export interface CupertinoPopupSurfaceProps {
+export interface CupertinoPopupSurfaceProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -41567,7 +42313,7 @@ export const CupertinoPopupSurface = Object.assign(
  *  * [Radio], the Material Design equivalent.
  *  * <https://developer.apple.com/design/human-interface-guidelines/components/selection-and-input/toggles/>
  */
-export interface CupertinoRadioProps {
+export interface CupertinoRadioProps extends GestureProps {
   value: unknown;
   /**
    * @deprecated
@@ -41724,7 +42470,7 @@ export const CupertinoRadio: FlutterComponent<CupertinoRadioProps> =
  *  * [RawScrollbar], a basic scrollbar that fades in and out, extended
  *    by this class to add more animations and behaviors.
  */
-export interface CupertinoScrollbarProps {
+export interface CupertinoScrollbarProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -42010,7 +42756,10 @@ export const CupertinoScrollbar = Object.assign(
  *
  *  * <https://developer.apple.com/design/human-interface-guidelines/ios/bars/search-bars/>
  */
-export interface CupertinoSearchTextFieldProps {
+export interface CupertinoSearchTextFieldProps extends Omit<
+  GestureProps,
+  'onClick'
+> {
   /**
    * Controls the text being edited.
    *
@@ -42308,7 +43057,7 @@ export const CupertinoSearchTextField: FlutterComponent<CupertinoSearchTextField
  *    up until iOS 13.
  *  * <https://developer.apple.com/design/human-interface-guidelines/ios/controls/segmented-controls/>
  */
-export interface CupertinoSegmentedControlProps {
+export interface CupertinoSegmentedControlProps extends GestureProps {
   /**
    * The identifying keys and corresponding widget values in the
    * segmented control.
@@ -42455,7 +43204,7 @@ export const CupertinoSegmentedControl: FlutterComponent<CupertinoSegmentedContr
  * another sheet view, it will slide slightly up and scale down to appear
  * stacked behind the new sheet.
  */
-export interface CupertinoSheetTransitionProps {
+export interface CupertinoSheetTransitionProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -42525,7 +43274,7 @@ export const CupertinoSheetTransition: FlutterComponent<CupertinoSheetTransition
  *
  *  * <https://developer.apple.com/design/human-interface-guidelines/sliders/>
  */
-export interface CupertinoSliderProps {
+export interface CupertinoSliderProps extends GestureProps {
   /**
    * The currently selected value for this slider.
    *
@@ -42737,7 +43486,7 @@ export const CupertinoSlider: FlutterComponent<CupertinoSliderProps> =
  *
  *  * <https://developer.apple.com/design/human-interface-guidelines/ios/controls/segmented-controls/>
  */
-export interface CupertinoSlidingSegmentedControlProps {
+export interface CupertinoSlidingSegmentedControlProps extends GestureProps {
   /**
    * The identifying keys and corresponding widget values in the
    * segmented control.
@@ -42988,7 +43737,7 @@ export const CupertinoSlidingSegmentedControl: FlutterComponent<CupertinoSliding
  *  * [CustomScrollView], a ScrollView that creates custom scroll effects using slivers.
  *  * <https://developer.apple.com/design/human-interface-guidelines/ios/bars/navigation-bars/>
  */
-export interface CupertinoSliverNavigationBarProps {
+export interface CupertinoSliverNavigationBarProps extends GestureProps {
   /**
    * The navigation bar's title.
    *
@@ -43231,7 +43980,7 @@ export const CupertinoSliverNavigationBar: FlutterComponent<CupertinoSliverNavig
  *    [CupertinoSliverRefreshControl] is part of the scrollable and actively occupies
  *    scrollable space.
  */
-export interface CupertinoSliverRefreshControlProps {
+export interface CupertinoSliverRefreshControlProps extends GestureProps {
   /**
    * The amount of overscroll the scrollable must be dragged to trigger a reload.
    *
@@ -43357,7 +44106,7 @@ export const CupertinoSliverRefreshControl: FlutterComponent<CupertinoSliverRefr
  *  * [SpellCheckSuggestionsToolbar], which is similar but for both the
  *    Material and Cupertino libraries.
  */
-export interface CupertinoSpellCheckSuggestionsToolbarProps {
+export interface CupertinoSpellCheckSuggestionsToolbarProps extends GestureProps {
   /**
    * The location on which to anchor the menu.
    */
@@ -43435,7 +44184,7 @@ export const CupertinoSpellCheckSuggestionsToolbar: FlutterComponent<CupertinoSp
  *  * [Switch], the Material Design equivalent.
  *  * <https://developer.apple.com/design/human-interface-guidelines/toggles/>
  */
-export interface CupertinoSwitchProps {
+export interface CupertinoSwitchProps extends GestureProps {
   /**
    * Whether this switch is on or off.
    */
@@ -43798,7 +44547,7 @@ export const CupertinoSwitch: FlutterComponent<CupertinoSwitchProps> =
  *  * [BottomNavigationBarItem], an item in a [CupertinoTabBar].
  *  * <https://developer.apple.com/design/human-interface-guidelines/ios/bars/tab-bars/>
  */
-export interface CupertinoTabBarProps {
+export interface CupertinoTabBarProps extends Omit<GestureProps, 'onClick'> {
   /**
    * The interactive items laid out within the bottom navigation bar.
    */
@@ -43952,7 +44701,7 @@ export const CupertinoTabBar: FlutterComponent<CupertinoTabBarProps> =
  *    layout with a navigation bar on top.
  *  * [iOS human interface guidelines](https://developer.apple.com/design/human-interface-guidelines/ios/bars/tab-bars/).
  */
-export interface CupertinoTabScaffoldProps {
+export interface CupertinoTabScaffoldProps extends GestureProps {
   /**
    * The [tabBar] is a [CupertinoTabBar] drawn at the bottom of the screen
    * that lets the user switch between different tabs in the main content area
@@ -44130,7 +44879,7 @@ export const CupertinoTabScaffold: FlutterComponent<CupertinoTabScaffoldProps> =
  *  * [CupertinoPageRoute], a typical modal page route pushed onto the
  *    [CupertinoTabView]'s [Navigator].
  */
-export interface CupertinoTabViewProps {
+export interface CupertinoTabViewProps extends GestureProps {
   /**
    * The widget builder for the default route of the tab view
    * ([Navigator.defaultRouteName], which is `/`).
@@ -44305,7 +45054,7 @@ export const CupertinoTabView: FlutterComponent<CupertinoTabViewProps> =
  *  * Learn how to use a [TextEditingController] in one of our [cookbook recipes](https://docs.flutter.dev/cookbook/forms/text-field-changes#2-use-a-texteditingcontroller).
  *  * <https://developer.apple.com/design/human-interface-guidelines/ios/controls/text-fields/>
  */
-export interface CupertinoTextFieldProps {
+export interface CupertinoTextFieldProps extends Omit<GestureProps, 'onClick'> {
   groupId?: Object;
   /**
    * Controls the text being edited.
@@ -44727,7 +45476,10 @@ export const CupertinoTextField = Object.assign(
  *
  * ** See code in examples/api/lib/cupertino/text_form_field_row/cupertino_text_form_field_row.1.dart **
  */
-export interface CupertinoTextFormFieldRowProps {
+export interface CupertinoTextFormFieldRowProps extends Omit<
+  GestureProps,
+  'onClick'
+> {
   /**
    * A widget that is displayed at the start of the row.
    *
@@ -44959,7 +45711,7 @@ export const CupertinoTextFormFieldRow: FlutterComponent<CupertinoTextFormFieldR
  * - has some vertical drag resistance; i.e. if a gesture is detected k units below the field,
  *   then has vertical offset [dragResistance] * k.
  */
-export interface CupertinoTextMagnifierProps {
+export interface CupertinoTextMagnifierProps extends GestureProps {
   /**
    * The curve used for the in / out animations.
    */
@@ -45041,7 +45793,7 @@ export const CupertinoTextMagnifier: FlutterComponent<CupertinoTextMagnifierProp
  *  * [TextSelectionToolbar], which is similar, but builds an Android-style
  *    toolbar.
  */
-export interface CupertinoTextSelectionToolbarProps {
+export interface CupertinoTextSelectionToolbarProps extends GestureProps {
   /**
    * See also:
    *   * [CupertinoTextSelectionToolbarButton], which builds a default
@@ -45103,7 +45855,10 @@ export const CupertinoTextSelectionToolbar = Object.assign(
 /**
  * A button in the style of the iOS text selection toolbar buttons.
  */
-export interface CupertinoTextSelectionToolbarButtonProps {
+export interface CupertinoTextSelectionToolbarButtonProps extends Omit<
+  GestureProps,
+  'onClick'
+> {
   /**
    * The child of this button.
    *
@@ -45145,7 +45900,7 @@ export const CupertinoTextSelectionToolbarButton: FlutterComponent<CupertinoText
  *  * [Theme], a Material theme which will automatically add a [CupertinoTheme]
  *    with a [CupertinoThemeData] derived from the Material [ThemeData].
  */
-export interface CupertinoThemeProps {
+export interface CupertinoThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -45204,7 +45959,7 @@ export const CupertinoTheme: FlutterComponent<CupertinoThemeProps> =
  *  * [CupertinoPicker], the class that implements a content agnostic spinner UI.
  *  * <https://developer.apple.com/design/human-interface-guidelines/ios/controls/pickers/>
  */
-export interface CupertinoTimerPickerProps {
+export interface CupertinoTimerPickerProps extends GestureProps {
   /**
    * The mode of the timer picker.
    */
@@ -45348,7 +46103,7 @@ export const CupertinoTimerPicker: FlutterComponent<CupertinoTimerPickerProps> =
  *  * [CupertinoUserInterfaceLevelData], specifies the visual level for the content
  *    in the subtree [CupertinoUserInterfaceLevel] established.
  */
-export interface CupertinoUserInterfaceLevelProps {
+export interface CupertinoUserInterfaceLevelProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -45420,7 +46175,7 @@ export const CupertinoUserInterfaceLevel: FlutterComponent<CupertinoUserInterfac
  *    matrices.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface CustomMultiChildLayoutProps {
+export interface CustomMultiChildLayoutProps extends GestureProps {
   /**
    * The widgets below this widget in the tree.
    *
@@ -45575,7 +46330,7 @@ export const CustomMultiChildLayout: FlutterComponent<CustomMultiChildLayoutProp
  *  * [CustomPainter], the class to extend when creating custom painters.
  *  * [Canvas], the class that a custom painter uses to paint.
  */
-export interface CustomPaintProps {
+export interface CustomPaintProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -45808,7 +46563,7 @@ export const CustomPaint: FlutterComponent<CustomPaintProps> =
  *  * [IndexedSemantics], which allows annotating child lists with an index
  *    for scroll announcements.
  */
-export interface CustomScrollViewProps {
+export interface CustomScrollViewProps extends GestureProps {
   /**
    * The [Axis] along which the scroll view's offset increases.
    *
@@ -46294,7 +47049,7 @@ export const CustomScrollView: FlutterComponent<CustomScrollViewProps> =
  *    children.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface CustomSingleChildLayoutProps {
+export interface CustomSingleChildLayoutProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -46383,7 +47138,7 @@ export const CustomSingleChildLayout: FlutterComponent<CustomSingleChildLayoutPr
  *    package, for displaying large amounts of data without pagination.
  *  * <https://material.io/go/design-data-tables>
  */
-export interface DataTableProps {
+export interface DataTableProps extends GestureProps {
   /**
    * The configuration and labels for the columns in the table.
    */
@@ -46698,7 +47453,7 @@ export const DataTable: FlutterComponent<DataTableProps> =
  *  * [DataTableThemeData], which describes the actual configuration
  *    of a data table theme.
  */
-export interface DataTableThemeProps {
+export interface DataTableThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -46742,7 +47497,7 @@ export const DataTableTheme: FlutterComponent<DataTableThemeProps> =
  *
  *  * [showDatePicker], which is a way to display the date picker.
  */
-export interface DatePickerDialogProps {
+export interface DatePickerDialogProps extends GestureProps {
   /**
    * The initially selected [DateTime] that the picker should display.
    *
@@ -46880,7 +47635,7 @@ export const DatePickerDialog: FlutterComponent<DatePickerDialogProps> =
  * Values specified here are used for [DatePickerDialog] properties that are not
  * given an explicit non-null value.
  */
-export interface DatePickerThemeProps {
+export interface DatePickerThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -46917,7 +47672,7 @@ export const DatePickerTheme: FlutterComponent<DatePickerThemeProps> =
  *
  *  * [showDateRangePicker], which is a way to display the date picker.
  */
-export interface DateRangePickerDialogProps {
+export interface DateRangePickerDialogProps extends GestureProps {
   /**
    * The date range that the date range picker starts with when it opens.
    *
@@ -47114,7 +47869,7 @@ export const DateRangePickerDialog: FlutterComponent<DateRangePickerDialogProps>
  *  * [CustomPaint], another way to draw custom effects from the widget layer.
  *  * [DecoratedSliver], which applies a [Decoration] to a sliver.
  */
-export interface DecoratedBoxProps {
+export interface DecoratedBoxProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -47193,7 +47948,7 @@ export const DecoratedBox: FlutterComponent<DecoratedBoxProps> =
  *  * [AnimatedContainer], a more full-featured container that also animates on
  *    decoration using an internal animation.
  */
-export interface DecoratedBoxTransitionProps {
+export interface DecoratedBoxTransitionProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -47271,7 +48026,7 @@ export const DecoratedBoxTransition: FlutterComponent<DecoratedBoxTransitionProp
  *    [DecoratedSliver].
  *  * [CustomPaint], another way to draw custom effects from the widget layer.
  */
-export interface DecoratedSliverProps {
+export interface DecoratedSliverProps extends GestureProps {
   /**
    * What decoration to paint.
    *
@@ -47375,7 +48130,7 @@ export const DecoratedSliver: FlutterComponent<DecoratedSliverProps> =
  *  * [AssetBundle], the interface for asset bundles.
  *  * [rootBundle], the default asset bundle.
  */
-export interface DefaultAssetBundleProps {
+export interface DefaultAssetBundleProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -47451,7 +48206,7 @@ export const DefaultAssetBundle: FlutterComponent<DefaultAssetBundleProps> =
  *  * [TextSelectionTheme]: which also creates a [DefaultSelectionStyle] for
  *    the subtree.
  */
-export interface DefaultSelectionStyleProps {
+export interface DefaultSelectionStyleProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -47550,7 +48305,7 @@ export const DefaultSelectionStyle = Object.assign(
  * }
  * ```
  */
-export interface DefaultTabControllerProps {
+export interface DefaultTabControllerProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -47769,7 +48524,7 @@ export const DefaultTabController: FlutterComponent<DefaultTabControllerProps> =
  *
  *   * [WidgetsApp], which creates a DefaultTextEditingShortcuts.
  */
-export interface DefaultTextEditingShortcutsProps {
+export interface DefaultTextEditingShortcutsProps extends GestureProps {
   children: FlutterChild;
 }
 
@@ -47931,7 +48686,7 @@ export const DefaultTextEditingShortcuts: FlutterComponent<DefaultTextEditingSho
  *  * [DefaultTextStyle], which defines a [TextStyle] to apply to descendant
  *    [Text] widgets.
  */
-export interface DefaultTextHeightBehaviorProps {
+export interface DefaultTextHeightBehaviorProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -47982,7 +48737,7 @@ export const DefaultTextHeightBehavior: FlutterComponent<DefaultTextHeightBehavi
  *  * [DefaultTextStyleTransition], which takes a provided [Animation] to
  *    animate changes in text style smoothly over time.
  */
-export interface DefaultTextStyleProps {
+export interface DefaultTextStyleProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -48078,7 +48833,7 @@ export const DefaultTextStyle: FlutterComponent<DefaultTextStyleProps> =
  *  * [DefaultTextStyle], which also defines a [TextStyle] for its descendants
  *    but is not animated.
  */
-export interface DefaultTextStyleTransitionProps {
+export interface DefaultTextStyleTransitionProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -48141,7 +48896,7 @@ export const DefaultTextStyleTransition: FlutterComponent<DefaultTextStyleTransi
  *  * [TextSelectionToolbar], which is similar, but builds an Android-style
  *    toolbar.
  */
-export interface DesktopTextSelectionToolbarProps {
+export interface DesktopTextSelectionToolbarProps extends GestureProps {
   /**
    * See also:
    *   * [DesktopTextSelectionToolbarButton], which builds a default
@@ -48179,7 +48934,10 @@ export const DesktopTextSelectionToolbar: FlutterComponent<DesktopTextSelectionT
 /**
  * A [TextButton] for the Material desktop text selection toolbar.
  */
-export interface DesktopTextSelectionToolbarButtonProps {
+export interface DesktopTextSelectionToolbarButtonProps extends Omit<
+  GestureProps,
+  'onClick'
+> {
   children: FlutterChild;
   onClick: (() => void) | null;
 }
@@ -48229,7 +48987,7 @@ export const DesktopTextSelectionToolbarButton: FlutterComponent<DesktopTextSele
  *    directly from [MediaQuery].
  *  * [LayoutBuilder], which exposes the complete layout constraints.
  */
-export interface DeviceOrientationBuilderProps {
+export interface DeviceOrientationBuilderProps extends GestureProps {
   /**
    * Builds the widgets below this widget given the device's orientation.
    *
@@ -48310,7 +49068,7 @@ export const DeviceOrientationBuilder: FlutterComponent<DeviceOrientationBuilder
  *  * [showDialog], which actually displays the dialog and returns its result.
  *  * <https://material.io/design/components/dialogs.html>
  */
-export interface DialogProps {
+export interface DialogProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -48504,7 +49262,7 @@ export const Dialog: FlutterComponent<DialogProps> =
  *  * [ThemeData], which describes the overall theme information for the
  *    application.
  */
-export interface DialogThemeProps {
+export interface DialogThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -48570,7 +49328,7 @@ export const DialogTheme: FlutterComponent<DialogThemeProps> =
  * )
  * ```
  */
-export interface DirectionalityProps {
+export interface DirectionalityProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -48622,7 +49380,7 @@ export const Directionality: FlutterComponent<DirectionalityProps> =
  *  * [EnableWidgetInspectorScope], the widget used to enable the inspector for a widget subtree.
  *  * [WidgetInspector], the widget used to provide inspector support for a widget subtree.
  */
-export interface DisableWidgetInspectorScopeProps {
+export interface DisableWidgetInspectorScopeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -48676,7 +49434,7 @@ export const DisableWidgetInspectorScope: FlutterComponent<DisableWidgetInspecto
  * list item, it must have a key that distinguishes it from the other items and
  * its [onDismissed] callback must remove the item from the list.
  */
-export interface DismissibleProps {
+export interface DismissibleProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -48858,7 +49616,7 @@ export const Dismissible: FlutterComponent<DismissibleProps> =
  *  * [showDialog], which is a way to display a [DialogRoute].
  *  * [showCupertinoDialog], which displays an iOS-style dialog.
  */
-export interface DisplayFeatureSubScreenProps {
+export interface DisplayFeatureSubScreenProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -48964,7 +49722,7 @@ export const DisplayFeatureSubScreen: FlutterComponent<DisplayFeatureSubScreenPr
  *  * [VerticalDivider], which is the vertical analog of this widget.
  *  * <https://material.io/design/components/dividers.html>
  */
-export interface DividerProps {
+export interface DividerProps extends GestureProps {
   /**
    * The divider's height extent.
    *
@@ -49064,7 +49822,7 @@ export const Divider: FlutterComponent<DividerProps> =
  * [Divider]s, [VerticalDivider]s, dividers between [ListTile]s, and dividers
  * between rows in [DataTable]s in this widget's subtree.
  */
-export interface DividerThemeProps {
+export interface DividerThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -49098,7 +49856,7 @@ export const DividerTheme: FlutterComponent<DividerThemeProps> =
  *
  * ** See code in examples/api/lib/widgets/gesture_detector/gesture_detector.3.dart **
  */
-export interface DragBoundaryProps {
+export interface DragBoundaryProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -49136,7 +49894,7 @@ export const DragBoundary: FlutterComponent<DragBoundaryProps> =
  *  * [Draggable]
  *  * [LongPressDraggable]
  */
-export interface DragTargetProps {
+export interface DragTargetProps extends GestureProps {
   /**
    * Called to build the contents of this widget.
    *
@@ -49280,7 +50038,7 @@ export const DragTarget: FlutterComponent<DragTargetProps> =
  *  * [DragTarget]
  *  * [LongPressDraggable]
  */
-export interface DraggableProps {
+export interface DraggableProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -49531,7 +50289,7 @@ export const Draggable: FlutterComponent<DraggableProps> =
  * directly by creating a controller and passing the controller to the sheet in
  * its constructor (see [DraggableScrollableSheet.controller]).
  */
-export interface DraggableScrollableActuatorProps {
+export interface DraggableScrollableActuatorProps extends GestureProps {
   /**
    * This child's [DraggableScrollableSheet] descendant will be reset when the
    * [reset] method is applied to a context that includes it.
@@ -49614,7 +50372,7 @@ export const DraggableScrollableActuator: FlutterComponent<DraggableScrollableAc
  *
  * ** See code in examples/api/lib/widgets/draggable_scrollable_sheet/draggable_scrollable_sheet.0.dart **
  */
-export interface DraggableScrollableSheetProps {
+export interface DraggableScrollableSheetProps extends GestureProps {
   /**
    * The initial fractional value of the parent container's height to use when
    * displaying the widget.
@@ -49843,7 +50601,7 @@ export const DraggableScrollableSheet: FlutterComponent<DraggableScrollableSheet
  *  * [ScaffoldState.openDrawer], which displays its [Drawer], if any.
  *  * <https://material.io/design/components/navigation-drawer.html>
  */
-export interface DrawerProps {
+export interface DrawerProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -50031,7 +50789,7 @@ export const Drawer: FlutterComponent<DrawerProps> =
  *  * [Icon], a Material Design icon.
  *  * [ThemeData.platform], which specifies the current platform.
  */
-export interface DrawerButtonProps {
+export interface DrawerButtonProps extends Omit<GestureProps, 'onClick'> {
   /**
    * The color to use for the icon inside the button, if the icon is enabled.
    * Defaults to leaving this up to the [icon] widget.
@@ -50113,7 +50871,7 @@ export const DrawerButton: FlutterComponent<DrawerButtonProps> =
  *  * [Icon], a Material Design icon.
  *  * [ThemeData.platform], which specifies the current platform.
  */
-export interface DrawerButtonIconProps {}
+export interface DrawerButtonIconProps extends GestureProps {}
 
 /**
  * A "drawer" icon that's appropriate for the current [TargetPlatform].
@@ -50150,7 +50908,7 @@ export const DrawerButtonIcon: FlutterComponent<DrawerButtonIconProps> =
  *  * [Drawer], a container with the default width of a drawer.
  *  * [Scaffold.drawer], the [Scaffold] slot for showing a drawer.
  */
-export interface DrawerControllerProps {
+export interface DrawerControllerProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -50268,7 +51026,7 @@ export const DrawerController: FlutterComponent<DrawerControllerProps> =
  *    specialized for showing user accounts.
  *  * <https://material.io/design/components/navigation-drawer.html>
  */
-export interface DrawerHeaderProps {
+export interface DrawerHeaderProps extends GestureProps {
   /**
    * A widget to be placed inside the drawer header, inset by the [padding].
    *
@@ -50336,7 +51094,7 @@ export const DrawerHeader: FlutterComponent<DrawerHeaderProps> =
  *
  * Using this would allow you to override the [ThemeData.drawerTheme].
  */
-export interface DrawerThemeProps {
+export interface DrawerThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -50453,7 +51211,7 @@ export const DrawerTheme: FlutterComponent<DrawerThemeProps> =
  *  * [ElevatedButton], [TextButton], ordinary buttons that trigger a single action.
  *  * <https://material.io/design/components/menus.html#dropdown-menu>
  */
-export interface DropdownButtonProps {
+export interface DropdownButtonProps extends Omit<GestureProps, 'onClick'> {
   /**
    * The list of items the user can select.
    *
@@ -50830,7 +51588,10 @@ export const DropdownButton: FlutterComponent<DropdownButtonProps> =
  *  * [DropdownButton], which is the underlying text field without the [Form]
  *    integration.
  */
-export interface DropdownButtonFormFieldProps {
+export interface DropdownButtonFormFieldProps extends Omit<
+  GestureProps,
+  'onClick'
+> {
   items: FlutterChild[];
   selectedItemBuilder?: (context: BuildContext) => FlutterElement[];
   /**
@@ -50998,7 +51759,7 @@ export const DropdownButtonFormField: FlutterComponent<DropdownButtonFormFieldPr
  * [DropdownButton] widgets placed within material data tables, as
  * required by the Material Design specification.
  */
-export interface DropdownButtonHideUnderlineProps {
+export interface DropdownButtonHideUnderlineProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -51053,7 +51814,7 @@ export const DropdownButtonHideUnderline: FlutterComponent<DropdownButtonHideUnd
  * * [TextField], which is a text input widget that uses an [InputDecoration].
  * * [DropdownMenuEntry], which is used to build the [MenuItemButton] in the [DropdownMenu] list.
  */
-export interface DropdownMenuProps {
+export interface DropdownMenuProps extends GestureProps {
   /**
    * Determine if the [DropdownMenu] is enabled.
    *
@@ -51570,7 +52331,7 @@ export const DropdownMenu: FlutterComponent<DropdownMenuProps> =
  *  * [DropdownMenu], which is the underlying text field without the [Form]
  *    integration.
  */
-export interface DropdownMenuFormFieldProps {
+export interface DropdownMenuFormFieldProps extends GestureProps {
   /**
    * Whether the form is able to receive user input.
    *
@@ -51751,7 +52512,7 @@ export const DropdownMenuFormField: FlutterComponent<DropdownMenuFormFieldProps>
  * The type `T` is the type of the value the entry represents. All the entries
  * in a given menu must represent values with consistent types.
  */
-export interface DropdownMenuItemProps {
+export interface DropdownMenuItemProps extends Omit<GestureProps, 'onClick'> {
   /**
    * The widget below this widget in the tree.
    *
@@ -51804,7 +52565,7 @@ export const DropdownMenuItem: FlutterComponent<DropdownMenuItemProps> =
  * Values specified here are used for [DropdownMenu] properties that are not
  * given an explicit non-null value.
  */
-export interface DropdownMenuThemeProps {
+export interface DropdownMenuThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -51844,7 +52605,7 @@ export const DropdownMenuTheme: FlutterComponent<DropdownMenuThemeProps> =
  * the enter and exit transitions. This ensures that no state information of
  * any descendant widget is lost when the transition starts or completes.
  */
-export interface DualTransitionBuilderProps {
+export interface DualTransitionBuilderProps extends GestureProps {
   /**
    * The widget below this [DualTransitionBuilder] in the tree.
    *
@@ -52142,7 +52903,7 @@ export const DualTransitionBuilder: FlutterComponent<DualTransitionBuilderProps>
  *  * [TextField], which is a full-featured, material-design text input field
  *    with placeholder text, labels, and [Form] integration.
  */
-export interface EditableTextProps {
+export interface EditableTextProps extends GestureProps {
   /**
    * Controls the text being edited.
    */
@@ -53397,7 +54158,10 @@ export const EditableText = Object.assign(
  *  * <https://material.io/design/components/buttons.html>
  *  * <https://m3.material.io/components/buttons>
  */
-export interface ElevatedButtonProps {
+export interface ElevatedButtonProps extends Omit<
+  GestureProps,
+  'onClick' | 'onLongPress'
+> {
   /**
    * Typically the button's label.
    */
@@ -53516,7 +54280,7 @@ export const ElevatedButton: FlutterComponent<ElevatedButtonProps> =
  *  * [ThemeData.elevatedButtonTheme], which can be used to override the default
  *    [ButtonStyle] for [ElevatedButton]s below the overall [Theme].
  */
-export interface ElevatedButtonThemeProps {
+export interface ElevatedButtonThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -53558,7 +54322,7 @@ export const ElevatedButtonTheme: FlutterComponent<ElevatedButtonThemeProps> =
  *  * [DisableWidgetInspectorScope], the widget used to disable the inspector for a widget subtree.
  *  * [WidgetInspector], the widget used to provide inspector support for a widget subtree.
  */
-export interface EnableWidgetInspectorScopeProps {
+export interface EnableWidgetInspectorScopeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -53600,7 +54364,7 @@ export const EnableWidgetInspectorScope: FlutterComponent<EnableWidgetInspectorS
  *  * [Icon], a Material Design icon.
  *  * [ThemeData.platform], which specifies the current platform.
  */
-export interface EndDrawerButtonProps {
+export interface EndDrawerButtonProps extends Omit<GestureProps, 'onClick'> {
   /**
    * The color to use for the icon inside the button, if the icon is enabled.
    * Defaults to leaving this up to the [icon] widget.
@@ -53682,7 +54446,7 @@ export const EndDrawerButton: FlutterComponent<EndDrawerButtonProps> =
  *  * [Icon], a Material Design icon.
  *  * [ThemeData.platform], which specifies the current platform.
  */
-export interface EndDrawerButtonIconProps {}
+export interface EndDrawerButtonIconProps extends GestureProps {}
 
 /**
  * A "end drawer" icon that's appropriate for the current [TargetPlatform].
@@ -53727,7 +54491,7 @@ export const EndDrawerButtonIcon: FlutterComponent<EndDrawerButtonIconProps> =
  *  * <https://docs.flutter.dev/testing/errors>, more information about error
  *    handling in Flutter.
  */
-export interface ErrorWidgetProps {
+export interface ErrorWidgetProps extends GestureProps {
   exception: Object;
 }
 
@@ -53771,7 +54535,7 @@ export const ErrorWidget: FlutterComponent<ErrorWidgetProps> =
  *    and can also be used in the same way as this widget by setting its
  *    `descendantsAreFocusable` attribute.
  */
-export interface ExcludeFocusProps {
+export interface ExcludeFocusProps extends GestureProps {
   /**
    * The child widget of this [ExcludeFocus].
    */
@@ -53830,7 +54594,7 @@ export const ExcludeFocus: FlutterComponent<ExcludeFocusProps> =
  *    and can also be used in the same way as this widget by setting its
  *    `descendantsAreFocusable` attribute.
  */
-export interface ExcludeFocusTraversalProps {
+export interface ExcludeFocusTraversalProps extends GestureProps {
   /**
    * The child widget of this [ExcludeFocusTraversal].
    */
@@ -53886,7 +54650,7 @@ export const ExcludeFocusTraversal: FlutterComponent<ExcludeFocusTraversalProps>
  *
  *  * [BlockSemantics] which drops semantics of widgets earlier in the tree.
  */
-export interface ExcludeSemanticsProps {
+export interface ExcludeSemanticsProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -53931,7 +54695,7 @@ export const ExcludeSemantics: FlutterComponent<ExcludeSemanticsProps> =
  *
  *  * https://material.io/design/iconography/system-icons.html
  */
-export interface ExpandIconProps {
+export interface ExpandIconProps extends Omit<GestureProps, 'onClick'> {
   /**
    * Whether the icon is in an expanded state.
    *
@@ -54062,7 +54826,7 @@ export const ExpandIcon: FlutterComponent<ExpandIconProps> =
  *  * [Spacer], a widget that takes up space proportional to its flex value.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface ExpandedProps {
+export interface ExpandedProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -54155,7 +54919,7 @@ export const Expanded: FlutterComponent<ExpandedProps> =
  *
  *  * [ExpansionTile], a Material-styled widget that expands and collapses.
  */
-export interface ExpansibleProps {
+export interface ExpansibleProps extends GestureProps {
   /**
    * Builds the always-displayed header.
    *
@@ -54312,7 +55076,7 @@ export const Expansible: FlutterComponent<ExpansibleProps> =
  *  * [ExpansionPanelList.radio], a variant of this widget where only one panel is open at a time.
  *  * <https://material.io/design/components/lists.html#types>
  */
-export interface ExpansionPanelListProps {
+export interface ExpansionPanelListProps extends GestureProps {
   /**
    * The children of the expansion panel list. They are laid out in a similar
    * fashion to [ListBody].
@@ -54441,7 +55205,7 @@ export const ExpansionPanelList: FlutterComponent<ExpansionPanelListProps> =
  *  * The "Expand and collapse" section of
  *    <https://material.io/components/lists#types>
  */
-export interface ExpansionTileProps {
+export interface ExpansionTileProps extends GestureProps {
   /**
    * The widgets that are displayed when the tile expands.
    *
@@ -54851,7 +55615,7 @@ export const ExpansionTile: FlutterComponent<ExpansionTileProps> =
  *  * [ThemeData.expansionTileTheme], which can be used to override the default
  *    [ExpansionTileTheme] for [ExpansionTile]s below the overall [Theme].
  */
-export interface ExpansionTileThemeProps {
+export interface ExpansionTileThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -54924,7 +55688,7 @@ export const ExpansionTileTheme: FlutterComponent<ExpansionTileThemeProps> =
  * )
  * ```
  */
-export interface FadeInImageProps {
+export interface FadeInImageProps extends GestureProps {
   /**
    * Image displayed while the target [image] is loading.
    */
@@ -55213,7 +55977,7 @@ export const FadeInImage: FlutterComponent<FadeInImageProps> =
  *    explicit [Animation] argument.
  *  * [SliverFadeTransition], the sliver version of this widget.
  */
-export interface FadeTransitionProps {
+export interface FadeTransitionProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -55334,7 +56098,10 @@ export const FadeTransition: FlutterComponent<FadeTransitionProps> =
  *  * <https://material.io/design/components/buttons.html>
  *  * <https://m3.material.io/components/buttons>
  */
-export interface FilledButtonProps {
+export interface FilledButtonProps extends Omit<
+  GestureProps,
+  'onClick' | 'onLongPress'
+> {
   /**
    * Typically the button's label.
    */
@@ -55461,7 +56228,7 @@ export const FilledButton: FlutterComponent<FilledButtonProps> =
  *  * [ThemeData.filledButtonTheme], which can be used to override the default
  *    [ButtonStyle] for [FilledButton]s below the overall [Theme].
  */
-export interface FilledButtonThemeProps {
+export interface FilledButtonThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -55528,7 +56295,7 @@ export const FilledButtonTheme: FlutterComponent<FilledButtonThemeProps> =
  *    vertical runs.
  *  * <https://material.io/design/components/chips.html>
  */
-export interface FilterChipProps {
+export interface FilterChipProps extends GestureProps {
   avatar?: FlutterChild;
   label: FlutterChild;
   labelStyle?: TextStyleValue;
@@ -55622,7 +56389,7 @@ export const FilterChip: FlutterComponent<FilterChipProps> =
  *   paint time.
  * * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface FittedBoxProps {
+export interface FittedBoxProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -55746,7 +56513,7 @@ export const FittedBox: FlutterComponent<FittedBoxProps> =
  *  * [Wrap], for a widget that allows its children to wrap over multiple _runs_.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface FlexProps {
+export interface FlexProps extends GestureProps {
   /**
    * The widgets below this widget in the tree.
    *
@@ -56010,7 +56777,7 @@ export const Flex: FlutterComponent<FlexProps> =
  *  * [Spacer], a widget that takes up space proportional to its flex value.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface FlexibleProps {
+export interface FlexibleProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -56098,7 +56865,7 @@ export const Flexible: FlutterComponent<FlexibleProps> =
  *  * [AppBar], which is used by [SliverAppBar].
  *  * <https://material.io/design/components/app-bars-top.html#behavior>
  */
-export interface FlexibleSpaceBarProps {
+export interface FlexibleSpaceBarProps extends GestureProps {
   /**
    * The primary contents of the flexible space bar when expanded.
    *
@@ -56206,7 +56973,7 @@ export const FlexibleSpaceBar: FlutterComponent<FlexibleSpaceBarProps> =
  *
  *  * [FlexibleSpaceBar] which creates a flexible space bar.
  */
-export interface FlexibleSpaceBarSettingsProps {
+export interface FlexibleSpaceBarSettingsProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -56312,7 +57079,10 @@ export const FlexibleSpaceBarSettings: FlutterComponent<FlexibleSpaceBarSettings
  *  * <https://material.io/design/components/buttons-floating-action-button.html>
  *  * <https://m3.material.io/components/floating-action-button>
  */
-export interface FloatingActionButtonProps {
+export interface FloatingActionButtonProps extends Omit<
+  GestureProps,
+  'onClick'
+> {
   /**
    * The widget below this widget in the tree.
    *
@@ -56588,7 +57358,7 @@ export const FloatingActionButton: FlutterComponent<FloatingActionButtonProps> =
  * Values specified here are used for [FloatingActionButton] properties that are not
  * given an explicit non-null value.
  */
-export interface FloatingActionButtonThemeProps {
+export interface FloatingActionButtonThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -56677,7 +57447,7 @@ export const FloatingActionButtonTheme: FlutterComponent<FloatingActionButtonThe
  *    children.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface FlowProps {
+export interface FlowProps extends GestureProps {
   /**
    * The widgets below this widget in the tree.
    *
@@ -56821,7 +57591,7 @@ export const Flow: FlutterComponent<FlowProps> =
  *  * [Icon], for showing icons the Material design icon library.
  *  * [ImageIcon], for showing icons from [AssetImage]s or other [ImageProvider]s.
  */
-export interface FlutterLogoProps {
+export interface FlutterLogoProps extends GestureProps {
   /**
    * The size of the logo in logical pixels.
    *
@@ -56965,7 +57735,7 @@ export const FlutterLogo: FlutterComponent<FlutterLogoProps> =
  *  * [FocusTraversalGroup], a widget that groups together and imposes a
  *    traversal policy on the [Focus] nodes below it in the widget hierarchy.
  */
-export interface FocusProps {
+export interface FocusProps extends GestureProps {
   /**
    * The child widget of this [Focus].
    */
@@ -57207,7 +57977,7 @@ export const Focus: FlutterComponent<FocusProps> =
  *  * [FocusTraversalGroup], a widget used to configure the focus traversal
  *    policy for a widget subtree.
  */
-export interface FocusScopeProps {
+export interface FocusScopeProps extends GestureProps {
   /**
    * The child widget of this [Focus].
    */
@@ -57369,7 +58139,7 @@ export const FocusScope: FlutterComponent<FocusScopeProps> =
  *  * [DirectionalFocusTraversalPolicyMixin] a mixin class that implements
  *    focus traversal in a direction.
  */
-export interface FocusTraversalGroupProps {
+export interface FocusTraversalGroupProps extends GestureProps {
   /**
    * The child widget of this [FocusTraversalGroup].
    */
@@ -57461,7 +58231,7 @@ export const FocusTraversalGroup: FlutterComponent<FocusTraversalGroupProps> =
  * The order for a widget is determined by the [FocusOrder] returned by
  * [FocusTraversalOrder.of] for a particular context.
  */
-export interface FocusTraversalOrderProps {
+export interface FocusTraversalOrderProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -57517,7 +58287,7 @@ export const FocusTraversalOrder: FlutterComponent<FocusTraversalOrderProps> =
  *
  * It hosts its own [FocusNode] or uses [focusNode], if given.
  */
-export interface FocusableActionDetectorProps {
+export interface FocusableActionDetectorProps extends GestureProps {
   /**
    * The child widget for this [FocusableActionDetector] widget.
    */
@@ -57631,7 +58401,7 @@ export const FocusableActionDetector: FlutterComponent<FocusableActionDetectorPr
  *  * [FormField], a single form field widget that maintains the current state.
  *  * [TextFormField], a convenience widget that wraps a [TextField] widget in a [FormField].
  */
-export interface FormProps {
+export interface FormProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -57748,7 +58518,7 @@ export const Form: FlutterComponent<FormProps> =
  *  * [Form], which is the widget that aggregates the form fields.
  *  * [TextField], which is a commonly used form field for entering text.
  */
-export interface FormFieldProps {
+export interface FormFieldProps extends GestureProps {
   /**
    * Function that returns the widget representing this form field.
    *
@@ -57902,7 +58672,7 @@ export const FormField: FlutterComponent<FormFieldProps> =
  *    transformation instead of an offset scaled to the child.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface FractionalTranslationProps {
+export interface FractionalTranslationProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -57963,7 +58733,7 @@ export const FractionalTranslation: FlutterComponent<FractionalTranslationProps>
  *    parent.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface FractionallySizedBoxProps {
+export interface FractionallySizedBoxProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -58109,7 +58879,7 @@ export const FractionallySizedBox: FlutterComponent<FractionallySizedBoxProps> =
  *
  * ** See code in examples/api/lib/widgets/async/future_builder.0.dart **
  */
-export interface FutureBuilderProps {
+export interface FutureBuilderProps extends GestureProps {
   /**
    * The asynchronous computation to which this builder is currently connected,
    * possibly null.
@@ -59258,7 +60028,7 @@ export const GestureDetector: FlutterComponent<GestureDetectorProps> =
  *    [OverscrollIndicatorNotification].
  *  * [StretchingOverscrollIndicator], a Material Design overscroll indicator.
  */
-export interface GlowingOverscrollIndicatorProps {
+export interface GlowingOverscrollIndicatorProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -59379,7 +60149,7 @@ export const GlowingOverscrollIndicator: FlutterComponent<GlowingOverscrollIndic
  *
  * The grid is drawn over the [child] widget.
  */
-export interface GridPaperProps {
+export interface GridPaperProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -59449,7 +60219,7 @@ export const GridPaper: FlutterComponent<GridPaperProps> =
  *    [footer].
  *  * <https://material.io/design/components/image-lists.html>
  */
-export interface GridTileProps {
+export interface GridTileProps extends GestureProps {
   /**
    * The widget that fills the tile.
    */
@@ -59498,7 +60268,7 @@ export const GridTile: FlutterComponent<GridTileProps> =
  *  * [GridTile]
  *  * <https://material.io/design/components/image-lists.html#anatomy>
  */
-export interface GridTileBarProps {
+export interface GridTileBarProps extends GestureProps {
   /**
    * The color to paint behind the child widgets.
    *
@@ -59779,7 +60549,7 @@ export const GridTileBar: FlutterComponent<GridTileBarProps> =
  *    the scroll position without using a [ScrollController].
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface GridViewProps {
+export interface GridViewProps extends GestureProps {
   children?: FlutterChildren;
   /**
    * The [Axis] along which the scroll view's offset increases.
@@ -60298,7 +61068,7 @@ export const GridView: FlutterComponent<GridViewProps> =
  *
  * ![Diagrams with parts of the Hero transition.](https://flutter.github.io/assets-for-api-docs/assets/interaction/heroes.png)
  */
-export interface HeroProps {
+export interface HeroProps extends GestureProps {
   /**
    * The widget subtree that will "fly" from one route to another during a
    * [Navigator] push or pop transition.
@@ -60514,7 +61284,7 @@ export const Hero: FlutterComponent<HeroProps> =
  * subscribes to more than one navigators. This can happen when there are
  * multiple navigators under the same [HeroControllerScope] in parallel.
  */
-export interface HeroControllerScopeProps {
+export interface HeroControllerScopeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -60554,7 +61324,7 @@ export const HeroControllerScope: FlutterComponent<HeroControllerScopeProps> =
  * When [enabled] is true (the default), [Hero] widgets may be involved in
  * hero animations, as usual.
  */
-export interface HeroModeProps {
+export interface HeroModeProps extends GestureProps {
   /**
    * The subtree to place inside the [HeroMode].
    */
@@ -60848,7 +61618,7 @@ export const HeroMode: FlutterComponent<HeroModeProps> =
  * it can be set to `false`, so the engine doesn't _waste_ an overlay to render
  * Flutter content on top of views that don't paint any pixels.
  */
-export interface HtmlElementViewProps {
+export interface HtmlElementViewProps extends GestureProps {
   /**
    * The unique identifier for the HTML view type to be embedded by this widget.
    *
@@ -61190,7 +61960,7 @@ export const HtmlElementView: FlutterComponent<HtmlElementViewProps> =
  *  * [IconTheme], which provides ambient configuration for icons.
  *  * [ImageIcon], for showing icons from [AssetImage]s or other [ImageProvider]s.
  */
-export interface IconProps {
+export interface IconProps extends GestureProps {
   /**
    * The icon to display. The available icons are described in [Icons].
    *
@@ -61550,7 +62320,10 @@ export const Icon: FlutterComponent<IconProps> =
  *  * [TextButton], [ElevatedButton], [OutlinedButton], for buttons with text labels and an optional icon.
  *  * [InkResponse] and [InkWell], for the ink splash effect itself.
  */
-export interface IconButtonProps {
+export interface IconButtonProps extends Omit<
+  GestureProps,
+  'onClick' | 'onLongPress'
+> {
   /**
    * The size of the icon inside the button.
    *
@@ -61988,7 +62761,7 @@ export const IconButton: FlutterComponent<IconButtonProps> =
  *  * [ThemeData.iconButtonTheme], which can be used to override the default
  *    [ButtonStyle] for [IconButton]s below the overall [Theme].
  */
-export interface IconButtonThemeProps {
+export interface IconButtonThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -62022,7 +62795,7 @@ export const IconButtonTheme: FlutterComponent<IconButtonThemeProps> =
  *
  * The icon theme is honored by [Icon] and [ImageIcon] widgets.
  */
-export interface IconThemeProps {
+export interface IconThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -62053,7 +62826,7 @@ export const IconTheme: FlutterComponent<IconThemeProps> =
  *
  *  * [Baseline], a widget that positions a child relative to a baseline.
  */
-export interface IgnoreBaselineProps {
+export interface IgnoreBaselineProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -62121,7 +62894,7 @@ export const IgnoreBaseline: FlutterComponent<IgnoreBaselineProps> =
  *    events but is itself visible to hit testing.
  *  * [SliverIgnorePointer], the sliver version of this widget.
  */
-export interface IgnorePointerProps {
+export interface IgnorePointerProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -62298,7 +63071,7 @@ export const IgnorePointer: FlutterComponent<IgnorePointerProps> =
  *  * Cookbook: [Display images from the internet](https://docs.flutter.dev/cookbook/images/network-image)
  *  * Cookbook: [Fade in images with a placeholder](https://docs.flutter.dev/cookbook/images/fading-in-images)
  */
-export interface ImageProps {
+export interface ImageProps extends GestureProps {
   /**
    * The image to display.
    */
@@ -62747,7 +63520,7 @@ export const Image: FlutterComponent<ImageProps> =
  *   beneath its child.
  * * [ColorFiltered], which applies a [ColorFilter] to its child.
  */
-export interface ImageFilteredProps {
+export interface ImageFilteredProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -62802,7 +63575,7 @@ export const ImageFiltered: FlutterComponent<ImageFilteredProps> =
  *  * [Icon], for icons based on glyphs from fonts instead of images.
  *  * [Icons], the library of Material Icons.
  */
-export interface ImageIconProps {
+export interface ImageIconProps extends GestureProps {
   /**
    * The image to display as the icon.
    *
@@ -62903,7 +63676,7 @@ export const ImageIcon: FlutterComponent<ImageIconProps> =
  *
  *  * [CustomScrollView], for an explanation of index semantics.
  */
-export interface IndexedSemanticsProps {
+export interface IndexedSemanticsProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -62968,7 +63741,7 @@ export const IndexedSemantics: FlutterComponent<IndexedSemanticsProps> =
  *  * [Stack], for more details about stacks.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface IndexedStackProps {
+export interface IndexedStackProps extends GestureProps {
   /**
    * The child widgets of the stack.
    *
@@ -63037,7 +63810,7 @@ export const IndexedStack: FlutterComponent<IndexedStackProps> =
 /**
  * Provides a [CupertinoTheme] to all descendants.
  */
-export interface InheritedCupertinoThemeProps {
+export interface InheritedCupertinoThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -63176,7 +63949,7 @@ export const InheritedCupertinoTheme: FlutterComponent<InheritedCupertinoThemePr
  *    on [Material] widgets.
  *  * [InkWell] and [InkResponse], which also draw on [Material] widgets.
  */
-export interface InkProps {
+export interface InkProps extends GestureProps {
   /**
    * The [child] contained by the container.
    */
@@ -63416,7 +64189,20 @@ export const Ink: FlutterComponent<InkProps> = declareWidget<InkProps>('Ink');
  *  * [ElevatedButton] and [TextButton], two kinds of buttons in Material Design.
  *  * [IconButton], which combines [InkResponse] with an [Icon].
  */
-export interface InkResponseProps {
+export interface InkResponseProps extends Omit<
+  GestureProps,
+  | 'onTapDown'
+  | 'onTapUp'
+  | 'onClick'
+  | 'onTapCancel'
+  | 'onSecondaryTap'
+  | 'onSecondaryTapDown'
+  | 'onSecondaryTapUp'
+  | 'onSecondaryTapCancel'
+  | 'onDoubleTap'
+  | 'onLongPress'
+  | 'onLongPressUp'
+> {
   /**
    * The widget below this widget in the tree.
    */
@@ -63912,7 +64698,20 @@ export const InkResponse: FlutterComponent<InkResponseProps> =
  *  * [InkResponse], a variant of [InkWell] that doesn't force a rectangular
  *    shape on the ink reaction.
  */
-export interface InkWellProps {
+export interface InkWellProps extends Omit<
+  GestureProps,
+  | 'onTapDown'
+  | 'onTapUp'
+  | 'onClick'
+  | 'onTapCancel'
+  | 'onSecondaryTap'
+  | 'onSecondaryTapDown'
+  | 'onSecondaryTapUp'
+  | 'onSecondaryTapCancel'
+  | 'onDoubleTap'
+  | 'onLongPress'
+  | 'onLongPressUp'
+> {
   /**
    * The widget below this widget in the tree.
    */
@@ -64338,7 +65137,7 @@ export const InkWell: FlutterComponent<InkWellProps> =
  *    vertical runs.
  *  * <https://material.io/design/components/chips.html>
  */
-export interface InputChipProps {
+export interface InputChipProps extends Omit<GestureProps, 'onClick'> {
   avatar?: FlutterChild;
   label: FlutterChild;
   labelStyle?: TextStyleValue;
@@ -64454,7 +65253,7 @@ export const InputChip: FlutterComponent<InputChipProps> =
  *  * [MaterialLocalizations.parseCompactDate], which is used to parse the text
  *    input into a [DateTime].
  */
-export interface InputDatePickerFormFieldProps {
+export interface InputDatePickerFormFieldProps extends GestureProps {
   /**
    * If provided, it will be used as the default value of the field.
    */
@@ -64564,7 +65363,7 @@ export const InputDatePickerFormField: FlutterComponent<InputDatePickerFormField
  *  * [ThemeData.inputDecorationTheme], which specifies an input decoration theme as
  *    part of the overall Material theme.
  */
-export interface InputDecorationThemeProps {
+export interface InputDecorationThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -64654,7 +65453,7 @@ export const InputDecorationTheme: FlutterComponent<InputDecorationThemeProps> =
  *  * [Decoration] and [DecoratedBox], for drawing arbitrary decorations
  *    around other widgets.
  */
-export interface InputDecoratorProps {
+export interface InputDecoratorProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -64800,7 +65599,7 @@ export const InputDecorator: FlutterComponent<InputDecoratorProps> =
  *
  * ** See code in examples/api/lib/widgets/interactive_viewer/interactive_viewer.0.dart **
  */
-export interface InteractiveViewerProps {
+export interface InteractiveViewerProps extends GestureProps {
   /**
    * The child [Widget] that is transformed by InteractiveViewer.
    *
@@ -65092,7 +65891,7 @@ export const InteractiveViewer: FlutterComponent<InteractiveViewerProps> =
  *    height to be smaller than that of its parent.
  *  * [The catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface IntrinsicHeightProps {
+export interface IntrinsicHeightProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -65172,7 +65971,7 @@ export const IntrinsicHeight: FlutterComponent<IntrinsicHeightProps> =
  *    width to be smaller than that of its parent.
  *  * [The catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface IntrinsicWidthProps {
+export interface IntrinsicWidthProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -65293,7 +66092,7 @@ export const IntrinsicWidth: FlutterComponent<IntrinsicWidthProps> =
  *    methods for clients of [AutomaticKeepAlive]. Used with [State]
  *    subclasses.
  */
-export interface KeepAliveProps {
+export interface KeepAliveProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -65381,7 +66180,7 @@ export const KeepAlive: FlutterComponent<KeepAliveProps> =
  *  * [EditableText], which should be used instead of this widget for text
  *    entry.
  */
-export interface KeyboardListenerProps {
+export interface KeyboardListenerProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -65422,7 +66221,7 @@ export const KeyboardListener: FlutterComponent<KeyboardListenerProps> =
  *
  * Useful for attaching a key to an existing widget.
  */
-export interface KeyedSubtreeProps {
+export interface KeyedSubtreeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -65465,7 +66264,7 @@ export const KeyedSubtree: FlutterComponent<KeyedSubtreeProps> =
  *  * [CustomSingleChildLayout], which positions its child during layout.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface LayoutBuilderProps {
+export interface LayoutBuilderProps extends GestureProps {
   builder: (
     context: BuildContext,
     constraints: BoxConstraints,
@@ -65510,7 +66309,7 @@ export const LayoutBuilder: FlutterComponent<LayoutBuilderProps> =
  * [MultiChildLayoutDelegate.layoutChild], and
  * [MultiChildLayoutDelegate.positionChild] methods use these identifiers.
  */
-export interface LayoutIdProps {
+export interface LayoutIdProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -65549,7 +66348,7 @@ export const LayoutId: FlutterComponent<LayoutIdProps> =
  * The licenses shown on the [LicensePage] are those returned by the
  * [LicenseRegistry] API, which can be used to add more licenses to the list.
  */
-export interface LicensePageProps {
+export interface LicensePageProps extends GestureProps {
   /**
    * The name of the application.
    *
@@ -65624,7 +66423,7 @@ export const LicensePage: FlutterComponent<LicensePageProps> =
  *    specifying the height or width.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface LimitedBoxProps {
+export interface LimitedBoxProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -65715,7 +66514,7 @@ export const LimitedBox: FlutterComponent<LimitedBoxProps> =
  *    when the underlying vertical scrollable is overscrolled.
  *  * <https://material.io/design/components/progress-indicators.html#linear-progress-indicators>
  */
-export interface LinearProgressIndicatorProps {
+export interface LinearProgressIndicatorProps extends GestureProps {
   /**
    * If non-null, the value of this progress indicator.
    *
@@ -65943,7 +66742,7 @@ export const LinearProgressIndicator = Object.assign(
  *    layout algorithm.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface ListBodyProps {
+export interface ListBodyProps extends GestureProps {
   /**
    * The widgets below this widget in the tree.
    *
@@ -66240,7 +67039,10 @@ export const ListBody: FlutterComponent<ListBodyProps> =
  *  * Cookbook: [Use lists](https://docs.flutter.dev/cookbook/lists/basic-list)
  *  * Cookbook: [Implement swipe to dismiss](https://docs.flutter.dev/cookbook/gestures/dismissible)
  */
-export interface ListTileProps {
+export interface ListTileProps extends Omit<
+  GestureProps,
+  'onClick' | 'onLongPress'
+> {
   /**
    * A widget to display before the title.
    *
@@ -66796,7 +67598,7 @@ export const ListTile: FlutterComponent<ListTileProps> =
  * The [Drawer] widget specifies a tile theme for its children which sets
  * [style] to [ListTileStyle.drawer].
  */
-export interface ListTileThemeProps {
+export interface ListTileThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -67169,7 +67971,7 @@ export const ListTileTheme: FlutterComponent<ListTileThemeProps> =
  *  * Cookbook: [Create lists with different types of items](https://docs.flutter.dev/cookbook/lists/mixed-list)
  *  * Cookbook: [Implement swipe to dismiss](https://docs.flutter.dev/cookbook/gestures/dismissible)
  */
-export interface ListViewProps {
+export interface ListViewProps extends GestureProps {
   children?: FlutterChildren;
   /**
    * The [Axis] along which the scroll view's offset increases.
@@ -67775,7 +68577,7 @@ export const ListView: FlutterComponent<ListViewProps> =
  * The children are rendered as if rotating on a wheel instead of scrolling on
  * a plane.
  */
-export interface ListWheelScrollViewProps {
+export interface ListWheelScrollViewProps extends GestureProps {
   children: FlutterChildren;
   /**
    * Typically a [FixedExtentScrollController] used to control the current item.
@@ -67884,7 +68686,7 @@ export const ListWheelScrollView: FlutterComponent<ListWheelScrollViewProps> =
  *  * [RenderListWheelViewport], the render object that renders the children
  *    on a wheel.
  */
-export interface ListWheelViewportProps {
+export interface ListWheelViewportProps extends GestureProps {
   diameterRatio?: number;
   perspective?: number;
   offAxisFraction?: number;
@@ -67985,7 +68787,7 @@ export const ListWheelViewport: FlutterComponent<ListWheelViewportProps> =
  * * [ValueListenableBuilder], which is specialized for [ValueNotifier]s and
  *   reports the new value in its builder callback.
  */
-export interface ListenableBuilderProps {
+export interface ListenableBuilderProps extends GestureProps {
   /**
    * The child widget to pass to the [builder].
    */
@@ -68092,7 +68894,7 @@ export const ListenableBuilder: FlutterComponent<ListenableBuilderProps> =
  *
  * ** See code in examples/api/lib/widgets/basic/listener.0.dart **
  */
-export interface ListenerProps {
+export interface ListenerProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -68291,7 +69093,7 @@ export const Listener: FlutterComponent<ListenerProps> =
  * support the appropriate [Directionality.textDirection] of the localized
  * resources.
  */
-export interface LocalizationsProps {
+export interface LocalizationsProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -68434,7 +69236,7 @@ export const Localizations: FlutterComponent<LocalizationsProps> =
  *  * [Draggable], similar to the [LongPressDraggable] widget but happens immediately.
  *  * [DragTarget], a widget that receives data when a [Draggable] widget is dropped.
  */
-export interface LongPressDraggableProps {
+export interface LongPressDraggableProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -68689,7 +69491,7 @@ export const LongPressDraggable: FlutterComponent<LongPressDraggableProps> =
  * anomalies. Those subtrees are expected to introduce their own [Material]
  * widget that buttons there can utilize without crossing a lookup boundary.
  */
-export interface LookupBoundaryProps {
+export interface LookupBoundaryProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -68772,7 +69574,7 @@ export const LookupBoundary: FlutterComponent<LookupBoundaryProps> =
  * code, where possible, and on eyeballing a Pixel 6 running Android 12
  * otherwise.
  */
-export interface MagnifierProps {
+export interface MagnifierProps extends GestureProps {
   /**
    * Any additional offset the focal point requires to "point"
    * to the correct place.
@@ -68951,7 +69753,7 @@ export const Magnifier = Object.assign(
  *  * <https://material.io/design/>
  *  * <https://m3.material.io/styles/color/the-color-system/color-roles>
  */
-export interface MaterialProps {
+export interface MaterialProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -69330,7 +70132,7 @@ export const Material = Object.assign(
  *  * The Flutter Internationalization Tutorial,
  *    <https://flutter.dev/to/internationalization/>.
  */
-export interface MaterialAppProps {
+export interface MaterialAppProps extends GestureProps {
   navigatorKey?: GlobalKey;
   /**
    * A key to use when building the [ScaffoldMessenger].
@@ -69935,7 +70737,7 @@ export const MaterialApp: FlutterComponent<MaterialAppProps> =
  *
  * This widget is unrelated to the widgets library [Banner] widget.
  */
-export interface MaterialBannerProps {
+export interface MaterialBannerProps extends GestureProps {
   /**
    * The content of the [MaterialBanner].
    *
@@ -70109,7 +70911,7 @@ export const MaterialBanner: FlutterComponent<MaterialBannerProps> =
  * Values specified here are used for [MaterialBanner] properties that are not
  * given an explicit non-null value.
  */
-export interface MaterialBannerThemeProps {
+export interface MaterialBannerThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -70161,7 +70963,10 @@ export const MaterialBannerTheme: FlutterComponent<MaterialBannerThemeProps> =
  *
  *  * [IconButton], to create buttons that contain icons rather than text.
  */
-export interface MaterialButtonProps {
+export interface MaterialButtonProps extends Omit<
+  GestureProps,
+  'onClick' | 'onLongPress'
+> {
   /**
    * The button's label.
    *
@@ -70519,7 +71324,7 @@ export const MaterialButton: FlutterComponent<MaterialButtonProps> =
  *  * [RotationTransition], which animates the rotation of a widget, by
  *    providing a matrix which rotates along the Z axis.
  */
-export interface MatrixTransitionProps {
+export interface MatrixTransitionProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -70599,7 +71404,7 @@ export const MatrixTransition: FlutterComponent<MatrixTransitionProps> =
  *    it up to date with the current screen metrics as they change.
  *  * [MediaQueryData], the data structure that represents the metrics.
  */
-export interface MediaQueryProps {
+export interface MediaQueryProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -70659,7 +71464,7 @@ export const MediaQuery: FlutterComponent<MediaQueryProps> =
  * [MenuAnchor] or [MenuBar]. Provided menu items such as [MenuItemButton] and
  * [SubmenuButton] already supply this wrapper internally.
  */
-export interface MenuAcceleratorCallbackBindingProps {
+export interface MenuAcceleratorCallbackBindingProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -70734,7 +71539,7 @@ export const MenuAcceleratorCallbackBinding: FlutterComponent<MenuAcceleratorCal
  *
  * ** See code in examples/api/lib/material/menu_anchor/menu_accelerator_label.0.dart **
  */
-export interface MenuAcceleratorLabelProps {
+export interface MenuAcceleratorLabelProps extends GestureProps {
   /**
    * The label string that should be displayed.
    *
@@ -70858,7 +71663,7 @@ export const MenuAcceleratorLabel: FlutterComponent<MenuAcceleratorLabelProps> =
  * The [MenuStyle.visualDensity] setting only affects horizontal padding,
  * and it will never make it negative. Vertical padding is not affected at all.
  */
-export interface MenuAnchorProps {
+export interface MenuAnchorProps extends GestureProps {
   /**
    * The optional child to be passed to the [builder].
    *
@@ -71170,7 +71975,7 @@ export const MenuAnchor: FlutterComponent<MenuAnchorProps> =
  * * [CallbackShortcuts], to define shortcuts that call a callback without
  *   involving [Actions].
  */
-export interface MenuBarProps {
+export interface MenuBarProps extends GestureProps {
   /**
    * The list of menu items that are the top level children of the [MenuBar].
    *
@@ -71283,7 +72088,7 @@ export const MenuBar: FlutterComponent<MenuBarProps> =
  *   properties.
  * * [MenuBar], a widget that creates a menu bar that can use [SubmenuButton]s.
  */
-export interface MenuBarThemeProps {
+export interface MenuBarThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -71340,7 +72145,7 @@ export const MenuBarTheme: FlutterComponent<MenuBarThemeProps> =
  *   [ButtonStyle] for [MenuItemButton]s and [SubmenuButton]s below the overall
  *   [Theme].
  */
-export interface MenuButtonThemeProps {
+export interface MenuButtonThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -71400,7 +72205,7 @@ export const MenuButtonTheme: FlutterComponent<MenuButtonThemeProps> =
  * * [CallbackShortcuts] to define shortcuts that call a callback without
  *   involving [Actions].
  */
-export interface MenuItemButtonProps {
+export interface MenuItemButtonProps extends Omit<GestureProps, 'onClick'> {
   /**
    * The widget displayed in the center of this button.
    *
@@ -71552,7 +72357,7 @@ export const MenuItemButton: FlutterComponent<MenuItemButtonProps> =
  * * [SubmenuButton], a widget that specifies an item with a cascading submenu
  *   in a [MenuBar] menu.
  */
-export interface MenuThemeProps {
+export interface MenuThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -71629,7 +72434,7 @@ export const MenuTheme: FlutterComponent<MenuThemeProps> =
  * the first one in tree order will be the one to receive the
  * callbacks.
  */
-export interface MergeSemanticsProps {
+export interface MergeSemanticsProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -71701,7 +72506,7 @@ export const MergeSemantics: FlutterComponent<MergeSemanticsProps> =
  *  * [Card], a piece of material that does not support splitting and merging
  *    but otherwise looks the same.
  */
-export interface MergeableMaterialProps {
+export interface MergeableMaterialProps extends GestureProps {
   /**
    * The main layout axis.
    */
@@ -71763,7 +72568,7 @@ export const MergeableMaterial: FlutterComponent<MergeableMaterialProps> =
  * be used when the user interacts with the render tree but has no visual
  * impact prior to the interaction.
  */
-export interface MetaDataProps {
+export interface MetaDataProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -71805,7 +72610,7 @@ export const MetaData: FlutterComponent<MetaDataProps> =
  *  * [AnimatedModalBarrier], which is similar but takes an animated [color]
  *    instead of a single color value.
  */
-export interface ModalBarrierProps {
+export interface ModalBarrierProps extends GestureProps {
   /**
    * If non-null, fill the barrier with this color.
    *
@@ -71922,7 +72727,7 @@ export const ModalBarrier: FlutterComponent<ModalBarrierProps> =
  *  * [Listener], a similar widget that tracks pointer events when the pointer
  *    has buttons pressed.
  */
-export interface MouseRegionProps {
+export interface MouseRegionProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -72165,7 +72970,7 @@ export const MouseRegion: FlutterComponent<MouseRegionProps> =
  *  * <https://api.flutter.dev/flutter/material/NavigationDestination-class.html>
  *  * <https://m3.material.io/components/navigation-bar>
  */
-export interface NavigationBarProps {
+export interface NavigationBarProps extends GestureProps {
   /**
    * Determines the transition time for each destination as it goes between
    * selected and unselected.
@@ -72401,7 +73206,7 @@ export const NavigationBar: FlutterComponent<NavigationBarProps> =
  *  * [ThemeData.navigationBarTheme], which describes the
  *    [NavigationBarThemeData] in the overall theme for the application.
  */
-export interface NavigationBarThemeProps {
+export interface NavigationBarThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -72441,7 +73246,7 @@ export const NavigationBarTheme: FlutterComponent<NavigationBarThemeProps> =
  *
  *  * [NavigationBar], for an interactive code sample.
  */
-export interface NavigationDestinationProps {
+export interface NavigationDestinationProps extends GestureProps {
   /**
    * The [Widget] (usually an [Icon]) that's displayed for this
    * [NavigationDestination].
@@ -72537,7 +73342,7 @@ export const NavigationDestination: FlutterComponent<NavigationDestinationProps>
  *  * [ScaffoldState.openDrawer], which displays its [Drawer], if any.
  *  * <https://material.io/design/components/navigation-drawer.html>
  */
-export interface NavigationDrawerProps {
+export interface NavigationDrawerProps extends GestureProps {
   /**
    * Defines the appearance of the items within the navigation drawer.
    *
@@ -72673,7 +73478,7 @@ export const NavigationDrawer: FlutterComponent<NavigationDrawerProps> =
  *
  * Displays an icon with a label, for use in [NavigationDrawer.children].
  */
-export interface NavigationDrawerDestinationProps {
+export interface NavigationDrawerDestinationProps extends GestureProps {
   /**
    * The background color of the destination.
    *
@@ -72743,7 +73548,7 @@ export const NavigationDrawerDestination: FlutterComponent<NavigationDrawerDesti
  *  * [ThemeData.navigationDrawerTheme], which describes the
  *    [NavigationDrawerThemeData] in the overall theme for the application.
  */
-export interface NavigationDrawerThemeProps {
+export interface NavigationDrawerThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -72784,7 +73589,7 @@ export const NavigationDrawerTheme: FlutterComponent<NavigationDrawerThemeProps>
  * Used in a [Stack] widget behind the icons in the Material 3 Navigation Bar
  * to illuminate the selected destination.
  */
-export interface NavigationIndicatorProps {
+export interface NavigationIndicatorProps extends GestureProps {
   /**
    * Determines the scale of the indicator.
    *
@@ -72882,7 +73687,7 @@ export const NavigationIndicator: FlutterComponent<NavigationIndicatorProps> =
  *  * <https://material.io/components/navigation-rail/>
  *  * <https://m3.material.io/components/navigation-rail>
  */
-export interface NavigationRailProps {
+export interface NavigationRailProps extends GestureProps {
   /**
    * Sets the color of the Container that holds all of the [NavigationRail]'s
    * contents.
@@ -73207,7 +74012,7 @@ export const NavigationRail: FlutterComponent<NavigationRailProps> =
  * Values specified here are used for [NavigationRail] properties that are not
  * given an explicit non-null value.
  */
-export interface NavigationRailThemeProps {
+export interface NavigationRailThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -73247,7 +74052,7 @@ export const NavigationRailTheme: FlutterComponent<NavigationRailThemeProps> =
  * the iOS [CupertinoNavigationBar] or wrap this widget with more theming
  * specifications for your own custom app bar.
  */
-export interface NavigationToolbarProps {
+export interface NavigationToolbarProps extends GestureProps {
   /**
    * Widget to place at the start of the horizontal toolbar.
    */
@@ -73595,7 +74400,7 @@ export const NavigationToolbar = Object.assign(
  * store and restore their own state. As an example, the [ModalRoute] will
  * use this ID to create a [RestorationScope] for its content widgets.
  */
-export interface NavigatorProps {
+export interface NavigatorProps extends GestureProps {
   /**
    * The list of pages with which to populate the history.
    *
@@ -74157,7 +74962,7 @@ export const Navigator = Object.assign(
  *  * [NavigationNotification], which indicates whether a [Navigator] in a
  *    subtree can handle pops.
  */
-export interface NavigatorPopHandlerProps {
+export interface NavigatorPopHandlerProps extends GestureProps {
   /**
    * The widget to place below this in the widget tree.
    *
@@ -74371,7 +75176,7 @@ export const NavigatorPopHandler: FlutterComponent<NavigatorPopHandlerProps> =
  *  * [SliverOverlapInjector], a sliver that has a sliver geometry based on
  *    the values stored in a [SliverOverlapAbsorberHandle].
  */
-export interface NestedScrollViewProps {
+export interface NestedScrollViewProps extends GestureProps {
   /**
    * An object that can be used to control the position to which the outer
    * scroll view is scrolled.
@@ -74641,7 +75446,7 @@ export const NestedScrollView: FlutterComponent<NestedScrollViewProps> =
  * This viewport takes a [SliverOverlapAbsorberHandle] and notifies it any time
  * the viewport needs to recompute its layout (e.g. when it is scrolled).
  */
-export interface NestedScrollViewViewportProps {
+export interface NestedScrollViewViewportProps extends GestureProps {
   /**
    * The direction in which the [offset]'s [ViewportOffset.pixels] increases.
    *
@@ -74722,7 +75527,7 @@ export const NestedScrollViewViewport: FlutterComponent<NestedScrollViewViewport
  *
  * To dispatch notifications, use the [Notification.dispatch] method.
  */
-export interface NotificationListenerProps {
+export interface NotificationListenerProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -74793,7 +75598,7 @@ export const NotificationListener: FlutterComponent<NotificationListenerProps> =
  *  * [SliverOffstage], the sliver version of this widget.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface OffstageProps {
+export interface OffstageProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -74948,7 +75753,7 @@ export const Offstage: FlutterComponent<OffstageProps> =
  *    paint time.
  *  * [SliverOpacity], the sliver version of this widget.
  */
-export interface OpacityProps {
+export interface OpacityProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -75091,7 +75896,7 @@ export const Opacity: FlutterComponent<OpacityProps> =
  *  * [MediaQueryData.orientation], which exposes whether the device is in
  *    landscape or portrait mode.
  */
-export interface OrientationBuilderProps {
+export interface OrientationBuilderProps extends GestureProps {
   /**
    * Builds the widgets below this widget given this widget's orientation.
    *
@@ -75165,7 +75970,10 @@ export const OrientationBuilder: FlutterComponent<OrientationBuilderProps> =
  *  * <https://material.io/design/components/buttons.html>
  *  * <https://m3.material.io/components/buttons>
  */
-export interface OutlinedButtonProps {
+export interface OutlinedButtonProps extends Omit<
+  GestureProps,
+  'onClick' | 'onLongPress'
+> {
   /**
    * Typically the button's label.
    */
@@ -75288,7 +76096,7 @@ export const OutlinedButton: FlutterComponent<OutlinedButtonProps> =
  *  * [ThemeData.outlinedButtonTheme], which can be used to override the default
  *    [ButtonStyle] for [OutlinedButton]s below the overall [Theme].
  */
-export interface OutlinedButtonThemeProps {
+export interface OutlinedButtonThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -75344,7 +76152,7 @@ export const OutlinedButtonTheme: FlutterComponent<OutlinedButtonThemeProps> =
  *
  * ** See code in examples/api/lib/widgets/overflow_bar/overflow_bar.0.dart **
  */
-export interface OverflowBarProps {
+export interface OverflowBarProps extends GestureProps {
   /**
    * The widgets below this widget in the tree.
    *
@@ -75582,7 +76390,7 @@ export const OverflowBar: FlutterComponent<OverflowBarProps> =
  *  * [SizedBox], a box with a specified size.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface OverflowBoxProps {
+export interface OverflowBoxProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -75705,7 +76513,7 @@ export const OverflowBox: FlutterComponent<OverflowBoxProps> =
  *  * [CupertinoApp], which inserts an [Overlay] widget indirectly via its [Navigator].
  *  * [Stack], which allows directly displaying a stack of widgets.
  */
-export interface OverlayProps {
+export interface OverlayProps extends GestureProps {
   /**
    * The entries to include in the overlay initially.
    *
@@ -75859,7 +76667,7 @@ export const Overlay: FlutterComponent<OverlayProps> =
  *  * [CompositedTransformFollower], which can be used to position the overlay
  *    child in relation to the linked [CompositedTransformTarget] widget.
  */
-export interface OverlayPortalProps {
+export interface OverlayPortalProps extends GestureProps {
   /**
    * A widget below this widget in the tree.
    */
@@ -76024,7 +76832,7 @@ export const OverlayPortal: FlutterComponent<OverlayPortalProps> =
  *  * [SliverPadding], the sliver equivalent of this widget.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface PaddingProps {
+export interface PaddingProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -76124,7 +76932,7 @@ export const Padding: FlutterComponent<PaddingProps> =
  *
  *  * [ModalRoute], which includes this class.
  */
-export interface PageStorageProps {
+export interface PageStorageProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -76210,7 +77018,7 @@ export const PageStorage: FlutterComponent<PageStorageProps> =
  *  * [ScrollNotification] and [NotificationListener], which can be used to watch
  *    the scroll position without using a [ScrollController].
  */
-export interface PageViewProps {
+export interface PageViewProps extends GestureProps {
   children?: FlutterChildren;
   /**
    * The [Axis] along which the scroll view's offset increases with each page.
@@ -76415,7 +77223,7 @@ export const PageView: FlutterComponent<PageViewProps> =
  *    package, for displaying large amounts of data without pagination.
  *  * <https://material.io/go/design-data-tables>
  */
-export interface PaginatedDataTableProps {
+export interface PaginatedDataTableProps extends GestureProps {
   /**
    * The table card's optional header.
    *
@@ -76652,7 +77460,7 @@ export const PaginatedDataTable = Object.assign(
  * [MaterialApp.showPerformanceOverlay] or [WidgetsApp.showPerformanceOverlay]
  * to true.
  */
-export interface PerformanceOverlayProps {
+export interface PerformanceOverlayProps extends GestureProps {
   /**
    * The mask is created by shifting 1 by the index of the specific
    * [PerformanceOverlayOption] to enable.
@@ -76697,7 +77505,7 @@ export const PerformanceOverlay: FlutterComponent<PerformanceOverlayProps> =
  *  * [DecoratedBox], which can apply more arbitrary shadow effects.
  *  * [ClipRect], which applies a clip to its child.
  */
-export interface PhysicalModelProps {
+export interface PhysicalModelProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -76776,7 +77584,7 @@ export const PhysicalModel: FlutterComponent<PhysicalModelProps> =
  *  * [ShapeBorderClipper], which converts a [ShapeBorder] to a [CustomClipper], as
  *    needed by this widget.
  */
-export interface PhysicalShapeProps {
+export interface PhysicalShapeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -76868,7 +77676,7 @@ export const PhysicalShape: FlutterComponent<PhysicalShapeProps> =
  *  * [SliverPersistentHeader] - a general purpose header that can be
  *    configured as a pinned, resizing, or floating header.
  */
-export interface PinnedHeaderSliverProps {
+export interface PinnedHeaderSliverProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -76924,7 +77732,7 @@ export const PinnedHeaderSliver: FlutterComponent<PinnedHeaderSliverProps> =
  * placeholder is in an unbounded space, it will size itself according to the
  * given [fallbackWidth] and [fallbackHeight].
  */
-export interface PlaceholderProps {
+export interface PlaceholderProps extends GestureProps {
   /**
    * The [child] contained by the placeholder box.
    *
@@ -77016,7 +77824,7 @@ export const Placeholder: FlutterComponent<PlaceholderProps> =
  * WidgetsBinding.instance.platformMenuDelegate.setMenus(menus);
  * ```
  */
-export interface PlatformMenuBarProps {
+export interface PlatformMenuBarProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -77098,7 +77906,7 @@ export const PlatformMenuBar: FlutterComponent<PlatformMenuBarProps> =
  * [PlatformSelectableRegionContextMenu] at a time. Use [attach] method to make
  * a [SelectionContainerDelegate] to be the active client.
  */
-export interface PlatformSelectableRegionContextMenuProps {
+export interface PlatformSelectableRegionContextMenuProps extends GestureProps {
   children: FlutterChild;
 }
 
@@ -77154,7 +77962,7 @@ export const PlatformSelectableRegionContextMenu: FlutterComponent<PlatformSelec
  * The `surfaceFactory` and the `onCreatePlatformView` are only called when the
  * state of this widget is initialized, or when the `viewType` changes.
  */
-export interface PlatformViewLinkProps {
+export interface PlatformViewLinkProps extends GestureProps {
   surfaceFactory: (
     context: BuildContext,
     controller: PlatformViewController,
@@ -77224,7 +78032,7 @@ export const PlatformViewLink: FlutterComponent<PlatformViewLinkProps> =
  *  * [AndroidView] which embeds an Android platform view in the widget hierarchy using a [TextureLayer].
  *  * [UiKitView] which embeds an iOS platform view in the widget hierarchy.
  */
-export interface PlatformViewSurfaceProps {
+export interface PlatformViewSurfaceProps extends GestureProps {
   /**
    * The controller for the platform view integrated by this [PlatformViewSurface].
    *
@@ -77349,7 +78157,7 @@ export const PlatformViewSurface: FlutterComponent<PlatformViewSurfaceProps> =
  *  * [ModalRoute.registerPopEntry] and [ModalRoute.unregisterPopEntry],
  *    which this widget uses to integrate with Flutter's navigation system.
  */
-export interface PopScopeProps {
+export interface PopScopeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -77533,7 +78341,7 @@ export const PopScope: FlutterComponent<PopScopeProps> =
  *  * [CheckedPopupMenuItem], a popup menu item with a checkmark.
  *  * [showMenu], a method to dynamically show a popup menu at a given location.
  */
-export interface PopupMenuButtonProps {
+export interface PopupMenuButtonProps extends GestureProps {
   /**
    * If provided, [child] is the widget used for this button
    * and the button will utilize an [InkWell] for taps.
@@ -77872,7 +78680,7 @@ export const PopupMenuButton: FlutterComponent<PopupMenuButtonProps> =
  *  * [PopupMenuButton], an [IconButton] that automatically shows a menu when
  *    it is tapped.
  */
-export interface PopupMenuDividerProps {
+export interface PopupMenuDividerProps extends GestureProps {
   /**
    * The height of the divider entry.
    *
@@ -77959,7 +78767,7 @@ export const PopupMenuDivider: FlutterComponent<PopupMenuDividerProps> =
  *  * [PopupMenuButton], an [IconButton] that automatically shows a menu when
  *    it is tapped.
  */
-export interface PopupMenuItemProps {
+export interface PopupMenuItemProps extends Omit<GestureProps, 'onClick'> {
   /**
    * The widget below this widget in the tree.
    *
@@ -78088,7 +78896,7 @@ export const PopupMenuItem: FlutterComponent<PopupMenuItemProps> =
  * Values specified here are used for popup menu properties that are not
  * given an explicit non-null value.
  */
-export interface PopupMenuThemeProps {
+export interface PopupMenuThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -78148,7 +78956,7 @@ export const PopupMenuTheme: FlutterComponent<PopupMenuThemeProps> =
  *    changes in the child's position over a given duration.
  *  * [PositionedDirectional], which adapts to the ambient [Directionality].
  */
-export interface PositionedProps {
+export interface PositionedProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -78291,7 +79099,7 @@ export const Positioned: FlutterComponent<PositionedProps> =
  *    the child's position over a given duration whenever the given position
  *    changes.
  */
-export interface PositionedDirectionalProps {
+export interface PositionedDirectionalProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -78409,7 +79217,7 @@ export const PositionedDirectional: FlutterComponent<PositionedDirectionalProps>
  *  * [SizeTransition], a widget that animates its own size and clips and
  *    aligns its child.
  */
-export interface PositionedTransitionProps {
+export interface PositionedTransitionProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -78479,7 +79287,7 @@ export const PositionedTransition: FlutterComponent<PositionedTransitionProps> =
  *    its preferred size.
  *  * [AppBar] and [TabBar], which implement PreferredSizeWidget.
  */
-export interface PreferredSizeProps {
+export interface PreferredSizeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -78550,7 +79358,7 @@ export const PreferredSize: FlutterComponent<PreferredSizeProps> =
  *     by its descendants when invoking an [Action] via a keyboard key
  *     combination that maps to an [Intent].
  */
-export interface PrimaryScrollControllerProps {
+export interface PrimaryScrollControllerProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -78655,7 +79463,7 @@ export const PrimaryScrollController: FlutterComponent<PrimaryScrollControllerPr
  * )
  * ```
  */
-export interface ProgressIndicatorThemeProps {
+export interface ProgressIndicatorThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -78744,7 +79552,7 @@ export const ProgressIndicatorTheme: FlutterComponent<ProgressIndicatorThemeProp
  *  * [Checkbox] and [Switch], for toggling a particular value on or off.
  *  * <https://material.io/design/components/selection-controls.html#radio-buttons>
  */
-export interface RadioProps {
+export interface RadioProps extends GestureProps {
   value: unknown;
   /**
    * The currently selected value for a group of radio buttons.
@@ -79085,7 +79893,7 @@ export const Radio: FlutterComponent<RadioProps> =
  *
  * ** See code in examples/api/lib/widgets/radio_group/radio_group.0.dart **
  */
-export interface RadioGroupProps {
+export interface RadioGroupProps extends GestureProps {
   children: FlutterChild;
   /**
    * The selected value under this radio group.
@@ -79250,7 +80058,7 @@ export const RadioGroup: FlutterComponent<RadioGroupProps> =
  *  * [SwitchListTile], a similar widget for switches.
  *  * [ListTile] and [Radio], the widgets from which this widget is made.
  */
-export interface RadioListTileProps {
+export interface RadioListTileProps extends GestureProps {
   /**
    * The value represented by this radio button.
    */
@@ -79680,7 +80488,7 @@ export const RadioListTile: FlutterComponent<RadioListTileProps> =
  * - [MenuAnchor], a widget that defines a region which can host a cascading
  *   menu.
  */
-export interface RadioMenuButtonProps {
+export interface RadioMenuButtonProps extends GestureProps {
   /**
    * The widget displayed in the center of this button.
    *
@@ -79828,7 +80636,7 @@ export const RadioMenuButton: FlutterComponent<RadioMenuButtonProps> =
  *  * [RadioThemeData], which describes the actual configuration of a radio
  *    theme.
  */
-export interface RadioThemeProps {
+export interface RadioThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -79937,7 +80745,7 @@ export const RadioTheme: FlutterComponent<RadioThemeProps> =
  *  * <https://material.io/design/components/sliders.html>
  *  * [MediaQuery], from which the text scale factor is obtained.
  */
-export interface RangeSliderProps {
+export interface RangeSliderProps extends GestureProps {
   /**
    * The currently selected values for this range slider.
    *
@@ -80306,7 +81114,7 @@ export const RangeSlider: FlutterComponent<RangeSliderProps> =
  *  * [Autocomplete], which is a Material-styled implementation that is based
  * on RawAutocomplete.
  */
-export interface RawAutocompleteProps {
+export interface RawAutocompleteProps extends GestureProps {
   /**
    * Builds the selectable options widgets from a list of options objects.
    *
@@ -80483,7 +81291,7 @@ export const RawAutocomplete: FlutterComponent<RawAutocompleteProps> =
  *    vertical runs.
  *  * <https://material.io/design/components/chips.html>
  */
-export interface RawChipProps {
+export interface RawChipProps extends Omit<GestureProps, 'onClick'> {
   /**
    * Defines the defaults for the chip properties if
    * they are not specified elsewhere.
@@ -80618,7 +81426,7 @@ export const RawChip: FlutterComponent<RawChipProps> =
  *  * [Listener], a widget that reports raw pointer events.
  *  * [GestureRecognizer], the class that you extend to create a custom gesture recognizer.
  */
-export interface RawGestureDetectorProps {
+export interface RawGestureDetectorProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -80775,7 +81583,7 @@ export const RawGestureDetector: FlutterComponent<RawGestureDetectorProps> =
  *
  * This widget is rarely used directly. Instead, consider using [Image].
  */
-export interface RawImageProps {
+export interface RawImageProps extends GestureProps {
   /**
    * The image to display.
    *
@@ -80963,7 +81771,7 @@ export const RawImage: FlutterComponent<RawImageProps> =
  *  * [KeyboardListener], a similar widget based on the newer [HardwareKeyboard]
  *    API.
  */
-export interface RawKeyboardListenerProps {
+export interface RawKeyboardListenerProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -81022,7 +81830,7 @@ export const RawKeyboardListener: FlutterComponent<RawKeyboardListenerProps> =
  * See:
  * * [MagnifierController], a controller to handle magnifiers in an overlay.
  */
-export interface RawMagnifierProps {
+export interface RawMagnifierProps extends GestureProps {
   /**
    * An optional widget to position inside the len of the [RawMagnifier].
    *
@@ -81121,7 +81929,10 @@ export const RawMagnifier: FlutterComponent<RawMagnifierProps> =
  *  * [OutlinedButton], a button with an outlined border and no fill color.
  *  * [TextButton], a button with no outline or fill color.
  */
-export interface RawMaterialButtonProps {
+export interface RawMaterialButtonProps extends Omit<
+  GestureProps,
+  'onClick' | 'onLongPress'
+> {
   /**
    * Typically the button's label.
    */
@@ -81444,7 +82255,7 @@ export const RawMaterialButton: FlutterComponent<RawMaterialButtonProps> =
  *
  * ** See code in examples/api/lib/widgets/raw_menu_anchor/raw_menu_anchor.3.dart **
  */
-export interface RawMenuAnchorProps {
+export interface RawMenuAnchorProps extends GestureProps {
   /**
    * The optional child to be passed to the [builder].
    *
@@ -81755,7 +82566,7 @@ export const RawMenuAnchor: FlutterComponent<RawMenuAnchorProps> =
  * * [RawMenuAnchor], a widget that defines a region attached to a floating
  *   submenu.
  */
-export interface RawMenuAnchorGroupProps {
+export interface RawMenuAnchorGroupProps extends GestureProps {
   /**
    * The child displayed by the [RawMenuAnchorGroup].
    *
@@ -81823,7 +82634,7 @@ export const RawMenuAnchorGroup: FlutterComponent<RawMenuAnchorGroupProps> =
  *  * [CupertinoRadio], which uses this widget to build a Cupertino styled
  *    radio button.
  */
-export interface RawRadioProps {
+export interface RawRadioProps extends GestureProps {
   /**
    * The value represented by this radio button.
    */
@@ -82023,7 +82834,7 @@ export const RawRadio: FlutterComponent<RawRadioProps> =
  *  * [ListView], which displays a linear, scrollable list of children.
  *  * [GridView], which displays a 2 dimensional, scrollable array of children.
  */
-export interface RawScrollbarProps {
+export interface RawScrollbarProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -82493,7 +83304,7 @@ export const RawScrollbar: FlutterComponent<RawScrollbarProps> =
  *
  * ** See code in examples/api/lib/widgets/raw_tooltip/raw_tooltip.0.dart **
  */
-export interface RawTooltipProps {
+export interface RawTooltipProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -82774,7 +83585,7 @@ export const RawTooltip: FlutterComponent<RawTooltipProps> =
  * * [View] for a higher level interface that also sets up a [MediaQuery] and
  *   [FocusScope] for the view's widget tree.
  */
-export interface RawViewProps {
+export interface RawViewProps extends GestureProps {
   /**
    * The widget below this widget in the tree, which will be drawn into the
    * [view].
@@ -82894,7 +83705,7 @@ export const RawView: FlutterComponent<RawViewProps> =
  *    around a [ScrollView] because it's a part of the scrollable instead of
  *    being overlaid on top of it.
  */
-export interface RefreshIndicatorProps {
+export interface RefreshIndicatorProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -83065,7 +83876,7 @@ export const RefreshIndicator: FlutterComponent<RefreshIndicatorProps> =
  *  * [RefreshIndicator], which automatically displays a [CircularProgressIndicator]
  *    when the underlying vertical scrollable is overscrolled.
  */
-export interface RefreshProgressIndicatorProps {
+export interface RefreshProgressIndicatorProps extends GestureProps {
   /**
    * If non-null, the value of this progress indicator.
    *
@@ -83227,7 +84038,7 @@ export const RefreshProgressIndicator = Object.assign(
  *  * [SlideTransition], a widget that animates the position of a widget
  *    relative to its normal position.
  */
-export interface RelativePositionedTransitionProps {
+export interface RelativePositionedTransitionProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -83285,7 +84096,7 @@ export const RelativePositionedTransition: FlutterComponent<RelativePositionedTr
  * bootstrapping an element tree. Unlike [RootWidget] it requires the
  * existence of a render tree (the [container]) to attach the element tree to.
  */
-export interface RenderObjectToWidgetAdapterProps {
+export interface RenderObjectToWidgetAdapterProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -83333,7 +84144,7 @@ export const RenderObjectToWidgetAdapter: FlutterComponent<RenderObjectToWidgetA
  *  * [ReorderableListView], a Material Design list that allows the user to
  *    reorder its items.
  */
-export interface ReorderableDelayedDragStartListenerProps {
+export interface ReorderableDelayedDragStartListenerProps extends GestureProps {
   /**
    * The widget for which the application would like to respond to a tap and
    * drag gesture by starting a reordering drag on a reorderable list.
@@ -83389,7 +84200,7 @@ export const ReorderableDelayedDragStartListener: FlutterComponent<ReorderableDe
  *  * [ReorderableListView], a Material Design list that allows the user to
  *    reorder its items.
  */
-export interface ReorderableDragStartListenerProps {
+export interface ReorderableDragStartListenerProps extends GestureProps {
   /**
    * The widget for which the application would like to respond to a tap and
    * drag gesture by starting a reordering drag on a reorderable list.
@@ -83457,7 +84268,7 @@ export const ReorderableDragStartListener: FlutterComponent<ReorderableDragStart
  *  * [ReorderableListView], a Material Design list that allows the user to
  *    reorder its items.
  */
-export interface ReorderableListProps {
+export interface ReorderableListProps extends GestureProps {
   /**
    * Called, as needed, to build list item widgets.
    *
@@ -83672,7 +84483,7 @@ export const ReorderableList: FlutterComponent<ReorderableListProps> =
  *
  * ** See code in examples/api/lib/material/reorderable_list/reorderable_list_view.2.dart **
  */
-export interface ReorderableListViewProps {
+export interface ReorderableListViewProps extends GestureProps {
   children: FlutterChildren;
   /**
    * @deprecated
@@ -83870,7 +84681,7 @@ export const ReorderableListView: FlutterComponent<ReorderableListViewProps> =
  *  * [debugProfilePaintsEnabled], a debugging flag to show render tree
  *    repaints in Flutter DevTools' timeline view.
  */
-export interface RepaintBoundaryProps {
+export interface RepaintBoundaryProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -83957,7 +84768,7 @@ export const RepaintBoundary: FlutterComponent<RepaintBoundaryProps> =
  *  * [TweenAnimationBuilder], which animates a tween value once.
  *  * [AnimationController.repeat], the underlying mechanism.
  */
-export interface RepeatingAnimationBuilderProps {
+export interface RepeatingAnimationBuilderProps extends GestureProps {
   /**
    * An optional widget to pass to the builder.
    *
@@ -84096,7 +84907,7 @@ export const RepeatingAnimationBuilder: FlutterComponent<RepeatingAnimationBuild
  *  * [RestorationManager], which describes the basic concepts of state
  *    restoration in Flutter.
  */
-export interface RestorationScopeProps {
+export interface RestorationScopeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -84248,7 +85059,7 @@ export const RestorationScope: FlutterComponent<RestorationScopeProps> =
  *    as [RichText]. [Text.rich] will inherit [TextStyle] from [DefaultTextStyle].
  *  * [SelectableRegion], which provides an overview of the selection system.
  */
-export interface RichTextProps {
+export interface RichTextProps extends GestureProps {
   /**
    * The text to display in this widget.
    */
@@ -84477,7 +85288,7 @@ export const RichText: FlutterComponent<RichTextProps> =
  *  * [RestorationManager], which describes the basic concepts of state
  *    restoration in Flutter.
  */
-export interface RootRestorationScopeProps {
+export interface RootRestorationScopeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -84556,7 +85367,7 @@ export const RootRestorationScope: FlutterComponent<RootRestorationScopeProps> =
  * Used by [WidgetsBinding.attachRootWidget] (which is indirectly called by
  * [runApp]) to bootstrap applications.
  */
-export interface RootWidgetProps {
+export interface RootWidgetProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -84605,7 +85416,7 @@ export const RootWidget: FlutterComponent<RootWidgetProps> =
  *  * [Transform.rotate], which applies a rotation paint effect.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface RotatedBoxProps {
+export interface RotatedBoxProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -84663,7 +85474,7 @@ export const RotatedBox: FlutterComponent<RotatedBoxProps> =
  *  * [SizeTransition], a widget that animates its own size and clips and
  *    aligns its child.
  */
-export interface RotationTransitionProps {
+export interface RotationTransitionProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -84904,7 +85715,7 @@ export const RotationTransition: FlutterComponent<RotationTransitionProps> =
  * if a [restorationScopeId] is provided, a [routeInformationParser] must be
  * configured as well.
  */
-export interface RouterProps {
+export interface RouterProps extends GestureProps {
   /**
    * The route information provider for the router.
    *
@@ -85357,7 +86168,7 @@ export const Router: FlutterComponent<RouterProps> =
  *  * [Spacer], a widget that takes up space proportional to its flex value.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface RowProps {
+export interface RowProps extends GestureProps {
   /**
    * The widgets below this widget in the tree.
    *
@@ -85739,7 +86550,7 @@ export const Row: FlutterComponent<RowProps> = declareWidget<RowProps>('Row');
  *  * [dart:ui.FlutterView.padding], which reports the padding from the operating
  *    system.
  */
-export interface SafeAreaProps {
+export interface SafeAreaProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -85962,7 +86773,7 @@ export const SafeArea: FlutterComponent<SafeAreaProps> =
  *  * <https://material.io/design/layout/responsive-layout-grid.html>
  *  * Cookbook: [Add a Drawer to a screen](https://docs.flutter.dev/cookbook/design/drawer)
  */
-export interface ScaffoldProps {
+export interface ScaffoldProps extends GestureProps {
   /**
    * An app bar to display at the top of the scaffold.
    */
@@ -86443,7 +87254,7 @@ export const Scaffold: FlutterComponent<ScaffoldProps> =
  *    has a [ScaffoldMessenger] ancestor.
  *  * Cookbook: [Display a SnackBar](https://docs.flutter.dev/cookbook/design/snackbars)
  */
-export interface ScaffoldMessengerProps {
+export interface ScaffoldMessengerProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -86505,7 +87316,7 @@ export const ScaffoldMessenger: FlutterComponent<ScaffoldMessengerProps> =
  *  * [SizeTransition], a widget that animates its own size and clips and
  *    aligns its child.
  */
-export interface ScaleTransitionProps {
+export interface ScaleTransitionProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -86557,7 +87368,7 @@ export const ScaleTransition: FlutterComponent<ScaleTransitionProps> =
  * The scroll configuration determines the [ScrollPhysics] and viewport
  * decorations used by descendants of [child].
  */
-export interface ScrollConfigurationProps {
+export interface ScrollConfigurationProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -86621,7 +87432,7 @@ export const ScrollConfiguration: FlutterComponent<ScrollConfigurationProps> =
  *
  * ** See code in examples/api/lib/widgets/scroll_notification_observer/scroll_notification_observer.0.dart **
  */
-export interface ScrollNotificationObserverProps {
+export interface ScrollNotificationObserverProps extends GestureProps {
   /**
    * The subtree below this widget.
    */
@@ -86723,7 +87534,7 @@ export const ScrollNotificationObserver: FlutterComponent<ScrollNotificationObse
  *  * [ScrollNotification] and [NotificationListener], which can be used to watch
  *    the scroll position without using a [ScrollController].
  */
-export interface ScrollableProps {
+export interface ScrollableProps extends GestureProps {
   /**
    * The direction in which this widget scrolls.
    *
@@ -87018,7 +87829,7 @@ export const Scrollable: FlutterComponent<ScrollableProps> =
  *  * [ListView], which displays a linear, scrollable list of children.
  *  * [GridView], which displays a 2 dimensional, scrollable array of children.
  */
-export interface ScrollbarProps {
+export interface ScrollbarProps extends GestureProps {
   children: FlutterChild;
   controller?: ScrollController;
   /**
@@ -87129,7 +87940,7 @@ export const Scrollbar: FlutterComponent<ScrollbarProps> =
  *  * [ScrollbarThemeData], which describes the configuration of a
  *    scrollbar theme.
  */
-export interface ScrollbarThemeProps {
+export interface ScrollbarThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -87207,7 +88018,7 @@ export const ScrollbarTheme: FlutterComponent<ScrollbarThemeProps> =
  * * [SearchBarTheme], a widget that overrides the default configuration of a search bar.
  * * [SearchViewTheme], a widget that overrides the default configuration of a search view.
  */
-export interface SearchAnchorProps {
+export interface SearchAnchorProps extends GestureProps {
   /**
    * Whether the search view grows to fill the entire screen when the
    * [SearchAnchor] is tapped.
@@ -87547,7 +88358,7 @@ export const SearchAnchor: FlutterComponent<SearchAnchorProps> =
  * * [SearchBarTheme], a widget that overrides the default configuration of a search bar.
  * * [SearchViewTheme], a widget that overrides the default configuration of a search view.
  */
-export interface SearchBarProps {
+export interface SearchBarProps extends Omit<GestureProps, 'onClick'> {
   /**
    * Controls the text being edited in the search bar's text field.
    *
@@ -87800,7 +88611,7 @@ export const SearchBar: FlutterComponent<SearchBarProps> =
  *  * [SearchBarThemeData], which describes the actual configuration of a search bar
  *    theme.
  */
-export interface SearchBarThemeProps {
+export interface SearchBarThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -87845,7 +88656,7 @@ export const SearchBarTheme: FlutterComponent<SearchBarThemeProps> =
  *  * [SearchViewThemeData], which describes the actual configuration of a search view
  *    theme.
  */
-export interface SearchViewThemeProps {
+export interface SearchViewThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -87925,7 +88736,7 @@ export const SearchViewTheme: FlutterComponent<SearchViewThemeProps> =
  *   * [Radio], an alternative way to present the user with a mutually exclusive set of options.
  *   * [FilterChip], [ChoiceChip], which can be used when you need to show more than five options.
  */
-export interface SegmentedButtonProps {
+export interface SegmentedButtonProps extends GestureProps {
   /**
    * Descriptions of the segments in the button.
    *
@@ -88131,7 +88942,7 @@ export const SegmentedButton: FlutterComponent<SegmentedButtonProps> =
  * Values specified here are used for [SegmentedButton] properties that are not
  * given an explicit non-null value.
  */
-export interface SegmentedButtonThemeProps {
+export interface SegmentedButtonThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -88337,7 +89148,7 @@ export const SegmentedButtonTheme: FlutterComponent<SegmentedButtonThemeProps> =
  *  * [SelectionListener], which enables accessing the [SelectionDetails] of
  *    the selectable subtree it wraps.
  */
-export interface SelectableRegionProps {
+export interface SelectableRegionProps extends GestureProps {
   /**
    * The child widget this selection area applies to.
    */
@@ -88618,7 +89429,7 @@ export const SelectableRegion: FlutterComponent<SelectableRegionProps> =
  *  * [SelectionArea], which enables the selection of multiple [Text] widgets
  *    and of other widgets.
  */
-export interface SelectableTextProps {
+export interface SelectableTextProps extends Omit<GestureProps, 'onClick'> {
   /**
    * The text to display.
    *
@@ -88857,7 +89668,7 @@ export const SelectableText: FlutterComponent<SelectableTextProps> =
  *  * [SelectionListener], which enables accessing the [SelectionDetails] of
  *    the selectable subtree it wraps.
  */
-export interface SelectionAreaProps {
+export interface SelectionAreaProps extends GestureProps {
   /**
    * The child widget this selection area applies to.
    */
@@ -88959,7 +89770,7 @@ export const SelectionArea: FlutterComponent<SelectionAreaProps> =
  *  * [SelectionContainer.disabled], which disable selection for a
  *    subtree.
  */
-export interface SelectionContainerProps {
+export interface SelectionContainerProps extends GestureProps {
   children: FlutterChild;
   /**
    * The [SelectionRegistrar] this container is registered to.
@@ -89041,7 +89852,7 @@ export const SelectionContainer: FlutterComponent<SelectionContainerProps> =
  *
  *   * [SelectableRegion], which provides an overview of the selection system.
  */
-export interface SelectionListenerProps {
+export interface SelectionListenerProps extends GestureProps {
   /**
    * The child widget this selection listener applies to.
    */
@@ -89094,7 +89905,7 @@ export const SelectionListener: FlutterComponent<SelectionListenerProps> =
  * of subtree. In that case, one can wrap the subtree with
  * [SelectionContainer.disabled].
  */
-export interface SelectionRegistrarScopeProps {
+export interface SelectionRegistrarScopeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -89130,7 +89941,10 @@ export const SelectionRegistrarScope: FlutterComponent<SelectionRegistrarScopePr
  *
  *  * [SliverSemantics], the sliver variant of this widget.
  */
-export interface SemanticsProps {
+export interface SemanticsProps extends Omit<
+  GestureProps,
+  'onClick' | 'onLongPress'
+> {
   /**
    * The widget below this widget in the tree.
    */
@@ -89340,7 +90154,7 @@ export const Semantics: FlutterComponent<SemanticsProps> =
  * This widget is useful for understand how an app presents itself to
  * accessibility technology.
  */
-export interface SemanticsDebuggerProps {
+export interface SemanticsDebuggerProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -89396,7 +90210,7 @@ export const SemanticsDebugger: FlutterComponent<SemanticsDebuggerProps> =
  *  * [ContentSensitivity], which are the different content sensitivity that a
  *    [SensitiveContent] widget can set.
  */
-export interface SensitiveContentProps {
+export interface SensitiveContentProps extends GestureProps {
   /**
    * The child widget of this [SensitiveContent].
    *
@@ -89485,7 +90299,7 @@ export const SensitiveContent: FlutterComponent<SensitiveContentProps> =
  *  * [DecoratedBox], for another approach at decorating child widgets.
  *  * [BackdropFilter], which applies an image filter to the background.
  */
-export interface ShaderMaskProps {
+export interface ShaderMaskProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -89600,7 +90414,7 @@ export const ShaderMask: FlutterComponent<ShaderMaskProps> =
  *
  * ** See code in examples/api/lib/widgets/shared_app_data/shared_app_data.1.dart **
  */
-export interface SharedAppDataProps {
+export interface SharedAppDataProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -89686,7 +90500,7 @@ export const SharedAppData: FlutterComponent<SharedAppDataProps> =
  * [ShortcutRegistryEntry.dispose] on the entry returned by
  * [ShortcutRegistry.addAll].
  */
-export interface ShortcutRegistrarProps {
+export interface ShortcutRegistrarProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -89772,7 +90586,7 @@ export const ShortcutRegistrar: FlutterComponent<ShortcutRegistrarProps> =
  *  * [Action], a class for defining an invocation of a user action.
  *  * [CallbackAction], a class for creating an action from a callback.
  */
-export interface ShortcutsProps {
+export interface ShortcutsProps extends GestureProps {
   /**
    * The child widget for this [Shortcuts] widget.
    */
@@ -89874,7 +90688,7 @@ export const Shortcuts: FlutterComponent<ShortcutsProps> =
  *    sliver context (the opposite of this widget).
  *  * [Viewport], a viewport that does not shrink-wrap its contents.
  */
-export interface ShrinkWrappingViewportProps {
+export interface ShrinkWrappingViewportProps extends GestureProps {
   /**
    * The direction in which the [offset]'s [ViewportOffset.pixels] increases.
    *
@@ -90031,7 +90845,7 @@ export const ShrinkWrappingViewport: FlutterComponent<ShrinkWrappingViewportProp
  *  * [showDialog], which actually displays the dialog and returns its result.
  *  * <https://material.io/design/components/dialogs.html#simple-dialog>
  */
-export interface SimpleDialogProps {
+export interface SimpleDialogProps extends GestureProps {
   /**
    * The (optional) content of the dialog is displayed in a
    * [SingleChildScrollView] underneath the title.
@@ -90217,7 +91031,7 @@ export const SimpleDialog: FlutterComponent<SimpleDialogProps> =
  *    dialogs, such as [AlertDialog]s.
  *  * <https://material.io/design/components/dialogs.html#simple-dialog>
  */
-export interface SimpleDialogOptionProps {
+export interface SimpleDialogOptionProps extends Omit<GestureProps, 'onClick'> {
   /**
    * The widget below this widget in the tree.
    *
@@ -90390,7 +91204,7 @@ export const SimpleDialogOption: FlutterComponent<SimpleDialogOptionProps> =
  *  * [PageView], for a scrollable that works page by page.
  *  * [Scrollable], which handles arbitrary scrolling effects.
  */
-export interface SingleChildScrollViewProps {
+export interface SingleChildScrollViewProps extends GestureProps {
   /**
    * The widget that scrolls.
    */
@@ -90597,7 +91411,7 @@ export const SingleChildScrollView: FlutterComponent<SingleChildScrollViewProps>
  *  * [Notification], the base class for notifications that bubble through the
  *    widget tree.
  */
-export interface SizeChangedLayoutNotifierProps {
+export interface SizeChangedLayoutNotifierProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -90661,7 +91475,7 @@ export const SizeChangedLayoutNotifier: FlutterComponent<SizeChangedLayoutNotifi
  *  * [RelativePositionedTransition], a widget that transitions its child's
  *    position based on the value of a rectangle relative to a bounding box.
  */
-export interface SizeTransitionProps {
+export interface SizeTransitionProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -90817,7 +91631,7 @@ export const SizeTransition: FlutterComponent<SizeTransitionProps> =
  *  * [Understanding constraints](https://docs.flutter.dev/ui/layout/constraints),
  *    an in-depth article about layout in Flutter.
  */
-export interface SizedBoxProps {
+export interface SizedBoxProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -90924,7 +91738,7 @@ export const SizedBox: FlutterComponent<SizedBoxProps> =
  *    constraints.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface SizedOverflowBoxProps {
+export interface SizedOverflowBoxProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -91004,7 +91818,7 @@ export const SizedOverflowBox: FlutterComponent<SizedOverflowBoxProps> =
  *  * [RelativePositionedTransition], a widget that transitions its child's
  *    position based on the value of a rectangle relative to a bounding box.
  */
-export interface SlideTransitionProps {
+export interface SlideTransitionProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -91140,7 +91954,7 @@ export const SlideTransition: FlutterComponent<SlideTransitionProps> =
  *  * <https://material.io/design/components/sliders.html>
  *  * [MediaQuery], from which the text scale factor is obtained.
  */
-export interface SliderProps {
+export interface SliderProps extends GestureProps {
   /**
    * The currently selected value for this slider.
    *
@@ -91586,7 +92400,7 @@ export const Slider: FlutterComponent<SliderProps> =
  *  * [RangeSliderTickMarkShape], which can be used to create custom shapes for
  *    the [RangeSlider]'s tick marks.
  */
-export interface SliderThemeProps {
+export interface SliderThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -91662,7 +92476,7 @@ export const SliderTheme: FlutterComponent<SliderThemeProps> =
  *  * [SliverAnimatedList], which animates items added and removed from a list
  *    instead of a grid.
  */
-export interface SliverAnimatedGridProps {
+export interface SliverAnimatedGridProps extends GestureProps {
   itemBuilder: (
     context: BuildContext,
     index: number,
@@ -91723,7 +92537,7 @@ export const SliverAnimatedGrid: FlutterComponent<SliverAnimatedGridProps> =
  *  * [AnimatedGrid], a non-sliver scrolling container that animates items when
  *    they are inserted into or removed from a grid.
  */
-export interface SliverAnimatedListProps {
+export interface SliverAnimatedListProps extends GestureProps {
   itemBuilder: (
     context: BuildContext,
     index: number,
@@ -91802,7 +92616,7 @@ export const SliverAnimatedList: FlutterComponent<SliverAnimatedListProps> =
  *  * [AnimatedOpacity], for automatically transitioning a box child's
  *    opacity over a given duration whenever the given opacity changes.
  */
-export interface SliverAnimatedOpacityProps {
+export interface SliverAnimatedOpacityProps extends GestureProps {
   /**
    * The sliver below this widget in the tree.
    */
@@ -91968,7 +92782,7 @@ export const SliverAnimatedOpacity: FlutterComponent<SliverAnimatedOpacityProps>
  *    can expand and collapse.
  *  * <https://material.io/design/components/app-bars-top.html>
  */
-export interface SliverAppBarProps {
+export interface SliverAppBarProps extends GestureProps {
   /**
    * This property is used to configure an [AppBar].
    */
@@ -92322,7 +93136,7 @@ export const SliverAppBar: FlutterComponent<SliverAppBarProps> =
  *  * [SliverCrossAxisGroup], the widget which makes use of 0 flex factor set by
  *    this widget.
  */
-export interface SliverConstrainedCrossAxisProps {
+export interface SliverConstrainedCrossAxisProps extends GestureProps {
   /**
    * The cross axis extent to apply to the sliver child.
    *
@@ -92373,7 +93187,7 @@ export const SliverConstrainedCrossAxis: FlutterComponent<SliverConstrainedCross
  * the remaining space is laid out among the slivers with nonzero flex
  * proportionally to their flex value.
  */
-export interface SliverCrossAxisExpandedProps {
+export interface SliverCrossAxisExpandedProps extends GestureProps {
   /**
    * Flex value for allocating cross axis extent left after laying out the children with
    * constrained cross axis. The children with flex values will have the remaining extent
@@ -92439,7 +93253,7 @@ export const SliverCrossAxisExpanded: FlutterComponent<SliverCrossAxisExpandedPr
  *  * [SliverMainAxisGroup], which is the [RenderObjectWidget] for laying out
  *    multiple slivers along the main axis.
  */
-export interface SliverCrossAxisGroupProps {
+export interface SliverCrossAxisGroupProps extends GestureProps {
   slivers: FlutterChild[];
 }
 
@@ -92519,7 +93333,7 @@ export const SliverCrossAxisGroup: FlutterComponent<SliverCrossAxisGroupProps> =
  *
  * ** See code in examples/api/lib/widgets/sliver/sliver_ensure_semantics.0.dart **
  */
-export interface SliverEnsureSemanticsProps {
+export interface SliverEnsureSemanticsProps extends GestureProps {
   sliver: FlutterChild;
 }
 
@@ -92595,7 +93409,7 @@ export const SliverEnsureSemantics: FlutterComponent<SliverEnsureSemanticsProps>
  *  * [SliverOpacity], which does not animate changes in opacity.
  *  * [FadeTransition], the box version of this widget.
  */
-export interface SliverFadeTransitionProps {
+export interface SliverFadeTransitionProps extends GestureProps {
   /**
    * The animation that controls the opacity of the sliver child.
    *
@@ -92746,7 +93560,7 @@ export const SliverFadeTransition: FlutterComponent<SliverFadeTransitionProps> =
  *  * [SliverList], which shows a list of variable-sized children in a
  *    viewport.
  */
-export interface SliverFillRemainingProps {
+export interface SliverFillRemainingProps extends GestureProps {
   /**
    * Box child widget that fills the remaining space in the viewport.
    *
@@ -92885,7 +93699,7 @@ export const SliverFillRemaining: FlutterComponent<SliverFillRemainingProps> =
  *  * [SliverList], which does not require its children to have the same
  *    extent in the main axis.
  */
-export interface SliverFillViewportProps {
+export interface SliverFillViewportProps extends GestureProps {
   delegate: SliverChildDelegate;
   /**
    * The fraction of the viewport that each child should fill in the main axis.
@@ -92981,7 +93795,7 @@ export const SliverFillViewport: FlutterComponent<SliverFillViewportProps> =
  *  * [SliverList], which does not require its children to have the same
  *    extent in the main axis.
  */
-export interface SliverFixedExtentListProps {
+export interface SliverFixedExtentListProps extends GestureProps {
   /**
    * The delegate that provides the children for this widget.
    *
@@ -93082,7 +93896,7 @@ export const SliverFixedExtentList: FlutterComponent<SliverFixedExtentListProps>
  *  * [SliverPersistentHeader] - a general purpose header that can be
  *    configured as a pinned, resizing, or floating header.
  */
-export interface SliverFloatingHeaderProps {
+export interface SliverFloatingHeaderProps extends GestureProps {
   /**
    * The widget contained by this sliver.
    */
@@ -93175,7 +93989,7 @@ export const SliverFloatingHeader: FlutterComponent<SliverFloatingHeaderProps> =
  *    except that it uses a prototype list item instead of a pixel value to define
  *    the main axis extent of each item.
  */
-export interface SliverGridProps {
+export interface SliverGridProps extends GestureProps {
   /**
    * The delegate that provides the children for this widget.
    *
@@ -93272,7 +94086,7 @@ export const SliverGrid: FlutterComponent<SliverGridProps> =
  *
  *  * [IgnorePointer], the equivalent widget for boxes.
  */
-export interface SliverIgnorePointerProps {
+export interface SliverIgnorePointerProps extends GestureProps {
   /**
    * Whether this sliver is ignored during hit testing.
    *
@@ -93327,7 +94141,7 @@ export const SliverIgnorePointer: FlutterComponent<SliverIgnorePointerProps> =
  *
  *  * [LayoutBuilder], the non-sliver version of this widget.
  */
-export interface SliverLayoutBuilderProps {
+export interface SliverLayoutBuilderProps extends GestureProps {
   builder: (
     context: BuildContext,
     constraints: SliverConstraints,
@@ -93394,7 +94208,7 @@ export const SliverLayoutBuilder: FlutterComponent<SliverLayoutBuilderProps> =
  *  * [SliverAnimatedGrid], a sliver which animates items when they are
  *    inserted into or removed from a grid.
  */
-export interface SliverListProps {
+export interface SliverListProps extends GestureProps {
   /**
    * The delegate that provides the children for this widget.
    *
@@ -93509,7 +94323,7 @@ export const SliverList: FlutterComponent<SliverListProps> =
  *  * [SliverCrossAxisGroup], which is the [RenderObjectWidget] for laying out
  *    multiple slivers along the cross axis.
  */
-export interface SliverMainAxisGroupProps {
+export interface SliverMainAxisGroupProps extends GestureProps {
   slivers: FlutterChild[];
 }
 
@@ -93577,7 +94391,7 @@ export const SliverMainAxisGroup: FlutterComponent<SliverMainAxisGroupProps> =
  *
  *  * [Offstage], the equivalent widget for boxes.
  */
-export interface SliverOffstageProps {
+export interface SliverOffstageProps extends GestureProps {
   /**
    * Whether the sliver child is hidden from the rest of the tree.
    *
@@ -93645,7 +94459,7 @@ export const SliverOffstage: FlutterComponent<SliverOffstageProps> =
  *    constructor is equivalent to using a sliver opacity widget with values of
  *    `0.0` or `1.0`.
  */
-export interface SliverOpacityProps {
+export interface SliverOpacityProps extends GestureProps {
   /**
    * The fraction to scale the sliver child's alpha value.
    *
@@ -93722,7 +94536,7 @@ export const SliverOpacity: FlutterComponent<SliverOpacityProps> =
  *  * [NestedScrollView], whose documentation has sample code showing how to
  *    use this widget.
  */
-export interface SliverOverlapAbsorberProps {
+export interface SliverOverlapAbsorberProps extends GestureProps {
   /**
    * The object in which the absorbed overlap is recorded.
    *
@@ -93763,7 +94577,7 @@ export const SliverOverlapAbsorber: FlutterComponent<SliverOverlapAbsorberProps>
  *  * [NestedScrollView], which uses a [SliverOverlapAbsorber] to align its
  *    children, and which shows sample usage for this class.
  */
-export interface SliverOverlapInjectorProps {
+export interface SliverOverlapInjectorProps extends GestureProps {
   /**
    * The handle to the [SliverOverlapAbsorber] that is feeding this injector.
    *
@@ -93804,7 +94618,7 @@ export const SliverOverlapInjector: FlutterComponent<SliverOverlapInjectorProps>
  *  * [CustomScrollView], which displays a scrollable list of slivers.
  *  * [Padding], the box version of this widget.
  */
-export interface SliverPaddingProps {
+export interface SliverPaddingProps extends GestureProps {
   /**
    * The amount of space by which to inset the child sliver.
    */
@@ -93841,7 +94655,7 @@ export const SliverPadding: FlutterComponent<SliverPaddingProps> =
  *
  * _To learn more about slivers, see [CustomScrollView.slivers]._
  */
-export interface SliverPersistentHeaderProps {
+export interface SliverPersistentHeaderProps extends GestureProps {
   /**
    * Configuration for the sliver's layout.
    *
@@ -93918,7 +94732,7 @@ export const SliverPersistentHeader: FlutterComponent<SliverPersistentHeaderProp
  *  * [SliverFillViewport], which sizes its children based on the
  *    size of the viewport, regardless of what else is in the scroll view.
  */
-export interface SliverPrototypeExtentListProps {
+export interface SliverPrototypeExtentListProps extends GestureProps {
   /**
    * The delegate that provides the children for this widget.
    *
@@ -94007,7 +94821,7 @@ export const SliverPrototypeExtentList: FlutterComponent<SliverPrototypeExtentLi
  *  * [ReorderableListView], a Material Design list that allows the user to
  *    reorder its items.
  */
-export interface SliverReorderableListProps {
+export interface SliverReorderableListProps extends GestureProps {
   itemBuilder: (context: BuildContext, index: number) => FlutterElement;
   findChildIndexCallback?: (key: Key) => number | null;
   itemCount: number;
@@ -94096,7 +94910,7 @@ export const SliverReorderableList: FlutterComponent<SliverReorderableListProps>
  *  * [SliverPersistentHeader] - a general purpose header that can be
  *    configured as a pinned, resizing, or floating header.
  */
-export interface SliverResizingHeaderProps {
+export interface SliverResizingHeaderProps extends GestureProps {
   /**
    * The widget contained by this sliver.
    */
@@ -94180,7 +94994,7 @@ export const SliverResizingHeader: FlutterComponent<SliverResizingHeaderProps> =
  *  * [dart:ui.FlutterView.padding], which reports the padding from the operating
  *    system.
  */
-export interface SliverSafeAreaProps {
+export interface SliverSafeAreaProps extends GestureProps {
   /**
    * Whether to avoid system intrusions on the left.
    */
@@ -94244,7 +95058,10 @@ export const SliverSafeArea: FlutterComponent<SliverSafeAreaProps> =
  *
  *  * [Semantics], the widget variant of this sliver.
  */
-export interface SliverSemanticsProps {
+export interface SliverSemanticsProps extends Omit<
+  GestureProps,
+  'onClick' | 'onLongPress'
+> {
   sliver: FlutterChild;
   /**
    * If [container] is true, this widget will introduce a new
@@ -94470,7 +95287,7 @@ export const SliverSemantics: FlutterComponent<SliverSemanticsProps> =
  *    same main-axis extent as a prototype item, in a linear array.
  *  * [SliverGrid], which displays multiple box widgets in arbitrary positions.
  */
-export interface SliverToBoxAdapterProps {
+export interface SliverToBoxAdapterProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -94534,7 +95351,7 @@ export const SliverToBoxAdapter: FlutterComponent<SliverToBoxAdapterProps> =
  *  * [SliverFillViewport], which sizes its children based on the
  *    size of the viewport, regardless of what else is in the scroll view.
  */
-export interface SliverVariedExtentListProps {
+export interface SliverVariedExtentListProps extends GestureProps {
   /**
    * The delegate that provides the children for this widget.
    *
@@ -94632,7 +95449,7 @@ export const SliverVariedExtentList: FlutterComponent<SliverVariedExtentListProp
  *
  *  * [Visibility], the equivalent widget for boxes.
  */
-export interface SliverVisibilityProps {
+export interface SliverVisibilityProps extends GestureProps {
   /**
    * The sliver to show or hide, as controlled by [visible].
    */
@@ -94835,7 +95652,7 @@ export const SliverVisibility: FlutterComponent<SliverVisibilityProps> =
  *    [SnackBar] widgets.
  *  * <https://material.io/design/components/snackbars.html>
  */
-export interface SnackBarProps {
+export interface SnackBarProps extends GestureProps {
   /**
    * The primary content of the snack bar.
    *
@@ -95111,7 +95928,7 @@ export const SnackBar: FlutterComponent<SnackBarProps> =
  *  * [SnackBar]
  *  * <https://material.io/design/components/snackbars.html>
  */
-export interface SnackBarActionProps {
+export interface SnackBarActionProps extends Omit<GestureProps, 'onClick'> {
   /**
    * The button label color. If not provided, defaults to
    * [SnackBarThemeData.actionTextColor].
@@ -95179,7 +95996,7 @@ export const SnackBarAction: FlutterComponent<SnackBarActionProps> =
  * Values specified here are used for [SnackBar] properties that are not
  * given an explicit non-null value.
  */
-export interface SnackBarThemeProps {
+export interface SnackBarThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -95235,7 +96052,7 @@ export const SnackBarTheme: FlutterComponent<SnackBarThemeProps> =
  * * On the CanvasKit backend of Flutter, the performance of using this widget may regress
  *   performance due to the fact that both the UI and engine share a single thread.
  */
-export interface SnapshotWidgetProps {
+export interface SnapshotWidgetProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -95332,7 +96149,7 @@ export const SnapshotWidget: FlutterComponent<SnapshotWidgetProps> =
  *    in.
  *  * [SizedBox], to create a box with a specific size and an optional child.
  */
-export interface SpacerProps {
+export interface SpacerProps extends GestureProps {
   /**
    * The flex factor to use in determining how much space to take up.
    *
@@ -95391,7 +96208,7 @@ export const Spacer: FlutterComponent<SpacerProps> =
  *  * [CupertinoSpellCheckSuggestionsToolbar], which is similar but builds an
  *    iOS-style spell check toolbar.
  */
-export interface SpellCheckSuggestionsToolbarProps {
+export interface SpellCheckSuggestionsToolbarProps extends GestureProps {
   /**
    * The focal point below which the toolbar attempts to position itself.
    */
@@ -95543,7 +96360,7 @@ export const SpellCheckSuggestionsToolbar: FlutterComponent<SpellCheckSuggestion
  *    matrices.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface StackProps {
+export interface StackProps extends GestureProps {
   /**
    * The widgets below this widget in the tree.
    *
@@ -95818,7 +96635,7 @@ export const Stack: FlutterComponent<StackProps> =
  *
  *  * [Builder], the platonic stateless widget.
  */
-export interface StatefulBuilderProps {
+export interface StatefulBuilderProps extends GestureProps {
   /**
    * Called to obtain the child widget.
    *
@@ -95902,7 +96719,7 @@ export const StatefulBuilder: FlutterComponent<StatefulBuilderProps> =
  *  * [Step]
  *  * <https://material.io/archive/guidelines/components/steppers.html>
  */
-export interface StepperProps {
+export interface StepperProps extends GestureProps {
   /**
    * The steps of the stepper whose titles, subtitles, icons always get shown.
    *
@@ -96189,7 +97006,7 @@ export const Stepper: FlutterComponent<StepperProps> =
  *  * [StreamBuilderBase], which supports widget building based on a computation
  *    that spans all interactions made with the stream.
  */
-export interface StreamBuilderProps {
+export interface StreamBuilderProps extends GestureProps {
   /**
    * The data that will be used to create the initial snapshot.
    *
@@ -96305,7 +97122,7 @@ export const StreamBuilder: FlutterComponent<StreamBuilderProps> =
  *
  * Used by [StretchingOverscrollIndicator] widget.
  */
-export interface StretchEffectProps {
+export interface StretchEffectProps extends GestureProps {
   /**
    * The child widget that the stretching overscroll effect applies to.
    */
@@ -96383,7 +97200,7 @@ export const StretchEffect: FlutterComponent<StretchEffectProps> =
  *  * [GlowingOverscrollIndicator], the default overscroll indicator for
  *    [TargetPlatform.android] and [TargetPlatform.fuchsia].
  */
-export interface StretchingOverscrollIndicatorProps {
+export interface StretchingOverscrollIndicatorProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -96462,7 +97279,7 @@ export const StretchingOverscrollIndicator: FlutterComponent<StretchingOverscrol
  * * [PlatformMenuBar], a widget that renders similar menu bar items from a
  *   [PlatformMenuItem] using platform-native APIs instead of Flutter.
  */
-export interface SubmenuButtonProps {
+export interface SubmenuButtonProps extends GestureProps {
   /**
    * The widget displayed in the middle portion of this button.
    *
@@ -96687,7 +97504,7 @@ export const SubmenuButton: FlutterComponent<SubmenuButtonProps> =
  *    different values depending on a widget's material state.
  *  * <https://material.io/design/components/selection-controls.html#switches>
  */
-export interface SwitchProps {
+export interface SwitchProps extends GestureProps {
   /**
    * Whether this switch is on or off.
    */
@@ -97216,7 +98033,7 @@ export const Switch: FlutterComponent<SwitchProps> =
  *  * [RadioListTile], a similar widget for radio buttons.
  *  * [ListTile] and [Switch], the widgets from which this widget is made.
  */
-export interface SwitchListTileProps {
+export interface SwitchListTileProps extends GestureProps {
   /**
    * Whether this switch is checked.
    */
@@ -97609,7 +98426,7 @@ export const SwitchListTile: FlutterComponent<SwitchListTileProps> =
  *  * [SwitchThemeData], which describes the actual configuration of a switch
  *    theme.
  */
-export interface SwitchThemeProps {
+export interface SwitchThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -97655,7 +98472,7 @@ export const SwitchTheme: FlutterComponent<SwitchThemeProps> =
  *  * [TabController], which coordinates tab selection between a [TabBar] and a [TabBarView].
  *  * <https://material.io/design/components/tabs.html>
  */
-export interface TabProps {
+export interface TabProps extends GestureProps {
   /**
    * The widget to be used as the tab's label.
    *
@@ -97784,7 +98601,7 @@ export const Tab: FlutterComponent<TabProps> = declareWidget<TabProps>('Tab');
  *  * https://m3.material.io/components/tabs/overview, the Material 3
  *     tab bar specification.
  */
-export interface TabBarProps {
+export interface TabBarProps extends Omit<GestureProps, 'onClick'> {
   /**
    * Typically a list of two or more [Tab] widgets.
    *
@@ -98278,7 +99095,7 @@ export const TabBar: FlutterComponent<TabBarProps> =
  *  * [TabBarThemeData], which describes the actual configuration of a tab
  *    bar theme.
  */
-export interface TabBarThemeProps {
+export interface TabBarThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -98339,7 +99156,7 @@ export const TabBarTheme: FlutterComponent<TabBarThemeProps> =
  *
  * To see a sample implementation, visit the [TabController] documentation.
  */
-export interface TabBarViewProps {
+export interface TabBarViewProps extends GestureProps {
   /**
    * One widget per tab.
    *
@@ -98403,7 +99220,7 @@ export const TabBarView: FlutterComponent<TabBarViewProps> =
  * If a [TabController] is not provided, then there must be a
  * [DefaultTabController] ancestor.
  */
-export interface TabPageSelectorProps {
+export interface TabPageSelectorProps extends GestureProps {
   /**
    * This widget's selection and animation state.
    *
@@ -98457,7 +99274,7 @@ export const TabPageSelector: FlutterComponent<TabPageSelectorProps> =
  *
  * Used by [TabPageSelector] to indicate the selected page.
  */
-export interface TabPageSelectorIndicatorProps {
+export interface TabPageSelectorIndicatorProps extends GestureProps {
   /**
    * The indicator circle's background color.
    */
@@ -98519,7 +99336,7 @@ export const TabPageSelectorIndicator: FlutterComponent<TabPageSelectorIndicator
  *
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface TableProps {
+export interface TableProps extends GestureProps {
   /**
    * The rows of the table.
    *
@@ -98631,7 +99448,7 @@ export const Table: FlutterComponent<TableProps> =
  * To create an empty [TableCell], provide a [SizedBox.shrink]
  * as the [child].
  */
-export interface TableCellProps {
+export interface TableCellProps extends GestureProps {
   /**
    * The child of this cell.
    */
@@ -98677,7 +99494,14 @@ export const TableCell: FlutterComponent<TableCellProps> =
  *    [DataRow.onSelectChanged] is defined and [DataCell.onTap]
  *    is not.
  */
-export interface TableRowInkWellProps {
+export interface TableRowInkWellProps extends Omit<
+  GestureProps,
+  | 'onClick'
+  | 'onSecondaryTap'
+  | 'onSecondaryTapDown'
+  | 'onDoubleTap'
+  | 'onLongPress'
+> {
   /**
    * The widget below this widget in the tree.
    */
@@ -98831,7 +99655,7 @@ export const TableRowInkWell: FlutterComponent<TableRowInkWellProps> =
  *
  * ** See code in examples/api/lib/widgets/tap_region/tap_region.1.dart **
  */
-export interface TapRegionProps {
+export interface TapRegionProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -99015,7 +99839,7 @@ export const TapRegion: FlutterComponent<TapRegionProps> =
  *  * <https://flutter.dev/to/gesture-disambiguation> for more
  *    information about the gesture system and how it disambiguates inputs.
  */
-export interface TapRegionSurfaceProps {
+export interface TapRegionSurfaceProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -99188,7 +100012,7 @@ export const TapRegionSurface: FlutterComponent<TapRegionSurfaceProps> =
  *  * [DefaultTextStyle], which sets default styles for [Text] widgets.
  *  * [SelectableRegion], which provides an overview of the selection system.
  */
-export interface TextProps {
+export interface TextProps extends GestureProps {
   /**
    * The text to display.
    *
@@ -99500,7 +100324,10 @@ export const Text: FlutterComponent<TextProps> =
  *  * <https://material.io/design/components/buttons.html>
  *  * <https://m3.material.io/components/buttons>
  */
-export interface TextButtonProps {
+export interface TextButtonProps extends Omit<
+  GestureProps,
+  'onClick' | 'onLongPress'
+> {
   /**
    * Typically the button's label.
    */
@@ -99639,7 +100466,7 @@ export const TextButton: FlutterComponent<TextButtonProps> =
  *  * [ThemeData.textButtonTheme], which can be used to override the default
  *    [ButtonStyle] for [TextButton]s below the overall [Theme].
  */
-export interface TextButtonThemeProps {
+export interface TextButtonThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -99788,7 +100615,7 @@ export const TextButtonTheme: FlutterComponent<TextButtonThemeProps> =
  *  * Cookbook: [Retrieve the value of a text field](https://docs.flutter.dev/cookbook/forms/retrieve-input)
  *  * Cookbook: [Focus and text fields](https://docs.flutter.dev/cookbook/forms/focus)
  */
-export interface TextFieldProps {
+export interface TextFieldProps extends Omit<GestureProps, 'onClick'> {
   groupId?: Object;
   /**
    * Controls the text being edited.
@@ -100410,7 +101237,7 @@ export const TextField = Object.assign(
  *  * [TapRegion], the widget that this widget uses to add widgets to the group
  *    of text fields.
  */
-export interface TextFieldTapRegionProps {
+export interface TextFieldTapRegionProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -100611,7 +101438,7 @@ export const TextFieldTapRegion: FlutterComponent<TextFieldTapRegionProps> =
  *    surround the actual text editing widget.
  *  * Learn how to use a [TextEditingController] in one of our [cookbook recipes](https://docs.flutter.dev/cookbook/forms/text-field-changes#2-use-a-texteditingcontroller).
  */
-export interface TextFormFieldProps {
+export interface TextFormFieldProps extends Omit<GestureProps, 'onClick'> {
   groupId?: Object;
   /**
    * Controls the text being edited.
@@ -100899,7 +101726,7 @@ export const TextFormField: FlutterComponent<TextFormFieldProps> =
  * This behavior was based on the Android 12 source code, where possible, and
  * on eyeballing a Pixel 6 running Android 12 otherwise.
  */
-export interface TextMagnifierProps {
+export interface TextMagnifierProps extends GestureProps {
   /**
    * The current status of the user's touch.
    *
@@ -100956,7 +101783,15 @@ export const TextMagnifier = Object.assign(
  *  * [CupertinoTextField], a Cupertino text field which uses this gesture
  *    detector.
  */
-export interface TextSelectionGestureDetectorProps {
+export interface TextSelectionGestureDetectorProps extends Omit<
+  GestureProps,
+  | 'onTapDown'
+  | 'onSecondaryTap'
+  | 'onSecondaryTapDown'
+  | 'onDoubleTapDown'
+  | 'onForcePressStart'
+  | 'onForcePressEnd'
+> {
   /**
    * Child below this widget.
    */
@@ -101117,7 +101952,7 @@ export const TextSelectionGestureDetector: FlutterComponent<TextSelectionGesture
  * This widget also creates a [DefaultSelectionStyle] for its subtree with
  * [data].
  */
-export interface TextSelectionThemeProps {
+export interface TextSelectionThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -101175,7 +102010,7 @@ export const TextSelectionTheme: FlutterComponent<TextSelectionThemeProps> =
  *  * [CupertinoTextSelectionToolbar], which is similar, but builds an iOS-
  *    style toolbar.
  */
-export interface TextSelectionToolbarProps {
+export interface TextSelectionToolbarProps extends GestureProps {
   /**
    * The children that will be displayed in the text selection toolbar.
    *
@@ -101250,7 +102085,10 @@ export const TextSelectionToolbar = Object.assign(
 /**
  * A button styled like a Material native Android text selection menu button.
  */
-export interface TextSelectionToolbarTextButtonProps {
+export interface TextSelectionToolbarTextButtonProps extends Omit<
+  GestureProps,
+  'onClick'
+> {
   /**
    * The child of this button.
    *
@@ -101323,7 +102161,7 @@ export const TextSelectionToolbarTextButton: FlutterComponent<TextSelectionToolb
  *  * [TextureRegistry Protocol](/ios-embedder/protocol_flutter_texture_registry-p.html)
  *    for how to create and manage backend textures on iOS.
  */
-export interface TextureProps {
+export interface TextureProps extends GestureProps {
   /**
    * The identity of the backend texture.
    */
@@ -101404,7 +102242,7 @@ export const Texture: FlutterComponent<TextureProps> =
  *  * [MaterialApp], which includes an [AnimatedTheme] widget configured via
  *    the [MaterialApp.theme] argument.
  */
-export interface ThemeProps {
+export interface ThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -101455,7 +102293,7 @@ export const Theme: FlutterComponent<ThemeProps> =
  * widget-aware ticker providers. For example, using a
  * [TickerProviderStateMixin] or a [SingleTickerProviderStateMixin].
  */
-export interface TickerModeProps {
+export interface TickerModeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -101506,7 +102344,7 @@ export const TickerMode: FlutterComponent<TickerModeProps> =
  *
  * Use [showTimePicker] to show a dialog already containing a [TimePickerDialog].
  */
-export interface TimePickerDialogProps {
+export interface TimePickerDialogProps extends GestureProps {
   /**
    * The time initially selected when the dialog is shown.
    */
@@ -101607,7 +102445,7 @@ export const TimePickerDialog: FlutterComponent<TimePickerDialogProps> =
  * Values specified here are used for time picker properties that are not
  * given an explicit non-null value.
  */
-export interface TimePickerThemeProps {
+export interface TimePickerThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -101635,7 +102473,7 @@ export const TimePickerTheme: FlutterComponent<TimePickerThemeProps> =
 /**
  * A widget that describes this app in the operating system.
  */
-export interface TitleProps {
+export interface TitleProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -101822,7 +102660,7 @@ export const Title: FlutterComponent<TitleProps> =
  *
  *  * <https://material.io/design/components/buttons.html#toggle-button>
  */
-export interface ToggleButtonsProps {
+export interface ToggleButtonsProps extends Omit<GestureProps, 'onClick'> {
   /**
    * The toggle button widgets.
    *
@@ -102235,7 +103073,7 @@ export const ToggleButtons: FlutterComponent<ToggleButtonsProps> =
  * Values specified here are used for [ToggleButtons] properties that are not
  * given an explicit non-null value.
  */
-export interface ToggleButtonsThemeProps {
+export interface ToggleButtonsThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -102326,7 +103164,7 @@ export const ToggleButtonsTheme: FlutterComponent<ToggleButtonsThemeProps> =
  *  * [TooltipTheme] or [ThemeData.tooltipTheme]
  *  * [TooltipVisibility]
  */
-export interface TooltipProps {
+export interface TooltipProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -102598,7 +103436,7 @@ export const Tooltip: FlutterComponent<TooltipProps> =
  *    tooltip theme.
  *  * [TooltipVisibility], which can be used to visually disable descendant [Tooltip]s.
  */
-export interface TooltipThemeProps {
+export interface TooltipThemeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -102662,7 +103500,7 @@ export const TooltipTheme: FlutterComponent<TooltipThemeProps> =
  * `ensureTooltipVisible` is called. This only visually disables tooltips but
  * continues to provide any semantic information that is provided.
  */
-export interface TooltipVisibilityProps {
+export interface TooltipVisibilityProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -102725,7 +103563,7 @@ export const TooltipVisibility: FlutterComponent<TooltipVisibilityProps> =
  *    according to a given [BoxFit] discipline.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface TransformProps {
+export interface TransformProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -102927,7 +103765,7 @@ export const Transform: FlutterComponent<TransformProps> =
  *
  * ** See code in examples/api/lib/widgets/sliver/sliver_tree.1.dart **
  */
-export interface TreeSliverProps {
+export interface TreeSliverProps extends GestureProps {
   /**
    * The list of [TreeSliverNode]s that may be displayed in the [TreeSliver].
    *
@@ -103144,7 +103982,7 @@ export const TreeSliver = Object.assign(
  * * [ValueListenableBuilder], a widget whose content stays synced with a
  *   [ValueListenable] instead of a [Tween].
  */
-export interface TweenAnimationBuilderProps {
+export interface TweenAnimationBuilderProps extends GestureProps {
   /**
    * The child widget to pass to the builder.
    *
@@ -103332,7 +104170,7 @@ export const TweenAnimationBuilder: FlutterComponent<TweenAnimationBuilderProps>
  *  * [TwoDimensionalViewport], which can be used to customize the child layout
  *    model.
  */
-export interface TwoDimensionalScrollableProps {
+export interface TwoDimensionalScrollableProps extends GestureProps {
   /**
    * The configuration of the horizontal [Scrollable].
    *
@@ -103433,7 +104271,7 @@ export const TwoDimensionalScrollable: FlutterComponent<TwoDimensionalScrollable
  * If a conic path clipping is applied to a UIKitView,
  * a quad path is used to approximate the clip due to limitation of Quartz.
  */
-export interface UiKitViewProps {
+export interface UiKitViewProps extends GestureProps {
   /**
    * The unique identifier for iOS view type to be embedded by this widget.
    *
@@ -103550,7 +104388,7 @@ export const UiKitView: FlutterComponent<UiKitViewProps> =
  *    transformed [BoxConstraints], and shows a warning if the child overflows
  *    in debug mode.
  */
-export interface UnconstrainedBoxProps {
+export interface UnconstrainedBoxProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -103633,7 +104471,7 @@ export const UnconstrainedBox: FlutterComponent<UnconstrainedBoxProps> =
  * The [child] must manage focus on the [focusNode]. For example, using a
  * [TextField] or [Focus] widget.
  */
-export interface UndoHistoryProps {
+export interface UndoHistoryProps extends GestureProps {
   /**
    * The child widget of [UndoHistory].
    */
@@ -103726,7 +104564,7 @@ export const UndoHistory: FlutterComponent<UndoHistoryProps> =
  *  * [RestorationManager], which describes the basic concepts of state
  *    restoration in Flutter.
  */
-export interface UnmanagedRestorationScopeProps {
+export interface UnmanagedRestorationScopeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -103780,7 +104618,7 @@ export const UnmanagedRestorationScope: FlutterComponent<UnmanagedRestorationSco
  *  * [DrawerHeader], for a drawer header that doesn't show user accounts.
  *  * <https://material.io/design/components/navigation-drawer.html#anatomy>
  */
-export interface UserAccountsDrawerHeaderProps {
+export interface UserAccountsDrawerHeaderProps extends GestureProps {
   /**
    * The header's background. If decoration is null then a [BoxDecoration]
    * with its background color set to the current theme's primaryColor is used.
@@ -103882,7 +104720,7 @@ export const UserAccountsDrawerHeader: FlutterComponent<UserAccountsDrawerHeader
  *  * [TweenAnimationBuilder], which can animate values in a widget based on a
  *    [Tween].
  */
-export interface ValueListenableBuilderProps {
+export interface ValueListenableBuilderProps extends GestureProps {
   /**
    * A [valueListenable]-independent widget which is passed back to the [builder].
    *
@@ -103984,7 +104822,7 @@ export const ValueListenableBuilder: FlutterComponent<ValueListenableBuilderProp
  *  * [Divider], which is the horizontal analog of this widget.
  *  * <https://material.io/design/components/dividers.html>
  */
-export interface VerticalDividerProps {
+export interface VerticalDividerProps extends GestureProps {
   /**
    * The divider's width.
    *
@@ -104124,7 +104962,7 @@ export const VerticalDivider: FlutterComponent<VerticalDividerProps> =
  * * [Element.debugExpectsRenderObjectForSlot], which defines whether a [View]
  *   widget is allowed in a given child slot.
  */
-export interface ViewProps {
+export interface ViewProps extends GestureProps {
   /**
    * The widget below this widget in the tree, which will be drawn into the
    * [view].
@@ -104224,7 +105062,7 @@ export const View: FlutterComponent<ViewProps> =
  * example, the [view] slot is configured with the tooltip [View] and the
  * [child] is the button widget rendered into the surrounding view.
  */
-export interface ViewAnchorProps {
+export interface ViewAnchorProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    *
@@ -104288,7 +105126,7 @@ export const ViewAnchor: FlutterComponent<ViewAnchorProps> =
  *
  *  * [WidgetsBinding] for an explanation of rendering and non-rendering zones.
  */
-export interface ViewCollectionProps {
+export interface ViewCollectionProps extends GestureProps {
   views: FlutterChild[];
 }
 
@@ -104350,7 +105188,7 @@ export const ViewCollection: FlutterComponent<ViewCollectionProps> =
  *  * [ViewportElementMixin], which should be mixed in to the [Element] type used
  *    by viewport-like widgets to correctly handle scroll notifications.
  */
-export interface ViewportProps {
+export interface ViewportProps extends GestureProps {
   /**
    * The direction in which the [offset]'s [ViewportOffset.pixels] increases.
    *
@@ -104497,7 +105335,7 @@ export const Viewport: FlutterComponent<ViewportProps> =
  *  * [AnimatedCrossFade], which can fade between two specific children.
  *  * [SliverVisibility], the sliver equivalent of this widget.
  */
-export interface VisibilityProps {
+export interface VisibilityProps extends GestureProps {
   /**
    * The widget to show or hide, as controlled by [visible].
    */
@@ -104695,7 +105533,7 @@ export const Visibility: FlutterComponent<VisibilityProps> =
  * the selected widget changes position. Clicking on the select icon in the
  * bottom left corner of the application switches back to select mode.
  */
-export interface WidgetInspectorProps {
+export interface WidgetInspectorProps extends GestureProps {
   /**
    * The widget that is being inspected.
    */
@@ -104788,7 +105626,7 @@ export const WidgetInspector: FlutterComponent<WidgetInspectorProps> =
  * children have been added to the [renderBox], they must be disposed in the
  * [onUnmount] callback.
  */
-export interface WidgetToRenderBoxAdapterProps {
+export interface WidgetToRenderBoxAdapterProps extends GestureProps {
   /**
    * The render box to place in the widget tree.
    *
@@ -104869,7 +105707,7 @@ export const WidgetToRenderBoxAdapter: FlutterComponent<WidgetToRenderBoxAdapter
  *    independently.
  *  * [SemanticsDebugger], a widget that visualizes the semantics for the child.
  */
-export interface WidgetsAppProps {
+export interface WidgetsAppProps extends GestureProps {
   /**
    * A key to use when building the [Navigator].
    *
@@ -105558,7 +106396,7 @@ export const WidgetsApp: FlutterComponent<WidgetsAppProps> =
  *  * [Form], which provides an `onWillPop` callback that enables the form
  *    to veto a `pop` initiated by the app's back button.
  */
-export interface WillPopScopeProps {
+export interface WillPopScopeProps extends GestureProps {
   /**
    * The widget below this widget in the tree.
    */
@@ -105637,7 +106475,7 @@ export const WillPopScope: FlutterComponent<WillPopScopeProps> =
  *    alignment and spacing.
  *  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
  */
-export interface WrapProps {
+export interface WrapProps extends GestureProps {
   /**
    * The widgets below this widget in the tree.
    *
@@ -105907,7 +106745,7 @@ export const Wrap: FlutterComponent<WrapProps> =
  *  * [showDatePicker], which shows a dialog containing a Material Design
  *    date picker.
  */
-export interface YearPickerProps {
+export interface YearPickerProps extends GestureProps {
   /**
    * The current date.
    *

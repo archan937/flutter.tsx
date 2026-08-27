@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'bun:test';
 
 import { loadApiSnapshot } from '@src/api/load';
+import type { ApiSnapshot, ParamModel } from '@src/api/model';
 import { analyzeSource } from '@src/compiler/analyze';
 import type { IrComponent } from '@src/compiler/ir';
 import {
@@ -1985,6 +1986,195 @@ describe('lowerComponent — assert-implied requirements', () => {
         '`actions`, `title`, `message` or `cancelButton`: Flutter asserts ' +
         'it at runtime, so leaving all of them out compiles to Dart that ' +
         'throws.',
+    );
+  });
+});
+// Gesture props are the vision's GestureDetector replacement: any widget can
+// take them, and the compiler wraps. The allowed set is derived from
+// GestureDetector's own constructor — no hand-maintained list.
+describe('lowerComponent — gesture props', () => {
+  const lowerProbe = async (element: string): Promise<IrComponent> => {
+    const analysis = analyzeSource(
+      "import { Container, Text, ListTile, useState } from 'flutter-tsx';\n" +
+        'export const Probe = () => {\n' +
+        '  const [hit, setHit] = useState(false);\n' +
+        '  const tap = () => {\n' +
+        '    setHit(true);\n' +
+        '  };\n' +
+        `  return ${element};\n` +
+        '};\n',
+      'probe.tsx',
+    );
+    const [component] = analysis.components;
+    if (component === undefined) {
+      throw new Error('expected a component');
+    }
+    return lowerComponent(component, await contextOnce());
+  };
+
+  test('a tap prop wraps the widget in a GestureDetector', async () => {
+    const ir = await lowerProbe(
+      '<Container onClick={tap}><Text>Hi</Text></Container>',
+    );
+
+    expect(ir.body.name).toBe('GestureDetector');
+    expect(ir.body.args.map((argument) => argument.param)).toEqual([
+      'onTap',
+      'child',
+    ]);
+    expect(ir.body.args[0]?.value).toEqual({
+      kind: 'handlerRef',
+      name: 'tap',
+    });
+    const [, child] = ir.body.args;
+    expect(child?.value.kind).toBe('widget');
+  });
+
+  test('several gesture props land on one wrapper', async () => {
+    const ir = await lowerProbe(
+      '<Container onClick={tap} onLongPress={tap} onDoubleTap={tap}>' +
+        '<Text>Hi</Text></Container>',
+    );
+
+    expect(ir.body.name).toBe('GestureDetector');
+    expect(ir.body.args.map((argument) => argument.param)).toEqual([
+      'onTap',
+      'onLongPress',
+      'onDoubleTap',
+      'child',
+    ]);
+  });
+
+  test("a widget's own prop of that name is not wrapped", async () => {
+    const ir = await lowerProbe('<ListTile onClick={tap} />');
+
+    expect(ir.body.name).toBe('ListTile');
+    expect(ir.body.args.map((argument) => argument.param)).toEqual(['onTap']);
+  });
+
+  test('an unknown prop that is no gesture is still a numbered error', () => {
+    expect(lowerProbe('<Container onWiggle={tap} />')).rejects.toThrow(
+      new Error(
+        'TSX0202 probe.tsx:7:21 — <Container> has no prop `onWiggle`. ' +
+          'Check the API reference for the available props.',
+      ),
+    );
+  });
+});
+// The gesture derivation reads GestureDetector out of the snapshot, so each
+// rule is pinned against a synthetic detector rather than only the SDK one.
+describe('buildCompileContext — gesture derivation rules', () => {
+  const detectorSnapshot = (params: ParamModel[]): ApiSnapshot => ({
+    meta: {
+      frameworkVersion: '3.47.1',
+      dartSdkVersion: '3.13.1',
+      frameworkRevision: 'test',
+    },
+    entities: [
+      {
+        kind: 'widget',
+        name: 'GestureDetector',
+        library: 'widgets',
+        doc: '',
+        supertypes: ['StatelessWidget', 'Widget'],
+        constructors: [
+          {
+            name: '',
+            doc: '',
+            isConst: true,
+            paramMemberAsserts: false,
+            requiredOneOf: [],
+            params: [
+              {
+                name: 'child',
+                type: { kind: 'nullable', inner: { kind: 'widget' } },
+                display: 'Widget?',
+                named: true,
+                required: false,
+                defaultValue: null,
+                doc: '',
+                deprecated: false,
+              },
+              ...params,
+            ],
+          },
+        ],
+        constants: [],
+      },
+    ],
+    hierarchy: { GestureDetector: ['StatelessWidget', 'Widget'] },
+    exports: {},
+  });
+
+  const callback = (name: string, nullable: boolean): ParamModel => {
+    const fn = {
+      kind: 'function' as const,
+      returnType: { kind: 'void' as const },
+      params: [],
+    };
+    return {
+      name,
+      type: nullable ? { kind: 'nullable', inner: fn } : fn,
+      display: 'VoidCallback',
+      named: true,
+      required: false,
+      defaultValue: null,
+      doc: '',
+      deprecated: false,
+    };
+  };
+
+  test('a non-nullable callback param is still a gesture prop', () => {
+    const snapshot = detectorSnapshot([callback('onTap', false)]);
+    const built = buildCompileContext(snapshot, deriveSlots(snapshot));
+
+    expect([...(built.gestures?.props.keys() ?? [])]).toEqual(['onClick']);
+    expect(built.gestures?.childParam).toBe('child');
+  });
+
+  test('a snapshot without GestureDetector derives no gestures', () => {
+    const snapshot = detectorSnapshot([]);
+    const withoutDetector: ApiSnapshot = {
+      ...snapshot,
+      entities: [],
+      hierarchy: {},
+    };
+    const built = buildCompileContext(
+      withoutDetector,
+      deriveSlots(withoutDetector),
+    );
+
+    expect(built.gestures).toBeNull();
+  });
+
+  test('a detector with no callbacks yields no gesture wrapping', () => {
+    const snapshot = detectorSnapshot([]);
+    const built = buildCompileContext(snapshot, deriveSlots(snapshot));
+
+    expect(built.gestures).toBeNull();
+  });
+
+  test('without gestures derived, an on-prop is a plain unknown prop', () => {
+    const snapshot = detectorSnapshot([]);
+    const built = buildCompileContext(snapshot, deriveSlots(snapshot));
+    const analysis = analyzeSource(
+      "import { GestureDetector } from 'flutter-tsx';\n" +
+        'export const Probe = () => {\n' +
+        '  const tap = () => {};\n' +
+        '  return <GestureDetector onClick={tap} />;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+    const [component] = analysis.components;
+    if (component === undefined) {
+      throw new Error('expected a component');
+    }
+
+    expect(() => lowerComponent(component, built)).toThrow(
+      new Error(
+        'TSX0202 probe.tsx:4:27 — <GestureDetector> has no prop `onClick`. ' +
+          'Check the API reference for the available props.',
+      ),
     );
   });
 });

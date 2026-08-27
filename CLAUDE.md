@@ -578,7 +578,7 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       incomplete with a visible `{…}` placeholder — placeholders 145→150,
       honestly excluded from the sweep instead of silently emitting throwing
       Dart. `sweep.test.ts` is now a plain green test, not `test.failing`.
-- [ ] 23 (breed matrix status). controller ✓ camera (goldens #1, #10);
+- [x] 23 (breed matrix status). controller ✓ camera (goldens #1, #10);
       storage ✓ shared_preferences (golden #11); service/auth ✓
       flutter_secure_storage (golden #12); navigation-function ✓
       url_launcher (golden #13); staticFactory generality ✓ package_info_plus
@@ -603,7 +603,26 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       anatomy (state/teardown/method-rewrite templates) and hook options —
       parameter slots like `useCamera({ resolution: 'high', lens: 'front' })`,
       each speced with its own fixture before being documented.**
-- [ ] 24b. High-level abstractions from the vision (each gated by its own golden +
+- [x] 24b (gesture props). **Any widget takes gesture props; the compiler
+      wraps.** `<Container onClick={bump} onLongPress={bump}>` →
+      `GestureDetector(onTap: _bump, onLongPress: _bump, child: Container(…))`.
+      The allowed set is DERIVED from GestureDetector's own constructor —
+      every `on*` param whose type is a function, so a new SDK gesture needs
+      no code change (66 params, all the tap/drag/scale/pan callbacks come
+      free). A widget's own prop of that name always wins, so `ListTile
+      onClick` stays on the ListTile and never wraps; an unknown prop that is
+      no gesture is still TSX0202. Const inference is unaffected: the wrapper
+      carries a handler reference so it is non-const while its child stays
+      `const Text(…)`. Golden #16 (`16-tap-target`) certified and byte-equal,
+      plus a widget test proving a tap AND a long press each reach the
+      handler at runtime. **The typecheck gate caught the half-measure:**
+      wrapping in the compiler is worthless if the TS types reject the prop,
+      so the generator now emits a `GestureProps` interface (also derived
+      from GestureDetector) that all 509 widget interfaces inherit —
+      `extends GestureProps`, or `extends Omit<GestureProps, 'onClick'>`
+      where the widget declares that prop itself, so its own signature
+      always wins and TS never sees a clash.
+- [ ] 24b. Remaining high-level abstractions from the vision (each gated by its own golden +
       e2e before being documented): `useAsync`/`Query`→FutureBuilder ·
       `useStream`→StreamBuilder · `createStore`/`useStore`→ChangeNotifier+Provider ·
       `useNavigation`/`<Router>`→GoRouter · `Modal` · `TabView` · `<Animated>` ·

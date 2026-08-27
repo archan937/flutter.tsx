@@ -52,6 +52,9 @@ export interface PluginFunctionInfo {
 
 export interface CompileContext {
   widgets: Map<string, WidgetInfo>;
+  // Everything needed to wrap a widget in a GestureDetector, derived from the
+  // detector itself so the prop set and the wrapper can never disagree.
+  gestures: GestureWrap | null;
   userWidgets: Map<string, WidgetInfo>;
   pluginHooks: Map<string, PluginHookInfo>;
   pluginFunctions: Map<string, PluginFunctionInfo>;
@@ -64,6 +67,39 @@ export interface CompileContext {
 }
 
 const EMPTY_SLOTS: WidgetSlots = { children: null, slots: [] };
+
+const GESTURE_WIDGET = 'GestureDetector';
+
+interface GestureWrap {
+  props: Map<string, ParamModel>;
+  childParam: string;
+  constConstructor: boolean;
+}
+
+// The detector's callback params are exactly the gestures Flutter recognises;
+// deriving them means a new SDK gesture needs no code change here.
+const gestureWrapOf = (
+  detector: WidgetInfo | undefined,
+): GestureWrap | null => {
+  const childSlot = detector?.slots.children;
+  if (detector === undefined || childSlot?.kind !== 'widget') {
+    return null;
+  }
+  const props = new Map<string, ParamModel>();
+  for (const [jsxName, param] of detector.paramsByJsxName) {
+    const bare = param.type.kind === 'nullable' ? param.type.inner : param.type;
+    if (param.name.startsWith('on') && bare.kind === 'function') {
+      props.set(jsxName, param);
+    }
+  }
+  return props.size === 0
+    ? null
+    : {
+        props,
+        childParam: childSlot.param,
+        constConstructor: detector.constConstructor,
+      };
+};
 
 export const buildCompileContext = (
   snapshot: ApiSnapshot,
@@ -112,6 +148,7 @@ export const buildCompileContext = (
 
   return {
     widgets,
+    gestures: gestureWrapOf(widgets.get(GESTURE_WIDGET)),
     userWidgets: new Map(),
     pluginHooks: new Map(),
     pluginFunctions: new Map(),
@@ -567,29 +604,37 @@ const lowerAttribute = (
     );
   }
 
+  return {
+    param: param.name,
+    positional: !param.named,
+    value: lowerAttributeValue(attribute, param, context),
+  };
+};
+
+const lowerAttributeValue = (
+  attribute: ts.JsxAttribute,
+  param: ParamModel,
+  context: LowerContext,
+): IrValue => {
   const { initializer } = attribute;
-  let value: IrValue;
   if (initializer === undefined) {
-    value = lowerBoolean(true, {
+    return lowerBoolean(true, {
       type: unwrapType(param.type),
       node: attribute.name,
       context,
     });
-  } else if (ts.isStringLiteral(initializer)) {
-    value = lowerString(initializer.text, {
+  }
+  if (ts.isStringLiteral(initializer)) {
+    return lowerString(initializer.text, {
       type: unwrapType(param.type),
       node: initializer,
       context,
     });
-  } else if (
-    ts.isJsxExpression(initializer) &&
-    initializer.expression !== undefined
-  ) {
-    value = lowerExpression(initializer.expression, param.type, context);
-  } else {
-    value = { kind: 'raw', node: initializer };
   }
-  return { param: param.name, positional: !param.named, value };
+  if (ts.isJsxExpression(initializer) && initializer.expression !== undefined) {
+    return lowerExpression(initializer.expression, param.type, context);
+  }
+  return { kind: 'raw', node: initializer };
 };
 
 const meaningfulText = (child: ts.JsxChild): string | null => {
@@ -938,10 +983,20 @@ const lowerJsxElement = (
       );
     }
   }
+  const gestureArgs: IrArgument[] = [];
   for (const attribute of opening.attributes.properties) {
-    if (ts.isJsxAttribute(attribute)) {
-      args.push(lowerAttribute(attribute, info, context));
+    if (!ts.isJsxAttribute(attribute)) {
+      continue;
     }
+    const jsxName = attribute.name.getText();
+    const gesture = info.paramsByJsxName.has(jsxName)
+      ? undefined
+      : context.compile.gestures?.props.get(jsxName);
+    if (gesture !== undefined) {
+      gestureArgs.push(lowerGestureAttribute(attribute, gesture, context));
+      continue;
+    }
+    args.push(lowerAttribute(attribute, info, context));
   }
   if (ts.isJsxElement(element)) {
     const children = childrenArgument(element, info, context);
@@ -950,12 +1005,45 @@ const lowerJsxElement = (
     }
   }
   requireOneOfSatisfied({ info, args, node: opening.tagName }, context);
-  return {
+  const widget: IrWidget = {
     name: widgetName,
     constConstructor: info.constConstructor,
     args,
   };
+  const wrap = context.compile.gestures;
+  return gestureArgs.length === 0 || wrap === null
+    ? widget
+    : wrapInGestureDetector(widget, gestureArgs, wrap);
 };
+
+const lowerGestureAttribute = (
+  attribute: ts.JsxAttribute,
+  param: ParamModel,
+  context: LowerContext,
+): IrArgument => ({
+  param: param.name,
+  positional: false,
+  value: lowerAttributeValue(attribute, param, context),
+});
+
+// Only reachable when a gesture prop matched, which means the wrap data came
+// from the same derivation — no impossible branch to guard.
+const wrapInGestureDetector = (
+  widget: IrWidget,
+  gestureArgs: IrArgument[],
+  wrap: GestureWrap,
+): IrWidget => ({
+  name: GESTURE_WIDGET,
+  constConstructor: wrap.constConstructor,
+  args: [
+    ...gestureArgs,
+    {
+      param: wrap.childParam,
+      positional: false,
+      value: { kind: 'widget', widget },
+    },
+  ],
+});
 
 const orList = (names: string[]): string => {
   const quoted = names.map((name) => `\`${name}\``);

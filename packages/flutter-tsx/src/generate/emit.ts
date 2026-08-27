@@ -98,11 +98,80 @@ const childrenLine = (children: ChildrenSlot, params: ParamModel[]): string => {
   return jsdoc === '' ? declaration : `${jsdoc}\n${declaration}`;
 };
 
-const widgetBlocks = (
-  widget: WidgetEntity,
-  widgetSlots: WidgetSlots,
+const GESTURE_WIDGET = 'GestureDetector';
+
+// GestureDetector's callback params are exactly the gestures any widget may
+// carry: the compiler wraps the widget, so the props must typecheck on it.
+const gestureParams = (
+  snapshot: ApiSnapshot,
+): { param: ParamModel; jsxName: string }[] => {
+  const detector = snapshot.entities.find(
+    (entity): entity is WidgetEntity =>
+      entity.kind === 'widget' && entity.name === GESTURE_WIDGET,
+  );
+  const constructor =
+    detector === undefined ? undefined : defaultConstructorOf(detector);
+  if (constructor === undefined) {
+    return [];
+  }
+  const takenNames = new Set(constructor.params.map((param) => param.name));
+  return constructor.params
+    .filter((param) => {
+      const bare =
+        param.type.kind === 'nullable' ? param.type.inner : param.type;
+      return param.name.startsWith('on') && bare.kind === 'function';
+    })
+    .map((param) => ({ param, jsxName: jsxPropName(param.name, takenNames) }));
+};
+
+const gesturePropsBlock = (
+  gestures: { param: ParamModel; jsxName: string }[],
   formNames: ReadonlySet<string>,
 ): string[] => {
+  if (gestures.length === 0) {
+    return [];
+  }
+  const scope: PropScope = {
+    widgetSlots: EMPTY_SLOTS,
+    takenNames: new Set(gestures.map(({ param }) => param.name)),
+    formNames,
+  };
+  const lines = gestures.map(({ param }) => propLine(param, scope));
+  return [
+    '/**\n * Gestures any widget accepts: the compiler wraps it in a' +
+      ' GestureDetector.\n */\n' +
+      `export interface GestureProps {\n${lines.join('\n')}\n}`,
+  ];
+};
+
+// A widget declaring the same prop keeps its own: that key is omitted from
+// the inherited set rather than clashing with it.
+const gestureClause = (
+  widget: WidgetEntity,
+  ownJsxNames: ReadonlySet<string>,
+  gestureJsxNames: string[],
+): string => {
+  if (gestureJsxNames.length === 0 || widget.name === GESTURE_WIDGET) {
+    return '';
+  }
+  const collisions = gestureJsxNames.filter((name) => ownJsxNames.has(name));
+  if (collisions.length === gestureJsxNames.length) {
+    return '';
+  }
+  const omitted = collisions.map((name) => `'${name}'`).join(' | ');
+  return collisions.length === 0
+    ? ' extends GestureProps'
+    : ` extends Omit<GestureProps, ${omitted}>`;
+};
+
+interface WidgetScope {
+  widgetSlots: WidgetSlots;
+  formNames: ReadonlySet<string>;
+  gestureJsxNames: string[];
+}
+
+const widgetBlocks = (widget: WidgetEntity, scope: WidgetScope): string[] => {
+  const { widgetSlots, formNames, gestureJsxNames } = scope;
   const constructor = defaultConstructorOf(widget);
   if (constructor === undefined) {
     return [];
@@ -122,8 +191,15 @@ const widgetBlocks = (
 
   const doc = dartdocToJsdoc(widget.doc, '');
   const docPrefix = doc === '' ? '' : `${doc}\n`;
+  const ownJsxNames = new Set(
+    constructor.params.map((param) => jsxPropName(param.name, takenNames)),
+  );
+  if (widgetSlots.children !== null) {
+    ownJsxNames.add('children');
+  }
   const propsInterface =
-    `${docPrefix}export interface ${widget.name}Props {\n` +
+    `${docPrefix}export interface ${widget.name}Props` +
+    `${gestureClause(widget, ownJsxNames, gestureJsxNames)} {\n` +
     `${lines.join('\n')}\n}`;
   const component =
     widget.constants.length === 0
@@ -316,9 +392,16 @@ export const emitWidgetsFile = (
   for (const name of formNames) {
     blocks.push(...valueFormBlocks(name, forms, formNames));
   }
+  const gestures = gestureParams(snapshot);
+  blocks.push(...gesturePropsBlock(gestures, formNames));
+  const gestureJsxNames = gestures.map(({ jsxName }) => jsxName);
   for (const widget of widgets) {
     blocks.push(
-      ...widgetBlocks(widget, slots[widget.name] ?? EMPTY_SLOTS, formNames),
+      ...widgetBlocks(widget, {
+        widgetSlots: slots[widget.name] ?? EMPTY_SLOTS,
+        formNames,
+        gestureJsxNames,
+      }),
     );
   }
 
