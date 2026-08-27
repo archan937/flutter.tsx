@@ -1,0 +1,482 @@
+{
+  "package": "url_launcher",
+  "version": "6.3.2",
+  "classes": [
+    {
+      "name": "BrowserConfiguration",
+      "doc": "/// Additional configuration options for [LaunchMode.inAppBrowserView]",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "/// Creates a new InAppBrowserConfiguration with given settings.",
+          "const": true,
+          "paramMemberAsserts": false,
+          "params": [
+            {
+              "name": "showTitle",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": false,
+              "defaultValue": "false",
+              "doc": "/// Whether or not to show the webpage title.\n///\n/// May not be supported on all platforms.",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "methods": [],
+      "constants": []
+    },
+    {
+      "name": "WebViewConfiguration",
+      "doc": "/// Additional configuration options for [LaunchMode.inAppWebView].",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "/// Creates a new WebViewConfiguration with the given settings.",
+          "const": true,
+          "paramMemberAsserts": false,
+          "params": [
+            {
+              "name": "enableJavaScript",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": false,
+              "defaultValue": "true",
+              "doc": "/// Whether or not JavaScript is enabled for the web content.\n///\n/// Disabling this may not be supported on all platforms.",
+              "deprecated": false
+            },
+            {
+              "name": "enableDomStorage",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": false,
+              "defaultValue": "true",
+              "doc": "/// Whether or not DOM storage is enabled for the web content.\n///\n/// Disabling this may not be supported on all platforms.",
+              "deprecated": false
+            },
+            {
+              "name": "headers",
+              "type": {
+                "kind": "map",
+                "key": {
+                  "kind": "scalar",
+                  "name": "String"
+                },
+                "value": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "Map<String, String>",
+              "named": true,
+              "required": false,
+              "defaultValue": "const <String, String>{}",
+              "doc": "/// Additional headers to pass in the load request.\n///\n/// On Android, this may work even when not loading in an in-app web view.\n/// When loading in an external browsers, this sets\n/// [Browser.EXTRA_HEADERS](https://developer.android.com/reference/android/provider/Browser#EXTRA_HEADERS)\n/// Not all browsers support this, so it is not guaranteed to be honored.",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "methods": [],
+      "constants": []
+    }
+  ],
+  "enums": [
+    {
+      "kind": "enum",
+      "name": "LaunchMode",
+      "library": "url_launcher",
+      "doc": "/// The desired mode to launch a URL.\n///\n/// Support for these modes varies by platform. Platforms that do not support\n/// the requested mode may substitute another mode. See [launchUrl] for more\n/// details.",
+      "values": [
+        {
+          "name": "platformDefault",
+          "doc": "/// Leaves the decision of how to launch the URL to the platform\n/// implementation."
+        },
+        {
+          "name": "inAppWebView",
+          "doc": "/// Loads the URL in an in-app web view (e.g., Android WebView)."
+        },
+        {
+          "name": "inAppBrowserView",
+          "doc": "/// Loads the URL in an in-app web view (e.g., Android Custom Tabs, SFSafariViewController)."
+        },
+        {
+          "name": "externalApplication",
+          "doc": "/// Passes the URL to the OS to be handled by another application."
+        },
+        {
+          "name": "externalNonBrowserApplication",
+          "doc": "/// Passes the URL to the OS to be handled by another non-browser application."
+        }
+      ]
+    }
+  ],
+  "functions": [
+    {
+      "name": "canLaunch",
+      "doc": "/// Checks whether the specified URL can be handled by some app installed on the\n/// device.\n///\n/// On some systems, such as recent versions of Android and iOS, this will\n/// always return false unless the application has been configuration to allow\n/// querying the system for launch support. See\n/// [the README](https://pub.dev/packages/url_launcher#configuration) for\n/// details.",
+      "returnType": {
+        "kind": "future",
+        "item": {
+          "kind": "scalar",
+          "name": "bool"
+        }
+      },
+      "params": [
+        {
+          "name": "urlString",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          },
+          "display": "String",
+          "named": false,
+          "required": true,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        }
+      ]
+    },
+    {
+      "name": "canLaunchUrl",
+      "doc": "/// Checks whether the specified URL can be handled by some app installed on the\n/// device.\n///\n/// Returns true if it is possible to verify that there is a handler available.\n/// A false return value can indicate either that there is no handler available,\n/// or that the application does not have permission to check. For example:\n/// - On recent versions of Android and iOS, this will always return false\n///   unless the application has been configuration to allow\n///   querying the system for launch support. See\n///   [the README](https://pub.dev/packages/url_launcher#configuration) for\n///   details.\n/// - On web, this will always return false except for a few specific schemes\n///   that are always assumed to be supported (such as http(s)), as web pages\n///   are never allowed to query installed applications.",
+      "returnType": {
+        "kind": "future",
+        "item": {
+          "kind": "scalar",
+          "name": "bool"
+        }
+      },
+      "params": [
+        {
+          "name": "url",
+          "type": {
+            "kind": "named",
+            "name": "Uri"
+          },
+          "display": "Uri",
+          "named": false,
+          "required": true,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        }
+      ]
+    },
+    {
+      "name": "closeInAppWebView",
+      "doc": "/// Closes the current in-app web view, if one was previously opened by\n/// [launchUrl].\n///\n/// This works only if [supportsCloseForLaunchMode] returns true for the mode\n/// that was used by [launchUrl].",
+      "returnType": {
+        "kind": "future",
+        "item": {
+          "kind": "void"
+        }
+      },
+      "params": []
+    },
+    {
+      "name": "closeWebView",
+      "doc": "/// Closes the current WebView, if one was previously opened via a call to [launch].\n///\n/// If [launch] was never called, then this call will not have any effect.\n///\n/// On Android systems, if [launch] was called without `forceWebView` being set to `true`\n/// Or on IOS systems, if [launch] was called without `forceSafariVC` being set to `true`,\n/// this call will not do anything either, simply because there is no\n/// WebView/SafariViewController available to be closed.",
+      "returnType": {
+        "kind": "future",
+        "item": {
+          "kind": "void"
+        }
+      },
+      "params": []
+    },
+    {
+      "name": "launch",
+      "doc": "/// Parses the specified URL string and delegates handling of it to the\n/// underlying platform.\n///\n/// The returned future completes with a [PlatformException] on invalid URLs and\n/// schemes which cannot be handled, that is when [canLaunch] would complete\n/// with false.\n///\n/// By default when [forceSafariVC] is unset, the launcher\n/// opens web URLs in the Safari View Controller, anything else is opened\n/// using the default handler on the platform. If set to true, it opens the\n/// URL in the Safari View Controller. If false, the URL is opened in the\n/// default browser of the phone. Note that to work with universal links on iOS,\n/// this must be set to false to let the platform's system handle the URL.\n/// Set this to false if you want to use the cookies/context of the main browser\n/// of the app (such as SSO flows). This setting will nullify [universalLinksOnly]\n/// and will always launch a web content in the built-in Safari View Controller regardless\n/// if the url is a universal link or not.\n///\n/// [universalLinksOnly] is only used in iOS with iOS version >= 10.0. This setting is only validated\n/// when [forceSafariVC] is set to false. The default value of this setting is false.\n/// By default (when unset), the launcher will either launch the url in a browser (when the\n/// url is not a universal link), or launch the respective native app content (when\n/// the url is a universal link). When set to true, the launcher will only launch\n/// the content if the url is a universal link and the respective app for the universal\n/// link is installed on the user's device; otherwise throw a [PlatformException].\n///\n/// [forceWebView] is an Android only setting. If null or false, the URL is\n/// always launched with the default browser on device. If set to true, the URL\n/// is launched in a WebView. Unlike iOS, browser context is shared across\n/// WebViews.\n/// [enableJavaScript] is an Android only setting. If true, WebView enable\n/// javascript.\n/// [enableDomStorage] is an Android only setting. If true, WebView enable\n/// DOM storage.\n/// [headers] is an Android only setting that adds headers to the WebView.\n/// When not using a WebView, the header information is passed to the browser,\n/// some Android browsers do not support the [Browser.EXTRA_HEADERS](https://developer.android.com/reference/android/provider/Browser#EXTRA_HEADERS)\n/// intent extra and the header information will be lost.\n/// [webOnlyWindowName] is an Web only setting . _blank opens the new url in new tab ,\n/// _self opens the new url in current tab.\n/// Default behaviour is to open the url in new tab.\n///\n/// Note that if any of the above are set to true but the URL is not a web URL,\n/// this will throw a [PlatformException].\n///\n/// [statusBarBrightness] Sets the status bar brightness of the application\n/// after opening a link on iOS. Does nothing if no value is passed. This does\n/// not handle resetting the previous status bar style.\n///\n/// Returns true if launch url is successful; false is only returned when [universalLinksOnly]\n/// is set to true and the universal link failed to launch.",
+      "returnType": {
+        "kind": "future",
+        "item": {
+          "kind": "scalar",
+          "name": "bool"
+        }
+      },
+      "params": [
+        {
+          "name": "urlString",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          },
+          "display": "String",
+          "named": false,
+          "required": true,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "forceSafariVC",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "bool"
+            }
+          },
+          "display": "bool?",
+          "named": true,
+          "required": false,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "forceWebView",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          },
+          "display": "bool",
+          "named": true,
+          "required": false,
+          "defaultValue": "false",
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "enableJavaScript",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          },
+          "display": "bool",
+          "named": true,
+          "required": false,
+          "defaultValue": "false",
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "enableDomStorage",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          },
+          "display": "bool",
+          "named": true,
+          "required": false,
+          "defaultValue": "false",
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "universalLinksOnly",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          },
+          "display": "bool",
+          "named": true,
+          "required": false,
+          "defaultValue": "false",
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "headers",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          },
+          "display": "Map<String, String>",
+          "named": true,
+          "required": false,
+          "defaultValue": "const <String, String>{}",
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "statusBarBrightness",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "enum",
+              "name": "Brightness"
+            }
+          },
+          "display": "Brightness?",
+          "named": true,
+          "required": false,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "webOnlyWindowName",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          },
+          "display": "String?",
+          "named": true,
+          "required": false,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        }
+      ]
+    },
+    {
+      "name": "launchUrl",
+      "doc": "/// Passes [url] to the underlying platform for handling.\n///\n/// [mode] support varies significantly by platform. Clients can use\n/// [supportsLaunchMode] to query for support, but platforms will fall back to\n/// other modes if the requested mode is not supported, so checking is not\n/// required. The default behavior of [LaunchMode.platformDefault] is up to each\n/// platform, and its behavior for a given platform may change over time as new\n/// modes are supported, so clients that want a specific mode should request it\n/// rather than rely on any currently observed default behavior.\n///\n/// For web, [webOnlyWindowName] specifies a target for the launch. This\n/// supports the standard special link target names. For example:\n///  - \"_blank\" opens the new URL in a new tab.\n///  - \"_self\" opens the new URL in the current tab.\n/// Default behaviour when unset is to open the url in a new tab.\n///\n/// Web browsers prevent launching URLs in a new tab/window, unless\n/// triggered by a user action (e.g. a button click). See\n/// [package:url_launcher_web](https://pub.dev/packages/url_launcher_web#limitations-on-the-web-platform)\n/// for more details.\n///\n/// Returns true if the URL was launched successfully, otherwise either returns\n/// false or throws a [PlatformException] depending on the failure.",
+      "returnType": {
+        "kind": "future",
+        "item": {
+          "kind": "scalar",
+          "name": "bool"
+        }
+      },
+      "params": [
+        {
+          "name": "url",
+          "type": {
+            "kind": "named",
+            "name": "Uri"
+          },
+          "display": "Uri",
+          "named": false,
+          "required": true,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "mode",
+          "type": {
+            "kind": "enum",
+            "name": "LaunchMode"
+          },
+          "display": "LaunchMode",
+          "named": true,
+          "required": false,
+          "defaultValue": "LaunchMode.platformDefault",
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "webViewConfiguration",
+          "type": {
+            "kind": "named",
+            "name": "WebViewConfiguration"
+          },
+          "display": "WebViewConfiguration",
+          "named": true,
+          "required": false,
+          "defaultValue": "const WebViewConfiguration()",
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "browserConfiguration",
+          "type": {
+            "kind": "named",
+            "name": "BrowserConfiguration"
+          },
+          "display": "BrowserConfiguration",
+          "named": true,
+          "required": false,
+          "defaultValue": "const BrowserConfiguration()",
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "webOnlyWindowName",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          },
+          "display": "String?",
+          "named": true,
+          "required": false,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        }
+      ]
+    },
+    {
+      "name": "supportsCloseForLaunchMode",
+      "doc": "/// Returns true if [closeInAppWebView] is supported for [mode] in the current\n/// platform implementation.\n///\n/// If this returns false, [closeInAppWebView] will not work when launching\n/// URLs with [mode].",
+      "returnType": {
+        "kind": "future",
+        "item": {
+          "kind": "scalar",
+          "name": "bool"
+        }
+      },
+      "params": [
+        {
+          "name": "mode",
+          "type": {
+            "kind": "enum",
+            "name": "LaunchMode"
+          },
+          "display": "LaunchMode",
+          "named": false,
+          "required": true,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        }
+      ]
+    },
+    {
+      "name": "supportsLaunchMode",
+      "doc": "/// Returns true if [mode] is supported by the current platform implementation.\n///\n/// Calling [launchUrl] with an unsupported mode will fall back to a supported\n/// mode, so calling this method is only necessary for cases where the caller\n/// needs to know which mode will be used.",
+      "returnType": {
+        "kind": "future",
+        "item": {
+          "kind": "scalar",
+          "name": "bool"
+        }
+      },
+      "params": [
+        {
+          "name": "mode",
+          "type": {
+            "kind": "enum",
+            "name": "LaunchMode"
+          },
+          "display": "LaunchMode",
+          "named": false,
+          "required": true,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        }
+      ]
+    }
+  ]
+}

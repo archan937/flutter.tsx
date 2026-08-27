@@ -1,0 +1,1956 @@
+{
+  "package": "flutter_secure_storage",
+  "version": "9.2.4",
+  "classes": [
+    {
+      "name": "AndroidOptions",
+      "doc": "",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "",
+          "const": true,
+          "paramMemberAsserts": false,
+          "params": [
+            {
+              "name": "encryptedSharedPreferences",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": false,
+              "defaultValue": "false",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "resetOnError",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": false,
+              "defaultValue": "false",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "keyCipherAlgorithm",
+              "type": {
+                "kind": "enum",
+                "name": "KeyCipherAlgorithm"
+              },
+              "display": "KeyCipherAlgorithm",
+              "named": true,
+              "required": false,
+              "defaultValue": "KeyCipherAlgorithm.RSA_ECB_PKCS1Padding",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "storageCipherAlgorithm",
+              "type": {
+                "kind": "enum",
+                "name": "StorageCipherAlgorithm"
+              },
+              "display": "StorageCipherAlgorithm",
+              "named": true,
+              "required": false,
+              "defaultValue": "StorageCipherAlgorithm.AES_CBC_PKCS7Padding",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "sharedPreferencesName",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The name of the sharedPreference database to use.\n/// You can select your own name if you want. A default name will\n/// be used if nothing is provided here.\n///\n/// WARNING: If you change this you can't retrieve already saved preferences.",
+              "deprecated": false
+            },
+            {
+              "name": "preferencesKeyPrefix",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The prefix for a shared preference key. The prefix is used to make sure\n/// the key is unique to your application. If not provided, a default prefix\n/// will be used.\n///\n/// WARNING: If you change this you can't retrieve already saved preferences.",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "methods": [
+        {
+          "name": "copyWith",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "named",
+            "name": "AndroidOptions"
+          },
+          "params": [
+            {
+              "name": "encryptedSharedPreferences",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "bool"
+                }
+              },
+              "display": "bool?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "resetOnError",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "bool"
+                }
+              },
+              "display": "bool?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "keyCipherAlgorithm",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "enum",
+                  "name": "KeyCipherAlgorithm"
+                }
+              },
+              "display": "KeyCipherAlgorithm?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "storageCipherAlgorithm",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "enum",
+                  "name": "StorageCipherAlgorithm"
+                }
+              },
+              "display": "StorageCipherAlgorithm?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "preferencesKeyPrefix",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The prefix for a shared preference key. The prefix is used to make sure\n/// the key is unique to your application. If not provided, a default prefix\n/// will be used.\n///\n/// WARNING: If you change this you can't retrieve already saved preferences.",
+              "deprecated": false
+            },
+            {
+              "name": "sharedPreferencesName",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The name of the sharedPreference database to use.\n/// You can select your own name if you want. A default name will\n/// be used if nothing is provided here.\n///\n/// WARNING: If you change this you can't retrieve already saved preferences.",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "toMap",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          },
+          "params": []
+        }
+      ],
+      "constants": [
+        {
+          "name": "defaultOptions",
+          "type": {
+            "kind": "named",
+            "name": "AndroidOptions"
+          },
+          "display": "AndroidOptions",
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "name": "AppleOptions",
+      "doc": "",
+      "constructors": [],
+      "methods": [
+        {
+          "name": "toMap",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          },
+          "params": []
+        }
+      ],
+      "constants": [
+        {
+          "name": "defaultAccountName",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          },
+          "display": "String",
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "name": "FlutterSecureStorage",
+      "doc": "",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "",
+          "const": true,
+          "paramMemberAsserts": false,
+          "params": [
+            {
+              "name": "iOptions",
+              "type": {
+                "kind": "named",
+                "name": "IOSOptions"
+              },
+              "display": "IOSOptions",
+              "named": true,
+              "required": false,
+              "defaultValue": "IOSOptions.defaultOptions",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "aOptions",
+              "type": {
+                "kind": "named",
+                "name": "AndroidOptions"
+              },
+              "display": "AndroidOptions",
+              "named": true,
+              "required": false,
+              "defaultValue": "AndroidOptions.defaultOptions",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "lOptions",
+              "type": {
+                "kind": "named",
+                "name": "LinuxOptions"
+              },
+              "display": "LinuxOptions",
+              "named": true,
+              "required": false,
+              "defaultValue": "LinuxOptions.defaultOptions",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "wOptions",
+              "type": {
+                "kind": "named",
+                "name": "WindowsOptions"
+              },
+              "display": "WindowsOptions",
+              "named": true,
+              "required": false,
+              "defaultValue": "WindowsOptions.defaultOptions",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "webOptions",
+              "type": {
+                "kind": "named",
+                "name": "WebOptions"
+              },
+              "display": "WebOptions",
+              "named": true,
+              "required": false,
+              "defaultValue": "WebOptions.defaultOptions",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "mOptions",
+              "type": {
+                "kind": "named",
+                "name": "MacOsOptions"
+              },
+              "display": "MacOsOptions",
+              "named": true,
+              "required": false,
+              "defaultValue": "MacOsOptions.defaultOptions",
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "methods": [
+        {
+          "name": "containsKey",
+          "doc": "/// Returns true if the storage contains the given [key].\n///\n/// [key] shouldn't be null.\n/// [iOptions] optional iOS options\n/// [aOptions] optional Android options\n/// [lOptions] optional Linux options\n/// [webOptions] optional web options\n/// [mOptions] optional MacOs options\n/// [wOptions] optional Windows options\n/// Can throw a [PlatformException].",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "scalar",
+              "name": "bool"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "iOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "IOSOptions"
+                }
+              },
+              "display": "IOSOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "aOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "AndroidOptions"
+                }
+              },
+              "display": "AndroidOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "lOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "LinuxOptions"
+                }
+              },
+              "display": "LinuxOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "webOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "WebOptions"
+                }
+              },
+              "display": "WebOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "mOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "MacOsOptions"
+                }
+              },
+              "display": "MacOsOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "wOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "WindowsOptions"
+                }
+              },
+              "display": "WindowsOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "doc": "/// Deletes associated value for the given [key].\n///\n/// If the given [key] does not exist, nothing will happen.\n///\n/// [key] shouldn't be null.\n/// [iOptions] optional iOS options\n/// [aOptions] optional Android options\n/// [lOptions] optional Linux options\n/// [webOptions] optional web options\n/// [mOptions] optional MacOs options\n/// [wOptions] optional Windows options\n/// Can throw a [PlatformException].",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "iOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "IOSOptions"
+                }
+              },
+              "display": "IOSOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "aOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "AndroidOptions"
+                }
+              },
+              "display": "AndroidOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "lOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "LinuxOptions"
+                }
+              },
+              "display": "LinuxOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "webOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "WebOptions"
+                }
+              },
+              "display": "WebOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "mOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "MacOsOptions"
+                }
+              },
+              "display": "MacOsOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "wOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "WindowsOptions"
+                }
+              },
+              "display": "WindowsOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "deleteAll",
+          "doc": "/// Deletes all keys with associated values.\n///\n/// [iOptions] optional iOS options\n/// [aOptions] optional Android options\n/// [lOptions] optional Linux options\n/// [webOptions] optional web options\n/// [mOptions] optional MacOs options\n/// [wOptions] optional Windows options\n/// Can throw a [PlatformException].",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "iOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "IOSOptions"
+                }
+              },
+              "display": "IOSOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "aOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "AndroidOptions"
+                }
+              },
+              "display": "AndroidOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "lOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "LinuxOptions"
+                }
+              },
+              "display": "LinuxOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "webOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "WebOptions"
+                }
+              },
+              "display": "WebOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "mOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "MacOsOptions"
+                }
+              },
+              "display": "MacOsOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "wOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "WindowsOptions"
+                }
+              },
+              "display": "WindowsOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "isCupertinoProtectedDataAvailable",
+          "doc": "/// iOS and macOS only feature.\n///\n/// On macOS this is only available on macOS 12 or newer. On older versions always returns true.\n/// On all unsupported platforms returns null\n///\n/// iOS: https://developer.apple.com/documentation/uikit/uiapplication/1622925-isprotecteddataavailable\n/// macOS: https://developer.apple.com/documentation/appkit/nsapplication/3752992-isprotecteddataavailable",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "nullable",
+              "inner": {
+                "kind": "scalar",
+                "name": "bool"
+              }
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "read",
+          "doc": "/// Decrypts and returns the value for the given [key] or null if [key] is not in the storage.\n///\n/// [key] shouldn't be null.\n/// [iOptions] optional iOS options\n/// [aOptions] optional Android options\n/// [lOptions] optional Linux options\n/// [webOptions] optional web options\n/// [mOptions] optional MacOs options\n/// [wOptions] optional Windows options\n/// Can throw a [PlatformException].",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "nullable",
+              "inner": {
+                "kind": "scalar",
+                "name": "String"
+              }
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "iOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "IOSOptions"
+                }
+              },
+              "display": "IOSOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "aOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "AndroidOptions"
+                }
+              },
+              "display": "AndroidOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "lOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "LinuxOptions"
+                }
+              },
+              "display": "LinuxOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "webOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "WebOptions"
+                }
+              },
+              "display": "WebOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "mOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "MacOsOptions"
+                }
+              },
+              "display": "MacOsOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "wOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "WindowsOptions"
+                }
+              },
+              "display": "WindowsOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "readAll",
+          "doc": "/// Decrypts and returns all keys with associated values.\n///\n/// [iOptions] optional iOS options\n/// [aOptions] optional Android options\n/// [lOptions] optional Linux options\n/// [webOptions] optional web options\n/// [mOptions] optional MacOs options\n/// [wOptions] optional Windows options\n/// Can throw a [PlatformException].",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "map",
+              "key": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "value": {
+                "kind": "scalar",
+                "name": "String"
+              }
+            }
+          },
+          "params": [
+            {
+              "name": "iOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "IOSOptions"
+                }
+              },
+              "display": "IOSOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "aOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "AndroidOptions"
+                }
+              },
+              "display": "AndroidOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "lOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "LinuxOptions"
+                }
+              },
+              "display": "LinuxOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "webOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "WebOptions"
+                }
+              },
+              "display": "WebOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "mOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "MacOsOptions"
+                }
+              },
+              "display": "MacOsOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "wOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "WindowsOptions"
+                }
+              },
+              "display": "WindowsOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "registerListener",
+          "doc": "///Register [listener] for [key] with the [value] injected for the listener.\n///The [listener] will still be called when you delete the [key] with the injected [value] as null.\n///This listener will be added to the list of registered listeners for that [key].",
+          "static": false,
+          "returnType": {
+            "kind": "void"
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "listener",
+              "type": {
+                "kind": "function",
+                "returnType": {
+                  "kind": "void"
+                },
+                "params": [
+                  {
+                    "name": "value",
+                    "type": {
+                      "kind": "nullable",
+                      "inner": {
+                        "kind": "scalar",
+                        "name": "String"
+                      }
+                    },
+                    "named": false,
+                    "required": true
+                  }
+                ]
+              },
+              "display": "void Function(String?)",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setMockInitialValues",
+          "doc": "/// Initializes the shared preferences with mock values for testing.",
+          "static": true,
+          "returnType": {
+            "kind": "void"
+          },
+          "params": [
+            {
+              "name": "values",
+              "type": {
+                "kind": "map",
+                "key": {
+                  "kind": "scalar",
+                  "name": "String"
+                },
+                "value": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "Map<String, String>",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "unregisterAllListeners",
+          "doc": "///Unregister all listeners for all keys.",
+          "static": false,
+          "returnType": {
+            "kind": "void"
+          },
+          "params": []
+        },
+        {
+          "name": "unregisterAllListenersForKey",
+          "doc": "///Unregister all listeners for [key].",
+          "static": false,
+          "returnType": {
+            "kind": "void"
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "unregisterListener",
+          "doc": "///Unregister listener for [Key].\n///The other registered listeners for [key] will be remained.",
+          "static": false,
+          "returnType": {
+            "kind": "void"
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "listener",
+              "type": {
+                "kind": "function",
+                "returnType": {
+                  "kind": "void"
+                },
+                "params": [
+                  {
+                    "name": "value",
+                    "type": {
+                      "kind": "nullable",
+                      "inner": {
+                        "kind": "scalar",
+                        "name": "String"
+                      }
+                    },
+                    "named": false,
+                    "required": true
+                  }
+                ]
+              },
+              "display": "void Function(String?)",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "write",
+          "doc": "/// Encrypts and saves the [key] with the given [value].\n///\n/// If the key was already in the storage, its associated value is changed.\n/// If the value is null, deletes associated value for the given [key].\n/// [key] shouldn't be null.\n/// [value] required value\n/// [iOptions] optional iOS options\n/// [aOptions] optional Android options\n/// [lOptions] optional Linux options\n/// [webOptions] optional web options\n/// [mOptions] optional MacOs options\n/// [wOptions] optional Windows options\n/// Can throw a [PlatformException].",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "value",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "iOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "IOSOptions"
+                }
+              },
+              "display": "IOSOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "aOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "AndroidOptions"
+                }
+              },
+              "display": "AndroidOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "lOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "LinuxOptions"
+                }
+              },
+              "display": "LinuxOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "webOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "WebOptions"
+                }
+              },
+              "display": "WebOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "mOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "MacOsOptions"
+                }
+              },
+              "display": "MacOsOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "wOptions",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "WindowsOptions"
+                }
+              },
+              "display": "WindowsOptions?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "constants": [
+        {
+          "name": "UNSUPPORTED_PLATFORM",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          },
+          "display": "String",
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "name": "IOSOptions",
+      "doc": "/// Specific options for iOS platform.",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "",
+          "const": true,
+          "paramMemberAsserts": false,
+          "params": [
+            {
+              "name": "groupId",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "accountName",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": "AppleOptions.defaultAccountName",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "accessibility",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "enum",
+                  "name": "KeychainAccessibility"
+                }
+              },
+              "display": "KeychainAccessibility?",
+              "named": true,
+              "required": false,
+              "defaultValue": "KeychainAccessibility.unlocked",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "synchronizable",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": false,
+              "defaultValue": "false",
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "methods": [
+        {
+          "name": "copyWith",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "named",
+            "name": "IOSOptions"
+          },
+          "params": [
+            {
+              "name": "groupId",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "accountName",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "accessibility",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "enum",
+                  "name": "KeychainAccessibility"
+                }
+              },
+              "display": "KeychainAccessibility?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "synchronizable",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "bool"
+                }
+              },
+              "display": "bool?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "constants": [
+        {
+          "name": "defaultOptions",
+          "type": {
+            "kind": "named",
+            "name": "IOSOptions"
+          },
+          "display": "IOSOptions",
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "name": "LinuxOptions",
+      "doc": "/// Specific options for Linux platform.\n/// Currently there are no specific linux options available.",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "",
+          "const": true,
+          "paramMemberAsserts": false,
+          "params": []
+        }
+      ],
+      "methods": [
+        {
+          "name": "toMap",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          },
+          "params": []
+        }
+      ],
+      "constants": [
+        {
+          "name": "defaultOptions",
+          "type": {
+            "kind": "named",
+            "name": "LinuxOptions"
+          },
+          "display": "LinuxOptions",
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "name": "MacOsOptions",
+      "doc": "/// Specific options for macOS platform.",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "",
+          "const": true,
+          "paramMemberAsserts": false,
+          "params": [
+            {
+              "name": "groupId",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "accountName",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": "AppleOptions.defaultAccountName",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "accessibility",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "enum",
+                  "name": "KeychainAccessibility"
+                }
+              },
+              "display": "KeychainAccessibility?",
+              "named": true,
+              "required": false,
+              "defaultValue": "KeychainAccessibility.unlocked",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "synchronizable",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": false,
+              "defaultValue": "false",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "useDataProtectionKeyChain",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": false,
+              "defaultValue": "true",
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "methods": [
+        {
+          "name": "copyWith",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "named",
+            "name": "MacOsOptions"
+          },
+          "params": [
+            {
+              "name": "groupId",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "accountName",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "accessibility",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "enum",
+                  "name": "KeychainAccessibility"
+                }
+              },
+              "display": "KeychainAccessibility?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "synchronizable",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "bool"
+                }
+              },
+              "display": "bool?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "useDataProtectionKeyChain",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "bool"
+                }
+              },
+              "display": "bool?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "toMap",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          },
+          "params": []
+        }
+      ],
+      "constants": [
+        {
+          "name": "defaultOptions",
+          "type": {
+            "kind": "named",
+            "name": "MacOsOptions"
+          },
+          "display": "MacOsOptions",
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "name": "WebOptions",
+      "doc": "/// Specific options for web platform.",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "",
+          "const": true,
+          "paramMemberAsserts": false,
+          "params": [
+            {
+              "name": "dbName",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": true,
+              "required": false,
+              "defaultValue": "'FlutterEncryptedStorage'",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "publicKey",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": true,
+              "required": false,
+              "defaultValue": "'FlutterSecureStorage'",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "wrapKey",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": true,
+              "required": false,
+              "defaultValue": "''",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "wrapKeyIv",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": true,
+              "required": false,
+              "defaultValue": "''",
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "methods": [
+        {
+          "name": "toMap",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          },
+          "params": []
+        }
+      ],
+      "constants": [
+        {
+          "name": "defaultOptions",
+          "type": {
+            "kind": "named",
+            "name": "WebOptions"
+          },
+          "display": "WebOptions",
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "name": "WindowsOptions",
+      "doc": "/// Specific options for Windows platform.\n///\n/// * If `useBackwardCompatibility` is set to `true`, trying to read from values\n///   which were written by previous versions. In addition, when reading or\n///   writing from previpus version's storage, read values will be migrated to\n///   new storage automatically. This may introduces some performance hit and\n///   might cause error for some kinds of keys.\n///   Default is `false`.\n///   You must set this value to `false` if you could use:\n///   * Keys containing `\"`, `<`, `>`, `|`, `:`, `*`, `?`, `/`, `\\`,\n///     or any of ASCII control charactors.\n///   * Keys containing `/../`, `\\..\\`, or their combinations.\n///   * Long key string (precise size is depends on your app's product name,\n///     company name, and account name who executes your app).\n///\n/// You can migrate all old data with this options as following:\n/// ```dart\n/// await FlutterSecureStorage().readAll(\n///     const WindowsOptions(useBackwardCompatibility: true),\n/// );\n/// ```",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "",
+          "const": true,
+          "paramMemberAsserts": false,
+          "params": [
+            {
+              "name": "useBackwardCompatibility",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": false,
+              "defaultValue": "false",
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "methods": [
+        {
+          "name": "copyWith",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "named",
+            "name": "WindowsOptions"
+          },
+          "params": [
+            {
+              "name": "useBackwardCompatibility",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "bool"
+                }
+              },
+              "display": "bool?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "toMap",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          },
+          "params": []
+        }
+      ],
+      "constants": [
+        {
+          "name": "defaultOptions",
+          "type": {
+            "kind": "named",
+            "name": "WindowsOptions"
+          },
+          "display": "WindowsOptions",
+          "doc": ""
+        }
+      ]
+    }
+  ],
+  "enums": [
+    {
+      "kind": "enum",
+      "name": "KeyCipherAlgorithm",
+      "library": "flutter_secure_storage",
+      "doc": "",
+      "values": [
+        {
+          "name": "RSA_ECB_PKCS1Padding",
+          "doc": ""
+        },
+        {
+          "name": "RSA_ECB_OAEPwithSHA_256andMGF1Padding",
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "kind": "enum",
+      "name": "KeychainAccessibility",
+      "library": "flutter_secure_storage",
+      "doc": "/// KeyChain accessibility attributes as defined here:\n/// https://developer.apple.com/documentation/security/ksecattraccessible?language=objc",
+      "values": [
+        {
+          "name": "passcode",
+          "doc": "/// The data in the keychain can only be accessed when the device is unlocked.\n/// Only available if a passcode is set on the device.\n/// Items with this attribute do not migrate to a new device."
+        },
+        {
+          "name": "unlocked",
+          "doc": "/// The data in the keychain item can be accessed only while the device is unlocked by the user."
+        },
+        {
+          "name": "unlocked_this_device",
+          "doc": "/// The data in the keychain item can be accessed only while the device is unlocked by the user.\n/// Items with this attribute do not migrate to a new device."
+        },
+        {
+          "name": "first_unlock",
+          "doc": "/// The data in the keychain item cannot be accessed after a restart until the device has been unlocked once by the user."
+        },
+        {
+          "name": "first_unlock_this_device",
+          "doc": "/// The data in the keychain item cannot be accessed after a restart until the device has been unlocked once by the user.\n/// Items with this attribute do not migrate to a new device."
+        }
+      ]
+    },
+    {
+      "kind": "enum",
+      "name": "StorageCipherAlgorithm",
+      "library": "flutter_secure_storage",
+      "doc": "",
+      "values": [
+        {
+          "name": "AES_CBC_PKCS7Padding",
+          "doc": ""
+        },
+        {
+          "name": "AES_GCM_NoPadding",
+          "doc": ""
+        }
+      ]
+    }
+  ],
+  "functions": []
+}

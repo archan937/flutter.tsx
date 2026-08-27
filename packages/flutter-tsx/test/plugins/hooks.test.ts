@@ -66,6 +66,50 @@ describe('deriveHooks — singleton services (shared_preferences)', () => {
   });
 });
 
+describe('deriveHooks — plain-constructor services (flutter_secure_storage)', () => {
+  test('the package-named class with a const ctor derives a field hook', async () => {
+    const api = await loadPluginApi('flutter_secure_storage');
+
+    expect(deriveHooks(api, undefined)).toEqual([
+      {
+        hookName: 'useSecureStorage',
+        className: 'FlutterSecureStorage',
+        dartImport:
+          'package:flutter_secure_storage/flutter_secure_storage.dart',
+        acquisition: { kind: 'constField', isConst: true },
+        construct: [],
+        managed: [],
+        options: [],
+      },
+    ]);
+  });
+
+  test('helper option classes never derive hooks of their own', async () => {
+    const api = await loadPluginApi('flutter_secure_storage');
+    const hookNames = deriveHooks(api, undefined).map((hook) => hook.hookName);
+
+    expect(hookNames).toEqual(['useSecureStorage']);
+  });
+});
+
+describe('deriveHooks — static factories beyond getInstance (package_info_plus)', () => {
+  test('PackageInfo.fromPlatform derives with the existing pattern, zero data', async () => {
+    const api = await loadPluginApi('package_info_plus');
+
+    expect(deriveHooks(api, undefined)).toEqual([
+      {
+        hookName: 'usePackageInfo',
+        className: 'PackageInfo',
+        dartImport: 'package:package_info_plus/package_info_plus.dart',
+        acquisition: { kind: 'staticFactory', method: 'fromPlatform' },
+        construct: [],
+        managed: [],
+        options: [],
+      },
+    ]);
+  });
+});
+
 describe('deriveHooks — underivable shapes', () => {
   const lifecycleMethods = [
     {

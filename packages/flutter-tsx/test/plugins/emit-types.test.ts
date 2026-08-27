@@ -1,9 +1,18 @@
+import { readdir } from 'node:fs/promises';
+
 import { describe, expect, test } from 'bun:test';
 
 import { loadPluginApi, type PluginApi } from '@src/plugins/api';
 import { emitPluginDeclaration } from '@src/plugins/emit-types';
 import { deriveHooks } from '@src/plugins/hooks';
 import { PLUGIN_OVERRIDES } from '@src/plugins/overrides';
+
+const extractedPlugins = (
+  await readdir(new URL('../../ref/plugins/', import.meta.url).pathname)
+)
+  .filter((entry) => entry.endsWith('.json'))
+  .map((entry) => entry.replace(/\.json$/, ''))
+  .sort();
 
 describe('emitPluginDeclaration', () => {
   test('a small api emits the complete ambient module', () => {
@@ -150,13 +159,15 @@ declare module 'plugin:demo' {
     );
   });
 
-  test('the committed camera declaration is byte-fresh', async () => {
-    const api = await loadPluginApi('camera');
-    const hooks = deriveHooks(api, PLUGIN_OVERRIDES.camera);
-    const committed = await Bun.file(
-      new URL('../fixtures/types/camera.d.ts', import.meta.url),
-    ).text();
+  for (const packageName of extractedPlugins) {
+    test(`the committed ${packageName} declaration is byte-fresh`, async () => {
+      const api = await loadPluginApi(packageName);
+      const hooks = deriveHooks(api, PLUGIN_OVERRIDES[packageName]);
+      const committed = await Bun.file(
+        new URL(`../fixtures/types/${packageName}.d.ts`, import.meta.url),
+      ).text();
 
-    expect(committed).toBe(emitPluginDeclaration(api, hooks));
-  });
+      expect(committed).toBe(emitPluginDeclaration(api, hooks));
+    });
+  }
 });

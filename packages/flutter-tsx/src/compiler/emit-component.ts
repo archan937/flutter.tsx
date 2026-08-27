@@ -138,6 +138,6 @@ export const emitDartFile = (
       ...importsForComponents(components, context),
       ...pluginImports,
     ]),
-  ].sort((first, second) => first.localeCompare(second));
+  ].sort();
   return `${imports.join('\n')}\n\n${classes.join('\n\n')}\n`;
 };

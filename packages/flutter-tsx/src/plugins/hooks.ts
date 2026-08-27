@@ -18,7 +18,9 @@ export interface HookOption {
 }
 
 export type HookAcquisition =
-  { kind: 'constructor' } | { kind: 'staticFactory'; method: string };
+  | { kind: 'constructor' }
+  | { kind: 'staticFactory'; method: string }
+  | { kind: 'constField'; isConst: boolean };
 
 export interface DerivedHook {
   hookName: string;
@@ -38,11 +40,38 @@ export interface HookOverrides {
 const isFutureVoid = (type: TypeNode): boolean =>
   type.kind === 'future' && type.item.kind === 'void';
 
+const pascalCase = (packageName: string): string =>
+  packageName
+    .split('_')
+    .map((part) => `${part[0]?.toUpperCase() ?? ''}${part.slice(1)}`)
+    .join('');
+
+const serviceConstructor = (
+  api: PluginApi,
+  entity: PluginClass,
+): { isConst: boolean } | null => {
+  if (entity.name !== pascalCase(api.package)) {
+    return null;
+  }
+  const constructor = entity.constructors.find(
+    (candidate) => candidate.name === '',
+  );
+  const hasInstanceMethods = entity.methods.some((method) => !method.isStatic);
+  if (
+    constructor === undefined ||
+    !hasInstanceMethods ||
+    constructor.params.some((param) => param.required)
+  ) {
+    return null;
+  }
+  return { isConst: constructor.isConst };
+};
+
 const staticFactoryOf = (entity: PluginClass): string | null => {
   const factory = entity.methods.find(
     (method) =>
       method.isStatic &&
-      method.params.length === 0 &&
+      method.params.every((param) => !param.required) &&
       method.returnType.kind === 'future' &&
       method.returnType.item.kind === 'named' &&
       method.returnType.item.name === entity.name,
@@ -142,8 +171,28 @@ export const deriveHooks = (
   overrides: Record<string, HookOverrides> | undefined,
 ): DerivedHook[] =>
   api.classes.flatMap((entity): DerivedHook[] => {
-    const hookName = `use${entity.name.replace(/Controller$/, '')}`;
+    const hookName = `use${entity.name
+      .replace(/^Flutter/, '')
+      .replace(/Controller$/, '')}`;
     const dartImport = `package:${api.package}/${api.package}.dart`;
+
+    const service = serviceConstructor(api, entity);
+    if (service !== null) {
+      return [
+        {
+          hookName,
+          className: entity.name,
+          dartImport,
+          acquisition: {
+            kind: 'constField' as const,
+            isConst: service.isConst,
+          },
+          construct: [],
+          managed: [],
+          options: [],
+        },
+      ];
+    }
 
     const factory = staticFactoryOf(entity);
     if (factory !== null) {

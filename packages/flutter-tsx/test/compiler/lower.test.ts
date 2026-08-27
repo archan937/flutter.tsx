@@ -56,8 +56,8 @@ const cameraHooksContext = async (
         'useCamera',
         {
           hook,
-          methods: new Set(
-            controller?.methods.map((method) => method.name) ?? [],
+          methods: new Map(
+            controller?.methods.map((method) => [method.name, method]) ?? [],
           ),
         },
       ],
@@ -1314,7 +1314,18 @@ describe('lowerComponent — plugin hooks', () => {
               managed: ['initialize', 'dispose'],
               options: [],
             },
-            methods: new Set(['initialize', 'dispose', 'start']),
+            methods: new Map(
+              ['initialize', 'dispose', 'start'].map((name) => [
+                name,
+                {
+                  name,
+                  doc: '',
+                  isStatic: false,
+                  returnType: { kind: 'void' },
+                  params: [],
+                },
+              ]),
+            ),
           },
         ],
       ]),
@@ -1442,6 +1453,96 @@ describe('lowerComponent — plugin hooks', () => {
 
     expect(probe()).rejects.toThrow(
       new Error('TSX0313 probe.tsx:4:27 — useCamera has no option `zoom`.'),
+    );
+  });
+
+  const storageContext = async (): Promise<CompileContext> => {
+    const api = await loadPluginApi('flutter_secure_storage');
+    const [hook] = deriveHooks(api, undefined);
+    if (hook === undefined) {
+      throw new Error('expected the derived useSecureStorage hook');
+    }
+    const storage = api.classes.find(
+      (entity) => entity.name === 'FlutterSecureStorage',
+    );
+    return {
+      ...(await contextOnce()),
+      pluginHooks: new Map([
+        [
+          'useSecureStorage',
+          {
+            hook,
+            methods: new Map(
+              storage?.methods.map((method) => [method.name, method]) ?? [],
+            ),
+          },
+        ],
+      ]),
+    };
+  };
+
+  test('const-field services skip lifecycle and call with named args', async () => {
+    const analysis = analyzeSource(
+      "import { Text, useState } from 'flutter-tsx';\n" +
+        "import { useSecureStorage } from 'plugin:flutter_secure_storage';\n" +
+        'export const Probe = () => {\n' +
+        '  const storage = useSecureStorage();\n' +
+        '  const [saved, setSaved] = useState(false);\n' +
+        '  const save = async () => {\n' +
+        "    await storage.write({ key: 'token', value: 'secret' });\n" +
+        '    setSaved(true);\n' +
+        '  };\n' +
+        '  return <Text>hi</Text>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+    const [component] = analysis.components;
+    if (component === undefined) {
+      throw new Error('expected a component');
+    }
+    const ir = lowerComponent(component, await storageContext());
+
+    expect(ir.fields[0]).toEqual({
+      name: '_storage',
+      dartType: 'FlutterSecureStorage',
+      mutable: false,
+      initializer: 'const FlutterSecureStorage()',
+    });
+    expect(ir.setupMethods).toEqual([]);
+    expect(ir.initStatements).toEqual([]);
+    expect(ir.disposeLines).toEqual([]);
+    expect(ir.methods[0]?.statements[0]).toEqual({
+      kind: 'dart',
+      line: "await _storage.write(key: 'token', value: 'secret');",
+    });
+  });
+
+  test('an unknown named argument is a numbered error', () => {
+    const probe = async (): Promise<unknown> => {
+      const analysis = analyzeSource(
+        "import { Text } from 'flutter-tsx';\n" +
+          "import { useSecureStorage } from 'plugin:flutter_secure_storage';\n" +
+          'export const Probe = () => {\n' +
+          '  const storage = useSecureStorage();\n' +
+          '  const boom = async () => {\n' +
+          "    await storage.write({ key: 'token', vault: 'x' });\n" +
+          '  };\n' +
+          '  return <Text>hi</Text>;\n' +
+          '};\n',
+        'probe.tsx',
+      );
+      const [component] = analysis.components;
+      if (component === undefined) {
+        throw new Error('expected a component');
+      }
+      return lowerComponent(component, await storageContext());
+    };
+
+    expect(probe()).rejects.toThrow(
+      new Error(
+        'TSX0314 probe.tsx:6:41 — `write` has no named argument `vault`. ' +
+          'Check the API reference for the available arguments.',
+      ),
     );
   });
 

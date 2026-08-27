@@ -61,7 +61,9 @@ const loadPluginHooks = async (
       );
       hooks.set(hook.hookName, {
         hook,
-        methods: new Set(entity?.methods.map((method) => method.name) ?? []),
+        methods: new Map(
+          entity?.methods.map((method) => [method.name, method]) ?? [],
+        ),
       });
     }
   }

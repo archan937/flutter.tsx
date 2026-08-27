@@ -62,8 +62,8 @@ describe('irWidgetToDart — camera fixture', () => {
           'useCamera',
           {
             hook,
-            methods: new Set(
-              controller?.methods.map((method) => method.name) ?? [],
+            methods: new Map(
+              controller?.methods.map((method) => [method.name, method]) ?? [],
             ),
           },
         ],

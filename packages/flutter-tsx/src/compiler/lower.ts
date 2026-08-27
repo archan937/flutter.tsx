@@ -9,6 +9,7 @@ import {
   type ValueForms,
 } from '../derive/value-forms';
 import { jsxPropName } from '../generate/renames';
+import type { PluginMethod } from '../plugins/api';
 import type { DerivedHook } from '../plugins/hooks';
 import type { ComponentAnalysis, PluginBinding } from './analyze';
 import { tsxErrorAt } from './diagnostics';
@@ -38,7 +39,7 @@ interface WidgetInfo {
 
 export interface PluginHookInfo {
   hook: DerivedHook;
-  methods: Set<string>;
+  methods: Map<string, PluginMethod>;
 }
 
 export interface CompileContext {
@@ -1040,7 +1041,8 @@ const pluginCallLine = (
     return null;
   }
   const methodName = call.expression.name.text;
-  if (!info.methods.has(methodName)) {
+  const method = info.methods.get(methodName);
+  if (method === undefined) {
     throw tsxErrorAt(
       'TSX0312',
       `${info.hook.className} has no method \`${methodName}\`. Check the ` +
@@ -1048,11 +1050,47 @@ const pluginCallLine = (
       { sourceFile: context.sourceFile, node: errorNode },
     );
   }
-  const args = call.arguments
-    .map((argument) => translateExpression(argument, context.translate))
-    .join(', ');
+  const args = pluginCallArguments(call, method, context);
   const prefix = awaited ? 'await ' : '';
-  return `${prefix}_${binding}?.${methodName}(${args});`;
+  const accessor = info.hook.acquisition.kind === 'constField' ? '.' : '?.';
+  return `${prefix}_${binding}${accessor}${methodName}(${args});`;
+};
+
+// A trailing object literal maps onto the Dart method's named parameters —
+// the same call shape the generated typings advertise.
+const pluginCallArguments = (
+  call: ts.CallExpression,
+  method: PluginMethod,
+  context: LowerContext,
+): string => {
+  const namedParams = new Set(
+    method.params.filter((param) => param.named).map((param) => param.name),
+  );
+  const rendered: string[] = [];
+  for (const [index, argument] of call.arguments.entries()) {
+    const isTrailingObject =
+      index === call.arguments.length - 1 &&
+      ts.isObjectLiteralExpression(argument) &&
+      namedParams.size > 0;
+    if (!isTrailingObject || !ts.isObjectLiteralExpression(argument)) {
+      rendered.push(translateExpression(argument, context.translate));
+      continue;
+    }
+    for (const entry of objectEntries(argument, 'TSX0206', context)) {
+      if (!namedParams.has(entry.key)) {
+        throw tsxErrorAt(
+          'TSX0314',
+          `\`${method.name}\` has no named argument \`${entry.key}\`. ` +
+            'Check the API reference for the available arguments.',
+          { sourceFile: context.sourceFile, node: entry.node },
+        );
+      }
+      rendered.push(
+        `${entry.key}: ${translateExpression(entry.initializer, context.translate)}`,
+      );
+    }
+  }
+  return rendered.join(', ');
 };
 
 const lowerEffects = (
@@ -1103,8 +1141,8 @@ const supplierLocalName = (functionName: string, paramType: string): string =>
 
 interface LoweredPlugin {
   field: IrField;
-  setup: { name: string; lines: string[] };
-  initCall: IrStatement;
+  setup: { name: string; lines: string[] } | null;
+  initCall: IrStatement | null;
   disposeLine: string | null;
   pluginImport: string;
 }
@@ -1220,6 +1258,23 @@ const lowerPluginBinding = (
 ): LoweredPlugin => {
   const fieldName = `_${binding.binding}`;
   const { acquisition } = info.hook;
+
+  if (acquisition.kind === 'constField') {
+    const constPrefix = acquisition.isConst ? 'const ' : '';
+    return {
+      field: {
+        name: fieldName,
+        dartType: info.hook.className,
+        mutable: false,
+        initializer: `${constPrefix}${info.hook.className}()`,
+      },
+      setup: null,
+      initCall: null,
+      disposeLine: null,
+      pluginImport: info.hook.dartImport,
+    };
+  }
+
   const lines =
     acquisition.kind === 'staticFactory'
       ? singletonSetupLines(binding, info, acquisition.method)
@@ -1337,9 +1392,13 @@ export const lowerComponent = (
       })),
     ],
     methods,
-    setupMethods: loweredPlugins.map(({ lowered }) => lowered.setup),
+    setupMethods: loweredPlugins.flatMap(({ lowered }) =>
+      lowered.setup === null ? [] : [lowered.setup],
+    ),
     initStatements: [
-      ...loweredPlugins.map(({ lowered }) => lowered.initCall),
+      ...loweredPlugins.flatMap(({ lowered }) =>
+        lowered.initCall === null ? [] : [lowered.initCall],
+      ),
       ...lowerEffects(component.effects, context),
     ],
     disposeLines: loweredPlugins.flatMap(({ lowered }) =>

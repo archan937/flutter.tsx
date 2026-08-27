@@ -28,6 +28,7 @@ describe('committed golden expected.dart files', () => {
       '09-typed-props',
       '10-camera-options',
       '11-preferences',
+      '12-secure-storage',
     ]);
   });
 
