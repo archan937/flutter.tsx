@@ -61,6 +61,7 @@ const constructorToJson = (
   doc: constructor.doc,
   const: constructor.isConst,
   paramMemberAsserts: constructor.paramMemberAsserts,
+  requiredOneOf: constructor.requiredOneOf,
   params: constructor.params.map(paramToJson),
 });
 

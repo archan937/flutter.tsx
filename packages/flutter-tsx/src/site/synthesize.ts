@@ -60,6 +60,28 @@ const attrValue = (
   }
 };
 
+// The first member with a canonical value wins; when none is expressible the
+// first member is still emitted, as a visible placeholder on an example the
+// caller is told is incomplete.
+const pickOneOfMember = (
+  group: string[],
+  params: ParamModel[],
+  context: SynthesisContext,
+): { param: ParamModel; value: string | null } | null => {
+  const members = group.flatMap((name) => {
+    const found = params.find((candidate) => candidate.name === name);
+    return found === undefined ? [] : [found];
+  });
+  for (const member of members) {
+    const value = attrValue(member.type, context);
+    if (value !== null) {
+      return { param: member, value };
+    }
+  }
+  const [first] = members;
+  return first === undefined ? null : { param: first, value: null };
+};
+
 const slotValue = (slot: NamedSlot): string | null => {
   if (slot.mode === 'multi') {
     return '{[]}';
@@ -82,18 +104,26 @@ export interface SynthesisInput {
   params: ParamModel[];
   slots: WidgetSlots;
   context: SynthesisContext;
+  // Groups a constructor assert demands a value from; every member is an
+  // optional param, so the example must pick one or it throws at const-eval.
+  requiredOneOf?: string[][];
 }
 
 export const synthesizeTsx = (input: SynthesisInput): SynthesizedExample => {
   const { widgetName, params, slots, context } = input;
   const takenNames = new Set(params.map((candidate) => candidate.name));
   const attrs: string[] = [];
+  const suppliedNames = new Set<string>();
   let complete = true;
+  if (slots.children !== null) {
+    suppliedNames.add(slots.children.param);
+  }
 
   for (const candidate of params) {
     if (!candidate.required || candidate.name === slots.children?.param) {
       continue;
     }
+    suppliedNames.add(candidate.name);
 
     const slot = slots.slots.find((entry) => entry.param === candidate.name);
     const value =
@@ -104,6 +134,21 @@ export const synthesizeTsx = (input: SynthesisInput): SynthesizedExample => {
     attrs.push(
       `${jsxPropName(candidate.name, takenNames)}=${value ?? INCOMPLETE_VALUE}`,
     );
+  }
+
+  for (const group of input.requiredOneOf ?? []) {
+    if (group.some((name) => suppliedNames.has(name))) {
+      continue;
+    }
+    const chosen = pickOneOfMember(group, params, context);
+    if (chosen === null) {
+      continue;
+    }
+    if (chosen.value === null) {
+      complete = false;
+    }
+    const propName = jsxPropName(chosen.param.name, takenNames);
+    attrs.push(`${propName}=${chosen.value ?? INCOMPLETE_VALUE}`);
   }
 
   const attrText = attrs.length > 0 ? ` ${attrs.join(' ')}` : '';

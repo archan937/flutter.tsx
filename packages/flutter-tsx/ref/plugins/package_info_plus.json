@@ -11,6 +11,7 @@
           "doc": "/// Constructs an instance with the given values for testing. [PackageInfo]\n/// instances constructed this way won't actually reflect any real information\n/// from the platform, just whatever was passed in at construction time.\n///\n/// See [fromPlatform] for the right API to get a [PackageInfo]\n/// that's actually populated with real data.",
           "const": false,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": [
             {
               "name": "appName",
@@ -417,6 +418,7 @@
           "doc": "",
           "const": false,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": []
         }
       ],
@@ -473,6 +475,7 @@
           "doc": "",
           "const": false,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": []
         }
       ],

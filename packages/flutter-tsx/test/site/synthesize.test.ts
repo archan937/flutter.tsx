@@ -294,3 +294,103 @@ describe('synthesizeTsx', () => {
     });
   });
 });
+// Flutter states some requirements only in a constructor assert; the example
+// must satisfy them or it compiles to Dart that throws at const-eval.
+describe('synthesizeTsx — assert-implied requirements', () => {
+  test('supplies the first expressible member of a one-of group', () => {
+    const params = [
+      param(
+        'message',
+        {
+          kind: 'nullable',
+          inner: { kind: 'scalar', name: 'String' },
+        },
+        { required: false },
+      ),
+      param(
+        'richMessage',
+        {
+          kind: 'nullable',
+          inner: { kind: 'named', name: 'InlineSpan' },
+        },
+        { required: false },
+      ),
+    ];
+
+    expect(
+      synthesizeTsx({
+        widgetName: 'Tooltip',
+        params,
+        slots: { children: { kind: 'widget', param: 'child' }, slots: [] },
+        context,
+        requiredOneOf: [['message', 'richMessage']],
+      }),
+    ).toEqual({
+      tsx: '<Tooltip message="example">\n  <Text>Content</Text>\n</Tooltip>',
+      complete: true,
+    });
+  });
+
+  test('a group of only inexpressible members marks the example incomplete', () => {
+    const params = [
+      param(
+        'filter',
+        {
+          kind: 'nullable',
+          inner: { kind: 'named', name: 'ImageFilter' },
+        },
+        { required: false },
+      ),
+      param(
+        'filterConfig',
+        {
+          kind: 'nullable',
+          inner: { kind: 'named', name: 'ImageFilterConfig' },
+        },
+        { required: false },
+      ),
+    ];
+
+    expect(
+      synthesizeTsx({
+        widgetName: 'BackdropFilter',
+        params,
+        slots: { children: { kind: 'widget', param: 'child' }, slots: [] },
+        context,
+        requiredOneOf: [['filter', 'filterConfig']],
+      }),
+    ).toEqual({
+      tsx:
+        '<BackdropFilter filter={…}>\n  <Text>Content</Text>\n' +
+        '</BackdropFilter>',
+      complete: false,
+    });
+  });
+
+  test('a member already supplied as a required prop satisfies the group', () => {
+    const params = [
+      param('title', { kind: 'scalar', name: 'String' }),
+      param(
+        'message',
+        {
+          kind: 'nullable',
+          inner: { kind: 'scalar', name: 'String' },
+        },
+        { required: false },
+      ),
+    ];
+
+    expect(
+      synthesizeTsx({
+        widgetName: 'Sheet',
+        params,
+        slots: noSlots,
+        context,
+        requiredOneOf: [['title', 'message']],
+      }),
+    ).toEqual({
+      tsx: '<Sheet title="example" />',
+      complete: true,
+    });
+  });
+});

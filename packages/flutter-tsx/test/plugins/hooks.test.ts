@@ -182,6 +182,7 @@ describe('deriveHooks — underivable shapes', () => {
                 doc: '',
                 isConst: false,
                 paramMemberAsserts: false,
+                requiredOneOf: [],
                 params,
               },
             ]

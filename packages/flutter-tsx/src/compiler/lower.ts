@@ -35,6 +35,7 @@ interface WidgetInfo {
   library: string;
   constConstructor: boolean;
   paramsByJsxName: Map<string, ParamModel>;
+  requiredOneOf: string[][];
   slots: WidgetSlots;
 }
 
@@ -104,6 +105,7 @@ export const buildCompileContext = (
       library: entity.library,
       constConstructor: constructor.isConst && !constructor.paramMemberAsserts,
       paramsByJsxName,
+      requiredOneOf: constructor.requiredOneOf,
       slots: slots[entity.name] ?? EMPTY_SLOTS,
     });
   }
@@ -138,6 +140,7 @@ export const buildUserWidgets = (
         name: component.name,
         library: '',
         constConstructor: true,
+        requiredOneOf: [],
         paramsByJsxName: new Map(
           component.props.map((prop) => [
             prop.name,
@@ -946,11 +949,43 @@ const lowerJsxElement = (
       args.push(children);
     }
   }
+  requireOneOfSatisfied({ info, args, node: opening.tagName }, context);
   return {
     name: widgetName,
     constConstructor: info.constConstructor,
     args,
   };
+};
+
+const orList = (names: string[]): string => {
+  const quoted = names.map((name) => `\`${name}\``);
+  const last = quoted.pop() ?? '';
+  return quoted.length === 0 ? last : `${quoted.join(', ')} or ${last}`;
+};
+
+// Flutter states some requirements only in a constructor assert, where no
+// optional-param type can carry them. Catch them here so the error lands on
+// the TSX instead of on generated Dart that throws at runtime.
+const requireOneOfSatisfied = (
+  widget: { info: WidgetInfo; args: IrArgument[]; node: ts.Node },
+  context: LowerContext,
+): void => {
+  const { info, args, node } = widget;
+  if (info.requiredOneOf.length === 0) {
+    return;
+  }
+  const supplied = new Set(args.map((argument) => argument.param));
+  for (const group of info.requiredOneOf) {
+    if (group.some((name) => supplied.has(name))) {
+      continue;
+    }
+    throw tsxErrorAt(
+      'TSX0317',
+      `\`${info.name}\` needs one of ${orList(group)}: Flutter asserts it ` +
+        'at runtime, so leaving all of them out compiles to Dart that throws.',
+      { sourceFile: context.sourceFile, node },
+    );
+  }
 };
 
 const setterAssignment = (

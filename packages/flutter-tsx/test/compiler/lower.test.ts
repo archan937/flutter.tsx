@@ -1913,3 +1913,78 @@ describe('lowerComponent — plugin property reads', () => {
     });
   });
 });
+describe('lowerComponent — assert-implied requirements', () => {
+  test('an unsatisfied one-of group is a numbered error', async () => {
+    const analysis = analyzeSource(
+      "import { Text, Tooltip } from 'flutter-tsx';\n" +
+        'export const Probe = () => (\n' +
+        '  <Tooltip>\n' +
+        '    <Text>Content</Text>\n' +
+        '  </Tooltip>\n' +
+        ');\n',
+      'probe.tsx',
+    );
+    const [component] = analysis.components;
+    if (component === undefined) {
+      throw new Error('expected a component');
+    }
+
+    let message = '';
+    try {
+      lowerComponent(component, await contextOnce());
+    } catch (error) {
+      ({ message } = error as Error);
+    }
+    expect(message).toBe(
+      'TSX0317 probe.tsx:3:4 — `Tooltip` needs one of `message` or ' +
+        '`richMessage`: Flutter asserts it at runtime, so leaving all of ' +
+        'them out compiles to Dart that throws.',
+    );
+  });
+
+  test('satisfying the group compiles', async () => {
+    const analysis = analyzeSource(
+      "import { Text, Tooltip } from 'flutter-tsx';\n" +
+        'export const Probe = () => (\n' +
+        '  <Tooltip message="Save">\n' +
+        '    <Text>Content</Text>\n' +
+        '  </Tooltip>\n' +
+        ');\n',
+      'probe.tsx',
+    );
+    const [component] = analysis.components;
+    if (component === undefined) {
+      throw new Error('expected a component');
+    }
+    const ir = lowerComponent(component, await contextOnce());
+
+    expect(ir.body.args.map((argument) => argument.param)).toEqual([
+      'message',
+      'child',
+    ]);
+  });
+
+  test('a four-way group lists every alternative', async () => {
+    const analysis = analyzeSource(
+      "import { CupertinoActionSheet } from 'flutter-tsx';\n" +
+        'export const Probe = () => <CupertinoActionSheet />;\n',
+      'probe.tsx',
+    );
+    const [component] = analysis.components;
+    if (component === undefined) {
+      throw new Error('expected a component');
+    }
+    let message = '';
+    try {
+      lowerComponent(component, await contextOnce());
+    } catch (error) {
+      ({ message } = error as Error);
+    }
+    expect(message).toBe(
+      'TSX0317 probe.tsx:2:29 — `CupertinoActionSheet` needs one of ' +
+        '`actions`, `title`, `message` or `cancelButton`: Flutter asserts ' +
+        'it at runtime, so leaving all of them out compiles to Dart that ' +
+        'throws.',
+    );
+  });
+});

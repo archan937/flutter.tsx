@@ -283,7 +283,7 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       handlers) is the honest numbered error TSX0301 at the component name —
       never silent wrong Dart — so the camera fixture and its e2e stay RED.
       The 543-widget sweep now really transpiles + analyzes every probe in its
-      own Dart package (`test/sweep/`, red until the probes analyze clean).
+      own Dart package (`test/sweep/`; green since step 23).
 - [x] 15. Value-type prop transforms — **golden #2 green** (`03-styled-container`:
       padding/hex color/alignment/TextStyle object, byte-equal to `dart format`).
       Data-driven from api.json, no hand lists: **constant unions**
@@ -315,7 +315,8 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       need callbacks/controllers/Animation, later traits). Sweep: 394 probes
       transpile, 40 analyze issues left (red, next traits).
 - [x] 16. Sweep hardening — **golden #3 green** (`04-inline-handler`) and the
-      543-widget sweep down to **3 known analyze issues from 40** (394 probes).
+      543-widget sweep down to **3 known analyze issues from 40** (394 probes)
+      — all three closed at step 23, see the assert-implied requirements entry.
       Landed: **inline handler closures** (`onChanged={() => {}}` →
       `onChanged: (_) {}` — Dart arity from the param's function type, TS
       `_`-prefixed params → Dart `_` wildcard; bodies are TSX0302 until step
@@ -555,6 +556,28 @@ bun run quality:extractor          # dart format + analyze + tests + 100% covera
       AndroidManifest.xml / Info.plist belongs to `fsx init` at steps 25–28
       (there is no app manifest to write into before the scaffolder exists);
       the data and the merge function are done and tested here.
+- [x] 23 (assert-implied requirements — THE SWEEP IS GREEN). The 543-widget
+      breadth net passes for the first time: every complete synthesized
+      example transpiles to Dart that `flutter analyze`s clean (was 3 known
+      `const_eval_throws_exception` reds: Tooltip, CupertinoActionSheet,
+      BackdropFilter). Root cause was a real guardrail hole, not a probe
+      quirk: Flutter states some requirements only in a constructor assert
+      (`assert(filter != null || filterConfig != null)`,
+      `assert((message == null) != (richMessage == null))`), where every
+      member is an optional param and no type can carry the constraint — so
+      a developer could write `<Tooltip><Text/></Tooltip>` and only find out
+      when Dart analysis failed. Now: the extractor reads those asserts from
+      the SDK AST and records `requiredOneOf` groups (14 constructors
+      SDK-wide) — disjunctions of null checks and the exclusive-or form, and
+      deliberately NOT `a == null || b == null`, which is mutual exclusion
+      rather than a requirement; **TSX0317** fires on TSX when a group is
+      unsatisfied, so the error lands on the source instead of on generated
+      Dart that throws; the example synthesizer satisfies each group with
+      its first expressible member. Examples whose groups need a value the
+      compiler cannot express yet (BackdropFilter's ImageFilter) are marked
+      incomplete with a visible `{…}` placeholder — placeholders 145→150,
+      honestly excluded from the sweep instead of silently emitting throwing
+      Dart. `sweep.test.ts` is now a plain green test, not `test.failing`.
 - [ ] 23 (breed matrix status). controller ✓ camera (goldens #1, #10);
       storage ✓ shared_preferences (golden #11); service/auth ✓
       flutter_secure_storage (golden #12); navigation-function ✓

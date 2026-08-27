@@ -241,6 +241,35 @@ void main() {
       expect(easeIn.type.toJson(), {'kind': 'named', 'name': 'Cubic'});
     });
 
+    test('required-one-of groups come from null-check asserts', () {
+      ConstructorModel ctorOf(String widget) =>
+          (byName[widget]! as WidgetEntity).constructors.singleWhere(
+            (constructor) => constructor.name == '',
+          );
+
+      // assert(filter != null || filterConfig != null)
+      expect(ctorOf('BackdropFilter').requiredOneOf, [
+        ['filter', 'filterConfig'],
+      ]);
+
+      // assert((message == null) != (richMessage == null)) — exactly one, so
+      // supplying either satisfies the group.
+      expect(ctorOf('Tooltip').requiredOneOf, [
+        ['message', 'richMessage'],
+      ]);
+
+      // An unrelated assert contributes no group: Column asserts nothing
+      // about null-ness of its params.
+      expect(ctorOf('Column').requiredOneOf, isEmpty);
+
+      // assert(height == null || constraints == null) is a mutual-exclusion
+      // assert, not a requirement — it must never become a group.
+      expect(
+        ctorOf('Tooltip').requiredOneOf.expand((group) => group),
+        isNot(contains('constraints')),
+      );
+    });
+
     test('widget dartdoc is captured', () {
       expect(
         widgetNamed('Scaffold').doc.split('\n').first,

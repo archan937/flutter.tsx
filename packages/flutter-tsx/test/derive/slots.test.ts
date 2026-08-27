@@ -34,7 +34,14 @@ const widget = (name: string, params: ParamModel[]): WidgetEntity => ({
   doc: '',
   supertypes: ['StatelessWidget', 'Widget'],
   constructors: [
-    { name: '', doc: '', isConst: true, paramMemberAsserts: false, params },
+    {
+      name: '',
+      doc: '',
+      isConst: true,
+      paramMemberAsserts: false,
+      requiredOneOf: [],
+      params,
+    },
   ],
   constants: [],
 });
@@ -163,6 +170,7 @@ describe('deriveSlots (synthetic snapshots)', () => {
           doc: '',
           isConst: true,
           paramMemberAsserts: false,
+          requiredOneOf: [],
           params: [],
         },
       ],

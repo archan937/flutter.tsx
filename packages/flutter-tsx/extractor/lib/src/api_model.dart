@@ -78,6 +78,7 @@ class ConstructorModel {
     required this.doc,
     required this.isConst,
     required this.paramMemberAsserts,
+    required this.requiredOneOf,
     required this.params,
   });
 
@@ -85,6 +86,10 @@ class ConstructorModel {
   final String doc;
   final bool isConst;
   final bool paramMemberAsserts;
+
+  /// Groups of parameters where an assert demands at least one be supplied —
+  /// a requirement the type system cannot express (every member is optional).
+  final List<List<String>> requiredOneOf;
   final List<ParamModel> params;
 
   Map<String, Object?> toJson() => {
@@ -92,6 +97,7 @@ class ConstructorModel {
     'doc': doc,
     'const': isConst,
     'paramMemberAsserts': paramMemberAsserts,
+    'requiredOneOf': requiredOneOf,
     'params': params.map((param) => param.toJson()).toList(),
   };
 }

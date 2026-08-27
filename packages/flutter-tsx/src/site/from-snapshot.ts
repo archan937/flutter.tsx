@@ -132,6 +132,7 @@ export const buildSitePage = (
       params: constructor.params,
       slots: widgetSlots,
       context,
+      requiredOneOf: constructor.requiredOneOf,
     });
     if (!example.complete) {
       incompleteExamples.push(widget.name);

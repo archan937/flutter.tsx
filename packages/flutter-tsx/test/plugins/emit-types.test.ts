@@ -29,6 +29,7 @@ describe('emitPluginDeclaration', () => {
               doc: '',
               isConst: false,
               paramMemberAsserts: false,
+              requiredOneOf: [],
               params: [
                 {
                   name: 'mode',

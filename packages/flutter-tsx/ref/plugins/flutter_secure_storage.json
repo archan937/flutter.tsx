@@ -11,6 +11,7 @@
           "doc": "",
           "const": true,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": [
             {
               "name": "encryptedSharedPreferences",
@@ -306,6 +307,7 @@
           "doc": "",
           "const": true,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": [
             {
               "name": "iOptions",
@@ -1389,6 +1391,7 @@
           "doc": "",
           "const": true,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": [
             {
               "name": "groupId",
@@ -1553,6 +1556,7 @@
           "doc": "",
           "const": true,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": []
         }
       ],
@@ -1597,6 +1601,7 @@
           "doc": "",
           "const": true,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": [
             {
               "name": "groupId",
@@ -1807,6 +1812,7 @@
           "doc": "",
           "const": true,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": [
             {
               "name": "dbName",
@@ -1937,6 +1943,7 @@
           "doc": "",
           "const": true,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": [
             {
               "name": "useBackwardCompatibility",

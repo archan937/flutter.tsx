@@ -45,6 +45,9 @@ export interface ConstructorModel {
   doc: string;
   isConst: boolean;
   paramMemberAsserts: boolean;
+  // Groups where a Dart assert demands at least one member be supplied —
+  // a requirement no optional-param type can express.
+  requiredOneOf: string[][];
   params: ParamModel[];
 }
 

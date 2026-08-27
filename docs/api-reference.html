@@ -2229,7 +2229,7 @@ highlighted for keyboard navigation.</p>
 </div>
 </article>
 <article class="widget" id="BackdropFilter" data-name="BackdropFilter">
-<h3>BackdropFilter<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
+<h3>BackdropFilter<span class="badge badge-lib">widgets</span></h3>
 <p class="doc">A widget that applies a filter to the existing painted content and then
 paints [child].</p>
 <table class="props">
@@ -2249,7 +2249,7 @@ paints [child].</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;BackdropFilter&gt;
+<pre><code class="language-tsx">&lt;BackdropFilter filter={…}&gt;
   &lt;Text&gt;Content&lt;/Text&gt;
 &lt;/BackdropFilter&gt;</code></pre>
 </div>
@@ -11894,7 +11894,7 @@ in combination with a [Scrollable].</p>
 </div>
 </article>
 <article class="widget" id="WidgetsApp" data-name="WidgetsApp">
-<h3>WidgetsApp<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
+<h3>WidgetsApp<span class="badge badge-lib">widgets</span></h3>
 <p class="doc">A convenience widget that wraps a number of widgets that are commonly
 required for an application.</p>
 <table class="props">
@@ -11939,7 +11939,7 @@ required for an application.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;WidgetsApp color=&quot;activeBlue&quot; /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;WidgetsApp color=&quot;activeBlue&quot; builder={…} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart">WidgetsApp({
@@ -21381,7 +21381,7 @@ displayed using [showTimePicker] in this widget's subtree.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;Tooltip&gt;
+<pre><code class="language-tsx">&lt;Tooltip message=&quot;example&quot;&gt;
   &lt;Text&gt;Content&lt;/Text&gt;
 &lt;/Tooltip&gt;</code></pre>
 </div>
@@ -21611,7 +21611,7 @@ displayed using [showTimePicker] in this widget's subtree.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;CupertinoActionSheet /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;CupertinoActionSheet actions={[]} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart">CupertinoActionSheet({

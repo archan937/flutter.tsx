@@ -37,6 +37,7 @@ const snapshot: ApiSnapshot = {
           doc: '/// Creates a frame.',
           isConst: true,
           paramMemberAsserts: false,
+          requiredOneOf: [],
           params: [
             {
               name: 'key',
@@ -167,6 +168,7 @@ const snapshot: ApiSnapshot = {
           doc: '',
           isConst: true,
           paramMemberAsserts: false,
+          requiredOneOf: [],
           params: [
             {
               name: 'data',
@@ -215,6 +217,7 @@ const snapshot: ApiSnapshot = {
           doc: '/// Creates a style.',
           isConst: true,
           paramMemberAsserts: false,
+          requiredOneOf: [],
           params: [
             {
               name: 'tint',
@@ -434,6 +437,7 @@ describe('emitWidgetsFile guards', () => {
                   doc: '',
                   isConst: true,
                   paramMemberAsserts: false,
+                  requiredOneOf: [],
                   params: [
                     {
                       name: 'behavior',
@@ -498,6 +502,7 @@ describe('emitWidgetsFile value-form guards', () => {
               doc: '',
               isConst: true,
               paramMemberAsserts: false,
+              requiredOneOf: [],
               params: [
                 {
                   name: 'value',

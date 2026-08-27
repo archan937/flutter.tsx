@@ -11,6 +11,7 @@
           "doc": "/// Creates a new camera controller in an uninitialized state.\n///\n/// - [resolutionPreset] affect the quality of video recording and image capture.\n/// - [enableAudio] controls audio presence in recorded video.\n///\n/// Following parameters (if present) will overwrite [resolutionPreset] settings:\n/// - [fps] controls rate at which frames should be captured by the camera in frames per second.\n/// - [videoBitrate] controls the video encoding bit rate for recording.\n/// - [audioBitrate] controls the audio encoding bit rate for recording.",
           "const": false,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": [
             {
               "name": "description",
@@ -840,6 +841,7 @@
           "doc": "/// Creates a new camera description with the given properties.",
           "const": true,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": [
             {
               "name": "name",
@@ -977,6 +979,7 @@
           "doc": "/// Creates a new camera exception with the given error code and description.",
           "const": false,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": [
             {
               "name": "code",
@@ -1054,6 +1057,7 @@
           "doc": "/// Creates a [CameraImage] from method channel data.",
           "const": false,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": [
             {
               "name": "data",
@@ -1080,6 +1084,7 @@
           "doc": "/// Creates a [CameraImage] from the platform interface version.",
           "const": false,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": [
             {
               "name": "data",
@@ -1179,6 +1184,7 @@
           "doc": "/// Creates a preview widget for the given camera controller.",
           "const": true,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": [
             {
               "name": "controller",
@@ -1283,6 +1289,7 @@
           "doc": "/// Creates a new camera controller state.",
           "const": true,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": [
             {
               "name": "isInitialized",
@@ -1553,6 +1560,7 @@
           "doc": "/// Creates a new camera controller state for an uninitialized controller.",
           "const": true,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": [
             {
               "name": "description",
@@ -2125,6 +2133,7 @@
           "doc": "/// Constructs an empty Optional.",
           "const": true,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": []
         },
         {
@@ -2132,6 +2141,7 @@
           "doc": "/// Constructs an Optional of the given [value].\n///\n/// If [value] is null, returns [absent()].",
           "const": true,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": [
             {
               "name": "value",
@@ -2155,6 +2165,7 @@
           "doc": "/// Constructs an Optional of the given [value].",
           "const": true,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": [
             {
               "name": "value",
@@ -2477,6 +2488,7 @@
           "doc": "/// Construct a CrossFile object from its path.\n///\n/// Optionally, this can be initialized with `bytes` and `length`\n/// so no http requests are performed to retrieve data later.\n///\n/// `name` may be passed from the outside, for those cases where the effective\n/// `path` of the file doesn't match what the user sees when selecting it\n/// (like in web)",
           "const": false,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": [
             {
               "name": "path",
@@ -2594,6 +2606,7 @@
           "doc": "/// Construct a CrossFile object from its data.\n///\n/// On the web, the [path] is ignored if the [bytes] are provided,\n/// as the underlying Blob URL is used as the path.",
           "const": false,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": [
             {
               "name": "bytes",

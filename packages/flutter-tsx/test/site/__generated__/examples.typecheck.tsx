@@ -33,7 +33,6 @@ import {
   AutomaticKeepAlive,
   BackButton,
   BackButtonIcon,
-  BackdropFilter,
   BackdropGroup,
   Badge,
   BadgeTheme,
@@ -391,7 +390,6 @@ import {
   ViewAnchor,
   ViewCollection,
   Visibility,
-  WidgetsApp,
   Wrap,
 } from 'flutter-tsx';
 
@@ -486,9 +484,6 @@ export const examples = [
   </AutomaticKeepAlive>,
   <BackButton />,
   <BackButtonIcon />,
-  <BackdropFilter>
-    <Text>Content</Text>
-  </BackdropFilter>,
   <BackdropGroup>
     <Text>Content</Text>
   </BackdropGroup>,
@@ -596,7 +591,7 @@ export const examples = [
   <Container>
     <Text>Content</Text>
   </Container>,
-  <CupertinoActionSheet />,
+  <CupertinoActionSheet actions={[]} />,
   <CupertinoActionSheetAction onClick={() => {}}>
     <Text>Content</Text>
   </CupertinoActionSheetAction>,
@@ -1348,7 +1343,7 @@ export const examples = [
   <ToggleButtonsTheme data={{}}>
     <Text>Content</Text>
   </ToggleButtonsTheme>,
-  <Tooltip>
+  <Tooltip message="example">
     <Text>Content</Text>
   </Tooltip>,
   <TooltipTheme data={{}}>
@@ -1377,7 +1372,6 @@ export const examples = [
   <Visibility>
     <Text>Content</Text>
   </Visibility>,
-  <WidgetsApp color="activeBlue" />,
   <Wrap>
     <Text>Item 1</Text>
     <Text>Item 2</Text>

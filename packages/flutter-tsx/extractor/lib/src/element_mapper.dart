@@ -162,6 +162,7 @@ List<ConstructorModel> _mapConstructors(
           doc: constructor.documentationComment ?? '',
           isConst: constructor.isConst,
           paramMemberAsserts: asserts.paramMemberAsserts(constructor),
+          requiredOneOf: asserts.requiredOneOf(constructor),
           params: constructor.formalParameters
               .map((param) => _mapParam(classElement, param))
               .toList(),

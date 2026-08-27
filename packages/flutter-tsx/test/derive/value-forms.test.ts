@@ -43,6 +43,7 @@ const defaultConstructor = (
   doc: '',
   isConst,
   paramMemberAsserts: false,
+  requiredOneOf: [],
   params,
 });
 

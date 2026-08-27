@@ -21,6 +21,7 @@ const widgetEntity = {
       doc: '/// Creates.',
       const: true,
       paramMemberAsserts: false,
+      requiredOneOf: [],
       params: [
         {
           name: 'child',
@@ -86,6 +87,7 @@ describe('parseApiSnapshot', () => {
               doc: '/// Creates.',
               isConst: true,
               paramMemberAsserts: false,
+              requiredOneOf: [],
               params: [
                 {
                   name: 'child',
@@ -249,6 +251,7 @@ describe('parseApiSnapshot', () => {
           doc: '',
           const: 'yes',
           paramMemberAsserts: false,
+          requiredOneOf: [],
           params: [],
         },
       ];
@@ -268,6 +271,7 @@ describe('parseApiSnapshot', () => {
           doc: '',
           const: true,
           paramMemberAsserts: false,
+          requiredOneOf: [],
           params: [
             {
               name: 'child',
@@ -299,6 +303,7 @@ describe('parseApiSnapshot', () => {
           doc: '',
           const: true,
           paramMemberAsserts: false,
+          requiredOneOf: [],
           params: [
             {
               name: 'count',

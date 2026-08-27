@@ -27,6 +27,7 @@ describe('dartSignature', () => {
       doc: '',
       isConst: true,
       paramMemberAsserts: false,
+      requiredOneOf: [],
       params: [],
     };
     expect(dartSignature('Spacer', constructor)).toBe('Spacer()');
@@ -38,6 +39,7 @@ describe('dartSignature', () => {
       doc: '',
       isConst: true,
       paramMemberAsserts: false,
+      requiredOneOf: [],
       params: [
         param('key', 'Key?'),
         param('mainAxisAlignment', 'MainAxisAlignment', {
@@ -68,6 +70,7 @@ describe('dartSignature', () => {
       doc: '',
       isConst: true,
       paramMemberAsserts: false,
+      requiredOneOf: [],
       params: [
         param('data', 'String', { named: false, required: true }),
         param('key', 'Key?'),
@@ -85,6 +88,7 @@ describe('dartSignature', () => {
       doc: '',
       isConst: true,
       paramMemberAsserts: false,
+      requiredOneOf: [],
       params: [param('child', 'Widget', { named: false, required: true })],
     };
 
@@ -142,6 +146,7 @@ describe('buildSitePage', () => {
             doc: '',
             isConst: true,
             paramMemberAsserts: false,
+            requiredOneOf: [],
             params: [
               param('key', 'Key?'),
               param('child', 'Widget?'),

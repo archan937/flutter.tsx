@@ -584,6 +584,7 @@
           "doc": "/// Creates a new instance with the given [options].",
           "const": false,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": [
             {
               "name": "options",
@@ -1130,6 +1131,7 @@
           "doc": "/// Constructor for SharedPreferencesOptions.",
           "const": true,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": []
         }
       ],
@@ -1670,6 +1672,7 @@
           "doc": "/// Creates a new instance with the given options.",
           "const": true,
           "paramMemberAsserts": false,
+          "requiredOneOf": [],
           "params": [
             {
               "name": "allowList",

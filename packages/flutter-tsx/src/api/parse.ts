@@ -130,6 +130,12 @@ export const parseConstructor = (
       record.paramMemberAsserts,
       `${path}.paramMemberAsserts`,
     ),
+    requiredOneOf: asArray(record.requiredOneOf, `${path}.requiredOneOf`).map(
+      (group, index) =>
+        asArray(group, `${path}.requiredOneOf[${index}]`).map((name, member) =>
+          asString(name, `${path}.requiredOneOf[${index}][${member}]`),
+        ),
+    ),
     params: asArray(record.params, `${path}.params`).map((param, index) =>
       parseParam(param, `${path}.params[${index}]`),
     ),
