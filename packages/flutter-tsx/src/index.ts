@@ -21,6 +21,8 @@ export {
   useStore,
   useStream,
 } from './runtime/hooks';
+export type { TabItemProps, TabViewProps } from './runtime/shell';
+export { TabItem, TabView } from './runtime/shell';
 export type {
   FlutterChild,
   FlutterChildren,

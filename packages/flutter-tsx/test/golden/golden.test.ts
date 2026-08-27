@@ -34,6 +34,7 @@ const GREEN_FIXTURES = new Set([
   '20-router',
   '21-modal',
   '22-mount-dialog',
+  '23-tabs',
 ]);
 
 const fixtures = await listFixtures();

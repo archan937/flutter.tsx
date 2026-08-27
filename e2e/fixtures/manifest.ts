@@ -175,4 +175,11 @@ export const FIXTURE_APPS: FixtureApp[] = [
     deps: [],
     behavior: true,
   },
+  {
+    id: '23-tabs',
+    component: 'Shell',
+    dartFile: 'tab_shell.dart',
+    deps: [],
+    behavior: true,
+  },
 ];

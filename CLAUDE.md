@@ -305,10 +305,10 @@ bun run test:extractor             # dart tests + 100% coverage gate
       `Container(...)` no longer emitted as `const`), **framework-beats-dart:ui
       name collisions** (painting's TextStyle with its const ctor + `inherit`,
       not ui's — 67 entities re-owned, ground-truth pinned), **column-aware
-      printer** (real 80-col fit at final position; collections split when their
-      call splits — refined at step 23 to dart_style's actual hug rule, see the
-      property-reads entry — byte-parity with `dart format` proven by the
-      goldens),
+      printer** (real 80-col fit at final position; a collection splits iff it
+      does not fit OR an element carries named arguments of its own — the rule
+      was corrected twice against `dart format` itself, at steps 23 and 24b;
+      byte-parity proven by the goldens),
       honest guards TSX0205–0208 (inexpressible value / bad insets shape /
       unknown object property / children on a slotless widget — no silent wrong
       Dart), and JSX elements as prop values (`appBar={<AppBar/>}` → named slot).
@@ -753,6 +753,28 @@ bun run test:extractor             # dart tests + 100% coverage gate
       Also unified: `initStateLines` and `methodStatementLines` were two
       walks over the same statements differing only in setState wrapping —
       now one walk, so every statement kind has exactly one renderer.
+- [x] 24b (TabView). `<TabView><TabItem label="Home" icon="home"><HomeTab/>
+      </TabItem>…</TabView>` becomes a `Scaffold` whose body is an
+      `IndexedStack` (every page stays alive) and whose `bottomNavigationBar`
+      is a `BottomNavigationBar` driven by a **synthesized** `int _tabIndex`
+      field — the component turns stateful even though the author declared no
+      state. Icon names are checked against the SDK's own `Icons` constants
+      (8825 of them), so a typo is TSX0332 rather than a Dart error; TSX0331
+      covers the shape (`TabItem` children with label, icon and one page).
+      **Named `TabItem`, not `Tab`, deliberately:** Flutter's own `Tab` widget
+      (for `TabBar`) must stay available, and shadowing it would have removed
+      a legitimate widget from the API surface. `TabView`/`TabItem` are
+      declared in `src/runtime/shell.ts` — framework shells the compiler
+      expands, with no SDK entity behind them.
+      **Printer rule corrected again, against the formatter:** the
+      sole-argument "hug" distinction from step 23 was wrong. `dart format`
+      collapses a hand-split collection whenever it fits and its elements
+      carry no named arguments — in multi-argument calls too. The rule is now
+      just that, which is simpler and reproduces every one of the 23 goldens;
+      two unit tests that had asserted the invented behaviour were corrected.
+      Golden #23 (`23-tabs`) certified and byte-equal; the widget test taps
+      the bar and asserts the IndexedStack index moves while both pages stay
+      mounted.
 - [ ] 24b. Remaining high-level abstractions from the vision (each gated by its own golden +
       e2e before being documented): `useAsync`/`Query`→FutureBuilder ·
       `useStream`→StreamBuilder · `createStore`/`useStore`→ChangeNotifier+Provider ·

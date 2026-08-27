@@ -114,7 +114,9 @@ describe('printExpr — calls', () => {
     );
   });
 
-  test('a collection argument splits whenever its call splits', () => {
+  // Verified against dart format: it collapses a hand-split collection whose
+  // elements carry no named arguments, in a multi-argument call too.
+  test('a fitting collection argument stays inline even in a split call', () => {
     expect(
       printExpr(
         call('Column', [], {
@@ -135,9 +137,7 @@ describe('printExpr — calls', () => {
       [
         'Column(',
         '  mainAxisAlignment: MainAxisAlignment.spaceBetween,',
-        '  children: [',
-        '    Spacer(),',
-        '  ],',
+        '  children: [Spacer()],',
         ')',
       ].join('\n'),
     );
@@ -428,7 +428,7 @@ describe('printExpr — sole collection argument hugs', () => {
     );
   });
 
-  test('with a second argument a fitting collection keeps its split', () => {
+  test('a second argument does not force a fitting collection to split', () => {
     expect(
       printExpr(
         call('Column', [], {
@@ -446,10 +446,7 @@ describe('printExpr — sole collection argument hugs', () => {
       [
         'Column(',
         '      mainAxisAlignment: MainAxisAlignment.center,',
-        '      children: [',
-        "        Text(_a ?? ''),",
-        "        Text(_b ?? ''),",
-        '      ],',
+        "      children: [Text(_a ?? ''), Text(_b ?? '')],",
         '    )',
       ].join('\n'),
     );

@@ -2511,3 +2511,67 @@ describe('lowerComponent — navigation diagnostics', () => {
     );
   });
 });
+describe('lowerComponent — TabView diagnostics', () => {
+  // Line 1 is the import, line 2 opens Probe, so `body` starts at line 3.
+  const lowerTabs = async (body: string): Promise<IrComponent> => {
+    const analysis = analyzeSource(
+      "import { TabItem, TabView, Text } from 'flutter-tsx';\n" +
+        `export const Probe = () => (\n${body});\n`,
+      'probe.tsx',
+    );
+    const [component] = analysis.components;
+    if (component === undefined) {
+      throw new Error('expected a component');
+    }
+    return lowerComponent(component, await contextOnce());
+  };
+
+  const SHAPE =
+    '<TabView> takes <TabItem label="…" icon="…"> children, one per tab.';
+
+  test('a self-closing TabView is a numbered error', () => {
+    expect(lowerTabs('  <TabView />\n')).rejects.toThrow(
+      new Error(`TSX0331 probe.tsx:3:3 — ${SHAPE}`),
+    );
+  });
+
+  test('a TabView with no tabs is a numbered error', () => {
+    expect(lowerTabs('  <TabView></TabView>\n')).rejects.toThrow(
+      new Error(`TSX0331 probe.tsx:3:3 — ${SHAPE}`),
+    );
+  });
+
+  test('a child that is no TabItem is a numbered error', () => {
+    expect(
+      lowerTabs('  <TabView>\n    <Text>nope</Text>\n  </TabView>\n'),
+    ).rejects.toThrow(new Error(`TSX0331 probe.tsx:4:5 — ${SHAPE}`));
+  });
+
+  test('a TabItem missing its label or page is a numbered error', () => {
+    expect(
+      lowerTabs(
+        '  <TabView>\n' +
+          '    <TabItem icon="home">\n' +
+          '      <Text>Home</Text>\n' +
+          '    </TabItem>\n' +
+          '  </TabView>\n',
+      ),
+    ).rejects.toThrow(new Error(`TSX0331 probe.tsx:4:5 — ${SHAPE}`));
+  });
+
+  test('an icon the SDK does not have is a numbered error', () => {
+    expect(
+      lowerTabs(
+        '  <TabView>\n' +
+          '    <TabItem label="Home" icon="hoem">\n' +
+          '      <Text>Home</Text>\n' +
+          '    </TabItem>\n' +
+          '  </TabView>\n',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        "TSX0332 probe.tsx:4:5 — `hoem` is not an icon in the SDK's Icons.",
+      ),
+    );
+  });
+});

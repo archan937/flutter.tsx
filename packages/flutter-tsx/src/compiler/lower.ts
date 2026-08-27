@@ -222,6 +222,9 @@ interface LowerContext {
   usedPluginImports: Set<string>;
   storeSetters: Map<string, IrStore>;
   navigators: ReadonlySet<string>;
+  // Set while lowering a <TabView>: the component needs a tab-index field
+  // even though the author declared no state.
+  tabState: { fieldName: string } | null;
   settersToStates: Map<string, string>;
   stateDartTypes: Map<string, string>;
   translate: TranslateContext;
@@ -954,12 +957,191 @@ const childrenArgument = (
     : { param: childrenSlot.param, positional, value };
 };
 
+const TAB_VIEW = 'TabView';
+const TAB = 'TabItem';
+const TAB_INDEX_FIELD = 'tabIndex';
+
+const TAB_SHAPE_ERROR = `<${TAB_VIEW}> takes <${TAB} label="…" icon="…"> children, one per tab.`;
+
+interface LoweredTab {
+  label: string;
+  icon: string;
+  child: IrValue;
+}
+
+const stringAttribute = (
+  element: ts.JsxOpeningElement,
+  name: string,
+): string | null => {
+  for (const attribute of element.attributes.properties) {
+    if (
+      ts.isJsxAttribute(attribute) &&
+      attribute.name.getText() === name &&
+      attribute.initializer !== undefined &&
+      ts.isStringLiteral(attribute.initializer)
+    ) {
+      return attribute.initializer.text;
+    }
+  }
+  return null;
+};
+
+// Each <Tab label icon> contributes one destination and one page. The icon is
+// checked against the SDK's own Icons constants, so a typo fails here rather
+// than in Dart.
+const lowerTab = (child: ts.JsxChild, context: LowerContext): LoweredTab => {
+  if (
+    !ts.isJsxElement(child) ||
+    child.openingElement.tagName.getText() !== TAB
+  ) {
+    throw tsxErrorAt('TSX0331', TAB_SHAPE_ERROR, {
+      sourceFile: context.sourceFile,
+      node: child,
+    });
+  }
+  const label = stringAttribute(child.openingElement, 'label');
+  const icon = stringAttribute(child.openingElement, 'icon');
+  const page = singleChildValue(child.children, context);
+  if (label === null || icon === null || page === null) {
+    throw tsxErrorAt('TSX0331', TAB_SHAPE_ERROR, {
+      sourceFile: context.sourceFile,
+      node: child.openingElement,
+    });
+  }
+  if (context.compile.constantOwners.get('Icons')?.has(icon) !== true) {
+    throw tsxErrorAt(
+      'TSX0332',
+      `\`${icon}\` is not an icon in the SDK's Icons.`,
+      { sourceFile: context.sourceFile, node: child.openingElement },
+    );
+  }
+  return { label, icon, child: page };
+};
+
+const tabItem = (tab: LoweredTab): IrChild => ({
+  kind: 'value',
+  value: {
+    kind: 'construct',
+    className: 'BottomNavigationBarItem',
+    constructorName: '',
+    args: [
+      {
+        param: 'icon',
+        positional: false,
+        value: {
+          kind: 'construct',
+          className: 'Icon',
+          constructorName: '',
+          args: [
+            {
+              param: 'icon',
+              positional: true,
+              value: { kind: 'constantRef', owner: 'Icons', member: tab.icon },
+            },
+          ],
+        },
+      },
+      {
+        param: 'label',
+        positional: false,
+        value: { kind: 'string', value: tab.label },
+      },
+    ],
+  },
+});
+
+// <TabView> is the vision's bottom-tab shell: an IndexedStack keeps every page
+// alive while the bar switches between them, driven by a synthesized index.
+const lowerTabView = (
+  element: ts.JsxElement,
+  context: LowerContext,
+): IrWidget => {
+  const tabs = element.children
+    .filter((child) => !ts.isJsxText(child) || meaningfulText(child) !== null)
+    .map((child) => lowerTab(child, context));
+  if (tabs.length === 0) {
+    throw tsxErrorAt('TSX0331', TAB_SHAPE_ERROR, {
+      sourceFile: context.sourceFile,
+      node: element,
+    });
+  }
+  context.tabState = { fieldName: TAB_INDEX_FIELD };
+  const indexRef: IrValue = { kind: 'stateRef', name: TAB_INDEX_FIELD };
+  return {
+    name: 'Scaffold',
+    constConstructor: false,
+    args: [
+      {
+        param: 'body',
+        positional: false,
+        value: {
+          kind: 'widget',
+          widget: {
+            name: 'IndexedStack',
+            constConstructor: false,
+            args: [
+              { param: 'index', positional: false, value: indexRef },
+              {
+                param: 'children',
+                positional: false,
+                value: {
+                  kind: 'widgetList',
+                  items: tabs.map((tab) => ({
+                    kind: 'value' as const,
+                    value: tab.child,
+                  })),
+                },
+              },
+            ],
+          },
+        },
+      },
+      {
+        param: 'bottomNavigationBar',
+        positional: false,
+        value: {
+          kind: 'widget',
+          widget: {
+            name: 'BottomNavigationBar',
+            constConstructor: false,
+            args: [
+              { param: 'currentIndex', positional: false, value: indexRef },
+              {
+                param: 'onTap',
+                positional: false,
+                value: {
+                  kind: 'dartExpr',
+                  dart: `(index) => setState(() => _${TAB_INDEX_FIELD} = index)`,
+                },
+              },
+              {
+                param: 'items',
+                positional: false,
+                value: { kind: 'widgetList', items: tabs.map(tabItem) },
+              },
+            ],
+          },
+        },
+      },
+    ],
+  };
+};
+
 const lowerJsxElement = (
   element: ts.JsxElement | ts.JsxSelfClosingElement,
   context: LowerContext,
 ): IrWidget => {
   const opening = ts.isJsxElement(element) ? element.openingElement : element;
   const widgetName = opening.tagName.getText();
+  if (widgetName === TAB_VIEW) {
+    if (!ts.isJsxElement(element)) {
+      throw tsxErrorAt('TSX0331', TAB_SHAPE_ERROR, {
+        sourceFile: context.sourceFile,
+        node: opening,
+      });
+    }
+    return lowerTabView(element, context);
+  }
   const info =
     context.compile.widgets.get(widgetName) ??
     context.compile.userWidgets.get(widgetName);
@@ -1939,6 +2121,7 @@ export const lowerComponent = (
   const context: LowerContext = {
     compile,
     navigators: new Set(component.navigators),
+    tabState: null,
     sourceFile: component.sourceFile,
     stateNames,
     handlerNames,
@@ -2006,12 +2189,6 @@ export const lowerComponent = (
     });
   }
 
-  const isStateful =
-    component.states.length > 0 ||
-    component.plugins.length > 0 ||
-    component.effects.length > 0 ||
-    component.asyncBinding !== null;
-
   const methods: IrMethod[] = component.handlers.map((handler) => ({
     name: handler.name,
     isAsync: handler.isAsync,
@@ -2024,8 +2201,9 @@ export const lowerComponent = (
       : lowerAsyncBinding(component.asyncBinding, root, context);
 
   // The body must be lowered before the literal below reads
-  // usedPluginImports: an import discovered while lowering a handler (a
-  // navigation call, say) would otherwise be recorded too late.
+  // usedPluginImports or context.tabState: an import discovered while
+  // lowering a handler, or the index a <TabView> needs, would otherwise be
+  // recorded too late.
   const body = storeWrapped(
     lowered?.body ??
       (ts.isJsxFragment(root)
@@ -2033,6 +2211,26 @@ export const lowerComponent = (
         : lowerJsxElement(root, context)),
     store,
   );
+
+  // A <TabView> owns its selected index, so the component is stateful even
+  // when the author declared no state of their own.
+  const tabField: IrField[] =
+    context.tabState === null
+      ? []
+      : [
+          {
+            name: `_${context.tabState.fieldName}`,
+            dartType: 'int',
+            mutable: true,
+            initializer: '0',
+          },
+        ];
+  const isStateful =
+    component.states.length > 0 ||
+    component.plugins.length > 0 ||
+    component.effects.length > 0 ||
+    component.asyncBinding !== null ||
+    tabField.length > 0;
 
   return {
     name: component.name,
@@ -2045,6 +2243,7 @@ export const lowerComponent = (
     fields: [
       ...loweredPlugins.map(({ lowered: plugin }) => plugin.field),
       ...(lowered === null ? [] : [lowered.field]),
+      ...tabField,
       ...component.states.map((state) => ({
         name: translateIdentifier(state.name, context.translate),
         dartType: state.dartType,
