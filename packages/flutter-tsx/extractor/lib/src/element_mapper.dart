@@ -104,7 +104,16 @@ PluginClass mapPluginClass(ClassElement classElement, AssertInspector asserts) {
 const _objectMemberNames = {'hashCode', 'runtimeType'};
 
 List<FieldModel> _mapInstanceFields(ClassElement classElement) {
-  final fields = classElement.getters
+  // Inherited members are part of the class's usable surface: a consumer
+  // reading `response.statusCode` cannot tell that BaseResponse declares it.
+  final owners = <InterfaceElement>[
+    classElement,
+    ...classElement.allSupertypes
+        .map((supertype) => supertype.element)
+        .where((element) => (element.name ?? 'Object') != 'Object'),
+  ];
+  final fields = owners
+      .expand((owner) => owner.getters)
       .where(
         (getter) =>
             getter.isPublic &&
@@ -125,8 +134,14 @@ List<FieldModel> _mapInstanceFields(ClassElement classElement) {
       )
       .toList();
 
-  fields.sort((first, second) => first.name.compareTo(second.name));
-  return fields;
+  final byName = <String, FieldModel>{};
+  for (final field in fields) {
+    // A subclass override wins: the first owner in the list is the class.
+    byName.putIfAbsent(field.name, () => field);
+  }
+  final unique = byName.values.toList()
+    ..sort((first, second) => first.name.compareTo(second.name));
+  return unique;
 }
 
 FunctionModel mapTopLevelFunction(TopLevelFunctionElement element) =>

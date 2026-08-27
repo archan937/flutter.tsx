@@ -50,6 +50,13 @@ export interface HookOverrides {
   optionNames?: Record<string, string>;
 }
 
+/// Per-package deltas that are not about a hook: whether the Dart import
+/// carries a prefix, which `package:http` documents for itself because bare
+/// `get`/`post` would collide and read poorly.
+export interface PackageOverrides {
+  importPrefix?: string;
+}
+
 const isFutureVoid = (type: TypeNode): boolean =>
   type.kind === 'future' && type.item.kind === 'void';
 

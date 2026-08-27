@@ -1,8 +1,9 @@
 import { loadApiSnapshot } from '../api/load';
+import type { TypeNode } from '../api/model';
 import { deriveSlots } from '../derive/slots';
 import { loadPluginApi, type PluginApi } from '../plugins/api';
 import { deriveHooks } from '../plugins/hooks';
-import { PLUGIN_OVERRIDES } from '../plugins/overrides';
+import { PACKAGE_OVERRIDES, PLUGIN_OVERRIDES } from '../plugins/overrides';
 import {
   analyzeSource,
   type ComponentAnalysis,
@@ -53,6 +54,8 @@ interface LoadedPlugins {
   pluginHooks: Map<string, PluginHookInfo>;
   pluginFunctions: Map<string, PluginFunctionInfo>;
   pluginEnums: Map<string, Set<string>>;
+  pluginClassFields: Map<string, Map<string, TypeNode>>;
+  prefixedTypes: Map<string, string>;
 }
 
 const loadPlugins = async (
@@ -63,17 +66,31 @@ const loadPlugins = async (
       ...analysis.components.flatMap((component) =>
         component.plugins.map((binding) => binding.package),
       ),
-      ...analysis.pluginImports.values(),
+      ...[...analysis.pluginImports.values()].map(
+        (imported) => imported.package,
+      ),
     ]),
   ];
   const pluginHooks = new Map<string, PluginHookInfo>();
   const pluginEnums = new Map<string, Set<string>>();
+  const pluginClassFields = new Map<string, Map<string, TypeNode>>();
+  const prefixedTypes = new Map<string, string>();
   const apis = new Map<string, PluginApi>();
   for (const packageName of packages) {
     const api = await loadPluginApi(packageName);
     apis.set(packageName, api);
     for (const entity of api.enums) {
       pluginEnums.set(entity.name, new Set(entity.values));
+    }
+    const prefix = PACKAGE_OVERRIDES[packageName]?.importPrefix;
+    for (const entity of api.classes) {
+      pluginClassFields.set(
+        entity.name,
+        new Map(entity.fields.map((field) => [field.name, field.type])),
+      );
+      if (prefix !== undefined) {
+        prefixedTypes.set(entity.name, `${prefix}.${entity.name}`);
+      }
     }
     for (const hook of deriveHooks(api, PLUGIN_OVERRIDES[packageName])) {
       const entity = api.classes.find(
@@ -91,17 +108,27 @@ const loadPlugins = async (
     }
   }
   const pluginFunctions = new Map<string, PluginFunctionInfo>();
-  for (const [localName, packageName] of analysis.pluginImports) {
-    const api = apis.get(packageName);
-    const fn = api?.functions.find((candidate) => candidate.name === localName);
+  for (const [localName, imported] of analysis.pluginImports) {
+    const api = apis.get(imported.package);
+    // Resolved by the exported name, so `import { get as httpGet }` works.
+    const fn = api?.functions.find(
+      (candidate) => candidate.name === imported.exportedName,
+    );
     if (api !== undefined && fn !== undefined) {
       pluginFunctions.set(localName, {
         fn,
         dartImport: `package:${api.package}/${api.package}.dart`,
+        importPrefix: PACKAGE_OVERRIDES[api.package]?.importPrefix ?? null,
       });
     }
   }
-  return { pluginHooks, pluginFunctions, pluginEnums };
+  return {
+    pluginHooks,
+    pluginFunctions,
+    pluginEnums,
+    pluginClassFields,
+    prefixedTypes,
+  };
 };
 
 export const transpileComponent = async (

@@ -102,6 +102,21 @@
       ],
       "fields": [
         {
+          "name": "params",
+          "doc": "",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
           "name": "preferencesKeyPrefix",
           "doc": "/// The prefix for a shared preference key. The prefix is used to make sure\n/// the key is unique to your application. If not provided, a default prefix\n/// will be used.\n///\n/// WARNING: If you change this you can't retrieve already saved preferences.",
           "type": {
@@ -266,7 +281,23 @@
       "name": "AppleOptions",
       "doc": "",
       "constructors": [],
-      "fields": [],
+      "fields": [
+        {
+          "name": "params",
+          "doc": "",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        }
+      ],
       "methods": [
         {
           "name": "toMap",
@@ -1460,7 +1491,23 @@
           ]
         }
       ],
-      "fields": [],
+      "fields": [
+        {
+          "name": "params",
+          "doc": "",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        }
+      ],
       "methods": [
         {
           "name": "copyWith",
@@ -1563,7 +1610,23 @@
           "params": []
         }
       ],
-      "fields": [],
+      "fields": [
+        {
+          "name": "params",
+          "doc": "",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        }
+      ],
       "methods": [
         {
           "name": "toMap",
@@ -1683,7 +1746,23 @@
           ]
         }
       ],
-      "fields": [],
+      "fields": [
+        {
+          "name": "params",
+          "doc": "",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        }
+      ],
       "methods": [
         {
           "name": "copyWith",
@@ -1882,6 +1961,21 @@
           }
         },
         {
+          "name": "params",
+          "doc": "",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
           "name": "publicKey",
           "doc": "",
           "type": {
@@ -1964,7 +2058,23 @@
           ]
         }
       ],
-      "fields": [],
+      "fields": [
+        {
+          "name": "params",
+          "doc": "",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        }
+      ],
       "methods": [
         {
           "name": "copyWith",

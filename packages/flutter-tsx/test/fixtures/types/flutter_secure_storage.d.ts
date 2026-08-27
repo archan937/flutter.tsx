@@ -10,6 +10,7 @@ declare module 'plugin:flutter_secure_storage' {
 
   export class AndroidOptions {
     constructor(options?: { encryptedSharedPreferences?: boolean; resetOnError?: boolean; keyCipherAlgorithm?: KeyCipherAlgorithm; storageCipherAlgorithm?: StorageCipherAlgorithm; sharedPreferencesName?: string | null; preferencesKeyPrefix?: string | null });
+    readonly params: Record<string, string>;
     readonly preferencesKeyPrefix: string | null;
     readonly sharedPreferencesName: string | null;
     copyWith(options?: { encryptedSharedPreferences?: boolean | null; resetOnError?: boolean | null; keyCipherAlgorithm?: KeyCipherAlgorithm | null; storageCipherAlgorithm?: StorageCipherAlgorithm | null; preferencesKeyPrefix?: string | null; sharedPreferencesName?: string | null }): AndroidOptions;
@@ -17,6 +18,7 @@ declare module 'plugin:flutter_secure_storage' {
   }
 
   export class AppleOptions {
+    readonly params: Record<string, string>;
     toMap(): Record<string, string>;
   }
 
@@ -45,16 +47,19 @@ declare module 'plugin:flutter_secure_storage' {
 
   export class IOSOptions {
     constructor(options?: { groupId?: string | null; accountName?: string | null; accessibility?: KeychainAccessibility | null; synchronizable?: boolean });
+    readonly params: Record<string, string>;
     copyWith(options?: { groupId?: string | null; accountName?: string | null; accessibility?: KeychainAccessibility | null; synchronizable?: boolean | null }): IOSOptions;
   }
 
   export class LinuxOptions {
     constructor();
+    readonly params: Record<string, string>;
     toMap(): Record<string, string>;
   }
 
   export class MacOsOptions {
     constructor(options?: { groupId?: string | null; accountName?: string | null; accessibility?: KeychainAccessibility | null; synchronizable?: boolean; useDataProtectionKeyChain?: boolean });
+    readonly params: Record<string, string>;
     copyWith(options?: { groupId?: string | null; accountName?: string | null; accessibility?: KeychainAccessibility | null; synchronizable?: boolean | null; useDataProtectionKeyChain?: boolean | null }): MacOsOptions;
     toMap(): Record<string, string>;
   }
@@ -62,6 +67,7 @@ declare module 'plugin:flutter_secure_storage' {
   export class WebOptions {
     constructor(options?: { dbName?: string; publicKey?: string; wrapKey?: string; wrapKeyIv?: string });
     readonly dbName: string;
+    readonly params: Record<string, string>;
     readonly publicKey: string;
     readonly wrapKey: string;
     readonly wrapKeyIv: string;
@@ -70,6 +76,7 @@ declare module 'plugin:flutter_secure_storage' {
 
   export class WindowsOptions {
     constructor(options?: { useBackwardCompatibility?: boolean });
+    readonly params: Record<string, string>;
     copyWith(options?: { useBackwardCompatibility?: boolean | null }): WindowsOptions;
     toMap(): Record<string, string>;
   }

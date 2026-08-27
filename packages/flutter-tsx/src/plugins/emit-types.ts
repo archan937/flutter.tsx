@@ -85,6 +85,59 @@ const withCoreStrings = (node: TypeNode): TypeNode => {
 
 const TS_IDENTIFIER = /^[A-Za-z_][A-Za-z0-9_]*$/;
 
+// Dart happily names a function `delete`; TypeScript cannot declare a const
+// by that name, but it can export one under the reserved alias — so the name
+// stays reachable through `import { delete as httpDelete }`.
+const TS_RESERVED = new Set([
+  'break',
+  'case',
+  'catch',
+  'class',
+  'const',
+  'continue',
+  'debugger',
+  'default',
+  'delete',
+  'do',
+  'else',
+  'enum',
+  'export',
+  'extends',
+  'false',
+  'finally',
+  'for',
+  'function',
+  'if',
+  'import',
+  'in',
+  'instanceof',
+  'new',
+  'null',
+  'return',
+  'super',
+  'switch',
+  'this',
+  'throw',
+  'true',
+  'try',
+  'typeof',
+  'var',
+  'void',
+  'while',
+  'with',
+]);
+
+const reservedFunction = (fn: PluginMethod): string => {
+  const signature = `(${signatureParams(fn.params)}) => ${tsTypeOf(withCoreStrings(fn.returnType))}`;
+  if (!TS_RESERVED.has(fn.name)) {
+    return `  export const ${fn.name}: ${signature};`;
+  }
+  return (
+    `  const ${fn.name}_: ${signature};\n` +
+    `  export { ${fn.name}_ as ${fn.name} };`
+  );
+};
+
 const signatureParams = (params: ParamModel[]): string => {
   const positional = params
     .filter((param) => !param.named)
@@ -203,9 +256,7 @@ export const emitPluginDeclaration = (
   }
 
   for (const fn of api.functions) {
-    blocks.push(
-      `  export const ${fn.name}: (${signatureParams(fn.params)}) => ${tsTypeOf(withCoreStrings(fn.returnType))};`,
-    );
+    blocks.push(reservedFunction(fn));
   }
 
   for (const hook of hooks) {

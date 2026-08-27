@@ -65,9 +65,11 @@ declare module 'plugin:camera' {
     readonly cameraId: number;
     readonly description: CameraDescription;
     readonly enableAudio: boolean;
+    readonly hasListeners: boolean;
     readonly imageFormatGroup: ImageFormatGroup | null;
     readonly mediaSettings: MediaSettings;
     readonly resolutionPreset: ResolutionPreset;
+    readonly value: unknown;
     buildPreview(): FlutterElement;
     debugCheckIsDisposed(): void;
     dispose(): Promise<void>;
@@ -133,6 +135,7 @@ declare module 'plugin:camera' {
     constructor(controller: CameraController, options?: { key?: Key | null; child?: FlutterElement | null });
     readonly child: FlutterElement | null;
     readonly controller: CameraController;
+    readonly key: Key | null;
     build(context: BuildContext): FlutterElement;
   }
 
@@ -170,10 +173,16 @@ declare module 'plugin:camera' {
   }
 
   export class Optional {
+    readonly first: unknown;
+    readonly isEmpty: boolean;
+    readonly isNotEmpty: boolean;
     readonly isNotPresent: boolean;
     readonly isPresent: boolean;
     readonly iterator: Iterator;
+    readonly last: unknown;
+    readonly length: number;
     readonly orNull: unknown | null;
+    readonly single: unknown;
     readonly value: unknown;
     ifAbsent(ifAbsent: () => void): void;
     ifPresent(ifPresent: (value: unknown) => void): void;
@@ -193,6 +202,9 @@ declare module 'plugin:camera' {
 
   export class XFile {
     constructor(path: string, options?: { mimeType?: string | null; name?: string | null; length?: number | null; bytes?: Uint8List | null; lastModified?: DateTime | null; overrides?: CrossFileTestOverrides | null });
+    readonly mimeType: string | null;
+    readonly name: string;
+    readonly path: string;
   }
 
   export const availableCameras: () => Promise<CameraDescription[]>;

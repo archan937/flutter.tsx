@@ -1,7 +1,7 @@
 import ts from 'typescript';
 
 import type { ApiSnapshot, ParamModel, TypeNode } from '../api/model';
-import { dartTypeOf } from '../derive/dart-types';
+import { dartTypeOf as bareDartTypeOf } from '../derive/dart-types';
 import type { SlotMap, WidgetSlots } from '../derive/slots';
 import {
   deriveValueForms,
@@ -58,6 +58,9 @@ export interface PluginHookInfo {
 export interface PluginFunctionInfo {
   fn: PluginMethod;
   dartImport: string;
+  // Set when the package is imported with a prefix, so the call reads
+  // `http.get(…)` the way the package's own documentation writes it.
+  importPrefix: string | null;
 }
 
 export interface CompileContext {
@@ -67,6 +70,11 @@ export interface CompileContext {
   gestures: GestureWrap | null;
   // Stores declared at module level, by TSX name.
   stores: Map<string, IrStore>;
+  // Fields of every class an imported plugin exposes, so a value of that type
+  // can be read even when it did not come from a hook.
+  pluginClassFields: Map<string, Map<string, TypeNode>>;
+  // Dart type name -> prefixed name, for plugins imported with a prefix.
+  prefixedTypes: Map<string, string>;
   userWidgets: Map<string, WidgetInfo>;
   pluginHooks: Map<string, PluginHookInfo>;
   pluginFunctions: Map<string, PluginFunctionInfo>;
@@ -162,6 +170,8 @@ export const buildCompileContext = (
     widgets,
     gestures: gestureWrapOf(widgets.get(GESTURE_WIDGET)),
     stores: new Map(),
+    pluginClassFields: new Map(),
+    prefixedTypes: new Map(),
     userWidgets: new Map(),
     pluginHooks: new Map(),
     pluginFunctions: new Map(),
@@ -219,7 +229,7 @@ interface LowerContext {
   stringStates: Set<string>;
   stringLocals: Set<string>;
   pluginBindings: Map<string, PluginHookInfo>;
-  usedPluginImports: Set<string>;
+  usedPluginImports: Map<string, string | null>;
   storeSetters: Map<string, IrStore>;
   navigators: ReadonlySet<string>;
   // Set while lowering a <TabView>: the component needs a tab-index field
@@ -1468,7 +1478,7 @@ const navigationLine = (
     );
   }
   // The rewrite only works with go_router's extension in scope.
-  context.usedPluginImports.add(GO_ROUTER_IMPORT);
+  context.usedPluginImports.set(GO_ROUTER_IMPORT, null);
   const args = expression.arguments.map((argument) =>
     translateExpression(argument, context.translate),
   );
@@ -1638,9 +1648,13 @@ const resolvePluginCall = (
     if (fnInfo === undefined) {
       return null;
     }
-    context.usedPluginImports.add(fnInfo.dartImport);
+    context.usedPluginImports.set(fnInfo.dartImport, fnInfo.importPrefix);
+    const invocation =
+      fnInfo.importPrefix === null
+        ? fnInfo.fn.name
+        : `${fnInfo.importPrefix}.${fnInfo.fn.name}`;
     return {
-      invocation: fnInfo.fn.name,
+      invocation,
       args: pluginCallArguments(call, fnInfo.fn, context),
       returnType: fnInfo.fn.returnType,
     };
@@ -1802,6 +1816,20 @@ export const lowerStore = (store: StoreBinding): IrStore => ({
   })),
 });
 
+// A type from a prefixed plugin has to be written with that prefix wherever
+// it appears in generated Dart, not only at the call site.
+const dartTypeIn = (type: TypeNode, compile: CompileContext): string | null => {
+  const bare = bareDartTypeOf(type);
+  if (bare === null) {
+    return null;
+  }
+  let prefixed = bare;
+  for (const [name, replacement] of compile.prefixedTypes) {
+    prefixed = prefixed.replaceAll(name, replacement);
+  }
+  return prefixed;
+};
+
 interface AsyncSource {
   invocation: string;
   // null for a property read: there is no argument list to render.
@@ -1863,7 +1891,9 @@ const lowerAsyncBinding = (
   const sourceKind = isStream ? 'stream' : 'future';
   const source = resolveAsyncSource(load, context);
   const dataType =
-    source?.type.kind === sourceKind ? dartTypeOf(source.type.item) : null;
+    source?.type.kind === sourceKind
+      ? dartTypeIn(source.type.item, context.compile)
+      : null;
   if (source === null || dataType === null) {
     const wrapper = isStream ? 'Stream' : 'Future';
     throw tsxErrorAt(
@@ -1885,6 +1915,22 @@ const lowerAsyncBinding = (
       ...(dataType === 'String' ? [binding.name] : []),
     ]),
   };
+  // The resolved value is a plain local, so its readable fields come from the
+  // plugin class it is an instance of.
+  const item = source.type.kind === sourceKind ? source.type.item : null;
+  const itemClass = item?.kind === 'named' ? item.name : null;
+  const itemFields =
+    itemClass === null
+      ? undefined
+      : context.compile.pluginClassFields.get(itemClass);
+  if (itemFields !== undefined && itemClass !== null) {
+    branchContext.translate.memberReads.set(binding.name, {
+      className: itemClass,
+      receiver: binding.name,
+      nullable: false,
+      fields: itemFields,
+    });
+  }
   const fieldName = `_${binding.name}${isStream ? 'Stream' : 'Future'}`;
   return {
     field: {
@@ -2248,7 +2294,7 @@ export const lowerComponent = (
         .map((prop) => prop.name),
     ),
     pluginBindings: new Map(),
-    usedPluginImports: new Set(),
+    usedPluginImports: new Map(),
     storeSetters: new Map(),
     stateDartTypes: new Map(
       component.states.map((state) => [state.name, state.dartType]),
@@ -2378,11 +2424,13 @@ export const lowerComponent = (
       lowered.disposeLine === null ? [] : [lowered.disposeLine],
     ),
     pluginImports: [
-      ...new Set([
-        ...loweredPlugins.map(({ lowered }) => lowered.pluginImport),
+      ...new Map<string, string | null>([
+        ...loweredPlugins.map(
+          ({ lowered }) => [lowered.pluginImport, null] as const,
+        ),
         ...context.usedPluginImports,
       ]),
-    ],
+    ].map(([uri, prefix]) => ({ uri, prefix })),
     body,
   };
 };

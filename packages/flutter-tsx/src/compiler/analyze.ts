@@ -98,7 +98,8 @@ export interface SourceAnalysis {
   router: RouterBinding | null;
   checker: ts.TypeChecker;
   sourceFile: ts.SourceFile;
-  pluginImports: Map<string, string>;
+  /// local name -> which package it came from and what it is called there
+  pluginImports: Map<string, { package: string; exportedName: string }>;
 }
 
 const COMPILER_OPTIONS: ts.CompilerOptions = {
@@ -215,10 +216,16 @@ const createProgramFor = (source: string, filePath: string): ts.Program => {
   return ts.createProgram([filePath], COMPILER_OPTIONS, host);
 };
 
-const importedHookModules = (
-  sourceFile: ts.SourceFile,
-): Map<string, string> => {
+interface ImportedNames {
+  /// local name -> module specifier
+  modules: Map<string, string>;
+  /// local name -> the name the module exports
+  originals: Map<string, string>;
+}
+
+const importedHookModules = (sourceFile: ts.SourceFile): ImportedNames => {
   const modules = new Map<string, string>();
+  const originalNames = new Map<string, string>();
   for (const statement of sourceFile.statements) {
     if (
       !ts.isImportDeclaration(statement) ||
@@ -231,10 +238,16 @@ const importedHookModules = (
       continue;
     }
     for (const element of bindings.elements) {
+      // `import { get as httpGet }` binds httpGet locally but names get in
+      // the module, and the plugin API is keyed by the module's name.
       modules.set(element.name.text, statement.moduleSpecifier.text);
+      originalNames.set(
+        element.name.text,
+        (element.propertyName ?? element.name).text,
+      );
     }
   }
-  return modules;
+  return { modules, originals: originalNames };
 };
 
 const dartTypeOfInitial = (
@@ -769,7 +782,8 @@ export const analyzeSource = (
   const program = createProgramFor(source, filePath);
   const sourceFile = requireSourceFile(program, filePath);
   const checker = program.getTypeChecker();
-  const hookModules = importedHookModules(sourceFile);
+  const { modules: hookModules, originals: importedOriginals } =
+    importedHookModules(sourceFile);
   const stores = analyzeStores(sourceFile);
   const storeNames = new Set(stores.map((store) => store.name));
 
@@ -819,7 +833,10 @@ export const analyzeSource = (
       .filter(([, module]) => module.startsWith(PLUGIN_MODULE_PREFIX))
       .map(([name, module]) => [
         name,
-        module.slice(PLUGIN_MODULE_PREFIX.length),
+        {
+          package: module.slice(PLUGIN_MODULE_PREFIX.length),
+          exportedName: importedOriginals.get(name) ?? name,
+        },
       ]),
   );
   const router = analyzeRouter(

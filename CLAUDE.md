@@ -790,12 +790,43 @@ bun run test:extractor             # dart tests + 100% coverage gate
       Golden #24 (`24-animated`) certified and byte-equal; the widget test
       asserts the opacity target flips 1 → 0 on tap with the declared
       duration, so the animation is real and not a static render.
-- [ ] 24b. Remaining: `fetch()` → Dart HTTP. **Paul's decision (roadmap):**
-      the package mapping (`package:http`, `dio`, or the SDK's own
-      `HttpClient`) is an open design choice and will not be picked
-      unilaterally. Everything else in the 24b list is done: `useAsync`,
-      `useStream`, `createStore`/`useStore`, `useNavigation`/`createRouter`,
-      `Modal`, `TabView`, `Animated`, gesture props.
+- [x] 24b (HTTP). **Paul's decision (2026-08-28): no `fetch()` magic — HTTP
+      goes through the normal plugin path.** So `import { get } from
+      'plugin:http'` inside `useAsync` is all it takes; no new compiler
+      concept was added for networking at all. The existing machinery covered
+      it: top-level plugin functions, the `Uri` string sugar
+      (`get('https://…')` → `http.get(Uri.parse('https://…'))`), the
+      FutureBuilder lowering, and property reads on the resolved value
+      (`res.statusCode`, `res.body`).
+      Three real gaps closed to make it work, none deferred:
+      (1) **inherited members were invisible** — the extractor read only a
+      class's own fields, so `Response.statusCode` (declared on
+      `BaseResponse`) did not exist as far as the compiler was concerned. It
+      now walks supertypes, excluding Object, with a subclass override
+      winning; camera and flutter_secure_storage snapshots grew accordingly.
+      (2) **prefixed imports** — `package:http` documents itself as
+      `import 'package:http/http.dart' as http`, and bare `get`/`post` in a
+      Flutter file is poor Dart. `PACKAGE_OVERRIDES` carries a one-line
+      `importPrefix`, and the prefix reaches the call (`http.get`) AND every
+      type name from that package (`Future<http.Response>`), because a prefix
+      that only covers call sites produces code that does not compile.
+      `IrImport` is now `{uri, prefix}` rather than a bare string.
+      (3) **reserved words** — Dart's `delete` cannot be a TypeScript const,
+      so the generated typings export it under an alias
+      (`export { delete_ as delete }`), and aliased imports
+      (`import { get as httpGet }`) now resolve by the name the module
+      exports rather than the local one. That works for any plugin, not just
+      http.
+      Golden #25 (`25-http-get`) certified and byte-equal; the widget tests
+      use `MockClient` with `runWithClient` to prove the generated Dart calls
+      the exact URL from the TSX, renders status and body, and shows the
+      error fallback when the request throws — no network involved.
+      **`res.json()` was deliberately NOT added:** `jsonDecode` returns
+      `dynamic`, so a typed `res.json<Album>()` needs TS interface → Dart
+      data class generation (with `fromJson`, nullability, nested objects).
+      That is its own capability with its own goldens, not something to
+      smuggle into an HTTP commit — a `json()` that returns an untypeable
+      value would be exactly the kind of facade this project forbids.
 - [ ] 24b (former list, kept for reference). High-level abstractions (each gated by its own golden +
       e2e before being documented): `useAsync`/`Query`→FutureBuilder ·
       `useStream`→StreamBuilder · `createStore`/`useStore`→ChangeNotifier+Provider ·

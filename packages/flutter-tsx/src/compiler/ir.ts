@@ -98,6 +98,13 @@ export interface IrRouter {
   routes: { path: string; component: string }[];
 }
 
+/// A Dart import contributed by a plugin: `import '<uri>' as <prefix>;` when
+/// the package is used prefixed, plain otherwise.
+export interface IrImport {
+  uri: string;
+  prefix: string | null;
+}
+
 export interface IrField {
   name: string;
   dartType: string;
@@ -136,6 +143,6 @@ export interface IrComponent {
   setupMethods: { name: string; lines: string[] }[];
   initStatements: IrStatement[];
   disposeLines: string[];
-  pluginImports: string[];
+  pluginImports: IrImport[];
   body: IrWidget;
 }

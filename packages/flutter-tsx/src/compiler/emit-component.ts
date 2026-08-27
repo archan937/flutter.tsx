@@ -242,7 +242,10 @@ export const emitDartFile = (
   ];
   const pluginImports = components
     .flatMap((component) => component.pluginImports)
-    .map((dartImport) => `import '${dartImport}';`);
+    .map(
+      ({ uri, prefix }) =>
+        `import '${uri}'${prefix === null ? '' : ` as ${prefix}`};`,
+    );
   const imports = [
     ...new Set([
       ...importsForComponents(components, context),

@@ -1278,7 +1278,9 @@ describe('lowerComponent — plugin hooks', () => {
         ],
       },
     ]);
-    expect(ir.pluginImports).toEqual(['package:camera/camera.dart']);
+    expect(ir.pluginImports).toEqual([
+      { uri: 'package:camera/camera.dart', prefix: null },
+    ]);
   });
 
   test('non-available suppliers name their local after the param type', async () => {
@@ -1744,6 +1746,7 @@ describe('lowerComponent — plugin functions', () => {
           {
             fn: launchUrl,
             dartImport: 'package:url_launcher/url_launcher.dart',
+            importPrefix: null,
           },
         ],
       ]),
@@ -1782,7 +1785,7 @@ describe('lowerComponent — plugin functions', () => {
       line: "await launchUrl(Uri.parse('https://flutter.dev'));",
     });
     expect(ir.pluginImports).toEqual([
-      'package:url_launcher/url_launcher.dart',
+      { uri: 'package:url_launcher/url_launcher.dart', prefix: null },
     ]);
   });
 

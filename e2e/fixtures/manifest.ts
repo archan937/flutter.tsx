@@ -189,4 +189,11 @@ export const FIXTURE_APPS: FixtureApp[] = [
     deps: [],
     behavior: true,
   },
+  {
+    id: '25-http-get',
+    component: 'AlbumView',
+    dartFile: 'album_view.dart',
+    deps: ['http'],
+    behavior: true,
+  },
 ];

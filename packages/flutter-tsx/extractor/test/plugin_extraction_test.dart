@@ -529,6 +529,35 @@ void main() {
       );
     });
 
+    test('a class also reports the members it inherits', () async {
+      final projectDir = path.normalize(
+        path.join(Directory.current.path, '..', 'test', 'fixtures'),
+      );
+      final home = Platform.environment['HOME'];
+      final flutterRoot =
+          Platform.environment['FSX_FLUTTER_ROOT'] ??
+          path.join(home ?? '', '.fsx', 'flutter');
+      final httpApi = await extractPluginApi(
+        packageName: 'http',
+        projectDir: projectDir,
+        sdkPath: SdkLayout.resolve(flutterRoot).dartSdkPath,
+      );
+      final response = httpApi.classes.singleWhere(
+        (candidate) => candidate.name == 'Response',
+      );
+      final names = response.fields.map((field) => field.name);
+
+      // `body` is declared on Response; `statusCode` comes from BaseResponse,
+      // and a consumer cannot tell the difference — nor should it.
+      expect(names, contains('body'));
+      expect(names, contains('statusCode'));
+      // Object's members stay out.
+      expect(names, isNot(contains('hashCode')));
+      expect(names, isNot(contains('runtimeType')));
+      // Sorted, so the snapshot stays deterministic.
+      expect(names, orderedEquals(names.toList()..sort()));
+    });
+
     test('every committed plugin snapshot is byte-fresh', () async {
       final projectDir = path.normalize(
         path.join(Directory.current.path, '..', 'test', 'fixtures'),

@@ -406,9 +406,36 @@ describe('analyzeSource — plugin imports', () => {
 
     expect(analysis.pluginImports).toEqual(
       new Map([
-        ['canLaunchUrl', 'url_launcher'],
-        ['launchUrl', 'url_launcher'],
-        ['useSecureStorage', 'flutter_secure_storage'],
+        [
+          'canLaunchUrl',
+          { package: 'url_launcher', exportedName: 'canLaunchUrl' },
+        ],
+        ['launchUrl', { package: 'url_launcher', exportedName: 'launchUrl' }],
+        [
+          'useSecureStorage',
+          {
+            package: 'flutter_secure_storage',
+            exportedName: 'useSecureStorage',
+          },
+        ],
+      ]),
+    );
+  });
+
+  test('an aliased import keeps the name the module exports', () => {
+    const analysis = analyzeSource(
+      "import { Text } from 'flutter-tsx';\n" +
+        "import { get as httpGet, delete as httpDelete } from 'plugin:http';\n" +
+        'export const Probe = () => <Text>hi</Text>;\n',
+      'probe.tsx',
+    );
+
+    // A reserved word like `delete` can only be used through an alias, so the
+    // local name and the exported name have to be tracked separately.
+    expect(analysis.pluginImports).toEqual(
+      new Map([
+        ['httpGet', { package: 'http', exportedName: 'get' }],
+        ['httpDelete', { package: 'http', exportedName: 'delete' }],
       ]),
     );
   });

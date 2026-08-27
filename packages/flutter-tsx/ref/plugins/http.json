@@ -1,0 +1,4600 @@
+{
+  "package": "http",
+  "version": "1.6.0",
+  "classes": [
+    {
+      "name": "Abortable",
+      "doc": "/// An HTTP request that can be aborted before it completes.",
+      "constructors": [],
+      "fields": [
+        {
+          "name": "abortTrigger",
+          "doc": "/// Completion of this future aborts this request (if the client supports\n/// abortion).\n///\n/// Requests/responses may be aborted at any time during their lifecycle.\n///\n///  * If completed before the request has been finalized and sent,\n///    [Client.send] completes with [RequestAbortedException].\n///  * If completed after the response headers are available, or whilst\n///    streaming the response, clients inject [RequestAbortedException] into\n///    the [StreamedResponse.stream] then close the stream.\n///  * If completed after the response is fully complete, there is no effect.\n///\n/// A common pattern is aborting a request when another event occurs (such as\n/// a user action): use a [Completer] to implement this. To implement a\n/// timeout (to abort the request after a set time has elapsed), use\n/// [Future.delayed].\n///\n/// This future must not complete with an error.\n///\n/// Some clients may not support abortion, or may not support this trigger.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "future",
+              "item": {
+                "kind": "void"
+              }
+            }
+          }
+        },
+        {
+          "name": "contentLength",
+          "doc": "/// The size of the request body, in bytes.\n///\n/// This defaults to `null`, which indicates that the size of the request is\n/// not known in advance. May not be assigned a negative value.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "int"
+            }
+          }
+        },
+        {
+          "name": "finalized",
+          "doc": "/// Whether [finalize] has been called.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "followRedirects",
+          "doc": "/// Whether the client should follow redirects while resolving this request.\n///\n/// Defaults to true.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "headers",
+          "doc": "/// The HTTP headers sent to the server.\n///\n/// Header names are converted to lowercase when sent to the server.\n///\n/// Some headers may not be sent by the [Client] for security or privacy\n/// reasons. For example, browser-based clients may only sent headers in the\n/// CORS safelist or specifically allowed by the server.",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "maxRedirects",
+          "doc": "/// The maximum number of redirects to follow when [followRedirects] is true.\n///\n/// If this number is exceeded the [BaseResponse] future will signal a\n/// [ClientException]. Defaults to 5.",
+          "type": {
+            "kind": "scalar",
+            "name": "int"
+          }
+        },
+        {
+          "name": "method",
+          "doc": "/// The HTTP method of the request.\n///\n/// Most commonly \"GET\" or \"POST\", less commonly \"HEAD\", \"PUT\", or \"DELETE\".\n/// Non-standard method names are also supported.",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          }
+        },
+        {
+          "name": "persistentConnection",
+          "doc": "/// Whether a persistent connection should be maintained with the server.\n///\n/// Defaults to true.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "url",
+          "doc": "/// The URL to which the request will be sent.",
+          "type": {
+            "kind": "named",
+            "name": "Uri"
+          }
+        }
+      ],
+      "methods": [],
+      "constants": []
+    },
+    {
+      "name": "AbortableMultipartRequest",
+      "doc": "/// A [MultipartRequest] which supports abortion using [abortTrigger].\n///\n/// A future breaking version of 'package:http' will merge this into\n/// [MultipartRequest], making it a requirement.",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "",
+          "const": false,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": [
+            {
+              "name": "method",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The HTTP method of the request.\n///\n/// Most commonly \"GET\" or \"POST\", less commonly \"HEAD\", \"PUT\", or \"DELETE\".\n/// Non-standard method names are also supported.",
+              "deprecated": false
+            },
+            {
+              "name": "url",
+              "type": {
+                "kind": "named",
+                "name": "Uri"
+              },
+              "display": "Uri",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The URL to which the request will be sent.",
+              "deprecated": false
+            },
+            {
+              "name": "abortTrigger",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "future",
+                  "item": {
+                    "kind": "void"
+                  }
+                }
+              },
+              "display": "Future<void>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// Completion of this future aborts this request (if the client supports\n/// abortion).\n///\n/// Requests/responses may be aborted at any time during their lifecycle.\n///\n///  * If completed before the request has been finalized and sent,\n///    [Client.send] completes with [RequestAbortedException].\n///  * If completed after the response headers are available, or whilst\n///    streaming the response, clients inject [RequestAbortedException] into\n///    the [StreamedResponse.stream] then close the stream.\n///  * If completed after the response is fully complete, there is no effect.\n///\n/// A common pattern is aborting a request when another event occurs (such as\n/// a user action): use a [Completer] to implement this. To implement a\n/// timeout (to abort the request after a set time has elapsed), use\n/// [Future.delayed].\n///\n/// This future must not complete with an error.\n///\n/// Some clients may not support abortion, or may not support this trigger.",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "name": "abortTrigger",
+          "doc": "",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "future",
+              "item": {
+                "kind": "void"
+              }
+            }
+          }
+        },
+        {
+          "name": "contentLength",
+          "doc": "/// The total length of the request body, in bytes.\n///\n/// This is calculated from [fields] and [files] and cannot be set manually.",
+          "type": {
+            "kind": "scalar",
+            "name": "int"
+          }
+        },
+        {
+          "name": "fields",
+          "doc": "/// The form fields to send for this request.",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "files",
+          "doc": "/// The list of files to upload for this request.",
+          "type": {
+            "kind": "list",
+            "item": {
+              "kind": "named",
+              "name": "MultipartFile"
+            }
+          }
+        },
+        {
+          "name": "finalized",
+          "doc": "/// Whether [finalize] has been called.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "followRedirects",
+          "doc": "/// Whether the client should follow redirects while resolving this request.\n///\n/// Defaults to true.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "headers",
+          "doc": "/// The HTTP headers sent to the server.\n///\n/// Header names are converted to lowercase when sent to the server.\n///\n/// Some headers may not be sent by the [Client] for security or privacy\n/// reasons. For example, browser-based clients may only sent headers in the\n/// CORS safelist or specifically allowed by the server.",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "maxRedirects",
+          "doc": "/// The maximum number of redirects to follow when [followRedirects] is true.\n///\n/// If this number is exceeded the [BaseResponse] future will signal a\n/// [ClientException]. Defaults to 5.",
+          "type": {
+            "kind": "scalar",
+            "name": "int"
+          }
+        },
+        {
+          "name": "method",
+          "doc": "/// The HTTP method of the request.\n///\n/// Most commonly \"GET\" or \"POST\", less commonly \"HEAD\", \"PUT\", or \"DELETE\".\n/// Non-standard method names are also supported.",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          }
+        },
+        {
+          "name": "persistentConnection",
+          "doc": "/// Whether a persistent connection should be maintained with the server.\n///\n/// Defaults to true.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "url",
+          "doc": "/// The URL to which the request will be sent.",
+          "type": {
+            "kind": "named",
+            "name": "Uri"
+          }
+        }
+      ],
+      "methods": [],
+      "constants": []
+    },
+    {
+      "name": "AbortableRequest",
+      "doc": "/// A [Request] which supports abortion using [abortTrigger].\n///\n/// A future breaking version of 'package:http' will merge this into [Request],\n/// making it a requirement.",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "",
+          "const": false,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": [
+            {
+              "name": "method",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The HTTP method of the request.\n///\n/// Most commonly \"GET\" or \"POST\", less commonly \"HEAD\", \"PUT\", or \"DELETE\".\n/// Non-standard method names are also supported.",
+              "deprecated": false
+            },
+            {
+              "name": "url",
+              "type": {
+                "kind": "named",
+                "name": "Uri"
+              },
+              "display": "Uri",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The URL to which the request will be sent.",
+              "deprecated": false
+            },
+            {
+              "name": "abortTrigger",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "future",
+                  "item": {
+                    "kind": "void"
+                  }
+                }
+              },
+              "display": "Future<void>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// Completion of this future aborts this request (if the client supports\n/// abortion).\n///\n/// Requests/responses may be aborted at any time during their lifecycle.\n///\n///  * If completed before the request has been finalized and sent,\n///    [Client.send] completes with [RequestAbortedException].\n///  * If completed after the response headers are available, or whilst\n///    streaming the response, clients inject [RequestAbortedException] into\n///    the [StreamedResponse.stream] then close the stream.\n///  * If completed after the response is fully complete, there is no effect.\n///\n/// A common pattern is aborting a request when another event occurs (such as\n/// a user action): use a [Completer] to implement this. To implement a\n/// timeout (to abort the request after a set time has elapsed), use\n/// [Future.delayed].\n///\n/// This future must not complete with an error.\n///\n/// Some clients may not support abortion, or may not support this trigger.",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "name": "abortTrigger",
+          "doc": "",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "future",
+              "item": {
+                "kind": "void"
+              }
+            }
+          }
+        },
+        {
+          "name": "body",
+          "doc": "/// The body of the request as a string.\n///\n/// This is converted to and from [bodyBytes] using [encoding].\n///\n/// When this is set, if the request does not yet have a `Content-Type`\n/// header, one will be added with the type `text/plain` and appropriate\n/// `charset` parameter.\n///\n/// If request has `Content-Type` header with MIME media type name `text` or\n/// is an XML MIME type (e.g. `application/xml` or `image/svg+xml`) without\n/// `charset` parameter, then the `charset` parameter will be set to\n/// [encoding].\n///\n/// To set the body of the request, without changing the `Content-Type`\n/// header, use [bodyBytes].",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          }
+        },
+        {
+          "name": "bodyBytes",
+          "doc": "/// The bytes comprising the body of the request.\n///\n/// This is converted to and from [body] using [encoding].\n///\n/// This list should only be set, not modified in place.\n///\n/// Unlike [body], setting [bodyBytes] does not implicitly set a\n/// `Content-Type` header.\n///\n/// ```dart\n/// final request = Request('GET', Uri.https('example.com', 'whatsit/create'))\n///   ..bodyBytes = utf8.encode(jsonEncode({}))\n///   ..headers['content-type'] = 'application/json';\n/// ```",
+          "type": {
+            "kind": "named",
+            "name": "Uint8List"
+          }
+        },
+        {
+          "name": "bodyFields",
+          "doc": "/// The form-encoded fields in the body of the request as a map from field\n/// names to values.\n///\n/// The form-encoded body is converted to and from [bodyBytes] using\n/// [encoding] (in the same way as [body]).\n///\n/// If the request doesn't have a `Content-Type` header of\n/// `application/x-www-form-urlencoded`, reading this will throw a\n/// [StateError].\n///\n/// If the request has a `Content-Type` header with a type other than\n/// `application/x-www-form-urlencoded`, setting this will throw a\n/// [StateError]. Otherwise, the content type will be set to\n/// `application/x-www-form-urlencoded`.\n///\n/// This map should only be set, not modified in place.",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "contentLength",
+          "doc": "/// The size of the request body, in bytes. This is calculated from\n/// [bodyBytes].\n///\n/// The content length cannot be set for [Request], since it's automatically\n/// calculated from [bodyBytes].",
+          "type": {
+            "kind": "scalar",
+            "name": "int"
+          }
+        },
+        {
+          "name": "encoding",
+          "doc": "/// The encoding used for the request.\n///\n/// This encoding is used when converting between [bodyBytes] and [body].\n///\n/// If the request has a `Content-Type` header and that header has a `charset`\n/// parameter, that parameter's value is used as the encoding. Otherwise, if\n/// [encoding] has been set manually, that encoding is used. If that hasn't\n/// been set either, this defaults to [utf8].\n///\n/// If the `charset` parameter's value is not a known [Encoding], reading this\n/// will throw a [FormatException].\n///\n/// If the request has a `Content-Type` header, setting this will set the\n/// charset parameter on that header.",
+          "type": {
+            "kind": "named",
+            "name": "Encoding"
+          }
+        },
+        {
+          "name": "finalized",
+          "doc": "/// Whether [finalize] has been called.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "followRedirects",
+          "doc": "/// Whether the client should follow redirects while resolving this request.\n///\n/// Defaults to true.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "headers",
+          "doc": "/// The HTTP headers sent to the server.\n///\n/// Header names are converted to lowercase when sent to the server.\n///\n/// Some headers may not be sent by the [Client] for security or privacy\n/// reasons. For example, browser-based clients may only sent headers in the\n/// CORS safelist or specifically allowed by the server.",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "maxRedirects",
+          "doc": "/// The maximum number of redirects to follow when [followRedirects] is true.\n///\n/// If this number is exceeded the [BaseResponse] future will signal a\n/// [ClientException]. Defaults to 5.",
+          "type": {
+            "kind": "scalar",
+            "name": "int"
+          }
+        },
+        {
+          "name": "method",
+          "doc": "/// The HTTP method of the request.\n///\n/// Most commonly \"GET\" or \"POST\", less commonly \"HEAD\", \"PUT\", or \"DELETE\".\n/// Non-standard method names are also supported.",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          }
+        },
+        {
+          "name": "persistentConnection",
+          "doc": "/// Whether a persistent connection should be maintained with the server.\n///\n/// Defaults to true.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "url",
+          "doc": "/// The URL to which the request will be sent.",
+          "type": {
+            "kind": "named",
+            "name": "Uri"
+          }
+        }
+      ],
+      "methods": [],
+      "constants": []
+    },
+    {
+      "name": "AbortableStreamedRequest",
+      "doc": "/// A [StreamedRequest] which supports abortion using [abortTrigger].\n///\n/// A future breaking version of 'package:http' will merge this into\n/// [StreamedRequest], making it a requirement.",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "",
+          "const": false,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": [
+            {
+              "name": "method",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The HTTP method of the request.\n///\n/// Most commonly \"GET\" or \"POST\", less commonly \"HEAD\", \"PUT\", or \"DELETE\".\n/// Non-standard method names are also supported.",
+              "deprecated": false
+            },
+            {
+              "name": "url",
+              "type": {
+                "kind": "named",
+                "name": "Uri"
+              },
+              "display": "Uri",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The URL to which the request will be sent.",
+              "deprecated": false
+            },
+            {
+              "name": "abortTrigger",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "future",
+                  "item": {
+                    "kind": "void"
+                  }
+                }
+              },
+              "display": "Future<void>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// Completion of this future aborts this request (if the client supports\n/// abortion).\n///\n/// Requests/responses may be aborted at any time during their lifecycle.\n///\n///  * If completed before the request has been finalized and sent,\n///    [Client.send] completes with [RequestAbortedException].\n///  * If completed after the response headers are available, or whilst\n///    streaming the response, clients inject [RequestAbortedException] into\n///    the [StreamedResponse.stream] then close the stream.\n///  * If completed after the response is fully complete, there is no effect.\n///\n/// A common pattern is aborting a request when another event occurs (such as\n/// a user action): use a [Completer] to implement this. To implement a\n/// timeout (to abort the request after a set time has elapsed), use\n/// [Future.delayed].\n///\n/// This future must not complete with an error.\n///\n/// Some clients may not support abortion, or may not support this trigger.",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "name": "abortTrigger",
+          "doc": "",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "future",
+              "item": {
+                "kind": "void"
+              }
+            }
+          }
+        },
+        {
+          "name": "contentLength",
+          "doc": "/// The size of the request body, in bytes.\n///\n/// This defaults to `null`, which indicates that the size of the request is\n/// not known in advance. May not be assigned a negative value.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "int"
+            }
+          }
+        },
+        {
+          "name": "finalized",
+          "doc": "/// Whether [finalize] has been called.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "followRedirects",
+          "doc": "/// Whether the client should follow redirects while resolving this request.\n///\n/// Defaults to true.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "headers",
+          "doc": "/// The HTTP headers sent to the server.\n///\n/// Header names are converted to lowercase when sent to the server.\n///\n/// Some headers may not be sent by the [Client] for security or privacy\n/// reasons. For example, browser-based clients may only sent headers in the\n/// CORS safelist or specifically allowed by the server.",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "maxRedirects",
+          "doc": "/// The maximum number of redirects to follow when [followRedirects] is true.\n///\n/// If this number is exceeded the [BaseResponse] future will signal a\n/// [ClientException]. Defaults to 5.",
+          "type": {
+            "kind": "scalar",
+            "name": "int"
+          }
+        },
+        {
+          "name": "method",
+          "doc": "/// The HTTP method of the request.\n///\n/// Most commonly \"GET\" or \"POST\", less commonly \"HEAD\", \"PUT\", or \"DELETE\".\n/// Non-standard method names are also supported.",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          }
+        },
+        {
+          "name": "persistentConnection",
+          "doc": "/// Whether a persistent connection should be maintained with the server.\n///\n/// Defaults to true.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "sink",
+          "doc": "/// The sink to which to write data that will be sent as the request body.\n///\n/// This may be safely written to before the request is sent; the data will be\n/// buffered.\n///\n/// Closing this signals the end of the request.",
+          "type": {
+            "kind": "named",
+            "name": "StreamSink"
+          }
+        },
+        {
+          "name": "url",
+          "doc": "/// The URL to which the request will be sent.",
+          "type": {
+            "kind": "named",
+            "name": "Uri"
+          }
+        }
+      ],
+      "methods": [],
+      "constants": []
+    },
+    {
+      "name": "BaseClient",
+      "doc": "/// The abstract base class for an HTTP client.\n///\n/// This is a mixin-style class; subclasses only need to implement [send] and\n/// maybe [close], and then they get various convenience methods for free.",
+      "constructors": [],
+      "fields": [],
+      "methods": [
+        {
+          "name": "close",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "void"
+          },
+          "params": []
+        },
+        {
+          "name": "delete",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "named",
+              "name": "Response"
+            }
+          },
+          "params": [
+            {
+              "name": "url",
+              "type": {
+                "kind": "named",
+                "name": "Uri"
+              },
+              "display": "Uri",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "headers",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "map",
+                  "key": {
+                    "kind": "scalar",
+                    "name": "String"
+                  },
+                  "value": {
+                    "kind": "scalar",
+                    "name": "String"
+                  }
+                }
+              },
+              "display": "Map<String, String>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "body",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Object"
+                }
+              },
+              "display": "Object?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "encoding",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Encoding"
+                }
+              },
+              "display": "Encoding?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "named",
+              "name": "Response"
+            }
+          },
+          "params": [
+            {
+              "name": "url",
+              "type": {
+                "kind": "named",
+                "name": "Uri"
+              },
+              "display": "Uri",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "headers",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "map",
+                  "key": {
+                    "kind": "scalar",
+                    "name": "String"
+                  },
+                  "value": {
+                    "kind": "scalar",
+                    "name": "String"
+                  }
+                }
+              },
+              "display": "Map<String, String>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "head",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "named",
+              "name": "Response"
+            }
+          },
+          "params": [
+            {
+              "name": "url",
+              "type": {
+                "kind": "named",
+                "name": "Uri"
+              },
+              "display": "Uri",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "headers",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "map",
+                  "key": {
+                    "kind": "scalar",
+                    "name": "String"
+                  },
+                  "value": {
+                    "kind": "scalar",
+                    "name": "String"
+                  }
+                }
+              },
+              "display": "Map<String, String>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "patch",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "named",
+              "name": "Response"
+            }
+          },
+          "params": [
+            {
+              "name": "url",
+              "type": {
+                "kind": "named",
+                "name": "Uri"
+              },
+              "display": "Uri",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "headers",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "map",
+                  "key": {
+                    "kind": "scalar",
+                    "name": "String"
+                  },
+                  "value": {
+                    "kind": "scalar",
+                    "name": "String"
+                  }
+                }
+              },
+              "display": "Map<String, String>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "body",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Object"
+                }
+              },
+              "display": "Object?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "encoding",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Encoding"
+                }
+              },
+              "display": "Encoding?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "post",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "named",
+              "name": "Response"
+            }
+          },
+          "params": [
+            {
+              "name": "url",
+              "type": {
+                "kind": "named",
+                "name": "Uri"
+              },
+              "display": "Uri",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "headers",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "map",
+                  "key": {
+                    "kind": "scalar",
+                    "name": "String"
+                  },
+                  "value": {
+                    "kind": "scalar",
+                    "name": "String"
+                  }
+                }
+              },
+              "display": "Map<String, String>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "body",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Object"
+                }
+              },
+              "display": "Object?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "encoding",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Encoding"
+                }
+              },
+              "display": "Encoding?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "put",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "named",
+              "name": "Response"
+            }
+          },
+          "params": [
+            {
+              "name": "url",
+              "type": {
+                "kind": "named",
+                "name": "Uri"
+              },
+              "display": "Uri",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "headers",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "map",
+                  "key": {
+                    "kind": "scalar",
+                    "name": "String"
+                  },
+                  "value": {
+                    "kind": "scalar",
+                    "name": "String"
+                  }
+                }
+              },
+              "display": "Map<String, String>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "body",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Object"
+                }
+              },
+              "display": "Object?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "encoding",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Encoding"
+                }
+              },
+              "display": "Encoding?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "read",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          },
+          "params": [
+            {
+              "name": "url",
+              "type": {
+                "kind": "named",
+                "name": "Uri"
+              },
+              "display": "Uri",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "headers",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "map",
+                  "key": {
+                    "kind": "scalar",
+                    "name": "String"
+                  },
+                  "value": {
+                    "kind": "scalar",
+                    "name": "String"
+                  }
+                }
+              },
+              "display": "Map<String, String>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "readBytes",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "named",
+              "name": "Uint8List"
+            }
+          },
+          "params": [
+            {
+              "name": "url",
+              "type": {
+                "kind": "named",
+                "name": "Uri"
+              },
+              "display": "Uri",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "headers",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "map",
+                  "key": {
+                    "kind": "scalar",
+                    "name": "String"
+                  },
+                  "value": {
+                    "kind": "scalar",
+                    "name": "String"
+                  }
+                }
+              },
+              "display": "Map<String, String>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "send",
+          "doc": "/// Sends an HTTP request and asynchronously returns the response.\n///\n/// Implementers should call [BaseRequest.finalize] to get the body of the\n/// request as a [ByteStream]. They shouldn't make any assumptions about the\n/// state of the stream; it could have data written to it asynchronously at a\n/// later point, or it could already be closed when it's returned. Any\n/// internal HTTP errors should be wrapped as [ClientException]s.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "named",
+              "name": "StreamedResponse"
+            }
+          },
+          "params": [
+            {
+              "name": "request",
+              "type": {
+                "kind": "named",
+                "name": "BaseRequest"
+              },
+              "display": "BaseRequest",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "constants": []
+    },
+    {
+      "name": "BaseRequest",
+      "doc": "/// The base class for HTTP requests.\n///\n/// Subclasses of [BaseRequest] can be constructed manually and passed to\n/// [BaseClient.send], which allows the user to provide fine-grained control\n/// over the request properties. However, usually it's easier to use convenience\n/// methods like [get] or [BaseClient.get].\n///\n/// Subclasses/implementers should mixin/implement [Abortable] to support\n/// request cancellation. A future breaking version of 'package:http' will\n/// merge [Abortable] into [BaseRequest], making it a requirement.",
+      "constructors": [],
+      "fields": [
+        {
+          "name": "contentLength",
+          "doc": "/// The size of the request body, in bytes.\n///\n/// This defaults to `null`, which indicates that the size of the request is\n/// not known in advance. May not be assigned a negative value.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "int"
+            }
+          }
+        },
+        {
+          "name": "finalized",
+          "doc": "/// Whether [finalize] has been called.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "followRedirects",
+          "doc": "/// Whether the client should follow redirects while resolving this request.\n///\n/// Defaults to true.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "headers",
+          "doc": "/// The HTTP headers sent to the server.\n///\n/// Header names are converted to lowercase when sent to the server.\n///\n/// Some headers may not be sent by the [Client] for security or privacy\n/// reasons. For example, browser-based clients may only sent headers in the\n/// CORS safelist or specifically allowed by the server.",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "maxRedirects",
+          "doc": "/// The maximum number of redirects to follow when [followRedirects] is true.\n///\n/// If this number is exceeded the [BaseResponse] future will signal a\n/// [ClientException]. Defaults to 5.",
+          "type": {
+            "kind": "scalar",
+            "name": "int"
+          }
+        },
+        {
+          "name": "method",
+          "doc": "/// The HTTP method of the request.\n///\n/// Most commonly \"GET\" or \"POST\", less commonly \"HEAD\", \"PUT\", or \"DELETE\".\n/// Non-standard method names are also supported.",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          }
+        },
+        {
+          "name": "persistentConnection",
+          "doc": "/// Whether a persistent connection should be maintained with the server.\n///\n/// Defaults to true.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "url",
+          "doc": "/// The URL to which the request will be sent.",
+          "type": {
+            "kind": "named",
+            "name": "Uri"
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "finalize",
+          "doc": "/// Finalizes the HTTP request in preparation for it being sent.\n///\n/// Freezes all mutable fields and returns a single-subscription [ByteStream]\n/// that emits the body of the request.\n///\n/// The base implementation of this returns an empty [ByteStream];\n/// subclasses are responsible for creating the return value, which should be\n/// single-subscription to ensure that no data is dropped. They should also\n/// freeze any additional mutable fields they add that don't make sense to\n/// change after the request headers are sent.",
+          "static": false,
+          "returnType": {
+            "kind": "named",
+            "name": "ByteStream"
+          },
+          "params": []
+        },
+        {
+          "name": "send",
+          "doc": "/// Sends this request.\n///\n/// This automatically initializes a new [Client] and closes that client once\n/// the request is complete. If you're planning on making multiple requests to\n/// the same server, you should use a single [Client] for all of those\n/// requests.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "named",
+              "name": "StreamedResponse"
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "toString",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "scalar",
+            "name": "String"
+          },
+          "params": []
+        }
+      ],
+      "constants": []
+    },
+    {
+      "name": "BaseResponse",
+      "doc": "/// The base class for HTTP responses.\n///\n/// Subclasses of [BaseResponse] are usually not constructed manually; instead,\n/// they're returned by [BaseClient.send] or other HTTP client methods.",
+      "constructors": [],
+      "fields": [
+        {
+          "name": "contentLength",
+          "doc": "/// The size of the response body, in bytes.\n///\n/// If the size of the request is not known in advance, this is `null`.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "int"
+            }
+          }
+        },
+        {
+          "name": "headers",
+          "doc": "/// The HTTP headers returned by the server.\n///\n/// The header names are converted to lowercase and stored with their\n/// associated header values.\n///\n/// If the server returns multiple headers with the same name then the header\n/// values will be associated with a single key and seperated by commas and\n/// possibly whitespace. For example:\n/// ```dart\n/// // HTTP/1.1 200 OK\n/// // Fruit: Apple\n/// // Fruit: Banana\n/// // Fruit: Grape\n/// final values = response.headers['fruit']!.split(RegExp(r'\\s*,\\s*'));\n/// // values = ['Apple', 'Banana', 'Grape']\n/// ```\n///\n/// To retrieve the header values as a `List<String>`, use\n/// [HeadersWithSplitValues.headersSplitValues].\n///\n/// If a header value contains whitespace then that whitespace may be replaced\n/// by a single space. Leading and trailing whitespace in header values are\n/// always removed.\n///\n/// Some headers may be excluded by the [Client] for security or privacy\n/// reasons. For example, browser-based clients can only return headers in the\n/// CORS safelist or specifically allowed by the server.",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "isRedirect",
+          "doc": "",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "persistentConnection",
+          "doc": "/// Whether the server requested that a persistent connection be maintained.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "reasonPhrase",
+          "doc": "/// The reason phrase associated with the status code.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "request",
+          "doc": "/// The (frozen) request that triggered this response.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "named",
+              "name": "BaseRequest"
+            }
+          }
+        },
+        {
+          "name": "statusCode",
+          "doc": "/// The HTTP status code for this response.",
+          "type": {
+            "kind": "scalar",
+            "name": "int"
+          }
+        }
+      ],
+      "methods": [],
+      "constants": []
+    },
+    {
+      "name": "BaseResponseWithUrl",
+      "doc": "/// A [BaseResponse] with a [url] field.\n///\n/// [Client] methods that return a [BaseResponse] subclass, such as [Response]\n/// or [StreamedResponse], **may** return a [BaseResponseWithUrl].\n///\n/// For example:\n///\n/// ```dart\n/// final client = Client();\n/// final response = client.get(Uri.https('example.com', '/'));\n/// Uri? finalUri;\n/// if (response case BaseResponseWithUrl(:final url)) {\n///   finalUri = url;\n/// }\n/// // Do something with `finalUri`.\n/// client.close();\n/// ```\n///\n/// [url] will be added to [BaseResponse] when `package:http` version 2 is\n/// released and this mixin will be deprecated.",
+      "constructors": [],
+      "fields": [
+        {
+          "name": "contentLength",
+          "doc": "/// The size of the response body, in bytes.\n///\n/// If the size of the request is not known in advance, this is `null`.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "int"
+            }
+          }
+        },
+        {
+          "name": "headers",
+          "doc": "/// The HTTP headers returned by the server.\n///\n/// The header names are converted to lowercase and stored with their\n/// associated header values.\n///\n/// If the server returns multiple headers with the same name then the header\n/// values will be associated with a single key and seperated by commas and\n/// possibly whitespace. For example:\n/// ```dart\n/// // HTTP/1.1 200 OK\n/// // Fruit: Apple\n/// // Fruit: Banana\n/// // Fruit: Grape\n/// final values = response.headers['fruit']!.split(RegExp(r'\\s*,\\s*'));\n/// // values = ['Apple', 'Banana', 'Grape']\n/// ```\n///\n/// To retrieve the header values as a `List<String>`, use\n/// [HeadersWithSplitValues.headersSplitValues].\n///\n/// If a header value contains whitespace then that whitespace may be replaced\n/// by a single space. Leading and trailing whitespace in header values are\n/// always removed.\n///\n/// Some headers may be excluded by the [Client] for security or privacy\n/// reasons. For example, browser-based clients can only return headers in the\n/// CORS safelist or specifically allowed by the server.",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "isRedirect",
+          "doc": "",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "persistentConnection",
+          "doc": "/// Whether the server requested that a persistent connection be maintained.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "reasonPhrase",
+          "doc": "/// The reason phrase associated with the status code.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "request",
+          "doc": "/// The (frozen) request that triggered this response.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "named",
+              "name": "BaseRequest"
+            }
+          }
+        },
+        {
+          "name": "statusCode",
+          "doc": "/// The HTTP status code for this response.",
+          "type": {
+            "kind": "scalar",
+            "name": "int"
+          }
+        },
+        {
+          "name": "url",
+          "doc": "/// The [Uri] of the response returned by the server.\n///\n/// If no redirects were followed, [url] will be the same as the requested\n/// [Uri].\n///\n/// If redirects were followed, [url] will be the [Uri] of the last redirect\n/// that was followed.",
+          "type": {
+            "kind": "named",
+            "name": "Uri"
+          }
+        }
+      ],
+      "methods": [],
+      "constants": []
+    },
+    {
+      "name": "ByteStream",
+      "doc": "/// A stream of chunks of bytes representing a single piece of data.",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "",
+          "const": true,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": [
+            {
+              "name": "stream",
+              "type": {
+                "kind": "stream",
+                "item": {
+                  "kind": "list",
+                  "item": {
+                    "kind": "scalar",
+                    "name": "int"
+                  }
+                }
+              },
+              "display": "Stream<List<int>>",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "fromBytes",
+          "doc": "/// Returns a single-subscription byte stream that will emit the given bytes\n/// in a single chunk.",
+          "const": false,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": [
+            {
+              "name": "bytes",
+              "type": {
+                "kind": "list",
+                "item": {
+                  "kind": "scalar",
+                  "name": "int"
+                }
+              },
+              "display": "List<int>",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "name": "first",
+          "doc": "/// The first element of this stream.\n///\n/// Stops listening to this stream after the first element has been received.\n///\n/// Internally the method cancels its subscription after the first element.\n/// This means that single-subscription (non-broadcast) streams are closed\n/// and cannot be reused after a call to this getter.\n///\n/// If an error event occurs before the first data event, the returned future\n/// is completed with that error.\n///\n/// If this stream is empty (a done event occurs before the first data event),\n/// the returned future completes with an error.\n///\n/// Except for the type of the error, this method is equivalent to\n/// `this.elementAt(0)`.",
+          "type": {
+            "kind": "future",
+            "item": {
+              "kind": "unknown"
+            }
+          }
+        },
+        {
+          "name": "isBroadcast",
+          "doc": "",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "isEmpty",
+          "doc": "/// Whether this stream contains any elements.\n///\n/// Waits for the first element of this stream, then completes the returned\n/// future with `false`.\n/// If this stream ends without emitting any elements, the returned future is\n/// completed with `true`.\n///\n/// If the first event is an error, the returned future is completed with that\n/// error.\n///\n/// This operation listens to this stream, and a non-broadcast stream cannot\n/// be reused after checking whether it is empty.",
+          "type": {
+            "kind": "future",
+            "item": {
+              "kind": "scalar",
+              "name": "bool"
+            }
+          }
+        },
+        {
+          "name": "last",
+          "doc": "/// The last element of this stream.\n///\n/// If this stream emits an error event,\n/// the returned future is completed with that error\n/// and processing stops.\n///\n/// If this stream is empty (the done event is the first event),\n/// the returned future completes with an error.",
+          "type": {
+            "kind": "future",
+            "item": {
+              "kind": "unknown"
+            }
+          }
+        },
+        {
+          "name": "length",
+          "doc": "/// The number of elements in this stream.\n///\n/// Waits for all elements of this stream. When this stream ends,\n/// the returned future is completed with the number of elements.\n///\n/// If this stream emits an error,\n/// the returned future is completed with that error,\n/// and processing stops.\n///\n/// This operation listens to this stream, and a non-broadcast stream cannot\n/// be reused after finding its length.",
+          "type": {
+            "kind": "future",
+            "item": {
+              "kind": "scalar",
+              "name": "int"
+            }
+          }
+        },
+        {
+          "name": "single",
+          "doc": "/// The single element of this stream.\n///\n/// If this stream emits an error event,\n/// the returned future is completed with that error\n/// and processing stops.\n///\n/// If this [Stream] is empty or has more than one element,\n/// the returned future completes with an error.",
+          "type": {
+            "kind": "future",
+            "item": {
+              "kind": "unknown"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "bytesToString",
+          "doc": "/// Collect the data of this stream in a [String], decoded according to\n/// [encoding], which defaults to `UTF8`.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          },
+          "params": [
+            {
+              "name": "encoding",
+              "type": {
+                "kind": "named",
+                "name": "Encoding"
+              },
+              "display": "Encoding",
+              "named": false,
+              "required": false,
+              "defaultValue": "utf8",
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "toBytes",
+          "doc": "/// Collects the data of this stream in a [Uint8List].",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "named",
+              "name": "Uint8List"
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "toStringStream",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "stream",
+            "item": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          },
+          "params": [
+            {
+              "name": "encoding",
+              "type": {
+                "kind": "named",
+                "name": "Encoding"
+              },
+              "display": "Encoding",
+              "named": false,
+              "required": false,
+              "defaultValue": "utf8",
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "constants": []
+    },
+    {
+      "name": "Client",
+      "doc": "/// The interface for HTTP clients that take care of maintaining persistent\n/// connections across multiple requests to the same server.\n///\n/// If you only need to send a single request, it's usually easier to use\n/// [http.head], [http.get], [http.post], [http.put], [http.patch], or\n/// [http.delete] instead.\n///\n/// All methods will emit a [ClientException] if there is a transport-level\n/// failure when communication with the server. For example, if the server could\n/// not be reached.\n///\n/// When creating an HTTP client class with additional functionality, you must\n/// extend [BaseClient] rather than [Client]. In most cases, you can wrap\n/// another instance of [Client] and add functionality on top of that. This\n/// allows all classes implementing [Client] to be mutually composable.",
+      "constructors": [],
+      "fields": [],
+      "methods": [
+        {
+          "name": "close",
+          "doc": "/// Closes the client and cleans up any resources associated with it.\n///\n/// Some clients maintain a pool of network connections that will not be\n/// disconnected until the client is closed. This may cause programs using\n/// using the Dart SDK (`dart run`, `dart test`, `dart compile`, etc.) to\n/// not terminate until the client is closed. Programs run using the Flutter\n/// SDK can still terminate even with an active connection pool.\n///\n/// Once [close] is called, no other methods should be called. If [close] is\n/// called while other asynchronous methods are running, the behavior is\n/// undefined.",
+          "static": false,
+          "returnType": {
+            "kind": "void"
+          },
+          "params": []
+        },
+        {
+          "name": "delete",
+          "doc": "/// Sends an HTTP DELETE request with the given headers to the given URL.\n///\n/// For more fine-grained control over the request, use [send] instead.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "named",
+              "name": "Response"
+            }
+          },
+          "params": [
+            {
+              "name": "url",
+              "type": {
+                "kind": "named",
+                "name": "Uri"
+              },
+              "display": "Uri",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "headers",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "map",
+                  "key": {
+                    "kind": "scalar",
+                    "name": "String"
+                  },
+                  "value": {
+                    "kind": "scalar",
+                    "name": "String"
+                  }
+                }
+              },
+              "display": "Map<String, String>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "body",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Object"
+                }
+              },
+              "display": "Object?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "encoding",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Encoding"
+                }
+              },
+              "display": "Encoding?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "doc": "/// Sends an HTTP GET request with the given headers to the given URL.\n///\n/// For more fine-grained control over the request, use [send] instead.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "named",
+              "name": "Response"
+            }
+          },
+          "params": [
+            {
+              "name": "url",
+              "type": {
+                "kind": "named",
+                "name": "Uri"
+              },
+              "display": "Uri",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "headers",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "map",
+                  "key": {
+                    "kind": "scalar",
+                    "name": "String"
+                  },
+                  "value": {
+                    "kind": "scalar",
+                    "name": "String"
+                  }
+                }
+              },
+              "display": "Map<String, String>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "head",
+          "doc": "/// Sends an HTTP HEAD request with the given headers to the given URL.\n///\n/// For more fine-grained control over the request, use [send] instead.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "named",
+              "name": "Response"
+            }
+          },
+          "params": [
+            {
+              "name": "url",
+              "type": {
+                "kind": "named",
+                "name": "Uri"
+              },
+              "display": "Uri",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "headers",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "map",
+                  "key": {
+                    "kind": "scalar",
+                    "name": "String"
+                  },
+                  "value": {
+                    "kind": "scalar",
+                    "name": "String"
+                  }
+                }
+              },
+              "display": "Map<String, String>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "patch",
+          "doc": "/// Sends an HTTP PATCH request with the given headers and body to the given\n/// URL.\n///\n/// [body] sets the body of the request. It can be a `String`, a `List<int>`\n/// or a `Map<String, String>`. If it's a `String`, it's encoded using\n/// [encoding] and used as the body of the request. The content-type of the\n/// request will default to \"text/plain\".\n///\n/// If [body] is a `List`, it's used as a list of bytes for the body of the\n/// request.\n///\n/// If [body] is a `Map`, it's encoded as form fields using [encoding]. The\n/// content-type of the request will be set to\n/// `\"application/x-www-form-urlencoded\"`; this cannot be overridden.\n///\n/// [encoding] defaults to [utf8].\n///\n/// For more fine-grained control over the request, use [send] instead.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "named",
+              "name": "Response"
+            }
+          },
+          "params": [
+            {
+              "name": "url",
+              "type": {
+                "kind": "named",
+                "name": "Uri"
+              },
+              "display": "Uri",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "headers",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "map",
+                  "key": {
+                    "kind": "scalar",
+                    "name": "String"
+                  },
+                  "value": {
+                    "kind": "scalar",
+                    "name": "String"
+                  }
+                }
+              },
+              "display": "Map<String, String>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "body",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Object"
+                }
+              },
+              "display": "Object?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "encoding",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Encoding"
+                }
+              },
+              "display": "Encoding?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "post",
+          "doc": "/// Sends an HTTP POST request with the given headers and body to the given\n/// URL.\n///\n/// [body] sets the body of the request. It can be a `String`, a `List<int>`\n/// or a `Map<String, String>`.\n///\n/// If [body] is a `String`, it's encoded using [encoding] and used as the\n/// body of the request. The content-type of the request will default to\n/// \"text/plain\".\n///\n/// If [body] is a `List`, it's used as a list of bytes for the body of the\n/// request.\n///\n/// If [body] is a `Map`, it's encoded as form fields using [encoding]. The\n/// content-type of the request will be set to\n/// `\"application/x-www-form-urlencoded\"`; this cannot be overridden.\n///\n/// [encoding] defaults to [utf8].\n///\n/// For more fine-grained control over the request, use [send] instead.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "named",
+              "name": "Response"
+            }
+          },
+          "params": [
+            {
+              "name": "url",
+              "type": {
+                "kind": "named",
+                "name": "Uri"
+              },
+              "display": "Uri",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "headers",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "map",
+                  "key": {
+                    "kind": "scalar",
+                    "name": "String"
+                  },
+                  "value": {
+                    "kind": "scalar",
+                    "name": "String"
+                  }
+                }
+              },
+              "display": "Map<String, String>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "body",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Object"
+                }
+              },
+              "display": "Object?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "encoding",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Encoding"
+                }
+              },
+              "display": "Encoding?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "put",
+          "doc": "/// Sends an HTTP PUT request with the given headers and body to the given\n/// URL.\n///\n/// [body] sets the body of the request. It can be a `String`, a `List<int>`\n/// or a `Map<String, String>`. If it's a `String`, it's encoded using\n/// [encoding] and used as the body of the request. The content-type of the\n/// request will default to \"text/plain\".\n///\n/// If [body] is a `List`, it's used as a list of bytes for the body of the\n/// request.\n///\n/// If [body] is a `Map`, it's encoded as form fields using [encoding]. The\n/// content-type of the request will be set to\n/// `\"application/x-www-form-urlencoded\"`; this cannot be overridden.\n///\n/// [encoding] defaults to [utf8].\n///\n/// For more fine-grained control over the request, use [send] instead.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "named",
+              "name": "Response"
+            }
+          },
+          "params": [
+            {
+              "name": "url",
+              "type": {
+                "kind": "named",
+                "name": "Uri"
+              },
+              "display": "Uri",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "headers",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "map",
+                  "key": {
+                    "kind": "scalar",
+                    "name": "String"
+                  },
+                  "value": {
+                    "kind": "scalar",
+                    "name": "String"
+                  }
+                }
+              },
+              "display": "Map<String, String>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "body",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Object"
+                }
+              },
+              "display": "Object?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "encoding",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Encoding"
+                }
+              },
+              "display": "Encoding?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "read",
+          "doc": "/// Sends an HTTP GET request with the given headers to the given URL and\n/// returns a Future that completes to the body of the response as a String.\n///\n/// The Future will emit a [ClientException] if the response doesn't have a\n/// success status code.\n///\n/// For more fine-grained control over the request and response, use [send] or\n/// [get] instead.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          },
+          "params": [
+            {
+              "name": "url",
+              "type": {
+                "kind": "named",
+                "name": "Uri"
+              },
+              "display": "Uri",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "headers",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "map",
+                  "key": {
+                    "kind": "scalar",
+                    "name": "String"
+                  },
+                  "value": {
+                    "kind": "scalar",
+                    "name": "String"
+                  }
+                }
+              },
+              "display": "Map<String, String>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "readBytes",
+          "doc": "/// Sends an HTTP GET request with the given headers to the given URL and\n/// returns a Future that completes to the body of the response as a list of\n/// bytes.\n///\n/// The Future will emit a [ClientException] if the response doesn't have a\n/// success status code.\n///\n/// For more fine-grained control over the request and response, use [send] or\n/// [get] instead.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "named",
+              "name": "Uint8List"
+            }
+          },
+          "params": [
+            {
+              "name": "url",
+              "type": {
+                "kind": "named",
+                "name": "Uri"
+              },
+              "display": "Uri",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "headers",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "map",
+                  "key": {
+                    "kind": "scalar",
+                    "name": "String"
+                  },
+                  "value": {
+                    "kind": "scalar",
+                    "name": "String"
+                  }
+                }
+              },
+              "display": "Map<String, String>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "send",
+          "doc": "/// Sends an HTTP request and asynchronously returns the response.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "named",
+              "name": "StreamedResponse"
+            }
+          },
+          "params": [
+            {
+              "name": "request",
+              "type": {
+                "kind": "named",
+                "name": "BaseRequest"
+              },
+              "display": "BaseRequest",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "constants": []
+    },
+    {
+      "name": "ClientException",
+      "doc": "/// An exception caused by an error in a pkg/http client.",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "",
+          "const": false,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": [
+            {
+              "name": "message",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "uri",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Uri"
+                }
+              },
+              "display": "Uri?",
+              "named": false,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The URL of the HTTP request or response that failed.",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "name": "message",
+          "doc": "",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          }
+        },
+        {
+          "name": "uri",
+          "doc": "/// The URL of the HTTP request or response that failed.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "named",
+              "name": "Uri"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "toString",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "scalar",
+            "name": "String"
+          },
+          "params": []
+        }
+      ],
+      "constants": []
+    },
+    {
+      "name": "MediaType",
+      "doc": "/// A class representing an HTTP media type, as used in Accept and Content-Type\n/// headers.\n///\n/// This is immutable; new instances can be created based on an old instance by\n/// calling [change].",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "",
+          "const": false,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": [
+            {
+              "name": "type",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The primary identifier of the MIME type.\n///\n/// This is always lowercase.",
+              "deprecated": false
+            },
+            {
+              "name": "subtype",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The secondary identifier of the MIME type.\n///\n/// This is always lowercase.",
+              "deprecated": false
+            },
+            {
+              "name": "parameters",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "map",
+                  "key": {
+                    "kind": "scalar",
+                    "name": "String"
+                  },
+                  "value": {
+                    "kind": "scalar",
+                    "name": "String"
+                  }
+                }
+              },
+              "display": "Map<String, String>?",
+              "named": false,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The parameters to the media type.\n///\n/// This map is immutable and the keys are case-insensitive.",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "parse",
+          "doc": "/// Parses a media type.\n///\n/// This will throw a FormatError if the media type is invalid.",
+          "const": false,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": [
+            {
+              "name": "mediaType",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "name": "mimeType",
+          "doc": "/// The media type's MIME type.",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          }
+        },
+        {
+          "name": "parameters",
+          "doc": "/// The parameters to the media type.\n///\n/// This map is immutable and the keys are case-insensitive.",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "subtype",
+          "doc": "/// The secondary identifier of the MIME type.\n///\n/// This is always lowercase.",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          }
+        },
+        {
+          "name": "type",
+          "doc": "/// The primary identifier of the MIME type.\n///\n/// This is always lowercase.",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "change",
+          "doc": "/// Returns a copy of this [MediaType] with some fields altered.\n///\n/// [type] and [subtype] alter the corresponding fields. [mimeType] is parsed\n/// and alters both the [type] and [subtype] fields; it cannot be passed along\n/// with [type] or [subtype].\n///\n/// [parameters] overwrites and adds to the corresponding field. If\n/// [clearParameters] is passed, it replaces the corresponding field entirely\n/// instead.",
+          "static": false,
+          "returnType": {
+            "kind": "named",
+            "name": "MediaType"
+          },
+          "params": [
+            {
+              "name": "type",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The primary identifier of the MIME type.\n///\n/// This is always lowercase.",
+              "deprecated": false
+            },
+            {
+              "name": "subtype",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The secondary identifier of the MIME type.\n///\n/// This is always lowercase.",
+              "deprecated": false
+            },
+            {
+              "name": "mimeType",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "parameters",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "map",
+                  "key": {
+                    "kind": "scalar",
+                    "name": "String"
+                  },
+                  "value": {
+                    "kind": "scalar",
+                    "name": "String"
+                  }
+                }
+              },
+              "display": "Map<String, String>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The parameters to the media type.\n///\n/// This map is immutable and the keys are case-insensitive.",
+              "deprecated": false
+            },
+            {
+              "name": "clearParameters",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": false,
+              "defaultValue": "false",
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "toString",
+          "doc": "/// Converts the media type to a string.\n///\n/// This will produce a valid HTTP media type.",
+          "static": false,
+          "returnType": {
+            "kind": "scalar",
+            "name": "String"
+          },
+          "params": []
+        }
+      ],
+      "constants": []
+    },
+    {
+      "name": "MultipartFile",
+      "doc": "/// A file to be uploaded as part of a [MultipartRequest].\n///\n/// This doesn't need to correspond to a physical file.",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "/// Creates a new [MultipartFile] from a chunked [Stream] of bytes.\n///\n/// The length of the file in bytes must be known in advance. If it's not,\n/// read the data from the stream and use [MultipartFile.fromBytes] instead.\n///\n/// [contentType] currently defaults to `application/octet-stream`, but in the\n/// future may be inferred from [filename].",
+          "const": false,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": [
+            {
+              "name": "field",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The name of the form field for the file.",
+              "deprecated": false
+            },
+            {
+              "name": "stream",
+              "type": {
+                "kind": "stream",
+                "item": {
+                  "kind": "list",
+                  "item": {
+                    "kind": "scalar",
+                    "name": "int"
+                  }
+                }
+              },
+              "display": "Stream<List<int>>",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "length",
+              "type": {
+                "kind": "scalar",
+                "name": "int"
+              },
+              "display": "int",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The size of the file in bytes.\n///\n/// This must be known in advance, even if this file is created from a\n/// [ByteStream].",
+              "deprecated": false
+            },
+            {
+              "name": "filename",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The basename of the file.\n///\n/// May be `null`.",
+              "deprecated": false
+            },
+            {
+              "name": "contentType",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "MediaType"
+                }
+              },
+              "display": "MediaType?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The content-type of the file.\n///\n/// Defaults to `application/octet-stream`.",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "fromBytes",
+          "doc": "/// Creates a new [MultipartFile] from a byte array.\n///\n/// [contentType] currently defaults to `application/octet-stream`, but in the\n/// future may be inferred from [filename].",
+          "const": false,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": [
+            {
+              "name": "field",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The name of the form field for the file.",
+              "deprecated": false
+            },
+            {
+              "name": "value",
+              "type": {
+                "kind": "list",
+                "item": {
+                  "kind": "scalar",
+                  "name": "int"
+                }
+              },
+              "display": "List<int>",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "filename",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The basename of the file.\n///\n/// May be `null`.",
+              "deprecated": false
+            },
+            {
+              "name": "contentType",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "MediaType"
+                }
+              },
+              "display": "MediaType?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The content-type of the file.\n///\n/// Defaults to `application/octet-stream`.",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "fromString",
+          "doc": "/// Creates a new [MultipartFile] from a string.\n///\n/// The encoding to use when translating [value] into bytes is taken from\n/// [contentType] if it has a charset set. Otherwise, it defaults to UTF-8.\n/// [contentType] currently defaults to `text/plain; charset=utf-8`, but in\n/// the future may be inferred from [filename].",
+          "const": false,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": [
+            {
+              "name": "field",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The name of the form field for the file.",
+              "deprecated": false
+            },
+            {
+              "name": "value",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "filename",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The basename of the file.\n///\n/// May be `null`.",
+              "deprecated": false
+            },
+            {
+              "name": "contentType",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "MediaType"
+                }
+              },
+              "display": "MediaType?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The content-type of the file.\n///\n/// Defaults to `application/octet-stream`.",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "name": "contentType",
+          "doc": "/// The content-type of the file.\n///\n/// Defaults to `application/octet-stream`.",
+          "type": {
+            "kind": "named",
+            "name": "MediaType"
+          }
+        },
+        {
+          "name": "field",
+          "doc": "/// The name of the form field for the file.",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          }
+        },
+        {
+          "name": "filename",
+          "doc": "/// The basename of the file.\n///\n/// May be `null`.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "isFinalized",
+          "doc": "/// Whether [finalize] has been called.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "length",
+          "doc": "/// The size of the file in bytes.\n///\n/// This must be known in advance, even if this file is created from a\n/// [ByteStream].",
+          "type": {
+            "kind": "scalar",
+            "name": "int"
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "finalize",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "named",
+            "name": "ByteStream"
+          },
+          "params": []
+        },
+        {
+          "name": "fromPath",
+          "doc": "/// Creates a new [MultipartFile] from a path to a file on disk.\n///\n/// [filename] defaults to the basename of [filePath]. [contentType] currently\n/// defaults to `application/octet-stream`, but in the future may be inferred\n/// from [filename].\n///\n/// Throws an [UnsupportedError] if `dart:io` isn't supported in this\n/// environment.",
+          "static": true,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "named",
+              "name": "MultipartFile"
+            }
+          },
+          "params": [
+            {
+              "name": "field",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The name of the form field for the file.",
+              "deprecated": false
+            },
+            {
+              "name": "filePath",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "filename",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The basename of the file.\n///\n/// May be `null`.",
+              "deprecated": false
+            },
+            {
+              "name": "contentType",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "MediaType"
+                }
+              },
+              "display": "MediaType?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The content-type of the file.\n///\n/// Defaults to `application/octet-stream`.",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "constants": []
+    },
+    {
+      "name": "MultipartRequest",
+      "doc": "/// A `multipart/form-data` request.\n///\n/// Such a request has both string [fields], which function as normal form\n/// fields, and (potentially streamed) binary [files].\n///\n/// This request automatically sets the Content-Type header to\n/// `multipart/form-data`. This value will override any value set by the user.\n///\n///     var uri = Uri.https('example.com', 'create');\n///     var request = http.MultipartRequest('POST', uri)\n///       ..fields['user'] = 'nweiz@google.com'\n///       ..files.add(await http.MultipartFile.fromPath(\n///           'package', 'build/package.tar.gz',\n///           contentType: MediaType('application', 'x-tar')));\n///     var response = await request.send();\n///     if (response.statusCode == 200) print('Uploaded!');",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "",
+          "const": false,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": [
+            {
+              "name": "method",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The HTTP method of the request.\n///\n/// Most commonly \"GET\" or \"POST\", less commonly \"HEAD\", \"PUT\", or \"DELETE\".\n/// Non-standard method names are also supported.",
+              "deprecated": false
+            },
+            {
+              "name": "url",
+              "type": {
+                "kind": "named",
+                "name": "Uri"
+              },
+              "display": "Uri",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The URL to which the request will be sent.",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "name": "contentLength",
+          "doc": "/// The total length of the request body, in bytes.\n///\n/// This is calculated from [fields] and [files] and cannot be set manually.",
+          "type": {
+            "kind": "scalar",
+            "name": "int"
+          }
+        },
+        {
+          "name": "fields",
+          "doc": "/// The form fields to send for this request.",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "files",
+          "doc": "/// The list of files to upload for this request.",
+          "type": {
+            "kind": "list",
+            "item": {
+              "kind": "named",
+              "name": "MultipartFile"
+            }
+          }
+        },
+        {
+          "name": "finalized",
+          "doc": "/// Whether [finalize] has been called.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "followRedirects",
+          "doc": "/// Whether the client should follow redirects while resolving this request.\n///\n/// Defaults to true.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "headers",
+          "doc": "/// The HTTP headers sent to the server.\n///\n/// Header names are converted to lowercase when sent to the server.\n///\n/// Some headers may not be sent by the [Client] for security or privacy\n/// reasons. For example, browser-based clients may only sent headers in the\n/// CORS safelist or specifically allowed by the server.",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "maxRedirects",
+          "doc": "/// The maximum number of redirects to follow when [followRedirects] is true.\n///\n/// If this number is exceeded the [BaseResponse] future will signal a\n/// [ClientException]. Defaults to 5.",
+          "type": {
+            "kind": "scalar",
+            "name": "int"
+          }
+        },
+        {
+          "name": "method",
+          "doc": "/// The HTTP method of the request.\n///\n/// Most commonly \"GET\" or \"POST\", less commonly \"HEAD\", \"PUT\", or \"DELETE\".\n/// Non-standard method names are also supported.",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          }
+        },
+        {
+          "name": "persistentConnection",
+          "doc": "/// Whether a persistent connection should be maintained with the server.\n///\n/// Defaults to true.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "url",
+          "doc": "/// The URL to which the request will be sent.",
+          "type": {
+            "kind": "named",
+            "name": "Uri"
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "finalize",
+          "doc": "/// Freezes all mutable fields and returns a single-subscription [ByteStream]\n/// that will emit the request body.",
+          "static": false,
+          "returnType": {
+            "kind": "named",
+            "name": "ByteStream"
+          },
+          "params": []
+        }
+      ],
+      "constants": []
+    },
+    {
+      "name": "Request",
+      "doc": "/// An HTTP request where the entire request body is known in advance.",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "",
+          "const": false,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": [
+            {
+              "name": "method",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The HTTP method of the request.\n///\n/// Most commonly \"GET\" or \"POST\", less commonly \"HEAD\", \"PUT\", or \"DELETE\".\n/// Non-standard method names are also supported.",
+              "deprecated": false
+            },
+            {
+              "name": "url",
+              "type": {
+                "kind": "named",
+                "name": "Uri"
+              },
+              "display": "Uri",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The URL to which the request will be sent.",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "name": "body",
+          "doc": "/// The body of the request as a string.\n///\n/// This is converted to and from [bodyBytes] using [encoding].\n///\n/// When this is set, if the request does not yet have a `Content-Type`\n/// header, one will be added with the type `text/plain` and appropriate\n/// `charset` parameter.\n///\n/// If request has `Content-Type` header with MIME media type name `text` or\n/// is an XML MIME type (e.g. `application/xml` or `image/svg+xml`) without\n/// `charset` parameter, then the `charset` parameter will be set to\n/// [encoding].\n///\n/// To set the body of the request, without changing the `Content-Type`\n/// header, use [bodyBytes].",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          }
+        },
+        {
+          "name": "bodyBytes",
+          "doc": "/// The bytes comprising the body of the request.\n///\n/// This is converted to and from [body] using [encoding].\n///\n/// This list should only be set, not modified in place.\n///\n/// Unlike [body], setting [bodyBytes] does not implicitly set a\n/// `Content-Type` header.\n///\n/// ```dart\n/// final request = Request('GET', Uri.https('example.com', 'whatsit/create'))\n///   ..bodyBytes = utf8.encode(jsonEncode({}))\n///   ..headers['content-type'] = 'application/json';\n/// ```",
+          "type": {
+            "kind": "named",
+            "name": "Uint8List"
+          }
+        },
+        {
+          "name": "bodyFields",
+          "doc": "/// The form-encoded fields in the body of the request as a map from field\n/// names to values.\n///\n/// The form-encoded body is converted to and from [bodyBytes] using\n/// [encoding] (in the same way as [body]).\n///\n/// If the request doesn't have a `Content-Type` header of\n/// `application/x-www-form-urlencoded`, reading this will throw a\n/// [StateError].\n///\n/// If the request has a `Content-Type` header with a type other than\n/// `application/x-www-form-urlencoded`, setting this will throw a\n/// [StateError]. Otherwise, the content type will be set to\n/// `application/x-www-form-urlencoded`.\n///\n/// This map should only be set, not modified in place.",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "contentLength",
+          "doc": "/// The size of the request body, in bytes. This is calculated from\n/// [bodyBytes].\n///\n/// The content length cannot be set for [Request], since it's automatically\n/// calculated from [bodyBytes].",
+          "type": {
+            "kind": "scalar",
+            "name": "int"
+          }
+        },
+        {
+          "name": "encoding",
+          "doc": "/// The encoding used for the request.\n///\n/// This encoding is used when converting between [bodyBytes] and [body].\n///\n/// If the request has a `Content-Type` header and that header has a `charset`\n/// parameter, that parameter's value is used as the encoding. Otherwise, if\n/// [encoding] has been set manually, that encoding is used. If that hasn't\n/// been set either, this defaults to [utf8].\n///\n/// If the `charset` parameter's value is not a known [Encoding], reading this\n/// will throw a [FormatException].\n///\n/// If the request has a `Content-Type` header, setting this will set the\n/// charset parameter on that header.",
+          "type": {
+            "kind": "named",
+            "name": "Encoding"
+          }
+        },
+        {
+          "name": "finalized",
+          "doc": "/// Whether [finalize] has been called.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "followRedirects",
+          "doc": "/// Whether the client should follow redirects while resolving this request.\n///\n/// Defaults to true.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "headers",
+          "doc": "/// The HTTP headers sent to the server.\n///\n/// Header names are converted to lowercase when sent to the server.\n///\n/// Some headers may not be sent by the [Client] for security or privacy\n/// reasons. For example, browser-based clients may only sent headers in the\n/// CORS safelist or specifically allowed by the server.",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "maxRedirects",
+          "doc": "/// The maximum number of redirects to follow when [followRedirects] is true.\n///\n/// If this number is exceeded the [BaseResponse] future will signal a\n/// [ClientException]. Defaults to 5.",
+          "type": {
+            "kind": "scalar",
+            "name": "int"
+          }
+        },
+        {
+          "name": "method",
+          "doc": "/// The HTTP method of the request.\n///\n/// Most commonly \"GET\" or \"POST\", less commonly \"HEAD\", \"PUT\", or \"DELETE\".\n/// Non-standard method names are also supported.",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          }
+        },
+        {
+          "name": "persistentConnection",
+          "doc": "/// Whether a persistent connection should be maintained with the server.\n///\n/// Defaults to true.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "url",
+          "doc": "/// The URL to which the request will be sent.",
+          "type": {
+            "kind": "named",
+            "name": "Uri"
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "finalize",
+          "doc": "/// Freezes all mutable fields and returns a single-subscription [ByteStream]\n/// containing the request body.",
+          "static": false,
+          "returnType": {
+            "kind": "named",
+            "name": "ByteStream"
+          },
+          "params": []
+        }
+      ],
+      "constants": []
+    },
+    {
+      "name": "RequestAbortedException",
+      "doc": "/// Thrown when an HTTP request is aborted.\n///\n/// This exception is triggered when [Abortable.abortTrigger] completes.",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "",
+          "const": false,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": [
+            {
+              "name": "uri",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Uri"
+                }
+              },
+              "display": "Uri?",
+              "named": false,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The URL of the HTTP request or response that failed.",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "name": "message",
+          "doc": "",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          }
+        },
+        {
+          "name": "uri",
+          "doc": "/// The URL of the HTTP request or response that failed.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "named",
+              "name": "Uri"
+            }
+          }
+        }
+      ],
+      "methods": [],
+      "constants": []
+    },
+    {
+      "name": "Response",
+      "doc": "/// An HTTP response where the entire response body is known in advance.",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "/// Creates a new HTTP response with a string body.",
+          "const": false,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": [
+            {
+              "name": "body",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "statusCode",
+              "type": {
+                "kind": "scalar",
+                "name": "int"
+              },
+              "display": "int",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The HTTP status code for this response.",
+              "deprecated": false
+            },
+            {
+              "name": "request",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "BaseRequest"
+                }
+              },
+              "display": "BaseRequest?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The (frozen) request that triggered this response.",
+              "deprecated": false
+            },
+            {
+              "name": "headers",
+              "type": {
+                "kind": "map",
+                "key": {
+                  "kind": "scalar",
+                  "name": "String"
+                },
+                "value": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "Map<String, String>",
+              "named": true,
+              "required": false,
+              "defaultValue": "const {}",
+              "doc": "/// The HTTP headers returned by the server.\n///\n/// The header names are converted to lowercase and stored with their\n/// associated header values.\n///\n/// If the server returns multiple headers with the same name then the header\n/// values will be associated with a single key and seperated by commas and\n/// possibly whitespace. For example:\n/// ```dart\n/// // HTTP/1.1 200 OK\n/// // Fruit: Apple\n/// // Fruit: Banana\n/// // Fruit: Grape\n/// final values = response.headers['fruit']!.split(RegExp(r'\\s*,\\s*'));\n/// // values = ['Apple', 'Banana', 'Grape']\n/// ```\n///\n/// To retrieve the header values as a `List<String>`, use\n/// [HeadersWithSplitValues.headersSplitValues].\n///\n/// If a header value contains whitespace then that whitespace may be replaced\n/// by a single space. Leading and trailing whitespace in header values are\n/// always removed.\n///\n/// Some headers may be excluded by the [Client] for security or privacy\n/// reasons. For example, browser-based clients can only return headers in the\n/// CORS safelist or specifically allowed by the server.",
+              "deprecated": false
+            },
+            {
+              "name": "isRedirect",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": false,
+              "defaultValue": "false",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "persistentConnection",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": false,
+              "defaultValue": "true",
+              "doc": "/// Whether the server requested that a persistent connection be maintained.",
+              "deprecated": false
+            },
+            {
+              "name": "reasonPhrase",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The reason phrase associated with the status code.",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "bytes",
+          "doc": "/// Create a new HTTP response with a byte array body.",
+          "const": false,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": [
+            {
+              "name": "bodyBytes",
+              "type": {
+                "kind": "list",
+                "item": {
+                  "kind": "scalar",
+                  "name": "int"
+                }
+              },
+              "display": "List<int>",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The bytes comprising the body of this response.",
+              "deprecated": false
+            },
+            {
+              "name": "statusCode",
+              "type": {
+                "kind": "scalar",
+                "name": "int"
+              },
+              "display": "int",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The HTTP status code for this response.",
+              "deprecated": false
+            },
+            {
+              "name": "request",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "BaseRequest"
+                }
+              },
+              "display": "BaseRequest?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The (frozen) request that triggered this response.",
+              "deprecated": false
+            },
+            {
+              "name": "headers",
+              "type": {
+                "kind": "map",
+                "key": {
+                  "kind": "scalar",
+                  "name": "String"
+                },
+                "value": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "Map<String, String>",
+              "named": true,
+              "required": false,
+              "defaultValue": "const {}",
+              "doc": "/// The HTTP headers returned by the server.\n///\n/// The header names are converted to lowercase and stored with their\n/// associated header values.\n///\n/// If the server returns multiple headers with the same name then the header\n/// values will be associated with a single key and seperated by commas and\n/// possibly whitespace. For example:\n/// ```dart\n/// // HTTP/1.1 200 OK\n/// // Fruit: Apple\n/// // Fruit: Banana\n/// // Fruit: Grape\n/// final values = response.headers['fruit']!.split(RegExp(r'\\s*,\\s*'));\n/// // values = ['Apple', 'Banana', 'Grape']\n/// ```\n///\n/// To retrieve the header values as a `List<String>`, use\n/// [HeadersWithSplitValues.headersSplitValues].\n///\n/// If a header value contains whitespace then that whitespace may be replaced\n/// by a single space. Leading and trailing whitespace in header values are\n/// always removed.\n///\n/// Some headers may be excluded by the [Client] for security or privacy\n/// reasons. For example, browser-based clients can only return headers in the\n/// CORS safelist or specifically allowed by the server.",
+              "deprecated": false
+            },
+            {
+              "name": "isRedirect",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": false,
+              "defaultValue": "false",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "persistentConnection",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": false,
+              "defaultValue": "true",
+              "doc": "/// Whether the server requested that a persistent connection be maintained.",
+              "deprecated": false
+            },
+            {
+              "name": "reasonPhrase",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The reason phrase associated with the status code.",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "name": "body",
+          "doc": "/// The body of the response as a string.\n///\n/// This is converted from [bodyBytes] using the `charset` parameter of the\n/// `Content-Type` header field, if available. If it's unavailable or if the\n/// encoding name is unknown:\n/// - [utf8] is used when the content-type is 'application/json' (see [RFC 3629][]).\n/// - [latin1] is used in all other cases (see [RFC 2616][])\n///\n/// [RFC 3629]: https://www.rfc-editor.org/rfc/rfc3629.\n/// [RFC 2616]: http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          }
+        },
+        {
+          "name": "bodyBytes",
+          "doc": "/// The bytes comprising the body of this response.",
+          "type": {
+            "kind": "named",
+            "name": "Uint8List"
+          }
+        },
+        {
+          "name": "contentLength",
+          "doc": "/// The size of the response body, in bytes.\n///\n/// If the size of the request is not known in advance, this is `null`.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "int"
+            }
+          }
+        },
+        {
+          "name": "headers",
+          "doc": "/// The HTTP headers returned by the server.\n///\n/// The header names are converted to lowercase and stored with their\n/// associated header values.\n///\n/// If the server returns multiple headers with the same name then the header\n/// values will be associated with a single key and seperated by commas and\n/// possibly whitespace. For example:\n/// ```dart\n/// // HTTP/1.1 200 OK\n/// // Fruit: Apple\n/// // Fruit: Banana\n/// // Fruit: Grape\n/// final values = response.headers['fruit']!.split(RegExp(r'\\s*,\\s*'));\n/// // values = ['Apple', 'Banana', 'Grape']\n/// ```\n///\n/// To retrieve the header values as a `List<String>`, use\n/// [HeadersWithSplitValues.headersSplitValues].\n///\n/// If a header value contains whitespace then that whitespace may be replaced\n/// by a single space. Leading and trailing whitespace in header values are\n/// always removed.\n///\n/// Some headers may be excluded by the [Client] for security or privacy\n/// reasons. For example, browser-based clients can only return headers in the\n/// CORS safelist or specifically allowed by the server.",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "isRedirect",
+          "doc": "",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "persistentConnection",
+          "doc": "/// Whether the server requested that a persistent connection be maintained.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "reasonPhrase",
+          "doc": "/// The reason phrase associated with the status code.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "request",
+          "doc": "/// The (frozen) request that triggered this response.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "named",
+              "name": "BaseRequest"
+            }
+          }
+        },
+        {
+          "name": "statusCode",
+          "doc": "/// The HTTP status code for this response.",
+          "type": {
+            "kind": "scalar",
+            "name": "int"
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "fromStream",
+          "doc": "/// Creates a new HTTP response by waiting for the full body to become\n/// available from a [StreamedResponse].",
+          "static": true,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "named",
+              "name": "Response"
+            }
+          },
+          "params": [
+            {
+              "name": "response",
+              "type": {
+                "kind": "named",
+                "name": "StreamedResponse"
+              },
+              "display": "StreamedResponse",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "constants": []
+    },
+    {
+      "name": "StreamedRequest",
+      "doc": "/// An HTTP request where the request body is sent asynchronously after the\n/// connection has been established and the headers have been sent.\n///\n/// When the request is sent via [BaseClient.send], only the headers and\n/// whatever data has already been written to [StreamedRequest.sink] will be\n/// sent immediately. More data will be sent as soon as it's written to\n/// [StreamedRequest.sink], and when the sink is closed the request will end.\n///\n/// For example:\n/// ```dart\n/// final request = http.StreamedRequest('POST', Uri.http('example.com', ''))\n///     ..contentLength = 10\n///     ..sink.add([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);\n///\n/// // The sink must be closed to end the request.\n/// // The Future returned from `close()` may not complete until after the\n/// // request is sent, and it should not be awaited.\n/// unawaited(request.sink.close());\n/// final response = await request.send();\n/// ```",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "/// Creates a new streaming request.",
+          "const": false,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": [
+            {
+              "name": "method",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The HTTP method of the request.\n///\n/// Most commonly \"GET\" or \"POST\", less commonly \"HEAD\", \"PUT\", or \"DELETE\".\n/// Non-standard method names are also supported.",
+              "deprecated": false
+            },
+            {
+              "name": "url",
+              "type": {
+                "kind": "named",
+                "name": "Uri"
+              },
+              "display": "Uri",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The URL to which the request will be sent.",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "name": "contentLength",
+          "doc": "/// The size of the request body, in bytes.\n///\n/// This defaults to `null`, which indicates that the size of the request is\n/// not known in advance. May not be assigned a negative value.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "int"
+            }
+          }
+        },
+        {
+          "name": "finalized",
+          "doc": "/// Whether [finalize] has been called.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "followRedirects",
+          "doc": "/// Whether the client should follow redirects while resolving this request.\n///\n/// Defaults to true.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "headers",
+          "doc": "/// The HTTP headers sent to the server.\n///\n/// Header names are converted to lowercase when sent to the server.\n///\n/// Some headers may not be sent by the [Client] for security or privacy\n/// reasons. For example, browser-based clients may only sent headers in the\n/// CORS safelist or specifically allowed by the server.",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "maxRedirects",
+          "doc": "/// The maximum number of redirects to follow when [followRedirects] is true.\n///\n/// If this number is exceeded the [BaseResponse] future will signal a\n/// [ClientException]. Defaults to 5.",
+          "type": {
+            "kind": "scalar",
+            "name": "int"
+          }
+        },
+        {
+          "name": "method",
+          "doc": "/// The HTTP method of the request.\n///\n/// Most commonly \"GET\" or \"POST\", less commonly \"HEAD\", \"PUT\", or \"DELETE\".\n/// Non-standard method names are also supported.",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          }
+        },
+        {
+          "name": "persistentConnection",
+          "doc": "/// Whether a persistent connection should be maintained with the server.\n///\n/// Defaults to true.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "sink",
+          "doc": "/// The sink to which to write data that will be sent as the request body.\n///\n/// This may be safely written to before the request is sent; the data will be\n/// buffered.\n///\n/// Closing this signals the end of the request.",
+          "type": {
+            "kind": "named",
+            "name": "StreamSink"
+          }
+        },
+        {
+          "name": "url",
+          "doc": "/// The URL to which the request will be sent.",
+          "type": {
+            "kind": "named",
+            "name": "Uri"
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "finalize",
+          "doc": "/// Freezes all mutable fields and returns a single-subscription [ByteStream]\n/// that emits the data being written to [sink].",
+          "static": false,
+          "returnType": {
+            "kind": "named",
+            "name": "ByteStream"
+          },
+          "params": []
+        }
+      ],
+      "constants": []
+    },
+    {
+      "name": "StreamedResponse",
+      "doc": "/// An HTTP response where the response body is received asynchronously after\n/// the headers have been received.",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "/// Creates a new streaming response.\n///\n/// [stream] should be a single-subscription stream.",
+          "const": false,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": [
+            {
+              "name": "stream",
+              "type": {
+                "kind": "stream",
+                "item": {
+                  "kind": "list",
+                  "item": {
+                    "kind": "scalar",
+                    "name": "int"
+                  }
+                }
+              },
+              "display": "Stream<List<int>>",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The stream from which the response body data can be read.\n///\n/// This should always be a single-subscription stream.",
+              "deprecated": false
+            },
+            {
+              "name": "statusCode",
+              "type": {
+                "kind": "scalar",
+                "name": "int"
+              },
+              "display": "int",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "/// The HTTP status code for this response.",
+              "deprecated": false
+            },
+            {
+              "name": "contentLength",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "int"
+                }
+              },
+              "display": "int?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The size of the response body, in bytes.\n///\n/// If the size of the request is not known in advance, this is `null`.",
+              "deprecated": false
+            },
+            {
+              "name": "request",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "BaseRequest"
+                }
+              },
+              "display": "BaseRequest?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The (frozen) request that triggered this response.",
+              "deprecated": false
+            },
+            {
+              "name": "headers",
+              "type": {
+                "kind": "map",
+                "key": {
+                  "kind": "scalar",
+                  "name": "String"
+                },
+                "value": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "Map<String, String>",
+              "named": true,
+              "required": false,
+              "defaultValue": "const {}",
+              "doc": "/// The HTTP headers returned by the server.\n///\n/// The header names are converted to lowercase and stored with their\n/// associated header values.\n///\n/// If the server returns multiple headers with the same name then the header\n/// values will be associated with a single key and seperated by commas and\n/// possibly whitespace. For example:\n/// ```dart\n/// // HTTP/1.1 200 OK\n/// // Fruit: Apple\n/// // Fruit: Banana\n/// // Fruit: Grape\n/// final values = response.headers['fruit']!.split(RegExp(r'\\s*,\\s*'));\n/// // values = ['Apple', 'Banana', 'Grape']\n/// ```\n///\n/// To retrieve the header values as a `List<String>`, use\n/// [HeadersWithSplitValues.headersSplitValues].\n///\n/// If a header value contains whitespace then that whitespace may be replaced\n/// by a single space. Leading and trailing whitespace in header values are\n/// always removed.\n///\n/// Some headers may be excluded by the [Client] for security or privacy\n/// reasons. For example, browser-based clients can only return headers in the\n/// CORS safelist or specifically allowed by the server.",
+              "deprecated": false
+            },
+            {
+              "name": "isRedirect",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": false,
+              "defaultValue": "false",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "persistentConnection",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": false,
+              "defaultValue": "true",
+              "doc": "/// Whether the server requested that a persistent connection be maintained.",
+              "deprecated": false
+            },
+            {
+              "name": "reasonPhrase",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "/// The reason phrase associated with the status code.",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "name": "contentLength",
+          "doc": "/// The size of the response body, in bytes.\n///\n/// If the size of the request is not known in advance, this is `null`.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "int"
+            }
+          }
+        },
+        {
+          "name": "headers",
+          "doc": "/// The HTTP headers returned by the server.\n///\n/// The header names are converted to lowercase and stored with their\n/// associated header values.\n///\n/// If the server returns multiple headers with the same name then the header\n/// values will be associated with a single key and seperated by commas and\n/// possibly whitespace. For example:\n/// ```dart\n/// // HTTP/1.1 200 OK\n/// // Fruit: Apple\n/// // Fruit: Banana\n/// // Fruit: Grape\n/// final values = response.headers['fruit']!.split(RegExp(r'\\s*,\\s*'));\n/// // values = ['Apple', 'Banana', 'Grape']\n/// ```\n///\n/// To retrieve the header values as a `List<String>`, use\n/// [HeadersWithSplitValues.headersSplitValues].\n///\n/// If a header value contains whitespace then that whitespace may be replaced\n/// by a single space. Leading and trailing whitespace in header values are\n/// always removed.\n///\n/// Some headers may be excluded by the [Client] for security or privacy\n/// reasons. For example, browser-based clients can only return headers in the\n/// CORS safelist or specifically allowed by the server.",
+          "type": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "isRedirect",
+          "doc": "",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "persistentConnection",
+          "doc": "/// Whether the server requested that a persistent connection be maintained.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "reasonPhrase",
+          "doc": "/// The reason phrase associated with the status code.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "request",
+          "doc": "/// The (frozen) request that triggered this response.",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "named",
+              "name": "BaseRequest"
+            }
+          }
+        },
+        {
+          "name": "statusCode",
+          "doc": "/// The HTTP status code for this response.",
+          "type": {
+            "kind": "scalar",
+            "name": "int"
+          }
+        },
+        {
+          "name": "stream",
+          "doc": "/// The stream from which the response body data can be read.\n///\n/// This should always be a single-subscription stream.",
+          "type": {
+            "kind": "named",
+            "name": "ByteStream"
+          }
+        }
+      ],
+      "methods": [],
+      "constants": []
+    }
+  ],
+  "enums": [],
+  "functions": [
+    {
+      "name": "delete",
+      "doc": "/// Sends an HTTP DELETE request with the given headers to the given URL.\n///\n/// This automatically initializes a new [Client] and closes that client once\n/// the request is complete. If you're planning on making multiple requests to\n/// the same server, you should use a single [Client] for all of those requests.\n///\n/// For more fine-grained control over the request, use [Request] instead.",
+      "returnType": {
+        "kind": "future",
+        "item": {
+          "kind": "named",
+          "name": "Response"
+        }
+      },
+      "params": [
+        {
+          "name": "url",
+          "type": {
+            "kind": "named",
+            "name": "Uri"
+          },
+          "display": "Uri",
+          "named": false,
+          "required": true,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "headers",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "map",
+              "key": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "value": {
+                "kind": "scalar",
+                "name": "String"
+              }
+            }
+          },
+          "display": "Map<String, String>?",
+          "named": true,
+          "required": false,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "body",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "named",
+              "name": "Object"
+            }
+          },
+          "display": "Object?",
+          "named": true,
+          "required": false,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "encoding",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "named",
+              "name": "Encoding"
+            }
+          },
+          "display": "Encoding?",
+          "named": true,
+          "required": false,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        }
+      ]
+    },
+    {
+      "name": "get",
+      "doc": "/// Sends an HTTP GET request with the given headers to the given URL.\n///\n/// This automatically initializes a new [Client] and closes that client once\n/// the request is complete. If you're planning on making multiple requests to\n/// the same server, you should use a single [Client] for all of those requests.\n///\n/// For more fine-grained control over the request, use [Request] instead.",
+      "returnType": {
+        "kind": "future",
+        "item": {
+          "kind": "named",
+          "name": "Response"
+        }
+      },
+      "params": [
+        {
+          "name": "url",
+          "type": {
+            "kind": "named",
+            "name": "Uri"
+          },
+          "display": "Uri",
+          "named": false,
+          "required": true,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "headers",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "map",
+              "key": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "value": {
+                "kind": "scalar",
+                "name": "String"
+              }
+            }
+          },
+          "display": "Map<String, String>?",
+          "named": true,
+          "required": false,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        }
+      ]
+    },
+    {
+      "name": "head",
+      "doc": "/// Sends an HTTP HEAD request with the given headers to the given URL.\n///\n/// This automatically initializes a new [Client] and closes that client once\n/// the request is complete. If you're planning on making multiple requests to\n/// the same server, you should use a single [Client] for all of those requests.\n///\n/// For more fine-grained control over the request, use [Request] instead.",
+      "returnType": {
+        "kind": "future",
+        "item": {
+          "kind": "named",
+          "name": "Response"
+        }
+      },
+      "params": [
+        {
+          "name": "url",
+          "type": {
+            "kind": "named",
+            "name": "Uri"
+          },
+          "display": "Uri",
+          "named": false,
+          "required": true,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "headers",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "map",
+              "key": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "value": {
+                "kind": "scalar",
+                "name": "String"
+              }
+            }
+          },
+          "display": "Map<String, String>?",
+          "named": true,
+          "required": false,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        }
+      ]
+    },
+    {
+      "name": "patch",
+      "doc": "/// Sends an HTTP PATCH request with the given headers and body to the given\n/// URL.\n///\n/// [body] sets the body of the request. It can be a `String`, a `List<int>` or\n/// a `Map<String, String>`. If it's a `String`, it's encoded using [encoding]\n/// and used as the body of the request. The content-type of the request will\n/// default to \"text/plain\".\n///\n/// If [body] is a `List`, it's used as a list of bytes for the body of the\n/// request.\n///\n/// If [body] is a `Map`, it's encoded as form fields using [encoding]. The\n/// content-type of the request will be set to\n/// `\"application/x-www-form-urlencoded\"`; this cannot be overridden.\n///\n/// [encoding] defaults to [utf8].\n///\n/// For more fine-grained control over the request, use [Request] or\n/// [StreamedRequest] instead.",
+      "returnType": {
+        "kind": "future",
+        "item": {
+          "kind": "named",
+          "name": "Response"
+        }
+      },
+      "params": [
+        {
+          "name": "url",
+          "type": {
+            "kind": "named",
+            "name": "Uri"
+          },
+          "display": "Uri",
+          "named": false,
+          "required": true,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "headers",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "map",
+              "key": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "value": {
+                "kind": "scalar",
+                "name": "String"
+              }
+            }
+          },
+          "display": "Map<String, String>?",
+          "named": true,
+          "required": false,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "body",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "named",
+              "name": "Object"
+            }
+          },
+          "display": "Object?",
+          "named": true,
+          "required": false,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "encoding",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "named",
+              "name": "Encoding"
+            }
+          },
+          "display": "Encoding?",
+          "named": true,
+          "required": false,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        }
+      ]
+    },
+    {
+      "name": "post",
+      "doc": "/// Sends an HTTP POST request with the given headers and body to the given URL.\n///\n/// [body] sets the body of the request. It can be a `String`, a `List<int>` or\n/// a `Map<String, String>`. If it's a `String`, it's encoded using [encoding]\n/// and used as the body of the request. The content-type of the request will\n/// default to \"text/plain\".\n///\n/// If [body] is a `List`, it's used as a list of bytes for the body of the\n/// request.\n///\n/// If [body] is a `Map`, it's encoded as form fields using [encoding]. The\n/// content-type of the request will be set to\n/// `\"application/x-www-form-urlencoded\"`; this cannot be overridden.\n///\n/// [encoding] defaults to [utf8].\n///\n/// For more fine-grained control over the request, use [Request] or\n/// [StreamedRequest] instead.",
+      "returnType": {
+        "kind": "future",
+        "item": {
+          "kind": "named",
+          "name": "Response"
+        }
+      },
+      "params": [
+        {
+          "name": "url",
+          "type": {
+            "kind": "named",
+            "name": "Uri"
+          },
+          "display": "Uri",
+          "named": false,
+          "required": true,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "headers",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "map",
+              "key": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "value": {
+                "kind": "scalar",
+                "name": "String"
+              }
+            }
+          },
+          "display": "Map<String, String>?",
+          "named": true,
+          "required": false,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "body",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "named",
+              "name": "Object"
+            }
+          },
+          "display": "Object?",
+          "named": true,
+          "required": false,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "encoding",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "named",
+              "name": "Encoding"
+            }
+          },
+          "display": "Encoding?",
+          "named": true,
+          "required": false,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        }
+      ]
+    },
+    {
+      "name": "put",
+      "doc": "/// Sends an HTTP PUT request with the given headers and body to the given URL.\n///\n/// [body] sets the body of the request. It can be a `String`, a `List<int>` or\n/// a `Map<String, String>`. If it's a `String`, it's encoded using [encoding]\n/// and used as the body of the request. The content-type of the request will\n/// default to \"text/plain\".\n///\n/// If [body] is a `List`, it's used as a list of bytes for the body of the\n/// request.\n///\n/// If [body] is a `Map`, it's encoded as form fields using [encoding]. The\n/// content-type of the request will be set to\n/// `\"application/x-www-form-urlencoded\"`; this cannot be overridden.\n///\n/// [encoding] defaults to [utf8].\n///\n/// For more fine-grained control over the request, use [Request] or\n/// [StreamedRequest] instead.",
+      "returnType": {
+        "kind": "future",
+        "item": {
+          "kind": "named",
+          "name": "Response"
+        }
+      },
+      "params": [
+        {
+          "name": "url",
+          "type": {
+            "kind": "named",
+            "name": "Uri"
+          },
+          "display": "Uri",
+          "named": false,
+          "required": true,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "headers",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "map",
+              "key": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "value": {
+                "kind": "scalar",
+                "name": "String"
+              }
+            }
+          },
+          "display": "Map<String, String>?",
+          "named": true,
+          "required": false,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "body",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "named",
+              "name": "Object"
+            }
+          },
+          "display": "Object?",
+          "named": true,
+          "required": false,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "encoding",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "named",
+              "name": "Encoding"
+            }
+          },
+          "display": "Encoding?",
+          "named": true,
+          "required": false,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        }
+      ]
+    },
+    {
+      "name": "read",
+      "doc": "/// Sends an HTTP GET request with the given headers to the given URL and\n/// returns a Future that completes to the body of the response as a [String].\n///\n/// The Future will emit a [ClientException] if the response doesn't have a\n/// success status code.\n///\n/// This automatically initializes a new [Client] and closes that client once\n/// the request is complete. If you're planning on making multiple requests to\n/// the same server, you should use a single [Client] for all of those requests.\n///\n/// For more fine-grained control over the request and response, use [Request]\n/// instead.",
+      "returnType": {
+        "kind": "future",
+        "item": {
+          "kind": "scalar",
+          "name": "String"
+        }
+      },
+      "params": [
+        {
+          "name": "url",
+          "type": {
+            "kind": "named",
+            "name": "Uri"
+          },
+          "display": "Uri",
+          "named": false,
+          "required": true,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "headers",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "map",
+              "key": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "value": {
+                "kind": "scalar",
+                "name": "String"
+              }
+            }
+          },
+          "display": "Map<String, String>?",
+          "named": true,
+          "required": false,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        }
+      ]
+    },
+    {
+      "name": "readBytes",
+      "doc": "/// Sends an HTTP GET request with the given headers to the given URL and\n/// returns a Future that completes to the body of the response as a list of\n/// bytes.\n///\n/// The Future will emit a [ClientException] if the response doesn't have a\n/// success status code.\n///\n/// This automatically initializes a new [Client] and closes that client once\n/// the request is complete. If you're planning on making multiple requests to\n/// the same server, you should use a single [Client] for all of those requests.\n///\n/// For more fine-grained control over the request and response, use [Request]\n/// instead.",
+      "returnType": {
+        "kind": "future",
+        "item": {
+          "kind": "named",
+          "name": "Uint8List"
+        }
+      },
+      "params": [
+        {
+          "name": "url",
+          "type": {
+            "kind": "named",
+            "name": "Uri"
+          },
+          "display": "Uri",
+          "named": false,
+          "required": true,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "headers",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "map",
+              "key": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "value": {
+                "kind": "scalar",
+                "name": "String"
+              }
+            }
+          },
+          "display": "Map<String, String>?",
+          "named": true,
+          "required": false,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        }
+      ]
+    },
+    {
+      "name": "runWithClient",
+      "doc": "/// Runs [body] in its own [Zone] with the [Client] returned by [clientFactory]\n/// set as the default [Client].\n///\n/// For example:\n///\n/// ```\n/// class MyAndroidHttpClient extends BaseClient {\n///   @override\n///   Future<http.StreamedResponse> send(http.BaseRequest request) {\n///     // your implementation here\n///   }\n/// }\n///\n/// void main() {\n///  var clientFactory = Client.new; // Constructs the default client.\n///  if (Platform.isAndroid) {\n///     clientFactory = MyAndroidHttpClient.new;\n///  }\n///  runWithClient(myFunction, clientFactory);\n/// }\n///\n/// void myFunction() {\n///   // Uses the `Client` configured in `main`.\n///   final response = await get(Uri.https('www.example.com', ''));\n///   final client = Client();\n/// }\n/// ```\n///\n/// The [Client] returned by [clientFactory] is used by the [Client.new] factory\n/// and the convenience HTTP functions (e.g. [http.get]). If [clientFactory]\n/// returns `Client()` then the default [Client] is used.\n///\n/// Only fresh `Client` instances using the default constructor are impacted.\n/// HTTP requests made using `dart:io` or `dart:html` APIs,\n/// or using specifically instantiated client implementations, are not affected.\n///\n/// If [runWithClient] is used and the environment defines\n/// `no_default_http_client=true` then generated binaries may be smaller e.g.\n/// ```shell\n/// $ dart compile exe --define=no_default_http_client=true ...\n/// ```\n///\n/// If `no_default_http_client=true` is set then any call to the [Client]\n/// factory (i.e. `Client()`) outside of the [Zone] created by [runWithClient]\n/// will throw [StateError].\n///\n/// > [!IMPORTANT]\n/// > Flutter does not guarantee that callbacks are executed in a particular\n/// > [Zone].\n/// >\n/// > Instead of using [runWithClient], Flutter developers can use a framework,\n/// > such as [`package:provider`](https://pub.dev/packages/provider), to make\n/// > a [Client] available throughout their applications.\n/// >\n/// > See the\n/// > [Flutter Http Example](https://github.com/dart-lang/http/tree/master/pkgs/flutter_http_example).",
+      "returnType": {
+        "kind": "unknown"
+      },
+      "params": [
+        {
+          "name": "body",
+          "type": {
+            "kind": "function",
+            "returnType": {
+              "kind": "unknown"
+            },
+            "params": []
+          },
+          "display": "R Function()",
+          "named": false,
+          "required": true,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "clientFactory",
+          "type": {
+            "kind": "function",
+            "returnType": {
+              "kind": "named",
+              "name": "Client"
+            },
+            "params": []
+          },
+          "display": "Client Function()",
+          "named": false,
+          "required": true,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        },
+        {
+          "name": "zoneSpecification",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "named",
+              "name": "ZoneSpecification"
+            }
+          },
+          "display": "ZoneSpecification?",
+          "named": true,
+          "required": false,
+          "defaultValue": null,
+          "doc": "",
+          "deprecated": false
+        }
+      ]
+    }
+  ],
+  "permissions": {
+    "android": {
+      "manifestSource": null,
+      "permissions": [],
+      "exampleSource": null,
+      "querySchemes": []
+    },
+    "ios": {
+      "exampleSource": null,
+      "usageDescriptionKeys": [],
+      "querySchemes": []
+    }
+  }
+}
