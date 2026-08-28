@@ -453,6 +453,20 @@ export const emitConstantsFile = (snapshot: ApiSnapshot): string => {
       "import type * as widgetTypes from './widgets';",
   ];
 
+  // Icon names are chosen by hand in TSX (`<TabItem icon="home">`), so they
+  // become a union: the IDE completes them and rejects a typo where it is
+  // written, instead of leaving it to the compiler.
+  const icons = snapshot.entities.find((entity) => entity.name === 'Icons');
+  if (icons !== undefined && icons.kind !== 'enum') {
+    const names = icons.constants
+      .map((constant) => `'${constant.name}'`)
+      .sort();
+    blocks.push(
+      '/**\n * Every icon name the installed SDK provides.\n */\n' +
+        `export type IconName = ${names.join(' | ')};`,
+    );
+  }
+
   for (const namespace of namespaces) {
     if (namespace.kind === 'enum') {
       continue;

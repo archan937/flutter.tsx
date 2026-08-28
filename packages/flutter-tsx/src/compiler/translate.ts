@@ -19,6 +19,9 @@ export interface TranslateContext {
   handlerNames: Set<string>;
   privateMembers: boolean;
   memberReads: Map<string, MemberReadInfo>;
+  // Fields by class name, so a read can continue through a field whose type
+  // is another known class: `album.author.name`.
+  classFields: Map<string, Map<string, TypeNode>>;
 }
 
 const BINARY_OPERATORS = new Map<ts.SyntaxKind, string>([
@@ -58,6 +61,51 @@ const zeroValueOf = (type: TypeNode): string | null =>
 
 const typeLabel = (type: TypeNode): string =>
   'name' in type ? type.name : type.kind;
+
+/// The fields readable off an expression: a registered receiver, or a field
+/// of one whose type is another known class. Recursive, so a chain of any
+/// depth resolves through the same rule.
+const fieldsOf = (
+  expression: ts.Expression,
+  context: TranslateContext,
+): Map<string, TypeNode> | undefined => {
+  if (ts.isIdentifier(expression)) {
+    return context.memberReads.get(expression.text)?.fields;
+  }
+  if (!ts.isPropertyAccessExpression(expression)) {
+    return undefined;
+  }
+  const field = fieldsOf(expression.expression, context)?.get(
+    expression.name.text,
+  );
+  return field?.kind === 'named'
+    ? context.classFields.get(field.name)
+    : undefined;
+};
+
+/// The declared type a read lands on, following the chain from its receiver;
+/// null when the chain is not a known read.
+export const readFieldType = (
+  expression: ts.PropertyAccessExpression,
+  context: TranslateContext,
+): TypeNode | null =>
+  fieldsOf(expression.expression, context)?.get(expression.name.text) ?? null;
+
+// A read may continue through fields whose type is another known class:
+// `album.author.name`, at any depth.
+const nestedReadDart = (
+  expression: ts.PropertyAccessExpression,
+  context: TranslateContext,
+): string | null => {
+  const target = expression.expression;
+  if (
+    !ts.isPropertyAccessExpression(target) ||
+    readFieldType(expression, context) === null
+  ) {
+    return null;
+  }
+  return `${translateExpression(target, context)}.${expression.name.text}`;
+};
 
 const memberReadDart = (
   expression: ts.PropertyAccessExpression,
@@ -191,13 +239,16 @@ export const translateExpression = (
     const whenFalse = translateExpression(expression.whenFalse, context);
     return `${condition} ? ${whenTrue} : ${whenFalse}`;
   }
-  if (
-    ts.isPropertyAccessExpression(expression) &&
-    ts.isIdentifier(expression.expression)
-  ) {
-    const readInfo = context.memberReads.get(expression.expression.text);
-    if (readInfo !== undefined) {
-      return memberReadDart(expression, readInfo, context);
+  if (ts.isPropertyAccessExpression(expression)) {
+    if (ts.isIdentifier(expression.expression)) {
+      const readInfo = context.memberReads.get(expression.expression.text);
+      if (readInfo !== undefined) {
+        return memberReadDart(expression, readInfo, context);
+      }
+    }
+    const nested = nestedReadDart(expression, context);
+    if (nested !== null) {
+      return nested;
     }
   }
   if (

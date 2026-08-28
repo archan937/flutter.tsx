@@ -15,6 +15,8 @@ import type { DerivedHook } from '../plugins/hooks';
 import type {
   AsyncBinding,
   ComponentAnalysis,
+  LocalBinding,
+  ModelBinding,
   PluginBinding,
   RouterBinding,
   StoreBinding,
@@ -23,10 +25,12 @@ import { tsxErrorAt } from './diagnostics';
 import { GO_ROUTER_IMPORT } from './emit-component';
 import type {
   IrArgument,
+  IrBuilderBind,
   IrChild,
   IrComponent,
   IrField,
   IrMethod,
+  IrModel,
   IrRouter,
   IrStatement,
   IrStore,
@@ -35,6 +39,7 @@ import type {
 } from './ir';
 import {
   type MemberReadInfo,
+  readFieldType,
   type TranslateContext,
   translateExpression,
   translateIdentifier,
@@ -73,6 +78,8 @@ export interface CompileContext {
   // Fields of every class an imported plugin exposes, so a value of that type
   // can be read even when it did not come from a hook.
   pluginClassFields: Map<string, Map<string, TypeNode>>;
+  // Models generated from this file's interfaces, by name.
+  models: Map<string, IrModel>;
   // Dart type name -> prefixed name, for plugins imported with a prefix.
   prefixedTypes: Map<string, string>;
   userWidgets: Map<string, WidgetInfo>;
@@ -172,6 +179,7 @@ export const buildCompileContext = (
     stores: new Map(),
     pluginClassFields: new Map(),
     prefixedTypes: new Map(),
+    models: new Map(),
     userWidgets: new Map(),
     pluginHooks: new Map(),
     pluginFunctions: new Map(),
@@ -230,6 +238,8 @@ interface LowerContext {
   stringLocals: Set<string>;
   pluginBindings: Map<string, PluginHookInfo>;
   usedPluginImports: Map<string, string | null>;
+  // `dart:` imports the lowering discovers, e.g. dart:convert for json().
+  usedDartImports: Set<string>;
   storeSetters: Map<string, IrStore>;
   navigators: ReadonlySet<string>;
   // Set while lowering a <TabView>: the component needs a tab-index field
@@ -540,6 +550,15 @@ const lowerPropertyAccess = (
   expression: ts.PropertyAccessExpression,
   context: LowerContext,
 ): IrValue => {
+  // A read off a plugin handle, a store or a model must translate the same
+  // way in a prop as it does in a child — otherwise the prop would emit the
+  // TSX name (`info.appName`) instead of the Dart one (`_info?.appName ?? ''`).
+  if (readFieldType(expression, context.translate) !== null) {
+    return {
+      kind: 'dartExpr',
+      dart: translateExpression(expression, context.translate),
+    };
+  }
   if (
     ts.isIdentifier(expression.expression) &&
     ts.isIdentifier(expression.name) &&
@@ -553,7 +572,13 @@ const lowerPropertyAccess = (
       member: expression.name.text,
     };
   }
-  return { kind: 'raw', node: expression };
+  // Emitting the TSX text verbatim would produce Dart naming something that
+  // does not exist there, so an unresolvable read is refused instead.
+  throw tsxErrorAt(
+    'TSX0305',
+    'this expression is not compiled yet (roadmap step 18).',
+    { sourceFile: context.sourceFile, node: expression },
+  );
 };
 
 const lowerArrowFunction = (
@@ -885,13 +910,8 @@ const isStringExpression = (
       isStringExpression(expression.whenFalse, context)
     );
   }
-  if (
-    ts.isPropertyAccessExpression(expression) &&
-    ts.isIdentifier(expression.expression)
-  ) {
-    const field = context.translate.memberReads
-      .get(expression.expression.text)
-      ?.fields.get(expression.name.text);
+  if (ts.isPropertyAccessExpression(expression)) {
+    const field = readFieldType(expression, context.translate);
     return field?.kind === 'scalar' && field.name === 'String';
   }
   return false;
@@ -1873,6 +1893,99 @@ const resolveAsyncSource = (
   };
 };
 
+export const lowerModel = (
+  model: ModelBinding,
+  known: ReadonlySet<string>,
+): IrModel => ({
+  name: model.name,
+  fields: model.fields.map((field) => ({
+    name: field.name,
+    dartType: field.dartType,
+    required: field.required,
+    isModel: known.has(field.dartType),
+  })),
+});
+
+// `const album = json<Album>(res.body)` decodes through the generated class.
+const jsonLocalBind = (
+  local: LocalBinding,
+  context: LowerContext,
+): IrBuilderBind | null => {
+  const call = ts.isAsExpression(local.expression)
+    ? local.expression.expression
+    : local.expression;
+  if (
+    !ts.isCallExpression(call) ||
+    !ts.isIdentifier(call.expression) ||
+    call.expression.text !== 'json'
+  ) {
+    return null;
+  }
+  const [body] = call.arguments;
+  // `json` returns `unknown`, so the cast is the only thing that can name the
+  // model — which is also how TypeScript code normally types a parsed body.
+  const modelName = local.declaredType;
+  const model =
+    modelName === null ? undefined : context.compile.models.get(modelName);
+  if (model === undefined || body === undefined) {
+    throw tsxErrorAt(
+      'TSX0335',
+      '`json` needs an interface from this file and a body: ' +
+        '`json(res.body) as Album`.',
+      { sourceFile: context.sourceFile, node: call },
+    );
+  }
+  context.usedDartImports.add('dart:convert');
+  context.translate.memberReads.set(local.name, {
+    className: model.name,
+    receiver: local.name,
+    nullable: false,
+    fields: new Map(
+      model.fields.map((field) => [
+        field.name,
+        field.isModel
+          ? { kind: 'named', name: field.dartType }
+          : dartFieldType(field.dartType),
+      ]),
+    ),
+  });
+  const decoded = `jsonDecode(${translateExpression(body, context.translate)}) as Map<String, dynamic>`;
+  return {
+    name: local.name,
+    value: {
+      kind: 'construct',
+      className: `${model.name}.fromJson`,
+      constructorName: '',
+      args: [
+        {
+          param: 'json',
+          positional: true,
+          value: { kind: 'dartExpr', dart: decoded },
+        },
+      ],
+    },
+  };
+};
+
+// A component-body local: a json decode, or any expression the translator
+// can render.
+const localBind = (
+  local: LocalBinding,
+  context: LowerContext,
+): IrBuilderBind => {
+  const decoded = jsonLocalBind(local, context);
+  if (decoded !== null) {
+    return decoded;
+  }
+  return {
+    name: local.name,
+    value: {
+      kind: 'dartExpr',
+      dart: translateExpression(local.expression, context.translate),
+    },
+  };
+};
+
 interface LoweredAsync {
   field: IrField;
   initStatement: IrStatement;
@@ -1883,9 +1996,10 @@ interface LoweredAsync {
 // initState plus a FutureBuilder whose three states each render something.
 const lowerAsyncBinding = (
   binding: AsyncBinding,
-  returnJsx: ts.Expression,
+  parts: { returnJsx: ts.Expression; locals: LocalBinding[] },
   context: LowerContext,
 ): LoweredAsync => {
+  const { returnJsx, locals } = parts;
   const { load } = binding;
   const isStream = binding.hook === 'useStream';
   const sourceKind = isStream ? 'stream' : 'future';
@@ -1931,6 +2045,11 @@ const lowerAsyncBinding = (
       fields: itemFields,
     });
   }
+  // Locals declared after the await belong inside the builder, where the
+  // resolved value is in scope.
+  const localBinds: IrBuilderBind[] = locals.map((local) =>
+    localBind(local, branchContext),
+  );
   const fieldName = `_${binding.name}${isStream ? 'Stream' : 'Future'}`;
   return {
     field: {
@@ -1967,7 +2086,10 @@ const lowerAsyncBinding = (
                 condition: 'snapshot.hasError',
                 bind: {
                   name: binding.errorParam,
-                  dart: "'${snapshot.error}'",
+                  value: {
+                    kind: 'dartExpr',
+                    dart: "'${snapshot.error}'",
+                  },
                 },
                 value: lowerFallbackJsx(binding.errorJsx, branchContext),
               },
@@ -1977,7 +2099,13 @@ const lowerAsyncBinding = (
                 value: lowerFallbackJsx(binding.loadingJsx, branchContext),
               },
             ],
-            bind: { name: binding.name, dart: 'snapshot.data!' },
+            binds: [
+              {
+                name: binding.name,
+                value: { kind: 'dartExpr', dart: 'snapshot.data!' },
+              },
+              ...localBinds,
+            ],
             value: lowerFallbackJsx(returnJsx, branchContext),
           },
         },
@@ -2295,6 +2423,7 @@ export const lowerComponent = (
     ),
     pluginBindings: new Map(),
     usedPluginImports: new Map(),
+    usedDartImports: new Set(),
     storeSetters: new Map(),
     stateDartTypes: new Map(
       component.states.map((state) => [state.name, state.dartType]),
@@ -2308,6 +2437,22 @@ export const lowerComponent = (
       handlerNames,
       privateMembers: true,
       memberReads,
+      classFields: new Map<string, Map<string, TypeNode>>([
+        ...compile.pluginClassFields,
+        ...[...compile.models.values()].map(
+          (model): [string, Map<string, TypeNode>] => [
+            model.name,
+            new Map<string, TypeNode>(
+              model.fields.map((field) => [
+                field.name,
+                field.isModel
+                  ? { kind: 'named', name: field.dartType }
+                  : dartFieldType(field.dartType),
+              ]),
+            ),
+          ],
+        ),
+      ]),
     },
   };
 
@@ -2356,7 +2501,18 @@ export const lowerComponent = (
   const lowered =
     component.asyncBinding === null
       ? null
-      : lowerAsyncBinding(component.asyncBinding, root, context);
+      : lowerAsyncBinding(
+          component.asyncBinding,
+          { returnJsx: root, locals: component.locals },
+          context,
+        );
+
+  // Locals register their reads, so they must be bound before the body that
+  // reads them is lowered.
+  const buildLocals =
+    component.asyncBinding === null
+      ? component.locals.map((local) => localBind(local, context))
+      : [];
 
   // The body must be lowered before the literal below reads
   // usedPluginImports or context.tabState: an import discovered while
@@ -2423,11 +2579,13 @@ export const lowerComponent = (
     disposeLines: loweredPlugins.flatMap(({ lowered }) =>
       lowered.disposeLine === null ? [] : [lowered.disposeLine],
     ),
+    buildLocals,
     pluginImports: [
       ...new Map<string, string | null>([
         ...loweredPlugins.map(
           ({ lowered }) => [lowered.pluginImport, null] as const,
         ),
+        ...[...context.usedDartImports].map((uri) => [uri, null] as const),
         ...context.usedPluginImports,
       ]),
     ].map(([uri, prefix]) => ({ uri, prefix })),
@@ -2495,7 +2653,7 @@ const storeWrapped = (body: IrWidget, store: IrStore | null): IrWidget =>
               kind: 'builder',
               params: ['context', 'child'],
               guards: [],
-              bind: null,
+              binds: [],
               value: { kind: 'widget', widget: body },
             },
           },

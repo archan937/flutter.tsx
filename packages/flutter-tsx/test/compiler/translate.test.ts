@@ -79,6 +79,7 @@ const translate = (source: string): string => {
     handlerNames: new Set(['tick']),
     privateMembers: true,
     memberReads: memberReads(),
+    classFields: new Map(),
   };
   return translateExpression(expression, context);
 };

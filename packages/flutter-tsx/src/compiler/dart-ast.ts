@@ -17,14 +17,14 @@ export type DartExpr =
       kind: 'builder';
       params: string[];
       guards: BuilderGuard[];
-      bind: BuilderBind | null;
+      binds: BuilderBind[];
       value: DartExpr;
     };
 
 /// `final <name> = <code>;` ahead of a return inside a builder block.
 export interface BuilderBind {
   name: string;
-  code: string;
+  value: DartExpr;
 }
 
 export interface BuilderGuard {
@@ -115,6 +115,6 @@ export const closure = (
 export const builderClosure = (builder: {
   params: string[];
   guards: BuilderGuard[];
-  bind: BuilderBind | null;
+  binds: BuilderBind[];
   value: DartExpr;
 }): DartExpr => ({ kind: 'builder', ...builder });

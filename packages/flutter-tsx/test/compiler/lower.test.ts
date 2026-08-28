@@ -517,20 +517,26 @@ describe('lowerComponent — value forms', () => {
     expect(style.args.map((argument) => argument.value.kind)).toEqual(['raw']);
   });
 
-  test('member access on unknown owners stays raw', async () => {
-    const ir = await lowerFirst(
-      "import { Text } from 'flutter-tsx';\n" +
-        'export const Probe = () => {\n' +
-        '  const config = { factor: 2 };\n' +
-        '  return <Text textScaleFactor={config.factor}>hi</Text>;\n' +
-        '};\n',
-      'probe.tsx',
-    );
-
+  // An object literal has no Dart equivalent, so the local cannot be bound.
+  // Refusing it is the point: the previous behaviour dropped the declaration
+  // and still emitted `config.factor`, which is Dart referring to a variable
+  // that was never declared.
+  test('an object literal local is a numbered error', () => {
     expect(
-      ir.body.args.find((argument) => argument.param === 'textScaleFactor')
-        ?.value.kind,
-    ).toBe('raw');
+      lowerFirst(
+        "import { Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => {\n' +
+          '  const config = { factor: 2 };\n' +
+          '  return <Text textScaleFactor={config.factor}>hi</Text>;\n' +
+          '};\n',
+        'probe.tsx',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0305 probe.tsx:3:18 — this expression is not compiled yet ' +
+          '(roadmap step 18).',
+      ),
+    );
   });
 
   test('a string that fits no value form is a numbered error', () => {
@@ -621,15 +627,16 @@ describe('lowerComponent — value forms', () => {
     expect(
       lowerFirst(
         "import { Container, Text } from 'flutter-tsx';\n" +
-          'export const Probe = () => {\n' +
-          '  const base = { top: 1 };\n' +
-          '  return <Container padding={{ ...base }}><Text>hi</Text></Container>;\n' +
-          '};\n',
+          'export const Probe = () => (\n' +
+          '  <Container padding={{ ...{ top: 1 } }}>\n' +
+          '    <Text>hi</Text>\n' +
+          '  </Container>\n' +
+          ');\n',
         'probe.tsx',
       ),
     ).rejects.toThrow(
       new Error(
-        'TSX0206 probe.tsx:4:32 — object values must use plain ' +
+        'TSX0206 probe.tsx:3:25 — object values must use plain ' +
           '`key: value` properties.',
       ),
     );
@@ -2390,13 +2397,12 @@ describe('lowerComponent — useAsync', () => {
     ]);
     expect(builder.guards[0]?.bind).toEqual({
       name: 'err',
-      dart: "'${snapshot.error}'",
+      value: { kind: 'dartExpr', dart: "'${snapshot.error}'" },
     });
     expect(builder.guards[1]?.bind).toBeNull();
-    expect(builder.bind).toEqual({
-      name: 'hasToken',
-      dart: 'snapshot.data!',
-    });
+    expect(builder.binds).toEqual([
+      { name: 'hasToken', value: { kind: 'dartExpr', dart: 'snapshot.data!' } },
+    ]);
   });
 });
 describe('lowerComponent — store diagnostics', () => {

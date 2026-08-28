@@ -16,6 +16,7 @@ import {
   buildUserWidgets,
   type CompileContext,
   lowerComponent,
+  lowerModel,
   lowerRouter,
   lowerStore,
   type PluginFunctionInfo,
@@ -142,6 +143,12 @@ export const transpileComponent = async (
     stores: new Map(
       analysis.stores.map((store) => [store.name, lowerStore(store)]),
     ),
+    models: new Map(
+      analysis.models.map((model) => [
+        model.name,
+        lowerModel(model, new Set(analysis.models.map((each) => each.name))),
+      ]),
+    ),
     ...(await loadPlugins(analysis)),
   };
   const components = analysis.components.map((component) => {
@@ -151,5 +158,6 @@ export const transpileComponent = async (
   return emitDartFile(components, fileContext, {
     stores: [...fileContext.stores.values()],
     router: analysis.router === null ? null : lowerRouter(analysis.router),
+    models: [...fileContext.models.values()],
   });
 };

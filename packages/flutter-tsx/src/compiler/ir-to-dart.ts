@@ -163,13 +163,16 @@ const valueToDart = (
           bind:
             guard.bind === null
               ? null
-              : { name: guard.bind.name, code: guard.bind.dart },
+              : {
+                  name: guard.bind.name,
+                  value: valueToDart(guard.bind.value, naming, insideConst),
+                },
           value: valueToDart(guard.value, naming, insideConst),
         })),
-        bind:
-          value.bind === null
-            ? null
-            : { name: value.bind.name, code: value.bind.dart },
+        binds: value.binds.map((bind) => ({
+          name: bind.name,
+          value: valueToDart(bind.value, naming, insideConst),
+        })),
         value: valueToDart(value.value, naming, insideConst),
       };
   }

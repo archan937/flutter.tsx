@@ -159,8 +159,15 @@ const printBuilder = (
     });
     return `${pad(indent)}return ${printed};`;
   };
-  const bindLine = (bind: BuilderBind, indent: number): string =>
-    `${pad(indent)}final ${bind.name} = ${bind.code};`;
+  const bindLine = (bind: BuilderBind, indent: number): string => {
+    const prefix = `final ${bind.name} = `;
+    const printed = printExpr(bind.value, {
+      indent,
+      used: indent + prefix.length,
+      trailing: 1,
+    });
+    return `${pad(indent)}${prefix}${printed};`;
+  };
 
   const lines: string[] = [];
   for (const guard of expr.guards) {
@@ -171,8 +178,8 @@ const printBuilder = (
     }
     lines.push(returnLine(guard.value, guardIndent), `${pad(bodyIndent)}}`);
   }
-  if (expr.bind !== null) {
-    lines.push(bindLine(expr.bind, bodyIndent));
+  for (const bind of expr.binds) {
+    lines.push(bindLine(bind, bodyIndent));
   }
   lines.push(returnLine(expr.value, bodyIndent));
   return (

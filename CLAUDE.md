@@ -827,6 +827,41 @@ bun run test:extractor             # dart tests + 100% coverage gate
       That is its own capability with its own goldens, not something to
       smuggle into an HTTP commit — a `json()` that returns an untypeable
       value would be exactly the kind of facade this project forbids.
+- [x] 24c (typed JSON models + IDE guidance). **`interface` → Dart data
+      class**, so the HTTP work reaches real data. `const album = json(res.body)
+      as Album;` generates the Flutter cookbook's own pattern — a const
+      constructor plus `factory Album.fromJson(Map<String, dynamic> json)` —
+      and decodes nested models recursively, lists via `.cast<T>()`, and
+      optional fields as `String?`. Reads chain to any depth
+      (`album.author.name`).
+      **Decisions, with reasons.** `number` maps to Dart `num`, not `double`:
+      JSON carries integers and `as double` throws on one, which a widget test
+      pins. `json` returns `unknown` so the model is named by an `as` cast —
+      the way TypeScript code normally types a parsed body, and it satisfies
+      `no-unnecessary-type-parameters` without a disable comment (Paul,
+      2026-08-28: "as idiomatic TS as possible"). Only interfaces actually
+      decoded become classes; a props interface stays a props interface.
+      **IDE guidance (Paul, 2026-08-28).** `TabItemProps.icon` was `string`,
+      which offered no completion and caught a typo only at compile time. The
+      generator now emits `IconName` — a union of all 8825 `Icons` names from
+      the installed SDK — so `icon="hoem"` fails in the editor with
+      *Type '"hoem"' is not assignable to type 'IconName'*, and TSX0332 is
+      only the backstop.
+      **Three silent-wrong-output bugs found and fixed on the way**, each of
+      which emitted Dart that named something nonexistent:
+      (1) a component-body local that was not a call — `const doubled = count
+      * 2` — was dropped entirely while its uses were still emitted;
+      (2) a read in a PROP position bypassed the member-read machinery, so
+      `semanticsLabel={info.appName}` emitted `info.appName` instead of
+      `_info?.appName ?? ''`;
+      (3) `lowerPropertyAccess` fell back to emitting the TSX text verbatim
+      for anything it could not resolve. That escape hatch is gone — no
+      fixture and none of the 543 sweep probes needed it — and an
+      unresolvable read is now TSX0305.
+      Locals are also supported in non-async components (bound at the top of
+      `build`). Golden #26 (`26-json-model`) certified and byte-equal; widget
+      tests decode a nested model, an absent optional field, and an integer
+      id through `num`.
 - [ ] 24b (former list, kept for reference). High-level abstractions (each gated by its own golden +
       e2e before being documented): `useAsync`/`Query`→FutureBuilder ·
       `useStream`→StreamBuilder · `createStore`/`useStore`→ChangeNotifier+Provider ·

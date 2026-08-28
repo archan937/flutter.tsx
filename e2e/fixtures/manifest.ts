@@ -196,4 +196,11 @@ export const FIXTURE_APPS: FixtureApp[] = [
     deps: ['http'],
     behavior: true,
   },
+  {
+    id: '26-json-model',
+    component: 'AlbumDetail',
+    dartFile: 'album_json.dart',
+    deps: ['http'],
+    behavior: true,
+  },
 ];

@@ -43,13 +43,13 @@ export type IrValue =
       kind: 'builder';
       params: string[];
       guards: IrBuilderGuard[];
-      bind: IrBuilderBind | null;
+      binds: IrBuilderBind[];
       value: IrValue;
     };
 
 export interface IrBuilderBind {
   name: string;
-  dart: string;
+  value: IrValue;
 }
 
 export interface IrBuilderGuard {
@@ -98,6 +98,20 @@ export interface IrRouter {
   routes: { path: string; component: string }[];
 }
 
+/// A data class generated from a TS interface.
+export interface IrModelField {
+  name: string;
+  dartType: string;
+  required: boolean;
+  /// True when the type is another generated model, which decodes recursively.
+  isModel: boolean;
+}
+
+export interface IrModel {
+  name: string;
+  fields: IrModelField[];
+}
+
 /// A Dart import contributed by a plugin: `import '<uri>' as <prefix>;` when
 /// the package is used prefixed, plain otherwise.
 export interface IrImport {
@@ -144,5 +158,7 @@ export interface IrComponent {
   initStatements: IrStatement[];
   disposeLines: string[];
   pluginImports: IrImport[];
+  /// `const x = …` from the component body, bound at the top of build().
+  buildLocals: IrBuilderBind[];
   body: IrWidget;
 }

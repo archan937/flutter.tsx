@@ -37,6 +37,7 @@ const GREEN_FIXTURES = new Set([
   '23-tabs',
   '24-animated',
   '25-http-get',
+  '26-json-model',
 ]);
 
 const fixtures = await listFixtures();

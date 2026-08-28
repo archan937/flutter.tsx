@@ -49,6 +49,21 @@ export interface RouterBinding {
   routes: { path: string; component: string }[];
 }
 
+/// A data model generated from a TS interface: one Dart class with a
+/// `fromJson` factory.
+export interface ModelBinding {
+  name: string;
+  fields: { name: string; dartType: string; required: boolean }[];
+}
+
+/// `const x = <expression>` in a component body, kept in source order.
+export interface LocalBinding {
+  name: string;
+  expression: ts.Expression;
+  /// The declared type, when written: `const album: Album = json(…)`.
+  declaredType: string | null;
+}
+
 export interface HandlerBinding {
   name: string;
   isAsync: boolean;
@@ -72,6 +87,7 @@ export interface ComponentAnalysis {
   storeUse: StoreUse | null;
   /// Names bound by `useNavigation()` in this component.
   navigators: string[];
+  locals: LocalBinding[];
   handlers: HandlerBinding[];
   effects: ts.CallExpression[];
   returnJsx: ts.Expression;
@@ -96,6 +112,7 @@ export interface SourceAnalysis {
   components: ComponentAnalysis[];
   stores: StoreBinding[];
   router: RouterBinding | null;
+  models: ModelBinding[];
   checker: ts.TypeChecker;
   sourceFile: ts.SourceFile;
   /// local name -> which package it came from and what it is called there
@@ -412,18 +429,31 @@ const analyzeBodyStatement = (
       });
       continue;
     }
-    if (
-      ts.isCallExpression(initializer) &&
-      ts.isIdentifier(initializer.expression)
-    ) {
-      const callee = initializer.expression.text;
+    // A cast wraps the call — `json(res.body) as Album` — so dispatch on what
+    // is underneath while the local keeps the original expression.
+    const called = ts.isAsExpression(initializer)
+      ? initializer.expression
+      : initializer;
+    if (!ts.isCallExpression(called) || !ts.isIdentifier(called.expression)) {
+      // Anything else is a plain local: `const doubled = count * 2;`. It must
+      // be recorded, or the generated Dart would reference a name it never
+      // declares.
+      context.analysis.locals.push({
+        name: declaration.name.getText(),
+        expression: initializer,
+        declaredType: declaredTypeName(declaration),
+      });
+      continue;
+    }
+    {
+      const callee = called.expression.text;
       const module = context.hookModules.get(callee);
       if (callee === 'useState') {
-        analyzeStateDeclaration(declaration, initializer, context);
+        analyzeStateDeclaration(declaration, called, context);
       } else if (callee === 'useNavigation') {
         context.analysis.navigators.push(declaration.name.getText());
       } else if (callee === 'useStore') {
-        analyzeStoreUse(declaration, initializer, context);
+        analyzeStoreUse(declaration, called, context);
       } else if (
         callee.startsWith('use') &&
         module?.startsWith(PLUGIN_MODULE_PREFIX) === true
@@ -432,7 +462,14 @@ const analyzeBodyStatement = (
           binding: declaration.name.getText(),
           hook: callee,
           package: module.slice(PLUGIN_MODULE_PREFIX.length),
-          call: initializer,
+          call: called,
+        });
+      } else {
+        // Any other call is a plain local, e.g. `const album = json<Album>(…)`.
+        context.analysis.locals.push({
+          name: declaration.name.getText(),
+          expression: initializer,
+          declaredType: declaredTypeName(declaration),
         });
       }
     }
@@ -657,6 +694,155 @@ const analyzeRouter = (
   return null;
 };
 
+// A TS interface maps to a Dart data class. `number` becomes `num`, not
+// `double`: JSON carries both integers and doubles, and `as double` throws on
+// an integer value, so num is the only safe cast without a distinct int type
+// in TSX.
+const MODEL_SCALARS: Record<string, string> = {
+  string: 'String',
+  number: 'num',
+  boolean: 'bool',
+};
+
+// The model is named either by an `as` cast — how TypeScript normally types a
+// parsed body — or by an annotation on the declaration.
+const typeReferenceName = (annotation: ts.TypeNode): string | null =>
+  ts.isTypeReferenceNode(annotation) && ts.isIdentifier(annotation.typeName)
+    ? annotation.typeName.text
+    : null;
+
+const declaredTypeName = (
+  declaration: ts.VariableDeclaration,
+): string | null => {
+  const { initializer, type } = declaration;
+  if (initializer !== undefined && ts.isAsExpression(initializer)) {
+    return typeReferenceName(initializer.type);
+  }
+  return type === undefined ? null : typeReferenceName(type);
+};
+
+const referencedModel = (annotation: ts.TypeNode): string | null => {
+  if (ts.isArrayTypeNode(annotation)) {
+    return referencedModel(annotation.elementType);
+  }
+  return ts.isTypeReferenceNode(annotation) &&
+    ts.isIdentifier(annotation.typeName)
+    ? annotation.typeName.text
+    : null;
+};
+
+const modelFieldType = (
+  annotation: ts.TypeNode,
+  known: ReadonlySet<string>,
+): string | null => {
+  if (ts.isArrayTypeNode(annotation)) {
+    const item = modelFieldType(annotation.elementType, known);
+    return item === null ? null : `List<${item}>`;
+  }
+  if (
+    ts.isTypeReferenceNode(annotation) &&
+    ts.isIdentifier(annotation.typeName)
+  ) {
+    return known.has(annotation.typeName.text)
+      ? annotation.typeName.text
+      : null;
+  }
+  const keyword = MODEL_SCALARS[annotation.getText()];
+  return keyword ?? null;
+};
+
+// Only an interface actually decoded with `json(…) as Model` becomes a Dart
+// data class — plus whatever such an interface references. A props interface
+// is still just a props interface, and is neither emitted nor validated as a
+// model.
+const isJsonCall = (expression: ts.Expression): boolean =>
+  ts.isCallExpression(expression) &&
+  ts.isIdentifier(expression.expression) &&
+  expression.expression.text === 'json';
+
+const jsonTargetNames = (sourceFile: ts.SourceFile): Set<string> => {
+  const targets = new Set<string>();
+  const visit = (node: ts.Node): void => {
+    if (ts.isVariableDeclaration(node)) {
+      const { initializer } = node;
+      const decoded =
+        initializer !== undefined &&
+        (isJsonCall(initializer) ||
+          (ts.isAsExpression(initializer) &&
+            isJsonCall(initializer.expression)));
+      const named = decoded ? declaredTypeName(node) : null;
+      if (named !== null) {
+        targets.add(named);
+      }
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sourceFile);
+  return targets;
+};
+
+const analyzeModels = (sourceFile: ts.SourceFile): ModelBinding[] => {
+  const declarations = sourceFile.statements.filter((statement) =>
+    ts.isInterfaceDeclaration(statement),
+  );
+  const known = new Set(
+    declarations.map((declaration) => declaration.name.text),
+  );
+  // Grow the set until it is closed under references from the targets.
+  const wanted = jsonTargetNames(sourceFile);
+  let added = true;
+  while (added) {
+    added = false;
+    for (const declaration of declarations) {
+      if (!wanted.has(declaration.name.text)) {
+        continue;
+      }
+      for (const member of declaration.members) {
+        const annotation = ts.isPropertySignature(member)
+          ? member.type
+          : undefined;
+        const referenced =
+          annotation === undefined ? null : referencedModel(annotation);
+        if (
+          referenced !== null &&
+          known.has(referenced) &&
+          !wanted.has(referenced)
+        ) {
+          wanted.add(referenced);
+          added = true;
+        }
+      }
+    }
+  }
+  return declarations
+    .filter((declaration) => wanted.has(declaration.name.text))
+    .map((declaration) => ({
+      name: declaration.name.text,
+      fields: declaration.members.map((member) => {
+        const annotation = ts.isPropertySignature(member)
+          ? member.type
+          : undefined;
+        const { name } = member;
+        const dartType =
+          annotation === undefined ? null : modelFieldType(annotation, known);
+        if (dartType === null || name === undefined || !ts.isIdentifier(name)) {
+          throw tsxErrorAt(
+            'TSX0334',
+            `\`${name?.getText() ?? 'this member'}\` has a type the compiler ` +
+              'cannot map to Dart: use a string, number, boolean, another ' +
+              'interface in this file, or a list of those.',
+            { sourceFile, node: member },
+          );
+        }
+        return {
+          name: name.text,
+          dartType,
+          required: member.questionToken === undefined,
+        };
+      }),
+    }));
+};
+
 const analyzeStores = (sourceFile: ts.SourceFile): StoreBinding[] => {
   const stores: StoreBinding[] = [];
   for (const statement of sourceFile.statements) {
@@ -728,6 +914,7 @@ const analyzeComponent = (
     asyncBinding: null,
     storeUse: null,
     navigators: [],
+    locals: [],
     handlers: [],
     effects: [],
     returnJsx,
@@ -785,6 +972,7 @@ export const analyzeSource = (
   const { modules: hookModules, originals: importedOriginals } =
     importedHookModules(sourceFile);
   const stores = analyzeStores(sourceFile);
+  const models = analyzeModels(sourceFile);
   const storeNames = new Set(stores.map((store) => store.name));
 
   const components: ComponentAnalysis[] = [];
@@ -843,7 +1031,15 @@ export const analyzeSource = (
     sourceFile,
     new Set(components.map((component) => component.name)),
   );
-  return { components, stores, router, checker, sourceFile, pluginImports };
+  return {
+    components,
+    stores,
+    router,
+    models,
+    checker,
+    sourceFile,
+    pluginImports,
+  };
 };
 
 export const summarize = (component: ComponentAnalysis): ComponentSummary => ({

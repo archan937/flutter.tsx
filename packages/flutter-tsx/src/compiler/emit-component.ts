@@ -1,7 +1,14 @@
 import { printExpr } from './dart-print';
 import { importsForComponents } from './imports';
-import type { IrComponent, IrMethod, IrRouter, IrStore } from './ir';
-import { irWidgetToDart } from './ir-to-dart';
+import type {
+  IrComponent,
+  IrMethod,
+  IrModel,
+  IrModelField,
+  IrRouter,
+  IrStore,
+} from './ir';
+import { irValueToDart, irWidgetToDart } from './ir-to-dart';
 import type { CompileContext } from './lower';
 import { initStateLines, methodStatementLines } from './statements';
 
@@ -46,13 +53,20 @@ const emitInitState = (component: IrComponent): string[] => {
 };
 
 const buildMethod = (component: IrComponent): string => {
-  const body = printExpr(
-    irWidgetToDart(component.body, { privateMembers: true }),
-    RETURN_SITE,
-  );
+  const naming = { privateMembers: true };
+  const body = printExpr(irWidgetToDart(component.body, naming), RETURN_SITE);
+  const locals = component.buildLocals.map((local) => {
+    const prefix = `final ${local.name} = `;
+    const printed = printExpr(irValueToDart(local.value, naming), {
+      indent: 4,
+      used: 4 + prefix.length,
+      trailing: 1,
+    });
+    return `    ${prefix}${printed};`;
+  });
   return `  @override
   Widget build(BuildContext context) {
-    return ${body};
+${[...locals, `    return ${body};`].join('\n')}
   }`;
 };
 
@@ -196,6 +210,74 @@ const emitStore = (store: IrStore): string => {
   return `${lines.join('\n')}\n\n${instance.join('\n')}`;
 };
 
+// A model renders as the Flutter cookbook's own JSON pattern: a const
+// constructor plus a `fromJson` factory that casts each field out of the
+// decoded map.
+const modelFieldCast = (field: IrModelField): string => {
+  const nullable = field.required ? '' : '?';
+  const key = `json['${field.name}']`;
+  const list = /^List<(.+)>$/.exec(field.dartType);
+  if (list !== null) {
+    return `${field.name}: (${key} as List<dynamic>).cast<${list[1] ?? ''}>(),`;
+  }
+  if (field.isModel) {
+    return `${field.name}: ${field.dartType}.fromJson(${key} as Map<String, dynamic>),`;
+  }
+  return `${field.name}: ${key} as ${field.dartType}${nullable},`;
+};
+
+const modelConstructorLines = (model: IrModel): string[] => {
+  const params = model.fields.map(
+    (field) => `${field.required ? 'required ' : ''}this.${field.name}`,
+  );
+  const inline = `  const ${model.name}({${params.join(', ')}});`;
+  if (inline.length <= 80) {
+    return [inline];
+  }
+  return [
+    `  const ${model.name}({`,
+    ...params.map((param) => `    ${param},`),
+    '  });',
+  ];
+};
+
+// dart format lays out an arrow member in three steps, each tried in turn:
+// all on one line; break after `=>` with the body on one line indented four;
+// otherwise keep the call on the signature line and split its arguments.
+const modelFactoryLines = (model: IrModel): string[] => {
+  const casts = model.fields.map(modelFieldCast);
+  const signature = `  factory ${model.name}.fromJson(Map<String, dynamic> json) =>`;
+  const body = `${model.name}(${casts.join(' ').replace(/,$/, '')});`;
+
+  const oneLine = `${signature} ${body}`;
+  if (oneLine.length <= 80) {
+    return [oneLine];
+  }
+  const brokenBody = `      ${body}`;
+  if (brokenBody.length <= 80) {
+    return [signature, brokenBody];
+  }
+  return [
+    `${signature} ${model.name}(`,
+    ...casts.map((cast) => `    ${cast}`),
+    '  );',
+  ];
+};
+
+const emitModel = (model: IrModel): string =>
+  [
+    `class ${model.name} {`,
+    ...modelConstructorLines(model),
+    '',
+    ...modelFactoryLines(model),
+    '',
+    ...model.fields.map(
+      (field) =>
+        `  final ${field.dartType}${field.required ? '' : '?'} ${field.name};`,
+    ),
+    '}',
+  ].join('\n');
+
 export const GO_ROUTER_IMPORT = 'package:go_router/go_router.dart';
 
 // dart format keeps each GoRoute on one line while it fits, and the routes
@@ -227,6 +309,7 @@ const emitRouter = (router: IrRouter): string => {
 export interface DartFileParts {
   stores?: IrStore[];
   router?: IrRouter | null;
+  models?: IrModel[];
 }
 
 export const emitDartFile = (
@@ -234,8 +317,9 @@ export const emitDartFile = (
   context: CompileContext,
   parts: DartFileParts = {},
 ): string => {
-  const { stores = [], router = null } = parts;
+  const { stores = [], router = null, models = [] } = parts;
   const classes = [
+    ...models.map(emitModel),
     ...stores.map(emitStore),
     ...components.map(emitComponentClass),
     ...(router === null ? [] : [emitRouter(router)]),
@@ -246,7 +330,7 @@ export const emitDartFile = (
       ({ uri, prefix }) =>
         `import '${uri}'${prefix === null ? '' : ` as ${prefix}`};`,
     );
-  const imports = [
+  const directives = [
     ...new Set([
       ...importsForComponents(components, context),
       ...pluginImports,
@@ -255,5 +339,17 @@ export const emitDartFile = (
       ...(router === null ? [] : [`import '${GO_ROUTER_IMPORT}';`]),
     ]),
   ].sort();
+  // Dart convention (and what dart format leaves alone): the dart: group
+  // first, then package:, separated by a blank line.
+  const dartGroup = directives.filter((line) =>
+    line.startsWith("import 'dart:"),
+  );
+  const packageGroup = directives.filter(
+    (line) => !line.startsWith("import 'dart:"),
+  );
+  const imports =
+    dartGroup.length === 0 || packageGroup.length === 0
+      ? directives
+      : [...dartGroup, '', ...packageGroup];
   return `${imports.join('\n')}\n\n${classes.join('\n\n')}\n`;
 };

@@ -461,7 +461,10 @@ describe('printExpr — builder closures', () => {
       guards: [
         {
           condition: 'snapshot.hasError',
-          bind: { name: 'err', code: "'${snapshot.error}'" },
+          bind: {
+            name: 'err',
+            value: identifier("'${snapshot.error}'"),
+          },
           value: call('Text', [identifier('err')]),
         },
         {
@@ -470,8 +473,11 @@ describe('printExpr — builder closures', () => {
           value: call('CircularProgressIndicator', [], { isConst: true }),
         },
       ],
-      bind: { name: 'hasToken', code: 'snapshot.data!' },
-      value: call('Text', [identifier('hasToken')]),
+      binds: [
+        { name: 'hasToken', value: identifier('snapshot.data!') },
+        { name: 'label', value: identifier("hasToken ? 'in' : 'out'") },
+      ],
+      value: call('Text', [identifier('label')]),
     });
 
     expect(printExpr(builder, { indent: 6, used: 15, trailing: 1 })).toBe(
@@ -485,7 +491,8 @@ describe('printExpr — builder closures', () => {
         '          return const CircularProgressIndicator();',
         '        }',
         '        final hasToken = snapshot.data!;',
-        '        return Text(hasToken);',
+        "        final label = hasToken ? 'in' : 'out';",
+        '        return Text(label);',
         '      }',
       ].join('\n'),
     );
@@ -495,7 +502,7 @@ describe('printExpr — builder closures', () => {
     const builder = builderClosure({
       params: ['context', 'snapshot'],
       guards: [],
-      bind: null,
+      binds: [],
       value: call('Text', [stringLit('hi')]),
     });
 

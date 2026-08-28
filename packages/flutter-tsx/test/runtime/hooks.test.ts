@@ -3,6 +3,7 @@ import { describe, expect, test } from 'bun:test';
 import {
   createRouter,
   createStore,
+  json,
   useAsync,
   useEffect,
   useNavigation,
@@ -101,5 +102,15 @@ describe('useNavigation / createRouter (compile-target stubs)', () => {
     const config = createRouter({ '/': Home });
 
     expect(Object.keys(config.routes)).toEqual(['/']);
+  });
+});
+
+describe('json (compile-target stub)', () => {
+  test('parses the body and hands back an unknown to cast', () => {
+    const decoded = json('{"title":"Hello","id":7}');
+
+    // `unknown` is the point: the cast is where the model is named, so the
+    // value cannot be used untyped.
+    expect(decoded).toEqual({ title: 'Hello', id: 7 });
   });
 });

@@ -96,3 +96,19 @@ export interface RouterConfig {
 export const createRouter = (
   routes: Record<string, RouteTarget>,
 ): RouterConfig => ({ routes });
+
+/**
+ * Decodes a JSON body into an interface declared in the same file:
+ *
+ * ```tsx
+ * const album = json(res.body) as Album;
+ * ```
+ *
+ * The transpiler generates a Dart data class with a `fromJson` factory and
+ * rewrites the call to
+ * `Album.fromJson(jsonDecode(res.body) as Map<String, dynamic>)`; at
+ * TypeScript runtime it only needs to parse. `unknown` is deliberate: the
+ * cast is where the model is named, which is how TypeScript code normally
+ * types a parsed body, and it means the value cannot be used untyped.
+ */
+export const json = (body: string): unknown => JSON.parse(body);

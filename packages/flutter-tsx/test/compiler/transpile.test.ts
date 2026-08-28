@@ -418,3 +418,166 @@ final GoRouter router = GoRouter(
 `);
   });
 });
+// The model can be named by the annotation (idiomatic TypeScript) or by an
+// explicit type argument; both decode through the generated class.
+describe('transpileComponent — json models', () => {
+  const source = (local: string): string =>
+    "import { Text, json, useAsync } from 'flutter-tsx';\n" +
+    "import { get } from 'plugin:http';\n" +
+    'interface Album {\n  title: string;\n}\n' +
+    'export const Probe = async () => {\n' +
+    "  const res = await useAsync(() => get('https://x.test/a'), {\n" +
+    '    loading: () => <Text>…</Text>,\n' +
+    '    error: (err) => <Text>{err}</Text>,\n' +
+    '  });\n' +
+    local +
+    '  return <Text>{album.title}</Text>;\n' +
+    '};\n';
+
+  // `as` is how TypeScript normally types a parsed body, and `json` returns
+  // `unknown` so the cast is the only way to name the model.
+  test('the cast names the model that decodes the body', async () => {
+    const annotated = await transpileComponent({
+      source: source('  const album = json(res.body) as Album;\n'),
+      filePath: 'probe.tsx',
+    });
+
+    expect(annotated).toContain(
+      '        final album = Album.fromJson(\n' +
+        '          jsonDecode(res.body) as Map<String, dynamic>,\n' +
+        '        );',
+    );
+  });
+
+  // At 82 columns this factory cannot fit on one line, so dart format breaks
+  // after the arrow and keeps the body whole — verified against the formatter.
+  test('a factory too wide for one line breaks after the arrow', async () => {
+    const dart = await transpileComponent({
+      source:
+        "import { Text, json } from 'flutter-tsx';\n" +
+        'interface Tag {\n  id: string;\n}\n' +
+        'export const Probe = () => {\n' +
+        '  const tag = json(raw) as Tag;\n' +
+        '  return <Text>{tag.id}</Text>;\n' +
+        '};\n',
+      filePath: 'probe.tsx',
+    });
+
+    expect(dart).toContain(
+      '  factory Tag.fromJson(Map<String, dynamic> json) =>\n' +
+        "      Tag(id: json['id'] as String);",
+    );
+    // A non-async component binds its locals at the top of build().
+    expect(dart).toContain(
+      '    final tag = Tag.fromJson(jsonDecode(raw) as Map<String, dynamic>);\n' +
+        '    return Text(tag.id);',
+    );
+  });
+
+  test('a factory that fits stays on one line', async () => {
+    const dart = await transpileComponent({
+      source:
+        "import { Text, json } from 'flutter-tsx';\n" +
+        'interface Hit {\n  n: number;\n}\n' +
+        'export const Probe = () => {\n' +
+        '  const hit = json(raw) as Hit;\n' +
+        '  return <Text>{hit.n}</Text>;\n' +
+        '};\n',
+      filePath: 'probe.tsx',
+    });
+
+    // 78 columns, so it fits — checked against dart format, which leaves it.
+    expect(dart).toContain(
+      '  factory Hit.fromJson(Map<String, dynamic> json) => ' +
+        "Hit(n: json['n'] as num);",
+    );
+  });
+
+  // A local that is no json call must still be declared: emitting a reference
+  // to a name that was never bound would be silently broken Dart.
+  test('a computed local is bound at the top of build', async () => {
+    const dart = await transpileComponent({
+      source:
+        "import { Text, useState } from 'flutter-tsx';\n" +
+        'export const Probe = () => {\n' +
+        '  const [count, setCount] = useState(2);\n' +
+        '  const doubled = count * 2;\n' +
+        '  return <Text>Total: {doubled}</Text>;\n' +
+        '};\n',
+      filePath: 'probe.tsx',
+    });
+
+    expect(dart).toContain(
+      '    final doubled = _count * 2;\n' +
+        "    return Text('Total: $doubled');",
+    );
+  });
+
+  // A read must translate identically wherever it appears. Emitting the TSX
+  // name into a prop produced Dart referring to a name that does not exist.
+  test('a plugin read is translated in a prop, not only in a child', async () => {
+    const dart = await transpileComponent({
+      source:
+        "import { Text } from 'flutter-tsx';\n" +
+        "import { usePackageInfo } from 'plugin:package_info_plus';\n" +
+        'export const Probe = () => {\n' +
+        '  const info = usePackageInfo();\n' +
+        '  return <Text semanticsLabel={info.appName}>hi</Text>;\n' +
+        '};\n',
+      filePath: 'probe.tsx',
+    });
+
+    expect(dart).toContain(
+      "    return Text('hi', semanticsLabel: _info?.appName ?? '');",
+    );
+  });
+
+  // In either position an unresolvable read is refused rather than emitted
+  // verbatim, which would have produced Dart naming something that does not
+  // exist there.
+  test('a read the compiler cannot resolve is a numbered error', () => {
+    expect(
+      transpileComponent({
+        source:
+          "import { Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => <Text>{lookup().name}</Text>;\n',
+        filePath: 'probe.tsx',
+      }),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0305 probe.tsx:2:35 — this expression is not compiled yet ' +
+          '(roadmap step 18).',
+      ),
+    );
+
+    expect(
+      transpileComponent({
+        source:
+          "import { Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => (\n' +
+          '  <Text semanticsLabel={lookup().name}>hi</Text>\n' +
+          ');\n',
+        filePath: 'probe.tsx',
+      }),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0305 probe.tsx:3:25 — this expression is not compiled yet ' +
+          '(roadmap step 18).',
+      ),
+    );
+  });
+
+  test('json without a cast to a model is a numbered error', () => {
+    expect(
+      transpileComponent({
+        source: source('  const album = json(res.body);\n'),
+        filePath: 'probe.tsx',
+      }),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0335 probe.tsx:11:17 — `json` needs an interface from this file ' +
+          'and a body: `json(res.body) as Album`.',
+      ),
+    );
+  });
+});

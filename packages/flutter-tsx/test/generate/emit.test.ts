@@ -748,3 +748,54 @@ describe('emitWidgetsFile — gesture props', () => {
     ]);
   });
 });
+// The IDE has to guide icon choices: a bare `string` offers no completion and
+// catches a typo only at compile time, so the SDK's own Icons names become a
+// union type.
+describe('emitConstantsFile — IconName', () => {
+  const withIcons: ApiSnapshot = {
+    ...snapshot,
+    entities: [
+      ...snapshot.entities,
+      {
+        kind: 'class',
+        name: 'Icons',
+        library: 'material',
+        doc: '',
+        supertypes: [],
+        constructors: [],
+        constants: [
+          {
+            name: 'home',
+            type: { kind: 'named', name: 'IconData' },
+            display: 'IconData',
+            doc: '',
+          },
+          {
+            name: 'person',
+            type: { kind: 'named', name: 'IconData' },
+            display: 'IconData',
+            doc: '',
+          },
+          {
+            name: 'ac_unit',
+            type: { kind: 'named', name: 'IconData' },
+            display: 'IconData',
+            doc: '',
+          },
+        ],
+      },
+    ],
+  };
+
+  test('emits every Icons name as a union, sorted', () => {
+    const emitted = emitConstantsFile(withIcons);
+
+    expect(emitted).toContain(
+      "export type IconName = 'ac_unit' | 'home' | 'person';",
+    );
+  });
+
+  test('a snapshot without Icons emits no IconName', () => {
+    expect(emitConstantsFile(snapshot)).not.toContain('IconName');
+  });
+});

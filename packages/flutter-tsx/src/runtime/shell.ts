@@ -1,6 +1,7 @@
 // Framework shells: JSX elements the compiler expands into a Flutter widget
 // tree rather than mapping one-to-one onto an SDK widget. They are declared
 // here, not generated, because no SDK entity corresponds to them.
+import type { IconName } from '../generated/constants';
 import { declareWidget } from './component';
 import type { FlutterChild, FlutterChildren, FlutterComponent } from './types';
 
@@ -11,8 +12,12 @@ import type { FlutterChild, FlutterChildren, FlutterComponent } from './types';
 export interface TabItemProps {
   /** Text under the icon in the bar. */
   label: string;
-  /** An icon name from the SDK's `Icons`, e.g. `"home"`. */
-  icon: string;
+  /**
+   * An icon from the SDK's `Icons`, e.g. `"home"`. Typed as a union of every
+   * name the installed SDK provides, so the IDE completes it and a typo is
+   * caught where it is written.
+   */
+  icon: IconName;
   /** The page this tab shows. */
   children: FlutterChild;
 }

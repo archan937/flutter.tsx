@@ -14,6 +14,7 @@ export type {
 export {
   createRouter,
   createStore,
+  json,
   useAsync,
   useEffect,
   useNavigation,

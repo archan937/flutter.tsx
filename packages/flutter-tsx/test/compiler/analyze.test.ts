@@ -776,3 +776,83 @@ describe('analyzeSource — createRouter / useNavigation', () => {
     );
   });
 });
+describe('analyzeSource — JSON models', () => {
+  const modelSource =
+    "import { Text, json, useAsync } from 'flutter-tsx';\n" +
+    'interface Author {\n  name: string;\n}\n' +
+    'interface Album {\n' +
+    '  id: number;\n' +
+    '  title: string;\n' +
+    '  tags: string[];\n' +
+    '  author: Author;\n' +
+    '  subtitle?: string;\n' +
+    '}\n' +
+    'export const Probe = () => {\n' +
+    '  const album = json(raw) as Album;\n' +
+    '  return <Text>{album.title}</Text>;\n' +
+    '};\n';
+
+  test('an interface becomes a model with typed fields', () => {
+    const analysis = analyzeSource(modelSource, 'probe.tsx');
+
+    expect(analysis.models).toEqual([
+      {
+        name: 'Author',
+        fields: [{ name: 'name', dartType: 'String', required: true }],
+      },
+      {
+        name: 'Album',
+        fields: [
+          // JSON numbers may be int or double, and `as double` throws on an
+          // integer, so num is the only safe mapping.
+          { name: 'id', dartType: 'num', required: true },
+          { name: 'title', dartType: 'String', required: true },
+          { name: 'tags', dartType: 'List<String>', required: true },
+          { name: 'author', dartType: 'Author', required: true },
+          { name: 'subtitle', dartType: 'String', required: false },
+        ],
+      },
+    ]);
+  });
+
+  test('a component body records its locals in order', () => {
+    const analysis = analyzeSource(modelSource, 'probe.tsx');
+    const locals = analysis.components[0]?.locals ?? [];
+
+    expect(locals.map((local) => local.name)).toEqual(['album']);
+    expect(locals[0]?.expression.getText()).toBe('json(raw) as Album');
+  });
+
+  test('an interface that is never decoded is not a model', () => {
+    // A props interface stays a props interface: no Dart class, and no
+    // model validation applied to it.
+    const analysis = analyzeSource(
+      "import { Text } from 'flutter-tsx';\n" +
+        'interface TaskProps {\n  title: string;\n}\n' +
+        'export const Probe = ({ title }: TaskProps) => <Text>{title}</Text>;\n',
+      'probe.tsx',
+    );
+
+    expect(analysis.models).toEqual([]);
+  });
+
+  test('a field type the compiler cannot map is a numbered error', () => {
+    expect(() =>
+      analyzeSource(
+        "import { Text, json } from 'flutter-tsx';\n" +
+          'interface Bad {\n  when: Date;\n}\n' +
+          'export const Probe = () => {\n' +
+          '  const bad = json(raw) as Bad;\n' +
+          '  return <Text>hi</Text>;\n' +
+          '};\n',
+        'probe.tsx',
+      ),
+    ).toThrow(
+      new Error(
+        'TSX0334 probe.tsx:3:3 — `when` has a type the compiler cannot map ' +
+          'to Dart: use a string, number, boolean, another interface in this ' +
+          'file, or a list of those.',
+      ),
+    );
+  });
+});
