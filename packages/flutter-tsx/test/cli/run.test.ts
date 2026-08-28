@@ -1,6 +1,17 @@
+import { mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+
 import { describe, expect, test } from 'bun:test';
 
-import { type CliIo, defaultCliIo, formatError, runCli } from '@src/cli/run';
+import { defaultInitDeps } from '@src/cli/init';
+import {
+  buildCommands,
+  type CliIo,
+  defaultCliIo,
+  formatError,
+  runCli,
+} from '@src/cli/run';
 
 interface CapturedIo extends CliIo {
   outLines: string[];
@@ -24,10 +35,11 @@ const captureIo = (): CapturedIo => {
 };
 
 const EXPECTED_USAGE = [
-  'Usage: fsx <command>',
+  'Usage: fsx <command> [arguments]',
   '',
   'Commands:',
-  '  install   Download the pinned Flutter SDK to ~/.fsx/flutter',
+  '  install        Download the pinned Flutter SDK to ~/.fsx/flutter',
+  '  init <dir>     Scaffold a new Flutter.tsx project',
 ].join('\n');
 
 describe('runCli', () => {
@@ -86,5 +98,96 @@ describe('runCli', () => {
       defaultCliIo.out('fsx test line (stdout)');
       defaultCliIo.err('fsx test line (stderr)');
     }).not.toThrow();
+  });
+});
+
+describe('runCli — command arguments', () => {
+  test('passes everything after the command to the runner', async () => {
+    const io = captureIo();
+    const seen: string[][] = [];
+
+    const code = await runCli(['init', 'demo-app', '--flag'], io, {
+      init: (args) => {
+        seen.push(args);
+        return Promise.resolve();
+      },
+    });
+
+    expect(code).toBe(0);
+    expect(seen).toEqual([['demo-app', '--flag']]);
+  });
+});
+
+describe('runCli — the built-in init command', () => {
+  test('reports the missing directory instead of scaffolding nowhere', async () => {
+    const io = captureIo();
+
+    const code = await runCli(['init'], io);
+
+    expect(code).toBe(1);
+    expect(io.errLines).toEqual([
+      'fsx init needs a directory: `fsx init my-app`.',
+    ]);
+  });
+
+  test('refuses to scaffold before the SDK is installed', async () => {
+    const home = await mkdtemp(join(tmpdir(), 'fsx-run-'));
+    const previous = process.env.FSX_HOME;
+    process.env.FSX_HOME = home;
+    const io = captureIo();
+    try {
+      const code = await runCli(['init', join(home, 'demo')], io);
+
+      expect(code).toBe(1);
+      expect(io.errLines).toEqual([
+        'the Flutter SDK is not installed — run `fsx install` first.',
+      ]);
+    } finally {
+      if (previous === undefined) delete process.env.FSX_HOME;
+      else process.env.FSX_HOME = previous;
+      await rm(home, { recursive: true, force: true });
+    }
+  });
+});
+
+describe('buildCommands', () => {
+  test('runs the install command it was given', async () => {
+    const io = captureIo();
+    let installs = 0;
+
+    const code = await runCli(
+      ['install'],
+      io,
+      buildCommands(() => {
+        installs += 1;
+        return Promise.resolve();
+      }),
+    );
+
+    expect(code).toBe(0);
+    expect(installs).toBe(1);
+  });
+
+  test('hands init the directory and the real dependency set', async () => {
+    const io = captureIo();
+    const calls: string[] = [];
+    const deps = defaultInitDeps();
+
+    const code = await runCli(
+      ['init', 'my-app'],
+      io,
+      buildCommands(
+        () => Promise.resolve(),
+        (directory, given) => {
+          calls.push(directory);
+          expect(given).toBe(deps);
+          return Promise.resolve();
+        },
+        () => deps,
+      ),
+    );
+
+    expect(code).toBe(0);
+    expect(calls).toEqual(['my-app']);
   });
 });

@@ -1,6 +1,7 @@
 export const FLUTTER_TSX_VERSION = '1.0.0-alpha.0';
 
 export * from './generated';
+export type { AppConfig, AppTarget } from './runtime/config';
 export type {
   AsyncOptions,
   EffectCleanup,

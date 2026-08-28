@@ -83,3 +83,7 @@ export const replaceDir = async (
 };
 
 export const isoNow = (): string => new Date().toISOString();
+
+/** Runs a command, streaming its output, and resolves with the exit code. */
+export const runProcess = (command: string[], cwd: string): Promise<number> =>
+  Bun.spawn(command, { cwd, stdout: 'inherit', stderr: 'inherit' }).exited;
