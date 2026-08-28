@@ -40,6 +40,7 @@ const EXPECTED_USAGE = [
   'Commands:',
   '  install        Download the pinned Flutter SDK to ~/.fsx/flutter',
   '  init <dir>     Scaffold a new Flutter.tsx project',
+  '  dev            Compile, run and hot reload the app here',
 ].join('\n');
 
 describe('runCli', () => {
@@ -158,9 +159,11 @@ describe('buildCommands', () => {
     const code = await runCli(
       ['install'],
       io,
-      buildCommands(() => {
-        installs += 1;
-        return Promise.resolve();
+      buildCommands({
+        install: () => {
+          installs += 1;
+          return Promise.resolve();
+        },
       }),
     );
 
@@ -176,18 +179,39 @@ describe('buildCommands', () => {
     const code = await runCli(
       ['init', 'my-app'],
       io,
-      buildCommands(
-        () => Promise.resolve(),
-        (directory, given) => {
+      buildCommands({
+        install: () => Promise.resolve(),
+        init: (directory, given) => {
           calls.push(directory);
           expect(given).toBe(deps);
           return Promise.resolve();
         },
-        () => deps,
-      ),
+        initDeps: () => deps,
+      }),
     );
 
     expect(code).toBe(0);
     expect(calls).toEqual(['my-app']);
+  });
+});
+
+describe('buildCommands — dev', () => {
+  test('runs dev in the working directory', async () => {
+    const io = captureIo();
+    const directories: string[] = [];
+
+    const code = await runCli(
+      ['dev'],
+      io,
+      buildCommands({
+        dev: (projectDir) => {
+          directories.push(projectDir);
+          return Promise.resolve();
+        },
+      }),
+    );
+
+    expect(code).toBe(0);
+    expect(directories).toEqual([process.cwd()]);
   });
 });

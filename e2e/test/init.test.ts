@@ -3,19 +3,14 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 import { describe, expect, test } from 'bun:test';
-import { defaultInitDeps, runInitCommand } from 'flutter-tsx/cli';
-import { transpileComponent } from 'flutter-tsx/compiler';
+import {
+  defaultDevDeps,
+  defaultInitDeps,
+  loadAppConfig,
+  runInitCommand,
+} from 'flutter-tsx/cli';
 
 import { buildWeb, flutterBin, run } from './support/flutter-app';
-
-const MAIN_DART = `import 'package:flutter/material.dart';
-
-import 'app.dart';
-
-void main() {
-  runApp(const MaterialApp(home: Scaffold(body: Center(child: App()))));
-}
-`;
 
 // The scaffolder's guarantee: what `fsx init` produces is a project that
 // really builds — the starter component transpiles and the app compiles for
@@ -49,16 +44,24 @@ describe('fsx init produces a project that builds', () => {
     expect(manifest.name).toBe('demo_app');
     expect(manifest.plugins).toEqual({});
 
-    // The starter component is real TSX that the compiler accepts.
-    const inputPath = join(appDir, 'src', 'App.tsx');
-    const generated = await transpileComponent({
-      source: await Bun.file(inputPath).text(),
-      filePath: inputPath,
+    // `fsx dev` compiles the scaffolded project: every component plus the
+    // entry point that runs it. Nothing is hand-written here.
+    const config = await loadAppConfig(appDir);
+    expect(config).toEqual({
+      name: 'demo_app',
+      bundleId: 'dev.fluttertsx.demoapp',
+      target: 'web',
     });
-    expect(generated).toContain('class App extends StatefulWidget');
 
-    await Bun.write(join(appDir, 'lib', 'app.dart'), generated);
-    await Bun.write(join(appDir, 'lib', 'main.dart'), MAIN_DART);
+    const built = await defaultDevDeps(flutterBin).build(appDir, config);
+    expect(built).toEqual(['app.dart']);
+
+    expect(await Bun.file(join(appDir, 'lib', 'app.dart')).text()).toContain(
+      'class App extends StatefulWidget',
+    );
+    expect(await Bun.file(join(appDir, 'lib', 'main.dart')).text()).toContain(
+      "title: 'demo_app',",
+    );
     await rm(join(appDir, 'test'), { recursive: true, force: true });
 
     const analyzed = await run([flutterBin, 'analyze', '--no-pub'], appDir);

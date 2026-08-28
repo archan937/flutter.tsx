@@ -1,3 +1,4 @@
+import { defaultDev } from './dev-command';
 import { defaultInitDeps, runInitCommand } from './init';
 import { runInstallCommand } from './install';
 
@@ -21,11 +22,20 @@ export const defaultCliIo: CliIo = {
  * The command table, with its runners injectable so the wiring itself can be
  * driven by tests without shelling out to the network or the Flutter SDK.
  */
-export const buildCommands = (
-  install: typeof runInstallCommand = runInstallCommand,
-  init: typeof runInitCommand = runInitCommand,
-  initDeps: typeof defaultInitDeps = defaultInitDeps,
-): Record<string, CommandRunner> => ({
+export interface CommandRunners {
+  install?: typeof runInstallCommand;
+  init?: typeof runInitCommand;
+  initDeps?: typeof defaultInitDeps;
+  dev?: (projectDir: string) => Promise<void>;
+}
+
+export const buildCommands = ({
+  install = runInstallCommand,
+  init = runInitCommand,
+  initDeps = defaultInitDeps,
+  dev = defaultDev,
+}: CommandRunners = {}): Record<string, CommandRunner> => ({
+  dev: () => dev(process.cwd()),
   install: async (): Promise<void> => {
     await install();
   },
@@ -46,6 +56,7 @@ const USAGE = [
   'Commands:',
   '  install        Download the pinned Flutter SDK to ~/.fsx/flutter',
   '  init <dir>     Scaffold a new Flutter.tsx project',
+  '  dev            Compile, run and hot reload the app here',
 ].join('\n');
 
 export const formatError = (error: unknown): string =>
