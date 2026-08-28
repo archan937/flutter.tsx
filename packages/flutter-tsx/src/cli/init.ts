@@ -1,7 +1,11 @@
 import { homedir } from 'node:os';
 import { basename, join, resolve } from 'node:path';
 
-import { pathExists as fileExists, runProcess } from '../sdk/io';
+import {
+  commandRunner,
+  pathExists as fileExists,
+  writeTextFile,
+} from '../sdk/io';
 import { resolveFsxPaths } from '../sdk/manifest';
 import { DEFAULT_SCAFFOLD_VERSION, scaffoldFiles } from './scaffold';
 
@@ -87,10 +91,8 @@ export const defaultInitDeps = (): InitDeps => {
   return {
     sdkInstalled: () => fileExists(flutterBin),
     pathExists: fileExists,
-    writeFile: async (path, contents): Promise<void> => {
-      await Bun.write(path, contents);
-    },
-    runFlutter: (args, cwd) => runProcess([flutterBin, ...args], cwd),
+    writeFile: writeTextFile,
+    runFlutter: commandRunner(flutterBin),
     out: (line): void => {
       process.stdout.write(`${line}\n`);
     },

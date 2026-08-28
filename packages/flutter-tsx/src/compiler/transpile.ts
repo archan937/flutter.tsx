@@ -26,6 +26,12 @@ import {
 export interface TranspileInput {
   source: string;
   filePath: string;
+  /**
+   * Directories holding plugin APIs extracted for this project by
+   * `fsx install`, searched before the reference set bundled with this
+   * package.
+   */
+  pluginApiDirs?: readonly string[];
 }
 
 let contextPromise: Promise<CompileContext> | undefined;
@@ -61,6 +67,7 @@ interface LoadedPlugins {
 
 const loadPlugins = async (
   analysis: SourceAnalysis,
+  pluginApiDirs: readonly string[],
 ): Promise<LoadedPlugins> => {
   const packages = [
     ...new Set([
@@ -78,7 +85,7 @@ const loadPlugins = async (
   const prefixedTypes = new Map<string, string>();
   const apis = new Map<string, PluginApi>();
   for (const packageName of packages) {
-    const api = await loadPluginApi(packageName);
+    const api = await loadPluginApi(packageName, pluginApiDirs);
     apis.set(packageName, api);
     for (const entity of api.enums) {
       pluginEnums.set(entity.name, new Set(entity.values));
@@ -149,7 +156,7 @@ export const transpileComponent = async (
         lowerModel(model, new Set(analysis.models.map((each) => each.name))),
       ]),
     ),
-    ...(await loadPlugins(analysis)),
+    ...(await loadPlugins(analysis, input.pluginApiDirs ?? [])),
   };
   const components = analysis.components.map((component) => {
     requireSupported(component);

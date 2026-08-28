@@ -1,15 +1,22 @@
 import { homedir } from 'node:os';
+import { join } from 'node:path';
 
+import { createPluginExtractor } from '../plugins/extract';
+import { syncProjectPlugins } from '../plugins/sync';
 import { type InstallDeps, installSdk } from '../sdk/install';
 import {
+  commandRunner,
   download,
   ensureDir,
   extract,
   fetchJson,
   isoNow,
   pathExists,
+  readTextFile,
   remove,
   replaceDir,
+  runProcess,
+  writeTextFile,
 } from '../sdk/io';
 import { readManifest, resolveFsxPaths, writeManifest } from '../sdk/manifest';
 import { resolveReleaseTarget } from '../sdk/platform';
@@ -42,8 +49,55 @@ export const writeProgress = (received: number, total: number | null): void => {
   process.stdout.write(`\r  ${formatProgress(received, total)}`);
 };
 
+/**
+ * The second half of `fsx install`: bringing the current project's plugins in
+ * line with its package.json. Injected so the command can be driven without a
+ * project on disk.
+ */
+export interface PluginPhase {
+  projectDir: string;
+  hasManifest: (projectDir: string) => Promise<boolean>;
+  sync: (projectDir: string) => Promise<void>;
+  out: (line: string) => void;
+}
+
+export const defaultPluginPhase = (): PluginPhase => {
+  const paths = resolveFsxPaths(process.env, homedir());
+  const flutterBin = join(paths.sdkDir, 'bin', 'flutter');
+  const dartBin = join(paths.sdkDir, 'bin', 'dart');
+  const extractorDir = new URL('../../extractor', import.meta.url).pathname;
+  const cacheDir = join(paths.home, 'plugins');
+
+  return {
+    projectDir: process.cwd(),
+    hasManifest: (projectDir) => pathExists(join(projectDir, 'package.json')),
+    sync: (projectDir) =>
+      syncProjectPlugins(projectDir, {
+        readFile: readTextFile,
+        writeFile: writeTextFile,
+        removeFile: remove,
+        pathExists,
+        runFlutter: commandRunner(flutterBin),
+        extractPlugin: createPluginExtractor({
+          flutterBin,
+          dartBin,
+          dartSdkPath: join(paths.sdkDir, 'bin', 'cache', 'dart-sdk'),
+          extractorDir,
+          cacheDir,
+          runProcess,
+          pathExists,
+          ensureDir,
+        }),
+        cacheDir,
+        out: writeLine,
+      }),
+    out: writeLine,
+  };
+};
+
 export const runInstallCommand = async (
   overrides: Partial<InstallDeps> = {},
+  plugins: PluginPhase = defaultPluginPhase(),
 ): Promise<void> => {
   await installSdk({
     paths: resolveFsxPaths(process.env, homedir()),
@@ -66,4 +120,11 @@ export const runInstallCommand = async (
     ...(process.stdout.isTTY ? { onProgress: writeProgress } : {}),
     ...overrides,
   });
+
+  const { projectDir } = plugins;
+  if (!(await plugins.hasManifest(projectDir))) {
+    plugins.out(`No package.json in ${projectDir} — installed the SDK only.`);
+    return;
+  }
+  await plugins.sync(projectDir);
 };

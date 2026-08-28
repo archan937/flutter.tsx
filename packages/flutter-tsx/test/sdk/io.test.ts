@@ -5,14 +5,17 @@ import { join } from 'node:path';
 import { afterAll, describe, expect, test } from 'bun:test';
 
 import {
+  commandRunner,
   download,
   ensureDir,
   extract,
   fetchJson,
   isoNow,
   pathExists,
+  readTextFile,
   remove,
   replaceDir,
+  writeTextFile,
 } from '@src/sdk/io';
 
 const PAYLOAD = 'flutter archive payload';
@@ -199,6 +202,27 @@ describe('pathExists / ensureDir / remove / replaceDir', () => {
     expect(await pathExists(join(destination, 'new.txt'))).toBe(true);
     expect(await pathExists(join(destination, 'old.txt'))).toBe(false);
     expect(await pathExists(source)).toBe(false);
+  });
+});
+
+describe('readTextFile / writeTextFile', () => {
+  test('round-trips a file, creating parent directories', async () => {
+    const dir = await mkdtemp(join(tmpdir(), 'fsx-io-text-'));
+    const path = join(dir, 'nested', 'note.txt');
+
+    expect(await readTextFile(path)).toBeNull();
+
+    await writeTextFile(path, 'written');
+
+    expect(await readTextFile(path)).toBe('written');
+  });
+});
+
+describe('commandRunner', () => {
+  test('prefixes the binary and reports the exit code', async () => {
+    const dir = await mkdtemp(join(tmpdir(), 'fsx-io-run-'));
+
+    expect(await commandRunner('/bin/sh')(['-c', 'exit 4'], dir)).toBe(4);
   });
 });
 

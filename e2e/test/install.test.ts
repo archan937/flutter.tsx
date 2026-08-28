@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp } from 'node:fs/promises';
+import { mkdir, mkdtemp, realpath } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -47,13 +47,17 @@ interface CliRun {
 const runFsxInstall = async (
   fsxHome: string,
   baseUrl: string,
+  cwd: string,
 ): Promise<CliRun> => {
-  const proc = Bun.spawn(['bun', 'bin/fsx.ts', 'install'], {
-    cwd: packageDir,
-    env: { ...process.env, FSX_HOME: fsxHome, FSX_RELEASES_URL: baseUrl },
-    stdout: 'pipe',
-    stderr: 'pipe',
-  });
+  const proc = Bun.spawn(
+    ['bun', join(packageDir, 'bin', 'fsx.ts'), 'install'],
+    {
+      cwd,
+      env: { ...process.env, FSX_HOME: fsxHome, FSX_RELEASES_URL: baseUrl },
+      stdout: 'pipe',
+      stderr: 'pipe',
+    },
+  );
   const [stdout, stderr, exitCode] = await Promise.all([
     new Response(proc.stdout).text(),
     new Response(proc.stderr).text(),
@@ -115,9 +119,14 @@ afterAll(async () => {
 describe('fsx install (hermetic end to end)', () => {
   test('installs, verifies, and is idempotent through the real CLI', async () => {
     const fsxHome = await mkdtemp(join(tmpdir(), 'fsx-e2e-home-'));
+    // Run outside any project so this stays a pure SDK-install test. The real
+    // path is what the CLI reports, since macOS resolves /var to /private/var.
+    const outsideProject = await realpath(
+      await mkdtemp(join(tmpdir(), 'fsx-e2e-outside-')),
+    );
     const { origin } = server.url;
 
-    const firstRun = await runFsxInstall(fsxHome, origin);
+    const firstRun = await runFsxInstall(fsxHome, origin, outsideProject);
 
     expect(firstRun.stderr).toBe('');
     expect(firstRun.exitCode).toBe(0);
@@ -126,7 +135,8 @@ describe('fsx install (hermetic end to end)', () => {
         `${releaseTarget.os}-${releaseTarget.arch}…\n` +
         `Downloading ${origin}/${ARCHIVE_PATH}…\n` +
         'Extracting…\n' +
-        `Flutter ${FLUTTER_VERSION} installed at ${fsxHome}/flutter\n`,
+        `Flutter ${FLUTTER_VERSION} installed at ${fsxHome}/flutter\n` +
+        `No package.json in ${outsideProject} — installed the SDK only.\n`,
     );
 
     const installedBinary = join(fsxHome, 'flutter', 'bin', 'flutter');
@@ -145,19 +155,24 @@ describe('fsx install (hermetic end to end)', () => {
       /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/,
     );
 
-    const secondRun = await runFsxInstall(fsxHome, origin);
+    const secondRun = await runFsxInstall(fsxHome, origin, outsideProject);
 
     expect(secondRun.stderr).toBe('');
     expect(secondRun.exitCode).toBe(0);
     expect(secondRun.stdout).toBe(
-      `Flutter ${FLUTTER_VERSION} already installed at ${fsxHome}/flutter\n`,
+      `Flutter ${FLUTTER_VERSION} already installed at ${fsxHome}/flutter\n` +
+        `No package.json in ${outsideProject} — installed the SDK only.\n`,
     );
   });
 
   test('rejects a tampered checksum through the real CLI', async () => {
     const fsxHome = await mkdtemp(join(tmpdir(), 'fsx-e2e-tampered-'));
 
-    const run = await runFsxInstall(fsxHome, `${server.url.origin}/bad`);
+    const run = await runFsxInstall(
+      fsxHome,
+      `${server.url.origin}/bad`,
+      await mkdtemp(join(tmpdir(), 'fsx-e2e-outside-')),
+    );
 
     expect(run.exitCode).toBe(1);
     expect(run.stderr).toBe(

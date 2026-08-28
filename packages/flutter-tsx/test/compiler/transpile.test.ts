@@ -267,6 +267,22 @@ describe('transpileComponent — plugins', () => {
     ).toBe(expected);
   });
 
+  test('a plugin call inline in a gesture handler compiles', async () => {
+    const source = await Bun.file(
+      new URL('../fixtures/27-inline-plugin-call/input.tsx', import.meta.url),
+    ).text();
+    const expected = await Bun.file(
+      new URL(
+        '../fixtures/27-inline-plugin-call/expected.dart',
+        import.meta.url,
+      ),
+    ).text();
+
+    expect(
+      await transpileComponent({ source, filePath: 'inline_link.tsx' }),
+    ).toBe(expected);
+  });
+
   test('hook options override the derived defaults', async () => {
     const source = await Bun.file(
       new URL('../fixtures/10-camera-options/input.tsx', import.meta.url),
@@ -307,8 +323,8 @@ describe('transpileComponent — plugins', () => {
       }),
     ).rejects.toThrow(
       new Error(
-        'plugins/rocketry.json does not exist — run ' +
-          '`bun run extract:plugin rocketry` first.',
+        `no extracted API for rocketry — add it to the "plugins" map in ` +
+          'package.json and run `fsx install`.',
       ),
     );
   });

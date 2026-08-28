@@ -87,3 +87,23 @@ export const isoNow = (): string => new Date().toISOString();
 /** Runs a command, streaming its output, and resolves with the exit code. */
 export const runProcess = (command: string[], cwd: string): Promise<number> =>
   Bun.spawn(command, { cwd, stdout: 'inherit', stderr: 'inherit' }).exited;
+
+/** Reads a file, or resolves null when it does not exist. */
+export const readTextFile = async (path: string): Promise<string | null> => {
+  const file = Bun.file(path);
+  return (await file.exists()) ? await file.text() : null;
+};
+
+/** Writes a file, creating its parent directories. */
+export const writeTextFile = async (
+  path: string,
+  contents: string,
+): Promise<void> => {
+  await Bun.write(path, contents);
+};
+
+/** Builds a runner that invokes one binary with varying arguments. */
+export const commandRunner =
+  (binary: string) =>
+  (args: string[], cwd: string): Promise<number> =>
+    runProcess([binary, ...args], cwd);

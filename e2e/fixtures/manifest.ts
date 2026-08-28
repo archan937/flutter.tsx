@@ -203,4 +203,10 @@ export const FIXTURE_APPS: FixtureApp[] = [
     deps: ['http'],
     behavior: true,
   },
+  {
+    id: '27-inline-plugin-call',
+    component: 'InlineLink',
+    dartFile: 'inline_link.dart',
+    deps: ['url_launcher'],
+  },
 ];

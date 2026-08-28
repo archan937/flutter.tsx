@@ -600,7 +600,7 @@ const lowerArrowFunction = (
   return {
     kind: 'closure',
     params,
-    statements: lowerBodyStatements(arrow.body, context),
+    statements: lowerBodyStatements(arrow.body, context, true),
   };
 };
 

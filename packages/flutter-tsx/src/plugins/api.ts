@@ -236,20 +236,36 @@ export const manifestRequirements = (
   };
 };
 
+/**
+ * Loads a plugin's extracted API.
+ *
+ * `searchDirs` holds project extractions written by `fsx install`, which take
+ * precedence: a project's resolved version of a plugin describes it better
+ * than the reference set bundled with this package, and covers plugins the
+ * bundle has never seen.
+ */
 export const loadPluginApi = async (
   packageName: string,
+  searchDirs: readonly string[] = [],
 ): Promise<PluginApi> => {
-  const location = new URL(
+  const bundled = new URL(
     `../../ref/plugins/${packageName}.json`,
     import.meta.url,
   ).pathname;
-  const file = Bun.file(location);
-  if (!(await file.exists())) {
-    throw new Error(
-      `plugins/${packageName}.json does not exist — run ` +
-        `\`bun run extract:plugin ${packageName}\` first.`,
-    );
+
+  for (const location of [
+    ...searchDirs.map((dir) => `${dir}/${packageName}.json`),
+    bundled,
+  ]) {
+    const file = Bun.file(location);
+    if (await file.exists()) {
+      const document: unknown = await file.json();
+      return parsePluginApi(document, location);
+    }
   }
-  const document: unknown = await file.json();
-  return parsePluginApi(document, `plugins/${packageName}.json`);
+
+  throw new Error(
+    `no extracted API for ${packageName} — add it to the "plugins" map in ` +
+      'package.json and run `fsx install`.',
+  );
 };

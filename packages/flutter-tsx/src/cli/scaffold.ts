@@ -45,7 +45,7 @@ const tsconfigJson = (): string => `{
     "skipLibCheck": true,
     "types": []
   },
-  "include": ["src", "fsx.config.ts"]
+  "include": ["src", "fsx.config.ts", ".fsx/types"]
 }
 `;
 

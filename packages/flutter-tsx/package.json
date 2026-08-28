@@ -2,7 +2,7 @@
   "name": "flutter-tsx",
   "version": "1.0.0-alpha.0",
   "private": true,
-  "description": "Write Flutter apps in TypeScript + JSX with full IDE autocomplete — idiomatic TSX transpiles to idiomatic Dart.",
+  "description": "Write Flutter apps in TypeScript + JSX with full IDE autocomplete \u2014 idiomatic TSX transpiles to idiomatic Dart.",
   "keywords": [
     "flutter",
     "dart",
@@ -34,7 +34,7 @@
     "./jsx-runtime": "./src/runtime/jsx-runtime.ts",
     "./jsx-dev-runtime": "./src/runtime/jsx-dev-runtime.ts",
     "./compiler": "./src/compiler/transpile.ts",
-    "./cli": "./src/cli/init.ts"
+    "./cli": "./src/cli/index.ts"
   },
   "scripts": {
     "typecheck": "tsc",

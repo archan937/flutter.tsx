@@ -38,6 +38,7 @@ const GREEN_FIXTURES = new Set([
   '24-animated',
   '25-http-get',
   '26-json-model',
+  '27-inline-plugin-call',
 ]);
 
 const fixtures = await listFixtures();

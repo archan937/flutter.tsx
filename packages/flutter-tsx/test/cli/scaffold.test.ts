@@ -63,7 +63,7 @@ describe('scaffoldFiles', () => {
     "skipLibCheck": true,
     "types": []
   },
-  "include": ["src", "fsx.config.ts"]
+  "include": ["src", "fsx.config.ts", ".fsx/types"]
 }
 `,
     );

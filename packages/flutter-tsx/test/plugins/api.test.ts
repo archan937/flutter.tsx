@@ -1,3 +1,7 @@
+import { mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+
 import { describe, expect, test } from 'bun:test';
 
 import {
@@ -110,8 +114,8 @@ describe('loadPluginApi — committed camera api', () => {
   test('a plugin without a committed api is a loud error', () => {
     expect(loadPluginApi('nonexistent')).rejects.toThrow(
       new Error(
-        'plugins/nonexistent.json does not exist — run ' +
-          '`bun run extract:plugin nonexistent` first.',
+        `no extracted API for nonexistent — add it to the "plugins" map in ` +
+          'package.json and run `fsx install`.',
       ),
     );
   });
@@ -209,5 +213,32 @@ describe('manifestRequirements — what a host app must declare', () => {
         'ghost: no example Info.plist found',
       ],
     });
+  });
+});
+
+describe('loadPluginApi — project extractions', () => {
+  test('prefers a project extraction over the bundled reference set', async () => {
+    const dir = await mkdtemp(join(tmpdir(), 'fsx-api-'));
+    const bundled = await loadPluginApi('camera');
+    const raw = (await Bun.file(
+      new URL('../../ref/plugins/camera.json', import.meta.url).pathname,
+    ).json()) as Record<string, unknown>;
+    await Bun.write(
+      join(dir, 'camera.json'),
+      JSON.stringify({ ...raw, version: '99.0.0' }),
+    );
+
+    expect((await loadPluginApi('camera', [dir])).version).toBe('99.0.0');
+    expect(bundled.version).not.toBe('99.0.0');
+
+    await rm(dir, { recursive: true, force: true });
+  });
+
+  test('falls back to the bundled set when the project has no extraction', async () => {
+    const dir = await mkdtemp(join(tmpdir(), 'fsx-api-'));
+
+    expect((await loadPluginApi('camera', [dir])).package).toBe('camera');
+
+    await rm(dir, { recursive: true, force: true });
   });
 });
