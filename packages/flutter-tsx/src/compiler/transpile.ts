@@ -1,3 +1,5 @@
+import ts from 'typescript';
+
 import { loadApiSnapshot } from '../api/load';
 import type { TypeNode } from '../api/model';
 import { deriveSlots } from '../derive/slots';
@@ -9,7 +11,8 @@ import {
   type ComponentAnalysis,
   type SourceAnalysis,
 } from './analyze';
-import { tsxErrorAt } from './diagnostics';
+import { dartFileFor } from './dart-names';
+import { TsxError, tsxErrorAt } from './diagnostics';
 import { emitDartFile } from './emit-component';
 import {
   buildCompileContext,
@@ -21,6 +24,7 @@ import {
   lowerStore,
   type PluginFunctionInfo,
   type PluginHookInfo,
+  type WidgetInfo,
 } from './lower';
 
 export interface TranspileInput {
@@ -139,14 +143,113 @@ const loadPlugins = async (
   };
 };
 
+/** Component names this file uses as JSX elements. */
+const usedJsxNames = (sourceFile: ts.SourceFile): Set<string> => {
+  const names = new Set<string>();
+  const visit = (node: ts.Node): void => {
+    if (ts.isJsxSelfClosingElement(node) || ts.isJsxOpeningElement(node)) {
+      const { tagName } = node;
+      if (ts.isIdentifier(tagName)) {
+        names.add(tagName.text);
+      }
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sourceFile);
+  return names;
+};
+
+const parentDir = (filePath: string): string =>
+  filePath.slice(0, filePath.lastIndexOf('/'));
+
+/** Resolves `./Card` against the importing file, without a path library. */
+const resolveSibling = (fromDir: string, specifier: string): string => {
+  const segments = [...fromDir.split('/'), ...specifier.split('/')];
+  const resolved: string[] = [];
+  for (const segment of segments) {
+    if (segment === '.' || segment === '') continue;
+    if (segment === '..') {
+      resolved.pop();
+      continue;
+    }
+    resolved.push(segment);
+  }
+  return `/${resolved.join('/')}`;
+};
+
+export interface ImportedComponents {
+  widgets: Map<string, WidgetInfo>;
+  /** local name -> the Dart file to import, relative to this component's. */
+  componentImports: Map<string, string>;
+}
+
+/**
+ * Loads the components this file imports from sibling files, so a
+ * `<UserCard />` declared next door compiles to that component — and to a
+ * Dart import of its file — rather than silently binding to a Flutter widget
+ * that happens to share its name.
+ */
+const loadImportedComponents = async (
+  analysis: SourceAnalysis,
+  filePath: string,
+): Promise<ImportedComponents> => {
+  const widgets = new Map<string, WidgetInfo>();
+  const componentImports = new Map<string, string>();
+  const used = usedJsxNames(analysis.sourceFile);
+  const fromDir = parentDir(filePath);
+
+  for (const [name, specifier] of analysis.componentImports) {
+    if (!used.has(name)) continue;
+
+    const resolved = `${resolveSibling(fromDir, specifier)}.tsx`;
+    const file = Bun.file(resolved);
+    if (!(await file.exists())) {
+      throw new TsxError(
+        'TSX0336',
+        `<${name} /> is imported from '${specifier}', but ${resolved} does ` +
+          'not exist.',
+        { file: filePath, line: 1, column: 1 },
+      );
+    }
+
+    const imported = analyzeSource(await file.text(), resolved);
+    const component = imported.components.find(
+      (candidate) => candidate.name === name,
+    );
+    if (component === undefined) {
+      throw new TsxError(
+        'TSX0336',
+        `${resolved} exports no component named ${name}.`,
+        { file: filePath, line: 1, column: 1 },
+      );
+    }
+
+    const info = buildUserWidgets([component]).get(name);
+    if (info !== undefined) {
+      widgets.set(name, info);
+    }
+    componentImports.set(
+      name,
+      dartFileFor(`${specifier}.tsx`).replace(/^\.\//, ''),
+    );
+  }
+
+  return { widgets, componentImports };
+};
+
 export const transpileComponent = async (
   input: TranspileInput,
 ): Promise<string> => {
   const context = await compileContext();
   const analysis = analyzeSource(input.source, input.filePath);
+  const imported = await loadImportedComponents(analysis, input.filePath);
   const fileContext = {
     ...context,
-    userWidgets: buildUserWidgets(analysis.components),
+    componentImports: imported.componentImports,
+    userWidgets: new Map([
+      ...imported.widgets,
+      ...buildUserWidgets(analysis.components),
+    ]),
     stores: new Map(
       analysis.stores.map((store) => [store.name, lowerStore(store)]),
     ),

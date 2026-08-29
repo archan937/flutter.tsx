@@ -117,6 +117,9 @@ export interface SourceAnalysis {
   sourceFile: ts.SourceFile;
   /// local name -> which package it came from and what it is called there
   pluginImports: Map<string, { package: string; exportedName: string }>;
+  /// local name -> the relative module it was imported from, for components
+  /// this file uses but another file declares
+  componentImports: Map<string, string>;
 }
 
 const COMPILER_OPTIONS: ts.CompilerOptions = {
@@ -1027,6 +1030,9 @@ export const analyzeSource = (
         },
       ]),
   );
+  const componentImports = new Map(
+    [...hookModules].filter(([, module]) => module.startsWith('.')),
+  );
   const router = analyzeRouter(
     sourceFile,
     new Set(components.map((component) => component.name)),
@@ -1039,6 +1045,7 @@ export const analyzeSource = (
     checker,
     sourceFile,
     pluginImports,
+    componentImports,
   };
 };
 

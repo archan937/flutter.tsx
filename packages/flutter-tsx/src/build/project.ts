@@ -1,3 +1,4 @@
+import { dartFileFor } from '../compiler/dart-names';
 import type { TranspileInput } from '../compiler/transpile';
 
 /** The root component every app is built around. */
@@ -14,27 +15,15 @@ export interface BuildDeps {
   readFile: (path: string) => Promise<string>;
   writeFile: (path: string, contents: string) => Promise<void>;
   transpile: (input: TranspileInput) => Promise<string>;
+  /** Runs `dart format` over the generated output; resolves its exit code. */
+  format: (outputDir: string) => Promise<number>;
 }
 
 export interface BuildConfig {
   name: string;
 }
 
-/**
- * Converts a component file name to its Dart file name, keeping the directory
- * it lives in: `widgets/UserCard.tsx` becomes `widgets/user_card.dart`.
- */
-export const dartFileFor = (componentFile: string): string => {
-  const separator = componentFile.lastIndexOf('/');
-  const directory = componentFile.slice(0, separator + 1);
-  const base = componentFile.slice(separator + 1).replace(/\.tsx$/, '');
-  const snake = base
-    // `HTTPClient` splits before the last capital of a run, not inside it.
-    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')
-    .replace(/([a-z0-9])([A-Z])/g, '$1_$2')
-    .toLowerCase();
-  return `${directory}${snake}.dart`;
-};
+export { dartFileFor } from '../compiler/dart-names';
 
 export interface EntryPoint {
   name: string;
@@ -97,6 +86,14 @@ export const buildProject = async (
     `${projectDir}/${OUTPUT_DIR}/${ENTRY_FILE}`,
     mainDart({ name: config.name, rootImport: dartFileFor(ROOT_COMPONENT) }),
   );
+
+  // The Dart formatter is the authority on layout, so generated code is
+  // canonical no matter which shapes the printer produced.
+  const outputDir = `${projectDir}/${OUTPUT_DIR}`;
+  const formatted = await deps.format(outputDir);
+  if (formatted !== 0) {
+    throw new Error(`formatting ${outputDir} failed (exit ${formatted}).`);
+  }
 
   return written;
 };

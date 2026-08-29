@@ -23,13 +23,20 @@ const project = async (): Promise<string> => {
   return dir;
 };
 
-/** A stand-in for the flutter binary, so no SDK is needed to drive the CLI. */
-const stubFlutter = async (dir: string, script: string): Promise<string> => {
-  const path = join(dir, 'flutter');
+/** A stand-in for an SDK binary, so no SDK is needed to drive the CLI. */
+const stubBinary = async (
+  dir: string,
+  name: string,
+  script: string,
+): Promise<string> => {
+  const path = join(dir, name);
   await Bun.write(path, `#!/bin/sh\n${script}\n`);
   await chmod(path, 0o755);
   return path;
 };
+
+const stubFlutter = (dir: string, script: string): Promise<string> =>
+  stubBinary(dir, 'flutter', script);
 
 const waitFor = async (
   condition: () => boolean | Promise<boolean>,
@@ -46,8 +53,9 @@ const waitFor = async (
 describe('defaultDevDeps — build', () => {
   test('compiles the project’s components and entry point to lib/', async () => {
     const dir = await project();
+    const flutter = await stubFlutter(dir, 'exit 0');
 
-    await defaultDevDeps('/unused/flutter').build(dir, {
+    await defaultDevDeps({ flutterBin: flutter, dartBin: flutter }).build(dir, {
       name: 'Demo',
       bundleId: 'dev.fluttertsx.demo',
       target: 'web',
@@ -80,7 +88,10 @@ describe('defaultDevDeps — startFlutter', () => {
     const keystroke = join(dir, 'keystroke');
     const flutter = await stubFlutter(dir, `head -c 1 > ${keystroke}`);
 
-    const session = defaultDevDeps(flutter).startFlutter(['run'], dir);
+    const session = defaultDevDeps({
+      flutterBin: flutter,
+      dartBin: flutter,
+    }).startFlutter(['run'], dir);
     session.reload();
 
     expect(await session.exited).toBe(0);
@@ -93,7 +104,10 @@ describe('defaultDevDeps — startFlutter', () => {
     const dir = await mkdtemp(join(tmpdir(), 'fsx-stub-'));
     const flutter = await stubFlutter(dir, 'sleep 30');
 
-    const session = defaultDevDeps(flutter).startFlutter(['run'], dir);
+    const session = defaultDevDeps({
+      flutterBin: flutter,
+      dartBin: flutter,
+    }).startFlutter(['run'], dir);
     session.stop();
 
     expect(await session.exited).not.toBe(0);
@@ -108,7 +122,10 @@ describe('defaultDevDeps — watch', () => {
     await Bun.write(join(dir, 'keep.txt'), 'x');
     const changed: string[] = [];
 
-    const stop = defaultDevDeps('/unused/flutter').watch(dir, (path) => {
+    const stop = defaultDevDeps({
+      flutterBin: '/unused/flutter',
+      dartBin: '/unused/dart',
+    }).watch(dir, (path) => {
       changed.push(path);
     });
 
@@ -138,7 +155,10 @@ describe('defaultDevDeps — out', () => {
       return true;
     };
     try {
-      defaultDevDeps('/unused/flutter').out('hello');
+      defaultDevDeps({
+        flutterBin: '/unused/flutter',
+        dartBin: '/unused/dart',
+      }).out('hello');
     } finally {
       process.stdout.write = write;
     }
@@ -154,7 +174,8 @@ describe('defaultDev', () => {
   ): Promise<void> => {
     const home = await mkdtemp(join(tmpdir(), 'fsx-dev-home-'));
     const binDir = join(home, 'flutter', 'bin');
-    await stubFlutter(binDir, script);
+    await stubBinary(binDir, 'flutter', script);
+    await stubBinary(binDir, 'dart', 'exit 0');
     const previous = process.env.FSX_HOME;
     process.env.FSX_HOME = home;
     const dir = await project();

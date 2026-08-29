@@ -4,6 +4,7 @@ import { join } from 'node:path';
 
 const fsxHome = process.env.FSX_HOME ?? join(homedir(), '.fsx');
 export const flutterBin = join(fsxHome, 'flutter', 'bin', 'flutter');
+export const dartBin = join(fsxHome, 'flutter', 'bin', 'dart');
 
 export interface CommandResult {
   exitCode: number;

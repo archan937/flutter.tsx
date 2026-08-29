@@ -10,7 +10,7 @@ import {
   runInitCommand,
 } from 'flutter-tsx/cli';
 
-import { buildWeb, flutterBin, run } from './support/flutter-app';
+import { buildWeb, dartBin, flutterBin, run } from './support/flutter-app';
 
 // The scaffolder's guarantee: what `fsx init` produces is a project that
 // really builds — the starter component transpiles and the app compiles for
@@ -53,7 +53,10 @@ describe('fsx init produces a project that builds', () => {
       target: 'web',
     });
 
-    const built = await defaultDevDeps(flutterBin).build(appDir, config);
+    const built = await defaultDevDeps({
+      flutterBin,
+      dartBin,
+    }).build(appDir, config);
     expect(built).toEqual(['app.dart']);
 
     expect(await Bun.file(join(appDir, 'lib', 'app.dart')).text()).toContain(

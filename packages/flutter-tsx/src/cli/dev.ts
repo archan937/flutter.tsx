@@ -3,7 +3,7 @@ import { watch } from 'node:fs';
 import { buildProject } from '../build/project';
 import { transpileComponent } from '../compiler/transpile';
 import type { AppConfig, AppTarget } from '../runtime/config';
-import { pathExists, readTextFile, writeTextFile } from '../sdk/io';
+import { pathExists, readTextFile, runProcess, writeTextFile } from '../sdk/io';
 
 const CONFIG_FILE = 'fsx.config.ts';
 const SOURCE_DIR = 'src';
@@ -110,7 +110,16 @@ export const runDevCommand = async (
   }
 };
 
-export const defaultDevDeps = (flutterBin: string): DevDeps => ({
+/** The SDK binaries `fsx dev` drives. */
+export interface SdkBinaries {
+  flutterBin: string;
+  dartBin: string;
+}
+
+export const defaultDevDeps = ({
+  flutterBin,
+  dartBin,
+}: SdkBinaries): DevDeps => ({
   loadConfig: loadAppConfig,
   build: (projectDir, config) =>
     buildProject(projectDir, config, {
@@ -126,6 +135,9 @@ export const defaultDevDeps = (flutterBin: string): DevDeps => ({
       readFile: async (path) => (await readTextFile(path)) ?? '',
       writeFile: writeTextFile,
       transpile: transpileComponent,
+      // `flutter format` was removed from the SDK; `dart format` is the tool.
+      format: (outputDir) =>
+        runProcess([dartBin, 'format', outputDir], projectDir),
     }),
   startFlutter: (args, cwd): FlutterSession => {
     const child = Bun.spawn([flutterBin, ...args], {

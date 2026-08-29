@@ -331,6 +331,136 @@ describe('transpileComponent — plugins', () => {
 });
 // A store wide enough to overflow 80 columns takes the tall form on both its
 // constructor and its update signature — the same rule as any Dart call.
+describe('transpileComponent — components from sibling files', () => {
+  test('imports the file declaring an imported component', async () => {
+    const source = await Bun.file(
+      new URL('../fixtures/28-multi-file/input.tsx', import.meta.url),
+    ).text();
+    const expected = await Bun.file(
+      new URL('../fixtures/28-multi-file/expected.dart', import.meta.url),
+    ).text();
+    const filePath = new URL(
+      '../fixtures/28-multi-file/input.tsx',
+      import.meta.url,
+    ).pathname;
+
+    expect(await transpileComponent({ source, filePath })).toBe(expected);
+  });
+
+  test('compiles the imported component to its own golden', async () => {
+    const source = await Bun.file(
+      new URL('../fixtures/28-multi-file/UserCard.tsx', import.meta.url),
+    ).text();
+    const expected = await Bun.file(
+      new URL('../fixtures/28-multi-file/user_card.dart', import.meta.url),
+    ).text();
+    const filePath = new URL(
+      '../fixtures/28-multi-file/UserCard.tsx',
+      import.meta.url,
+    ).pathname;
+
+    expect(await transpileComponent({ source, filePath })).toBe(expected);
+  });
+
+  test('resolves a component imported from a parent directory', async () => {
+    const filePath = new URL(
+      '../fixtures/28-multi-file/routes/Listing.tsx',
+      import.meta.url,
+    ).pathname;
+
+    const dart = await transpileComponent({
+      source:
+        "import { UserCard } from '../UserCard';\n\n" +
+        'export const Listing = () => <UserCard name="Ada" admin={true} />;\n',
+      filePath,
+    });
+
+    expect(dart).toContain("import '../user_card.dart';");
+  });
+
+  test('hides the Flutter widget an imported component shadows', async () => {
+    const filePath = new URL(
+      '../fixtures/28-multi-file/input.tsx',
+      import.meta.url,
+    ).pathname;
+
+    const dart = await transpileComponent({
+      source:
+        "import { Banner } from './Banner';\n\n" +
+        'export const Shell = () => <Banner title="Team" />;\n',
+      filePath,
+    });
+
+    // Flutter also exports `Banner`; without the hide, Dart cannot tell the
+    // two apart and the file does not compile.
+    expect(dart).toBe(
+      `import 'package:flutter/material.dart' hide Banner;
+
+import 'banner.dart';
+
+class Shell extends StatelessWidget {
+  const Shell({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Banner(title: 'Team');
+  }
+}
+`,
+    );
+  });
+
+  test('reports an import that names no file', () => {
+    const filePath = new URL(
+      '../fixtures/28-multi-file/input.tsx',
+      import.meta.url,
+    ).pathname;
+
+    expect(
+      transpileComponent({
+        source:
+          "import { Missing } from './Missing';\n\n" +
+          'export const Broken = () => <Missing />;\n',
+        filePath,
+      }),
+    ).rejects.toThrow(
+      /TSX0336 .* <Missing \/> is imported from '\.\/Missing', but .*Missing\.tsx does not exist\./,
+    );
+  });
+
+  test('reports a file that declares no such component', () => {
+    const filePath = new URL(
+      '../fixtures/28-multi-file/input.tsx',
+      import.meta.url,
+    ).pathname;
+
+    expect(
+      transpileComponent({
+        source:
+          "import { Absent } from './UserCard';\n\n" +
+          'export const Broken = () => <Absent />;\n',
+        filePath,
+      }),
+    ).rejects.toThrow(/TSX0336 .* exports no component named Absent\./);
+  });
+
+  test('leaves a relative import alone when its name is never rendered', async () => {
+    const filePath = new URL(
+      '../fixtures/28-multi-file/input.tsx',
+      import.meta.url,
+    ).pathname;
+
+    expect(
+      await transpileComponent({
+        source:
+          "import { formatName } from './helpers';\n\n" +
+          'export const Plain = () => <Text>{formatName}</Text>;\n',
+        filePath,
+      }),
+    ).toContain("import 'package:flutter/material.dart';");
+  });
+});
+
 describe('transpileComponent — a store that must wrap', () => {
   test('splits the constructor and update params one per line', async () => {
     const source =

@@ -45,7 +45,7 @@ import {
   translateIdentifier,
 } from './translate';
 
-interface WidgetInfo {
+export interface WidgetInfo {
   name: string;
   library: string;
   constConstructor: boolean;
@@ -83,6 +83,8 @@ export interface CompileContext {
   // Dart type name -> prefixed name, for plugins imported with a prefix.
   prefixedTypes: Map<string, string>;
   userWidgets: Map<string, WidgetInfo>;
+  /// local component name -> the Dart file declaring it, relative to this one
+  componentImports: Map<string, string>;
   pluginHooks: Map<string, PluginHookInfo>;
   pluginFunctions: Map<string, PluginFunctionInfo>;
   pluginEnums: Map<string, Set<string>>;
@@ -181,6 +183,7 @@ export const buildCompileContext = (
     prefixedTypes: new Map(),
     models: new Map(),
     userWidgets: new Map(),
+    componentImports: new Map(),
     pluginHooks: new Map(),
     pluginFunctions: new Map(),
     pluginEnums: new Map(),
@@ -1284,9 +1287,11 @@ const lowerJsxElement = (
     }
     return lowerTabView(element, context);
   }
+  // A component this file declares or imports shadows a Flutter widget of the
+  // same name, the way a local binding shadows a global one.
   const info =
-    context.compile.widgets.get(widgetName) ??
-    context.compile.userWidgets.get(widgetName);
+    context.compile.userWidgets.get(widgetName) ??
+    context.compile.widgets.get(widgetName);
   if (info === undefined) {
     throw tsxErrorAt(
       'TSX0201',

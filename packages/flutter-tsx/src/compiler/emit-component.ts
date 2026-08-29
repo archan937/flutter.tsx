@@ -339,17 +339,24 @@ export const emitDartFile = (
       ...(router === null ? [] : [`import '${GO_ROUTER_IMPORT}';`]),
     ]),
   ].sort();
-  // Dart convention (and what dart format leaves alone): the dart: group
-  // first, then package:, separated by a blank line.
-  const dartGroup = directives.filter((line) =>
-    line.startsWith("import 'dart:"),
+  // Dart convention (and what dart format leaves alone): dart: first, then
+  // package:, then this project's own files, each group separated by a blank
+  // line.
+  const group = (prefix: string): string[] =>
+    directives.filter((line) => line.startsWith(prefix));
+  const relativeGroup = directives.filter(
+    (line) =>
+      !line.startsWith("import 'dart:") && !line.startsWith("import 'package:"),
   );
-  const packageGroup = directives.filter(
-    (line) => !line.startsWith("import 'dart:"),
-  );
-  const imports =
-    dartGroup.length === 0 || packageGroup.length === 0
-      ? directives
-      : [...dartGroup, '', ...packageGroup];
+  const imports = [
+    group("import 'dart:"),
+    group("import 'package:"),
+    relativeGroup,
+  ]
+    .filter((lines) => lines.length > 0)
+    .reduce<string[]>(
+      (all, lines) => (all.length === 0 ? lines : [...all, '', ...lines]),
+      [],
+    );
   return `${imports.join('\n')}\n\n${classes.join('\n\n')}\n`;
 };

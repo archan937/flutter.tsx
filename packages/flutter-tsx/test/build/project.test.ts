@@ -82,6 +82,7 @@ const harness = (
       },
       transpile: (input): Promise<string> =>
         Promise.resolve(`// dart for ${input.filePath}\n`),
+      format: (): Promise<number> => Promise.resolve(0),
       ...overrides,
     },
   };
@@ -142,6 +143,36 @@ describe('buildProject', () => {
 
     expect(buildProject('/app', { name: 'Demo' }, deps)).rejects.toThrow(
       '/app/src/App.tsx does not exist — the app needs a root component.',
+    );
+  });
+});
+
+describe('buildProject — formatting', () => {
+  test('formats the Dart it generated, so output is always canonical', async () => {
+    const formatted: string[] = [];
+    const { deps } = harness(
+      { 'App.tsx': 'export const App = () => <Text>hi</Text>;' },
+      {
+        format: (outputDir): Promise<number> => {
+          formatted.push(outputDir);
+          return Promise.resolve(0);
+        },
+      },
+    );
+
+    await buildProject('/app', { name: 'Demo' }, deps);
+
+    expect(formatted).toEqual(['/app/lib']);
+  });
+
+  test('reports a formatter that failed', () => {
+    const { deps } = harness(
+      { 'App.tsx': 'export const App = () => <Text>hi</Text>;' },
+      { format: (): Promise<number> => Promise.resolve(65) },
+    );
+
+    expect(buildProject('/app', { name: 'Demo' }, deps)).rejects.toThrow(
+      'formatting /app/lib failed (exit 65).',
     );
   });
 });

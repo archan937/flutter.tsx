@@ -50,15 +50,22 @@ const collectWidget = (
   }
 };
 
-const importDirective = (library: string): string =>
-  library === 'ui'
-    ? "import 'dart:ui';"
-    : `import 'package:flutter/${library}.dart';`;
+const importDirective = (library: string, hidden: string[] = []): string => {
+  const uri = library === 'ui' ? 'dart:ui' : `package:flutter/${library}.dart`;
+  // A component imported from a sibling file and a Flutter widget of the same
+  // name would be an ambiguous import; the SDK's is the one to hide.
+  const hide = hidden.length === 0 ? '' : ` hide ${hidden.join(', ')}`;
+  return `import '${uri}'${hide};`;
+};
 
 // One barrel that covers every used name wins (material first, then
 // cupertino); otherwise both contribute and any name neither re-exports pulls
 // in its own defining library (e.g. services).
-const importsFor = (names: Set<string>, context: CompileContext): string[] => {
+const importsFor = (
+  names: Set<string>,
+  context: CompileContext,
+  hidden: string[] = [],
+): string[] => {
   const barrelsOf = (name: string): string[] => context.exports.get(name) ?? [];
   const used = [...names].filter((name) => !context.userWidgets.has(name));
   const covers = (barrel: string): boolean =>
@@ -88,7 +95,12 @@ const importsFor = (names: Set<string>, context: CompileContext): string[] => {
   }
 
   return [...libraries]
-    .map(importDirective)
+    .map((library) =>
+      importDirective(
+        library,
+        hidden.filter((name) => barrelsOf(name).includes(library)),
+      ),
+    )
     .sort((first, second) => first.localeCompare(second));
 };
 
@@ -100,5 +112,20 @@ export const importsForComponents = (
   for (const component of components) {
     collectWidget(component.body, context, names);
   }
-  return importsFor(names, context);
+
+  // Components declared in sibling files need their own file imported.
+  const relative = [...names]
+    .map((name) => context.componentImports.get(name))
+    .filter((path): path is string => path !== undefined)
+    .map((path) => `import '${path}';`);
+
+  // Names an imported component shares with a Flutter widget must be hidden
+  // from the SDK barrel, or Dart cannot tell the two apart.
+  const shadowed = [...names]
+    .filter(
+      (name) => context.componentImports.has(name) && context.exports.has(name),
+    )
+    .sort();
+
+  return [...importsFor(names, context, shadowed), ...relative];
 };
