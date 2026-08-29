@@ -2,6 +2,7 @@ import ts from 'typescript';
 
 import { escapeDartString } from './dart-print';
 import { TsxError, tsxErrorAt } from './diagnostics';
+import { checkStrictMode } from './strict-mode';
 
 export interface StateBinding {
   name: string;
@@ -1241,6 +1242,7 @@ export const analyzeSource = (
 ): SourceAnalysis => {
   const program = createProgramFor(source, filePath);
   const sourceFile = requireSourceFile(program, filePath);
+  checkStrictMode(sourceFile);
   const checker = program.getTypeChecker();
   const { modules: hookModules, originals: importedOriginals } =
     importedHookModules(sourceFile);
