@@ -33,6 +33,30 @@ const statementLines = (
         return statement.line.split('\n');
       case 'expr':
         return exprLines(statement, naming);
+      case 'if': {
+        const branch = statementLines(statement.then, naming, wrapSetState);
+        const lines = [
+          `if (${statement.condition}) {`,
+          ...branch.map((line) => `  ${line}`),
+        ];
+        if (statement.otherwise.length === 0) {
+          return [...lines, '}'];
+        }
+        const [only] = statement.otherwise;
+        // A lone `if` in the else branch is an `else if`, not a nested block.
+        if (statement.otherwise.length === 1 && only?.kind === 'if') {
+          const [head, ...rest] = statementLines([only], naming, wrapSetState);
+          return [...lines, `} else ${head ?? ''}`, ...rest];
+        }
+        return [
+          ...lines,
+          '} else {',
+          ...statementLines(statement.otherwise, naming, wrapSetState).map(
+            (line) => `  ${line}`,
+          ),
+          '}',
+        ];
+      }
       case 'postFrame':
         return [
           'WidgetsBinding.instance.addPostFrameCallback((_) {',

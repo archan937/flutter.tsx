@@ -40,6 +40,7 @@ const GREEN_FIXTURES = new Set([
   '26-json-model',
   '27-inline-plugin-call',
   '28-multi-file',
+  '29-branching-handler',
 ]);
 
 const fixtures = await listFixtures();

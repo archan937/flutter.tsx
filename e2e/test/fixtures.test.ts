@@ -32,7 +32,13 @@ const mainDart = (): string => {
   const components = FIXTURE_APPS.map(
     (fixture) => `  ${fixture.component},`,
   ).join('\n');
-  return `import 'package:flutter/material.dart';
+  // A fixture component may share its name with a Flutter widget (Stepper,
+  // Banner…). The host references the fixture's type, so the SDK's name is
+  // hidden here exactly as the compiler hides it in generated files.
+  const shadowed = FIXTURE_APPS.map((fixture) => fixture.component)
+    .sort()
+    .join(', ');
+  return `import 'package:flutter/material.dart' hide ${shadowed};
 
 ${imports}
 

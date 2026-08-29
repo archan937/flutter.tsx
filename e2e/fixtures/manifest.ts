@@ -209,4 +209,10 @@ export const FIXTURE_APPS: FixtureApp[] = [
     dartFile: 'inline_link.dart',
     deps: ['url_launcher'],
   },
+  {
+    id: '29-branching-handler',
+    component: 'Stepper',
+    dartFile: 'stepper.dart',
+    deps: [],
+  },
 ];

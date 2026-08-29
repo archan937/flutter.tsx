@@ -727,3 +727,78 @@ describe('transpileComponent — json models', () => {
     );
   });
 });
+
+describe('transpileComponent — branching handlers', () => {
+  const component = (handler: string): string =>
+    `import { Text, useState } from 'flutter-tsx';
+
+export const Branch = () => {
+  const [count, setCount] = useState(0);
+
+  const go = () => {
+${handler}
+  };
+
+  return <Text onClick={go}>{count}</Text>;
+};
+`;
+
+  const bodyOf = async (handler: string): Promise<string> => {
+    const dart = await transpileComponent({
+      source: component(handler),
+      filePath: '/tmp/Branch.tsx',
+    });
+    const start = dart.indexOf('  void _go() {');
+    return dart.slice(start, dart.indexOf('\n  }\n', start) + 5);
+  };
+
+  test('an if with no else', async () => {
+    expect(await bodyOf('    if (count > 1) {\n      setCount(0);\n    }'))
+      .toBe(`  void _go() {
+    if (_count > 1) {
+      setState(() {
+        _count = 0;
+      });
+    }
+  }
+`);
+  });
+
+  test('branches that are single statements rather than blocks', async () => {
+    expect(
+      await bodyOf('    if (count > 1) setCount(0);\n    else setCount(1);'),
+    ).toBe(`  void _go() {
+    if (_count > 1) {
+      setState(() {
+        _count = 0;
+      });
+    } else {
+      setState(() {
+        _count = 1;
+      });
+    }
+  }
+`);
+  });
+
+  test('an else branch that is a block of several statements', async () => {
+    expect(
+      await bodyOf(
+        '    if (count > 1) {\n      setCount(0);\n    } else {\n' +
+          '      setCount(2);\n      setCount(3);\n    }',
+      ),
+    ).toBe(`  void _go() {
+    if (_count > 1) {
+      setState(() {
+        _count = 0;
+      });
+    } else {
+      setState(() {
+        _count = 2;
+        _count = 3;
+      });
+    }
+  }
+`);
+  });
+});

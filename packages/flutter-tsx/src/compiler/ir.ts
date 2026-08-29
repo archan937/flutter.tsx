@@ -130,6 +130,13 @@ export interface IrField {
 
 export type IrStatement =
   | { kind: 'setState'; assignments: string[] }
+  // `if (c) { … } else { … }`; an `else if` chain is an `if` in `otherwise`.
+  | {
+      kind: 'if';
+      condition: string;
+      then: IrStatement[];
+      otherwise: IrStatement[];
+    }
   | { kind: 'dart'; line: string }
   // An expression the printer renders at its real column, so a call that has
   // to wrap does so correctly wherever the statement sits.

@@ -1584,75 +1584,152 @@ const setterAssignment = (
   return `${member} = ${translateExpression(argument, context.translate)}`;
 };
 
+/**
+ * Consecutive state updates belong in one `setState`, however many statements
+ * they were lowered from.
+ */
+const mergeSetState = (statements: IrStatement[]): IrStatement[] =>
+  statements.reduce<IrStatement[]>((merged, statement) => {
+    const previous = merged[merged.length - 1];
+    if (statement.kind === 'setState' && previous?.kind === 'setState') {
+      previous.assignments.push(...statement.assignments);
+      return merged;
+    }
+    return [...merged, statement];
+  }, []);
+
+/** The statements of `{ … }`, or the single statement of `if (c) doIt();`. */
+const branchStatements = (
+  statement: ts.Statement,
+  context: LowerContext,
+  allowPluginCalls: boolean,
+): IrStatement[] =>
+  ts.isBlock(statement)
+    ? lowerBodyStatements(statement, context, allowPluginCalls)
+    : mergeSetState(lowerStatement(statement, context, allowPluginCalls));
+
+// A statement form the body walker understands on its own, rather than as an
+// expression; null when this is not one of them.
+const lowerControlFlow = (
+  statement: ts.Statement,
+  context: LowerContext,
+  allowPluginCalls: boolean,
+): IrStatement[] | null => {
+  if (!ts.isIfStatement(statement)) return null;
+  return [
+    {
+      kind: 'if',
+      condition: translateExpression(statement.expression, context.translate),
+      then: branchStatements(
+        statement.thenStatement,
+        context,
+        allowPluginCalls,
+      ),
+      otherwise:
+        statement.elseStatement === undefined
+          ? []
+          : branchStatements(
+              statement.elseStatement,
+              context,
+              allowPluginCalls,
+            ),
+    },
+  ];
+};
+
+const lowerStatement = (
+  statement: ts.Statement,
+  context: LowerContext,
+  allowPluginCalls: boolean,
+): IrStatement[] => {
+  const controlFlow = lowerControlFlow(statement, context, allowPluginCalls);
+  if (controlFlow !== null) return controlFlow;
+  return lowerExpressionStatement(
+    {
+      expression: ts.isExpressionStatement(statement)
+        ? statement.expression
+        : undefined,
+      errorNode: statement,
+    },
+    context,
+    allowPluginCalls,
+  );
+};
+
 const lowerBodyStatements = (
   body: ts.ConciseBody,
   context: LowerContext,
   allowPluginCalls = false,
 ): IrStatement[] => {
-  const items: { expression: ts.Expression | undefined; errorNode: ts.Node }[] =
-    ts.isBlock(body)
-      ? body.statements.map((statement) => ({
-          expression: ts.isExpressionStatement(statement)
-            ? statement.expression
-            : undefined,
-          errorNode: statement,
-        }))
-      : [{ expression: body, errorNode: body }];
-
-  const lowered: IrStatement[] = [];
-  for (const { expression, errorNode } of items) {
-    const pluginLine =
-      allowPluginCalls && expression !== undefined
-        ? pluginCallLine(expression, context, errorNode)
-        : null;
-    if (pluginLine !== null) {
-      lowered.push({ kind: 'dart', line: pluginLine });
-      continue;
-    }
-    const presentation =
-      expression === undefined ? null : presentationValue(expression, context);
-    if (presentation !== null) {
-      lowered.push({ kind: 'expr', value: presentation });
-      continue;
-    }
-    const navLine =
-      expression === undefined ? null : navigationLine(expression, context);
-    if (navLine !== null) {
-      lowered.push({ kind: 'dart', line: navLine });
-      continue;
-    }
-    const storeLine =
-      expression === undefined ? null : storeUpdateLine(expression, context);
-    if (storeLine !== null) {
-      lowered.push({ kind: 'dart', line: storeLine });
-      continue;
-    }
-    const stateName =
-      expression !== undefined &&
-      ts.isCallExpression(expression) &&
-      ts.isIdentifier(expression.expression)
-        ? context.settersToStates.get(expression.expression.text)
-        : undefined;
-    if (
-      expression === undefined ||
-      !ts.isCallExpression(expression) ||
-      stateName === undefined
-    ) {
-      throw tsxErrorAt(
-        'TSX0305',
-        'this statement is not compiled yet (roadmap step 18).',
-        { sourceFile: context.sourceFile, node: errorNode },
-      );
-    }
-    const assignment = setterAssignment(expression, stateName, context);
-    const previous = lowered[lowered.length - 1];
-    if (previous?.kind === 'setState') {
-      previous.assignments.push(assignment);
-    } else {
-      lowered.push({ kind: 'setState', assignments: [assignment] });
-    }
+  if (ts.isBlock(body)) {
+    return mergeSetState(
+      body.statements.flatMap((statement) =>
+        lowerStatement(statement, context, allowPluginCalls),
+      ),
+    );
   }
-  return lowered;
+  return lowerExpressionStatement(
+    { expression: body, errorNode: body },
+    context,
+    allowPluginCalls,
+  );
+};
+
+interface StatementSource {
+  expression: ts.Expression | undefined;
+  errorNode: ts.Node;
+}
+
+const lowerExpressionStatement = (
+  { expression, errorNode }: StatementSource,
+  context: LowerContext,
+  allowPluginCalls: boolean,
+): IrStatement[] => {
+  const pluginLine =
+    allowPluginCalls && expression !== undefined
+      ? pluginCallLine(expression, context, errorNode)
+      : null;
+  if (pluginLine !== null) {
+    return [{ kind: 'dart', line: pluginLine }];
+  }
+  const presentation =
+    expression === undefined ? null : presentationValue(expression, context);
+  if (presentation !== null) {
+    return [{ kind: 'expr', value: presentation }];
+  }
+  const navLine =
+    expression === undefined ? null : navigationLine(expression, context);
+  if (navLine !== null) {
+    return [{ kind: 'dart', line: navLine }];
+  }
+  const storeLine =
+    expression === undefined ? null : storeUpdateLine(expression, context);
+  if (storeLine !== null) {
+    return [{ kind: 'dart', line: storeLine }];
+  }
+  const stateName =
+    expression !== undefined &&
+    ts.isCallExpression(expression) &&
+    ts.isIdentifier(expression.expression)
+      ? context.settersToStates.get(expression.expression.text)
+      : undefined;
+  if (
+    expression === undefined ||
+    !ts.isCallExpression(expression) ||
+    stateName === undefined
+  ) {
+    throw tsxErrorAt(
+      'TSX0305',
+      'this statement is not compiled yet (roadmap step 18).',
+      { sourceFile: context.sourceFile, node: errorNode },
+    );
+  }
+  return [
+    {
+      kind: 'setState',
+      assignments: [setterAssignment(expression, stateName, context)],
+    },
+  ];
 };
 
 interface PluginCall {
