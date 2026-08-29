@@ -48,6 +48,7 @@ const GREEN_FIXTURES = new Set([
   '34-list-pipeline',
   '35-helpers',
   '36-enums',
+  '37-tuples-generics',
 ]);
 
 const fixtures = await listFixtures();

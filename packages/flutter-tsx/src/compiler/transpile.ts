@@ -24,6 +24,7 @@ import {
   type PluginHookInfo,
   type WidgetInfo,
 } from './lower';
+import type { HelperSignature } from './translate';
 
 export interface TranspileInput {
   source: string;
@@ -250,9 +251,13 @@ export const transpileComponent = async (
       ]),
     ),
     helperReturns: new Map(
-      analysis.helpers.map((helper): [string, string] => [
+      analysis.helpers.map((helper): [string, HelperSignature] => [
         helper.name,
-        helper.returnDartType,
+        {
+          typeParams: helper.typeParams,
+          params: helper.params,
+          returnDartType: helper.returnDartType,
+        },
       ]),
     ),
     ...(await loadPlugins(analysis, input.pluginApiDirs ?? [])),

@@ -19,3 +19,12 @@ const LIST_OF = /^List<(.+)>$/;
 /** What a `List<T>` holds; null when the type is not a list. */
 export const listElementType = (dartType: string | undefined): string | null =>
   dartType === undefined ? null : (LIST_OF.exec(dartType)?.[1] ?? null);
+
+/** The type of a record's nth field: `(String, double)` at 0 is String. */
+export const recordFieldType = (
+  dartType: string | undefined,
+  index: number,
+): string | null => {
+  if (!dartType?.startsWith('(')) return null;
+  return dartType.slice(1, -1).split(', ')[index] ?? null;
+};

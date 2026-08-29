@@ -257,4 +257,10 @@ export const FIXTURE_APPS: FixtureApp[] = [
     dartFile: 'badge.dart',
     deps: [],
   },
+  {
+    id: '37-tuples-generics',
+    component: 'Span',
+    dartFile: 'span.dart',
+    deps: [],
+  },
 ];

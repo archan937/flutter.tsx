@@ -354,10 +354,25 @@ const HELPER_BODY_INDENT = 4;
 
 /** `String shout(String value) => value.toUpperCase();` */
 const emitHelper = (helper: IrHelper): string => {
-  const params = helper.params
-    .map((param) => `${param.dartType} ${param.name}`)
-    .join(', ');
-  const head = `${helper.returnDartType} ${helper.name}(${params}) =>`;
+  const required = helper.params.filter((param) => param.defaultValue === null);
+  const optional = helper.params.filter((param) => param.defaultValue !== null);
+  // Dart writes defaults as optional positionals, in one trailing group.
+  const params = [
+    ...required.map((param) => `${param.dartType} ${param.name}`),
+    ...(optional.length === 0
+      ? []
+      : [
+          `[${optional
+            .map(
+              (param) =>
+                `${param.dartType} ${param.name} = ${param.defaultValue ?? ''}`,
+            )
+            .join(', ')}]`,
+        ]),
+  ].join(', ');
+  const generics =
+    helper.typeParams.length === 0 ? '' : `<${helper.typeParams.join(', ')}>`;
+  const head = `${helper.returnDartType} ${helper.name}${generics}(${params}) =>`;
   const body = printExpr(
     irValueToDart(helper.value, { privateMembers: false }),
     {

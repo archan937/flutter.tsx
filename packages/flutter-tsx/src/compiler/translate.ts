@@ -14,6 +14,12 @@ export interface MemberReadInfo {
   fields: Map<string, TypeNode>;
 }
 
+export interface HelperSignature {
+  typeParams: string[];
+  params: { name: string; dartType: string }[];
+  returnDartType: string;
+}
+
 export interface TranslateContext {
   sourceFile: ts.SourceFile;
   stateNames: Set<string>;
@@ -21,8 +27,8 @@ export interface TranslateContext {
   widgetProps: Set<string>;
   /// Dart types of this component's props and state, by name.
   localDartTypes: Map<string, string>;
-  /// Module-level helpers by name, with the Dart type each returns.
-  helperReturns: Map<string, string>;
+  /// Helpers by name, with the signature each declares.
+  helperReturns: Map<string, HelperSignature>;
   /// Helpers declared inside the component, emitted as private methods.
   privateHelpers: Set<string>;
   /// Enum name -> its members' TSX names mapped to their Dart names.
@@ -351,6 +357,16 @@ export const translateExpression = (
   if (ts.isElementAccessExpression(expression)) {
     const target = translateExpression(expression.expression, context);
     const index = translateExpression(expression.argumentExpression, context);
+    // A tuple is a Dart record, whose fields are positional: `$1`, `$2`.
+    const receiverType = ts.isIdentifier(expression.expression)
+      ? context.localDartTypes.get(expression.expression.text)
+      : undefined;
+    if (
+      receiverType?.startsWith('(') === true &&
+      ts.isNumericLiteral(expression.argumentExpression)
+    ) {
+      return `${target}.$${Number(expression.argumentExpression.text) + 1}`;
+    }
     // TypeScript types `names[0]` as `string | undefined`; Dart's `[]` throws
     // rather than returning null, so a list is read through elementAtOrNull
     // to mean what the TSX type says.

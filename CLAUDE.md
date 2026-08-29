@@ -407,18 +407,27 @@ bun run test:extractor             # dart tests + 100% coverage gate
       TS/Dart member allow-list, everything else TSX0305); string-typed
       ternaries in text slots print plain (`Text(done ? '✓ \$title' : title)`),
       not wrapped in interpolation.
-- [ ] 21b. Compiler-core remainder, each with its own golden when it lands;
-      diagnostics with file/line + fix hints. Traits still open:
-      value-type prop transforms (color/padding/TextStyle…) · sync+async handlers ·
-      useState→StatefulWidget · useEffect→lifecycle · conditionals · lists ·
-      composition · Fragment + key semantics · **the TSX Strict Mode expression
-      language** (if/switch/for-of/while/try-catch, map/filter/reduce→map/where/fold,
-      `?.`/`??`, template literals, functions with default/rest/destructured params) ·
-      **user-defined types→Dart** (type→class, interface→abstract class, enums,
-      generics, tuples→records) · **multi-file modules** (user imports across files) ·
-      app entry (`runApp` + MaterialApp wiring) · **TSX1001–3002 forbidden-feature
-      error codes** (vision §11 — the full audited input-language inventory,
-      2026-08-23; nothing from the vision docs is dropped silently)
+- [x] 21b. **Compiler-core remainder — closed 2026-08-29**, each trait with its
+      own certified golden (fixtures 28–37) and its own numbered diagnostic
+      where Dart cannot express the input. Landed: value-type prop transforms ·
+      sync+async handlers · useState→StatefulWidget · useEffect→lifecycle ·
+      conditionals · lists · composition · Fragment + key semantics ·
+      **statement language** (if/else-if/else, switch with Dart's no-fallthrough
+      rule, for-of, while, try/catch) · **expression language**
+      (map/filter/reduce→map/where/fold, verified String/List/num method
+      mappings, `?.`/`??`, template literals, index reads through
+      elementAtOrNull so the TSX type holds) · **helpers** (module-level → top
+      level functions, typed component-local → private methods, generics,
+      literal defaults → optional positionals; rest params refused) ·
+      **user-defined types→Dart** (interface and `type` alias → class, enums →
+      constants with TypeScript's own numbering, string-literal unions → String,
+      tuples → records) · **props with state** (props are widget fields, read
+      through `widget.`) · **multi-file modules** (sibling imports, with the
+      SDK name hidden where a component shadows a Flutter widget) · app entry
+      (`runApp` + MaterialApp wiring, step 26) · **TSX1001–3002 forbidden-feature
+      error codes** (vision §11 inventory, all 19 reported by name).
+      Still open, each a loud diagnostic rather than silent output:
+      `interface Foo { bar(): void }` → abstract class (TSX0334).
 - [x] 22. **THE TRUST MILESTONE: conformance fixture #1 is green.** The flagship
       camera snippet transpiles byte-for-byte to its hand-certified golden and
       builds as a real Flutter web app from TSX (`build-from-tsx.test.ts` flipped

@@ -902,6 +902,157 @@ export const Board = ({ jobs }: { jobs: Job[] }) => (
   });
 });
 
+describe('transpileComponent — tuples and generics', () => {
+  test('a tuple prop is a Dart record, indexed by position', async () => {
+    const dart = await transpileComponent({
+      source:
+        'export const Pair = ({ span }: { span: [string, number] }) => ' +
+        '<Text>{span[0]}</Text>;\n',
+      filePath: '/tmp/Pair.tsx',
+    });
+
+    expect(dart).toContain('final (String, double) span;');
+    expect(dart).toContain('Text(span.$1)');
+  });
+
+  test('a generic helper keeps its type parameter', async () => {
+    const dart = await transpileComponent({
+      source: `const firstOr = <T,>(values: T[], fallback: T): T =>
+  values[0] ?? fallback;
+
+export const Head = ({ names }: { names: string[] }) => (
+  <Text>{firstOr(names, '-')}</Text>
+);
+`,
+      filePath: '/tmp/Head.tsx',
+    });
+
+    expect(dart).toContain(
+      'T firstOr<T>(List<T> values, T fallback) =>\n' +
+        '    values.elementAtOrNull(0) ?? fallback;',
+    );
+  });
+});
+
+describe('transpileComponent — helper parameters', () => {
+  test('a default value becomes an optional positional parameter', async () => {
+    const dart = await transpileComponent({
+      source:
+        "const tag = (value: string, prefix: string = '#'): string =>\n" +
+        '  prefix + value;\n' +
+        "export const A = () => <Text>{tag('x')}</Text>;\n",
+      filePath: '/tmp/A.tsx',
+    });
+
+    expect(dart).toContain(
+      "String tag(String value, [String prefix = '#']) => prefix + value;",
+    );
+  });
+
+  test('a rest parameter is refused, since Dart has none', () => {
+    expect(
+      transpileComponent({
+        source:
+          "const join = (...values: string[]): string => values.join(', ');\n" +
+          "export const A = () => <Text>{join('a')}</Text>;\n",
+        filePath: '/tmp/A.tsx',
+      }),
+    ).rejects.toThrow(
+      /TSX0339 .* `join` cannot take a rest parameter: Dart has none — pass a list\./,
+    );
+  });
+
+  test('a default value that is not a literal is refused', () => {
+    expect(
+      transpileComponent({
+        source:
+          'const tag = (value: string, prefix: string = value): string =>\n' +
+          '  prefix + value;\n' +
+          "export const A = () => <Text>{tag('x')}</Text>;\n",
+        filePath: '/tmp/A.tsx',
+      }),
+    ).rejects.toThrow(
+      /TSX0339 .* `tag` needs a literal default for `prefix`\./,
+    );
+  });
+
+  test('a type alias is a model, like an interface', async () => {
+    const dart = await transpileComponent({
+      source:
+        'type Point = { x: number; y: number };\n' +
+        'export const A = ({ p }: { p: Point }) => <Text>{p.x}</Text>;\n',
+      filePath: '/tmp/A.tsx',
+    });
+
+    expect(dart).toContain('class Point {');
+    expect(dart).toContain('final Point p;');
+    expect(dart).toContain("Text('${p.x}')");
+  });
+});
+
+describe('transpileComponent — inference edges', () => {
+  test('a generic type is resolved from a later argument when the first says nothing', async () => {
+    const dart = await transpileComponent({
+      source: `const pick = <T,>(fallback: T, values: T[]): T =>
+  values[0] ?? fallback;
+
+export const Head = ({ names }: { names: string[] }) => (
+  <Text>{pick(names[0] ?? '-', names)}</Text>
+);
+`,
+      filePath: '/tmp/Head.tsx',
+    });
+
+    // Resolved to String through `values`, so no needless interpolation.
+    expect(dart).toContain(
+      "Text(pick(names.elementAtOrNull(0) ?? '-', names))",
+    );
+  });
+
+  test('a parameter that does not mention the type variable is skipped', async () => {
+    const dart = await transpileComponent({
+      source: `const nth = <T,>(count: number, values: T[], fallback: T): T =>
+  values[0] ?? fallback;
+
+export const Head = ({ names }: { names: string[] }) => (
+  <Text>{nth(1, names, '-')}</Text>
+);
+`,
+      filePath: '/tmp/Head.tsx',
+    });
+
+    expect(dart).toContain("Text(nth(1, names, '-'))");
+  });
+
+  test('a generic type that no argument pins down stays unknown', async () => {
+    const dart = await transpileComponent({
+      source: `const headOf = <T,>(values: T[], fallback: T): T =>
+  values[0] ?? fallback;
+
+export const Head = ({ names }: { names: string[] }) => (
+  <Text>{headOf(names.filter((name) => name !== ''), names[0] ?? '-')}</Text>
+);
+`,
+      filePath: '/tmp/Head.tsx',
+    });
+
+    // Neither argument is a plain name or literal, so the return type is not
+    // known to be a String and the value is interpolated rather than assumed.
+    expect(dart).toContain("'${headOf(");
+  });
+
+  test('a tuple holding a type with no Dart equivalent is refused', () => {
+    expect(
+      transpileComponent({
+        source:
+          'export const A = ({ pair }: { pair: [string, Date] }) => ' +
+          '<Text>{pair[0]}</Text>;\n',
+        filePath: '/tmp/A.tsx',
+      }),
+    ).rejects.toThrow(/TSX0309/);
+  });
+});
+
 describe('transpileComponent — helpers inside a component', () => {
   test('a typed local function becomes a private method that can read state', async () => {
     const dart = await transpileComponent({

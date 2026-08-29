@@ -66,9 +66,18 @@ export interface EnumBinding {
 }
 
 /// A module-level `const f = (a: T): R => …` the file's components call.
+export interface HelperParam {
+  name: string;
+  dartType: string;
+  /// A literal default, which Dart writes as an optional positional.
+  defaultValue: string | null;
+}
+
 export interface HelperBinding {
   name: string;
-  params: { name: string; dartType: string }[];
+  /// `<T>` on the helper, kept so the Dart signature stays generic.
+  typeParams: string[];
+  params: HelperParam[];
   returnDartType: string;
   body: ts.Expression;
 }
@@ -170,12 +179,21 @@ const PROP_DART_TYPES = new Map<ts.SyntaxKind, string>([
 const dartPropType = (
   type: ts.TypeNode,
   sourceFile: ts.SourceFile,
+  typeParams: Set<string> = new Set(),
 ): string | null => {
   const scalar = PROP_DART_TYPES.get(type.kind);
   if (scalar !== undefined) return scalar;
   if (ts.isArrayTypeNode(type)) {
-    const element = dartPropType(type.elementType, sourceFile);
+    const element = dartPropType(type.elementType, sourceFile, typeParams);
     return element === null ? null : `List<${element}>`;
+  }
+  if (ts.isTupleTypeNode(type)) {
+    const members = type.elements.map((element) =>
+      dartPropType(element, sourceFile, typeParams),
+    );
+    return members.every((member) => member !== null)
+      ? `(${members.join(', ')})`
+      : null;
   }
   if (
     ts.isUnionTypeNode(type) &&
@@ -187,6 +205,9 @@ const dartPropType = (
     return 'String';
   }
   if (ts.isTypeReferenceNode(type) && ts.isIdentifier(type.typeName)) {
+    if (typeParams.has(type.typeName.text)) {
+      return type.typeName.text;
+    }
     const declaredEnum = enumDeclaration(type.typeName.text, sourceFile);
     if (declaredEnum !== null) {
       return declaredEnum;
@@ -946,6 +967,30 @@ const analyzeEnums = (sourceFile: ts.SourceFile): EnumBinding[] => {
   return enums;
 };
 
+/** A parameter's default, which Dart writes as an optional positional. */
+const literalDefault = (
+  parameter: ts.ParameterDeclaration,
+  helper: string,
+  sourceFile: ts.SourceFile,
+): string | null => {
+  const { initializer } = parameter;
+  if (initializer === undefined) return null;
+  if (ts.isStringLiteral(initializer)) {
+    return `'${escapeDartString(initializer.text)}'`;
+  }
+  if (ts.isNumericLiteral(initializer)) return initializer.text;
+  if (initializer.kind === ts.SyntaxKind.TrueKeyword) return 'true';
+  if (initializer.kind === ts.SyntaxKind.FalseKeyword) return 'false';
+  return helperTypeError(
+    {
+      helper,
+      detail: `needs a literal default for \`${parameter.name.getText(sourceFile)}\`.`,
+      node: initializer,
+    },
+    sourceFile,
+  );
+};
+
 const helperTypeError = (
   { helper, detail, node }: HelperTypeError,
   sourceFile: ts.SourceFile,
@@ -963,6 +1008,9 @@ const helperBinding = (
   arrow: ts.ArrowFunction,
   sourceFile: ts.SourceFile,
 ): HelperBinding => {
+  const typeParams = (arrow.typeParameters ?? []).map(
+    (parameter) => parameter.name.text,
+  );
   const annotation = arrow.type;
   if (annotation === undefined) {
     return helperTypeError(
@@ -975,7 +1023,8 @@ const helperBinding = (
       sourceFile,
     );
   }
-  const returnDartType = dartPropType(annotation, sourceFile);
+  const scope = new Set(typeParams);
+  const returnDartType = dartPropType(annotation, sourceFile, scope);
   if (returnDartType === null) {
     return helperTypeError(
       {
@@ -998,7 +1047,19 @@ const helperBinding = (
   }
   return {
     name,
+    typeParams,
     params: arrow.parameters.map((parameter) => {
+      if (parameter.dotDotDotToken !== undefined) {
+        return helperTypeError(
+          {
+            helper: name,
+            detail:
+              'cannot take a rest parameter: Dart has none — pass a list.',
+            node: parameter,
+          },
+          sourceFile,
+        );
+      }
       if (!ts.isIdentifier(parameter.name)) {
         return helperTypeError(
           {
@@ -1012,7 +1073,7 @@ const helperBinding = (
       const paramType =
         parameter.type === undefined
           ? null
-          : dartPropType(parameter.type, sourceFile);
+          : dartPropType(parameter.type, sourceFile, scope);
       if (paramType === null) {
         return helperTypeError(
           {
@@ -1023,7 +1084,11 @@ const helperBinding = (
           sourceFile,
         );
       }
-      return { name: parameter.name.text, dartType: paramType };
+      return {
+        name: parameter.name.text,
+        dartType: paramType,
+        defaultValue: literalDefault(parameter, name, sourceFile),
+      };
     }),
     returnDartType,
     body: arrow.body,
@@ -1055,19 +1120,30 @@ const analyzeModels = (
   sourceFile: ts.SourceFile,
   required: Set<string>,
 ): ModelBinding[] => {
-  const declarations = sourceFile.statements.filter((statement) =>
-    ts.isInterfaceDeclaration(statement),
+  // `type Point = { x: number }` describes the same shape an interface does,
+  // so both become models.
+  const declarations = sourceFile.statements.flatMap(
+    (statement): { name: string; members: ts.NodeArray<ts.TypeElement> }[] => {
+      if (ts.isInterfaceDeclaration(statement)) {
+        return [{ name: statement.name.text, members: statement.members }];
+      }
+      if (
+        ts.isTypeAliasDeclaration(statement) &&
+        ts.isTypeLiteralNode(statement.type)
+      ) {
+        return [{ name: statement.name.text, members: statement.type.members }];
+      }
+      return [];
+    },
   );
-  const known = new Set(
-    declarations.map((declaration) => declaration.name.text),
-  );
+  const known = new Set(declarations.map((declaration) => declaration.name));
   // Grow the set until it is closed under references from the targets.
   const wanted = new Set([...jsonTargetNames(sourceFile), ...required]);
   let added = true;
   while (added) {
     added = false;
     for (const declaration of declarations) {
-      if (!wanted.has(declaration.name.text)) {
+      if (!wanted.has(declaration.name)) {
         continue;
       }
       for (const member of declaration.members) {
@@ -1088,9 +1164,9 @@ const analyzeModels = (
     }
   }
   return declarations
-    .filter((declaration) => wanted.has(declaration.name.text))
+    .filter((declaration) => wanted.has(declaration.name))
     .map((declaration) => ({
-      name: declaration.name.text,
+      name: declaration.name,
       fields: declaration.members.map((member) => {
         const annotation = ts.isPropertySignature(member)
           ? member.type

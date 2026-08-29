@@ -3,6 +3,7 @@ import ts from 'typescript';
 
 import { analyzeSource } from '@src/compiler/analyze';
 import {
+  type HelperSignature,
   type MemberReadInfo,
   type TranslateContext,
   translateExpression,
@@ -79,7 +80,7 @@ const translate = (source: string): string => {
     handlerNames: new Set(['tick']),
     widgetProps: new Set<string>(),
     localDartTypes: new Map<string, string>(),
-    helperReturns: new Map<string, string>(),
+    helperReturns: new Map<string, HelperSignature>(),
     privateHelpers: new Set<string>(),
     enumMembers: new Map<string, Map<string, string>>(),
     privateMembers: true,

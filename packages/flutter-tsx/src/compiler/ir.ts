@@ -115,7 +115,8 @@ export interface IrEnum {
 
 export interface IrHelper {
   name: string;
-  params: { name: string; dartType: string }[];
+  typeParams: string[];
+  params: { name: string; dartType: string; defaultValue: string | null }[];
   returnDartType: string;
   value: IrValue;
 }

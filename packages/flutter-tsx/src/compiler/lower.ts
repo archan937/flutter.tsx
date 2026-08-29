@@ -27,7 +27,7 @@ import type {
   RouterBinding,
   StoreBinding,
 } from './analyze';
-import { listElementType } from './dart-names';
+import { listElementType, recordFieldType } from './dart-names';
 import { tsxErrorAt } from './diagnostics';
 import { GO_ROUTER_IMPORT } from './emit-component';
 import type {
@@ -46,6 +46,7 @@ import type {
   IrWidget,
 } from './ir';
 import {
+  type HelperSignature,
   type MemberReadInfo,
   readFieldType,
   STRING_RETURNING_METHODS,
@@ -92,8 +93,8 @@ export interface CompileContext {
   // Dart type name -> prefixed name, for plugins imported with a prefix.
   prefixedTypes: Map<string, string>;
   userWidgets: Map<string, WidgetInfo>;
-  /// Module-level helpers by name, with the Dart type each returns.
-  helperReturns: Map<string, string>;
+  /// Helpers by name, with the signature each declares.
+  helperReturns: Map<string, HelperSignature>;
   /// Enum name -> its members' TSX names mapped to their Dart names.
   enumMembers: Map<string, Map<string, string>>;
   /// local component name -> the Dart file declaring it, relative to this one
@@ -284,6 +285,7 @@ export const lowerHelper = (helper: HelperBinding): IrHelper => {
   });
   return {
     name: helper.name,
+    typeParams: helper.typeParams,
     params: helper.params,
     returnDartType: helper.returnDartType,
     value: {
@@ -1035,6 +1037,46 @@ const iterableElementType = (
   return null;
 };
 
+/**
+ * What a call to a helper yields. A generic helper's return type is resolved
+ * from the arguments: `firstOr(names, '-')` over a List<String> yields String.
+ */
+const helperCallDartType = (
+  signature: HelperSignature,
+  call: ts.CallExpression,
+  context: LowerContext,
+): string | null => {
+  const { returnDartType } = signature;
+  if (!signature.typeParams.includes(returnDartType)) {
+    return returnDartType;
+  }
+  for (const [index, param] of signature.params.entries()) {
+    const argument = call.arguments[index];
+    if (argument === undefined) continue;
+    const argumentType = dartTypeOfArgument(argument, context);
+    if (argumentType === null) continue;
+    if (param.dartType === returnDartType) return argumentType;
+    if (param.dartType === `List<${returnDartType}>`) {
+      const element = listElementType(argumentType);
+      if (element !== null) return element;
+    }
+  }
+  return null;
+};
+
+/** The Dart type of a call argument, when it is plain enough to know. */
+const dartTypeOfArgument = (
+  argument: ts.Expression,
+  context: LowerContext,
+): string | null => {
+  if (ts.isStringLiteral(argument)) return 'String';
+  if (ts.isNumericLiteral(argument)) return 'double';
+  if (ts.isIdentifier(argument)) {
+    return context.localDartTypes.get(argument.text) ?? null;
+  }
+  return null;
+};
+
 const isStringExpression = (
   expression: ts.Expression,
   context: LowerContext,
@@ -1064,8 +1106,19 @@ const isStringExpression = (
   ) {
     return STRING_RETURNING_METHODS.has(expression.expression.name.text);
   }
-  // `names[0]` is a String when names is a List<String>.
+  // `names[0]` is a String when names is a List<String>, and so is a record
+  // field that holds one.
   if (ts.isElementAccessExpression(expression)) {
+    if (
+      ts.isIdentifier(expression.expression) &&
+      ts.isNumericLiteral(expression.argumentExpression)
+    ) {
+      const field = recordFieldType(
+        context.localDartTypes.get(expression.expression.text),
+        Number(expression.argumentExpression.text),
+      );
+      if (field !== null) return field === 'String';
+    }
     return iterableElementType(expression.expression, context) === 'String';
   }
   if (
@@ -1073,9 +1126,12 @@ const isStringExpression = (
     ts.isIdentifier(expression.expression)
   ) {
     // The translate context carries both module and component helpers.
+    const signature = context.translate.helperReturns.get(
+      expression.expression.text,
+    );
     return (
-      context.translate.helperReturns.get(expression.expression.text) ===
-      'String'
+      signature !== undefined &&
+      helperCallDartType(signature, expression, context) === 'String'
     );
   }
   // `a ?? b` is a String when both sides are.
@@ -2768,6 +2824,20 @@ export const lowerComponent = (
     ]),
   ]);
   const memberReads = new Map<string, MemberReadInfo>();
+  // A prop or state holding a model has readable fields: `p.x` where p is a
+  // Point. A State reaches its props through `widget`.
+  const readsThroughWidget = statefulComponent(component);
+  for (const prop of component.props) {
+    const model = compile.models.get(prop.dartType);
+    if (model !== undefined) {
+      memberReads.set(prop.name, {
+        className: model.name,
+        receiver: readsThroughWidget ? `widget.${prop.name}` : prop.name,
+        nullable: !prop.required,
+        fields: modelFieldTypes(model),
+      });
+    }
+  }
   const stateNames = new Set(component.states.map((state) => state.name));
   const handlerNames = new Set(
     component.handlers.map((handler) => handler.name),
@@ -2807,9 +2877,13 @@ export const lowerComponent = (
       localDartTypes,
       helperReturns: new Map([
         ...compile.helperReturns,
-        ...component.helpers.map((helper): [string, string] => [
+        ...component.helpers.map((helper): [string, HelperSignature] => [
           helper.name,
-          helper.returnDartType,
+          {
+            typeParams: helper.typeParams,
+            params: helper.params,
+            returnDartType: helper.returnDartType,
+          },
         ]),
       ]),
       privateHelpers: new Set(component.helpers.map((helper) => helper.name)),
@@ -2875,6 +2949,7 @@ export const lowerComponent = (
   // is lowered in the component's own context and emitted as a private method.
   const componentHelpers: IrHelper[] = component.helpers.map((helper) => ({
     name: helper.name,
+    typeParams: helper.typeParams,
     params: helper.params,
     returnDartType: helper.returnDartType,
     value: {
