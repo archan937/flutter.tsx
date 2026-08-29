@@ -130,6 +130,15 @@ export interface IrField {
 
 export type IrStatement =
   | { kind: 'setState'; assignments: string[] }
+  | { kind: 'try'; body: IrStatement[]; error: string; onError: IrStatement[] }
+  | { kind: 'forOf'; itemName: string; iterable: string; body: IrStatement[] }
+  | { kind: 'while'; condition: string; body: IrStatement[] }
+  | {
+      kind: 'switch';
+      value: string;
+      cases: { values: string[]; body: IrStatement[] }[];
+      fallback: IrStatement[] | null;
+    }
   // `if (c) { … } else { … }`; an `else if` chain is an `if` in `otherwise`.
   | {
       kind: 'if';

@@ -19,6 +19,8 @@ const exprLines = (
   return `${printed};`.split('\n');
 };
 
+const indent = (lines: string[]): string[] => lines.map((line) => `  ${line}`);
+
 // initState assigns state directly; anywhere else the same assignment has to
 // go through setState. Everything else renders identically, so both callers
 // share one walk over the statements.
@@ -57,6 +59,46 @@ const statementLines = (
           '}',
         ];
       }
+      case 'try':
+        return [
+          'try {',
+          ...indent(statementLines(statement.body, naming, wrapSetState)),
+          `} catch (${statement.error}) {`,
+          ...indent(statementLines(statement.onError, naming, wrapSetState)),
+          '}',
+        ];
+      case 'forOf':
+        return [
+          `for (final ${statement.itemName} in ${statement.iterable}) {`,
+          ...indent(statementLines(statement.body, naming, wrapSetState)),
+          '}',
+        ];
+      case 'while':
+        return [
+          `while (${statement.condition}) {`,
+          ...indent(statementLines(statement.body, naming, wrapSetState)),
+          '}',
+        ];
+      case 'switch':
+        return [
+          `switch (${statement.value}) {`,
+          ...statement.cases.flatMap((entry) => [
+            ...entry.values.map((value) => `  case ${value}:`),
+            ...indent(indent(statementLines(entry.body, naming, wrapSetState))),
+            '    break;',
+          ]),
+          ...(statement.fallback === null
+            ? []
+            : [
+                '  default:',
+                ...indent(
+                  indent(
+                    statementLines(statement.fallback, naming, wrapSetState),
+                  ),
+                ),
+              ]),
+          '}',
+        ];
       case 'postFrame':
         return [
           'WidgetsBinding.instance.addPostFrameCallback((_) {',

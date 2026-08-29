@@ -16,6 +16,8 @@ export interface MemberReadInfo {
 export interface TranslateContext {
   sourceFile: ts.SourceFile;
   stateNames: Set<string>;
+  /// Props reached through `widget.` because the reader is a State class.
+  widgetProps: Set<string>;
   handlerNames: Set<string>;
   privateMembers: boolean;
   memberReads: Map<string, MemberReadInfo>;
@@ -185,7 +187,11 @@ export const translateIdentifier = (
 ): string => {
   const isMember =
     context.stateNames.has(name) || context.handlerNames.has(name);
-  return isMember && context.privateMembers ? `_${name}` : name;
+  if (isMember && context.privateMembers) {
+    return `_${name}`;
+  }
+  // A prop is a field of the widget, so a State reads it through `widget`.
+  return context.widgetProps.has(name) ? `widget.${name}` : name;
 };
 
 export const interpolate = (

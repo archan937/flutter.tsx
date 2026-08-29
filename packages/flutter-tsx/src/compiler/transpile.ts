@@ -6,13 +6,9 @@ import { deriveSlots } from '../derive/slots';
 import { loadPluginApi, type PluginApi } from '../plugins/api';
 import { deriveHooks } from '../plugins/hooks';
 import { PACKAGE_OVERRIDES, PLUGIN_OVERRIDES } from '../plugins/overrides';
-import {
-  analyzeSource,
-  type ComponentAnalysis,
-  type SourceAnalysis,
-} from './analyze';
+import { analyzeSource, type SourceAnalysis } from './analyze';
 import { dartFileFor } from './dart-names';
-import { TsxError, tsxErrorAt } from './diagnostics';
+import { TsxError } from './diagnostics';
 import { emitDartFile } from './emit-component';
 import {
   buildCompileContext,
@@ -45,20 +41,6 @@ const compileContext = (): Promise<CompileContext> => {
     buildCompileContext(snapshot, deriveSlots(snapshot)),
   );
   return contextPromise;
-};
-
-const requireSupported = (component: ComponentAnalysis): void => {
-  if (
-    component.props.length > 0 &&
-    (component.states.length > 0 || component.effects.length > 0)
-  ) {
-    throw tsxErrorAt(
-      'TSX0310',
-      `<${component.name}> combines props and state — stateful components ` +
-        'with props land at a later roadmap step.',
-      { sourceFile: component.sourceFile, node: component.nameNode },
-    );
-  }
 };
 
 interface LoadedPlugins {
@@ -261,10 +243,9 @@ export const transpileComponent = async (
     ),
     ...(await loadPlugins(analysis, input.pluginApiDirs ?? [])),
   };
-  const components = analysis.components.map((component) => {
-    requireSupported(component);
-    return lowerComponent(component, fileContext);
-  });
+  const components = analysis.components.map((component) =>
+    lowerComponent(component, fileContext),
+  );
   return emitDartFile(components, fileContext, {
     stores: [...fileContext.stores.values()],
     router: analysis.router === null ? null : lowerRouter(analysis.router),

@@ -138,11 +138,15 @@ const emitStatefulClass = (component: IrComponent): string => {
     ...component.methods.map(emitMethod),
     buildMethod(component),
   ];
+  // Props are fields of the widget, which the State reads through `widget`.
+  const widgetMembers = [
+    constructorLine(component),
+    ...propFields(component),
+    `  @override\n  State<${name}> createState() => _${name}State();`,
+  ];
   return (
     `class ${name} extends StatefulWidget {\n` +
-    `  const ${name}({super.key});\n\n` +
-    `  @override\n` +
-    `  State<${name}> createState() => _${name}State();\n` +
+    `${widgetMembers.join('\n\n')}\n` +
     `}\n\n` +
     `class _${name}State extends State<${name}> {\n` +
     `${stateMembers.join('\n\n')}\n}`

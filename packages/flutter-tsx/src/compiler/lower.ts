@@ -207,6 +207,35 @@ const PROP_TYPE_NODES: Record<string, TypeNode> = {
   bool: { kind: 'scalar', name: 'bool' },
 };
 
+/** Whether the JSX renders a `<TabView>`, which owns a selected index. */
+const rendersTabView = (component: ComponentAnalysis): boolean => {
+  let found = false;
+  const visit = (node: ts.Node): void => {
+    if (
+      (ts.isJsxSelfClosingElement(node) || ts.isJsxOpeningElement(node)) &&
+      ts.isIdentifier(node.tagName) &&
+      node.tagName.text === TAB_VIEW
+    ) {
+      found = true;
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(component.returnJsx);
+  return found;
+};
+
+/**
+ * A component needs a State class when it owns something across rebuilds.
+ * Known before lowering, because how a prop is read depends on it: a State
+ * reaches its props through `widget`.
+ */
+const statefulComponent = (component: ComponentAnalysis): boolean =>
+  component.states.length > 0 ||
+  component.plugins.length > 0 ||
+  component.effects.length > 0 ||
+  component.asyncBinding !== null ||
+  rendersTabView(component);
+
 export const buildUserWidgets = (
   components: ComponentAnalysis[],
 ): Map<string, WidgetInfo> =>
@@ -1639,6 +1668,50 @@ const mergeSetState = (statements: IrStatement[]): IrStatement[] =>
     return [...merged, statement];
   }, []);
 
+/**
+ * A `switch` whose clauses each end in `break`, which is what Dart requires:
+ * a clause that falls through to the next is a different construct there, so
+ * only stacked empty clauses (`case 1: case 2:`) share a body.
+ */
+const lowerSwitch = (
+  statement: ts.SwitchStatement,
+  context: LowerContext,
+  allowPluginCalls: boolean,
+): IrStatement => {
+  const cases: { values: string[]; body: IrStatement[] }[] = [];
+  let fallback: IrStatement[] | null = null;
+  let pending: string[] = [];
+
+  for (const clause of statement.caseBlock.clauses) {
+    const body = mergeSetState(
+      clause.statements
+        .filter((each) => !ts.isBreakStatement(each))
+        .flatMap((each) => lowerStatement(each, context, allowPluginCalls)),
+    );
+    if (ts.isDefaultClause(clause)) {
+      fallback = body;
+      continue;
+    }
+    pending.push(translateExpression(clause.expression, context.translate));
+    // An empty clause stacks onto the next one, sharing its body.
+    if (clause.statements.length === 0) continue;
+    cases.push({ values: pending, body });
+    pending = [];
+  }
+  if (pending.length > 0) {
+    throw tsxErrorAt('TSX0337', 'the last `case` of a `switch` needs a body.', {
+      sourceFile: context.sourceFile,
+      node: statement,
+    });
+  }
+  return {
+    kind: 'switch',
+    value: translateExpression(statement.expression, context.translate),
+    cases,
+    fallback,
+  };
+};
+
 /** The statements of `{ … }`, or the single statement of `if (c) doIt();`. */
 const branchStatements = (
   statement: ts.Statement,
@@ -1656,6 +1729,67 @@ const lowerControlFlow = (
   context: LowerContext,
   allowPluginCalls: boolean,
 ): IrStatement[] | null => {
+  if (ts.isTryStatement(statement)) {
+    const clause = statement.catchClause;
+    if (clause === undefined) {
+      throw tsxErrorAt(
+        'TSX0337',
+        'a `try` needs a `catch`: `finally` on its own is not compiled.',
+        { sourceFile: context.sourceFile, node: statement },
+      );
+    }
+    const declaration = clause.variableDeclaration;
+    // `} catch { … }` names nothing, which is Dart's `catch (_)`.
+    const error =
+      declaration !== undefined && ts.isIdentifier(declaration.name)
+        ? declaration.name.text
+        : '_';
+    return [
+      {
+        kind: 'try',
+        body: lowerBodyStatements(
+          statement.tryBlock,
+          context,
+          allowPluginCalls,
+        ),
+        error,
+        onError: lowerBodyStatements(clause.block, context, allowPluginCalls),
+      },
+    ];
+  }
+  if (ts.isForOfStatement(statement)) {
+    const binding = statement.initializer;
+    const declared = ts.isVariableDeclarationList(binding)
+      ? binding.declarations[0]?.name
+      : undefined;
+    if (declared === undefined || !ts.isIdentifier(declared)) {
+      throw tsxErrorAt(
+        'TSX0337',
+        'a `for … of` binds one name: `for (const item of items)`.',
+        { sourceFile: context.sourceFile, node: statement },
+      );
+    }
+    return [
+      {
+        kind: 'forOf',
+        itemName: declared.text,
+        iterable: translateExpression(statement.expression, context.translate),
+        body: branchStatements(statement.statement, context, allowPluginCalls),
+      },
+    ];
+  }
+  if (ts.isWhileStatement(statement)) {
+    return [
+      {
+        kind: 'while',
+        condition: translateExpression(statement.expression, context.translate),
+        body: branchStatements(statement.statement, context, allowPluginCalls),
+      },
+    ];
+  }
+  if (ts.isSwitchStatement(statement)) {
+    return [lowerSwitch(statement, context, allowPluginCalls)];
+  }
   if (!ts.isIfStatement(statement)) return null;
   return [
     {
@@ -2565,6 +2699,9 @@ export const lowerComponent = (
       sourceFile: component.sourceFile,
       stateNames,
       handlerNames,
+      widgetProps: statefulComponent(component)
+        ? new Set(component.props.map((prop) => prop.name))
+        : new Set<string>(),
       privateMembers: true,
       memberReads,
       classFields: new Map<string, Map<string, TypeNode>>([
@@ -2669,12 +2806,7 @@ export const lowerComponent = (
             initializer: '0',
           },
         ];
-  const isStateful =
-    component.states.length > 0 ||
-    component.plugins.length > 0 ||
-    component.effects.length > 0 ||
-    component.asyncBinding !== null ||
-    tabField.length > 0;
+  const isStateful = statefulComponent(component) || tabField.length > 0;
 
   return {
     name: component.name,

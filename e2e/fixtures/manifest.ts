@@ -233,4 +233,10 @@ export const FIXTURE_APPS: FixtureApp[] = [
     dartFile: 'value_methods.dart',
     deps: [],
   },
+  {
+    id: '33-control-flow',
+    component: 'Auditor',
+    dartFile: 'auditor.dart',
+    deps: [],
+  },
 ];

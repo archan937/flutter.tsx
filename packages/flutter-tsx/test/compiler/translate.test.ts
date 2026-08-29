@@ -77,6 +77,7 @@ const translate = (source: string): string => {
     sourceFile,
     stateNames: new Set(['count', 'label']),
     handlerNames: new Set(['tick']),
+    widgetProps: new Set<string>(),
     privateMembers: true,
     memberReads: memberReads(),
     classFields: new Map(),

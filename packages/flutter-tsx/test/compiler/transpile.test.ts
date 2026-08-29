@@ -178,23 +178,40 @@ describe('transpileComponent — stateful components', () => {
     );
   });
 
-  test('props on a stateful component are a numbered error', () => {
-    expect(
-      transpileComponent({
-        source:
-          "import { Text, useState } from 'flutter-tsx';\n" +
-          'export const Probe = ({ label }: { label: string }) => {\n' +
-          '  const [count, setCount] = useState(0);\n' +
-          '  return <Text>{label}</Text>;\n' +
-          '};\n',
-        filePath: 'probe.tsx',
-      }),
-    ).rejects.toThrow(
-      new Error(
-        'TSX0310 probe.tsx:2:14 — <Probe> combines props and state — ' +
-          'stateful components with props land at a later roadmap step.',
-      ),
+  test('a stateful component reads its props through the widget', async () => {
+    const dart = await transpileComponent({
+      source:
+        "import { Text, useState } from 'flutter-tsx';\n" +
+        'export const Probe = ({ label }: { label: string }) => {\n' +
+        '  const [count, setCount] = useState(0);\n' +
+        '  return <Text onClick={() => setCount(count + 1)}>{label}</Text>;\n' +
+        '};\n',
+      filePath: 'probe.tsx',
+    });
+
+    expect(dart).toBe(`import 'package:flutter/material.dart';
+
+class Probe extends StatefulWidget {
+  const Probe({super.key, required this.label});
+
+  final String label;
+
+  @override
+  State<Probe> createState() => _ProbeState();
+}
+
+class _ProbeState extends State<Probe> {
+  int _count = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => setState(() => _count++),
+      child: Text(widget.label),
     );
+  }
+}
+`);
   });
 
   test('named prop types, fragments, and final fields emit in full', async () => {
@@ -882,5 +899,85 @@ export const Board = ({ jobs }: { jobs: Job[] }) => (
         filePath: '/tmp/Odd.tsx',
       }),
     ).rejects.toThrow(/TSX0309/);
+  });
+});
+
+describe('transpileComponent — statement forms', () => {
+  const handler = (body: string): string =>
+    `import { Text, useState } from 'flutter-tsx';
+
+export const Loop = ({ items }: { items: string[] }) => {
+  const [count, setCount] = useState(0);
+
+  const go = () => {
+${body}
+  };
+
+  return <Text onClick={go}>{count}</Text>;
+};
+`;
+
+  const methodOf = async (body: string): Promise<string> => {
+    const dart = await transpileComponent({
+      source: handler(body),
+      filePath: '/tmp/Loop.tsx',
+    });
+    const start = dart.indexOf('  void _go() {');
+    return dart.slice(start, dart.indexOf('\n  }\n', start) + 5);
+  };
+
+  test('a while loop', async () => {
+    expect(
+      await methodOf(
+        '    while (count < 3) {\n      setCount(count + 1);\n    }',
+      ),
+    ).toBe(`  void _go() {
+    while (_count < 3) {
+      setState(() {
+        _count++;
+      });
+    }
+  }
+`);
+  });
+
+  test('a try with no catch is refused', () => {
+    expect(
+      transpileComponent({
+        source: handler(
+          '    try {\n      setCount(1);\n    } finally {\n      setCount(2);\n    }',
+        ),
+        filePath: '/tmp/Loop.tsx',
+      }),
+    ).rejects.toThrow(
+      /TSX0337 .* a `try` needs a `catch`: `finally` on its own is not compiled\./,
+    );
+  });
+
+  test('a for … of that destructures is refused', () => {
+    expect(
+      transpileComponent({
+        source: handler(
+          '    for (const [a, b] of [[1, 2]]) {\n      setCount(a);\n    }',
+        ),
+        filePath: '/tmp/Loop.tsx',
+      }),
+    ).rejects.toThrow(
+      /TSX0337 .* a `for … of` binds one name: `for \(const item of items\)`\./,
+    );
+  });
+
+  test('a switch whose last case has no body is refused', () => {
+    expect(
+      transpileComponent({
+        source: handler(
+          '    switch (count) {\n      case 0:\n        setCount(1);\n' +
+            '        break;\n      case 1:\n    }',
+        ),
+        filePath: '/tmp/Loop.tsx',
+      }),
+    ).rejects.toThrow(
+      /TSX0337 .* the last `case` of a `switch` needs a body\./,
+    );
   });
 });
