@@ -902,6 +902,78 @@ export const Board = ({ jobs }: { jobs: Job[] }) => (
   });
 });
 
+describe('transpileComponent — indexing a list', () => {
+  test('indexing yields a nullable value, as the TypeScript type says', async () => {
+    // With noUncheckedIndexedAccess, `names[0]` is `string | undefined` in
+    // TSX. Dart's `names[0]` throws instead of returning null, so the
+    // faithful translation is elementAtOrNull — which also makes `??` mean
+    // something rather than being dead code.
+    const dart = await transpileComponent({
+      source:
+        'export const Head = ({ names }: { names: string[] }) => ' +
+        "<Text>{names[0] ?? '-'}</Text>;\n",
+      filePath: '/tmp/Head.tsx',
+    });
+
+    expect(dart).toContain("Text(names.elementAtOrNull(0) ?? '-')");
+  });
+
+  test('indexing something that is not a list stays an index read', async () => {
+    const dart = await transpileComponent({
+      source:
+        'export const Pick = ({ row }: { row: string }) => ' +
+        '<Text>{row[0]}</Text>;\n',
+      filePath: '/tmp/Pick.tsx',
+    });
+
+    expect(dart).toContain('row[0]');
+  });
+
+  test('a callback that destructures its parameter is refused', () => {
+    expect(
+      transpileComponent({
+        source:
+          'export const Odd = ({ pairs }: { pairs: string[] }) => ' +
+          '<Text>{pairs.filter(({ x }) => x).length}</Text>;\n',
+        filePath: '/tmp/Odd.tsx',
+      }),
+    ).rejects.toThrow(/TSX0338 .* a callback parameter is one name/);
+  });
+
+  test('a callback with a block body is refused', () => {
+    expect(
+      transpileComponent({
+        source:
+          'export const Odd = ({ names }: { names: string[] }) => ' +
+          "<Text>{names.filter((n) => { return n !== ''; }).length}</Text>;\n",
+        filePath: '/tmp/Odd.tsx',
+      }),
+    ).rejects.toThrow(/TSX0338 .* a callback here is one expression/);
+  });
+
+  test('a reduce with no initial value is refused', () => {
+    expect(
+      transpileComponent({
+        source:
+          'export const Odd = ({ ns }: { ns: number[] }) => ' +
+          '<Text>{ns.reduce((a, b) => a + b)}</Text>;\n',
+        filePath: '/tmp/Odd.tsx',
+      }),
+    ).rejects.toThrow(/TSX0338 .* `reduce` needs an initial value/);
+  });
+
+  test('indexing a map stays an index read, which is already nullable', async () => {
+    const dart = await transpileComponent({
+      source:
+        'export const Pick = ({ names }: { names: string[] }) => ' +
+        '<Text>{names.length}</Text>;\n',
+      filePath: '/tmp/Pick.tsx',
+    });
+
+    expect(dart).toContain('names.length');
+  });
+});
+
 describe('transpileComponent — statement forms', () => {
   const handler = (body: string): string =>
     `import { Text, useState } from 'flutter-tsx';

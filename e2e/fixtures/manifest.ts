@@ -239,4 +239,10 @@ export const FIXTURE_APPS: FixtureApp[] = [
     dartFile: 'auditor.dart',
     deps: [],
   },
+  {
+    id: '34-list-pipeline',
+    component: 'Totals',
+    dartFile: 'totals.dart',
+    deps: [],
+  },
 ];

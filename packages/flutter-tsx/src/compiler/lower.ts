@@ -26,6 +26,7 @@ import type {
   RouterBinding,
   StoreBinding,
 } from './analyze';
+import { listElementType } from './dart-names';
 import { tsxErrorAt } from './diagnostics';
 import { GO_ROUTER_IMPORT } from './emit-component';
 import type {
@@ -806,11 +807,6 @@ const unwrapParenthesized = (expression: ts.Expression): ts.Expression =>
     ? unwrapParenthesized(expression.expression)
     : expression;
 
-const elementDartType = (listDartType: string | undefined): string | null => {
-  const match = listDartType?.match(/^List<(.+)>$/);
-  return match?.[1] ?? null;
-};
-
 const lowerMapChild = (
   call: ts.CallExpression,
   context: LowerContext,
@@ -843,9 +839,7 @@ const lowerMapChild = (
         kind: 'dartExpr' as const,
         dart: translateExpression(callee.expression, context.translate),
       };
-  const itemType = ts.isIdentifier(callee.expression)
-    ? elementDartType(context.localDartTypes.get(callee.expression.text))
-    : null;
+  const itemType = iterableElementType(callee.expression, context);
   const bodyContext: LowerContext = {
     ...context,
     stringLocals:
@@ -958,6 +952,31 @@ const modelFieldTypes = (model: IrModel): Map<string, TypeNode> =>
     ]),
   );
 
+// Methods that narrow or reorder a list without changing what it holds, so
+// the element type survives them.
+const ELEMENT_PRESERVING = new Set(['filter', 'where', 'reversed', 'toList']);
+
+/**
+ * What a list expression yields per item: `jobs` and
+ * `jobs.filter(f)` both yield a Job.
+ */
+const iterableElementType = (
+  expression: ts.Expression,
+  context: LowerContext,
+): string | null => {
+  if (ts.isIdentifier(expression)) {
+    return listElementType(context.localDartTypes.get(expression.text));
+  }
+  if (
+    ts.isCallExpression(expression) &&
+    ts.isPropertyAccessExpression(expression.expression) &&
+    ELEMENT_PRESERVING.has(expression.expression.name.text)
+  ) {
+    return iterableElementType(expression.expression.expression, context);
+  }
+  return null;
+};
+
 const isStringExpression = (
   expression: ts.Expression,
   context: LowerContext,
@@ -986,6 +1005,20 @@ const isStringExpression = (
     ts.isPropertyAccessExpression(expression.expression)
   ) {
     return STRING_RETURNING_METHODS.has(expression.expression.name.text);
+  }
+  // `names[0]` is a String when names is a List<String>.
+  if (ts.isElementAccessExpression(expression)) {
+    return iterableElementType(expression.expression, context) === 'String';
+  }
+  // `a ?? b` is a String when both sides are.
+  if (
+    ts.isBinaryExpression(expression) &&
+    expression.operatorToken.kind === ts.SyntaxKind.QuestionQuestionToken
+  ) {
+    return (
+      isStringExpression(expression.left, context) &&
+      isStringExpression(expression.right, context)
+    );
   }
   return false;
 };
@@ -2656,6 +2689,16 @@ export const lowerComponent = (
   component: ComponentAnalysis,
   compile: CompileContext,
 ): IrComponent => {
+  const localDartTypes = new Map<string, string>([
+    ...component.props.map((prop): [string, string] => [
+      prop.name,
+      prop.dartType,
+    ]),
+    ...component.states.map((state): [string, string] => [
+      state.name,
+      state.dartType,
+    ]),
+  ]);
   const memberReads = new Map<string, MemberReadInfo>();
   const stateNames = new Set(component.states.map((state) => state.name));
   const handlerNames = new Set(
@@ -2682,16 +2725,7 @@ export const lowerComponent = (
     usedPluginImports: new Map(),
     usedDartImports: new Set(),
     storeSetters: new Map(),
-    localDartTypes: new Map([
-      ...component.props.map((prop): [string, string] => [
-        prop.name,
-        prop.dartType,
-      ]),
-      ...component.states.map((state): [string, string] => [
-        state.name,
-        state.dartType,
-      ]),
-    ]),
+    localDartTypes,
     settersToStates: new Map(
       component.states.map((state) => [state.setterName, state.name]),
     ),
@@ -2702,6 +2736,7 @@ export const lowerComponent = (
       widgetProps: statefulComponent(component)
         ? new Set(component.props.map((prop) => prop.name))
         : new Set<string>(),
+      localDartTypes,
       privateMembers: true,
       memberReads,
       classFields: new Map<string, Map<string, TypeNode>>([

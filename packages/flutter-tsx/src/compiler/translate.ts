@@ -1,6 +1,7 @@
 import ts from 'typescript';
 
 import type { TypeNode } from '../api/model';
+import { listElementType } from './dart-names';
 import { escapeDartString } from './dart-print';
 import { tsxErrorAt } from './diagnostics';
 
@@ -18,6 +19,8 @@ export interface TranslateContext {
   stateNames: Set<string>;
   /// Props reached through `widget.` because the reader is a State class.
   widgetProps: Set<string>;
+  /// Dart types of this component's props and state, by name.
+  localDartTypes: Map<string, string>;
   handlerNames: Set<string>;
   privateMembers: boolean;
   memberReads: Map<string, MemberReadInfo>;
@@ -68,7 +71,12 @@ const DART_METHODS = new Map([
   ['some', 'any'],
   ['every', 'every'],
   ['toFixed', 'toStringAsFixed'],
+  ['filter', 'where'],
 ]);
+
+// `reduce` and `fold` mean the same thing with the arguments the other way
+// round: JS takes (step, initial), Dart takes (initial, step).
+const REDUCE = 'reduce';
 
 /** Of those, the ones that produce a String whatever the receiver is. */
 export const STRING_RETURNING_METHODS = new Set([
@@ -194,6 +202,32 @@ export const translateIdentifier = (
   return context.widgetProps.has(name) ? `widget.${name}` : name;
 };
 
+/** `(x) => x.trim()` is the same closure in Dart. */
+const translateArrow = (
+  arrow: ts.ArrowFunction,
+  context: TranslateContext,
+): string => {
+  const params = arrow.parameters.map((parameter) => {
+    if (!ts.isIdentifier(parameter.name)) {
+      throw tsxErrorAt(
+        'TSX0338',
+        'a callback parameter is one name: `(item) => …`.',
+        { sourceFile: context.sourceFile, node: parameter },
+      );
+    }
+    return parameter.name.text;
+  });
+  const { body } = arrow;
+  if (ts.isBlock(body)) {
+    throw tsxErrorAt(
+      'TSX0338',
+      'a callback here is one expression: `(item) => item.trim()`.',
+      { sourceFile: context.sourceFile, node: body },
+    );
+  }
+  return `(${params.join(', ')}) => ${translateExpression(body, context)}`;
+};
+
 export const interpolate = (
   parts: { kind: 'text' | 'expr'; value: string }[],
 ): string => {
@@ -296,6 +330,48 @@ export const translateExpression = (
   ) {
     const target = translateExpression(expression.expression, context);
     return `${target}.${expression.name.text}`;
+  }
+  if (ts.isElementAccessExpression(expression)) {
+    const target = translateExpression(expression.expression, context);
+    const index = translateExpression(expression.argumentExpression, context);
+    // TypeScript types `names[0]` as `string | undefined`; Dart's `[]` throws
+    // rather than returning null, so a list is read through elementAtOrNull
+    // to mean what the TSX type says.
+    const isList =
+      ts.isIdentifier(expression.expression) &&
+      listElementType(
+        context.localDartTypes.get(expression.expression.text),
+      ) !== null;
+    return isList
+      ? `${target}.elementAtOrNull(${index})`
+      : `${target}[${index}]`;
+  }
+  if (ts.isArrowFunction(expression)) {
+    return translateArrow(expression, context);
+  }
+  if (
+    ts.isCallExpression(expression) &&
+    ts.isPropertyAccessExpression(expression.expression) &&
+    expression.expression.name.text === REDUCE
+  ) {
+    const [step, initial] = expression.arguments;
+    if (step === undefined || initial === undefined) {
+      throw tsxErrorAt(
+        'TSX0338',
+        '`reduce` needs an initial value: `xs.reduce((a, b) => a + b, 0)`.',
+        { sourceFile: context.sourceFile, node: expression },
+      );
+    }
+    const receiver = expression.expression.expression;
+    const target = translateExpression(receiver, context);
+    // Dart infers the accumulator from the initial value, so `fold(0, …)`
+    // over a List<double> would be an int accumulator: name the type when
+    // the element type is known.
+    const element = ts.isIdentifier(receiver)
+      ? listElementType(context.localDartTypes.get(receiver.text))
+      : null;
+    const typeArgument = element === null ? '' : `<${element}>`;
+    return `${target}.fold${typeArgument}(${translateExpression(initial, context)}, ${translateExpression(step, context)})`;
   }
   if (
     ts.isCallExpression(expression) &&

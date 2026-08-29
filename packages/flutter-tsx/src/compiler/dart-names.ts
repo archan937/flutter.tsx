@@ -13,3 +13,9 @@ export const dartFileFor = (componentFile: string): string => {
     .toLowerCase();
   return `${directory}${snake}.dart`;
 };
+
+const LIST_OF = /^List<(.+)>$/;
+
+/** What a `List<T>` holds; null when the type is not a list. */
+export const listElementType = (dartType: string | undefined): string | null =>
+  dartType === undefined ? null : (LIST_OF.exec(dartType)?.[1] ?? null);
