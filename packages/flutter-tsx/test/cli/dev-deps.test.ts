@@ -4,6 +4,7 @@ import { join } from 'node:path';
 
 import { describe, expect, test } from 'bun:test';
 
+import { defaultBuild } from '@src/cli/build-command';
 import { defaultDevDeps } from '@src/cli/dev';
 import { defaultDev } from '@src/cli/dev-command';
 
@@ -201,5 +202,52 @@ describe('defaultDev', () => {
     await withStubSdk('exit 3', (dir) => {
       expect(defaultDev(dir)).rejects.toThrow('flutter run exited with 3.');
     });
+  }, 60000);
+});
+
+describe('defaultBuild', () => {
+  test('compiles and builds through the installed SDK', async () => {
+    const home = await mkdtemp(join(tmpdir(), 'fsx-build-home-'));
+    const binDir = join(home, 'flutter', 'bin');
+    const log = join(home, 'commands');
+    // The stub records what fsx asked the SDK to do.
+    await stubBinary(binDir, 'flutter', `echo "$@" >> ${log}`);
+    await stubBinary(binDir, 'dart', 'exit 0');
+    const previous = process.env.FSX_HOME;
+    process.env.FSX_HOME = home;
+    const dir = await project();
+
+    try {
+      await defaultBuild(dir, ['--target=web']);
+
+      expect(await Bun.file(log).text()).toBe('build web --release\n');
+      expect(await Bun.file(join(dir, 'lib', 'main.dart')).exists()).toBe(true);
+    } finally {
+      if (previous === undefined) delete process.env.FSX_HOME;
+      else process.env.FSX_HOME = previous;
+      await rm(home, { recursive: true, force: true });
+      await rm(dir, { recursive: true, force: true });
+    }
+  }, 60000);
+
+  test('reports a build that failed', async () => {
+    const home = await mkdtemp(join(tmpdir(), 'fsx-build-home-'));
+    const binDir = join(home, 'flutter', 'bin');
+    await stubBinary(binDir, 'flutter', 'exit 7');
+    await stubBinary(binDir, 'dart', 'exit 0');
+    const previous = process.env.FSX_HOME;
+    process.env.FSX_HOME = home;
+    const dir = await project();
+
+    try {
+      expect(defaultBuild(dir, [])).rejects.toThrow(
+        '`flutter build web --release` failed (exit 7).',
+      );
+    } finally {
+      if (previous === undefined) delete process.env.FSX_HOME;
+      else process.env.FSX_HOME = previous;
+      await rm(home, { recursive: true, force: true });
+      await rm(dir, { recursive: true, force: true });
+    }
   }, 60000);
 });

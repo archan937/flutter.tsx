@@ -1,3 +1,4 @@
+import { defaultBuild } from './build-command';
 import { defaultDev } from './dev-command';
 import { defaultInitDeps, runInitCommand } from './init';
 import { runInstallCommand } from './install';
@@ -27,6 +28,7 @@ export interface CommandRunners {
   init?: typeof runInitCommand;
   initDeps?: typeof defaultInitDeps;
   dev?: (projectDir: string) => Promise<void>;
+  build?: (projectDir: string, args: string[]) => Promise<void>;
 }
 
 export const buildCommands = ({
@@ -34,8 +36,10 @@ export const buildCommands = ({
   init = runInitCommand,
   initDeps = defaultInitDeps,
   dev = defaultDev,
+  build = defaultBuild,
 }: CommandRunners = {}): Record<string, CommandRunner> => ({
   dev: () => dev(process.cwd()),
+  build: (args) => build(process.cwd(), args),
   install: async (): Promise<void> => {
     await install();
   },
@@ -57,6 +61,7 @@ const USAGE = [
   '  install        Download the pinned Flutter SDK to ~/.fsx/flutter',
   '  init <dir>     Scaffold a new Flutter.tsx project',
   '  dev            Compile, run and hot reload the app here',
+  '  build          Compile and build the app for release',
 ].join('\n');
 
 export const formatError = (error: unknown): string =>

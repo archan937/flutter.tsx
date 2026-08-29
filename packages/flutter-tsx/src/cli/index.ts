@@ -1,4 +1,12 @@
 export {
+  artifactPath,
+  type BuildDeps,
+  buildSubcommand,
+  parseTargetFlag,
+  runBuildCommand,
+} from './build';
+export { defaultBuild } from './build-command';
+export {
   defaultDevDeps,
   type DevDeps,
   deviceFor,

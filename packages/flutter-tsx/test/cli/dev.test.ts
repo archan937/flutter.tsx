@@ -16,6 +16,9 @@ describe('deviceFor', () => {
     expect(deviceFor('web')).toBe('chrome');
     expect(deviceFor('ios')).toBe('ios');
     expect(deviceFor('android')).toBe('android');
+    expect(deviceFor('macos')).toBe('macos');
+    expect(deviceFor('windows')).toBe('windows');
+    expect(deviceFor('linux')).toBe('linux');
   });
 });
 
@@ -74,7 +77,7 @@ describe('loadAppConfig', () => {
       `export default { name: 'a', bundleId: 'b', target: 'toaster' };\n`,
       (dir) => {
         expect(loadAppConfig(dir)).rejects.toThrow(
-          `${dir}/fsx.config.ts: target must be one of web, ios, android.`,
+          `${dir}/fsx.config.ts: target must be one of web, ios, android, macos, windows, linux.`,
         );
       },
     );

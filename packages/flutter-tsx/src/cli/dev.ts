@@ -13,6 +13,9 @@ const DEVICES: Record<AppTarget, string> = {
   web: 'chrome',
   ios: 'ios',
   android: 'android',
+  macos: 'macos',
+  windows: 'windows',
+  linux: 'linux',
 };
 
 const TARGETS = Object.keys(DEVICES) as AppTarget[];

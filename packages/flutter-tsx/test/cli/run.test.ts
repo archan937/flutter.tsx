@@ -41,6 +41,7 @@ const EXPECTED_USAGE = [
   '  install        Download the pinned Flutter SDK to ~/.fsx/flutter',
   '  init <dir>     Scaffold a new Flutter.tsx project',
   '  dev            Compile, run and hot reload the app here',
+  '  build          Compile and build the app for release',
 ].join('\n');
 
 describe('runCli', () => {
@@ -213,5 +214,26 @@ describe('buildCommands — dev', () => {
 
     expect(code).toBe(0);
     expect(directories).toEqual([process.cwd()]);
+  });
+});
+
+describe('buildCommands — build', () => {
+  test('runs build in the working directory with its arguments', async () => {
+    const io = captureIo();
+    const calls: [string, string[]][] = [];
+
+    const code = await runCli(
+      ['build', '--target=macos'],
+      io,
+      buildCommands({
+        build: (projectDir, args) => {
+          calls.push([projectDir, args]);
+          return Promise.resolve();
+        },
+      }),
+    );
+
+    expect(code).toBe(0);
+    expect(calls).toEqual([[process.cwd(), ['--target=macos']]]);
   });
 });

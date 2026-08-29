@@ -1,5 +1,6 @@
 /** Platforms a project can build for. */
-export type AppTarget = 'web' | 'ios' | 'android';
+export type AppTarget =
+  'web' | 'ios' | 'android' | 'macos' | 'windows' | 'linux';
 
 /**
  * A project's `fsx.config.ts`. Written with `satisfies AppConfig` so the
