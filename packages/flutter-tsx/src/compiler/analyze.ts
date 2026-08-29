@@ -143,6 +143,30 @@ const PROP_DART_TYPES = new Map<ts.SyntaxKind, string>([
   [ts.SyntaxKind.BooleanKeyword, 'bool'],
 ]);
 
+/**
+ * The Dart type a prop annotation maps to: a scalar, a list of those, or a
+ * model this file declares. Null when nothing maps.
+ */
+const dartPropType = (
+  type: ts.TypeNode,
+  sourceFile: ts.SourceFile,
+): string | null => {
+  const scalar = PROP_DART_TYPES.get(type.kind);
+  if (scalar !== undefined) return scalar;
+  if (ts.isArrayTypeNode(type)) {
+    const element = dartPropType(type.elementType, sourceFile);
+    return element === null ? null : `List<${element}>`;
+  }
+  if (
+    ts.isTypeReferenceNode(type) &&
+    ts.isIdentifier(type.typeName) &&
+    localTypeMembers(type.typeName.text, sourceFile) !== null
+  ) {
+    return type.typeName.text;
+  }
+  return null;
+};
+
 const propsError = (sourceFile: ts.SourceFile, node: ts.Node): never => {
   throw tsxErrorAt(
     'TSX0309',
@@ -213,8 +237,8 @@ const analyzeProps = (
     ) {
       return propsError(sourceFile, member);
     }
-    const dartType = PROP_DART_TYPES.get(member.type.kind);
-    if (dartType === undefined) {
+    const dartType = dartPropType(member.type, sourceFile);
+    if (dartType === null) {
       return propsError(sourceFile, member.type);
     }
     return {
@@ -784,7 +808,32 @@ const jsonTargetNames = (sourceFile: ts.SourceFile): Set<string> => {
   return targets;
 };
 
-const analyzeModels = (sourceFile: ts.SourceFile): ModelBinding[] => {
+const LIST_DART_TYPE = /^List<(.*)>$/;
+
+/**
+ * The type a prop's Dart type ultimately names: `List<List<Job>>` is a Job.
+ * A props object destructured into constructor parameters names nothing.
+ */
+const namedDartType = (dartType: string): string => {
+  const list = LIST_DART_TYPE.exec(dartType);
+  return list?.[1] === undefined ? dartType : namedDartType(list[1]);
+};
+
+/**
+ * Models a component's props require: a prop typed `Job[]` needs a Dart class
+ * named Job, whether or not anything decodes one from JSON.
+ */
+const propModelNames = (components: ComponentAnalysis[]): Set<string> =>
+  new Set(
+    components.flatMap((component) =>
+      component.props.map((prop) => namedDartType(prop.dartType)),
+    ),
+  );
+
+const analyzeModels = (
+  sourceFile: ts.SourceFile,
+  required: Set<string>,
+): ModelBinding[] => {
   const declarations = sourceFile.statements.filter((statement) =>
     ts.isInterfaceDeclaration(statement),
   );
@@ -792,7 +841,7 @@ const analyzeModels = (sourceFile: ts.SourceFile): ModelBinding[] => {
     declarations.map((declaration) => declaration.name.text),
   );
   // Grow the set until it is closed under references from the targets.
-  const wanted = jsonTargetNames(sourceFile);
+  const wanted = new Set([...jsonTargetNames(sourceFile), ...required]);
   let added = true;
   while (added) {
     added = false;
@@ -975,7 +1024,6 @@ export const analyzeSource = (
   const { modules: hookModules, originals: importedOriginals } =
     importedHookModules(sourceFile);
   const stores = analyzeStores(sourceFile);
-  const models = analyzeModels(sourceFile);
   const storeNames = new Set(stores.map((store) => store.name));
 
   const components: ComponentAnalysis[] = [];
@@ -1030,6 +1078,7 @@ export const analyzeSource = (
         },
       ]),
   );
+  const models = analyzeModels(sourceFile, propModelNames(components));
   const componentImports = new Map(
     [...hookModules].filter(([, module]) => module.startsWith('.')),
   );

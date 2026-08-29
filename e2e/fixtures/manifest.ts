@@ -215,4 +215,16 @@ export const FIXTURE_APPS: FixtureApp[] = [
     dartFile: 'stepper.dart',
     deps: [],
   },
+  {
+    id: '30-list-prop',
+    component: 'TagList',
+    dartFile: 'tag_list.dart',
+    deps: [],
+  },
+  {
+    id: '31-model-list',
+    component: 'JobBoard',
+    dartFile: 'job_board.dart',
+    deps: [],
+  },
 ];

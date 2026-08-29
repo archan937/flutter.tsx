@@ -46,6 +46,8 @@ describe('committed golden expected.dart files', () => {
       '27-inline-plugin-call',
       '28-multi-file',
       '29-branching-handler',
+      '30-list-prop',
+      '31-model-list',
     ]);
   });
 

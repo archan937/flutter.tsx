@@ -1,6 +1,11 @@
 import ts from 'typescript';
 
-import type { ApiSnapshot, ParamModel, TypeNode } from '../api/model';
+import type {
+  ApiSnapshot,
+  ParamModel,
+  ScalarName,
+  TypeNode,
+} from '../api/model';
 import { dartTypeOf as bareDartTypeOf } from '../derive/dart-types';
 import type { SlotMap, WidgetSlots } from '../derive/slots';
 import {
@@ -249,7 +254,8 @@ interface LowerContext {
   // even though the author declared no state.
   tabState: { fieldName: string } | null;
   settersToStates: Map<string, string>;
-  stateDartTypes: Map<string, string>;
+  /// Dart types of this component's props and state, by name.
+  localDartTypes: Map<string, string>;
   translate: TranslateContext;
 }
 
@@ -807,9 +813,9 @@ const lowerMapChild = (
         kind: 'dartExpr' as const,
         dart: translateExpression(callee.expression, context.translate),
       };
-  const itemType =
-    ts.isIdentifier(callee.expression) &&
-    elementDartType(context.stateDartTypes.get(callee.expression.text));
+  const itemType = ts.isIdentifier(callee.expression)
+    ? elementDartType(context.localDartTypes.get(callee.expression.text))
+    : null;
   const bodyContext: LowerContext = {
     ...context,
     stringLocals:
@@ -817,6 +823,21 @@ const lowerMapChild = (
         ? new Set([...context.stringLocals, itemName])
         : context.stringLocals,
   };
+  // Iterating a list of models binds an item whose fields can be read:
+  // `jobs.map((job) => <Text>{job.title}</Text>)`.
+  const itemModel =
+    itemType === null ? undefined : context.compile.models.get(itemType);
+  if (itemModel !== undefined) {
+    bodyContext.translate = {
+      ...context.translate,
+      memberReads: new Map(context.translate.memberReads).set(itemName, {
+        className: itemModel.name,
+        receiver: itemName,
+        nullable: false,
+        fields: modelFieldTypes(itemModel),
+      }),
+    };
+  }
   return {
     kind: 'for',
     itemName,
@@ -893,6 +914,19 @@ const singleChildValue = (
 
 const jsxTextValue = (child: ts.JsxText): string =>
   child.text.replace(/\s*\n\s*/g, '');
+
+const SCALAR_DART_NAMES = new Set(['String', 'int', 'double', 'bool', 'num']);
+
+/** A model's fields as the type nodes member reads are resolved against. */
+const modelFieldTypes = (model: IrModel): Map<string, TypeNode> =>
+  new Map(
+    model.fields.map((field): [string, TypeNode] => [
+      field.name,
+      SCALAR_DART_NAMES.has(field.dartType)
+        ? { kind: 'scalar', name: field.dartType as ScalarName }
+        : { kind: 'named', name: field.dartType },
+    ]),
+  );
 
 const isStringExpression = (
   expression: ts.Expression,
@@ -2507,9 +2541,16 @@ export const lowerComponent = (
     usedPluginImports: new Map(),
     usedDartImports: new Set(),
     storeSetters: new Map(),
-    stateDartTypes: new Map(
-      component.states.map((state) => [state.name, state.dartType]),
-    ),
+    localDartTypes: new Map([
+      ...component.props.map((prop): [string, string] => [
+        prop.name,
+        prop.dartType,
+      ]),
+      ...component.states.map((state): [string, string] => [
+        state.name,
+        state.dartType,
+      ]),
+    ]),
     settersToStates: new Map(
       component.states.map((state) => [state.setterName, state.name]),
     ),

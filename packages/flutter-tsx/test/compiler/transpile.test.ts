@@ -802,3 +802,74 @@ ${handler}
 `);
   });
 });
+
+describe('transpileComponent — prop types', () => {
+  test('a list of models declared in the same file', async () => {
+    const dart = await transpileComponent({
+      source: `interface Job {
+  title: string;
+}
+
+export const Board = ({ jobs }: { jobs: Job[] }) => (
+  <Column>
+    {jobs.map((job) => (
+      <Text>{job.title}</Text>
+    ))}
+  </Column>
+);
+`,
+      filePath: '/tmp/Board.tsx',
+    });
+
+    expect(dart).toContain('final List<Job> jobs;');
+    expect(dart).toContain('for (final job in jobs) Text(job.title)');
+  });
+
+  test('a model field that is itself a model', async () => {
+    const dart = await transpileComponent({
+      source: `interface Company {
+  name: string;
+}
+
+interface Job {
+  title: string;
+  company: Company;
+}
+
+export const Board = ({ jobs }: { jobs: Job[] }) => (
+  <Column>
+    {jobs.map((job) => (
+      <Text>{job.company.name}</Text>
+    ))}
+  </Column>
+);
+`,
+      filePath: '/tmp/Nested.tsx',
+    });
+
+    expect(dart).toContain('final Company company;');
+    expect(dart).toContain('for (final job in jobs) Text(job.company.name)');
+  });
+
+  test('a list of lists', async () => {
+    const dart = await transpileComponent({
+      source:
+        'export const Grid = ({ rows }: { rows: string[][] }) => ' +
+        '<Text>{rows.length}</Text>;\n',
+      filePath: '/tmp/Grid.tsx',
+    });
+
+    expect(dart).toContain('final List<List<String>> rows;');
+  });
+
+  test('reports a prop type that has no Dart mapping', () => {
+    expect(
+      transpileComponent({
+        source:
+          'export const Odd = ({ when }: { when: Date }) => ' +
+          '<Text>x</Text>;\n',
+        filePath: '/tmp/Odd.tsx',
+      }),
+    ).rejects.toThrow(/TSX0309/);
+  });
+});
