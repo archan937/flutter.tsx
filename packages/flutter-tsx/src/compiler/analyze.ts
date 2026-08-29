@@ -56,6 +56,14 @@ export interface ModelBinding {
   fields: { name: string; dartType: string; required: boolean }[];
 }
 
+/// A module-level `const f = (a: T): R => …` the file's components call.
+export interface HelperBinding {
+  name: string;
+  params: { name: string; dartType: string }[];
+  returnDartType: string;
+  body: ts.Expression;
+}
+
 /// `const x = <expression>` in a component body, kept in source order.
 export interface LocalBinding {
   name: string;
@@ -113,6 +121,7 @@ export interface SourceAnalysis {
   stores: StoreBinding[];
   router: RouterBinding | null;
   models: ModelBinding[];
+  helpers: HelperBinding[];
   checker: ts.TypeChecker;
   sourceFile: ts.SourceFile;
   /// local name -> which package it came from and what it is called there
@@ -830,6 +839,110 @@ const propModelNames = (components: ComponentAnalysis[]): Set<string> =>
     ),
   );
 
+interface HelperTypeError {
+  helper: string;
+  detail: string;
+  node: ts.Node;
+}
+
+const helperTypeError = (
+  { helper, detail, node }: HelperTypeError,
+  sourceFile: ts.SourceFile,
+): never => {
+  throw tsxErrorAt('TSX0339', `\`${helper}\` ${detail}`, { sourceFile, node });
+};
+
+/**
+ * Module-level arrow functions that are not components: pure helpers the
+ * components call. Types are read from the annotations rather than inferred,
+ * so the Dart signature says exactly what the TSX one does.
+ */
+const analyzeHelpers = (sourceFile: ts.SourceFile): HelperBinding[] => {
+  const helpers: HelperBinding[] = [];
+  for (const statement of sourceFile.statements) {
+    if (!ts.isVariableStatement(statement)) continue;
+    for (const declaration of statement.declarationList.declarations) {
+      const arrow = declaration.initializer;
+      if (
+        arrow === undefined ||
+        !ts.isArrowFunction(arrow) ||
+        !ts.isIdentifier(declaration.name) ||
+        returnedJsx(arrow.body) !== null
+      ) {
+        continue;
+      }
+      const name = declaration.name.text;
+      if (arrow.type === undefined) {
+        helperTypeError(
+          {
+            helper: name,
+            detail:
+              'needs an explicit return type: `(value: string): string => …`.',
+            node: arrow,
+          },
+          sourceFile,
+        );
+        continue;
+      }
+      const returnDartType = dartPropType(arrow.type, sourceFile);
+      if (returnDartType === null) {
+        helperTypeError(
+          {
+            helper: name,
+            detail: `returns a type with no Dart equivalent: ${arrow.type.getText(sourceFile)}.`,
+            node: arrow.type,
+          },
+          sourceFile,
+        );
+        continue;
+      }
+      helpers.push({
+        name,
+        params: arrow.parameters.map((parameter) => {
+          if (!ts.isIdentifier(parameter.name)) {
+            return helperTypeError(
+              {
+                helper: name,
+                detail: 'takes plain named parameters: `(value: string)`.',
+                node: parameter,
+              },
+              sourceFile,
+            );
+          }
+          const paramType =
+            parameter.type === undefined
+              ? null
+              : dartPropType(parameter.type, sourceFile);
+          if (paramType === null) {
+            return helperTypeError(
+              {
+                helper: name,
+                detail: `needs a type for \`${parameter.name.text}\`.`,
+                node: parameter,
+              },
+              sourceFile,
+            );
+          }
+          return { name: parameter.name.text, dartType: paramType };
+        }),
+        returnDartType,
+        body: ts.isBlock(arrow.body)
+          ? helperTypeError(
+              {
+                helper: name,
+                detail:
+                  'is one expression: `(value: string): string => value.trim()`.',
+                node: arrow.body,
+              },
+              sourceFile,
+            )
+          : arrow.body,
+      });
+    }
+  }
+  return helpers;
+};
+
 const analyzeModels = (
   sourceFile: ts.SourceFile,
   required: Set<string>,
@@ -1079,6 +1192,7 @@ export const analyzeSource = (
       ]),
   );
   const models = analyzeModels(sourceFile, propModelNames(components));
+  const helpers = analyzeHelpers(sourceFile);
   const componentImports = new Map(
     [...hookModules].filter(([, module]) => module.startsWith('.')),
   );
@@ -1091,6 +1205,7 @@ export const analyzeSource = (
     stores,
     router,
     models,
+    helpers,
     checker,
     sourceFile,
     pluginImports,

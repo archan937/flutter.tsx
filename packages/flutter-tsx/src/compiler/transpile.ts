@@ -15,6 +15,7 @@ import {
   buildUserWidgets,
   type CompileContext,
   lowerComponent,
+  lowerHelper,
   lowerModel,
   lowerRouter,
   lowerStore,
@@ -241,12 +242,20 @@ export const transpileComponent = async (
         lowerModel(model, new Set(analysis.models.map((each) => each.name))),
       ]),
     ),
+    helperReturns: new Map(
+      analysis.helpers.map((helper): [string, string] => [
+        helper.name,
+        helper.returnDartType,
+      ]),
+    ),
     ...(await loadPlugins(analysis, input.pluginApiDirs ?? [])),
   };
   const components = analysis.components.map((component) =>
     lowerComponent(component, fileContext),
   );
+  const helpers = analysis.helpers.map(lowerHelper);
   return emitDartFile(components, fileContext, {
+    helpers,
     stores: [...fileContext.stores.values()],
     router: analysis.router === null ? null : lowerRouter(analysis.router),
     models: [...fileContext.models.values()],

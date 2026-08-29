@@ -245,4 +245,10 @@ export const FIXTURE_APPS: FixtureApp[] = [
     dartFile: 'totals.dart',
     deps: [],
   },
+  {
+    id: '35-helpers',
+    component: 'Roster',
+    dartFile: 'roster.dart',
+    deps: [],
+  },
 ];

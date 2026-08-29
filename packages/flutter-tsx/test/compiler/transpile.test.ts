@@ -902,6 +902,112 @@ export const Board = ({ jobs }: { jobs: Job[] }) => (
   });
 });
 
+describe('transpileComponent — helper functions', () => {
+  test('a module-level helper becomes a top-level Dart function', async () => {
+    const dart = await transpileComponent({
+      source: `const shout = (value: string): string => value.toUpperCase();
+
+export const Loud = ({ name }: { name: string }) => <Text>{shout(name)}</Text>;
+`,
+      filePath: '/tmp/Loud.tsx',
+    });
+
+    expect(dart).toBe(`import 'package:flutter/material.dart';
+
+String shout(String value) => value.toUpperCase();
+
+class Loud extends StatelessWidget {
+  const Loud({super.key, required this.name});
+
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(shout(name));
+  }
+}
+`);
+  });
+
+  test('a helper taking and returning a list', async () => {
+    const dart = await transpileComponent({
+      source: `const kept = (values: string[]): string[] =>
+  values.filter((value) => value !== '');
+
+export const Kept = ({ names }: { names: string[] }) => (
+  <Text>{kept(names).length}</Text>
+);
+`,
+      filePath: '/tmp/Kept.tsx',
+    });
+
+    expect(dart).toContain(
+      "List<String> kept(List<String> values) =>\n    values.where((value) => value != '').toList();",
+    );
+  });
+
+  test('a helper without a return type is refused', () => {
+    expect(
+      transpileComponent({
+        source:
+          'const shout = (value: string) => value.toUpperCase();\n' +
+          "export const Loud = () => <Text>{shout('a')}</Text>;\n",
+        filePath: '/tmp/Loud.tsx',
+      }),
+    ).rejects.toThrow(
+      /TSX0339 .* `shout` needs an explicit return type: `\(value: string\): string => …`\./,
+    );
+  });
+
+  test('a helper returning a type with no Dart equivalent is refused', () => {
+    expect(
+      transpileComponent({
+        source:
+          'const when = (value: string): Date => new Date(value);\n' +
+          "export const At = () => <Text>{when('x')}</Text>;\n",
+        filePath: '/tmp/At.tsx',
+      }),
+    ).rejects.toThrow(
+      /TSX0339 .* `when` returns a type with no Dart equivalent: Date\./,
+    );
+  });
+
+  test('a helper that destructures a parameter is refused', () => {
+    expect(
+      transpileComponent({
+        source:
+          'const label = ({ name }: { name: string }): string => name;\n' +
+          "export const At = () => <Text>{label({ name: 'a' })}</Text>;\n",
+        filePath: '/tmp/At.tsx',
+      }),
+    ).rejects.toThrow(/TSX0339 .* `label` takes plain named parameters/);
+  });
+
+  test('a helper with a block body is refused', () => {
+    expect(
+      transpileComponent({
+        source:
+          'const shout = (value: string): string => {\n' +
+          '  return value.toUpperCase();\n' +
+          '};\n' +
+          "export const At = () => <Text>{shout('a')}</Text>;\n",
+        filePath: '/tmp/At.tsx',
+      }),
+    ).rejects.toThrow(/TSX0339 .* `shout` is one expression/);
+  });
+
+  test('a helper parameter without a type is refused', () => {
+    expect(
+      transpileComponent({
+        source:
+          'const shout = (value): string => value;\n' +
+          "export const Loud = () => <Text>{shout('a')}</Text>;\n",
+        filePath: '/tmp/Loud.tsx',
+      }),
+    ).rejects.toThrow(/TSX0339 .* `shout` needs a type for `value`\./);
+  });
+});
+
 describe('transpileComponent — indexing a list', () => {
   test('indexing yields a nullable value, as the TypeScript type says', async () => {
     // With noUncheckedIndexedAccess, `names[0]` is `string | undefined` in

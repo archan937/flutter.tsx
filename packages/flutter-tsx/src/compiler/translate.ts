@@ -21,6 +21,8 @@ export interface TranslateContext {
   widgetProps: Set<string>;
   /// Dart types of this component's props and state, by name.
   localDartTypes: Map<string, string>;
+  /// Module-level helpers by name, with the Dart type each returns.
+  helperReturns: Map<string, string>;
   handlerNames: Set<string>;
   privateMembers: boolean;
   memberReads: Map<string, MemberReadInfo>;
@@ -388,6 +390,16 @@ export const translateExpression = (
       );
       return `${target}.${dartName}(${args.join(', ')})`;
     }
+  }
+  if (
+    ts.isCallExpression(expression) &&
+    ts.isIdentifier(expression.expression) &&
+    context.helperReturns.has(expression.expression.text)
+  ) {
+    const args = expression.arguments.map((argument) =>
+      translateExpression(argument, context),
+    );
+    return `${expression.expression.text}(${args.join(', ')})`;
   }
   if (ts.isBinaryExpression(expression)) {
     const operator = BINARY_OPERATORS.get(expression.operatorToken.kind);

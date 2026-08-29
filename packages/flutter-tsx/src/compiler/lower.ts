@@ -20,6 +20,7 @@ import type { DerivedHook } from '../plugins/hooks';
 import type {
   AsyncBinding,
   ComponentAnalysis,
+  HelperBinding,
   LocalBinding,
   ModelBinding,
   PluginBinding,
@@ -35,6 +36,7 @@ import type {
   IrChild,
   IrComponent,
   IrField,
+  IrHelper,
   IrMethod,
   IrModel,
   IrRouter,
@@ -90,6 +92,8 @@ export interface CompileContext {
   // Dart type name -> prefixed name, for plugins imported with a prefix.
   prefixedTypes: Map<string, string>;
   userWidgets: Map<string, WidgetInfo>;
+  /// Module-level helpers by name, with the Dart type each returns.
+  helperReturns: Map<string, string>;
   /// local component name -> the Dart file declaring it, relative to this one
   componentImports: Map<string, string>;
   pluginHooks: Map<string, PluginHookInfo>;
@@ -190,6 +194,7 @@ export const buildCompileContext = (
     prefixedTypes: new Map(),
     models: new Map(),
     userWidgets: new Map(),
+    helperReturns: new Map(),
     componentImports: new Map(),
     pluginHooks: new Map(),
     pluginFunctions: new Map(),
@@ -236,6 +241,54 @@ const statefulComponent = (component: ComponentAnalysis): boolean =>
   component.effects.length > 0 ||
   component.asyncBinding !== null ||
   rendersTabView(component);
+
+// Dart's where/map are lazy: a helper that says it returns a List has to
+// materialise one.
+const LAZY_RESULTS = new Set(['filter', 'map', 'where']);
+
+const materialisesList = (
+  body: ts.Expression,
+  returnDartType: string,
+): boolean =>
+  listElementType(returnDartType) !== null &&
+  ts.isCallExpression(body) &&
+  ts.isPropertyAccessExpression(body.expression) &&
+  LAZY_RESULTS.has(body.expression.name.text);
+
+/**
+ * Lowers a module-level helper to its Dart function. A helper reads only its
+ * own parameters, so it needs nothing from a component's context.
+ */
+export const lowerHelper = (helper: HelperBinding): IrHelper => {
+  const localDartTypes = new Map(
+    helper.params.map((param): [string, string] => [
+      param.name,
+      param.dartType,
+    ]),
+  );
+  const dart = translateExpression(helper.body, {
+    sourceFile: helper.body.getSourceFile(),
+    stateNames: new Set(),
+    handlerNames: new Set(),
+    widgetProps: new Set(),
+    localDartTypes,
+    helperReturns: new Map(),
+    privateMembers: false,
+    memberReads: new Map(),
+    classFields: new Map(),
+  });
+  return {
+    name: helper.name,
+    params: helper.params,
+    returnDartType: helper.returnDartType,
+    value: {
+      kind: 'dartExpr',
+      dart: materialisesList(helper.body, helper.returnDartType)
+        ? `${dart}.toList()`
+        : dart,
+    },
+  };
+};
 
 export const buildUserWidgets = (
   components: ComponentAnalysis[],
@@ -1009,6 +1062,14 @@ const isStringExpression = (
   // `names[0]` is a String when names is a List<String>.
   if (ts.isElementAccessExpression(expression)) {
     return iterableElementType(expression.expression, context) === 'String';
+  }
+  if (
+    ts.isCallExpression(expression) &&
+    ts.isIdentifier(expression.expression)
+  ) {
+    return (
+      context.compile.helperReturns.get(expression.expression.text) === 'String'
+    );
   }
   // `a ?? b` is a String when both sides are.
   if (
@@ -2737,6 +2798,7 @@ export const lowerComponent = (
         ? new Set(component.props.map((prop) => prop.name))
         : new Set<string>(),
       localDartTypes,
+      helperReturns: compile.helperReturns,
       privateMembers: true,
       memberReads,
       classFields: new Map<string, Map<string, TypeNode>>([

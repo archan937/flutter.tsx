@@ -79,6 +79,7 @@ const translate = (source: string): string => {
     handlerNames: new Set(['tick']),
     widgetProps: new Set<string>(),
     localDartTypes: new Map<string, string>(),
+    helperReturns: new Map<string, string>(),
     privateMembers: true,
     memberReads: memberReads(),
     classFields: new Map(),

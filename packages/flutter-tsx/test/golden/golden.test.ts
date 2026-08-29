@@ -46,6 +46,7 @@ const GREEN_FIXTURES = new Set([
   '32-value-methods',
   '33-control-flow',
   '34-list-pipeline',
+  '35-helpers',
 ]);
 
 const fixtures = await listFixtures();

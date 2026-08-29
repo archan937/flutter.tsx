@@ -51,6 +51,7 @@ describe('committed golden expected.dart files', () => {
       '32-value-methods',
       '33-control-flow',
       '34-list-pipeline',
+      '35-helpers',
     ]);
   });
 

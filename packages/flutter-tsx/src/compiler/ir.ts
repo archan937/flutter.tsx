@@ -107,6 +107,13 @@ export interface IrModelField {
   isModel: boolean;
 }
 
+export interface IrHelper {
+  name: string;
+  params: { name: string; dartType: string }[];
+  returnDartType: string;
+  value: IrValue;
+}
+
 export interface IrModel {
   name: string;
   fields: IrModelField[];

@@ -2,6 +2,7 @@ import { MAX_WIDTH, printExpr } from './dart-print';
 import { importsForComponents } from './imports';
 import type {
   IrComponent,
+  IrHelper,
   IrMethod,
   IrModel,
   IrModelField,
@@ -324,15 +325,39 @@ export interface DartFileParts {
   stores?: IrStore[];
   router?: IrRouter | null;
   models?: IrModel[];
+  helpers?: IrHelper[];
 }
+
+const HELPER_BODY_INDENT = 4;
+
+/** `String shout(String value) => value.toUpperCase();` */
+const emitHelper = (helper: IrHelper): string => {
+  const params = helper.params
+    .map((param) => `${param.dartType} ${param.name}`)
+    .join(', ');
+  const head = `${helper.returnDartType} ${helper.name}(${params}) =>`;
+  const body = printExpr(
+    irValueToDart(helper.value, { privateMembers: false }),
+    {
+      indent: HELPER_BODY_INDENT,
+      used: head.length + 1,
+      trailing: 1,
+    },
+  );
+  const oneLine = `${head} ${body};`;
+  return oneLine.length <= MAX_WIDTH && !body.includes('\n')
+    ? oneLine
+    : `${head}\n    ${body};`;
+};
 
 export const emitDartFile = (
   components: IrComponent[],
   context: CompileContext,
   parts: DartFileParts = {},
 ): string => {
-  const { stores = [], router = null, models = [] } = parts;
+  const { stores = [], router = null, models = [], helpers = [] } = parts;
   const classes = [
+    ...helpers.map(emitHelper),
     ...models.map(emitModel),
     ...stores.map(emitStore),
     ...components.map(emitComponentClass),
