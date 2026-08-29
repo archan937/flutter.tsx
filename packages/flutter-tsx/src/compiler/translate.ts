@@ -23,6 +23,8 @@ export interface TranslateContext {
   localDartTypes: Map<string, string>;
   /// Module-level helpers by name, with the Dart type each returns.
   helperReturns: Map<string, string>;
+  /// Enum name -> its members' TSX names mapped to their Dart names.
+  enumMembers: Map<string, Map<string, string>>;
   handlerNames: Set<string>;
   privateMembers: boolean;
   memberReads: Map<string, MemberReadInfo>;
@@ -313,6 +315,17 @@ export const translateExpression = (
     const whenTrue = translateExpression(expression.whenTrue, context);
     const whenFalse = translateExpression(expression.whenFalse, context);
     return `${condition} ? ${whenTrue} : ${whenFalse}`;
+  }
+  if (
+    ts.isPropertyAccessExpression(expression) &&
+    ts.isIdentifier(expression.expression)
+  ) {
+    const member = context.enumMembers
+      .get(expression.expression.text)
+      ?.get(expression.name.text);
+    if (member !== undefined) {
+      return `${expression.expression.text}.${member}`;
+    }
   }
   if (ts.isPropertyAccessExpression(expression)) {
     if (ts.isIdentifier(expression.expression)) {

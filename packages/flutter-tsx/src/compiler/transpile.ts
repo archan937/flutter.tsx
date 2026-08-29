@@ -10,6 +10,7 @@ import { analyzeSource, type SourceAnalysis } from './analyze';
 import { dartFileFor } from './dart-names';
 import { TsxError } from './diagnostics';
 import { emitDartFile } from './emit-component';
+import type { IrEnum } from './ir';
 import {
   buildCompileContext,
   buildUserWidgets,
@@ -242,6 +243,12 @@ export const transpileComponent = async (
         lowerModel(model, new Set(analysis.models.map((each) => each.name))),
       ]),
     ),
+    enumMembers: new Map(
+      analysis.enums.map((entity): [string, Map<string, string>] => [
+        entity.name,
+        new Map(entity.members.map((member) => [member.name, member.dartName])),
+      ]),
+    ),
     helperReturns: new Map(
       analysis.helpers.map((helper): [string, string] => [
         helper.name,
@@ -254,8 +261,17 @@ export const transpileComponent = async (
     lowerComponent(component, fileContext),
   );
   const helpers = analysis.helpers.map(lowerHelper);
+  const enums = analysis.enums.map((entity): IrEnum => ({
+    name: entity.name,
+    dartType: entity.dartType,
+    members: entity.members.map((member) => ({
+      dartName: member.dartName,
+      value: member.value,
+    })),
+  }));
   return emitDartFile(components, fileContext, {
     helpers,
+    enums,
     stores: [...fileContext.stores.values()],
     router: analysis.router === null ? null : lowerRouter(analysis.router),
     models: [...fileContext.models.values()],

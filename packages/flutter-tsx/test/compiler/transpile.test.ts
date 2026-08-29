@@ -902,6 +902,93 @@ export const Board = ({ jobs }: { jobs: Job[] }) => (
   });
 });
 
+describe('transpileComponent — enums and unions', () => {
+  test('a string enum becomes named constants, which is what it is at runtime', async () => {
+    const dart = await transpileComponent({
+      source: `enum Status {
+  Active = 'active',
+  Paused = 'paused',
+}
+
+export const Badge = ({ status }: { status: Status }) => (
+  <Text>{status === Status.Active ? 'on' : 'off'}</Text>
+);
+`,
+      filePath: '/tmp/Badge.tsx',
+    });
+
+    expect(dart).toContain(`abstract final class Status {
+  static const String active = 'active';
+  static const String paused = 'paused';
+}`);
+    expect(dart).toContain('final String status;');
+    expect(dart).toContain("status == Status.active ? 'on' : 'off'");
+  });
+
+  test('a numeric enum numbers its members the way TypeScript does', async () => {
+    const dart = await transpileComponent({
+      source: `enum Level {
+  Low,
+  Medium,
+  High = 9,
+}
+
+export const Meter = () => <Text>{Level.Medium}</Text>;
+`,
+      filePath: '/tmp/Meter.tsx',
+    });
+
+    expect(dart).toContain(`abstract final class Level {
+  static const int low = 0;
+  static const int medium = 1;
+  static const int high = 9;
+}`);
+  });
+
+  test('a numeric enum is an int prop', async () => {
+    const dart = await transpileComponent({
+      source: `enum Level {
+  Low,
+  High,
+}
+
+export const Meter = ({ level }: { level: Level }) => (
+  <Text>{level === Level.High ? 'high' : 'low'}</Text>
+);
+`,
+      filePath: '/tmp/Meter.tsx',
+    });
+
+    expect(dart).toContain('final int level;');
+    expect(dart).toContain('level == Level.high');
+  });
+
+  test('a union of string literals is a String prop', async () => {
+    const dart = await transpileComponent({
+      source:
+        "export const Chip = ({ tone }: { tone: 'warn' | 'ok' }) => " +
+        '<Text>{tone}</Text>;\n',
+      filePath: '/tmp/Chip.tsx',
+    });
+
+    expect(dart).toContain('final String tone;');
+    expect(dart).toContain('Text(tone)');
+  });
+
+  test('an enum member that is not a literal is refused', () => {
+    expect(
+      transpileComponent({
+        source:
+          'enum Odd {\n  Computed = 1 + 1,\n}\n' +
+          'export const A = () => <Text>{Odd.Computed}</Text>;\n',
+        filePath: '/tmp/A.tsx',
+      }),
+    ).rejects.toThrow(
+      /TSX0340 .* `Odd.Computed` must be a string or number literal\./,
+    );
+  });
+});
+
 describe('transpileComponent — helper functions', () => {
   test('a module-level helper becomes a top-level Dart function', async () => {
     const dart = await transpileComponent({

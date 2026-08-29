@@ -52,6 +52,7 @@ describe('committed golden expected.dart files', () => {
       '33-control-flow',
       '34-list-pipeline',
       '35-helpers',
+      '36-enums',
     ]);
   });
 
@@ -64,4 +65,34 @@ describe('committed golden expected.dart files', () => {
   test('the fixtures package analyzes with zero issues (flutter_lints)', async () => {
     expect(await flutterAnalyze()).toBe(0);
   }, 300000);
+});
+
+describe('golden top-level names', () => {
+  test('no two fixtures declare the same top-level Dart name', async () => {
+    // One app imports every fixture library at once, so a name declared by
+    // two of them is an ambiguous import there — a broken build that no
+    // single fixture is wrong about.
+    const declared = new Map<string, string>();
+    const clashes: string[] = [];
+    // Column-0 declarations only: an indented line is a member, not a
+    // top-level name.
+    const declaration =
+      /^(?:abstract\s+final\s+)?(?:class|enum|mixin|extension)\s+(\w+)|^[A-Za-z_][\w<>,?]*\s+(\w+)\(/;
+
+    for (const fixture of fixtures) {
+      const dart = await Bun.file(fixture.expectedPath).text();
+      for (const line of dart.split('\n')) {
+        const match = declaration.exec(line);
+        const name = match?.[1] ?? match?.[2];
+        if (name === undefined || name === 'main') continue;
+        const owner = declared.get(name);
+        if (owner !== undefined && owner !== fixture.id) {
+          clashes.push(`${name}: ${owner} and ${fixture.id}`);
+        }
+        declared.set(name, fixture.id);
+      }
+    }
+
+    expect(clashes).toEqual([]);
+  });
 });

@@ -251,4 +251,10 @@ export const FIXTURE_APPS: FixtureApp[] = [
     dartFile: 'roster.dart',
     deps: [],
   },
+  {
+    id: '36-enums',
+    component: 'Badge',
+    dartFile: 'badge.dart',
+    deps: [],
+  },
 ];

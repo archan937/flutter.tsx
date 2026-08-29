@@ -94,6 +94,8 @@ export interface CompileContext {
   userWidgets: Map<string, WidgetInfo>;
   /// Module-level helpers by name, with the Dart type each returns.
   helperReturns: Map<string, string>;
+  /// Enum name -> its members' TSX names mapped to their Dart names.
+  enumMembers: Map<string, Map<string, string>>;
   /// local component name -> the Dart file declaring it, relative to this one
   componentImports: Map<string, string>;
   pluginHooks: Map<string, PluginHookInfo>;
@@ -195,6 +197,7 @@ export const buildCompileContext = (
     models: new Map(),
     userWidgets: new Map(),
     helperReturns: new Map(),
+    enumMembers: new Map(),
     componentImports: new Map(),
     pluginHooks: new Map(),
     pluginFunctions: new Map(),
@@ -273,6 +276,7 @@ export const lowerHelper = (helper: HelperBinding): IrHelper => {
     widgetProps: new Set(),
     localDartTypes,
     helperReturns: new Map(),
+    enumMembers: new Map(),
     privateMembers: false,
     memberReads: new Map(),
     classFields: new Map(),
@@ -2799,6 +2803,7 @@ export const lowerComponent = (
         : new Set<string>(),
       localDartTypes,
       helperReturns: compile.helperReturns,
+      enumMembers: compile.enumMembers,
       privateMembers: true,
       memberReads,
       classFields: new Map<string, Map<string, TypeNode>>([

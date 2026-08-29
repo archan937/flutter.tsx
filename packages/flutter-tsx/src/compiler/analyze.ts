@@ -1,5 +1,6 @@
 import ts from 'typescript';
 
+import { escapeDartString } from './dart-print';
 import { TsxError, tsxErrorAt } from './diagnostics';
 
 export interface StateBinding {
@@ -54,6 +55,13 @@ export interface RouterBinding {
 export interface ModelBinding {
   name: string;
   fields: { name: string; dartType: string; required: boolean }[];
+}
+
+/// A TypeScript `enum`, which at runtime is a namespace of constants.
+export interface EnumBinding {
+  name: string;
+  dartType: 'String' | 'int';
+  members: { name: string; dartName: string; value: string }[];
 }
 
 /// A module-level `const f = (a: T): R => …` the file's components call.
@@ -122,6 +130,7 @@ export interface SourceAnalysis {
   router: RouterBinding | null;
   models: ModelBinding[];
   helpers: HelperBinding[];
+  enums: EnumBinding[];
   checker: ts.TypeChecker;
   sourceFile: ts.SourceFile;
   /// local name -> which package it came from and what it is called there
@@ -167,11 +176,41 @@ const dartPropType = (
     return element === null ? null : `List<${element}>`;
   }
   if (
-    ts.isTypeReferenceNode(type) &&
-    ts.isIdentifier(type.typeName) &&
-    localTypeMembers(type.typeName.text, sourceFile) !== null
+    ts.isUnionTypeNode(type) &&
+    type.types.every(
+      (member) =>
+        ts.isLiteralTypeNode(member) && ts.isStringLiteral(member.literal),
+    )
   ) {
-    return type.typeName.text;
+    return 'String';
+  }
+  if (ts.isTypeReferenceNode(type) && ts.isIdentifier(type.typeName)) {
+    const declaredEnum = enumDeclaration(type.typeName.text, sourceFile);
+    if (declaredEnum !== null) {
+      return declaredEnum;
+    }
+    if (localTypeMembers(type.typeName.text, sourceFile) !== null) {
+      return type.typeName.text;
+    }
+  }
+  return null;
+};
+
+/** The Dart type an enum's members hold, when this names an enum. */
+const enumDeclaration = (
+  name: string,
+  sourceFile: ts.SourceFile,
+): 'String' | 'int' | null => {
+  for (const statement of sourceFile.statements) {
+    if (ts.isEnumDeclaration(statement) && statement.name.text === name) {
+      return statement.members.some(
+        (member) =>
+          member.initializer !== undefined &&
+          ts.isStringLiteral(member.initializer),
+      )
+        ? 'String'
+        : 'int';
+    }
   }
   return null;
 };
@@ -845,6 +884,54 @@ interface HelperTypeError {
   node: ts.Node;
 }
 
+const lowerFirstLetter = (value: string): string =>
+  value.charAt(0).toLowerCase() + value.slice(1);
+
+/**
+ * TypeScript enums are constants at runtime: string members keep their text,
+ * unlabelled numeric members count up from the last one, exactly as tsc does.
+ */
+const analyzeEnums = (sourceFile: ts.SourceFile): EnumBinding[] => {
+  const enums: EnumBinding[] = [];
+  for (const statement of sourceFile.statements) {
+    if (!ts.isEnumDeclaration(statement)) continue;
+    let nextNumber = 0;
+    let dartType: 'String' | 'int' = 'int';
+    const members = statement.members.map((member) => {
+      const name = member.name.getText(sourceFile);
+      const { initializer } = member;
+      if (initializer === undefined) {
+        const value = String(nextNumber);
+        nextNumber += 1;
+        return { name, dartName: lowerFirstLetter(name), value };
+      }
+      if (ts.isStringLiteral(initializer)) {
+        dartType = 'String';
+        return {
+          name,
+          dartName: lowerFirstLetter(name),
+          value: `'${escapeDartString(initializer.text)}'`,
+        };
+      }
+      if (ts.isNumericLiteral(initializer)) {
+        nextNumber = Number(initializer.text) + 1;
+        return {
+          name,
+          dartName: lowerFirstLetter(name),
+          value: initializer.text,
+        };
+      }
+      throw tsxErrorAt(
+        'TSX0340',
+        `\`${statement.name.text}.${name}\` must be a string or number literal.`,
+        { sourceFile, node: initializer },
+      );
+    });
+    enums.push({ name: statement.name.text, dartType, members });
+  }
+  return enums;
+};
+
 const helperTypeError = (
   { helper, detail, node }: HelperTypeError,
   sourceFile: ts.SourceFile,
@@ -1193,6 +1280,7 @@ export const analyzeSource = (
   );
   const models = analyzeModels(sourceFile, propModelNames(components));
   const helpers = analyzeHelpers(sourceFile);
+  const enums = analyzeEnums(sourceFile);
   const componentImports = new Map(
     [...hookModules].filter(([, module]) => module.startsWith('.')),
   );
@@ -1206,6 +1294,7 @@ export const analyzeSource = (
     router,
     models,
     helpers,
+    enums,
     checker,
     sourceFile,
     pluginImports,

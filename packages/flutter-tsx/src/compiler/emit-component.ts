@@ -2,6 +2,7 @@ import { MAX_WIDTH, printExpr } from './dart-print';
 import { importsForComponents } from './imports';
 import type {
   IrComponent,
+  IrEnum,
   IrHelper,
   IrMethod,
   IrModel,
@@ -326,7 +327,19 @@ export interface DartFileParts {
   router?: IrRouter | null;
   models?: IrModel[];
   helpers?: IrHelper[];
+  enums?: IrEnum[];
 }
+
+/** A TypeScript enum is a namespace of constants, so that is what it emits. */
+const emitEnum = (entity: IrEnum): string =>
+  [
+    `abstract final class ${entity.name} {`,
+    ...entity.members.map(
+      (member) =>
+        `  static const ${entity.dartType} ${member.dartName} = ${member.value};`,
+    ),
+    '}',
+  ].join('\n');
 
 const HELPER_BODY_INDENT = 4;
 
@@ -355,8 +368,15 @@ export const emitDartFile = (
   context: CompileContext,
   parts: DartFileParts = {},
 ): string => {
-  const { stores = [], router = null, models = [], helpers = [] } = parts;
+  const {
+    stores = [],
+    router = null,
+    models = [],
+    helpers = [],
+    enums = [],
+  } = parts;
   const classes = [
+    ...enums.map(emitEnum),
     ...helpers.map(emitHelper),
     ...models.map(emitModel),
     ...stores.map(emitStore),
