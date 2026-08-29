@@ -105,6 +105,7 @@ export interface ComponentAnalysis {
   navigators: string[];
   locals: LocalBinding[];
   handlers: HandlerBinding[];
+  helpers: HelperBinding[];
   effects: ts.CallExpression[];
   returnJsx: ts.Expression;
   sourceFile: ts.SourceFile;
@@ -491,6 +492,18 @@ const analyzeBodyStatement = (
     }
     if (ts.isAwaitExpression(initializer)) {
       analyzeAsyncDeclaration(declaration, initializer, context);
+      continue;
+    }
+    // A local arrow that declares a return type is a helper, not a callback:
+    // it computes something the component renders.
+    if (ts.isArrowFunction(initializer) && initializer.type !== undefined) {
+      context.analysis.helpers.push(
+        helperBinding(
+          declaration.name.getText(),
+          initializer,
+          context.sourceFile,
+        ),
+      );
       continue;
     }
     if (ts.isArrowFunction(initializer)) {
@@ -940,10 +953,83 @@ const helperTypeError = (
 };
 
 /**
- * Module-level arrow functions that are not components: pure helpers the
- * components call. Types are read from the annotations rather than inferred,
- * so the Dart signature says exactly what the TSX one does.
+ * The typed signature of `const f = (a: T): R => …`, read from the
+ * annotations rather than inferred, so the Dart signature says exactly what
+ * the TSX one does.
  */
+const helperBinding = (
+  name: string,
+  arrow: ts.ArrowFunction,
+  sourceFile: ts.SourceFile,
+): HelperBinding => {
+  const annotation = arrow.type;
+  if (annotation === undefined) {
+    return helperTypeError(
+      {
+        helper: name,
+        detail:
+          'needs an explicit return type: `(value: string): string => …`.',
+        node: arrow,
+      },
+      sourceFile,
+    );
+  }
+  const returnDartType = dartPropType(annotation, sourceFile);
+  if (returnDartType === null) {
+    return helperTypeError(
+      {
+        helper: name,
+        detail: `returns a type with no Dart equivalent: ${annotation.getText(sourceFile)}.`,
+        node: annotation,
+      },
+      sourceFile,
+    );
+  }
+  if (ts.isBlock(arrow.body)) {
+    return helperTypeError(
+      {
+        helper: name,
+        detail: 'is one expression: `(value: string): string => value.trim()`.',
+        node: arrow.body,
+      },
+      sourceFile,
+    );
+  }
+  return {
+    name,
+    params: arrow.parameters.map((parameter) => {
+      if (!ts.isIdentifier(parameter.name)) {
+        return helperTypeError(
+          {
+            helper: name,
+            detail: 'takes plain named parameters: `(value: string)`.',
+            node: parameter,
+          },
+          sourceFile,
+        );
+      }
+      const paramType =
+        parameter.type === undefined
+          ? null
+          : dartPropType(parameter.type, sourceFile);
+      if (paramType === null) {
+        return helperTypeError(
+          {
+            helper: name,
+            detail: `needs a type for \`${parameter.name.text}\`.`,
+            node: parameter,
+          },
+          sourceFile,
+        );
+      }
+      return { name: parameter.name.text, dartType: paramType };
+    }),
+    returnDartType,
+    body: arrow.body,
+  };
+};
+
+/** Module-level helpers: the components in this file call them by name. */
 const analyzeHelpers = (sourceFile: ts.SourceFile): HelperBinding[] => {
   const helpers: HelperBinding[] = [];
   for (const statement of sourceFile.statements) {
@@ -958,73 +1044,7 @@ const analyzeHelpers = (sourceFile: ts.SourceFile): HelperBinding[] => {
       ) {
         continue;
       }
-      const name = declaration.name.text;
-      if (arrow.type === undefined) {
-        helperTypeError(
-          {
-            helper: name,
-            detail:
-              'needs an explicit return type: `(value: string): string => …`.',
-            node: arrow,
-          },
-          sourceFile,
-        );
-        continue;
-      }
-      const returnDartType = dartPropType(arrow.type, sourceFile);
-      if (returnDartType === null) {
-        helperTypeError(
-          {
-            helper: name,
-            detail: `returns a type with no Dart equivalent: ${arrow.type.getText(sourceFile)}.`,
-            node: arrow.type,
-          },
-          sourceFile,
-        );
-        continue;
-      }
-      helpers.push({
-        name,
-        params: arrow.parameters.map((parameter) => {
-          if (!ts.isIdentifier(parameter.name)) {
-            return helperTypeError(
-              {
-                helper: name,
-                detail: 'takes plain named parameters: `(value: string)`.',
-                node: parameter,
-              },
-              sourceFile,
-            );
-          }
-          const paramType =
-            parameter.type === undefined
-              ? null
-              : dartPropType(parameter.type, sourceFile);
-          if (paramType === null) {
-            return helperTypeError(
-              {
-                helper: name,
-                detail: `needs a type for \`${parameter.name.text}\`.`,
-                node: parameter,
-              },
-              sourceFile,
-            );
-          }
-          return { name: parameter.name.text, dartType: paramType };
-        }),
-        returnDartType,
-        body: ts.isBlock(arrow.body)
-          ? helperTypeError(
-              {
-                helper: name,
-                detail:
-                  'is one expression: `(value: string): string => value.trim()`.',
-                node: arrow.body,
-              },
-              sourceFile,
-            )
-          : arrow.body,
-      });
+      helpers.push(helperBinding(declaration.name.text, arrow, sourceFile));
     }
   }
   return helpers;
@@ -1168,6 +1188,7 @@ const analyzeComponent = (
     navigators: [],
     locals: [],
     handlers: [],
+    helpers: [],
     effects: [],
     returnJsx,
     sourceFile: context.sourceFile,

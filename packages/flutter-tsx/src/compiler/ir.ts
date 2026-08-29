@@ -183,6 +183,7 @@ export interface IrComponent {
   effects: ts.CallExpression[];
   fields: IrField[];
   methods: IrMethod[];
+  helpers: IrHelper[];
   setupMethods: { name: string; lines: string[] }[];
   initStatements: IrStatement[];
   disposeLines: string[];

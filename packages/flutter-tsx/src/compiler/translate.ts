@@ -23,6 +23,8 @@ export interface TranslateContext {
   localDartTypes: Map<string, string>;
   /// Module-level helpers by name, with the Dart type each returns.
   helperReturns: Map<string, string>;
+  /// Helpers declared inside the component, emitted as private methods.
+  privateHelpers: Set<string>;
   /// Enum name -> its members' TSX names mapped to their Dart names.
   enumMembers: Map<string, Map<string, string>>;
   handlerNames: Set<string>;
@@ -412,7 +414,10 @@ export const translateExpression = (
     const args = expression.arguments.map((argument) =>
       translateExpression(argument, context),
     );
-    return `${expression.expression.text}(${args.join(', ')})`;
+    const name = context.privateHelpers.has(expression.expression.text)
+      ? `_${expression.expression.text}`
+      : expression.expression.text;
+    return `${name}(${args.join(', ')})`;
   }
   if (ts.isBinaryExpression(expression)) {
     const operator = BINARY_OPERATORS.get(expression.operatorToken.kind);

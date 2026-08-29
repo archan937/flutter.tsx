@@ -902,6 +902,49 @@ export const Board = ({ jobs }: { jobs: Job[] }) => (
   });
 });
 
+describe('transpileComponent — helpers inside a component', () => {
+  test('a typed local function becomes a private method that can read state', async () => {
+    const dart = await transpileComponent({
+      source: `import { Text, useState } from 'flutter-tsx';
+
+export const Ticker = ({ unit }: { unit: string }) => {
+  const [count, setCount] = useState(0);
+
+  const label = (value: number): string => \`\${value} \${unit}\`;
+
+  return <Text onClick={() => setCount(count + 1)}>{label(count)}</Text>;
+};
+`,
+      filePath: '/tmp/Ticker.tsx',
+    });
+
+    expect(dart).toContain(
+      "String _label(double value) => '$value ${widget.unit}';",
+    );
+    expect(dart).toContain('Text(_label(_count))');
+  });
+
+  test('an untyped local arrow stays a handler', async () => {
+    const dart = await transpileComponent({
+      source: `import { Text, useState } from 'flutter-tsx';
+
+export const Tap = () => {
+  const [count, setCount] = useState(0);
+
+  const bump = () => {
+    setCount(count + 1);
+  };
+
+  return <Text onClick={bump}>{count}</Text>;
+};
+`,
+      filePath: '/tmp/Tap.tsx',
+    });
+
+    expect(dart).toContain('void _bump() {');
+  });
+});
+
 describe('transpileComponent — enums and unions', () => {
   test('a string enum becomes named constants, which is what it is at runtime', async () => {
     const dart = await transpileComponent({

@@ -108,6 +108,7 @@ const emitStatelessClass = (component: IrComponent): string => {
   const members = [
     constructorLine(component),
     ...propFields(component),
+    ...component.helpers.map(emitComponentHelper),
     ...component.methods.map(emitMethod),
     buildMethod(component),
   ];
@@ -137,6 +138,7 @@ const emitStatefulClass = (component: IrComponent): string => {
     ...emitInitState(component),
     ...emitSetupMethods(component),
     ...emitDispose(component),
+    ...component.helpers.map(emitComponentHelper),
     ...component.methods.map(emitMethod),
     buildMethod(component),
   ];
@@ -329,6 +331,13 @@ export interface DartFileParts {
   helpers?: IrHelper[];
   enums?: IrEnum[];
 }
+
+/** A helper the component owns: a private method, indented into the class. */
+const emitComponentHelper = (helper: IrHelper): string =>
+  emitHelper({ ...helper, name: `_${helper.name}` })
+    .split('\n')
+    .map((line) => `  ${line}`)
+    .join('\n');
 
 /** A TypeScript enum is a namespace of constants, so that is what it emits. */
 const emitEnum = (entity: IrEnum): string =>

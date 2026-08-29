@@ -80,6 +80,7 @@ const translate = (source: string): string => {
     widgetProps: new Set<string>(),
     localDartTypes: new Map<string, string>(),
     helperReturns: new Map<string, string>(),
+    privateHelpers: new Set<string>(),
     enumMembers: new Map<string, Map<string, string>>(),
     privateMembers: true,
     memberReads: memberReads(),

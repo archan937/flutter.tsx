@@ -276,6 +276,7 @@ export const lowerHelper = (helper: HelperBinding): IrHelper => {
     widgetProps: new Set(),
     localDartTypes,
     helperReturns: new Map(),
+    privateHelpers: new Set(),
     enumMembers: new Map(),
     privateMembers: false,
     memberReads: new Map(),
@@ -1071,8 +1072,10 @@ const isStringExpression = (
     ts.isCallExpression(expression) &&
     ts.isIdentifier(expression.expression)
   ) {
+    // The translate context carries both module and component helpers.
     return (
-      context.compile.helperReturns.get(expression.expression.text) === 'String'
+      context.translate.helperReturns.get(expression.expression.text) ===
+      'String'
     );
   }
   // `a ?? b` is a String when both sides are.
@@ -2802,7 +2805,14 @@ export const lowerComponent = (
         ? new Set(component.props.map((prop) => prop.name))
         : new Set<string>(),
       localDartTypes,
-      helperReturns: compile.helperReturns,
+      helperReturns: new Map([
+        ...compile.helperReturns,
+        ...component.helpers.map((helper): [string, string] => [
+          helper.name,
+          helper.returnDartType,
+        ]),
+      ]),
+      privateHelpers: new Set(component.helpers.map((helper) => helper.name)),
       enumMembers: compile.enumMembers,
       privateMembers: true,
       memberReads,
@@ -2861,6 +2871,26 @@ export const lowerComponent = (
     });
   }
 
+  // A helper declared inside the component reads its props and state, so it
+  // is lowered in the component's own context and emitted as a private method.
+  const componentHelpers: IrHelper[] = component.helpers.map((helper) => ({
+    name: helper.name,
+    params: helper.params,
+    returnDartType: helper.returnDartType,
+    value: {
+      kind: 'dartExpr' as const,
+      dart: translateExpression(helper.body, {
+        ...context.translate,
+        localDartTypes: new Map([
+          ...context.localDartTypes,
+          ...helper.params.map((param): [string, string] => [
+            param.name,
+            param.dartType,
+          ]),
+        ]),
+      }),
+    },
+  }));
   const methods: IrMethod[] = component.handlers.map((handler) => ({
     name: handler.name,
     isAsync: handler.isAsync,
@@ -2930,6 +2960,7 @@ export const lowerComponent = (
       })),
     ],
     methods,
+    helpers: componentHelpers,
     setupMethods: loweredPlugins.flatMap(({ lowered }) =>
       lowered.setup === null ? [] : [lowered.setup],
     ),
