@@ -65,7 +65,6 @@ describe('fsx init produces a project that builds', () => {
     expect(await Bun.file(join(appDir, 'lib', 'main.dart')).text()).toContain(
       "title: 'demo_app',",
     );
-    await rm(join(appDir, 'test'), { recursive: true, force: true });
 
     const analyzed = await run([flutterBin, 'analyze', '--no-pub'], appDir);
     expect(analyzed.exitCode).toBe(0);

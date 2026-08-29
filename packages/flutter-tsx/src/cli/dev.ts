@@ -137,6 +137,7 @@ export const defaultDevDeps = ({
       },
       readFile: async (path) => (await readTextFile(path)) ?? '',
       writeFile: writeTextFile,
+      pathExists,
       transpile: transpileComponent,
       // `flutter format` was removed from the SDK; `dart format` is the tool.
       format: (outputDir) =>

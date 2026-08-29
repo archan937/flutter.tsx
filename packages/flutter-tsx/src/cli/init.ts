@@ -1,9 +1,12 @@
 import { homedir } from 'node:os';
 import { basename, join, resolve } from 'node:path';
 
+import { mainDart, ROOT_COMPONENT } from '../build/project';
+import { dartFileFor } from '../compiler/dart-names';
 import {
   commandRunner,
   pathExists as fileExists,
+  remove,
   writeTextFile,
 } from '../sdk/io';
 import { resolveFsxPaths } from '../sdk/manifest';
@@ -13,6 +16,7 @@ export interface InitDeps {
   sdkInstalled: () => Promise<boolean>;
   pathExists: (path: string) => Promise<boolean>;
   writeFile: (path: string, contents: string) => Promise<void>;
+  removeFile: (path: string) => Promise<void>;
   runFlutter: (args: string[], cwd: string) => Promise<number>;
   out: (line: string) => void;
 }
@@ -79,6 +83,15 @@ export const runInitCommand = async (
     throw new Error(`flutter create failed (exit ${created}) in ${directory}.`);
   }
 
+  // `flutter create` leaves a counter-app entry point and a widget test for
+  // it. Neither belongs to a Flutter.tsx project, whose entry point is
+  // generated from the components under src/.
+  await deps.writeFile(
+    `${directory}/lib/main.dart`,
+    mainDart({ name, rootImport: dartFileFor(ROOT_COMPONENT) }),
+  );
+  await deps.removeFile(`${directory}/test/widget_test.dart`);
+
   deps.out(`Created ${directory}. Next: cd ${directory} && bun install`);
 };
 
@@ -92,6 +105,7 @@ export const defaultInitDeps = (): InitDeps => {
     sdkInstalled: () => fileExists(flutterBin),
     pathExists: fileExists,
     writeFile: writeTextFile,
+    removeFile: remove,
     runFlutter: commandRunner(flutterBin),
     out: (line): void => {
       process.stdout.write(`${line}\n`);

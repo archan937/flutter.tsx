@@ -877,7 +877,14 @@ bun run test:extractor             # dart tests + 100% coverage gate
       `useNavigation`/`<Router>`→GoRouter · `Modal` · `TabView` · `<Animated>` ·
       gesture props (onTap/onLongPress→GestureDetector wrap) · `fetch()`→Dart HTTP
       (mapping choice, e.g. package:http, is an open design decision for Paul)
-- [ ] 25–28. `fsx` CLI (init/dev/build/doctor) + `create-flutter-tsx` scaffolder
+- [x] 25–27. `fsx` CLI: **init** (scaffold + `flutter create`, entry point owned
+      by fsx), **install** (SDK + the plugins package.json declares — pub sync,
+      extraction, `plugin:` typings), **dev** (compile · run · watch · hot
+      reload · `dart format`), **build** (release build for web, ios, android,
+      macos, windows, linux; a platform the project never had is scaffolded on
+      the way). A project may take over `lib/main.dart` by removing the
+      generated marker, which is how a menu-bar app sets up its tray and window.
+- [ ] 28. `fsx doctor` + `create-flutter-tsx` scaffolder
 - [ ] 29–31. CI pipeline, docs from fixtures + site deploy, 1.0 publish (Paul triggers).
       **Paul (2026-08-25): the preserved v1 pages (docs/index.html, guide.md,
       config-mapping.md) stay frozen and unmarked until the step-30 refresh —

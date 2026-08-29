@@ -4,6 +4,7 @@ import {
   type BuildDeps,
   buildProject,
   dartFileFor,
+  GENERATED_ENTRY,
   mainDart,
 } from '@src/build/project';
 
@@ -31,7 +32,8 @@ describe('dartFileFor', () => {
 describe('mainDart', () => {
   test('hosts the root component in a titled MaterialApp', () => {
     expect(mainDart({ name: 'Demo App', rootImport: 'app.dart' })).toBe(
-      `import 'package:flutter/material.dart';
+      `${GENERATED_ENTRY}
+import 'package:flutter/material.dart';
 
 import 'app.dart';
 
@@ -82,6 +84,7 @@ const harness = (
       },
       transpile: (input): Promise<string> =>
         Promise.resolve(`// dart for ${input.filePath}\n`),
+      pathExists: (): Promise<boolean> => Promise.resolve(false),
       format: (): Promise<number> => Promise.resolve(0),
       ...overrides,
     },
@@ -173,6 +176,52 @@ describe('buildProject — formatting', () => {
 
     expect(buildProject('/app', { name: 'Demo' }, deps)).rejects.toThrow(
       'formatting /app/lib failed (exit 65).',
+    );
+  });
+});
+
+describe('buildProject — a project that owns its entry point', () => {
+  test('leaves a hand-written main.dart alone', async () => {
+    const { deps, written } = harness(
+      { 'App.tsx': 'export const App = () => <Text>hi</Text>;' },
+      {
+        readFile: (path): Promise<string> =>
+          Promise.resolve(
+            path.endsWith('/lib/main.dart')
+              ? 'void main() { /* tray + window setup */ }\n'
+              : 'export const App = () => <Text>hi</Text>;',
+          ),
+        pathExists: (path): Promise<boolean> =>
+          Promise.resolve(path.endsWith('/lib/main.dart')),
+      },
+    );
+
+    await buildProject('/app', { name: 'Demo' }, deps);
+
+    // The component is still compiled; only the entry point is the app's own.
+    expect(written.has('/app/lib/app.dart')).toBe(true);
+    expect(written.has('/app/lib/main.dart')).toBe(false);
+  });
+
+  test('rewrites the entry point it generated itself', async () => {
+    const { deps, written } = harness(
+      { 'App.tsx': 'export const App = () => <Text>hi</Text>;' },
+      {
+        readFile: (path): Promise<string> =>
+          Promise.resolve(
+            path.endsWith('/lib/main.dart')
+              ? mainDart({ name: 'Old', rootImport: 'app.dart' })
+              : 'export const App = () => <Text>hi</Text>;',
+          ),
+        pathExists: (path): Promise<boolean> =>
+          Promise.resolve(path.endsWith('/lib/main.dart')),
+      },
+    );
+
+    await buildProject('/app', { name: 'Demo' }, deps);
+
+    expect(written.get('/app/lib/main.dart')).toBe(
+      mainDart({ name: 'Demo', rootImport: 'app.dart' }),
     );
   });
 });

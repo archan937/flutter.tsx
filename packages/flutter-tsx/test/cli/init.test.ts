@@ -4,6 +4,7 @@ import { join } from 'node:path';
 
 import { describe, expect, test } from 'bun:test';
 
+import { mainDart } from '@src/build/project';
 import {
   defaultInitDeps,
   type InitDeps,
@@ -13,13 +14,24 @@ import {
 
 const deps = (
   overrides: Partial<InitDeps> = {},
-): { deps: InitDeps; written: Map<string, string>; ran: string[][] } => {
+): {
+  deps: InitDeps;
+  written: Map<string, string>;
+  ran: string[][];
+  removed: string[];
+} => {
   const written = new Map<string, string>();
   const ran: string[][] = [];
+  const removed: string[] = [];
   return {
     written,
     ran,
+    removed,
     deps: {
+      removeFile: (path): Promise<void> => {
+        removed.push(path);
+        return Promise.resolve();
+      },
       sdkInstalled: () => Promise.resolve(true),
       pathExists: () => Promise.resolve(false),
       writeFile: (path, contents): Promise<void> => {
@@ -54,6 +66,7 @@ describe('runInitCommand', () => {
     expect([...written.keys()].sort()).toEqual([
       'demo-app/.gitignore',
       'demo-app/fsx.config.ts',
+      'demo-app/lib/main.dart',
       'demo-app/package.json',
       'demo-app/src/App.tsx',
       'demo-app/tsconfig.json',
@@ -169,5 +182,20 @@ describe('defaultInitDeps', () => {
       }
       expect(lines).toEqual(['hello\n']);
     });
+  });
+});
+
+describe('runInitCommand — the entry point', () => {
+  test('replaces the template main.dart and drops its widget test', async () => {
+    const { deps: initDeps, written, removed } = deps();
+
+    await runInitCommand('/app', initDeps);
+
+    // `flutter create` writes a counter-app main.dart and a test for it;
+    // neither belongs to a Flutter.tsx project.
+    expect(written.get('/app/lib/main.dart')).toBe(
+      mainDart({ name: 'app', rootImport: 'app.dart' }),
+    );
+    expect(removed).toEqual(['/app/test/widget_test.dart']);
   });
 });
