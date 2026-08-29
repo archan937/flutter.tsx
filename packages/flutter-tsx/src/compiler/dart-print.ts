@@ -5,7 +5,7 @@ import type {
   DartListItem,
 } from './dart-ast';
 
-const MAX_WIDTH = 80;
+export const MAX_WIDTH = 80;
 
 export interface PrintSite {
   indent: number;

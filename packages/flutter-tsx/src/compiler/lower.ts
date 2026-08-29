@@ -45,6 +45,7 @@ import type {
 import {
   type MemberReadInfo,
   readFieldType,
+  STRING_RETURNING_METHODS,
   type TranslateContext,
   translateExpression,
   translateIdentifier,
@@ -950,6 +951,12 @@ const isStringExpression = (
   if (ts.isPropertyAccessExpression(expression)) {
     const field = readFieldType(expression, context.translate);
     return field?.kind === 'scalar' && field.name === 'String';
+  }
+  if (
+    ts.isCallExpression(expression) &&
+    ts.isPropertyAccessExpression(expression.expression)
+  ) {
+    return STRING_RETURNING_METHODS.has(expression.expression.name.text);
   }
   return false;
 };

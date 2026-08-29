@@ -851,6 +851,17 @@ export const Board = ({ jobs }: { jobs: Job[] }) => (
     expect(dart).toContain('for (final job in jobs) Text(job.company.name)');
   });
 
+  test('a method whose Dart semantics differ is refused, not guessed', () => {
+    expect(
+      transpileComponent({
+        source:
+          'export const Odd = ({ name }: { name: string }) => ' +
+          '<Text>{name.slice(0, 2)}</Text>;\n',
+        filePath: '/tmp/Odd.tsx',
+      }),
+    ).rejects.toThrow(/TSX0305/);
+  });
+
   test('a list of lists', async () => {
     const dart = await transpileComponent({
       source:

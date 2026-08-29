@@ -150,7 +150,9 @@ describe('translateExpression', () => {
   });
 
   test('unsupported expressions are a numbered error', () => {
-    expect(() => translate('count.toString()')).toThrow(
+    // `slice` is deliberately unmapped: Dart's sublist/substring differ in
+    // how they clamp, so it raises rather than compiling to something else.
+    expect(() => translate('count.slice(0)')).toThrow(
       new Error(
         'TSX0305 probe.tsx:6:17 — this expression is not compiled yet ' +
           '(roadmap step 18).',

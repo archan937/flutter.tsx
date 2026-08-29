@@ -46,6 +46,39 @@ const DART_IDENTIFIER = /^[a-zA-Z_][a-zA-Z0-9_]*$/;
 // Members that mean the same thing on TS and Dart values.
 const SHARED_MEMBERS = new Set(['length']);
 
+// Methods whose Dart counterpart takes the same arguments in the same order
+// and means the same thing. Each one is verified against the Dart SDK; a
+// method whose semantics differ (slice, find, sort, padStart) is deliberately
+// absent, so it raises a diagnostic rather than compiling to something subtly
+// different.
+const DART_METHODS = new Map([
+  ['toUpperCase', 'toUpperCase'],
+  ['toLowerCase', 'toLowerCase'],
+  ['trim', 'trim'],
+  ['startsWith', 'startsWith'],
+  ['endsWith', 'endsWith'],
+  ['split', 'split'],
+  ['indexOf', 'indexOf'],
+  ['replaceAll', 'replaceAll'],
+  ['toString', 'toString'],
+  ['join', 'join'],
+  ['includes', 'contains'],
+  ['some', 'any'],
+  ['every', 'every'],
+  ['toFixed', 'toStringAsFixed'],
+]);
+
+/** Of those, the ones that produce a String whatever the receiver is. */
+export const STRING_RETURNING_METHODS = new Set([
+  'toUpperCase',
+  'toLowerCase',
+  'trim',
+  'replaceAll',
+  'join',
+  'toString',
+  'toFixed',
+]);
+
 // Dart zero values, so a read through a nullable plugin handle is never null
 // at the use site — no context-sensitive coercion needed downstream.
 const ZERO_VALUES = new Map([
@@ -257,6 +290,22 @@ export const translateExpression = (
   ) {
     const target = translateExpression(expression.expression, context);
     return `${target}.${expression.name.text}`;
+  }
+  if (
+    ts.isCallExpression(expression) &&
+    ts.isPropertyAccessExpression(expression.expression)
+  ) {
+    const dartName = DART_METHODS.get(expression.expression.name.text);
+    if (dartName !== undefined) {
+      const target = translateExpression(
+        expression.expression.expression,
+        context,
+      );
+      const args = expression.arguments.map((argument) =>
+        translateExpression(argument, context),
+      );
+      return `${target}.${dartName}(${args.join(', ')})`;
+    }
   }
   if (ts.isBinaryExpression(expression)) {
     const operator = BINARY_OPERATORS.get(expression.operatorToken.kind);

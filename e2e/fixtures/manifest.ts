@@ -227,4 +227,10 @@ export const FIXTURE_APPS: FixtureApp[] = [
     dartFile: 'job_board.dart',
     deps: [],
   },
+  {
+    id: '32-value-methods',
+    component: 'ValueMethods',
+    dartFile: 'value_methods.dart',
+    deps: [],
+  },
 ];

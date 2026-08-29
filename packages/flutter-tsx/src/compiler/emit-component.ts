@@ -1,4 +1,4 @@
-import { printExpr } from './dart-print';
+import { MAX_WIDTH, printExpr } from './dart-print';
 import { importsForComponents } from './imports';
 import type {
   IrComponent,
@@ -74,8 +74,18 @@ const constructorLine = (component: IrComponent): string => {
   const propParams = component.props.map((prop) =>
     prop.required ? `required this.${prop.name}` : `this.${prop.name}`,
   );
-  const params = ['super.key', ...propParams].join(', ');
-  return `  const ${component.name}({${params}});`;
+  const params = ['super.key', ...propParams];
+  const single = `  const ${component.name}({${params.join(', ')}});`;
+  if (single.length <= MAX_WIDTH) {
+    return single;
+  }
+  // Too wide for one line: one parameter per line, trailing comma, which is
+  // the shape the Dart formatter settles on.
+  return [
+    `  const ${component.name}({`,
+    ...params.map((param) => `    ${param},`),
+    '  });',
+  ].join('\n');
 };
 
 const propFields = (component: IrComponent): string[] => {

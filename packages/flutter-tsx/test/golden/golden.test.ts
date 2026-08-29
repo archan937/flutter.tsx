@@ -43,6 +43,7 @@ const GREEN_FIXTURES = new Set([
   '29-branching-handler',
   '30-list-prop',
   '31-model-list',
+  '32-value-methods',
 ]);
 
 const fixtures = await listFixtures();

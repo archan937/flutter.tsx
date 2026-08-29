@@ -57,6 +57,19 @@ void main() {
 // One app hosts every fixture, so create/pub/test/build each run once for the
 // whole suite. Per-fixture compilability is not weakened: the goldens are
 // byte-equal here and the 543-widget sweep analyzes every probe on its own.
+describe('the fixture manifest', () => {
+  test('no two fixtures claim the same component or Dart file', () => {
+    // One app hosts them all: a duplicate silently overwrites the other's
+    // generated file, which is how a passing suite can stop testing a
+    // fixture entirely.
+    const components = FIXTURE_APPS.map((fixture) => fixture.component);
+    const dartFiles = FIXTURE_APPS.map((fixture) => fixture.dartFile);
+
+    expect(components).toEqual([...new Set(components)]);
+    expect(dartFiles).toEqual([...new Set(dartFiles)]);
+  });
+});
+
 describe('every fixture builds and behaves in a real Flutter app', () => {
   test('transpiles byte-equal, runs its widget tests, builds for web', async () => {
     const appDir = await createFlutterWebApp();
