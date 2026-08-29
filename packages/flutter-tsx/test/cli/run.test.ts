@@ -42,6 +42,7 @@ const EXPECTED_USAGE = [
   '  init <dir>     Scaffold a new Flutter.tsx project',
   '  dev            Compile, run and hot reload the app here',
   '  build          Compile and build the app for release',
+  '  doctor         Check that this project is ready to build',
 ].join('\n');
 
 describe('runCli', () => {
@@ -235,5 +236,26 @@ describe('buildCommands — build', () => {
 
     expect(code).toBe(0);
     expect(calls).toEqual([[process.cwd(), ['--target=macos']]]);
+  });
+});
+
+describe('buildCommands — doctor', () => {
+  test('runs doctor in the working directory', async () => {
+    const io = captureIo();
+    const directories: string[] = [];
+
+    const code = await runCli(
+      ['doctor'],
+      io,
+      buildCommands({
+        doctor: (projectDir) => {
+          directories.push(projectDir);
+          return Promise.resolve();
+        },
+      }),
+    );
+
+    expect(code).toBe(0);
+    expect(directories).toEqual([process.cwd()]);
   });
 });

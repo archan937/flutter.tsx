@@ -1,5 +1,6 @@
 import { defaultBuild } from './build-command';
 import { defaultDev } from './dev-command';
+import { defaultDoctor } from './doctor-command';
 import { defaultInitDeps, runInitCommand } from './init';
 import { runInstallCommand } from './install';
 
@@ -29,6 +30,7 @@ export interface CommandRunners {
   initDeps?: typeof defaultInitDeps;
   dev?: (projectDir: string) => Promise<void>;
   build?: (projectDir: string, args: string[]) => Promise<void>;
+  doctor?: (projectDir: string) => Promise<void>;
 }
 
 export const buildCommands = ({
@@ -37,7 +39,9 @@ export const buildCommands = ({
   initDeps = defaultInitDeps,
   dev = defaultDev,
   build = defaultBuild,
+  doctor = defaultDoctor,
 }: CommandRunners = {}): Record<string, CommandRunner> => ({
+  doctor: () => doctor(process.cwd()),
   dev: () => dev(process.cwd()),
   build: (args) => build(process.cwd(), args),
   install: async (): Promise<void> => {
@@ -62,6 +66,7 @@ const USAGE = [
   '  init <dir>     Scaffold a new Flutter.tsx project',
   '  dev            Compile, run and hot reload the app here',
   '  build          Compile and build the app for release',
+  '  doctor         Check that this project is ready to build',
 ].join('\n');
 
 export const formatError = (error: unknown): string =>

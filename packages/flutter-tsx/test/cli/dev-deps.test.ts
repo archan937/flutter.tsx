@@ -7,6 +7,8 @@ import { describe, expect, test } from 'bun:test';
 import { defaultBuild } from '@src/cli/build-command';
 import { defaultDevDeps } from '@src/cli/dev';
 import { defaultDev } from '@src/cli/dev-command';
+import { defaultDoctor } from '@src/cli/doctor-command';
+import { FLUTTER_VERSION } from '@src/sdk/version';
 
 const APP_TSX = `export const App = () => <Text>hi</Text>;\n`;
 
@@ -249,5 +251,47 @@ describe('defaultBuild', () => {
       await rm(home, { recursive: true, force: true });
       await rm(dir, { recursive: true, force: true });
     }
+  }, 60000);
+});
+
+describe('defaultDoctor', () => {
+  const withHome = async (
+    body: (home: string, dir: string) => Promise<void> | void,
+  ): Promise<void> => {
+    const home = await mkdtemp(join(tmpdir(), 'fsx-doctor-home-'));
+    const previous = process.env.FSX_HOME;
+    process.env.FSX_HOME = home;
+    const dir = await project();
+    try {
+      await body(home, dir);
+    } finally {
+      if (previous === undefined) delete process.env.FSX_HOME;
+      else process.env.FSX_HOME = previous;
+      await rm(home, { recursive: true, force: true });
+      await rm(dir, { recursive: true, force: true });
+    }
+  };
+
+  test('passes on a project whose SDK is installed', async () => {
+    await withHome(async (home, dir) => {
+      await Bun.write(
+        join(home, 'sdk-manifest.json'),
+        JSON.stringify({
+          flutterVersion: FLUTTER_VERSION,
+          archive: 'stable/macos/flutter.zip',
+          sha256: 'sha',
+          installedAt: '2026-08-30T00:00:00.000Z',
+        }),
+      );
+      await Bun.write(join(dir, 'package.json'), '{"name":"demo_app"}');
+
+      await defaultDoctor(dir);
+    });
+  }, 60000);
+
+  test('fails when the SDK was never installed', async () => {
+    await withHome((_home, dir) => {
+      expect(defaultDoctor(dir)).rejects.toThrow('fsx doctor found issues.');
+    });
   }, 60000);
 });

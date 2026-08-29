@@ -28,22 +28,19 @@
     "packages/create-flutter-tsx": {
       "name": "create-flutter-tsx",
       "version": "1.0.0-alpha.0",
-      "devDependencies": {
-        "@eslint/js": "^10.0.1",
-        "@types/bun": "^1.4.0",
-        "eslint": "^10.9.0",
-        "eslint-config-prettier": "^10.1.8",
-        "eslint-plugin-prettier": "^5.5.6",
-        "eslint-plugin-simple-import-sort": "^14.0.0",
-        "globals": "^17.11.0",
-        "prettier": "^3.9.6",
-        "typescript": "^6.0.3",
-        "typescript-eslint": "^8.67.0",
+      "bin": {
+        "create-flutter-tsx": "./bin/create.ts",
+      },
+      "dependencies": {
+        "flutter-tsx": "workspace:*",
       },
     },
     "packages/flutter-tsx": {
       "name": "flutter-tsx",
       "version": "1.0.0-alpha.0",
+      "bin": {
+        "fsx": "./bin/fsx.ts",
+      },
       "devDependencies": {
         "@eslint/js": "^10.0.1",
         "@types/bun": "^1.4.0",

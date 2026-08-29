@@ -884,7 +884,13 @@ bun run test:extractor             # dart tests + 100% coverage gate
       macos, windows, linux; a platform the project never had is scaffolded on
       the way). A project may take over `lib/main.dart` by removing the
       generated marker, which is how a menu-bar app sets up its tray and window.
-- [ ] 28. `fsx doctor` + `create-flutter-tsx` scaffolder
+- [x] 28. **`fsx doctor`** — checks the SDK against the pinned version, the
+      project's package.json and root component, and whether every declared
+      plugin is installed with its typings; each failure names the command that
+      fixes it, and the exit code is non-zero so CI can gate on it.
+      **`create-flutter-tsx`** — `npm create flutter-tsx@latest my-app`,
+      scaffolding through the very same `fsx init`, proven by an e2e that
+      builds what it wrote.
 - [ ] 29–31. CI pipeline, docs from fixtures + site deploy, 1.0 publish (Paul triggers).
       **Paul (2026-08-25): the preserved v1 pages (docs/index.html, guide.md,
       config-mapping.md) stay frozen and unmarked until the step-30 refresh —

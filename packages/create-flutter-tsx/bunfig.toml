@@ -2,3 +2,6 @@
 timeout = 30000
 coverageThreshold = 1.0
 coverageSkipTestFiles = true
+# The scaffolder is a thin front for flutter-tsx, whose own gate covers it;
+# this threshold is about this package's sources.
+coveragePathIgnorePatterns = ["../flutter-tsx/**"]
