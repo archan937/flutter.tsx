@@ -4,11 +4,13 @@ import { codeBlock, HIGHLIGHT_CSS } from './highlight';
 import type { SitePage } from './model';
 import { escapeHtml, inlineDoc } from './render';
 import {
+  NAV_CSS,
   type NavGroup,
   navGroupsHtml,
   SHELL_CSS,
   SHELL_JS,
   sidebarHtml,
+  type SitePageId,
 } from './shell';
 
 /** One file of an example, on both sides of the compiler. */
@@ -121,6 +123,7 @@ export const loadRecipes = async (fixturesDir: string): Promise<Recipe[]> => {
 
 const PAGE_CSS = `
 ${SHELL_CSS}
+${NAV_CSS}
 main { padding-top: 40px; }
 .lede, .note { color: var(--muted); max-width: 68ch; }
 .note { font-size: 14px; }
@@ -199,10 +202,7 @@ ${sidebarHtml(
   {
     meta: `${recipes.length} recipes · Flutter ${flutterVersion}`,
     searchPlaceholder: 'Search recipes…',
-    pages: [
-      { href: './guide.html', label: 'Guide' },
-      { href: './api-reference.html', label: 'API ↗' },
-    ],
+    current: 'cookbook',
   },
   navGroupsHtml(cookbookNav(recipes)),
 )}
@@ -369,12 +369,18 @@ export interface DocPage {
   /** Source file under docs/, e.g. `guide.md`. */
   source: string;
   title: string;
+  /** Which entry of the main nav this page is. */
+  current: SitePageId;
 }
 
 /** The prose pages, rendered from the markdown that is their source. */
 export const DOC_PAGES: DocPage[] = [
-  { source: 'guide.md', title: 'Guide' },
-  { source: 'config-mapping.md', title: 'Config mapping' },
+  { source: 'guide.md', title: 'Guide', current: 'guide' },
+  {
+    source: 'config-mapping.md',
+    title: 'Config mapping',
+    current: 'config',
+  },
 ];
 
 const BODY_HEADING = /<h2 id="([^"]+)">([\s\S]*?)<\/h2>/g;
@@ -414,10 +420,7 @@ ${sidebarHtml(
   {
     meta: `${page.title} · Flutter.tsx`,
     searchPlaceholder: 'Search sections…',
-    pages: [
-      { href: './cookbook.html', label: 'Cookbook' },
-      { href: './api-reference.html', label: 'API ↗' },
-    ],
+    current: page.current,
   },
   navGroupsHtml(docNav(page, body)),
 )}

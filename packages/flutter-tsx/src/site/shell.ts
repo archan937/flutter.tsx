@@ -16,14 +16,51 @@ export interface NavGroup {
   items: { id: string; label: string }[];
 }
 
+/** Every page of the site, in the order the nav lists them. */
+export type SitePageId = 'home' | 'guide' | 'cookbook' | 'api' | 'config';
+
+interface SiteLink {
+  id: SitePageId;
+  href: string;
+  label: string;
+}
+
+/**
+ * The one main navigation, identical on every page.
+ *
+ * Each page used to list a different subset of its siblings — the API
+ * reference listed none of them, so the largest page on the site was a dead
+ * end. Every page now offers the whole site and marks where the reader is.
+ */
+const SITE_LINKS: readonly SiteLink[] = [
+  { id: 'home', href: './index.html', label: 'Home' },
+  { id: 'guide', href: './guide.html', label: 'Guide' },
+  { id: 'cookbook', href: './cookbook.html', label: 'Cookbook' },
+  { id: 'api', href: './api-reference.html', label: 'API reference' },
+  { id: 'config', href: './config-mapping.html', label: 'Config mapping' },
+];
+
 export interface ShellOptions {
   /** Shown under the search box, e.g. “37 recipes · 7 categories”. */
   meta: string;
   /** Placeholder for the filter input. */
   searchPlaceholder: string;
-  /** Sibling pages, as label and href. */
-  pages: { href: string; label: string }[];
+  /** The page being rendered, which the nav marks rather than links. */
+  current: SitePageId;
 }
+
+const GITHUB = 'https://github.com/archan937/flutter.tsx';
+
+const mainNav = (current: SitePageId): string =>
+  `<nav class="site-nav" aria-label="Site">
+${SITE_LINKS.map((link) =>
+  link.id === current
+    ? `    <span class="here" aria-current="page">${escapeHtml(link.label)}</span>`
+    : `    <a href="${link.href}">${escapeHtml(link.label)}</a>`,
+).join('\n')}
+    <a class="ghstars" href="${GITHUB}/stargazers" target="_blank" rel="noopener" aria-label="Star flutter.tsx on GitHub"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M8 .25l2.06 4.17 4.6.67-3.33 3.24.79 4.59L8 11.42l-4.12 2.16.79-4.59L1.34 5.09l4.6-.67z" /></svg><span id="gh-stars">Star</span></a>
+    <a href="${GITHUB}" target="_blank" rel="noopener">GitHub ↗</a>
+  </nav>`;
 
 const navGroup = (group: NavGroup): string =>
   `<details${group.open === true ? ' open' : ''}>
@@ -44,16 +81,9 @@ export const sidebarHtml = (
   navHtml: string,
 ): string => `<aside id="sidebar">
   <a class="sb-brand" href="./index.html"><img class="mark" src="./icon.png" alt="flutter.tsx logo" width="28" height="28"><span>flutter<b>.tsx</b></span></a>
+  ${mainNav(options.current)}
   <input id="search" type="search" placeholder="${escapeHtml(options.searchPlaceholder)}" autocomplete="off" spellcheck="false">
   <div class="meta-info">${escapeHtml(options.meta)}</div>
-  <div class="sb-gh">
-${options.pages
-  .map(
-    (page) =>
-      `    <a href="${escapeHtml(page.href)}">${escapeHtml(page.label)}</a>`,
-  )
-  .join('\n')}
-  </div>
   <nav id="sidebar-nav">
 ${navHtml}
   </nav>
@@ -61,6 +91,18 @@ ${navHtml}
 
 export const navGroupsHtml = (groups: NavGroup[]): string =>
   groups.map(navGroup).join('\n');
+
+export const NAV_CSS = `
+.site-nav { display: flex; flex-direction: column; gap: 1px; margin: 0 0 14px; }
+.site-nav a, .site-nav .here {
+  display: flex; align-items: center; gap: 6px; padding: 5px 8px; border-radius: 7px;
+  font-size: 12.5px; font-weight: 600; text-decoration: none; color: var(--muted);
+  transition: background .12s, color .12s; }
+.site-nav a:hover { background: rgba(255,255,255,.04); color: var(--text); }
+.site-nav .here { color: var(--react); background: rgba(97,218,251,.12); }
+.site-nav .ghstars { margin-top: 6px; border-top: 1px solid var(--line-soft); padding-top: 9px; }
+.site-nav .ghstars svg { color: var(--amber, #f5d761); }
+`;
 
 export const SHELL_CSS = `:root {
   --react:#61dafb; --flutter:#54a4ff; --violet:#a78bfa;

@@ -10,6 +10,7 @@ import type {
   SiteType,
   SiteWidget,
 } from './model';
+import { NAV_CSS, sidebarHtml } from './shell';
 
 export const escapeHtml = (raw: string): string =>
   raw
@@ -654,26 +655,20 @@ details details > ul { padding-left: 24px; }
 .token.namespace { opacity: 0.7; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
 ${HIGHLIGHT_CSS}
+${NAV_CSS}
 </style>
 </head>
 <body>
 <div class="bg-layer bg-grid"></div>
 <div class="bg-layer bg-glow"></div>
-<aside id="sidebar">
-  <a class="sb-brand" href="./index.html"><img class="mark" src="./icon.png" alt="flutter.tsx logo" width="28" height="28"><span>flutter<b>.tsx</b></span></a>
-  <input id="search" type="search" placeholder="Search widgets…" autocomplete="off" spellcheck="false">
-  <div class="meta-info">${counts.widgets} widgets · ${counts.enums} enums</div>
-  <div class="sb-gh">
-    <a class="ghstars" href="https://github.com/archan937/flutter.tsx/stargazers" target="_blank" rel="noopener" aria-label="Star flutter.tsx on GitHub">
-      <svg viewBox="0 0 16 16" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M8 .25l2.06 4.17 4.6.67-3.33 3.24.79 4.59L8 11.42l-4.12 2.16.79-4.59L1.34 5.09l4.6-.67z" /></svg>
-      <span id="gh-stars">Star</span>
-    </a>
-    <a href="https://github.com/archan937/flutter.tsx" target="_blank" rel="noopener">GitHub ↗</a>
-  </div>
-  <nav id="sidebar-nav">
-${nav}
-  </nav>
-</aside>
+${sidebarHtml(
+  {
+    meta: `${counts.widgets} widgets · ${counts.enums} enums`,
+    searchPlaceholder: 'Search widgets…',
+    current: 'api',
+  },
+  nav,
+)}
 <main>
   <h1>Flutter.tsx — API Reference</h1>
   <p class="subtitle">Auto-generated from the Flutter ${counts.flutterVersion ?? '3'} widget catalog. Run <code>bun run docs</code> to regenerate.</p>

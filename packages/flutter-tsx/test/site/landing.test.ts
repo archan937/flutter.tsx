@@ -92,3 +92,44 @@ describe('the landing page showcase', () => {
     );
   });
 });
+
+const PAGES = [
+  'index.html',
+  'guide.html',
+  'cookbook.html',
+  'api-reference.html',
+  'config-mapping.html',
+];
+
+const docPage = async (name: string): Promise<string> =>
+  Bun.file(new URL(`../../../../docs/${name}`, import.meta.url)).text();
+
+/**
+ * The main navigation is the one thing every page shares. The API reference
+ * once listed none of its siblings, so the largest page on the site was a
+ * dead end; each of the others listed a different subset.
+ */
+describe('the main navigation', () => {
+  test('reaches every other page, from every page', async () => {
+    for (const name of PAGES) {
+      const html = await docPage(name);
+      const reached = new Set(
+        [...html.matchAll(/href="\.\/([a-z-]+\.html)"/g)].map(
+          (match) => match[1] ?? '',
+        ),
+      );
+      const expected = PAGES.filter((other) => other !== name);
+      expect([name, [...reached].sort()]).toEqual([name, expected.sort()]);
+    }
+  }, 60000);
+
+  test('marks the page the reader is on, on every generated page', async () => {
+    for (const name of PAGES.filter((page) => page !== 'index.html')) {
+      const html = await docPage(name);
+      expect([name, html.includes('aria-current="page"')]).toEqual([
+        name,
+        true,
+      ]);
+    }
+  }, 60000);
+});

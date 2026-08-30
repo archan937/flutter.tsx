@@ -95,6 +95,17 @@ h2 { font-family: var(--display); font-size: 22px; font-weight: 700; letter-spac
   margin: 56px 0 22px; padding-bottom: 10px; border-bottom: 1px solid var(--line); color: var(--text); }
 h2:first-of-type { margin-top: 0; }
 
+
+.site-nav { display: flex; flex-direction: column; gap: 1px; margin: 0 0 14px; }
+.site-nav a, .site-nav .here {
+  display: flex; align-items: center; gap: 6px; padding: 5px 8px; border-radius: 7px;
+  font-size: 12.5px; font-weight: 600; text-decoration: none; color: var(--muted);
+  transition: background .12s, color .12s; }
+.site-nav a:hover { background: rgba(255,255,255,.04); color: var(--text); }
+.site-nav .here { color: var(--react); background: rgba(97,218,251,.12); }
+.site-nav .ghstars { margin-top: 6px; border-top: 1px solid var(--line-soft); padding-top: 9px; }
+.site-nav .ghstars svg { color: var(--amber, #f5d761); }
+
 main { padding-top: 40px; }
 .lede, .note { color: var(--muted); max-width: 68ch; }
 .note { font-size: 14px; }
@@ -134,12 +145,17 @@ main p { margin-bottom: 12px; }
 <div class="bg-layer bg-glow"></div>
 <aside id="sidebar">
   <a class="sb-brand" href="./index.html"><img class="mark" src="./icon.png" alt="flutter.tsx logo" width="28" height="28"><span>flutter<b>.tsx</b></span></a>
+  <nav class="site-nav" aria-label="Site">
+    <a href="./index.html">Home</a>
+    <a href="./guide.html">Guide</a>
+    <span class="here" aria-current="page">Cookbook</span>
+    <a href="./api-reference.html">API reference</a>
+    <a href="./config-mapping.html">Config mapping</a>
+    <a class="ghstars" href="https://github.com/archan937/flutter.tsx/stargazers" target="_blank" rel="noopener" aria-label="Star flutter.tsx on GitHub"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M8 .25l2.06 4.17 4.6.67-3.33 3.24.79 4.59L8 11.42l-4.12 2.16.79-4.59L1.34 5.09l4.6-.67z" /></svg><span id="gh-stars">Star</span></a>
+    <a href="https://github.com/archan937/flutter.tsx" target="_blank" rel="noopener">GitHub ↗</a>
+  </nav>
   <input id="search" type="search" placeholder="Search recipes…" autocomplete="off" spellcheck="false">
   <div class="meta-info">41 recipes · Flutter 3.47.1</div>
-  <div class="sb-gh">
-    <a href="./guide.html">Guide</a>
-    <a href="./api-reference.html">API ↗</a>
-  </div>
   <nav id="sidebar-nav">
 <details open>
 <summary>Start here<span class="nav-count">7</span></summary>
