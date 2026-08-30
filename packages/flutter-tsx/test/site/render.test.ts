@@ -120,10 +120,10 @@ describe('enumSection', () => {
 describe('navHtml', () => {
   test('groups widgets by library with counts', () => {
     expect(navHtml(page)).toBe(
-      `<details>
-<summary>Example<span class="nav-count">1</span></summary>
+      `<details open>
+<summary>Examples<span class="nav-count">1</span></summary>
 <ul>
-<li data-name="Camera Screen"><a href="#example">Camera Screen</a></li>
+<li data-name="Camera"><a href="#example-01-camera-screen">Camera</a></li>
 </ul>
 </details>
 <details>

@@ -1,6 +1,11 @@
 import { loadPluginApi, type PluginApi } from '../plugins/api';
 import { PLUGIN_OVERRIDES } from '../plugins/overrides';
-import { loadRecipes, type Recipe, SHOWCASE } from './cookbook';
+import {
+  loadRecipes,
+  type Recipe,
+  showcaseRecipes,
+  SHOWCASES,
+} from './cookbook';
 import { extractCoreApi } from './core-api';
 import type { SiteSections } from './from-snapshot';
 import { buildSitePlugins } from './plugins';
@@ -27,19 +32,15 @@ const loadPluginApis = async (): Promise<PluginApi[]> => {
   return Promise.all(names.sort().map((name) => loadPluginApi(name)));
 };
 
-/** The fixture the reference opens with, refused when the suite loses it. */
-export const exampleFrom = (recipes: Recipe[]): SiteSections['example'] => {
-  const recipe = recipes.find((each) => each.id === SHOWCASE);
-  if (recipe === undefined) {
-    throw new Error(`the example fixture ${SHOWCASE} is missing.`);
-  }
-  return {
+/** The fixtures the reference leads with, refused when the suite loses one. */
+export const examplesFrom = (recipes: Recipe[]): SiteSections['examples'] =>
+  showcaseRecipes(recipes).map((recipe, index) => ({
     id: recipe.id,
     title: recipe.title,
+    label: SHOWCASES[index]?.label ?? recipe.title,
     tsx: recipe.tsx,
     dart: recipe.dart,
-  };
-};
+  }));
 
 /**
  * Everything the reference documents beside the SDK snapshot, assembled once
@@ -49,7 +50,7 @@ export const exampleFrom = (recipes: Recipe[]): SiteSections['example'] => {
 export const loadSiteSections = async (): Promise<SiteSections> => {
   const recipes = await loadRecipes(resolve(FIXTURES_DIR));
   return {
-    example: exampleFrom(recipes),
+    examples: examplesFrom(recipes),
     coreApi: extractCoreApi(CORE_SOURCES.map(resolve), recipes),
     plugins: buildSitePlugins(
       await loadPluginApis(),

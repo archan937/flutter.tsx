@@ -57,6 +57,7 @@ const requirementsOf = (api: PluginApi): SitePluginRequirement[] => {
 const exampleOf = (recipe: Recipe): SiteExample => ({
   id: recipe.id,
   title: recipe.title,
+  label: recipe.title,
   tsx: recipe.tsx,
   dart: recipe.dart,
 });

@@ -4,6 +4,8 @@ import {
   buildCookbookHtml,
   loadRecipes,
   type Recipe,
+  showcaseFiles,
+  SHOWCASES,
   withShowcase,
 } from '@src/site/cookbook';
 
@@ -76,69 +78,79 @@ describe('buildCookbookHtml', () => {
 });
 
 describe('withShowcase', () => {
-  const camera: Recipe = {
-    id: '01-camera-screen',
-    title: 'Camera Screen',
-    tsx:
-      "import { useCamera } from 'plugin:camera';\n\n" +
-      'export const CameraScreen = () => <Text>Take Photo</Text>;\n',
-    dart: "import 'package:camera/camera.dart';\n",
-  };
   const page = [
-    '<span class="eyebrow"><span class="dot"></span> TSX in · Dart out · Flutter 3.44.0</span>',
-    '<div class="compile-bar">',
-    '  <span>Old.tsx</span>',
-    '  <span class="arrow">⟶</span>',
-    '  <span>idiomatic Dart · Flutter 3.44.0</span>',
-    '</div>',
+    '<span class="eyebrow">TSX in · Dart out · Flutter 3.44.0</span>',
+    '<span id="compile-name">Old.tsx</span>',
+    '<span>idiomatic Dart · Flutter 3.44.0</span>',
     '<span class="fname" id="fname">src/Old.tsx</span>',
-    '<!-- showcase:tsx -->old<!-- /showcase:tsx -->',
-    '<!-- showcase:dart -->old<!-- /showcase:dart -->',
-    "const names = { tsx: 'src/Old.tsx', dart: 'Old.g.dart' };",
+    '<!-- showcase:picker --><div id="picker"></div><!-- /showcase:picker -->',
+    '<!-- showcase:panels -->old<!-- /showcase:panels -->',
+    "const EXAMPLES = { '00-old': { tsx: 'src/Old.tsx', dart: 'old.dart' } };",
   ].join('\n');
 
-  test('replaces both panels with the fixture they claim to show', () => {
-    const html = withShowcase(page, [camera], '3.47.1');
+  const load = async (): Promise<Recipe[]> => loadRecipes(FIXTURES_DIR);
 
-    expect(html).toContain(
-      "<pre>import { useCamera } from 'plugin:camera';\n\n" +
-        'export const CameraScreen = () =&gt; &lt;Text&gt;Take Photo&lt;/Text&gt;;</pre>',
-    );
-    expect(html).toContain("<pre>import 'package:camera/camera.dart';</pre>");
+  test('offers every showcase, so one example does not stand for the whole compiler', async () => {
+    const html = withShowcase(page, await load(), '3.47.1');
+
+    for (const showcase of SHOWCASES) {
+      expect(html).toContain(`data-example="${showcase.id}"`);
+      expect(html).toContain(`>${showcase.label}</button>`);
+    }
     expect(html).not.toContain('>old<');
-  });
+  }, 60000);
 
-  test('names the files the compiler reads and writes', () => {
-    const html = withShowcase(page, [camera], '3.47.1');
+  test('renders both panels for every showcase, only the first one open', async () => {
+    const html = withShowcase(page, await load(), '3.47.1');
 
+    for (const showcase of SHOWCASES) {
+      expect(html).toContain(`data-example="${showcase.id}" data-panel="tsx"`);
+      expect(html).toContain(`data-example="${showcase.id}" data-panel="dart"`);
+    }
+    // Exactly one panel is open, and it is the first showcase's TSX.
+    expect(html.match(/class="tab-panel active"/g)?.length).toBe(1);
     expect(html).toContain(
-      '<span class="fname" id="fname">src/CameraScreen.tsx</span>',
+      `<div class="tab-panel active" data-example="${SHOWCASES[0].id}" data-panel="tsx">`,
     );
-    expect(html).toContain('<span>CameraScreen.tsx</span>');
-    // The emitted file is snake_case — not the `.g.dart` this page claimed.
+  }, 60000);
+
+  test('names the files the compiler reads and writes', async () => {
+    const html = withShowcase(page, await load(), '3.47.1');
+
+    // `05-counter` exports Counter, so a project would hold these two files.
     expect(html).toContain(
-      "const names = { tsx: 'src/CameraScreen.tsx', dart: 'camera_screen.dart' };",
+      '<span class="fname" id="fname">src/Counter.tsx</span>',
+    );
+    expect(html).toContain('<span id="compile-name">Counter.tsx</span>');
+    expect(html).toContain(
+      "'05-counter': { tsx: 'src/Counter.tsx', dart: 'counter.dart' },",
+    );
+    // A file exporting several components is named after its last one.
+    expect(html).toContain(
+      "'23-tabs': { tsx: 'src/Shell.tsx', dart: 'shell.dart' },",
     );
     expect(html).not.toContain('Old');
-  });
+  }, 60000);
 
-  test('states the Flutter version the page was generated against', () => {
-    const html = withShowcase(page, [camera], '3.47.1');
+  test('states the Flutter version the page was generated against', async () => {
+    const html = withShowcase(page, await load(), '3.47.1');
 
     expect(html).toContain('TSX in · Dart out · Flutter 3.47.1');
     expect(html).toContain('idiomatic Dart · Flutter 3.47.1');
     expect(html).not.toContain('3.44.0');
-  });
+  }, 60000);
 
   test('refuses to render a showcase whose fixture is gone', () => {
     expect(() => withShowcase(page, [counter], '3.47.1')).toThrow(
       'the showcase fixture 01-camera-screen is missing.',
     );
   });
+});
 
-  test('refuses a showcase fixture that exports no component', () => {
-    expect(() =>
-      withShowcase(page, [{ ...camera, tsx: 'const x = 1;\n' }], '3.47.1'),
-    ).toThrow('the showcase fixture 01-camera-screen exports no component.');
+describe('showcaseFiles', () => {
+  test('refuses a fixture that exports no component', () => {
+    expect(() => showcaseFiles({ ...counter, tsx: 'const x = 1;\n' })).toThrow(
+      'the showcase fixture 05-counter exports no component.',
+    );
   });
 });

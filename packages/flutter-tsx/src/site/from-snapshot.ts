@@ -114,7 +114,7 @@ const propRows = (
 
 /** What the reference documents beside the SDK: derived elsewhere, verified there. */
 export interface SiteSections {
-  example: SiteExample;
+  examples: SiteExample[];
   coreApi: SiteCoreEntry[];
   plugins: SitePlugin[];
   /** Generated declaration files the value types are read from. */
@@ -168,7 +168,7 @@ export const buildSitePage = (
 
   return {
     flutterVersion: snapshot.meta.frameworkVersion,
-    example: sections.example,
+    examples: sections.examples,
     coreApi: sections.coreApi,
     widgets,
     types: buildSiteTypes(sections.generatedFiles, widgets),

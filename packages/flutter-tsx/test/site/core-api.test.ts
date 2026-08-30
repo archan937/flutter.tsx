@@ -33,6 +33,13 @@ describe('extractCoreApi', () => {
       signature: '<TValue>(initial: TValue) => [TValue, StateSetter<TValue>]',
       doc: '',
       examples: ['99-everything'],
+      usage: {
+        id: '99-everything',
+        title: '99-everything',
+        label: '99-everything',
+        tsx: everything()[0]?.tsx ?? '',
+        dart: '',
+      },
     });
   });
 
@@ -55,6 +62,7 @@ describe('extractCoreApi', () => {
       signature: 'export type RouteTarget = () => FlutterElement;',
       doc: 'A routable component takes no props: the router supplies nothing but the\nlocation, so a component needing props cannot be a route target — TypeScript\nrejects it rather than the Dart compiler.',
       examples: [],
+      usage: null,
     });
   });
 
@@ -63,6 +71,20 @@ describe('extractCoreApi', () => {
     // claim about the compiler, so the build fails instead.
     expect(() => extractCoreApi([HOOKS], [])).toThrow(
       'core API useState has no fixture using it.',
+    );
+  });
+
+  test('shows the shortest fixture, so an entry reads as an example', () => {
+    // Both fixtures exercise everything; only their length differs.
+    const [all] = everything();
+    const long = recipe('01-long', `${all?.tsx ?? ''} ${'x'.repeat(400)}`);
+    const short = recipe('02-short', all?.tsx ?? '');
+
+    const entries = extractCoreApi([HOOKS], [long, short]);
+
+    // Every fixture is proof; the shortest is the one worth showing.
+    expect(entries.find((entry) => entry.name === 'useState')?.usage?.id).toBe(
+      '02-short',
     );
   });
 });

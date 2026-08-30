@@ -396,6 +396,37 @@
           color 0.16s,
           background 0.2s var(--ease);
       }
+      .picker {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 14px;
+      }
+      .picker button {
+        appearance: none;
+        cursor: pointer;
+        font-family: var(--mono);
+        font-size: 0.74rem;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        color: var(--muted);
+        background: rgba(10, 13, 20, 0.7);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 6px 14px;
+        transition:
+          color 0.16s,
+          border-color 0.16s,
+          background 0.2s var(--ease);
+      }
+      .picker button:hover {
+        color: var(--text);
+      }
+      .picker button.active {
+        color: #06121f;
+        background: var(--grad-soft);
+        border-color: transparent;
+      }
       .toggle button.active {
         color: #06121f;
         background: var(--grad-soft);
@@ -995,10 +1026,23 @@
 
       <section class="showcase reveal">
         <div class="compile-bar">
-          <span>CameraScreen.tsx</span>
+          <span id="compile-name">Counter.tsx</span>
           <span class="arrow">⟶</span>
           <span>idiomatic Dart · Flutter 3.47.1</span>
         </div>
+
+        <!-- showcase:picker -->
+<div class="picker" id="picker" role="tablist">
+<button class="active" data-example="05-counter" role="tab" aria-selected="true">State</button>
+<button class="" data-example="01-camera-screen" role="tab" aria-selected="false">Camera</button>
+<button class="" data-example="07-list-rendering" role="tab" aria-selected="false">Lists</button>
+<button class="" data-example="25-http-get" role="tab" aria-selected="false">Async data</button>
+<button class="" data-example="19-store-counter" role="tab" aria-selected="false">Store</button>
+<button class="" data-example="20-router" role="tab" aria-selected="false">Router</button>
+<button class="" data-example="23-tabs" role="tab" aria-selected="false">Tabs</button>
+<button class="" data-example="24-animated" role="tab" aria-selected="false">Animation</button>
+</div>
+<!-- /showcase:picker -->
 
         <div class="toggle" role="tablist" id="toggle">
           <button class="active" data-tab="tsx" role="tab" aria-selected="true">
@@ -1010,11 +1054,60 @@
         <div class="code-block" style="margin-top: 16px">
           <div class="window-bar">
             <span class="lights"><i></i><i></i><i></i></span>
-            <span class="fname" id="fname">src/CameraScreen.tsx</span>
+            <span class="fname" id="fname">src/Counter.tsx</span>
           </div>
 
-          <div class="tab-panel active" data-panel="tsx">
-            <!-- showcase:tsx -->
+          <!-- showcase:panels -->
+<div class="tab-panel active" data-example="05-counter" data-panel="tsx">
+<pre>import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+
+export const Counter = () =&gt; {
+  const [count, setCount] = useState(0);
+
+  const increment = () =&gt; {
+    setCount(count + 1);
+  };
+
+  return (
+    &lt;Column mainAxisAlignment=&quot;center&quot;&gt;
+      &lt;Text&gt;Count: {count}&lt;/Text&gt;
+      &lt;ElevatedButton onClick={increment}&gt;Increment&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</pre>
+</div>
+<div class="tab-panel" data-example="05-counter" data-panel="dart">
+<pre>import 'package:flutter/material.dart';
+
+class Counter extends StatefulWidget {
+  const Counter({super.key});
+
+  @override
+  State&lt;Counter&gt; createState() =&gt; _CounterState();
+}
+
+class _CounterState extends State&lt;Counter&gt; {
+  int _count = 0;
+
+  void _increment() {
+    setState(() {
+      _count++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text('Count: $_count'),
+        ElevatedButton(onPressed: _increment, child: const Text('Increment')),
+      ],
+    );
+  }
+}</pre>
+</div>
+<div class="tab-panel" data-example="01-camera-screen" data-panel="tsx">
 <pre>import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
 import { useCamera } from 'plugin:camera';
 
@@ -1034,11 +1127,8 @@ export const CameraScreen = () =&gt; {
     &lt;/Column&gt;
   );
 };</pre>
-<!-- /showcase:tsx -->
-          </div>
-
-          <div class="tab-panel" data-panel="dart">
-            <!-- showcase:dart -->
+</div>
+<div class="tab-panel" data-example="01-camera-screen" data-panel="dart">
 <pre>import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
@@ -1095,8 +1185,398 @@ class _CameraScreenState extends State&lt;CameraScreen&gt; {
     );
   }
 }</pre>
-<!-- /showcase:dart -->
-          </div>
+</div>
+<div class="tab-panel" data-example="07-list-rendering" data-panel="tsx">
+<pre>import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+
+export const Groceries = () =&gt; {
+  const [items, setItems] = useState(['Apples', 'Bread']);
+
+  const addItem = () =&gt; {
+    setItems([...items, 'Milk']);
+  };
+
+  return (
+    &lt;Column&gt;
+      {items.map((item) =&gt; (
+        &lt;Text&gt;{item}&lt;/Text&gt;
+      ))}
+      &lt;ElevatedButton onClick={addItem}&gt;Add&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</pre>
+</div>
+<div class="tab-panel" data-example="07-list-rendering" data-panel="dart">
+<pre>import 'package:flutter/material.dart';
+
+class Groceries extends StatefulWidget {
+  const Groceries({super.key});
+
+  @override
+  State&lt;Groceries&gt; createState() =&gt; _GroceriesState();
+}
+
+class _GroceriesState extends State&lt;Groceries&gt; {
+  List&lt;String&gt; _items = ['Apples', 'Bread'];
+
+  void _addItem() {
+    setState(() {
+      _items = [..._items, 'Milk'];
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        for (final item in _items) Text(item),
+        ElevatedButton(onPressed: _addItem, child: const Text('Add')),
+      ],
+    );
+  }
+}</pre>
+</div>
+<div class="tab-panel" data-example="25-http-get" data-panel="tsx">
+<pre>import { CircularProgressIndicator, Column, Text, useAsync } from 'flutter-tsx';
+import { get } from 'plugin:http';
+
+export const AlbumView = async () =&gt; {
+  const res = await useAsync(() =&gt; get('https://example.com/album/1'), {
+    loading: () =&gt; &lt;CircularProgressIndicator /&gt;,
+    error: (err) =&gt; &lt;Text&gt;{err}&lt;/Text&gt;,
+  });
+
+  return (
+    &lt;Column&gt;
+      &lt;Text&gt;Status: {res.statusCode}&lt;/Text&gt;
+      &lt;Text&gt;{res.body}&lt;/Text&gt;
+    &lt;/Column&gt;
+  );
+};</pre>
+</div>
+<div class="tab-panel" data-example="25-http-get" data-panel="dart">
+<pre>import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+class AlbumView extends StatefulWidget {
+  const AlbumView({super.key});
+
+  @override
+  State&lt;AlbumView&gt; createState() =&gt; _AlbumViewState();
+}
+
+class _AlbumViewState extends State&lt;AlbumView&gt; {
+  late final Future&lt;http.Response&gt; _resFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _resFuture = http.get(Uri.parse('https://example.com/album/1'));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder&lt;http.Response&gt;(
+      future: _resFuture,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          final err = '${snapshot.error}';
+          return Text(err);
+        }
+        if (!snapshot.hasData) {
+          return const CircularProgressIndicator();
+        }
+        final res = snapshot.data!;
+        return Column(
+          children: [Text('Status: ${res.statusCode}'), Text(res.body)],
+        );
+      },
+    );
+  }
+}</pre>
+</div>
+<div class="tab-panel" data-example="19-store-counter" data-panel="tsx">
+<pre>import {
+  Column,
+  createStore,
+  ElevatedButton,
+  Text,
+  useStore,
+} from 'flutter-tsx';
+
+const counterStore = createStore({ count: 0, label: 'Taps' });
+
+export const StoreCounter = () =&gt; {
+  const [state, setState] = useStore(counterStore);
+
+  const increment = () =&gt; {
+    setState({ count: state.count + 1 });
+  };
+
+  return (
+    &lt;Column&gt;
+      &lt;Text&gt;
+        {state.label}: {state.count}
+      &lt;/Text&gt;
+      &lt;ElevatedButton onClick={increment}&gt;Increment&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</pre>
+</div>
+<div class="tab-panel" data-example="19-store-counter" data-panel="dart">
+<pre>import 'package:flutter/material.dart';
+
+class _CounterStore extends ChangeNotifier {
+  _CounterStore({required this.count, required this.label});
+
+  int count;
+  String label;
+
+  void update({int? count, String? label}) {
+    if (count != null) {
+      this.count = count;
+    }
+    if (label != null) {
+      this.label = label;
+    }
+    notifyListeners();
+  }
+}
+
+final _CounterStore _counterStore = _CounterStore(count: 0, label: 'Taps');
+
+class StoreCounter extends StatelessWidget {
+  const StoreCounter({super.key});
+
+  void _increment() {
+    _counterStore.update(count: _counterStore.count + 1);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: _counterStore,
+      builder: (context, child) {
+        return Column(
+          children: [
+            Text('${_counterStore.label}: ${_counterStore.count}'),
+            ElevatedButton(
+              onPressed: _increment,
+              child: const Text('Increment'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}</pre>
+</div>
+<div class="tab-panel" data-example="20-router" data-panel="tsx">
+<pre>import {
+  Column,
+  createRouter,
+  ElevatedButton,
+  Text,
+  useNavigation,
+} from 'flutter-tsx';
+
+export const HomePage = () =&gt; {
+  const nav = useNavigation();
+
+  return (
+    &lt;Column&gt;
+      &lt;Text&gt;Home&lt;/Text&gt;
+      &lt;ElevatedButton onClick={() =&gt; nav.push('/detail')}&gt;
+        Open detail
+      &lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};
+
+export const DetailPage = () =&gt; {
+  const nav = useNavigation();
+
+  return (
+    &lt;Column&gt;
+      &lt;Text&gt;Detail&lt;/Text&gt;
+      &lt;ElevatedButton onClick={() =&gt; nav.pop()}&gt;Back&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};
+
+export const router = createRouter({
+  '/': HomePage,
+  '/detail': DetailPage,
+});</pre>
+</div>
+<div class="tab-panel" data-example="20-router" data-panel="dart">
+<pre>import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Text('Home'),
+        ElevatedButton(
+          onPressed: () =&gt; context.push('/detail'),
+          child: const Text('Open detail'),
+        ),
+      ],
+    );
+  }
+}
+
+class DetailPage extends StatelessWidget {
+  const DetailPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Text('Detail'),
+        ElevatedButton(
+          onPressed: () =&gt; context.pop(),
+          child: const Text('Back'),
+        ),
+      ],
+    );
+  }
+}
+
+final GoRouter router = GoRouter(
+  routes: [
+    GoRoute(path: '/', builder: (context, state) =&gt; const HomePage()),
+    GoRoute(path: '/detail', builder: (context, state) =&gt; const DetailPage()),
+  ],
+);</pre>
+</div>
+<div class="tab-panel" data-example="23-tabs" data-panel="tsx">
+<pre>import { TabItem, TabView, Text } from 'flutter-tsx';
+
+export const HomeTab = () =&gt; &lt;Text&gt;Home&lt;/Text&gt;;
+
+export const ProfileTab = () =&gt; &lt;Text&gt;Profile&lt;/Text&gt;;
+
+export const Shell = () =&gt; (
+  &lt;TabView&gt;
+    &lt;TabItem label=&quot;Home&quot; icon=&quot;home&quot;&gt;
+      &lt;HomeTab /&gt;
+    &lt;/TabItem&gt;
+    &lt;TabItem label=&quot;Profile&quot; icon=&quot;person&quot;&gt;
+      &lt;ProfileTab /&gt;
+    &lt;/TabItem&gt;
+  &lt;/TabView&gt;
+);</pre>
+</div>
+<div class="tab-panel" data-example="23-tabs" data-panel="dart">
+<pre>import 'package:flutter/material.dart';
+
+class HomeTab extends StatelessWidget {
+  const HomeTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('Home');
+  }
+}
+
+class ProfileTab extends StatelessWidget {
+  const ProfileTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('Profile');
+  }
+}
+
+class Shell extends StatefulWidget {
+  const Shell({super.key});
+
+  @override
+  State&lt;Shell&gt; createState() =&gt; _ShellState();
+}
+
+class _ShellState extends State&lt;Shell&gt; {
+  int _tabIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: IndexedStack(
+        index: _tabIndex,
+        children: const [HomeTab(), ProfileTab()],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _tabIndex,
+        onTap: (index) =&gt; setState(() =&gt; _tabIndex = index),
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        ],
+      ),
+    );
+  }
+}</pre>
+</div>
+<div class="tab-panel" data-example="24-animated" data-panel="tsx">
+<pre>import { Animated, Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+
+export const Fader = () =&gt; {
+  const [shown, setShown] = useState(true);
+
+  const toggle = () =&gt; {
+    setShown(!shown);
+  };
+
+  return (
+    &lt;Column&gt;
+      &lt;Animated type=&quot;fade&quot; visible={shown} duration={300}&gt;
+        &lt;Text&gt;Fades&lt;/Text&gt;
+      &lt;/Animated&gt;
+      &lt;ElevatedButton onClick={toggle}&gt;Toggle&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</pre>
+</div>
+<div class="tab-panel" data-example="24-animated" data-panel="dart">
+<pre>import 'package:flutter/material.dart';
+
+class Fader extends StatefulWidget {
+  const Fader({super.key});
+
+  @override
+  State&lt;Fader&gt; createState() =&gt; _FaderState();
+}
+
+class _FaderState extends State&lt;Fader&gt; {
+  bool _shown = true;
+
+  void _toggle() {
+    setState(() {
+      _shown = !_shown;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        AnimatedOpacity(
+          opacity: _shown ? 1 : 0,
+          duration: const Duration(milliseconds: 300),
+          child: const Text('Fades'),
+        ),
+        ElevatedButton(onPressed: _toggle, child: const Text('Toggle')),
+      ],
+    );
+  }
+}</pre>
+</div>
+<!-- /showcase:panels -->
         </div>
       </section>
 
@@ -1370,25 +1850,64 @@ class _CameraScreenState extends State&lt;CameraScreen&gt; {
     </footer>
 
     <script>
-      // ── Tabs ──
+      // ── Example picker and TSX/Dart tabs ──
       (function () {
         const toggle = document.getElementById('toggle');
+        const picker = document.getElementById('picker');
         const fname = document.getElementById('fname');
-        const names = { tsx: 'src/CameraScreen.tsx', dart: 'camera_screen.dart' };
-        toggle.addEventListener('click', function (e) {
-          const btn = e.target.closest('button');
-          if (!btn) return;
-          const tab = btn.dataset.tab;
-          toggle.querySelectorAll('button').forEach(function (b) {
-            const on = b.dataset.tab === tab;
+        const compileName = document.getElementById('compile-name');
+        const EXAMPLES = {
+            '05-counter': { tsx: 'src/Counter.tsx', dart: 'counter.dart' },
+            '01-camera-screen': { tsx: 'src/CameraScreen.tsx', dart: 'camera_screen.dart' },
+            '07-list-rendering': { tsx: 'src/Groceries.tsx', dart: 'groceries.dart' },
+            '25-http-get': { tsx: 'src/AlbumView.tsx', dart: 'album_view.dart' },
+            '19-store-counter': { tsx: 'src/StoreCounter.tsx', dart: 'store_counter.dart' },
+            '20-router': { tsx: 'src/router.tsx', dart: 'router.dart' },
+            '23-tabs': { tsx: 'src/Shell.tsx', dart: 'shell.dart' },
+            '24-animated': { tsx: 'src/Fader.tsx', dart: 'fader.dart' },
+          };
+        const ids = Object.keys(EXAMPLES);
+        let example = ids[0];
+        let tab = 'tsx';
+
+        function select(group, attribute, value) {
+          group.querySelectorAll('button').forEach(function (b) {
+            const on = b.dataset[attribute] === value;
             b.classList.toggle('active', on);
             b.setAttribute('aria-selected', String(on));
           });
+        }
+
+        function render() {
+          select(toggle, 'tab', tab);
+          select(picker, 'example', example);
           document.querySelectorAll('.tab-panel').forEach(function (p) {
-            p.classList.toggle('active', p.dataset.panel === tab);
+            p.classList.toggle(
+              'active',
+              p.dataset.example === example && p.dataset.panel === tab,
+            );
           });
-          if (fname) fname.textContent = names[tab];
+          const meta = EXAMPLES[example];
+          if (!meta) return;
+          if (fname) fname.textContent = meta[tab];
+          if (compileName) compileName.textContent = meta.tsx.slice(4);
+        }
+
+        toggle.addEventListener('click', function (e) {
+          const btn = e.target.closest('button');
+          if (!btn) return;
+          tab = btn.dataset.tab;
+          render();
         });
+
+        picker.addEventListener('click', function (e) {
+          const btn = e.target.closest('button');
+          if (!btn) return;
+          example = btn.dataset.example;
+          render();
+        });
+
+        render();
       })();
 
       // ── Live GitHub star count ──

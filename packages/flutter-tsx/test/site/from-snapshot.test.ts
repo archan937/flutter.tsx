@@ -181,12 +181,15 @@ describe('buildSitePage', () => {
   };
 
   const sections: SiteSections = {
-    example: {
-      id: '01-camera-screen',
-      title: 'Camera Screen',
-      tsx: "import { useCamera } from 'plugin:camera';\n",
-      dart: "import 'package:camera/camera.dart';\n",
-    },
+    examples: [
+      {
+        id: '01-camera-screen',
+        title: 'Camera Screen',
+        label: 'Camera',
+        tsx: "import { useCamera } from 'plugin:camera';\n",
+        dart: "import 'package:camera/camera.dart';\n",
+      },
+    ],
     coreApi: [],
     plugins: [],
     // No generated declarations: the value types come from the file that
@@ -197,7 +200,7 @@ describe('buildSitePage', () => {
   test('builds the complete page model', () => {
     expect(buildSitePage(snapshot, slots, sections)).toEqual({
       flutterVersion: '3.47.1',
-      example: sections.example,
+      examples: sections.examples,
       coreApi: [],
       types: [],
       plugins: [],

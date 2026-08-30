@@ -112,54 +112,122 @@ ${recipes.map(recipeSection).join('\n')}
 </html>
 `;
 
-/** The fixture the landing page and the API reference both open with. */
-export const SHOWCASE = '01-camera-screen';
-
-const EXPORTED_COMPONENT = /^export const (\w+)/m;
-
-/** Every place the landing page names the showcase or the Flutter version. */
-const TSX_PANEL = /<!-- showcase:tsx -->[\s\S]*?<!-- \/showcase:tsx -->/;
-const DART_PANEL = /<!-- showcase:dart -->[\s\S]*?<!-- \/showcase:dart -->/;
-const WINDOW_NAME = /(<span class="fname" id="fname">)[^<]*(<\/span>)/;
-const COMPILE_BAR = /(<div class="compile-bar">\s*<span>)[^<]*(<\/span>)/;
-const TAB_NAMES = /const names = \{ tsx: '[^']*', dart: '[^']*' \};/;
-const FLUTTER_VERSION = /Flutter \d+\.\d+\.\d+/g;
-
-const panel = (kind: 'tsx' | 'dart', code: string): string =>
-  `<!-- showcase:${kind} -->\n<pre>${escapeHtml(code.trimEnd())}</pre>\n<!-- /showcase:${kind} -->`;
+/** One certified fixture the site leads with, under the capability it shows. */
+export interface Showcase {
+  id: string;
+  label: string;
+}
 
 /**
- * The landing page's showcase, replaced with the fixture it claims to show —
- * both panels, both file names, and the Flutter version the pages were
- * generated against. The page carried hand-written Dart, a `.g.dart` name the
- * compiler never emits, and a stale version; deriving all of it from the
- * fixture and the snapshot makes the page provably true and unable to drift.
+ * What the landing page and the API reference lead with, in this order.
+ *
+ * Chosen to span what the compiler does rather than to repeat one trick:
+ * local state, a native plugin, list rendering, asynchronous data, a shared
+ * store, routing, a tab shell and an animation. The cookbook has them all.
+ */
+export const SHOWCASES: readonly [Showcase, ...Showcase[]] = [
+  { id: '05-counter', label: 'State' },
+  { id: '01-camera-screen', label: 'Camera' },
+  { id: '07-list-rendering', label: 'Lists' },
+  { id: '25-http-get', label: 'Async data' },
+  { id: '19-store-counter', label: 'Store' },
+  { id: '20-router', label: 'Router' },
+  { id: '23-tabs', label: 'Tabs' },
+  { id: '24-animated', label: 'Animation' },
+];
+
+// A file exporting several components is named after its subject, which is
+// the last one: `23-tabs` exports two tabs and then the Shell holding them.
+const EXPORTED_NAMES = /^export const (\w+)/gm;
+
+/** What a fixture would be called in a project, on both sides of the compiler. */
+export const showcaseFiles = (
+  recipe: Recipe,
+): { tsx: string; dart: string } => {
+  const subject = [...recipe.tsx.matchAll(EXPORTED_NAMES)].at(-1)?.[1];
+  if (subject === undefined) {
+    throw new Error(`the showcase fixture ${recipe.id} exports no component.`);
+  }
+  return { tsx: `src/${subject}.tsx`, dart: dartFileFor(`${subject}.tsx`) };
+};
+
+const recipeFor = (showcase: Showcase, recipes: Recipe[]): Recipe => {
+  const recipe = recipes.find((each) => each.id === showcase.id);
+  if (recipe === undefined) {
+    throw new Error(`the showcase fixture ${showcase.id} is missing.`);
+  }
+  return recipe;
+};
+
+/** Every showcase in order, refusing to render one the suite has lost. */
+export const showcaseRecipes = (recipes: Recipe[]): Recipe[] =>
+  SHOWCASES.map((showcase) => recipeFor(showcase, recipes));
+
+/** Every region of the landing page generated from the fixtures. */
+const PICKER = /<!-- showcase:picker -->[\s\S]*?<!-- \/showcase:picker -->/;
+const PANELS = /<!-- showcase:panels -->[\s\S]*?<!-- \/showcase:panels -->/;
+const WINDOW_NAME = /(<span class="fname" id="fname">)[^<]*(<\/span>)/;
+const COMPILE_NAME = /(<span id="compile-name">)[^<]*(<\/span>)/;
+const EXAMPLE_MAP = /const EXAMPLES = \{[\s\S]*?\};/;
+const FLUTTER_VERSION = /Flutter \d+\.\d+\.\d+/g;
+
+const pickerButton = (showcase: Showcase, index: number): string =>
+  `<button class="${index === 0 ? 'active' : ''}" data-example="${escapeHtml(showcase.id)}" role="tab" aria-selected="${index === 0}">${escapeHtml(showcase.label)}</button>`;
+
+const codePanel = (
+  recipe: Recipe,
+  kind: 'tsx' | 'dart',
+  active: boolean,
+): string =>
+  `<div class="tab-panel${active ? ' active' : ''}" data-example="${escapeHtml(recipe.id)}" data-panel="${kind}">\n` +
+  `<pre>${escapeHtml(recipe[kind].trimEnd())}</pre>\n` +
+  `</div>`;
+
+/**
+ * The landing page's showcase, generated from the fixtures it claims to show.
+ *
+ * One example persuades nobody that a compiler is general, so the page offers
+ * every capability in `SHOWCASES` and the reader picks. The page once carried
+ * hand-written Dart, a `.g.dart` name the compiler never emits and a stale
+ * version; every name, panel and number here comes from a certified fixture
+ * and the snapshot, so none of it can drift again.
  */
 export const withShowcase = (
   html: string,
   recipes: Recipe[],
   flutterVersion: string,
 ): string => {
-  const recipe = recipes.find((each) => each.id === SHOWCASE);
-  if (recipe === undefined) {
-    throw new Error(`the showcase fixture ${SHOWCASE} is missing.`);
-  }
-  const component = EXPORTED_COMPONENT.exec(recipe.tsx)?.[1];
-  if (component === undefined) {
-    throw new Error(`the showcase fixture ${SHOWCASE} exports no component.`);
-  }
-  const tsxFile = `src/${component}.tsx`;
-  const dartFile = dartFileFor(`${component}.tsx`);
+  const chosen = showcaseRecipes(recipes);
+  // SHOWCASES is a non-empty tuple, so the page always has something to open
+  // with, and no unreachable branch is needed to say so.
+  const lead = showcaseFiles(recipeFor(SHOWCASES[0], recipes));
+
+  const picker = SHOWCASES.map(pickerButton).join('\n');
+  const panels = chosen
+    .flatMap((recipe, index) => [
+      codePanel(recipe, 'tsx', index === 0),
+      codePanel(recipe, 'dart', false),
+    ])
+    .join('\n');
+  const map = chosen
+    .map((recipe) => {
+      const file = showcaseFiles(recipe);
+      return `            '${recipe.id}': { tsx: '${file.tsx}', dart: '${file.dart}' },`;
+    })
+    .join('\n');
 
   return html
-    .replace(TSX_PANEL, panel('tsx', recipe.tsx))
-    .replace(DART_PANEL, panel('dart', recipe.dart))
-    .replace(WINDOW_NAME, `$1${escapeHtml(tsxFile)}$2`)
-    .replace(COMPILE_BAR, `$1${escapeHtml(component)}.tsx$2`)
     .replace(
-      TAB_NAMES,
-      `const names = { tsx: '${tsxFile}', dart: '${dartFile}' };`,
+      PICKER,
+      `<!-- showcase:picker -->\n<div class="picker" id="picker" role="tablist">\n${picker}\n</div>\n<!-- /showcase:picker -->`,
     )
+    .replace(
+      PANELS,
+      `<!-- showcase:panels -->\n${panels}\n<!-- /showcase:panels -->`,
+    )
+    .replace(WINDOW_NAME, `$1${escapeHtml(lead.tsx)}$2`)
+    .replace(COMPILE_NAME, `$1${escapeHtml(lead.tsx.replace('src/', ''))}$2`)
+    .replace(EXAMPLE_MAP, `const EXAMPLES = {\n${map}\n          };`)
     .replace(FLUTTER_VERSION, `Flutter ${flutterVersion}`);
 };
 

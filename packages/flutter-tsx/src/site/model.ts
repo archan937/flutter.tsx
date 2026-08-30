@@ -78,6 +78,8 @@ export interface SitePlugin {
 export interface SiteExample {
   id: string;
   title: string;
+  /** The capability it leads with, e.g. “Async data”. */
+  label: string;
   tsx: string;
   dart: string;
 }
@@ -92,6 +94,11 @@ export interface SiteCoreEntry {
   doc: string;
   /** Fixture ids exercising it; never empty for a value. */
   examples: string[];
+  /**
+   * The shortest of those fixtures, shown in full. A signature alone tells a
+   * newcomer what a hook takes, not what writing one looks like.
+   */
+  usage: SiteExample | null;
 }
 
 /** A value type a prop accepts, as the generated declarations spell it. */
@@ -109,8 +116,8 @@ export interface SiteType {
 
 export interface SitePage {
   flutterVersion: string;
-  /** The worked example the reference opens with. */
-  example: SiteExample;
+  /** The worked examples the reference opens with. */
+  examples: SiteExample[];
   coreApi: SiteCoreEntry[];
   widgets: SiteWidget[];
   types: SiteType[];

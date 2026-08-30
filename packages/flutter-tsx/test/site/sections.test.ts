@@ -1,30 +1,48 @@
 import { describe, expect, test } from 'bun:test';
 
-import type { Recipe } from '@src/site/cookbook';
-import { exampleFrom, loadSiteSections } from '@src/site/sections';
+import { loadRecipes } from '@src/site/cookbook';
+import { examplesFrom, loadSiteSections } from '@src/site/sections';
 
-describe('exampleFrom', () => {
-  test('refuses to open the reference with a fixture the suite lost', () => {
-    expect(() => exampleFrom([])).toThrow(
-      'the example fixture 01-camera-screen is missing.',
+describe('examplesFrom', () => {
+  test('refuses to lead the reference with a fixture the suite lost', () => {
+    expect(() => examplesFrom([])).toThrow(
+      'the showcase fixture 05-counter is missing.',
     );
   });
 
-  test('carries the fixture pair verbatim', () => {
-    const recipe: Recipe = {
-      id: '01-camera-screen',
-      title: 'Camera Screen',
-      tsx: "import { useCamera } from 'plugin:camera';\n",
-      dart: "import 'package:camera/camera.dart';\n",
-    };
+  test('carries each fixture pair verbatim, under its capability', async () => {
+    const recipes = await loadRecipes(
+      new URL('../fixtures', import.meta.url).pathname,
+    );
 
-    expect(exampleFrom([recipe])).toEqual({
-      id: '01-camera-screen',
-      title: 'Camera Screen',
-      tsx: "import { useCamera } from 'plugin:camera';\n",
-      dart: "import 'package:camera/camera.dart';\n",
+    const examples = examplesFrom(recipes);
+    const counter = recipes.find((each) => each.id === '05-counter');
+
+    expect(examples[0]).toEqual({
+      id: '05-counter',
+      title: 'Counter',
+      label: 'State',
+      tsx: counter?.tsx ?? '',
+      dart: counter?.dart ?? '',
     });
-  });
+  }, 60000);
+
+  test('leads with a spread of capabilities, not one repeated', async () => {
+    const recipes = await loadRecipes(
+      new URL('../fixtures', import.meta.url).pathname,
+    );
+
+    expect(examplesFrom(recipes).map((each) => each.label)).toEqual([
+      'State',
+      'Camera',
+      'Lists',
+      'Async data',
+      'Store',
+      'Router',
+      'Tabs',
+      'Animation',
+    ]);
+  }, 60000);
 });
 
 describe('loadSiteSections', () => {
@@ -40,7 +58,9 @@ describe('loadSiteSections', () => {
       'shared_preferences',
       'url_launcher',
     ]);
-    expect(sections.example.id).toBe('01-camera-screen');
+    expect(sections.examples.map((each) => each.id)).toContain(
+      '01-camera-screen',
+    );
     expect(sections.coreApi.length).toBeGreaterThan(0);
     expect(sections.generatedFiles.length).toBeGreaterThan(0);
   }, 60000);

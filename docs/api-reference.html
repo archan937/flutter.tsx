@@ -185,10 +185,17 @@ details details > ul { padding-left: 24px; }
     <a href="https://github.com/archan937/flutter.tsx" target="_blank" rel="noopener">GitHub ↗</a>
   </div>
   <nav id="sidebar-nav">
-<details>
-<summary>Example<span class="nav-count">1</span></summary>
+<details open>
+<summary>Examples<span class="nav-count">8</span></summary>
 <ul>
-<li data-name="Camera Screen"><a href="#example">Camera Screen</a></li>
+<li data-name="State"><a href="#example-05-counter">State</a></li>
+<li data-name="Camera"><a href="#example-01-camera-screen">Camera</a></li>
+<li data-name="Lists"><a href="#example-07-list-rendering">Lists</a></li>
+<li data-name="Async data"><a href="#example-25-http-get">Async data</a></li>
+<li data-name="Store"><a href="#example-19-store-counter">Store</a></li>
+<li data-name="Router"><a href="#example-20-router">Router</a></li>
+<li data-name="Tabs"><a href="#example-23-tabs">Tabs</a></li>
+<li data-name="Animation"><a href="#example-24-animated">Animation</a></li>
 </ul>
 </details>
 <details>
@@ -1150,10 +1157,71 @@ details details > ul { padding-left: 24px; }
 <main>
   <h1>Flutter.tsx — API Reference</h1>
   <p class="subtitle">Auto-generated from the Flutter 3.47.1 widget catalog. Run <code>bun run docs</code> to regenerate.</p>
-<h2 id="example-heading">Example</h2>
-<article class="widget" id="example" data-name="example">
-<h3>Camera Screen<span class="badge badge-pkg">certified fixture</span></h3>
-<p class="doc">The TSX a developer writes and the Dart <code>fsx</code> emits from it. This pair is asserted byte-for-byte by the golden tests, laid out by <code>dart format</code>, checked by <code>flutter analyze</code> and built as a real Flutter app on every run — see <a href="./cookbook.html#01-camera-screen"><code>01-camera-screen</code></a>.</p>
+<h2 id="example-heading">Examples</h2>
+<article class="widget" id="examples-about" data-name="about the examples">
+<h3>Every pair here is compiled, not written</h3>
+<p class="doc">The TSX on the left is what a developer writes; the Dart on the right is what <code>fsx</code> emits from it — nothing on this page was typed by hand. Each pair is asserted byte-for-byte by the golden tests, laid out by <code>dart format</code>, checked by <code>flutter analyze</code> and built as a real Flutter app on every run. The <a href="./cookbook.html">cookbook</a> has the rest.</p>
+</article>
+<article class="widget" id="example-05-counter" data-name="State">
+<h3>State<span class="badge badge-lib">Counter</span><a class="badge badge-pkg" href="./cookbook.html#05-counter">certified fixture</a></h3>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="TSX" role="tab" aria-selected="true">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+</div>
+<div class="tab-panel active" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx">import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+
+export const Counter = () =&gt; {
+  const [count, setCount] = useState(0);
+
+  const increment = () =&gt; {
+    setCount(count + 1);
+  };
+
+  return (
+    &lt;Column mainAxisAlignment=&quot;center&quot;&gt;
+      &lt;Text&gt;Count: {count}&lt;/Text&gt;
+      &lt;ElevatedButton onClick={increment}&gt;Increment&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart">import 'package:flutter/material.dart';
+
+class Counter extends StatefulWidget {
+  const Counter({super.key});
+
+  @override
+  State&lt;Counter&gt; createState() =&gt; _CounterState();
+}
+
+class _CounterState extends State&lt;Counter&gt; {
+  int _count = 0;
+
+  void _increment() {
+    setState(() {
+      _count++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text('Count: $_count'),
+        ElevatedButton(onPressed: _increment, child: const Text('Increment')),
+      ],
+    );
+  }
+}</code></pre>
+</div>
+</div>
+</article>
+<article class="widget" id="example-01-camera-screen" data-name="Camera">
+<h3>Camera<span class="badge badge-lib">Camera Screen</span><a class="badge badge-pkg" href="./cookbook.html#01-camera-screen">certified fixture</a></h3>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="TSX" role="tab" aria-selected="true">TSX</button>
@@ -1240,6 +1308,450 @@ class _CameraScreenState extends State&lt;CameraScreen&gt; {
 </div>
 </div>
 </article>
+<article class="widget" id="example-07-list-rendering" data-name="Lists">
+<h3>Lists<span class="badge badge-lib">List Rendering</span><a class="badge badge-pkg" href="./cookbook.html#07-list-rendering">certified fixture</a></h3>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="TSX" role="tab" aria-selected="true">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+</div>
+<div class="tab-panel active" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx">import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+
+export const Groceries = () =&gt; {
+  const [items, setItems] = useState(['Apples', 'Bread']);
+
+  const addItem = () =&gt; {
+    setItems([...items, 'Milk']);
+  };
+
+  return (
+    &lt;Column&gt;
+      {items.map((item) =&gt; (
+        &lt;Text&gt;{item}&lt;/Text&gt;
+      ))}
+      &lt;ElevatedButton onClick={addItem}&gt;Add&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart">import 'package:flutter/material.dart';
+
+class Groceries extends StatefulWidget {
+  const Groceries({super.key});
+
+  @override
+  State&lt;Groceries&gt; createState() =&gt; _GroceriesState();
+}
+
+class _GroceriesState extends State&lt;Groceries&gt; {
+  List&lt;String&gt; _items = ['Apples', 'Bread'];
+
+  void _addItem() {
+    setState(() {
+      _items = [..._items, 'Milk'];
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        for (final item in _items) Text(item),
+        ElevatedButton(onPressed: _addItem, child: const Text('Add')),
+      ],
+    );
+  }
+}</code></pre>
+</div>
+</div>
+</article>
+<article class="widget" id="example-25-http-get" data-name="Async data">
+<h3>Async data<span class="badge badge-lib">Http Get</span><a class="badge badge-pkg" href="./cookbook.html#25-http-get">certified fixture</a></h3>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="TSX" role="tab" aria-selected="true">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+</div>
+<div class="tab-panel active" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx">import { CircularProgressIndicator, Column, Text, useAsync } from 'flutter-tsx';
+import { get } from 'plugin:http';
+
+export const AlbumView = async () =&gt; {
+  const res = await useAsync(() =&gt; get('https://example.com/album/1'), {
+    loading: () =&gt; &lt;CircularProgressIndicator /&gt;,
+    error: (err) =&gt; &lt;Text&gt;{err}&lt;/Text&gt;,
+  });
+
+  return (
+    &lt;Column&gt;
+      &lt;Text&gt;Status: {res.statusCode}&lt;/Text&gt;
+      &lt;Text&gt;{res.body}&lt;/Text&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart">import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+class AlbumView extends StatefulWidget {
+  const AlbumView({super.key});
+
+  @override
+  State&lt;AlbumView&gt; createState() =&gt; _AlbumViewState();
+}
+
+class _AlbumViewState extends State&lt;AlbumView&gt; {
+  late final Future&lt;http.Response&gt; _resFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _resFuture = http.get(Uri.parse('https://example.com/album/1'));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder&lt;http.Response&gt;(
+      future: _resFuture,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          final err = '${snapshot.error}';
+          return Text(err);
+        }
+        if (!snapshot.hasData) {
+          return const CircularProgressIndicator();
+        }
+        final res = snapshot.data!;
+        return Column(
+          children: [Text('Status: ${res.statusCode}'), Text(res.body)],
+        );
+      },
+    );
+  }
+}</code></pre>
+</div>
+</div>
+</article>
+<article class="widget" id="example-19-store-counter" data-name="Store">
+<h3>Store<span class="badge badge-lib">Store Counter</span><a class="badge badge-pkg" href="./cookbook.html#19-store-counter">certified fixture</a></h3>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="TSX" role="tab" aria-selected="true">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+</div>
+<div class="tab-panel active" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx">import {
+  Column,
+  createStore,
+  ElevatedButton,
+  Text,
+  useStore,
+} from 'flutter-tsx';
+
+const counterStore = createStore({ count: 0, label: 'Taps' });
+
+export const StoreCounter = () =&gt; {
+  const [state, setState] = useStore(counterStore);
+
+  const increment = () =&gt; {
+    setState({ count: state.count + 1 });
+  };
+
+  return (
+    &lt;Column&gt;
+      &lt;Text&gt;
+        {state.label}: {state.count}
+      &lt;/Text&gt;
+      &lt;ElevatedButton onClick={increment}&gt;Increment&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart">import 'package:flutter/material.dart';
+
+class _CounterStore extends ChangeNotifier {
+  _CounterStore({required this.count, required this.label});
+
+  int count;
+  String label;
+
+  void update({int? count, String? label}) {
+    if (count != null) {
+      this.count = count;
+    }
+    if (label != null) {
+      this.label = label;
+    }
+    notifyListeners();
+  }
+}
+
+final _CounterStore _counterStore = _CounterStore(count: 0, label: 'Taps');
+
+class StoreCounter extends StatelessWidget {
+  const StoreCounter({super.key});
+
+  void _increment() {
+    _counterStore.update(count: _counterStore.count + 1);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: _counterStore,
+      builder: (context, child) {
+        return Column(
+          children: [
+            Text('${_counterStore.label}: ${_counterStore.count}'),
+            ElevatedButton(
+              onPressed: _increment,
+              child: const Text('Increment'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}</code></pre>
+</div>
+</div>
+</article>
+<article class="widget" id="example-20-router" data-name="Router">
+<h3>Router<span class="badge badge-lib">Router</span><a class="badge badge-pkg" href="./cookbook.html#20-router">certified fixture</a></h3>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="TSX" role="tab" aria-selected="true">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+</div>
+<div class="tab-panel active" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx">import {
+  Column,
+  createRouter,
+  ElevatedButton,
+  Text,
+  useNavigation,
+} from 'flutter-tsx';
+
+export const HomePage = () =&gt; {
+  const nav = useNavigation();
+
+  return (
+    &lt;Column&gt;
+      &lt;Text&gt;Home&lt;/Text&gt;
+      &lt;ElevatedButton onClick={() =&gt; nav.push('/detail')}&gt;
+        Open detail
+      &lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};
+
+export const DetailPage = () =&gt; {
+  const nav = useNavigation();
+
+  return (
+    &lt;Column&gt;
+      &lt;Text&gt;Detail&lt;/Text&gt;
+      &lt;ElevatedButton onClick={() =&gt; nav.pop()}&gt;Back&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};
+
+export const router = createRouter({
+  '/': HomePage,
+  '/detail': DetailPage,
+});</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart">import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Text('Home'),
+        ElevatedButton(
+          onPressed: () =&gt; context.push('/detail'),
+          child: const Text('Open detail'),
+        ),
+      ],
+    );
+  }
+}
+
+class DetailPage extends StatelessWidget {
+  const DetailPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Text('Detail'),
+        ElevatedButton(
+          onPressed: () =&gt; context.pop(),
+          child: const Text('Back'),
+        ),
+      ],
+    );
+  }
+}
+
+final GoRouter router = GoRouter(
+  routes: [
+    GoRoute(path: '/', builder: (context, state) =&gt; const HomePage()),
+    GoRoute(path: '/detail', builder: (context, state) =&gt; const DetailPage()),
+  ],
+);</code></pre>
+</div>
+</div>
+</article>
+<article class="widget" id="example-23-tabs" data-name="Tabs">
+<h3>Tabs<span class="badge badge-lib">Tabs</span><a class="badge badge-pkg" href="./cookbook.html#23-tabs">certified fixture</a></h3>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="TSX" role="tab" aria-selected="true">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+</div>
+<div class="tab-panel active" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx">import { TabItem, TabView, Text } from 'flutter-tsx';
+
+export const HomeTab = () =&gt; &lt;Text&gt;Home&lt;/Text&gt;;
+
+export const ProfileTab = () =&gt; &lt;Text&gt;Profile&lt;/Text&gt;;
+
+export const Shell = () =&gt; (
+  &lt;TabView&gt;
+    &lt;TabItem label=&quot;Home&quot; icon=&quot;home&quot;&gt;
+      &lt;HomeTab /&gt;
+    &lt;/TabItem&gt;
+    &lt;TabItem label=&quot;Profile&quot; icon=&quot;person&quot;&gt;
+      &lt;ProfileTab /&gt;
+    &lt;/TabItem&gt;
+  &lt;/TabView&gt;
+);</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart">import 'package:flutter/material.dart';
+
+class HomeTab extends StatelessWidget {
+  const HomeTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('Home');
+  }
+}
+
+class ProfileTab extends StatelessWidget {
+  const ProfileTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('Profile');
+  }
+}
+
+class Shell extends StatefulWidget {
+  const Shell({super.key});
+
+  @override
+  State&lt;Shell&gt; createState() =&gt; _ShellState();
+}
+
+class _ShellState extends State&lt;Shell&gt; {
+  int _tabIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: IndexedStack(
+        index: _tabIndex,
+        children: const [HomeTab(), ProfileTab()],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _tabIndex,
+        onTap: (index) =&gt; setState(() =&gt; _tabIndex = index),
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        ],
+      ),
+    );
+  }
+}</code></pre>
+</div>
+</div>
+</article>
+<article class="widget" id="example-24-animated" data-name="Animation">
+<h3>Animation<span class="badge badge-lib">Animated</span><a class="badge badge-pkg" href="./cookbook.html#24-animated">certified fixture</a></h3>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="TSX" role="tab" aria-selected="true">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+</div>
+<div class="tab-panel active" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx">import { Animated, Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+
+export const Fader = () =&gt; {
+  const [shown, setShown] = useState(true);
+
+  const toggle = () =&gt; {
+    setShown(!shown);
+  };
+
+  return (
+    &lt;Column&gt;
+      &lt;Animated type=&quot;fade&quot; visible={shown} duration={300}&gt;
+        &lt;Text&gt;Fades&lt;/Text&gt;
+      &lt;/Animated&gt;
+      &lt;ElevatedButton onClick={toggle}&gt;Toggle&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart">import 'package:flutter/material.dart';
+
+class Fader extends StatefulWidget {
+  const Fader({super.key});
+
+  @override
+  State&lt;Fader&gt; createState() =&gt; _FaderState();
+}
+
+class _FaderState extends State&lt;Fader&gt; {
+  bool _shown = true;
+
+  void _toggle() {
+    setState(() {
+      _shown = !_shown;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        AnimatedOpacity(
+          opacity: _shown ? 1 : 0,
+          duration: const Duration(milliseconds: 300),
+          child: const Text('Fades'),
+        ),
+        ElevatedButton(onPressed: _toggle, child: const Text('Toggle')),
+      ],
+    );
+  }
+}</code></pre>
+</div>
+</div>
+</article>
 <h2 id="about-verification">Verification</h2>
 <article class="widget" id="verification" data-name="verification">
 <h3>✓ typechecked — what the badge means</h3>
@@ -1255,7 +1767,65 @@ class _CameraScreenState extends State&lt;CameraScreen&gt; {
 <article class="widget" id="core-useState" data-name="useState">
 <h3>useState<span class="badge badge-lib">hook</span></h3>
 
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="Signature" role="tab" aria-selected="true">Signature</button>
+<button class="tab-btn" data-tab="TSX" role="tab" aria-selected="false">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+</div>
+<div class="tab-panel active" data-panel="Signature" role="tabpanel">
 <pre><code class="language-typescript">&lt;TValue&gt;(initial: TValue) =&gt; [TValue, StateSetter&lt;TValue&gt;]</code></pre>
+</div>
+<div class="tab-panel" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx">import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+
+export const Counter = () =&gt; {
+  const [count, setCount] = useState(0);
+
+  const increment = () =&gt; {
+    setCount(count + 1);
+  };
+
+  return (
+    &lt;Column mainAxisAlignment=&quot;center&quot;&gt;
+      &lt;Text&gt;Count: {count}&lt;/Text&gt;
+      &lt;ElevatedButton onClick={increment}&gt;Increment&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart">import 'package:flutter/material.dart';
+
+class Counter extends StatefulWidget {
+  const Counter({super.key});
+
+  @override
+  State&lt;Counter&gt; createState() =&gt; _CounterState();
+}
+
+class _CounterState extends State&lt;Counter&gt; {
+  int _count = 0;
+
+  void _increment() {
+    setState(() {
+      _count++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text('Count: $_count'),
+        ElevatedButton(onPressed: _increment, child: const Text('Increment')),
+      ],
+    );
+  }
+}</code></pre>
+</div>
+</div>
 <p class="note">Used by <a href="./cookbook.html#01-camera-screen"><code>01-camera-screen</code></a>, <a href="./cookbook.html#05-counter"><code>05-counter</code></a>, <a href="./cookbook.html#06-mount-effect"><code>06-mount-effect</code></a>, <a href="./cookbook.html#07-list-rendering"><code>07-list-rendering</code></a>, <a href="./cookbook.html#09-typed-props"><code>09-typed-props</code></a>, <a href="./cookbook.html#10-camera-options"><code>10-camera-options</code></a>, <a href="./cookbook.html#11-preferences"><code>11-preferences</code></a>, <a href="./cookbook.html#12-secure-storage"><code>12-secure-storage</code></a>, <a href="./cookbook.html#13-open-link"><code>13-open-link</code></a>, <a href="./cookbook.html#15-front-camera"><code>15-front-camera</code></a>, <a href="./cookbook.html#16-tap-target"><code>16-tap-target</code></a>, <a href="./cookbook.html#21-modal"><code>21-modal</code></a>, <a href="./cookbook.html#22-mount-dialog"><code>22-mount-dialog</code></a>, <a href="./cookbook.html#24-animated"><code>24-animated</code></a>, <a href="./cookbook.html#29-branching-handler"><code>29-branching-handler</code></a>, <a href="./cookbook.html#33-control-flow"><code>33-control-flow</code></a></p>
 </article>
 <article class="widget" id="core-EffectCleanup" data-name="EffectCleanup">
@@ -1267,7 +1837,73 @@ class _CameraScreenState extends State&lt;CameraScreen&gt; {
 <article class="widget" id="core-useEffect" data-name="useEffect">
 <h3>useEffect<span class="badge badge-lib">hook</span></h3>
 
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="Signature" role="tab" aria-selected="true">Signature</button>
+<button class="tab-btn" data-tab="TSX" role="tab" aria-selected="false">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+</div>
+<div class="tab-panel active" data-panel="Signature" role="tabpanel">
 <pre><code class="language-typescript">(effect: () =&gt; EffectCleanup | void, dependencies?: readonly unknown[]) =&gt; void</code></pre>
+</div>
+<div class="tab-panel" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx">import { Column, ElevatedButton, Text, useEffect, useState } from 'flutter-tsx';
+
+export const Status = () =&gt; {
+  const [online, setOnline] = useState(false);
+  const [checks, setChecks] = useState(0);
+
+  useEffect(() =&gt; {
+    setOnline(true);
+  }, []);
+
+  return (
+    &lt;Column&gt;
+      {online ? &lt;Text&gt;Online&lt;/Text&gt; : &lt;Text&gt;Offline&lt;/Text&gt;}
+      &lt;Text&gt;Checks: {checks}&lt;/Text&gt;
+      &lt;ElevatedButton onClick={() =&gt; setChecks(checks + 1)}&gt;
+        Check
+      &lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart">import 'package:flutter/material.dart';
+
+class Status extends StatefulWidget {
+  const Status({super.key});
+
+  @override
+  State&lt;Status&gt; createState() =&gt; _StatusState();
+}
+
+class _StatusState extends State&lt;Status&gt; {
+  bool _online = false;
+  int _checks = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _online = true;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        _online ? const Text('Online') : const Text('Offline'),
+        Text('Checks: $_checks'),
+        ElevatedButton(
+          onPressed: () =&gt; setState(() =&gt; _checks++),
+          child: const Text('Check'),
+        ),
+      ],
+    );
+  }
+}</code></pre>
+</div>
+</div>
 <p class="note">Used by <a href="./cookbook.html#06-mount-effect"><code>06-mount-effect</code></a>, <a href="./cookbook.html#22-mount-dialog"><code>22-mount-dialog</code></a></p>
 </article>
 <article class="widget" id="core-AsyncOptions" data-name="AsyncOptions">
@@ -1282,13 +1918,144 @@ class _CameraScreenState extends State&lt;CameraScreen&gt; {
 <article class="widget" id="core-useAsync" data-name="useAsync">
 <h3>useAsync<span class="badge badge-lib">hook</span></h3>
 
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="Signature" role="tab" aria-selected="true">Signature</button>
+<button class="tab-btn" data-tab="TSX" role="tab" aria-selected="false">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+</div>
+<div class="tab-panel active" data-panel="Signature" role="tabpanel">
 <pre><code class="language-typescript">&lt;TValue&gt;(load: () =&gt; Promise&lt;TValue&gt;, options: AsyncOptions) =&gt; Promise&lt;TValue&gt;</code></pre>
+</div>
+<div class="tab-panel" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx">import { CircularProgressIndicator, Column, Text, useAsync } from 'flutter-tsx';
+import { get } from 'plugin:http';
+
+export const AlbumView = async () =&gt; {
+  const res = await useAsync(() =&gt; get('https://example.com/album/1'), {
+    loading: () =&gt; &lt;CircularProgressIndicator /&gt;,
+    error: (err) =&gt; &lt;Text&gt;{err}&lt;/Text&gt;,
+  });
+
+  return (
+    &lt;Column&gt;
+      &lt;Text&gt;Status: {res.statusCode}&lt;/Text&gt;
+      &lt;Text&gt;{res.body}&lt;/Text&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart">import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+class AlbumView extends StatefulWidget {
+  const AlbumView({super.key});
+
+  @override
+  State&lt;AlbumView&gt; createState() =&gt; _AlbumViewState();
+}
+
+class _AlbumViewState extends State&lt;AlbumView&gt; {
+  late final Future&lt;http.Response&gt; _resFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _resFuture = http.get(Uri.parse('https://example.com/album/1'));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder&lt;http.Response&gt;(
+      future: _resFuture,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          final err = '${snapshot.error}';
+          return Text(err);
+        }
+        if (!snapshot.hasData) {
+          return const CircularProgressIndicator();
+        }
+        final res = snapshot.data!;
+        return Column(
+          children: [Text('Status: ${res.statusCode}'), Text(res.body)],
+        );
+      },
+    );
+  }
+}</code></pre>
+</div>
+</div>
 <p class="note">Used by <a href="./cookbook.html#17-async-token"><code>17-async-token</code></a>, <a href="./cookbook.html#25-http-get"><code>25-http-get</code></a>, <a href="./cookbook.html#26-json-model"><code>26-json-model</code></a></p>
 </article>
 <article class="widget" id="core-useStream" data-name="useStream">
 <h3>useStream<span class="badge badge-lib">hook</span></h3>
 
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="Signature" role="tab" aria-selected="true">Signature</button>
+<button class="tab-btn" data-tab="TSX" role="tab" aria-selected="false">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+</div>
+<div class="tab-panel active" data-panel="Signature" role="tabpanel">
 <pre><code class="language-typescript">&lt;TValue&gt;(source: () =&gt; AsyncIterable&lt;TValue&gt;, options: AsyncOptions) =&gt; Promise&lt;TValue&gt;</code></pre>
+</div>
+<div class="tab-panel" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx">import { CircularProgressIndicator, Text, useStream } from 'flutter-tsx';
+import { useConnectivity } from 'plugin:connectivity_plus';
+
+export const ConnectionBanner = async () =&gt; {
+  const connectivity = useConnectivity();
+  const status = await useStream(() =&gt; connectivity.onConnectivityChanged, {
+    loading: () =&gt; &lt;CircularProgressIndicator /&gt;,
+    error: (err) =&gt; &lt;Text&gt;{err}&lt;/Text&gt;,
+  });
+
+  return &lt;Text&gt;Connections: {status.length}&lt;/Text&gt;;
+};</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart">import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/material.dart';
+
+class ConnectionBanner extends StatefulWidget {
+  const ConnectionBanner({super.key});
+
+  @override
+  State&lt;ConnectionBanner&gt; createState() =&gt; _ConnectionBannerState();
+}
+
+class _ConnectionBannerState extends State&lt;ConnectionBanner&gt; {
+  final Connectivity _connectivity = Connectivity();
+  late final Stream&lt;List&lt;ConnectivityResult&gt;&gt; _statusStream;
+
+  @override
+  void initState() {
+    super.initState();
+    _statusStream = _connectivity.onConnectivityChanged;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder&lt;List&lt;ConnectivityResult&gt;&gt;(
+      stream: _statusStream,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          final err = '${snapshot.error}';
+          return Text(err);
+        }
+        if (!snapshot.hasData) {
+          return const CircularProgressIndicator();
+        }
+        final status = snapshot.data!;
+        return Text('Connections: ${status.length}');
+      },
+    );
+  }
+}</code></pre>
+</div>
+</div>
 <p class="note">Used by <a href="./cookbook.html#18-connectivity-stream"><code>18-connectivity-stream</code></a></p>
 </article>
 <article class="widget" id="core-Store" data-name="Store">
@@ -1304,7 +2071,92 @@ handle only needs to carry the value's type.</p>
 <article class="widget" id="core-createStore" data-name="createStore">
 <h3>createStore<span class="badge badge-lib">function</span></h3>
 
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="Signature" role="tab" aria-selected="true">Signature</button>
+<button class="tab-btn" data-tab="TSX" role="tab" aria-selected="false">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+</div>
+<div class="tab-panel active" data-panel="Signature" role="tabpanel">
 <pre><code class="language-typescript">&lt;TState extends object&gt;(initial: TState) =&gt; Store&lt;TState&gt;</code></pre>
+</div>
+<div class="tab-panel" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx">import {
+  Column,
+  createStore,
+  ElevatedButton,
+  Text,
+  useStore,
+} from 'flutter-tsx';
+
+const counterStore = createStore({ count: 0, label: 'Taps' });
+
+export const StoreCounter = () =&gt; {
+  const [state, setState] = useStore(counterStore);
+
+  const increment = () =&gt; {
+    setState({ count: state.count + 1 });
+  };
+
+  return (
+    &lt;Column&gt;
+      &lt;Text&gt;
+        {state.label}: {state.count}
+      &lt;/Text&gt;
+      &lt;ElevatedButton onClick={increment}&gt;Increment&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart">import 'package:flutter/material.dart';
+
+class _CounterStore extends ChangeNotifier {
+  _CounterStore({required this.count, required this.label});
+
+  int count;
+  String label;
+
+  void update({int? count, String? label}) {
+    if (count != null) {
+      this.count = count;
+    }
+    if (label != null) {
+      this.label = label;
+    }
+    notifyListeners();
+  }
+}
+
+final _CounterStore _counterStore = _CounterStore(count: 0, label: 'Taps');
+
+class StoreCounter extends StatelessWidget {
+  const StoreCounter({super.key});
+
+  void _increment() {
+    _counterStore.update(count: _counterStore.count + 1);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: _counterStore,
+      builder: (context, child) {
+        return Column(
+          children: [
+            Text('${_counterStore.label}: ${_counterStore.count}'),
+            ElevatedButton(
+              onPressed: _increment,
+              child: const Text('Increment'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}</code></pre>
+</div>
+</div>
 <p class="note">Used by <a href="./cookbook.html#19-store-counter"><code>19-store-counter</code></a></p>
 </article>
 <article class="widget" id="core-StorePatch" data-name="StorePatch">
@@ -1316,7 +2168,92 @@ handle only needs to carry the value's type.</p>
 <article class="widget" id="core-useStore" data-name="useStore">
 <h3>useStore<span class="badge badge-lib">hook</span></h3>
 
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="Signature" role="tab" aria-selected="true">Signature</button>
+<button class="tab-btn" data-tab="TSX" role="tab" aria-selected="false">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+</div>
+<div class="tab-panel active" data-panel="Signature" role="tabpanel">
 <pre><code class="language-typescript">&lt;TState extends object&gt;(store: Store&lt;TState&gt;) =&gt; [TState, (patch: StorePatch&lt;TState&gt;) =&gt; void]</code></pre>
+</div>
+<div class="tab-panel" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx">import {
+  Column,
+  createStore,
+  ElevatedButton,
+  Text,
+  useStore,
+} from 'flutter-tsx';
+
+const counterStore = createStore({ count: 0, label: 'Taps' });
+
+export const StoreCounter = () =&gt; {
+  const [state, setState] = useStore(counterStore);
+
+  const increment = () =&gt; {
+    setState({ count: state.count + 1 });
+  };
+
+  return (
+    &lt;Column&gt;
+      &lt;Text&gt;
+        {state.label}: {state.count}
+      &lt;/Text&gt;
+      &lt;ElevatedButton onClick={increment}&gt;Increment&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart">import 'package:flutter/material.dart';
+
+class _CounterStore extends ChangeNotifier {
+  _CounterStore({required this.count, required this.label});
+
+  int count;
+  String label;
+
+  void update({int? count, String? label}) {
+    if (count != null) {
+      this.count = count;
+    }
+    if (label != null) {
+      this.label = label;
+    }
+    notifyListeners();
+  }
+}
+
+final _CounterStore _counterStore = _CounterStore(count: 0, label: 'Taps');
+
+class StoreCounter extends StatelessWidget {
+  const StoreCounter({super.key});
+
+  void _increment() {
+    _counterStore.update(count: _counterStore.count + 1);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: _counterStore,
+      builder: (context, child) {
+        return Column(
+          children: [
+            Text('${_counterStore.label}: ${_counterStore.count}'),
+            ElevatedButton(
+              onPressed: _increment,
+              child: const Text('Increment'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}</code></pre>
+</div>
+</div>
 <p class="note">Used by <a href="./cookbook.html#19-store-counter"><code>19-store-counter</code></a></p>
 </article>
 <article class="widget" id="core-Navigation" data-name="Navigation">
@@ -1338,7 +2275,88 @@ go_router's BuildContext extension, so no navigator is threaded by hand.</p>
 <article class="widget" id="core-useNavigation" data-name="useNavigation">
 <h3>useNavigation<span class="badge badge-lib">hook</span></h3>
 
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="Signature" role="tab" aria-selected="true">Signature</button>
+<button class="tab-btn" data-tab="TSX" role="tab" aria-selected="false">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+</div>
+<div class="tab-panel active" data-panel="Signature" role="tabpanel">
 <pre><code class="language-typescript">() =&gt; Navigation</code></pre>
+</div>
+<div class="tab-panel" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx">import {
+  AlertDialog,
+  Column,
+  Text,
+  useEffect,
+  useNavigation,
+  useState,
+} from 'flutter-tsx';
+
+export const WelcomeDialog = () =&gt; (
+  &lt;AlertDialog title={&lt;Text&gt;Welcome!&lt;/Text&gt;} /&gt;
+);
+
+export const Onboarding = () =&gt; {
+  const nav = useNavigation();
+  const [greeted, setGreeted] = useState(false);
+
+  useEffect(() =&gt; {
+    nav.present(&lt;WelcomeDialog /&gt;);
+    setGreeted(true);
+  }, []);
+
+  return (
+    &lt;Column&gt;
+      &lt;Text&gt;Onboarding&lt;/Text&gt;
+      {greeted &amp;&amp; &lt;Text&gt;Greeted&lt;/Text&gt;}
+    &lt;/Column&gt;
+  );
+};</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart">import 'package:flutter/material.dart';
+
+class WelcomeDialog extends StatelessWidget {
+  const WelcomeDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const AlertDialog(title: Text('Welcome!'));
+  }
+}
+
+class Onboarding extends StatefulWidget {
+  const Onboarding({super.key});
+
+  @override
+  State&lt;Onboarding&gt; createState() =&gt; _OnboardingState();
+}
+
+class _OnboardingState extends State&lt;Onboarding&gt; {
+  bool _greeted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showDialog(context: context, builder: (context) =&gt; const WelcomeDialog());
+      setState(() {
+        _greeted = true;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [const Text('Onboarding'), if (_greeted) const Text('Greeted')],
+    );
+  }
+}</code></pre>
+</div>
+</div>
 <p class="note">Used by <a href="./cookbook.html#20-router"><code>20-router</code></a>, <a href="./cookbook.html#21-modal"><code>21-modal</code></a>, <a href="./cookbook.html#22-mount-dialog"><code>22-mount-dialog</code></a></p>
 </article>
 <article class="widget" id="core-RouteTarget" data-name="RouteTarget">
@@ -1360,7 +2378,99 @@ rejects it rather than the Dart compiler.</p>
 <article class="widget" id="core-createRouter" data-name="createRouter">
 <h3>createRouter<span class="badge badge-lib">function</span></h3>
 
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="Signature" role="tab" aria-selected="true">Signature</button>
+<button class="tab-btn" data-tab="TSX" role="tab" aria-selected="false">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+</div>
+<div class="tab-panel active" data-panel="Signature" role="tabpanel">
 <pre><code class="language-typescript">(routes: Record&lt;string, RouteTarget&gt;) =&gt; RouterConfig</code></pre>
+</div>
+<div class="tab-panel" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx">import {
+  Column,
+  createRouter,
+  ElevatedButton,
+  Text,
+  useNavigation,
+} from 'flutter-tsx';
+
+export const HomePage = () =&gt; {
+  const nav = useNavigation();
+
+  return (
+    &lt;Column&gt;
+      &lt;Text&gt;Home&lt;/Text&gt;
+      &lt;ElevatedButton onClick={() =&gt; nav.push('/detail')}&gt;
+        Open detail
+      &lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};
+
+export const DetailPage = () =&gt; {
+  const nav = useNavigation();
+
+  return (
+    &lt;Column&gt;
+      &lt;Text&gt;Detail&lt;/Text&gt;
+      &lt;ElevatedButton onClick={() =&gt; nav.pop()}&gt;Back&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};
+
+export const router = createRouter({
+  '/': HomePage,
+  '/detail': DetailPage,
+});</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart">import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Text('Home'),
+        ElevatedButton(
+          onPressed: () =&gt; context.push('/detail'),
+          child: const Text('Open detail'),
+        ),
+      ],
+    );
+  }
+}
+
+class DetailPage extends StatelessWidget {
+  const DetailPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Text('Detail'),
+        ElevatedButton(
+          onPressed: () =&gt; context.pop(),
+          child: const Text('Back'),
+        ),
+      ],
+    );
+  }
+}
+
+final GoRouter router = GoRouter(
+  routes: [
+    GoRoute(path: '/', builder: (context, state) =&gt; const HomePage()),
+    GoRoute(path: '/detail', builder: (context, state) =&gt; const DetailPage()),
+  ],
+);</code></pre>
+</div>
+</div>
 <p class="note">Used by <a href="./cookbook.html#20-router"><code>20-router</code></a></p>
 </article>
 <article class="widget" id="core-json" data-name="json">
@@ -1377,7 +2487,130 @@ rewrites the call to
 TypeScript runtime it only needs to parse. `unknown` is deliberate: the
 cast is where the model is named, which is how TypeScript code normally
 types a parsed body, and it means the value cannot be used untyped.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="Signature" role="tab" aria-selected="true">Signature</button>
+<button class="tab-btn" data-tab="TSX" role="tab" aria-selected="false">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+</div>
+<div class="tab-panel active" data-panel="Signature" role="tabpanel">
 <pre><code class="language-typescript">(body: string) =&gt; unknown</code></pre>
+</div>
+<div class="tab-panel" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx">import {
+  CircularProgressIndicator,
+  Column,
+  json,
+  Text,
+  useAsync,
+} from 'flutter-tsx';
+import { get } from 'plugin:http';
+
+interface Author {
+  name: string;
+}
+
+interface Album {
+  id: number;
+  title: string;
+  tags: string[];
+  author: Author;
+  subtitle?: string;
+}
+
+export const AlbumDetail = async () =&gt; {
+  const res = await useAsync(() =&gt; get('https://example.com/albums/1'), {
+    loading: () =&gt; &lt;CircularProgressIndicator /&gt;,
+    error: (err) =&gt; &lt;Text&gt;{err}&lt;/Text&gt;,
+  });
+  const album = json(res.body) as Album;
+
+  return (
+    &lt;Column&gt;
+      &lt;Text&gt;{album.title}&lt;/Text&gt;
+      &lt;Text&gt;{album.author.name}&lt;/Text&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart">import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+class Author {
+  const Author({required this.name});
+
+  factory Author.fromJson(Map&lt;String, dynamic&gt; json) =&gt;
+      Author(name: json['name'] as String);
+
+  final String name;
+}
+
+class Album {
+  const Album({
+    required this.id,
+    required this.title,
+    required this.tags,
+    required this.author,
+    this.subtitle,
+  });
+
+  factory Album.fromJson(Map&lt;String, dynamic&gt; json) =&gt; Album(
+    id: json['id'] as num,
+    title: json['title'] as String,
+    tags: (json['tags'] as List&lt;dynamic&gt;).cast&lt;String&gt;(),
+    author: Author.fromJson(json['author'] as Map&lt;String, dynamic&gt;),
+    subtitle: json['subtitle'] as String?,
+  );
+
+  final num id;
+  final String title;
+  final List&lt;String&gt; tags;
+  final Author author;
+  final String? subtitle;
+}
+
+class AlbumDetail extends StatefulWidget {
+  const AlbumDetail({super.key});
+
+  @override
+  State&lt;AlbumDetail&gt; createState() =&gt; _AlbumDetailState();
+}
+
+class _AlbumDetailState extends State&lt;AlbumDetail&gt; {
+  late final Future&lt;http.Response&gt; _resFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _resFuture = http.get(Uri.parse('https://example.com/albums/1'));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder&lt;http.Response&gt;(
+      future: _resFuture,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          final err = '${snapshot.error}';
+          return Text(err);
+        }
+        if (!snapshot.hasData) {
+          return const CircularProgressIndicator();
+        }
+        final res = snapshot.data!;
+        final album = Album.fromJson(
+          jsonDecode(res.body) as Map&lt;String, dynamic&gt;,
+        );
+        return Column(children: [Text(album.title), Text(album.author.name)]);
+      },
+    );
+  }
+}</code></pre>
+</div>
+</div>
 <p class="note">Used by <a href="./cookbook.html#26-json-model"><code>26-json-model</code></a></p>
 </article>
 <article class="widget" id="core-TabItemProps" data-name="TabItemProps">
@@ -1401,7 +2634,84 @@ Flutter's own `Tab` widget (used with `TabBar`) must stay available.</p>
 <article class="widget" id="core-TabItem" data-name="TabItem">
 <h3>TabItem<span class="badge badge-lib">component</span></h3>
 
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="Signature" role="tab" aria-selected="true">Signature</button>
+<button class="tab-btn" data-tab="TSX" role="tab" aria-selected="false">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+</div>
+<div class="tab-panel active" data-panel="Signature" role="tabpanel">
 <pre><code class="language-typescript">FlutterComponent&lt;TabItemProps&gt;</code></pre>
+</div>
+<div class="tab-panel" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx">import { TabItem, TabView, Text } from 'flutter-tsx';
+
+export const HomeTab = () =&gt; &lt;Text&gt;Home&lt;/Text&gt;;
+
+export const ProfileTab = () =&gt; &lt;Text&gt;Profile&lt;/Text&gt;;
+
+export const Shell = () =&gt; (
+  &lt;TabView&gt;
+    &lt;TabItem label=&quot;Home&quot; icon=&quot;home&quot;&gt;
+      &lt;HomeTab /&gt;
+    &lt;/TabItem&gt;
+    &lt;TabItem label=&quot;Profile&quot; icon=&quot;person&quot;&gt;
+      &lt;ProfileTab /&gt;
+    &lt;/TabItem&gt;
+  &lt;/TabView&gt;
+);</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart">import 'package:flutter/material.dart';
+
+class HomeTab extends StatelessWidget {
+  const HomeTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('Home');
+  }
+}
+
+class ProfileTab extends StatelessWidget {
+  const ProfileTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('Profile');
+  }
+}
+
+class Shell extends StatefulWidget {
+  const Shell({super.key});
+
+  @override
+  State&lt;Shell&gt; createState() =&gt; _ShellState();
+}
+
+class _ShellState extends State&lt;Shell&gt; {
+  int _tabIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: IndexedStack(
+        index: _tabIndex,
+        children: const [HomeTab(), ProfileTab()],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _tabIndex,
+        onTap: (index) =&gt; setState(() =&gt; _tabIndex = index),
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        ],
+      ),
+    );
+  }
+}</code></pre>
+</div>
+</div>
 <p class="note">Used by <a href="./cookbook.html#23-tabs"><code>23-tabs</code></a></p>
 </article>
 <article class="widget" id="core-TabViewProps" data-name="TabViewProps">
@@ -1416,7 +2726,84 @@ Flutter's own `Tab` widget (used with `TabBar`) must stay available.</p>
 <article class="widget" id="core-TabView" data-name="TabView">
 <h3>TabView<span class="badge badge-lib">component</span></h3>
 
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="Signature" role="tab" aria-selected="true">Signature</button>
+<button class="tab-btn" data-tab="TSX" role="tab" aria-selected="false">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+</div>
+<div class="tab-panel active" data-panel="Signature" role="tabpanel">
 <pre><code class="language-typescript">FlutterComponent&lt;TabViewProps&gt;</code></pre>
+</div>
+<div class="tab-panel" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx">import { TabItem, TabView, Text } from 'flutter-tsx';
+
+export const HomeTab = () =&gt; &lt;Text&gt;Home&lt;/Text&gt;;
+
+export const ProfileTab = () =&gt; &lt;Text&gt;Profile&lt;/Text&gt;;
+
+export const Shell = () =&gt; (
+  &lt;TabView&gt;
+    &lt;TabItem label=&quot;Home&quot; icon=&quot;home&quot;&gt;
+      &lt;HomeTab /&gt;
+    &lt;/TabItem&gt;
+    &lt;TabItem label=&quot;Profile&quot; icon=&quot;person&quot;&gt;
+      &lt;ProfileTab /&gt;
+    &lt;/TabItem&gt;
+  &lt;/TabView&gt;
+);</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart">import 'package:flutter/material.dart';
+
+class HomeTab extends StatelessWidget {
+  const HomeTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('Home');
+  }
+}
+
+class ProfileTab extends StatelessWidget {
+  const ProfileTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('Profile');
+  }
+}
+
+class Shell extends StatefulWidget {
+  const Shell({super.key});
+
+  @override
+  State&lt;Shell&gt; createState() =&gt; _ShellState();
+}
+
+class _ShellState extends State&lt;Shell&gt; {
+  int _tabIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: IndexedStack(
+        index: _tabIndex,
+        children: const [HomeTab(), ProfileTab()],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _tabIndex,
+        onTap: (index) =&gt; setState(() =&gt; _tabIndex = index),
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        ],
+      ),
+    );
+  }
+}</code></pre>
+</div>
+</div>
 <p class="note">Used by <a href="./cookbook.html#23-tabs"><code>23-tabs</code></a></p>
 </article>
 <article class="widget" id="core-AnimatedProps" data-name="AnimatedProps">
@@ -1445,7 +2832,70 @@ animates.</p>
 <article class="widget" id="core-Animated" data-name="Animated">
 <h3>Animated<span class="badge badge-lib">component</span></h3>
 
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="Signature" role="tab" aria-selected="true">Signature</button>
+<button class="tab-btn" data-tab="TSX" role="tab" aria-selected="false">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+</div>
+<div class="tab-panel active" data-panel="Signature" role="tabpanel">
 <pre><code class="language-typescript">FlutterComponent&lt;AnimatedProps&gt;</code></pre>
+</div>
+<div class="tab-panel" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx">import { Animated, Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+
+export const Fader = () =&gt; {
+  const [shown, setShown] = useState(true);
+
+  const toggle = () =&gt; {
+    setShown(!shown);
+  };
+
+  return (
+    &lt;Column&gt;
+      &lt;Animated type=&quot;fade&quot; visible={shown} duration={300}&gt;
+        &lt;Text&gt;Fades&lt;/Text&gt;
+      &lt;/Animated&gt;
+      &lt;ElevatedButton onClick={toggle}&gt;Toggle&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart">import 'package:flutter/material.dart';
+
+class Fader extends StatefulWidget {
+  const Fader({super.key});
+
+  @override
+  State&lt;Fader&gt; createState() =&gt; _FaderState();
+}
+
+class _FaderState extends State&lt;Fader&gt; {
+  bool _shown = true;
+
+  void _toggle() {
+    setState(() {
+      _shown = !_shown;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        AnimatedOpacity(
+          opacity: _shown ? 1 : 0,
+          duration: const Duration(milliseconds: 300),
+          child: const Text('Fades'),
+        ),
+        ElevatedButton(onPressed: _toggle, child: const Text('Toggle')),
+      ],
+    );
+  }
+}</code></pre>
+</div>
+</div>
 <p class="note">Used by <a href="./cookbook.html#24-animated"><code>24-animated</code></a></p>
 </article>
 <h2 id="lib-widgets">Widgets — widgets</h2>

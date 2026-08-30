@@ -34,12 +34,15 @@ export const page: SitePage = {
       values: ['start', 'end'],
     },
   ],
-  example: {
-    id: '01-camera-screen',
-    title: 'Camera Screen',
-    tsx: "import { useCamera } from 'plugin:camera';\n",
-    dart: "import 'package:camera/camera.dart';\n",
-  },
+  examples: [
+    {
+      id: '01-camera-screen',
+      title: 'Camera Screen',
+      label: 'Camera',
+      tsx: "import { useCamera } from 'plugin:camera';\n",
+      dart: "import 'package:camera/camera.dart';\n",
+    },
+  ],
   coreApi: [
     {
       name: 'useState',
@@ -47,6 +50,7 @@ export const page: SitePage = {
       signature: '<TValue>(initial: TValue) => [TValue, StateSetter<TValue>]',
       doc: '',
       examples: ['05-counter'],
+      usage: null,
     },
   ],
   types: [
@@ -99,6 +103,7 @@ export const page: SitePage = {
         {
           id: '01-camera-screen',
           title: 'Camera Screen',
+          label: 'Camera Screen',
           tsx: "import { useCamera } from 'plugin:camera';\n",
           dart: "import 'package:camera/camera.dart';\n",
         },

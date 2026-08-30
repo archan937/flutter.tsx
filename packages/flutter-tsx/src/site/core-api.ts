@@ -11,12 +11,18 @@ const kindOf = (name: string, signature: string): SiteCoreKind => {
   return 'function';
 };
 
-const usedBy = (name: string, recipes: Recipe[]): string[] => {
+const usedIn = (name: string, recipes: Recipe[]): Recipe[] => {
   const reference = new RegExp(`\\b${name}\\b`);
-  return recipes
-    .filter((recipe) => reference.test(recipe.tsx))
-    .map((recipe) => recipe.id);
+  return recipes.filter((recipe) => reference.test(recipe.tsx));
 };
+
+// The shortest fixture reads as an example rather than as an application.
+const shortest = (recipes: Recipe[]): Recipe | null =>
+  recipes.reduce<Recipe | null>(
+    (best, recipe) =>
+      best === null || recipe.tsx.length < best.tsx.length ? recipe : best,
+    null,
+  );
 
 /**
  * The runtime core the compiler understands: every hook, factory and shell
@@ -33,10 +39,11 @@ export const extractCoreApi = (
   recipes: Recipe[],
 ): SiteCoreEntry[] =>
   extractDeclarations(sourceFiles).map((declared): SiteCoreEntry => {
-    const examples = usedBy(declared.name, recipes);
-    if (declared.kind === 'value' && examples.length === 0) {
+    const found = usedIn(declared.name, recipes);
+    if (declared.kind === 'value' && found.length === 0) {
       throw new Error(`core API ${declared.name} has no fixture using it.`);
     }
+    const usage = shortest(found);
     return {
       name: declared.name,
       kind:
@@ -45,6 +52,16 @@ export const extractCoreApi = (
           : kindOf(declared.name, declared.signature),
       signature: declared.signature,
       doc: declared.doc,
-      examples,
+      examples: found.map((recipe) => recipe.id),
+      usage:
+        usage === null
+          ? null
+          : {
+              id: usage.id,
+              title: usage.title,
+              label: usage.title,
+              tsx: usage.tsx,
+              dart: usage.dart,
+            },
     };
   });

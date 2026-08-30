@@ -136,15 +136,19 @@ const fixtureLinks = (ids: string[]): string =>
     )
     .join(', ');
 
-/** The worked example the reference opens with: one certified fixture. */
+/** One worked example: the TSX written beside the Dart it emits. */
 export const exampleSection = (example: SiteExample): string =>
-  `<article class="widget" id="example" data-name="example">
-<h3>${escapeHtml(example.title)}<span class="badge badge-pkg">certified fixture</span></h3>
-<p class="doc">The TSX a developer writes and the Dart <code>fsx</code> emits from it. This pair is asserted byte-for-byte by the golden tests, laid out by <code>dart format</code>, checked by <code>flutter analyze</code> and built as a real Flutter app on every run — see ${fixtureLinks([example.id])}.</p>
+  `<article class="widget" id="example-${escapeHtml(example.id)}" data-name="${escapeHtml(example.label)}">
+<h3>${escapeHtml(example.label)}<span class="badge badge-lib">${escapeHtml(example.title)}</span><a class="badge badge-pkg" href="./cookbook.html#${escapeHtml(example.id)}">certified fixture</a></h3>
 ${tabs([
   { label: 'TSX', language: 'tsx', code: example.tsx },
   { label: 'Dart', language: 'dart', code: example.dart },
 ])}
+</article>`;
+
+const EXAMPLES_INTRO = `<article class="widget" id="examples-about" data-name="about the examples">
+<h3>Every pair here is compiled, not written</h3>
+<p class="doc">The TSX on the left is what a developer writes; the Dart on the right is what <code>fsx</code> emits from it — nothing on this page was typed by hand. Each pair is asserted byte-for-byte by the golden tests, laid out by <code>dart format</code>, checked by <code>flutter analyze</code> and built as a real Flutter app on every run. The <a href="./cookbook.html">cookbook</a> has the rest.</p>
 </article>`;
 
 const CORE_KIND_LABEL: Record<SiteCoreEntry['kind'], string> = {
@@ -159,10 +163,20 @@ export const coreApiSection = (entry: SiteCoreEntry): string => {
     entry.examples.length === 0
       ? ''
       : `<p class="note">Used by ${fixtureLinks(entry.examples)}</p>`;
+  // A signature says what it takes; the fixture says what writing it looks
+  // like, which is the part a newcomer is actually deciding on.
+  const usage =
+    entry.usage === null
+      ? ''
+      : tabs([
+          { label: 'Signature', language: 'typescript', code: entry.signature },
+          { label: 'TSX', language: 'tsx', code: entry.usage.tsx },
+          { label: 'Dart', language: 'dart', code: entry.usage.dart },
+        ]);
   return `<article class="widget" id="core-${entry.name}" data-name="${entry.name}">
 <h3>${escapeHtml(entry.name)}<span class="badge badge-lib">${CORE_KIND_LABEL[entry.kind]}</span></h3>
 ${entry.doc === '' ? '' : `<p class="doc">${escapeHtml(entry.doc)}</p>`}
-<pre><code class="language-typescript">${escapeHtml(entry.signature)}</code></pre>
+${entry.usage === null ? `<pre><code class="language-typescript">${escapeHtml(entry.signature)}</code></pre>` : usage}
 ${proof}
 </article>`;
 };
@@ -364,10 +378,15 @@ ${navList(members.map((member) => member.name))}
     )
     .join('\n');
 
-  return `<details>
-<summary>Example<span class="nav-count">1</span></summary>
+  return `<details open>
+<summary>Examples<span class="nav-count">${page.examples.length}</span></summary>
 <ul>
-<li data-name="${escapeHtml(page.example.title)}"><a href="#example">${escapeHtml(page.example.title)}</a></li>
+${page.examples
+  .map(
+    (example) =>
+      `<li data-name="${escapeHtml(example.label)}"><a href="#example-${escapeHtml(example.id)}">${escapeHtml(example.label)}</a></li>`,
+  )
+  .join('\n')}
 </ul>
 </details>
 <details>
@@ -433,8 +452,9 @@ export const pageContent = (page: SitePage): string => {
     .map(enumSection)
     .join('\n')}`;
   const sections = [
-    `<h2 id="example-heading">Example</h2>`,
-    exampleSection(page.example),
+    `<h2 id="example-heading">Examples</h2>`,
+    EXAMPLES_INTRO,
+    page.examples.map(exampleSection).join('\n'),
     `<h2 id="about-verification">Verification</h2>`,
     verificationSection,
     `<h2 id="core">Hooks &amp; core APIs</h2>`,
