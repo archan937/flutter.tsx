@@ -67,10 +67,22 @@ class SdkLayout {
       '.dart_tool',
       'package_config.json',
     );
-    if (!File(packageConfigPath).existsSync()) {
+    final packageConfigFile = File(packageConfigPath);
+    if (!packageConfigFile.existsSync()) {
       throw StateError(
         'Package resolution not found at $packageConfigPath — without it '
         'dart:ui types (VoidCallback, …) resolve as invalid. Run '
+        '`flutter update-packages` in $normalizedRoot first.',
+      );
+    }
+    // dart:ui resolves through the engine package this config maps: the
+    // analyzer finds sky_engine's _embedder.yaml that way. A config without
+    // it parses and resolves everything else, and then fails on dart:ui with
+    // an unresolved URI rather than anything naming the cause.
+    if (!_mapsSkyEngine(packageConfigFile)) {
+      throw StateError(
+        'Package resolution at $packageConfigPath does not map sky_engine — '
+        'dart:ui cannot be resolved without it. Run '
         '`flutter update-packages` in $normalizedRoot first.',
       );
     }
@@ -80,6 +92,21 @@ class SdkLayout {
       flutterLibPath: flutterLibPath,
       dartSdkPath: dartSdkPath,
       meta: _readMeta(normalizedRoot),
+    );
+  }
+
+  static bool _mapsSkyEngine(File packageConfig) {
+    final decoded = jsonDecode(packageConfig.readAsStringSync());
+    if (decoded is! Map<String, dynamic>) {
+      return false;
+    }
+    final packages = decoded['packages'];
+    if (packages is! List) {
+      return false;
+    }
+    return packages.any(
+      (package) =>
+          package is Map<String, dynamic> && package['name'] == 'sky_engine',
     );
   }
 

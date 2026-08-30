@@ -44,7 +44,14 @@ void main() {
       path.join(flutterRoot.path, '.dart_tool', 'package_config.json'),
     );
     await packageConfig.parent.create(recursive: true);
-    await packageConfig.writeAsString('{"configVersion": 2, "packages": []}');
+    await packageConfig.writeAsString(
+      jsonEncode({
+        'configVersion': 2,
+        'packages': [
+          {'name': 'sky_engine', 'rootUri': '../bin/cache/pkg/sky_engine'},
+        ],
+      }),
+    );
   });
 
   tearDown(() async {
@@ -176,5 +183,53 @@ void main() {
         );
       },
     );
+
+    test('reports a package config that does not map the engine', () async {
+      await writeVersionFile({
+        'frameworkVersion': '3.47.1',
+        'dartSdkVersion': '3.13.1',
+        'frameworkRevision': 'abc123',
+      });
+      await File(
+        path.join(flutterRoot.path, '.dart_tool', 'package_config.json'),
+      ).writeAsString('{"configVersion": 2, "packages": []}');
+
+      expect(
+        () => SdkLayout.resolve(flutterRoot.path),
+        throwsStateErrorWith(contains('does not map sky_engine')),
+      );
+    });
+
+    test('reports a package config that is not an object', () async {
+      await writeVersionFile({
+        'frameworkVersion': '3.47.1',
+        'dartSdkVersion': '3.13.1',
+        'frameworkRevision': 'abc123',
+      });
+      await File(
+        path.join(flutterRoot.path, '.dart_tool', 'package_config.json'),
+      ).writeAsString('[]');
+
+      expect(
+        () => SdkLayout.resolve(flutterRoot.path),
+        throwsStateErrorWith(contains('does not map sky_engine')),
+      );
+    });
+
+    test('reports a package config whose packages are not a list', () async {
+      await writeVersionFile({
+        'frameworkVersion': '3.47.1',
+        'dartSdkVersion': '3.13.1',
+        'frameworkRevision': 'abc123',
+      });
+      await File(
+        path.join(flutterRoot.path, '.dart_tool', 'package_config.json'),
+      ).writeAsString('{"configVersion": 2, "packages": {}}');
+
+      expect(
+        () => SdkLayout.resolve(flutterRoot.path),
+        throwsStateErrorWith(contains('does not map sky_engine')),
+      );
+    });
   });
 }

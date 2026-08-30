@@ -49,9 +49,24 @@ const flutterBin = join(paths.sdkDir, 'bin', 'flutter');
  * engine cache is not done here: that is what makes an SDK usable at all, so
  * `fsx install` owns it.
  */
+/**
+ * Whether the SDK's package config maps the engine package. A downloaded SDK
+ * can carry a config that resolves the framework and not sky_engine, which
+ * reads later as `Could not load library dart:ui` — so the mapping is what is
+ * checked, not the file.
+ */
+const mapsSkyEngine = async (packageConfig: string): Promise<boolean> => {
+  const file = Bun.file(packageConfig);
+  if (!(await file.exists())) {
+    return false;
+  }
+  const parsed = (await file.json()) as { packages?: { name?: string }[] };
+  return parsed.packages?.some((entry) => entry.name === 'sky_engine') === true;
+};
+
 const bootstrapSdk = async (): Promise<void> => {
   const packageConfig = join(paths.sdkDir, '.dart_tool', 'package_config.json');
-  if (await Bun.file(packageConfig).exists()) {
+  if (await mapsSkyEngine(packageConfig)) {
     return;
   }
   process.stdout.write('Resolving the Flutter SDK packages…\n');
