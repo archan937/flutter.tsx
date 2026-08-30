@@ -26,7 +26,9 @@ const LINT_STEPS: string[][] = [
 
 const TEST_STEPS: string[][] = [
   RESOLVE,
-  [dartBin, 'test', '--coverage=coverage'],
+  // The reporter GitHub Actions selects collapses failures behind a group;
+  // expanded prints what actually failed, which is what a CI log is for.
+  [dartBin, 'test', '--coverage=coverage', '--reporter=expanded'],
   [
     dartBin,
     'run',

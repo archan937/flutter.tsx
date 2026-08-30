@@ -40,7 +40,11 @@ runs:
         path: |
           ~/.fsx
           ~/.pub-cache
-        key: fsx-${{ runner.os }}-flutter-${{ steps.pinned.outputs.version }}
+        # `complete` marks what the entry holds: an SDK whose cache is
+        # populated. A cache entry is never rewritten once its key exists, so
+        # this changes whenever what `fsx install` leaves behind changes —
+        # otherwise CI keeps restoring an SDK from before the change.
+        key: fsx-${{ runner.os }}-flutter-${{ steps.pinned.outputs.version }}-complete
 
     # `fsx install` is a no-op when the cache already holds the pinned SDK, so
     # CI exercises the installer users run rather than a different SDK.

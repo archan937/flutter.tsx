@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, realpath } from 'node:fs/promises';
+import { chmod, mkdir, mkdtemp, realpath } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -6,7 +6,7 @@ import { afterAll, beforeAll, describe, expect, test } from 'bun:test';
 import { FLUTTER_VERSION } from 'flutter-tsx';
 
 const ARCHIVE_PATH = 'stable/test/fsx-e2e-flutter.tar.gz';
-const FAKE_FLUTTER_BINARY = '#!/bin/sh\necho "fake flutter for fsx e2e"\n';
+const FAKE_FLUTTER_BINARY = '#!/bin/sh\n# fake flutter for fsx e2e\nexit 0\n';
 const TAMPERED_SHA = 'deadbeef';
 
 const packageDir = join(import.meta.dir, '..', '..', 'packages', 'flutter-tsx');
@@ -69,10 +69,11 @@ const runFsxInstall = async (
 beforeAll(async () => {
   const buildDir = await mkdtemp(join(tmpdir(), 'fsx-e2e-sdk-'));
   await mkdir(join(buildDir, 'flutter', 'bin'), { recursive: true });
-  await Bun.write(
-    join(buildDir, 'flutter', 'bin', 'flutter'),
-    FAKE_FLUTTER_BINARY,
-  );
+  const fakeBinary = join(buildDir, 'flutter', 'bin', 'flutter');
+  await Bun.write(fakeBinary, FAKE_FLUTTER_BINARY);
+  // A real SDK archive carries an executable `bin/flutter`; without the bit,
+  // installing cannot run it to populate the cache.
+  await chmod(fakeBinary, 0o755);
   const archiveFile = join(buildDir, 'sdk.tar.gz');
   const tar = Bun.spawn([
     'tar',
@@ -136,6 +137,9 @@ describe('fsx install (hermetic end to end)', () => {
         `Downloading ${origin}/${ARCHIVE_PATH}…\n` +
         'Extracting…\n' +
         `Flutter ${FLUTTER_VERSION} installed at ${fsxHome}/flutter\n` +
+        // Installing does not stop at extraction: the SDK is only usable once
+        // its cache holds the engine sources.
+        'Populating the Flutter cache…\n' +
         `No package.json in ${outsideProject} — installed the SDK only.\n`,
     );
 
@@ -161,6 +165,9 @@ describe('fsx install (hermetic end to end)', () => {
     expect(secondRun.exitCode).toBe(0);
     expect(secondRun.stdout).toBe(
       `Flutter ${FLUTTER_VERSION} already installed at ${fsxHome}/flutter\n` +
+        // The fake SDK never gains engine sources, so completing it is
+        // attempted again — an SDK installed earlier is completed too.
+        'Populating the Flutter cache…\n' +
         `No package.json in ${outsideProject} — installed the SDK only.\n`,
     );
   });
