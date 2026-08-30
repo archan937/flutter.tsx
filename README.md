@@ -44,6 +44,15 @@ on every run; 1.0 ships only once the same proof runs in CI plus the real-device
 
 ## Getting started
 
+Neither package is on npm yet, so the commands below are what 1.0 will ship. Today the
+same project comes from a clone:
+
+```bash
+git clone https://github.com/archan937/flutter.tsx
+cd flutter.tsx && bun install
+bun packages/flutter-tsx/bin/fsx.ts init ~/my-app
+```
+
 ```bash
 npm create flutter-tsx@latest my-app   # or: bun create flutter-tsx my-app
 cd my-app

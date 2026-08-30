@@ -47,9 +47,15 @@
 <main>
 <p class="note"><a href="./index.html">Home</a> · <a href="./cookbook.html">Cookbook</a> · <a href="./api-reference.html">API reference</a></p>
 <h1>Guide — working with Flutter.tsx</h1>
-<p>You write TSX; <code>fsx</code> compiles it to idiomatic Dart and drives Flutter. You never write Dart by hand, and one codebase ships to all six targets — web, iOS, Android, macOS, Windows and Linux.</p>
+<p>You write TSX; <code>fsx</code> compiles it to idiomatic Dart and drives Flutter. You never write Dart by hand, and one codebase builds for web, iOS, Android, macOS, Windows and Linux. Two of those — web and macOS — are built from TSX by the end-to-end suite on every run; the other four take the same path through <code>flutter build</code> but are not covered by CI.</p>
 <p>Every TSX snippet on this page is a conformance fixture from the compiler's test suite. The Dart each one emits is asserted byte-for-byte, laid out by <code>dart format</code>, checked by <code>flutter analyze</code> and built as a real Flutter app on every run — see the <a href="./cookbook.html">cookbook</a> for all of them, side by side.</p>
 <h2>1. Create a project</h2>
+<p>Flutter.tsx is not on npm yet — the <code>0.x</code> releases there are the previous implementation. Until 1.0, run it from a clone:</p>
+<pre><code class="language-sh">git clone https://github.com/archan937/flutter.tsx
+cd flutter.tsx &amp;&amp; bun install
+bun packages/flutter-tsx/bin/fsx.ts init ~/my-app
+cd ~/my-app &amp;&amp; bun install</code></pre>
+<p>Once 1.0 ships, the same project comes from:</p>
 <pre><code class="language-sh">npm create flutter-tsx@latest my-app   # or: bun create flutter-tsx my-app
 cd my-app
 bun install</code></pre>
@@ -139,7 +145,7 @@ export default {
 <h2>7. Build</h2>
 <pre><code class="language-sh">fsx build                    # the target fsx.config.ts names
 fsx build --target=macos     # or pick one</code></pre>
-<p>A platform the project has never built for is set up on the way — the SDK's desktop support is enabled and the native folder is created — so a web-only app ships for macOS without anyone touching native directories.</p>
+<p>A platform the project has never built for is set up on the way — the SDK's desktop support is enabled and the native folder is created — so a web-only app ships for macOS without anyone touching native directories. The suite proves that for web and macOS; the remaining four targets run the same code path, on toolchains this project's CI does not have.</p>
 <table>
 <thead><tr><th>Target</th><th>Artifact</th></tr></thead>
 <tbody>

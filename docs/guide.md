@@ -1,8 +1,9 @@
 # Guide — working with Flutter.tsx
 
 You write TSX; `fsx` compiles it to idiomatic Dart and drives Flutter. You never write
-Dart by hand, and one codebase ships to all six targets — web, iOS, Android, macOS,
-Windows and Linux.
+Dart by hand, and one codebase builds for web, iOS, Android, macOS, Windows and Linux.
+Two of those — web and macOS — are built from TSX by the end-to-end suite on every run;
+the other four take the same path through `flutter build` but are not covered by CI.
 
 Every TSX snippet on this page is a conformance fixture from the compiler's test suite.
 The Dart each one emits is asserted byte-for-byte, laid out by `dart format`, checked by
@@ -10,6 +11,18 @@ The Dart each one emits is asserted byte-for-byte, laid out by `dart format`, ch
 [cookbook](./cookbook.html) for all of them, side by side.
 
 ## 1. Create a project
+
+Flutter.tsx is not on npm yet — the `0.x` releases there are the previous
+implementation. Until 1.0, run it from a clone:
+
+```sh
+git clone https://github.com/archan937/flutter.tsx
+cd flutter.tsx && bun install
+bun packages/flutter-tsx/bin/fsx.ts init ~/my-app
+cd ~/my-app && bun install
+```
+
+Once 1.0 ships, the same project comes from:
 
 ```sh
 npm create flutter-tsx@latest my-app   # or: bun create flutter-tsx my-app
@@ -167,7 +180,9 @@ fsx build --target=macos     # or pick one
 
 A platform the project has never built for is set up on the way — the SDK's desktop
 support is enabled and the native folder is created — so a web-only app ships for macOS
-without anyone touching native directories.
+without anyone touching native directories. The suite proves that for web and macOS; the
+remaining four targets run the same code path, on toolchains this project's CI does not
+have.
 
 | Target | Artifact |
 | --- | --- |

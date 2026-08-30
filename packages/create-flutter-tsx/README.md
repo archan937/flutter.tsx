@@ -2,6 +2,10 @@
 
 **Scaffold a Flutter.tsx app — write TSX, ship Flutter.**
 
+> **Not on npm yet** — this is what `npm create flutter-tsx@latest my-app` will run
+> once 1.0 ships. Until then, scaffold from a clone with
+> `bun packages/flutter-tsx/bin/fsx.ts init my-app`, which does exactly the same thing.
+
 ```sh
 npm create flutter-tsx@latest my-app   # or: bun create flutter-tsx my-app
 cd my-app
@@ -14,10 +18,10 @@ You get a typed `fsx.config.ts`, a `src/App.tsx` to start from, a `tsconfig.json
 for TSX, and the host Flutter app — ready to run on web, iOS, Android, macOS, Windows or
 Linux.
 
-Everything this does is `fsx init` from [`flutter-tsx`](https://www.npmjs.com/package/flutter-tsx),
-so a project created here and one created by the CLI are the same project.
+Everything this does is `fsx init` from [`flutter-tsx`](../flutter-tsx), so a project
+created here and one created by the CLI are the same project.
 
-See the [guide](https://archan937.github.io/flutter.tsx/guide.md) for what to do next.
+See the [guide](../../docs/guide.md) for what to do next.
 
 ## License
 

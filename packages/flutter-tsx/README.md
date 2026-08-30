@@ -29,15 +29,19 @@ export const Counter = () => {
 That is a conformance fixture: the test suite asserts its emitted Dart byte-for-byte,
 `dart format` certifies the layout, `flutter analyze` certifies it compiles, and the e2e
 suite builds it as a real Flutter app on every run. See the
-[cookbook](https://archan937.github.io/flutter.tsx/cookbook.html) for every fixture, as
-written and as emitted.
+[cookbook](../../docs/cookbook.html) for every fixture, as written and as emitted.
 
 ## Getting started
 
-```sh
-npm create flutter-tsx@latest my-app
-cd my-app
+> **Not on npm yet.** The `0.x` releases under this name are the previous
+> implementation and should not be used. Until 1.0, run it from a clone.
 
+```sh
+git clone https://github.com/archan937/flutter.tsx
+cd flutter.tsx && bun install
+bun packages/flutter-tsx/bin/fsx.ts init ~/my-app
+
+cd ~/my-app && bun install
 fsx install    # the pinned Flutter SDK, plus the plugins package.json declares
 fsx dev        # compile, run, hot reload on save
 ```
@@ -69,10 +73,12 @@ actually depend on. Plugins whose lifecycle needs owning get a hook (`useCamera(
 
 ## Documentation
 
-- [Guide](https://archan937.github.io/flutter.tsx/guide.md) — from scaffold to release build
-- [Cookbook](https://archan937.github.io/flutter.tsx/cookbook.html) — every fixture, TSX beside Dart
-- [API reference](https://archan937.github.io/flutter.tsx/api-reference.html) — every widget, prop and enum, generated from the SDK
-- [Config mapping](https://archan937.github.io/flutter.tsx/config-mapping.md) — what fsx writes, and what it does not
+The site is published once 1.0 ships; until then the pages live in the repository.
+
+- [Guide](../../docs/guide.md) — from scaffold to release build
+- [Cookbook](../../docs/cookbook.html) — every fixture, TSX beside Dart
+- [API reference](../../docs/api-reference.html) — every widget, prop and enum, generated from the SDK
+- [Config mapping](../../docs/config-mapping.md) — what fsx writes, and what it does not
 
 ## License
 
