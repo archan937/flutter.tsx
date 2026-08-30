@@ -40,11 +40,26 @@ export interface SitePluginHook {
   options: SitePluginOption[];
 }
 
-/** Something the host app must declare for a plugin to work on a platform. */
+/**
+ * A platform declaration a plugin brings with it.
+ *
+ * `duty` is what the host app actually has to do about it, which differs by
+ * kind: Gradle merges a plugin's own permissions on its own, an iOS usage
+ * description must be written by hand with a purpose string Apple reviews,
+ * and a query scheme only applies to an app that looks those URLs up.
+ */
 export interface SitePluginRequirement {
   platform: 'Android' | 'iOS';
   kind: string;
   values: string[];
+  duty: 'merged' | 'required' | 'conditional';
+}
+
+/** A top-level function the plugin exports, imported from the same module. */
+export interface SitePluginFunction {
+  name: string;
+  signature: string;
+  doc: string;
 }
 
 export interface SitePlugin {
@@ -52,6 +67,7 @@ export interface SitePlugin {
   version: string;
   module: string;
   hooks: SitePluginHook[];
+  functions: SitePluginFunction[];
   /** The generated declaration — the exact typings the IDE reads. */
   declaration: string;
   requirements: SitePluginRequirement[];

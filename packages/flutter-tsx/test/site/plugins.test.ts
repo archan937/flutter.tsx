@@ -104,17 +104,20 @@ describe('buildSitePlugins', () => {
     expect(plugin?.requirements).toEqual([
       {
         platform: 'Android',
-        kind: 'AndroidManifest.xml permissions',
+        kind: 'permissions',
         values: [
           'android.permission.CAMERA',
           'android.permission.RECORD_AUDIO',
           'android.permission.WRITE_EXTERNAL_STORAGE',
         ],
+        // camera_android_camerax declares these itself; Gradle merges them.
+        duty: 'merged',
       },
       {
         platform: 'iOS',
         kind: 'Info.plist usage descriptions',
         values: ['NSCameraUsageDescription', 'NSMicrophoneUsageDescription'],
+        duty: 'required',
       },
     ]);
   });
@@ -129,8 +132,11 @@ describe('buildSitePlugins', () => {
     expect(plugin?.requirements).toEqual([
       {
         platform: 'Android',
-        kind: 'AndroidManifest.xml query schemes',
+        kind: 'query schemes',
         values: ['https', 'sms', 'tel'],
+        // url_launcher_android's own manifest declares no <queries>; these
+        // come from its example app, where each is shown as an if-your-app.
+        duty: 'conditional',
       },
     ]);
   });
@@ -143,6 +149,25 @@ describe('buildSitePlugins', () => {
     ]);
 
     expect(plugin?.requirements).toEqual([]);
+  });
+
+  test('carries the top-level functions a hookless plugin is made of', async () => {
+    const http = await loadPluginApi('http');
+
+    const [plugin] = buildSitePlugins([http], PLUGIN_OVERRIDES, [
+      recipe('25-http-get', "import { get } from 'plugin:http';\n"),
+    ]);
+
+    // http exposes no hook at all: an import line built from hooks alone
+    // would name nothing a developer can write.
+    expect(plugin?.hooks).toEqual([]);
+    expect(plugin?.functions.find((fn) => fn.name === 'get')).toEqual({
+      name: 'get',
+      signature:
+        '(url: string, options?: { headers?: Record<string, string> | null }) ' +
+        '=> Promise<Response>',
+      doc: 'Sends an HTTP GET request with the given headers to the given URL.',
+    });
   });
 
   test('orders plugins by package name', async () => {

@@ -79,12 +79,20 @@ export const page: SitePage = {
           ],
         },
       ],
+      functions: [
+        {
+          name: 'availableCameras',
+          signature: '() => Promise<CameraDescription[]>',
+          doc: 'The cameras available on the device.',
+        },
+      ],
       declaration: "declare module 'plugin:camera' {}\n",
       requirements: [
         {
           platform: 'iOS',
           kind: 'Info.plist usage descriptions',
           values: ['NSCameraUsageDescription'],
+          duty: 'required',
         },
       ],
       examples: [

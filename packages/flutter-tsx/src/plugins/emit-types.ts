@@ -127,8 +127,15 @@ const TS_RESERVED = new Set([
   'with',
 ]);
 
+/**
+ * The type a top-level plugin function is declared with — the one the IDE
+ * shows and the one the API reference documents, from a single source.
+ */
+export const functionSignature = (fn: PluginMethod): string =>
+  `(${signatureParams(fn.params)}) => ${tsTypeOf(withCoreStrings(fn.returnType))}`;
+
 const reservedFunction = (fn: PluginMethod): string => {
-  const signature = `(${signatureParams(fn.params)}) => ${tsTypeOf(withCoreStrings(fn.returnType))}`;
+  const signature = functionSignature(fn);
   if (!TS_RESERVED.has(fn.name)) {
     return `  export const ${fn.name}: ${signature};`;
   }

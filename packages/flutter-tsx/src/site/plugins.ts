@@ -1,13 +1,22 @@
 import type { PluginApi } from '../plugins/api';
-import { emitPluginDeclaration, hookSignature } from '../plugins/emit-types';
+import {
+  emitPluginDeclaration,
+  functionSignature,
+  hookSignature,
+} from '../plugins/emit-types';
 import { deriveHooks, type HookOverrides } from '../plugins/hooks';
 import type { Recipe } from './cookbook';
 import type {
   SiteExample,
   SitePlugin,
+  SitePluginFunction,
   SitePluginHook,
   SitePluginRequirement,
 } from './model';
+import { cleanDoc } from './render';
+
+// A Dart name that is not a TS identifier cannot be imported by that name.
+const TS_IDENTIFIER = /^[A-Za-z_][A-Za-z0-9_]*$/;
 
 const requirementsOf = (api: PluginApi): SitePluginRequirement[] => {
   const { android, ios } = api.permissions;
@@ -15,23 +24,31 @@ const requirementsOf = (api: PluginApi): SitePluginRequirement[] => {
     [
       {
         platform: 'Android',
-        kind: 'AndroidManifest.xml permissions',
+        kind: 'permissions',
         values: android.permissions,
+        // Declared in the plugin's own manifest, which Gradle's manifest
+        // merger folds into the host app: nothing to copy anywhere.
+        duty: 'merged',
       },
       {
         platform: 'Android',
-        kind: 'AndroidManifest.xml query schemes',
+        kind: 'query schemes',
         values: android.querySchemes,
+        // Read from the plugin's example app, where its author shows them
+        // behind “if your app checks for X”: an app-by-app decision.
+        duty: 'conditional',
       },
       {
         platform: 'iOS',
         kind: 'Info.plist usage descriptions',
         values: ios.usageDescriptionKeys,
+        duty: 'required',
       },
       {
         platform: 'iOS',
         kind: 'Info.plist query schemes',
         values: ios.querySchemes,
+        duty: 'conditional',
       },
     ] satisfies SitePluginRequirement[]
   ).filter((requirement) => requirement.values.length > 0);
@@ -74,6 +91,16 @@ export const buildSitePlugins = (
         })),
       }));
 
+      // `http` and `url_launcher` expose no hook at all: their API is these
+      // top-level functions, so an import line without them names nothing.
+      const functions: SitePluginFunction[] = api.functions
+        .filter((fn) => TS_IDENTIFIER.test(fn.name))
+        .map((fn) => ({
+          name: fn.name,
+          signature: functionSignature(fn),
+          doc: cleanDoc(fn.doc, { firstParagraphOnly: true }),
+        }));
+
       const examples = recipes
         .filter((recipe) => recipe.tsx.includes(`'${module}'`))
         .map(exampleOf);
@@ -88,6 +115,7 @@ export const buildSitePlugins = (
         version: api.version,
         module,
         hooks,
+        functions,
         declaration: emitPluginDeclaration(api, derived),
         requirements: requirementsOf(api),
         examples,

@@ -1,4 +1,10 @@
+import {
+  manifestRequirements,
+  parsePluginApi,
+  type PluginApi,
+} from '../plugins/api';
 import { readPluginDependencies } from '../plugins/install';
+import { projectApiDir } from '../plugins/sync';
 import type { SdkManifest } from '../sdk/manifest';
 
 /** One thing `fsx doctor` looked at, and what it found. */
@@ -18,6 +24,8 @@ export interface DoctorDeps {
 
 const ROOT_COMPONENT = 'src/App.tsx';
 const INSTALL_HINT = 'run `fsx install`';
+const IOS_PLIST = 'ios/Runner/Info.plist';
+const IOS_CHECK = 'iOS usage descriptions';
 
 export const formatCheck = (check: Check): string =>
   `[${check.ok ? '✓' : '✗'}] ${check.name} — ${check.detail}`;
@@ -115,6 +123,62 @@ const pluginsCheck = async (
 };
 
 /**
+ * The one platform duty a plugin brings that nothing else can discharge.
+ *
+ * Gradle merges a plugin's Android permissions on its own, and query schemes
+ * apply only to an app that looks those URLs up. An iOS usage description is
+ * different: the host app must carry the key, and its value is a purpose
+ * string shown to the user and reviewed by Apple — so this reports the
+ * missing keys and leaves the wording to whoever ships the app.
+ */
+const iosUsageCheck = async (
+  projectDir: string,
+  manifest: Manifest | string,
+  deps: DoctorDeps,
+): Promise<Check> => {
+  const declared =
+    typeof manifest === 'string' ? [] : Object.keys(manifest.plugins).sort();
+
+  const apis: PluginApi[] = [];
+  for (const name of declared) {
+    const path = `${projectApiDir(projectDir)}/${name}.json`;
+    const contents = await deps.readFile(path);
+    // A plugin that was never installed has no extraction to read; the
+    // plugins check above is the one that reports it.
+    if (contents === null) continue;
+    apis.push(parsePluginApi(JSON.parse(contents), path));
+  }
+
+  const needed = manifestRequirements(apis).ios.usageDescriptionKeys;
+  if (needed.length === 0) {
+    return { name: IOS_CHECK, ok: true, detail: 'no plugin needs one' };
+  }
+
+  const plist = await deps.readFile(`${projectDir}/${IOS_PLIST}`);
+  if (plist === null) {
+    return {
+      name: IOS_CHECK,
+      ok: true,
+      detail: 'no iOS host app in this project',
+    };
+  }
+
+  const missing = needed.filter((key) => !plist.includes(`<key>${key}</key>`));
+  if (missing.length === 0) {
+    return { name: IOS_CHECK, ok: true, detail: `${needed.length} declared` };
+  }
+  const plural = missing.length === 1;
+  return {
+    name: IOS_CHECK,
+    ok: false,
+    detail:
+      `${missing.join(', ')} missing from ${IOS_PLIST} — ` +
+      `add ${plural ? 'it' : 'them'} with your own purpose ` +
+      (plural ? 'string' : 'strings'),
+  };
+};
+
+/**
  * Reports what a project needs to build, and what to run when something is
  * missing. Exits non-zero when anything is wrong, so CI can gate on it.
  */
@@ -139,6 +203,7 @@ export const runDoctorCommand = async (
       detail: hasRoot ? ROOT_COMPONENT : `${ROOT_COMPONENT} is missing`,
     },
     await pluginsCheck(projectDir, manifest, deps),
+    await iosUsageCheck(projectDir, manifest, deps),
   ];
 
   for (const check of checks) {

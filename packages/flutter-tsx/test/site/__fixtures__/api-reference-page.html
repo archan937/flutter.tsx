@@ -292,7 +292,7 @@ details details > ul { padding-left: 24px; }
 <h2 id="plugins">Native plugins</h2>
 <article class="widget" id="plugin-camera" data-name="camera">
 <h3>camera<span class="badge badge-lib">0.12.0+2</span><a class="badge badge-pkg" href="https://pub.dev/packages/camera">pub.dev</a></h3>
-<pre><code class="language-typescript">import { useCamera } from 'plugin:camera';</code></pre>
+<pre><code class="language-typescript">import { useCamera, availableCameras } from 'plugin:camera';</code></pre>
 <table class="props">
 <thead><tr><th>Hook</th><th>Signature</th><th>Manages for you</th></tr></thead>
 <tbody>
@@ -305,8 +305,14 @@ details details > ul { padding-left: 24px; }
 <tr><td><code>useCamera</code></td><td><code>lens</code></td><td><code>CameraLensDirection</code></td><td><code>front</code>, <code>back</code></td><td>the plugin's first</td></tr>
 </tbody>
 </table>
-<p class="note">Extracted from the plugin's own manifests — the host app must declare them:</p>
-<ul class="enum-values"><li>iOS — Info.plist usage descriptions: <code>NSCameraUsageDescription</code></li></ul>
+<table class="props">
+<thead><tr><th>Function</th><th>Signature</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><code>availableCameras</code></td><td><code>() =&gt; Promise&lt;CameraDescription[]&gt;</code></td><td>The cameras available on the device.</td></tr>
+</tbody>
+</table>
+<p class="note">Read from the plugin's own artifacts:</p>
+<ul class="enum-values"><li>iOS Info.plist usage descriptions: <code>NSCameraUsageDescription</code> — you must add these to <code>ios/Runner/Info.plist</code>, each with your own purpose string</li></ul>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="TSX" role="tab" aria-selected="true">TSX</button>

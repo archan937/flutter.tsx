@@ -49,6 +49,57 @@ const files: Record<string, string> = {
     "declare module 'plugin:url_launcher' {}",
 };
 
+/** A plugin extraction as `fsx install` writes it, with one iOS duty. */
+const cameraApi = (): string =>
+  JSON.stringify({
+    package: 'camera',
+    version: '0.12.0+2',
+    classes: [],
+    enums: [],
+    functions: [],
+    permissions: {
+      android: {
+        manifestSource: 'camera/android/src/main/AndroidManifest.xml',
+        permissions: ['android.permission.CAMERA'],
+        exampleSource: 'example/android/app/src/main/AndroidManifest.xml',
+        querySchemes: [],
+      },
+      ios: {
+        exampleSource: 'example/ios/Runner/Info.plist',
+        usageDescriptionKeys: [
+          'NSCameraUsageDescription',
+          'NSMicrophoneUsageDescription',
+        ],
+        querySchemes: [],
+      },
+    },
+  });
+
+const PLIST_WITH_CAMERA_KEY =
+  '<plist><dict>\n' +
+  '<key>NSCameraUsageDescription</key><string>To scan receipts.</string>\n' +
+  '</dict></plist>\n';
+
+/** A project whose declared plugins include camera, with an iOS host app. */
+const withCamera = (plist: string | null): Record<string, string> => ({
+  ...files,
+  '/app/package.json': JSON.stringify({
+    name: 'demo_app',
+    plugins: { camera: '^0.12.0' },
+  }),
+  '/app/.fsx/plugins.json': JSON.stringify({ camera: '^0.12.0' }),
+  '/app/.fsx/types/camera.d.ts': "declare module 'plugin:camera' {}",
+  '/app/.fsx/api/camera.json': cameraApi(),
+  ...(plist === null ? {} : { '/app/ios/Runner/Info.plist': plist }),
+});
+
+const readingFrom = (tree: Record<string, string>): Partial<DoctorDeps> => ({
+  readFile: (path): Promise<string | null> =>
+    Promise.resolve(tree[path] ?? null),
+  pathExists: (path): Promise<boolean> =>
+    Promise.resolve(tree[path] !== undefined),
+});
+
 const harness = (overrides: Partial<DoctorDeps> = {}): Harness => {
   const lines: string[] = [];
 
@@ -81,6 +132,7 @@ describe('runDoctorCommand', () => {
       '[✓] Project — demo_app',
       '[✓] Root component — src/App.tsx',
       '[✓] Plugins — 1 installed, in sync',
+      '[✓] iOS usage descriptions — no plugin needs one',
       'No issues found.',
     ]);
   });
@@ -119,6 +171,7 @@ describe('runDoctorCommand', () => {
       '[✗] Project — no package.json here — run `fsx init`',
       '[✗] Root component — src/App.tsx is missing',
       '[✗] Plugins — cannot be checked without a package.json',
+      '[✓] iOS usage descriptions — no plugin needs one',
       '3 issues found.',
     ]);
   });
@@ -190,5 +243,66 @@ describe('a check list', () => {
     ];
 
     expect(checks.filter((check) => !check.ok)).toHaveLength(2);
+  });
+});
+
+describe('runDoctorCommand — iOS usage descriptions', () => {
+  test('names the keys a plugin needs that the Info.plist does not have', async () => {
+    const context = harness(readingFrom(withCamera(PLIST_WITH_CAMERA_KEY)));
+
+    expect(await runDoctorCommand('/app', context.deps)).toBe(1);
+    expect(context.lines).toContain(
+      '[✗] iOS usage descriptions — NSMicrophoneUsageDescription missing from ' +
+        'ios/Runner/Info.plist — add it with your own purpose string',
+    );
+  });
+
+  test('names every missing key, not just the first', async () => {
+    const context = harness(
+      readingFrom(withCamera('<plist><dict></dict></plist>\n')),
+    );
+
+    await runDoctorCommand('/app', context.deps);
+
+    expect(context.lines).toContain(
+      '[✗] iOS usage descriptions — NSCameraUsageDescription, ' +
+        'NSMicrophoneUsageDescription missing from ios/Runner/Info.plist — ' +
+        'add them with your own purpose strings',
+    );
+  });
+
+  test('passes when the host app declares every key', async () => {
+    const context = harness(
+      readingFrom(
+        withCamera(
+          PLIST_WITH_CAMERA_KEY.replace(
+            '</dict>',
+            '<key>NSMicrophoneUsageDescription</key><string>To record ' +
+              'audio.</string>\n</dict>',
+          ),
+        ),
+      ),
+    );
+
+    expect(await runDoctorCommand('/app', context.deps)).toBe(0);
+    expect(context.lines).toContain('[✓] iOS usage descriptions — 2 declared');
+  });
+
+  test('says nothing to check when the project has no iOS host app', async () => {
+    const context = harness(readingFrom(withCamera(null)));
+
+    expect(await runDoctorCommand('/app', context.deps)).toBe(0);
+    expect(context.lines).toContain(
+      '[✓] iOS usage descriptions — no iOS host app in this project',
+    );
+  });
+
+  test('says nothing to check when no plugin asks for one', async () => {
+    const context = harness();
+
+    expect(await runDoctorCommand('/app', context.deps)).toBe(0);
+    expect(context.lines).toContain(
+      '[✓] iOS usage descriptions — no plugin needs one',
+    );
   });
 });

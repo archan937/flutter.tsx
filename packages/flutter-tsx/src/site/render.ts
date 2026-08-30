@@ -4,6 +4,7 @@ import type {
   SiteExample,
   SitePage,
   SitePlugin,
+  SitePluginRequirement,
   SiteProp,
   SiteType,
   SiteWidget,
@@ -166,21 +167,55 @@ ${proof}
 </article>`;
 };
 
+// What the host app has to do about a declaration, spelled out where it is
+// shown: the three duties are genuinely different pieces of work.
+const DUTY_NOTE: Record<SitePluginRequirement['duty'], string> = {
+  merged: 'merged into your app by Gradle — nothing to add',
+  required:
+    'you must add these to <code>ios/Runner/Info.plist</code>, each with your own purpose string',
+  conditional: 'add only if your app looks these up',
+};
+
 const requirementList = (plugin: SitePlugin): string => {
   if (plugin.requirements.length === 0) {
-    return '<p class="note">Needs nothing declared by the host app — extracted from the plugin\'s own manifests.</p>';
+    return '<p class="note">Declares nothing a host app has to know about.</p>';
   }
   const items = plugin.requirements
     .map(
       (requirement) =>
-        `<li>${escapeHtml(requirement.platform)} — ${escapeHtml(requirement.kind)}: ` +
-        `${requirement.values.map((value) => `<code>${escapeHtml(value)}</code>`).join(', ')}</li>`,
+        `<li>${escapeHtml(requirement.platform)} ${escapeHtml(requirement.kind)}: ` +
+        requirement.values
+          .map((value) => `<code>${escapeHtml(value)}</code>`)
+          .join(', ') +
+        ` — ${DUTY_NOTE[requirement.duty]}</li>`,
     )
     .join('\n');
-  return `<p class="note">Extracted from the plugin's own manifests — the host app must declare them:</p>\n<ul class="enum-values">${items}</ul>`;
+  return `<p class="note">Read from the plugin's own artifacts:</p>\n<ul class="enum-values">${items}</ul>`;
+};
+
+const functionTable = (plugin: SitePlugin): string => {
+  if (plugin.functions.length === 0) {
+    return '';
+  }
+  const rows = plugin.functions
+    .map(
+      (fn) =>
+        `<tr><td><code>${escapeHtml(fn.name)}</code></td><td><code>${escapeHtml(fn.signature)}</code></td>` +
+        `<td>${escapeHtml(fn.doc)}</td></tr>`,
+    )
+    .join('\n');
+  return `<table class="props">
+<thead><tr><th>Function</th><th>Signature</th><th>What it does</th></tr></thead>
+<tbody>
+${rows}
+</tbody>
+</table>`;
 };
 
 const hookTable = (plugin: SitePlugin): string => {
+  if (plugin.hooks.length === 0) {
+    return '';
+  }
   const rows = plugin.hooks
     .map(
       (hook) =>
@@ -219,6 +254,16 @@ ${rows}
 </table>`;
 };
 
+// Some plugins are hooks, some are plain functions, some are both; the import
+// line names whatever the plugin actually gives you.
+const importLine = (plugin: SitePlugin): string => {
+  const names = [
+    ...plugin.hooks.map((hook) => hook.name),
+    ...plugin.functions.map((fn) => fn.name),
+  ];
+  return `import { ${names.map(escapeHtml).join(', ')} } from '${escapeHtml(plugin.module)}';`;
+};
+
 export const pluginSection = (plugin: SitePlugin): string => {
   const [example] = plugin.examples;
   if (example === undefined) {
@@ -226,9 +271,10 @@ export const pluginSection = (plugin: SitePlugin): string => {
   }
   return `<article class="widget" id="plugin-${plugin.package}" data-name="${plugin.package}">
 <h3>${escapeHtml(plugin.package)}<span class="badge badge-lib">${escapeHtml(plugin.version)}</span><a class="badge badge-pkg" href="https://pub.dev/packages/${escapeHtml(plugin.package)}">pub.dev</a></h3>
-<pre><code class="language-typescript">import { ${plugin.hooks.map((hook) => escapeHtml(hook.name)).join(', ')} } from '${escapeHtml(plugin.module)}';</code></pre>
+<pre><code class="language-typescript">${importLine(plugin)}</code></pre>
 ${hookTable(plugin)}
 ${optionTable(plugin)}
+${functionTable(plugin)}
 ${requirementList(plugin)}
 ${tabs([
   { label: 'TSX', language: 'tsx', code: example.tsx },

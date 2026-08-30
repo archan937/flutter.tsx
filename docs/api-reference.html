@@ -24599,7 +24599,7 @@ can be used to apply style differences based on a widget's elevation.</p>
 <h2 id="plugins">Native plugins</h2>
 <article class="widget" id="plugin-camera" data-name="camera">
 <h3>camera<span class="badge badge-lib">0.12.0+2</span><a class="badge badge-pkg" href="https://pub.dev/packages/camera">pub.dev</a></h3>
-<pre><code class="language-typescript">import { useCamera } from 'plugin:camera';</code></pre>
+<pre><code class="language-typescript">import { useCamera, availableCameras } from 'plugin:camera';</code></pre>
 <table class="props">
 <thead><tr><th>Hook</th><th>Signature</th><th>Manages for you</th></tr></thead>
 <tbody>
@@ -24614,9 +24614,15 @@ can be used to apply style differences based on a widget's elevation.</p>
 <tr><td><code>useCamera</code></td><td><code>resolution</code></td><td><code>ResolutionPreset</code></td><td><code>low</code>, <code>medium</code>, <code>high</code>, <code>veryHigh</code>, <code>ultraHigh</code>, <code>max</code></td><td><code>high</code></td></tr>
 </tbody>
 </table>
-<p class="note">Extracted from the plugin's own manifests — the host app must declare them:</p>
-<ul class="enum-values"><li>Android — AndroidManifest.xml permissions: <code>android.permission.CAMERA</code>, <code>android.permission.RECORD_AUDIO</code>, <code>android.permission.WRITE_EXTERNAL_STORAGE</code></li>
-<li>iOS — Info.plist usage descriptions: <code>NSCameraUsageDescription</code>, <code>NSMicrophoneUsageDescription</code></li></ul>
+<table class="props">
+<thead><tr><th>Function</th><th>Signature</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><code>availableCameras</code></td><td><code>() =&gt; Promise&lt;CameraDescription[]&gt;</code></td><td>Completes with a list of available cameras.</td></tr>
+</tbody>
+</table>
+<p class="note">Read from the plugin's own artifacts:</p>
+<ul class="enum-values"><li>Android permissions: <code>android.permission.CAMERA</code>, <code>android.permission.RECORD_AUDIO</code>, <code>android.permission.WRITE_EXTERNAL_STORAGE</code> — merged into your app by Gradle — nothing to add</li>
+<li>iOS Info.plist usage descriptions: <code>NSCameraUsageDescription</code>, <code>NSMicrophoneUsageDescription</code> — you must add these to <code>ios/Runner/Info.plist</code>, each with your own purpose string</li></ul>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="TSX" role="tab" aria-selected="true">TSX</button>
@@ -24930,8 +24936,9 @@ declare module 'plugin:camera' {
 </tbody>
 </table>
 
-<p class="note">Extracted from the plugin's own manifests — the host app must declare them:</p>
-<ul class="enum-values"><li>Android — AndroidManifest.xml permissions: <code>android.permission.ACCESS_NETWORK_STATE</code></li></ul>
+
+<p class="note">Read from the plugin's own artifacts:</p>
+<ul class="enum-values"><li>Android permissions: <code>android.permission.ACCESS_NETWORK_STATE</code> — merged into your app by Gradle — nothing to add</li></ul>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="TSX" role="tab" aria-selected="true">TSX</button>
@@ -25033,7 +25040,8 @@ declare module 'plugin:connectivity_plus' {
 </tbody>
 </table>
 
-<p class="note">Needs nothing declared by the host app — extracted from the plugin's own manifests.</p>
+
+<p class="note">Declares nothing a host app has to know about.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="TSX" role="tab" aria-selected="true">TSX</button>
@@ -25186,15 +25194,29 @@ declare module 'plugin:flutter_secure_storage' {
 </article>
 <article class="widget" id="plugin-http" data-name="http">
 <h3>http<span class="badge badge-lib">1.6.0</span><a class="badge badge-pkg" href="https://pub.dev/packages/http">pub.dev</a></h3>
-<pre><code class="language-typescript">import {  } from 'plugin:http';</code></pre>
-<table class="props">
-<thead><tr><th>Hook</th><th>Signature</th><th>Manages for you</th></tr></thead>
-<tbody>
+<pre><code class="language-typescript">import { delete, get, head, patch, post, put, read, readBytes, runWithClient } from 'plugin:http';</code></pre>
 
+
+<table class="props">
+<thead><tr><th>Function</th><th>Signature</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><code>delete</code></td><td><code>(url: string, options?: { headers?: Record&lt;string, string&gt; | null; body?: Object | null; encoding?: Encoding | null }) =&gt; Promise&lt;Response&gt;</code></td><td>Sends an HTTP DELETE request with the given headers to the given URL.</td></tr>
+<tr><td><code>get</code></td><td><code>(url: string, options?: { headers?: Record&lt;string, string&gt; | null }) =&gt; Promise&lt;Response&gt;</code></td><td>Sends an HTTP GET request with the given headers to the given URL.</td></tr>
+<tr><td><code>head</code></td><td><code>(url: string, options?: { headers?: Record&lt;string, string&gt; | null }) =&gt; Promise&lt;Response&gt;</code></td><td>Sends an HTTP HEAD request with the given headers to the given URL.</td></tr>
+<tr><td><code>patch</code></td><td><code>(url: string, options?: { headers?: Record&lt;string, string&gt; | null; body?: Object | null; encoding?: Encoding | null }) =&gt; Promise&lt;Response&gt;</code></td><td>Sends an HTTP PATCH request with the given headers and body to the given
+URL.</td></tr>
+<tr><td><code>post</code></td><td><code>(url: string, options?: { headers?: Record&lt;string, string&gt; | null; body?: Object | null; encoding?: Encoding | null }) =&gt; Promise&lt;Response&gt;</code></td><td>Sends an HTTP POST request with the given headers and body to the given URL.</td></tr>
+<tr><td><code>put</code></td><td><code>(url: string, options?: { headers?: Record&lt;string, string&gt; | null; body?: Object | null; encoding?: Encoding | null }) =&gt; Promise&lt;Response&gt;</code></td><td>Sends an HTTP PUT request with the given headers and body to the given URL.</td></tr>
+<tr><td><code>read</code></td><td><code>(url: string, options?: { headers?: Record&lt;string, string&gt; | null }) =&gt; Promise&lt;string&gt;</code></td><td>Sends an HTTP GET request with the given headers to the given URL and
+returns a Future that completes to the body of the response as a [String].</td></tr>
+<tr><td><code>readBytes</code></td><td><code>(url: string, options?: { headers?: Record&lt;string, string&gt; | null }) =&gt; Promise&lt;Uint8List&gt;</code></td><td>Sends an HTTP GET request with the given headers to the given URL and
+returns a Future that completes to the body of the response as a list of
+bytes.</td></tr>
+<tr><td><code>runWithClient</code></td><td><code>(body: () =&gt; unknown, clientFactory: () =&gt; Client, options?: { zoneSpecification?: ZoneSpecification | null }) =&gt; unknown</code></td><td>Runs [body] in its own [Zone] with the [Client] returned by [clientFactory]
+set as the default [Client].</td></tr>
 </tbody>
 </table>
-
-<p class="note">Needs nothing declared by the host app — extracted from the plugin's own manifests.</p>
+<p class="note">Declares nothing a host app has to know about.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="TSX" role="tab" aria-selected="true">TSX</button>
@@ -25556,7 +25578,8 @@ declare module 'plugin:http' {
 </tbody>
 </table>
 
-<p class="note">Needs nothing declared by the host app — extracted from the plugin's own manifests.</p>
+
+<p class="note">Declares nothing a host app has to know about.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="TSX" role="tab" aria-selected="true">TSX</button>
@@ -25673,7 +25696,8 @@ declare module 'plugin:package_info_plus' {
 </tbody>
 </table>
 
-<p class="note">Needs nothing declared by the host app — extracted from the plugin's own manifests.</p>
+
+<p class="note">Declares nothing a host app has to know about.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="TSX" role="tab" aria-selected="true">TSX</button>
@@ -25839,16 +25863,29 @@ declare module 'plugin:shared_preferences' {
 </article>
 <article class="widget" id="plugin-url_launcher" data-name="url_launcher">
 <h3>url_launcher<span class="badge badge-lib">6.3.2</span><a class="badge badge-pkg" href="https://pub.dev/packages/url_launcher">pub.dev</a></h3>
-<pre><code class="language-typescript">import {  } from 'plugin:url_launcher';</code></pre>
-<table class="props">
-<thead><tr><th>Hook</th><th>Signature</th><th>Manages for you</th></tr></thead>
-<tbody>
+<pre><code class="language-typescript">import { canLaunch, canLaunchUrl, closeInAppWebView, closeWebView, launch, launchUrl, supportsCloseForLaunchMode, supportsLaunchMode } from 'plugin:url_launcher';</code></pre>
 
+
+<table class="props">
+<thead><tr><th>Function</th><th>Signature</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><code>canLaunch</code></td><td><code>(urlString: string) =&gt; Promise&lt;boolean&gt;</code></td><td>Checks whether the specified URL can be handled by some app installed on the
+device.</td></tr>
+<tr><td><code>canLaunchUrl</code></td><td><code>(url: string) =&gt; Promise&lt;boolean&gt;</code></td><td>Checks whether the specified URL can be handled by some app installed on the
+device.</td></tr>
+<tr><td><code>closeInAppWebView</code></td><td><code>() =&gt; Promise&lt;void&gt;</code></td><td>Closes the current in-app web view, if one was previously opened by
+[launchUrl].</td></tr>
+<tr><td><code>closeWebView</code></td><td><code>() =&gt; Promise&lt;void&gt;</code></td><td>Closes the current WebView, if one was previously opened via a call to [launch].</td></tr>
+<tr><td><code>launch</code></td><td><code>(urlString: string, options?: { forceSafariVC?: boolean | null; forceWebView?: boolean; enableJavaScript?: boolean; enableDomStorage?: boolean; universalLinksOnly?: boolean; headers?: Record&lt;string, string&gt;; statusBarBrightness?: Brightness | null; webOnlyWindowName?: string | null }) =&gt; Promise&lt;boolean&gt;</code></td><td>Parses the specified URL string and delegates handling of it to the
+underlying platform.</td></tr>
+<tr><td><code>launchUrl</code></td><td><code>(url: string, options?: { mode?: LaunchMode; webViewConfiguration?: WebViewConfiguration; browserConfiguration?: BrowserConfiguration; webOnlyWindowName?: string | null }) =&gt; Promise&lt;boolean&gt;</code></td><td>Passes [url] to the underlying platform for handling.</td></tr>
+<tr><td><code>supportsCloseForLaunchMode</code></td><td><code>(mode: LaunchMode) =&gt; Promise&lt;boolean&gt;</code></td><td>Returns true if [closeInAppWebView] is supported for [mode] in the current
+platform implementation.</td></tr>
+<tr><td><code>supportsLaunchMode</code></td><td><code>(mode: LaunchMode) =&gt; Promise&lt;boolean&gt;</code></td><td>Returns true if [mode] is supported by the current platform implementation.</td></tr>
 </tbody>
 </table>
-
-<p class="note">Extracted from the plugin's own manifests — the host app must declare them:</p>
-<ul class="enum-values"><li>Android — AndroidManifest.xml query schemes: <code>https</code>, <code>sms</code>, <code>tel</code></li></ul>
+<p class="note">Read from the plugin's own artifacts:</p>
+<ul class="enum-values"><li>Android query schemes: <code>https</code>, <code>sms</code>, <code>tel</code> — add only if your app looks these up</li></ul>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="TSX" role="tab" aria-selected="true">TSX</button>
