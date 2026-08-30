@@ -1,0 +1,46 @@
+name: Set up Flutter.tsx
+description: >
+  Installs Bun and the workspace, and — for jobs that need it — the pinned
+  Flutter SDK, cached on the version the repository pins.
+
+inputs:
+  flutter:
+    description: Install the pinned Flutter SDK into ~/.fsx.
+    required: false
+    default: 'true'
+
+runs:
+  using: composite
+  steps:
+    - name: Install Bun
+      uses: oven-sh/setup-bun@v2
+      with:
+        bun-version: 1.4.0
+
+    - name: Install workspace dependencies
+      shell: bash
+      run: bun install --frozen-lockfile
+
+    # Read the constant the installer itself uses, so the cache key can never
+    # drift from the version a build would download.
+    - name: Resolve the pinned Flutter version
+      if: inputs.flutter == 'true'
+      id: pinned
+      shell: bash
+      run: |
+        version=$(bun -e "import { FLUTTER_VERSION } from './packages/flutter-tsx/src/sdk/version.ts'; console.log(FLUTTER_VERSION);")
+        echo "version=$version" >> "$GITHUB_OUTPUT"
+
+    - name: Cache the Flutter SDK
+      if: inputs.flutter == 'true'
+      uses: actions/cache@v4
+      with:
+        path: ~/.fsx
+        key: fsx-${{ runner.os }}-flutter-${{ steps.pinned.outputs.version }}
+
+    # `fsx install` is a no-op when the cache already holds the pinned SDK, so
+    # CI exercises the installer users run rather than a different SDK.
+    - name: Install the Flutter SDK
+      if: inputs.flutter == 'true'
+      shell: bash
+      run: bun packages/flutter-tsx/bin/fsx.ts install

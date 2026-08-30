@@ -1,4 +1,4 @@
-import { mkdtemp } from 'node:fs/promises';
+import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -30,10 +30,19 @@ describe('fsx install (real network, pre-release gate)', () => {
       );
       const output = await new Response(version.stdout).text();
       expect(await version.exited).toBe(0);
-      expect(output.split('\n')[0]).toBe(
+      // A freshly downloaded SDK prints an "a new version is available"
+      // banner before the version itself, so the line is found rather than
+      // assumed to be first — and then matched in full.
+      expect(
+        output.split('\n').find((line) => line.startsWith('Flutter ')),
+      ).toBe(
         `Flutter ${FLUTTER_VERSION} • channel stable • ` +
           'https://github.com/flutter/flutter.git',
       );
+
+      // A whole SDK is ~2 GB; leaving one behind per run fills a disk.
+      await rm(fsxHome, { recursive: true, force: true });
     },
+    1800000,
   );
 });

@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  package:
+    name: flutter-tsx
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      # typecheck · format · lint · extractor lint · tests at 100% coverage ·
+      # extractor tests at 100% line coverage.
+      - name: Quality gate
+        run: bun run quality
+        working-directory: packages/flutter-tsx
+
+  scaffolder:
+    name: create-flutter-tsx
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+        with:
+          flutter: 'false'
+      - name: Quality gate
+        run: bun run quality
+        working-directory: packages/create-flutter-tsx
+
+  e2e:
+    name: end to end
+    # macOS, because the suite builds a real macOS app as well as a web one.
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Typecheck and lint
+        run: bun run typecheck && bun run lint
+        working-directory: e2e
+      # FSX_E2E_REAL runs the installer against the real releases feed, which
+      # only a machine with a clean network and no cached SDK can prove.
+      - name: End-to-end suite
+        run: bun test
+        working-directory: e2e
+        env:
+          FSX_E2E_REAL: '1'

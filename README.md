@@ -7,11 +7,12 @@ know. Flutter provides the stable, truly cross-platform runtime. Flutter.tsx bri
 two: you write TSX, the compiler emits the Dart a senior Flutter developer would have
 written by hand.
 
-> 🚧 **Not installable yet.** Flutter.tsx is being rewritten from the ground up (see
-> [Status](#status)). The snippet below **compiles today**: the test suite transpiles
-> this exact file, verifies the emitted Dart byte-for-byte against a hand-certified
-> golden, and builds it as a real Flutter web app on every run. What's missing before
-> you can run it yourself is the `fsx` CLI and scaffolder — the last unchecked boxes.
+> 🚧 **Not on npm yet.** Flutter.tsx is being rewritten from the ground up (see
+> [Status](#status)); the `0.x` releases on npm are the legacy implementation. The
+> compiler and the whole `fsx` CLI work today from a clone — what remains before 1.0
+> is CI, the docs site, and the publish itself. The snippet below **compiles today**:
+> the test suite transpiles this exact file, verifies the emitted Dart byte-for-byte
+> against a hand-certified golden, and builds it as a real Flutter web app on every run.
 
 ```tsx
 import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
@@ -40,6 +41,39 @@ Native camera access, React state, an async event handler, and conditional rende
 in twenty lines: every Flutter.tsx API is held to this level of ergonomics. The suite
 transpiles this file, `dart analyze`s the output, and builds it as a real Flutter app
 on every run; 1.0 ships only once the same proof runs in CI plus the real-device gate.
+
+## Getting started
+
+```bash
+npm create flutter-tsx@latest my-app   # or: bun create flutter-tsx my-app
+cd my-app
+
+fsx install    # the pinned Flutter SDK, plus the plugins package.json declares
+fsx dev        # compile, run, and hot reload on every save
+```
+
+Then write components under `src/`, starting with `src/App.tsx`. The compiler writes
+Dart to `lib/`, which nothing needs to edit by hand.
+
+| Command | What it does |
+| --- | --- |
+| `fsx install` | Downloads the pinned Flutter SDK to `~/.fsx`, syncs `pubspec.yaml` from the `"plugins"` map in package.json, and generates `plugin:*` typings for the resolved versions |
+| `fsx init <dir>` | Scaffolds a project and its host Flutter app |
+| `fsx dev` | Compiles `src/**/*.tsx` → `lib/`, runs the app, hot reloads on save |
+| `fsx build [--target=<platform>]` | Release build for `web`, `ios`, `android`, `macos`, `windows` or `linux`; a platform the project has never built for is set up on the way |
+| `fsx doctor` | Reports whether the SDK, project and plugins are ready, naming the command that fixes each problem |
+
+Plugins are declared the way npm dependencies are, and installed by the same command:
+
+```jsonc
+// package.json
+{
+  "plugins": { "camera": "^0.11.0", "url_launcher": "^6.3.0" }
+}
+```
+
+`fsx install` then resolves them with pub, extracts each plugin's real API from the
+resolved source, and writes the `plugin:<name>` typings your editor completes against.
 
 ## Why
 
@@ -102,10 +136,17 @@ Rewrite progress:
       components, typed props & composition, `useState`/`useEffect`, handlers,
       conditionals, list rendering, fragments (8 traits proven end to end)
 - [x] Plugin hooks: on-demand extraction from the installed plugin's source, derived
-      `useX` lifecycle hooks, generated `plugin:*` typings — `useCamera` is live and
-      conformance fixture #1 is green (remaining plugins land breed-by-breed)
-- [ ] `fsx` CLI (`install` · `init` · `dev` · `build` · `doctor`) and scaffolder
-- [ ] 1.0 on npm
+      `useX` lifecycle hooks, generated `plugin:*` typings — every plugin breed proven,
+      and any pub package can be installed and typed per project
+- [x] The rest of the input language: control flow (`if`/`switch`/`for…of`/`while`/
+      `try`), list pipelines (`filter`→`where`, `reduce`→`fold`), helper functions,
+      enums, tuples, generics, multi-file imports, and the TSX Strict Mode error codes
+      for everything Dart cannot express
+- [x] High-level abstractions: `useAsync`/`useStream` → `FutureBuilder`/`StreamBuilder`,
+      `createStore`/`useStore`, routing, modals, tabs, animation, gestures, typed JSON
+- [x] `fsx` CLI (`install` · `init` · `dev` · `build` · `doctor`) and the scaffolder,
+      building for web, iOS, Android, macOS, Windows and Linux
+- [ ] CI pipeline, docs site, and 1.0 on npm
 
 ## Repository layout
 

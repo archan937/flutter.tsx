@@ -891,7 +891,14 @@ bun run test:extractor             # dart tests + 100% coverage gate
       **`create-flutter-tsx`** — `npm create flutter-tsx@latest my-app`,
       scaffolding through the very same `fsx init`, proven by an e2e that
       builds what it wrote.
-- [ ] 29–31. CI pipeline, docs from fixtures + site deploy, 1.0 publish (Paul triggers).
+- [x] 29. **CI pipeline** (GitHub Actions, `.github/workflows/ci.yml`): three jobs —
+      the flutter-tsx gate and the create-flutter-tsx gate on ubuntu, and the e2e
+      suite on macOS, because it builds a real macOS app as well as a web one.
+      `~/.fsx` is cached on the pinned Flutter version and filled by `fsx install`
+      itself, so CI proves the installer users run rather than a different SDK.
+      The e2e job sets `FSX_E2E_REAL=1`, which downloads the SDK from the official
+      release index — that test now passes, so no red is carried into CI.
+- [ ] 30–31. Docs from fixtures + site deploy, 1.0 publish (Paul triggers).
       **Paul (2026-08-25): the preserved v1 pages (docs/index.html, guide.md,
       config-mapping.md) stay frozen and unmarked until the step-30 refresh —
       they present v1 as current; fix belongs to the site refresh, not before.**
