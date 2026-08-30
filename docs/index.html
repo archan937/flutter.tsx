@@ -923,7 +923,9 @@
         </a>
         <div class="nav-links">
           <a class="dim-mobile" href="#why">Why</a>
-          <a href="./api-reference.html">API Reference</a>
+          <a href="./guide.html">Guide</a>
+            <a href="./cookbook.html">Cookbook</a>
+            <a href="./api-reference.html">API Reference</a>
           <a
             class="ghstars"
             href="https://github.com/archan937/flutter-tsx/stargazers"
@@ -1012,55 +1014,58 @@
           </div>
 
           <div class="tab-panel active" data-panel="tsx">
-            <pre><span class="cmt">// src/Counter.tsx</span>
-<span class="kw">import</span> { MaterialApp, Scaffold, AppBar, Center, ElevatedButton } <span class="kw">from</span> <span class="str">'flutter-tsx'</span>;
-<span class="kw">import</span> { useState } <span class="kw">from</span> <span class="str">'flutter-tsx'</span>;
+            <!-- showcase:tsx -->
+<pre>import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
 
-<span class="kw">export const</span> <span class="fn">Counter</span> = () => {
-  <span class="kw">const</span> [count, setCount] = <span class="fn">useState</span>(<span class="attr">0</span>);
-  <span class="kw">return</span> (
-    &lt;<span class="tag">MaterialApp</span> <span class="attr">title</span>=<span class="str">"Counter"</span>&gt;
-      &lt;<span class="tag">Scaffold</span>&gt;
-        &lt;<span class="tag">AppBar</span> <span class="attr">title</span>=<span class="str">"Counter"</span> /&gt;
-        &lt;<span class="tag">Center</span>&gt;
-          &lt;<span class="tag">ElevatedButton</span> <span class="attr">onClick</span>={() => <span class="fn">setCount</span>(count + <span class="attr">1</span>)}&gt;
-            {<span class="str">'Count: '</span> + count}
-          &lt;/<span class="tag">ElevatedButton</span>&gt;
-        &lt;/<span class="tag">Center</span>&gt;
-      &lt;/<span class="tag">Scaffold</span>&gt;
-    &lt;/<span class="tag">MaterialApp</span>&gt;
+export const Counter = () =&gt; {
+  const [count, setCount] = useState(0);
+
+  const increment = () =&gt; {
+    setCount(count + 1);
+  };
+
+  return (
+    &lt;Column mainAxisAlignment=&quot;center&quot;&gt;
+      &lt;Text&gt;Count: {count}&lt;/Text&gt;
+      &lt;ElevatedButton onClick={increment}&gt;Increment&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
   );
 };</pre>
+<!-- /showcase:tsx -->
           </div>
 
           <div class="tab-panel" data-panel="dart">
-            <pre><span class="dart-cmt">// GENERATED — do not edit. Source: Counter.tsx</span>
-<span class="kw">import</span> <span class="str">'package:flutter/material.dart'</span>;
+            <!-- showcase:dart -->
+<pre>import 'package:flutter/material.dart';
 
-<span class="dart-kw">class</span> <span class="dart-cls">Counter</span> <span class="dart-kw">extends</span> <span class="dart-cls">StatefulWidget</span> {
-  <span class="dart-kw">const</span> Counter({<span class="dart-kw">super</span>.key});
-  <span class="dart-ann">@override</span>
-  <span class="dart-cls">State</span>&lt;<span class="dart-cls">Counter</span>&gt; createState() => <span class="dart-cls">_CounterState</span>();
+class Counter extends StatefulWidget {
+  const Counter({super.key});
+
+  @override
+  State&lt;Counter&gt; createState() =&gt; _CounterState();
 }
 
-<span class="dart-kw">class</span> <span class="dart-cls">_CounterState</span> <span class="dart-kw">extends</span> <span class="dart-cls">State</span>&lt;<span class="dart-cls">Counter</span>&gt; {
-  <span class="dart-kw">int</span> count = <span class="dart-num">0</span>;
-  <span class="dart-ann">@override</span>
-  <span class="dart-cls">Widget</span> build(<span class="dart-cls">BuildContext</span> context) {
-    <span class="dart-kw">return</span> <span class="dart-cls">MaterialApp</span>(
-      title: <span class="dart-str">'Counter'</span>,
-      home: <span class="dart-cls">Scaffold</span>(
-        appBar: <span class="dart-cls">AppBar</span>(title: <span class="dart-str">'Counter'</span>),
-        body: <span class="dart-cls">Center</span>(
-          child: <span class="dart-cls">ElevatedButton</span>(
-            onPressed: () { setState(() { count = count + <span class="dart-num">1</span>; }); },
-            child: <span class="dart-str">'Count: '</span> + count,
-          ),
-        ),
-      ),
+class _CounterState extends State&lt;Counter&gt; {
+  int _count = 0;
+
+  void _increment() {
+    setState(() {
+      _count++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text('Count: $_count'),
+        ElevatedButton(onPressed: _increment, child: const Text('Increment')),
+      ],
     );
   }
 }</pre>
+<!-- /showcase:dart -->
           </div>
         </div>
       </section>
@@ -1320,7 +1325,9 @@
       <div class="wrap">
         <div class="fbrand">flutter<b>.tsx</b></div>
         <p>
-          <a href="./api-reference.html">API Reference</a> ·
+          <a href="./guide.html">Guide</a> ·
+            <a href="./cookbook.html">Cookbook</a> ·
+            <a href="./api-reference.html">API Reference</a> ·
           <a
             href="https://github.com/archan937/flutter-tsx"
             target="_blank"

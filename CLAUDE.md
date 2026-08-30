@@ -898,7 +898,20 @@ bun run test:extractor             # dart tests + 100% coverage gate
       itself, so CI proves the installer users run rather than a different SDK.
       The e2e job sets `FSX_E2E_REAL=1`, which downloads the SDK from the official
       release index — that test now passes, so no red is carried into CI.
-- [ ] 30–31. Docs from fixtures + site deploy, 1.0 publish (Paul triggers).
+- [x] 30. **Docs from fixtures + site deploy.** `docs/cookbook.html` is generated
+      from all 37 conformance fixtures — the TSX written beside the Dart emitted,
+      nothing hand-written between them — and the landing page's showcase is
+      generated from fixture 05 (the Dart there had been written by hand and did
+      not match what the compiler emits). The guide and config-mapping pages were
+      rewritten from the v1 design they still described to what v2 does, and are
+      rendered to HTML from their markdown by a small tested renderer, so the
+      markdown stays the source GitHub renders. Both packages gained the README
+      npm would have shown empty. Freshness is gated: every generated page must
+      equal a fresh render, and **every TSX snippet in the guide and both READMEs
+      must be a conformance fixture verbatim** — a documented snippet that
+      nothing compiles cannot exist. Deployed by `.github/workflows/pages.yml`,
+      which publishes docs/ only after CI passes on master.
+- [ ] 31. 1.0 publish (Paul triggers).
       **Paul (2026-08-25): the preserved v1 pages (docs/index.html, guide.md,
       config-mapping.md) stay frozen and unmarked until the step-30 refresh —
       they present v1 as current; fix belongs to the site refresh, not before.**

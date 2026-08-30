@@ -1,277 +1,224 @@
-# Guide — working with flutter-tsx
+# Guide — working with Flutter.tsx
 
-Write your app in TSX; `fsx` transpiles it to idiomatic Dart and drives Flutter. You never write Dart by hand, and one codebase ships to all six targets (web · iOS · Android · macOS · Windows · Linux).
+You write TSX; `fsx` compiles it to idiomatic Dart and drives Flutter. You never write
+Dart by hand, and one codebase ships to all six targets — web, iOS, Android, macOS,
+Windows and Linux.
 
-## 1. Scaffold
+Every TSX snippet on this page is a conformance fixture from the compiler's test suite.
+The Dart each one emits is asserted byte-for-byte, laid out by `dart format`, checked by
+`flutter analyze` and built as a real Flutter app on every run — see the
+[cookbook](./cookbook.html) for all of them, side by side.
 
-```sh
-bun create flutter-tsx my-app   # interactive: target → app kind
-cd my-app && bun install
-```
-
-You get a typed `config/`, a skeleton `src/App.tsx`, brand `icons/`, `locales/`, and tooling. See [`create-flutter-tsx`](../../create-flutter-tsx/README.md) for the skeleton catalog.
-
-## 2. Develop
+## 1. Create a project
 
 ```sh
-bun run dev            # fsx dev — uses config/app.ts target
-bun run dev:ios        # or pick a target explicitly
+npm create flutter-tsx@latest my-app   # or: bun create flutter-tsx my-app
+cd my-app
+bun install
 ```
 
-`fsx dev` scaffolds the Flutter project under `.fsx/flutter/`, transpiles `src/**/*.tsx` → Dart, applies your config surfaces (theme, permissions, links, locales), and runs Flutter with hot-reload on save.
+You get `fsx.config.ts`, a `src/App.tsx` to start from, a `tsconfig.json` wired for TSX,
+and the host Flutter app.
 
-## 3. Configure
+## 2. Install the SDK and your plugins
 
-Config is **typed TypeScript** (`satisfies` a type from `flutter-tsx/config`) — autocomplete + compile-time checks, no native conventions to memorize.
-
-- **Cross-platform** values live once and fan out: `config/app.ts` (identity), `config/theme.ts`, `config/links.ts`, `config/permissions.ts` (usually unneeded — permissions are inferred from hooks), `config/env.ts`.
-- **OS-specific** bits go in `config/platforms/<os>.ts` (signing, `deploymentTarget`, FCM).
-
-See **[config-mapping.md](./config-mapping.md)** for exactly which native files each key produces, per platform.
-
-## 4. Routing (multi-screen)
-
-File-based, like Next.js / Expo Router — the `src/routes/` tree **is** the route map:
-
-```
-src/routes/
-  index.tsx          →  /
-  about.tsx          →  /about
-  users/[id].tsx     →  /users/:id     ([brackets] = dynamic param)
+```sh
+fsx install
 ```
 
-Point your `MaterialApp` at the directory — this is the visible connection that turns routing on:
+One command does both: it downloads the pinned Flutter SDK into `~/.fsx` (shared by every
+project on the machine, so it happens once), then brings the project's plugins in line
+with what `package.json` declares.
+
+## 3. Develop
+
+```sh
+fsx dev
+```
+
+`fsx dev` compiles every component under `src/` to Dart under `lib/`, runs the app on the
+device your target maps to, and watches for saves: each one recompiles and hot reloads. A
+compile error is reported and the app keeps running, so a typo never ends the session.
+
+## 4. Write components
+
+A component is an exported arrow function returning JSX. State is `useState`, and a
+handler is a plain function:
 
 ```tsx
-// src/App.tsx
-import { MaterialApp } from 'flutter-tsx';
-export const MainApp = () => <MaterialApp title="My App" routes="./routes" />;
-```
+import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
 
-Each route file exports one screen component. fsx generates a `go_router` config from `src/routes/`, rewrites that `<MaterialApp>` to `MaterialApp.router(...)`, and adds the `go_router` dependency. (The `routes` prop is repurposed as the routes directory — file-based routing supersedes Flutter's manual routes map.) Navigate imperatively:
+export const Counter = () => {
+  const [count, setCount] = useState(0);
 
-```tsx
-import { useNavigate } from 'flutter-tsx';
-const nav = useNavigate();
-nav.push('/users/42'); // context.push
-nav.go('/about'); // context.go
-nav.pop(); // context.pop
-```
+  const increment = () => {
+    setCount(count + 1);
+  };
 
-Read a route param inside a screen with `useParams`:
-
-```tsx
-import { useParams } from 'flutter-tsx';
-const id = useParams('id'); // on /users/[id] → GoRouterState path param
-return <Text>User {id}</Text>;
-```
-
-No routes prop / directory → your app stays a single screen (`MaterialApp(home: …)`), zero router overhead.
-
-## 5. State management
-
-Define a shared store (Zustand-style) — state + actions in one factory. fsx
-generates an idiomatic `ChangeNotifier`, provides it at the app root, and adds
-the `provider` dependency automatically:
-
-```tsx
-// src/stores/counter.tsx
-import { createStore } from 'flutter-tsx';
-
-type CounterState = { count: number; increment: () => void };
-
-export const useCounter = createStore<CounterState>((set) => ({
-  count: 0,
-  increment: () => set((s) => ({ count: s.count + 1 })),
-}));
-```
-
-> Pass the state type explicitly — TS can't infer a store whose actions read
-> state (same as Zustand's `create<T>()`), so `createStore<State>(...)` is the
-> type-safe form.
-
-Use it in any screen — destructure like React. Reads become `context.watch`, and
-actions are bound calls:
-
-```tsx
-import { useCounter } from '../stores/counter';
-
-export const Screen = () => {
-  const { count, increment } = useCounter();
   return (
-    <ElevatedButton onClick={increment}>
-      <Text>{count}</Text>
-    </ElevatedButton>
+    <Column mainAxisAlignment="center">
+      <Text>Count: {count}</Text>
+      <ElevatedButton onClick={increment}>Increment</ElevatedButton>
+    </Column>
   );
 };
 ```
 
-Stores resolve across files; the `ChangeNotifierProvider`s are wired into
-`main.dart` for you.
+That compiles to a `StatefulWidget` with a private `_count` field, a `_increment` method
+that calls `setState`, and a `build` returning the `Column` — the Dart a Flutter
+developer would have written.
 
-## 6. Async data & `fetch`
-
-`useAsync` runs a future and exposes `{ data, loading, error }` — it compiles to
-a `FutureBuilder`. `fetch()` is a built-in HTTP source (over the `http` package)
-that composes with it:
+Props are destructured with an inline type, and a component that both takes props and
+owns state reads its props through `widget` in the emitted Dart — you never write that:
 
 ```tsx
-import {
-  useAsync,
-  fetch,
-  Center,
-  CircularProgressIndicator,
-  Text,
-} from 'flutter-tsx';
+import { Column, Text } from 'flutter-tsx';
 
-export const Feed = () => {
-  const { data, loading, error } = useAsync(() =>
-    fetch('https://api.example.com/posts'),
+export const TagList = ({ tags }: { tags: string[] }) => (
+  <Column>
+    {tags.map((tag) => (
+      <Text>{tag}</Text>
+    ))}
+  </Column>
+);
+```
+
+Components in other files are imported the way you would expect, and the compiler emits
+the Dart import for you — including hiding a Flutter widget of the same name, so a
+component called `Card` or `Banner` is yours, not the SDK's.
+
+## 5. Use a plugin
+
+Plugins are declared like npm dependencies, in `package.json`:
+
+```jsonc
+{
+  "plugins": {
+    "url_launcher": "^6.3.0"
+  }
+}
+```
+
+`fsx install` resolves them with pub, writes them into `pubspec.yaml`, extracts each
+plugin's real API from the resolved source, and generates the `plugin:<name>` typings
+your editor completes against. Then import from the plugin and call it:
+
+```tsx
+import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+import { launchUrl } from 'plugin:url_launcher';
+
+export const OpenLink = () => {
+  const [opened, setOpened] = useState(false);
+
+  const open = async () => {
+    await launchUrl('https://flutter.dev', { mode: 'externalApplication' });
+    setOpened(true);
+  };
+
+  return (
+    <Column>
+      {opened && <Text>Opened!</Text>}
+      <ElevatedButton onClick={open}>Open</ElevatedButton>
+    </Column>
   );
-  if (loading)
-    return (
-      <Center>
-        <CircularProgressIndicator />
-      </Center>
-    );
-  if (error)
-    return (
-      <Center>
-        <Text>Something went wrong</Text>
-      </Center>
-    );
-  return <Text>{data.body}</Text>; // also: data.ok, data.status, data.json
 };
 ```
 
-The loading branch maps to the not-done connection state, the error branch to
-`snapshot.hasError`, and `data` binds from `snapshot.data!`.
+The typings are generated from the plugin version your project resolved, so what the IDE
+completes is what the plugin actually exposes. Dart types map to their TypeScript
+counterparts — a Dart `Uri` is a `string`, an enum is a union of string literals — and the
+compiler maps them back (`launchUrl('https://flutter.dev')` emits
+`launchUrl(Uri.parse('https://flutter.dev'))`).
 
-## 7. Tabs & modals
+Plugins whose lifecycle needs owning get a hook: `useCamera()`, `useLocation()`,
+`useSecureStorage()` and the rest acquire on mount and dispose on unmount, so a controller
+is never left running.
 
-`<TabView>` is a bottom-navigation shell (Scaffold + `BottomNavigationBar` +
-`IndexedStack`, so tab state is preserved):
+## 6. Configure
 
-```tsx
-import { TabView } from 'flutter-tsx';
-
-<TabView
-  tabs={[
-    { label: 'Home', icon: 'home', screen: <HomeScreen /> },
-    { label: 'Profile', icon: 'person', screen: <ProfileScreen /> },
-  ]}
-/>;
-```
-
-Modals are imperative (they map 1:1 to Flutter) — call them from a handler:
-
-```tsx
-import { showSheet, showDialog } from 'flutter-tsx';
-
-<ElevatedButton onClick={() => showSheet(<CartView />)}>Cart</ElevatedButton>
-<ElevatedButton onClick={() => showDialog(<ConfirmDelete />)}>Delete</ElevatedButton>
-```
-
-## 8. Gestures & animation
-
-Tap handlers work on **any** widget — `onTap`, `onDoubleTap`, and `onLongPress`.
-If the widget supports them natively (e.g. `GestureDetector`, `InkWell`) they
-pass straight through; otherwise fsx wraps it in a `GestureDetector` for you:
-
-```tsx
-<Container onTap={() => select(id)} onLongPress={() => remove(id)}>
-  <Text>{label}</Text>
-</Container>
-// → GestureDetector(onTap: …, onLongPress: …, child: Container(…))
-```
-
-Add `animate` to an animatable widget and its prop changes tween automatically —
-fsx swaps it for the matching `Animated*` widget. `duration` is milliseconds
-(default 300) and `curve` is a named curve:
-
-```tsx
-<Container
-  animate
-  duration={300}
-  curve="easeInOut"
-  width={open ? 240 : 120}
-  color={open ? 'blue' : 'grey'}
-  onTap={() => setOpen(!open)}
-/>
-// → AnimatedContainer(duration: Duration(milliseconds: 300),
-//      curve: Curves.easeInOut, width: …, color: open ? Colors.blue : Colors.grey, …)
-```
-
-Animatable widgets: `Container`, `Opacity`, `Align`, `Padding`, `Positioned`,
-`DefaultTextStyle`, `FractionallySizedBox`.
-
-## 9. Native functions
-
-Call a native capability directly — fsx transpiles it to the underlying plugin
-call and adds the pubspec dependency automatically:
-
-```tsx
-import {
-  launchUrl,
-  share,
-  pickFile,
-  clipboard,
-  hapticFeedback,
-} from 'flutter-tsx';
-
-await launchUrl('https://flutter.dev'); // → url_launcher
-await share('Check this out', 'Subject'); // → share_plus
-await clipboard.copy('copied'); // → Clipboard.setData
-await hapticFeedback.light(); // → HapticFeedback.lightImpact
-const file = await pickFile({ extensions: ['pdf'] }); // → file_picker
-```
-
-Also available: `clipboard.paste`, `hapticFeedback.{medium,heavy,vibrate}`,
-`systemChrome.{setOrientation,setStatusBarColor}`, `loadAsset(path)`,
-`appDir()` / `tempDir()`. Use them inside a handler (`onClick`, `useEffect`).
-
-## 10. System-tray / menubar apps (desktop)
-
-Add a `config/tray.ts` to turn a desktop app into a tray/menubar app — fsx emits
-the `window_manager` + `tray_manager` bootstrap (tray icon, context menu, and
-Show/Hide/Quit wiring) into `main.dart`; your TSX is just the window UI. The
-menubar icon comes from `icons/tray.png` (a small monochrome glyph), falling
-back to `icons/icon.png` when absent:
+`fsx.config.ts` is typed TypeScript — `satisfies AppConfig`, so the IDE completes every
+field and a wrong value is a compile error:
 
 ```ts
-// config/tray.ts
-import type { TrayConfig } from 'flutter-tsx/config';
+import type { AppConfig } from 'flutter-tsx';
 
 export default {
-  tooltip: 'My App',
-  menu: [
-    { label: 'Show', action: 'show' },
-    { label: 'Hide', action: 'hide' },
-    { label: 'Quit', action: 'quit' },
-  ],
-} satisfies TrayConfig;
+  name: 'my_app',
+  bundleId: 'dev.fluttertsx.myapp',
+  target: 'web',
+} satisfies AppConfig;
 ```
 
-## 11. Build & sign
+| Field | Meaning |
+| --- | --- |
+| `name` | Dart package name, lower_snake_case |
+| `bundleId` | Reverse-DNS application id |
+| `target` | Default platform for `fsx dev` and `fsx build`: `web`, `ios`, `android`, `macos`, `windows` or `linux` |
+
+See [config mapping](./config-mapping.md) for what fsx writes into the native projects,
+and what it does not.
+
+## 7. Build
 
 ```sh
-bun run build              # fsx build — release artifact for config/app.ts target
-bun run build:macos        # or a specific target
+fsx build                    # the target fsx.config.ts names
+fsx build --target=macos     # or pick one
 ```
 
-`fsx build` is the non-interactive path (transpile → apply surfaces → `flutter build <target>`, exits with the build's code). Signing is driven by `config/platforms/<os>.ts`:
+A platform the project has never built for is set up on the way — the SDK's desktop
+support is enabled and the native folder is created — so a web-only app ships for macOS
+without anyone touching native directories.
 
-- **android** → `key.properties` from a keystore (password via env var).
-- **macos** → `codesign` + notarize (Developer ID + Apple notary).
-- **windows** → Authenticode `signtool`.
+| Target | Artifact |
+| --- | --- |
+| `web` | `build/web` |
+| `ios` | `build/ios/ipa` |
+| `android` | `build/app/outputs/bundle/release/app-release.aab` |
+| `macos` | `build/macos/Build/Products/Release` |
+| `windows` | `build/windows/x64/runner/Release` |
+| `linux` | `build/linux/x64/release/bundle` |
 
-Credential files live in a **gitignored `signing/<os>/`** directory, referenced by path from the platform config; passwords come from environment variables, never source.
+## 8. Check the project
 
-## CLI reference
+```sh
+fsx doctor
+```
 
-| command                | does                                                    |
-| ---------------------- | ------------------------------------------------------- |
-| `fsx install`          | download the Flutter SDK to `~/.fsx/flutter/`           |
-| `fsx init`             | scaffold a minimal project (`config/app.ts` + `src/`)   |
-| `fsx dev [--target]`   | watch + transpile + run Flutter with hot-reload         |
-| `fsx build [--target]` | transpile + `flutter build` a release artifact (+ sign) |
+Reports whether the SDK matches the pinned version, whether this is a project, whether
+its root component exists, and whether every declared plugin is installed with its
+typings — naming the command that fixes anything it finds, and exiting non-zero so CI can
+gate on it.
+
+## Project layout
+
+```
+my-app/
+  fsx.config.ts        typed app config
+  package.json         dependencies, and the "plugins" map
+  src/
+    App.tsx            the root component (required)
+    components/…       everything else you write
+  lib/                 generated Dart — never edited by hand
+  .fsx/                generated: plugin typings and extractions
+  web/ macos/ …        the host Flutter app
+```
+
+`lib/` and `.fsx/` are generated and gitignored: a fresh clone is `bun install && fsx
+install`, and everything is rebuilt.
+
+### Owning the entry point
+
+`fsx` generates `lib/main.dart`, marked with a line saying so. Delete that line and fsx
+never touches the file again — which is how an app that needs its own `main` (a menu-bar
+app setting up a tray and window, say) takes over, while every component still compiles
+from TSX.
+
+## When something is not expressible
+
+Dart cannot express everything TypeScript can. Rather than emit something subtly
+different, the compiler refuses with a numbered error naming the reason and the way
+round: `any` (TSX1001), `eval` (TSX1002), mapped and conditional types (TSX2002, TSX2003),
+generators (TSX2006), dynamic `import()` (TSX3001), and the rest of the inventory. The
+same applies inside a component: a method whose Dart counterpart behaves differently
+(`slice`, `find`, `sort`) is refused rather than mapped to something that looks right and
+is not.

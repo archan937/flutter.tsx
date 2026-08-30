@@ -1,0 +1,2242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flutter.tsx — cookbook</title>
+<meta name="description" content="Every Flutter.tsx conformance fixture: the TSX written and the Dart emitted, byte-for-byte.">
+<link rel="icon" type="image/png" href="./icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --react: #61dafb; --bg: #07090f; --panel: #11151f;
+    --text: #e8ecf4; --dim: #94a3b8; --line: #1f2637;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0 1.25rem 4rem; background: var(--bg); color: var(--text);
+    font: 16px/1.6 'Hanken Grotesk', system-ui, sans-serif;
+  }
+  main { max-width: 62rem; margin: 0 auto; }
+  h1 { font-size: 2.25rem; margin: 2.5rem 0 0.5rem; }
+  h2 { font-size: 1.4rem; margin: 3rem 0 0.75rem; scroll-margin-top: 1rem; }
+  a { color: var(--react); }
+  .lede, .note { color: var(--dim); }
+  .contents { columns: 2; margin: 1.5rem 0 0; padding: 0; list-style: none; }
+  .contents li { margin: 0.15rem 0; break-inside: avoid; }
+  .pair { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; }
+  @media (max-width: 60rem) { .pair { grid-template-columns: 1fr; } }
+  .pane { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
+  .pane h3 {
+    margin: 0; padding: 0.6rem 0.9rem; font-size: 0.75rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--dim); border-bottom: 1px solid var(--line);
+  }
+  pre { margin: 0; padding: 0.9rem; overflow-x: auto; }
+  code { font: 13px/1.55 'JetBrains Mono', ui-monospace, monospace; }
+</style>
+</head>
+<body>
+<main>
+<h1>Cookbook</h1>
+<p class="lede">Every conformance fixture in the compiler suite, as the TSX you write and the Dart it emits — nothing here is illustrative. Each pair is asserted byte-for-byte by the golden tests, laid out by <code>dart format</code>, checked by <code>flutter analyze</code>, and built as a real Flutter app on every run.</p>
+<p class="note">Generated from the fixtures. Flutter 3.47.1. <a href="./index.html">Home</a> · <a href="./api-reference.html">API reference</a> · <a href="./guide.html">Guide</a></p>
+<ul class="contents">
+<li><a href="#01-camera-screen">Camera Screen</a></li>
+<li><a href="#02-hello-column">Hello Column</a></li>
+<li><a href="#03-styled-container">Styled Container</a></li>
+<li><a href="#04-inline-handler">Inline Handler</a></li>
+<li><a href="#05-counter">Counter</a></li>
+<li><a href="#06-mount-effect">Mount Effect</a></li>
+<li><a href="#07-list-rendering">List Rendering</a></li>
+<li><a href="#08-composition">Composition</a></li>
+<li><a href="#09-typed-props">Typed Props</a></li>
+<li><a href="#10-camera-options">Camera Options</a></li>
+<li><a href="#11-preferences">Preferences</a></li>
+<li><a href="#12-secure-storage">Secure Storage</a></li>
+<li><a href="#13-open-link">Open Link</a></li>
+<li><a href="#14-app-info">App Info</a></li>
+<li><a href="#15-front-camera">Front Camera</a></li>
+<li><a href="#16-tap-target">Tap Target</a></li>
+<li><a href="#17-async-token">Async Token</a></li>
+<li><a href="#18-connectivity-stream">Connectivity Stream</a></li>
+<li><a href="#19-store-counter">Store Counter</a></li>
+<li><a href="#20-router">Router</a></li>
+<li><a href="#21-modal">Modal</a></li>
+<li><a href="#22-mount-dialog">Mount Dialog</a></li>
+<li><a href="#23-tabs">Tabs</a></li>
+<li><a href="#24-animated">Animated</a></li>
+<li><a href="#25-http-get">Http Get</a></li>
+<li><a href="#26-json-model">Json Model</a></li>
+<li><a href="#27-inline-plugin-call">Inline Plugin Call</a></li>
+<li><a href="#28-multi-file">Multi File</a></li>
+<li><a href="#29-branching-handler">Branching Handler</a></li>
+<li><a href="#30-list-prop">List Prop</a></li>
+<li><a href="#31-model-list">Model List</a></li>
+<li><a href="#32-value-methods">Value Methods</a></li>
+<li><a href="#33-control-flow">Control Flow</a></li>
+<li><a href="#34-list-pipeline">List Pipeline</a></li>
+<li><a href="#35-helpers">Helpers</a></li>
+<li><a href="#36-enums">Enums</a></li>
+<li><a href="#37-tuples-generics">Tuples Generics</a></li>
+</ul>
+<section>
+<h2 id="01-camera-screen">Camera Screen</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+import { useCamera } from 'plugin:camera';
+
+export const CameraScreen = () =&gt; {
+  const cam = useCamera();
+  const [taken, setTaken] = useState(false);
+
+  const takePhoto = async () =&gt; {
+    await cam.takePicture();
+    setTaken(true);
+  };
+
+  return (
+    &lt;Column&gt;
+      {taken &amp;&amp; &lt;Text&gt;Photo saved!&lt;/Text&gt;}
+      &lt;ElevatedButton onClick={takePhoto}&gt;Take Photo&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
+
+class CameraScreen extends StatefulWidget {
+  const CameraScreen({super.key});
+
+  @override
+  State&lt;CameraScreen&gt; createState() =&gt; _CameraScreenState();
+}
+
+class _CameraScreenState extends State&lt;CameraScreen&gt; {
+  CameraController? _cam;
+  bool _taken = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initCam();
+  }
+
+  Future&lt;void&gt; _initCam() async {
+    final cameras = await availableCameras();
+    final controller = CameraController(cameras.first, ResolutionPreset.high);
+    await controller.initialize();
+    if (!mounted) {
+      await controller.dispose();
+      return;
+    }
+    setState(() {
+      _cam = controller;
+    });
+  }
+
+  @override
+  void dispose() {
+    _cam?.dispose();
+    super.dispose();
+  }
+
+  Future&lt;void&gt; _takePhoto() async {
+    await _cam?.takePicture();
+    setState(() {
+      _taken = true;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        if (_taken) const Text('Photo saved!'),
+        ElevatedButton(onPressed: _takePhoto, child: const Text('Take Photo')),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="02-hello-column">Hello Column</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Center, Column, Text } from 'flutter-tsx';
+
+export const HelloScreen = () =&gt; (
+  &lt;Column mainAxisAlignment=&quot;center&quot;&gt;
+    &lt;Text&gt;Hello Flutter.tsx&lt;/Text&gt;
+    &lt;Center&gt;
+      &lt;Text&gt;It works!&lt;/Text&gt;
+    &lt;/Center&gt;
+  &lt;/Column&gt;
+);</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+
+class HelloScreen extends StatelessWidget {
+  const HelloScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text('Hello Flutter.tsx'),
+        Center(child: Text('It works!')),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="03-styled-container">Styled Container</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Column, Container, Text } from 'flutter-tsx';
+
+export const StyledCard = () =&gt; (
+  &lt;Container padding={16} color=&quot;#7B1FA2&quot; alignment=&quot;center&quot;&gt;
+    &lt;Column mainAxisSize=&quot;min&quot;&gt;
+      &lt;Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}&gt;
+        Styled
+      &lt;/Text&gt;
+      &lt;Text style={{ color: 'white70' }}&gt;with value props&lt;/Text&gt;
+    &lt;/Column&gt;
+  &lt;/Container&gt;
+);</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+
+class StyledCard extends StatelessWidget {
+  const StyledCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      color: const Color(0xFF7B1FA2),
+      alignment: AlignmentGeometry.center,
+      child: const Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'Styled',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text('with value props', style: TextStyle(color: Colors.white70)),
+        ],
+      ),
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="04-inline-handler">Inline Handler</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Column, Switch, Text } from 'flutter-tsx';
+
+export const Toggles = () =&gt; (
+  &lt;Column&gt;
+    &lt;Text&gt;Notifications&lt;/Text&gt;
+    &lt;Switch value={true} onChanged={() =&gt; {}} /&gt;
+    &lt;Switch value={false} onChanged={(_enabled) =&gt; {}} /&gt;
+  &lt;/Column&gt;
+);</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+
+class Toggles extends StatelessWidget {
+  const Toggles({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Text('Notifications'),
+        Switch(value: true, onChanged: (_) {}),
+        Switch(value: false, onChanged: (_) {}),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="05-counter">Counter</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+
+export const Counter = () =&gt; {
+  const [count, setCount] = useState(0);
+
+  const increment = () =&gt; {
+    setCount(count + 1);
+  };
+
+  return (
+    &lt;Column mainAxisAlignment=&quot;center&quot;&gt;
+      &lt;Text&gt;Count: {count}&lt;/Text&gt;
+      &lt;ElevatedButton onClick={increment}&gt;Increment&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+
+class Counter extends StatefulWidget {
+  const Counter({super.key});
+
+  @override
+  State&lt;Counter&gt; createState() =&gt; _CounterState();
+}
+
+class _CounterState extends State&lt;Counter&gt; {
+  int _count = 0;
+
+  void _increment() {
+    setState(() {
+      _count++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text('Count: $_count'),
+        ElevatedButton(onPressed: _increment, child: const Text('Increment')),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="06-mount-effect">Mount Effect</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Column, ElevatedButton, Text, useEffect, useState } from 'flutter-tsx';
+
+export const Status = () =&gt; {
+  const [online, setOnline] = useState(false);
+  const [checks, setChecks] = useState(0);
+
+  useEffect(() =&gt; {
+    setOnline(true);
+  }, []);
+
+  return (
+    &lt;Column&gt;
+      {online ? &lt;Text&gt;Online&lt;/Text&gt; : &lt;Text&gt;Offline&lt;/Text&gt;}
+      &lt;Text&gt;Checks: {checks}&lt;/Text&gt;
+      &lt;ElevatedButton onClick={() =&gt; setChecks(checks + 1)}&gt;
+        Check
+      &lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+
+class Status extends StatefulWidget {
+  const Status({super.key});
+
+  @override
+  State&lt;Status&gt; createState() =&gt; _StatusState();
+}
+
+class _StatusState extends State&lt;Status&gt; {
+  bool _online = false;
+  int _checks = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _online = true;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        _online ? const Text('Online') : const Text('Offline'),
+        Text('Checks: $_checks'),
+        ElevatedButton(
+          onPressed: () =&gt; setState(() =&gt; _checks++),
+          child: const Text('Check'),
+        ),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="07-list-rendering">List Rendering</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+
+export const Groceries = () =&gt; {
+  const [items, setItems] = useState(['Apples', 'Bread']);
+
+  const addItem = () =&gt; {
+    setItems([...items, 'Milk']);
+  };
+
+  return (
+    &lt;Column&gt;
+      {items.map((item) =&gt; (
+        &lt;Text&gt;{item}&lt;/Text&gt;
+      ))}
+      &lt;ElevatedButton onClick={addItem}&gt;Add&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+
+class Groceries extends StatefulWidget {
+  const Groceries({super.key});
+
+  @override
+  State&lt;Groceries&gt; createState() =&gt; _GroceriesState();
+}
+
+class _GroceriesState extends State&lt;Groceries&gt; {
+  List&lt;String&gt; _items = ['Apples', 'Bread'];
+
+  void _addItem() {
+    setState(() {
+      _items = [..._items, 'Milk'];
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        for (final item in _items) Text(item),
+        ElevatedButton(onPressed: _addItem, child: const Text('Add')),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="08-composition">Composition</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Center, Column, Text } from 'flutter-tsx';
+
+const Greeting = ({ name }: { name: string }) =&gt; &lt;Text&gt;Hello, {name}!&lt;/Text&gt;;
+
+export const Welcome = () =&gt; (
+  &lt;Center&gt;
+    &lt;Column&gt;
+      &lt;Greeting name=&quot;Paul&quot; /&gt;
+      &lt;Greeting name=&quot;World&quot; /&gt;
+    &lt;/Column&gt;
+  &lt;/Center&gt;
+);</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+
+class Greeting extends StatelessWidget {
+  const Greeting({super.key, required this.name});
+
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('Hello, $name!');
+  }
+}
+
+class Welcome extends StatelessWidget {
+  const Welcome({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Column(
+        children: [
+          Greeting(name: 'Paul'),
+          Greeting(name: 'World'),
+        ],
+      ),
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="09-typed-props">Typed Props</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Column, Text, useState } from 'flutter-tsx';
+
+interface TaskProps {
+  title: string;
+  done: boolean;
+}
+
+const Task = ({ title, done }: TaskProps) =&gt; (
+  &lt;Text&gt;{done ? `✓ ${title}` : title}&lt;/Text&gt;
+);
+
+export const TaskBoard = () =&gt; {
+  const [titles] = useState(['Ship step 21', 'Camera plugin']);
+
+  return (
+    &lt;Column&gt;
+      &lt;Text&gt;{titles.length} open tasks&lt;/Text&gt;
+      &lt;&gt;
+        &lt;Task title=&quot;Write goldens&quot; done={true} /&gt;
+        &lt;Task title=&quot;Trust the sweep&quot; done={false} /&gt;
+      &lt;/&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+
+class Task extends StatelessWidget {
+  const Task({super.key, required this.title, required this.done});
+
+  final String title;
+  final bool done;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(done ? '✓ $title' : title);
+  }
+}
+
+class TaskBoard extends StatefulWidget {
+  const TaskBoard({super.key});
+
+  @override
+  State&lt;TaskBoard&gt; createState() =&gt; _TaskBoardState();
+}
+
+class _TaskBoardState extends State&lt;TaskBoard&gt; {
+  final List&lt;String&gt; _titles = ['Ship step 21', 'Camera plugin'];
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text('${_titles.length} open tasks'),
+        const Task(title: 'Write goldens', done: true),
+        const Task(title: 'Trust the sweep', done: false),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="10-camera-options">Camera Options</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+import { useCamera } from 'plugin:camera';
+
+export const HiResCamera = () =&gt; {
+  const cam = useCamera({ resolution: 'veryHigh' });
+  const [taken, setTaken] = useState(false);
+
+  const takePhoto = async () =&gt; {
+    await cam.takePicture();
+    setTaken(true);
+  };
+
+  return (
+    &lt;Column&gt;
+      {taken &amp;&amp; &lt;Text&gt;Saved!&lt;/Text&gt;}
+      &lt;ElevatedButton onClick={takePhoto}&gt;Snap&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
+
+class HiResCamera extends StatefulWidget {
+  const HiResCamera({super.key});
+
+  @override
+  State&lt;HiResCamera&gt; createState() =&gt; _HiResCameraState();
+}
+
+class _HiResCameraState extends State&lt;HiResCamera&gt; {
+  CameraController? _cam;
+  bool _taken = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initCam();
+  }
+
+  Future&lt;void&gt; _initCam() async {
+    final cameras = await availableCameras();
+    final controller = CameraController(
+      cameras.first,
+      ResolutionPreset.veryHigh,
+    );
+    await controller.initialize();
+    if (!mounted) {
+      await controller.dispose();
+      return;
+    }
+    setState(() {
+      _cam = controller;
+    });
+  }
+
+  @override
+  void dispose() {
+    _cam?.dispose();
+    super.dispose();
+  }
+
+  Future&lt;void&gt; _takePhoto() async {
+    await _cam?.takePicture();
+    setState(() {
+      _taken = true;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        if (_taken) const Text('Saved!'),
+        ElevatedButton(onPressed: _takePhoto, child: const Text('Snap')),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="11-preferences">Preferences</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+import { useSharedPreferences } from 'plugin:shared_preferences';
+
+export const Profile = () =&gt; {
+  const prefs = useSharedPreferences();
+  const [saved, setSaved] = useState(false);
+
+  const save = async () =&gt; {
+    await prefs.setString('name', 'Paul');
+    setSaved(true);
+  };
+
+  return (
+    &lt;Column&gt;
+      {saved &amp;&amp; &lt;Text&gt;Saved!&lt;/Text&gt;}
+      &lt;ElevatedButton onClick={save}&gt;Save&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class Profile extends StatefulWidget {
+  const Profile({super.key});
+
+  @override
+  State&lt;Profile&gt; createState() =&gt; _ProfileState();
+}
+
+class _ProfileState extends State&lt;Profile&gt; {
+  SharedPreferences? _prefs;
+  bool _saved = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initPrefs();
+  }
+
+  Future&lt;void&gt; _initPrefs() async {
+    final instance = await SharedPreferences.getInstance();
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _prefs = instance;
+    });
+  }
+
+  Future&lt;void&gt; _save() async {
+    await _prefs?.setString('name', 'Paul');
+    setState(() {
+      _saved = true;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        if (_saved) const Text('Saved!'),
+        ElevatedButton(onPressed: _save, child: const Text('Save')),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="12-secure-storage">Secure Storage</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+import { useSecureStorage } from 'plugin:flutter_secure_storage';
+
+export const Vault = () =&gt; {
+  const storage = useSecureStorage();
+  const [saved, setSaved] = useState(false);
+
+  const save = async () =&gt; {
+    await storage.write({ key: 'token', value: 'secret' });
+    setSaved(true);
+  };
+
+  return (
+    &lt;Column&gt;
+      {saved &amp;&amp; &lt;Text&gt;Saved!&lt;/Text&gt;}
+      &lt;ElevatedButton onClick={save}&gt;Save&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+class Vault extends StatefulWidget {
+  const Vault({super.key});
+
+  @override
+  State&lt;Vault&gt; createState() =&gt; _VaultState();
+}
+
+class _VaultState extends State&lt;Vault&gt; {
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+  bool _saved = false;
+
+  Future&lt;void&gt; _save() async {
+    await _storage.write(key: 'token', value: 'secret');
+    setState(() {
+      _saved = true;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        if (_saved) const Text('Saved!'),
+        ElevatedButton(onPressed: _save, child: const Text('Save')),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="13-open-link">Open Link</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+import { launchUrl } from 'plugin:url_launcher';
+
+export const OpenLink = () =&gt; {
+  const [opened, setOpened] = useState(false);
+
+  const open = async () =&gt; {
+    await launchUrl('https://flutter.dev', { mode: 'externalApplication' });
+    setOpened(true);
+  };
+
+  return (
+    &lt;Column&gt;
+      {opened &amp;&amp; &lt;Text&gt;Opened!&lt;/Text&gt;}
+      &lt;ElevatedButton onClick={open}&gt;Open&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+class OpenLink extends StatefulWidget {
+  const OpenLink({super.key});
+
+  @override
+  State&lt;OpenLink&gt; createState() =&gt; _OpenLinkState();
+}
+
+class _OpenLinkState extends State&lt;OpenLink&gt; {
+  bool _opened = false;
+
+  Future&lt;void&gt; _open() async {
+    await launchUrl(
+      Uri.parse('https://flutter.dev'),
+      mode: LaunchMode.externalApplication,
+    );
+    setState(() {
+      _opened = true;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        if (_opened) const Text('Opened!'),
+        ElevatedButton(onPressed: _open, child: const Text('Open')),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="14-app-info">App Info</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Column, Text } from 'flutter-tsx';
+import { usePackageInfo } from 'plugin:package_info_plus';
+
+export const AppInfo = () =&gt; {
+  const info = usePackageInfo();
+
+  return (
+    &lt;Column&gt;
+      &lt;Text&gt;{info.appName}&lt;/Text&gt;
+      &lt;Text&gt;v{info.version}&lt;/Text&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+
+class AppInfo extends StatefulWidget {
+  const AppInfo({super.key});
+
+  @override
+  State&lt;AppInfo&gt; createState() =&gt; _AppInfoState();
+}
+
+class _AppInfoState extends State&lt;AppInfo&gt; {
+  PackageInfo? _info;
+
+  @override
+  void initState() {
+    super.initState();
+    _initInfo();
+  }
+
+  Future&lt;void&gt; _initInfo() async {
+    final instance = await PackageInfo.fromPlatform();
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _info = instance;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [Text(_info?.appName ?? ''), Text('v${_info?.version ?? ''}')],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="15-front-camera">Front Camera</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+import { useCamera } from 'plugin:camera';
+
+export const Selfie = () =&gt; {
+  const cam = useCamera({ lens: 'front', resolution: 'veryHigh' });
+  const [taken, setTaken] = useState(false);
+
+  const takePhoto = async () =&gt; {
+    await cam.takePicture();
+    setTaken(true);
+  };
+
+  return (
+    &lt;Column&gt;
+      {taken &amp;&amp; &lt;Text&gt;Saved!&lt;/Text&gt;}
+      &lt;ElevatedButton onClick={takePhoto}&gt;Snap&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
+
+class Selfie extends StatefulWidget {
+  const Selfie({super.key});
+
+  @override
+  State&lt;Selfie&gt; createState() =&gt; _SelfieState();
+}
+
+class _SelfieState extends State&lt;Selfie&gt; {
+  CameraController? _cam;
+  bool _taken = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initCam();
+  }
+
+  Future&lt;void&gt; _initCam() async {
+    final cameras = await availableCameras();
+    final description = cameras.firstWhere(
+      (candidate) =&gt; candidate.lensDirection == CameraLensDirection.front,
+      orElse: () =&gt; cameras.first,
+    );
+    final controller = CameraController(description, ResolutionPreset.veryHigh);
+    await controller.initialize();
+    if (!mounted) {
+      await controller.dispose();
+      return;
+    }
+    setState(() {
+      _cam = controller;
+    });
+  }
+
+  @override
+  void dispose() {
+    _cam?.dispose();
+    super.dispose();
+  }
+
+  Future&lt;void&gt; _takePhoto() async {
+    await _cam?.takePicture();
+    setState(() {
+      _taken = true;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        if (_taken) const Text('Saved!'),
+        ElevatedButton(onPressed: _takePhoto, child: const Text('Snap')),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="16-tap-target">Tap Target</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Column, Container, Text, useState } from 'flutter-tsx';
+
+export const TapTarget = () =&gt; {
+  const [taps, setTaps] = useState(0);
+
+  const bump = () =&gt; {
+    setTaps(taps + 1);
+  };
+
+  return (
+    &lt;Column&gt;
+      &lt;Container onClick={bump} onLongPress={bump} padding={16}&gt;
+        &lt;Text&gt;Tap me&lt;/Text&gt;
+      &lt;/Container&gt;
+      &lt;Text&gt;Taps: {taps}&lt;/Text&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+
+class TapTarget extends StatefulWidget {
+  const TapTarget({super.key});
+
+  @override
+  State&lt;TapTarget&gt; createState() =&gt; _TapTargetState();
+}
+
+class _TapTargetState extends State&lt;TapTarget&gt; {
+  int _taps = 0;
+
+  void _bump() {
+    setState(() {
+      _taps++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: _bump,
+          onLongPress: _bump,
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            child: const Text('Tap me'),
+          ),
+        ),
+        Text('Taps: $_taps'),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="17-async-token">Async Token</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { CircularProgressIndicator, Text, useAsync } from 'flutter-tsx';
+import { useSecureStorage } from 'plugin:flutter_secure_storage';
+
+export const TokenCheck = async () =&gt; {
+  const storage = useSecureStorage();
+  const hasToken = await useAsync(() =&gt; storage.containsKey({ key: 'token' }), {
+    loading: () =&gt; &lt;CircularProgressIndicator /&gt;,
+    error: (err) =&gt; &lt;Text&gt;{err}&lt;/Text&gt;,
+  });
+
+  return &lt;Text&gt;{hasToken ? 'Signed in' : 'Signed out'}&lt;/Text&gt;;
+};</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+class TokenCheck extends StatefulWidget {
+  const TokenCheck({super.key});
+
+  @override
+  State&lt;TokenCheck&gt; createState() =&gt; _TokenCheckState();
+}
+
+class _TokenCheckState extends State&lt;TokenCheck&gt; {
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+  late final Future&lt;bool&gt; _hasTokenFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _hasTokenFuture = _storage.containsKey(key: 'token');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder&lt;bool&gt;(
+      future: _hasTokenFuture,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          final err = '${snapshot.error}';
+          return Text(err);
+        }
+        if (!snapshot.hasData) {
+          return const CircularProgressIndicator();
+        }
+        final hasToken = snapshot.data!;
+        return Text(hasToken ? 'Signed in' : 'Signed out');
+      },
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="18-connectivity-stream">Connectivity Stream</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { CircularProgressIndicator, Text, useStream } from 'flutter-tsx';
+import { useConnectivity } from 'plugin:connectivity_plus';
+
+export const ConnectionBanner = async () =&gt; {
+  const connectivity = useConnectivity();
+  const status = await useStream(() =&gt; connectivity.onConnectivityChanged, {
+    loading: () =&gt; &lt;CircularProgressIndicator /&gt;,
+    error: (err) =&gt; &lt;Text&gt;{err}&lt;/Text&gt;,
+  });
+
+  return &lt;Text&gt;Connections: {status.length}&lt;/Text&gt;;
+};</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/material.dart';
+
+class ConnectionBanner extends StatefulWidget {
+  const ConnectionBanner({super.key});
+
+  @override
+  State&lt;ConnectionBanner&gt; createState() =&gt; _ConnectionBannerState();
+}
+
+class _ConnectionBannerState extends State&lt;ConnectionBanner&gt; {
+  final Connectivity _connectivity = Connectivity();
+  late final Stream&lt;List&lt;ConnectivityResult&gt;&gt; _statusStream;
+
+  @override
+  void initState() {
+    super.initState();
+    _statusStream = _connectivity.onConnectivityChanged;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder&lt;List&lt;ConnectivityResult&gt;&gt;(
+      stream: _statusStream,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          final err = '${snapshot.error}';
+          return Text(err);
+        }
+        if (!snapshot.hasData) {
+          return const CircularProgressIndicator();
+        }
+        final status = snapshot.data!;
+        return Text('Connections: ${status.length}');
+      },
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="19-store-counter">Store Counter</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import {
+  Column,
+  createStore,
+  ElevatedButton,
+  Text,
+  useStore,
+} from 'flutter-tsx';
+
+const counterStore = createStore({ count: 0, label: 'Taps' });
+
+export const StoreCounter = () =&gt; {
+  const [state, setState] = useStore(counterStore);
+
+  const increment = () =&gt; {
+    setState({ count: state.count + 1 });
+  };
+
+  return (
+    &lt;Column&gt;
+      &lt;Text&gt;
+        {state.label}: {state.count}
+      &lt;/Text&gt;
+      &lt;ElevatedButton onClick={increment}&gt;Increment&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+
+class _CounterStore extends ChangeNotifier {
+  _CounterStore({required this.count, required this.label});
+
+  int count;
+  String label;
+
+  void update({int? count, String? label}) {
+    if (count != null) {
+      this.count = count;
+    }
+    if (label != null) {
+      this.label = label;
+    }
+    notifyListeners();
+  }
+}
+
+final _CounterStore _counterStore = _CounterStore(count: 0, label: 'Taps');
+
+class StoreCounter extends StatelessWidget {
+  const StoreCounter({super.key});
+
+  void _increment() {
+    _counterStore.update(count: _counterStore.count + 1);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: _counterStore,
+      builder: (context, child) {
+        return Column(
+          children: [
+            Text('${_counterStore.label}: ${_counterStore.count}'),
+            ElevatedButton(
+              onPressed: _increment,
+              child: const Text('Increment'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="20-router">Router</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import {
+  Column,
+  createRouter,
+  ElevatedButton,
+  Text,
+  useNavigation,
+} from 'flutter-tsx';
+
+export const HomePage = () =&gt; {
+  const nav = useNavigation();
+
+  return (
+    &lt;Column&gt;
+      &lt;Text&gt;Home&lt;/Text&gt;
+      &lt;ElevatedButton onClick={() =&gt; nav.push('/detail')}&gt;
+        Open detail
+      &lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};
+
+export const DetailPage = () =&gt; {
+  const nav = useNavigation();
+
+  return (
+    &lt;Column&gt;
+      &lt;Text&gt;Detail&lt;/Text&gt;
+      &lt;ElevatedButton onClick={() =&gt; nav.pop()}&gt;Back&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};
+
+export const router = createRouter({
+  '/': HomePage,
+  '/detail': DetailPage,
+});</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Text('Home'),
+        ElevatedButton(
+          onPressed: () =&gt; context.push('/detail'),
+          child: const Text('Open detail'),
+        ),
+      ],
+    );
+  }
+}
+
+class DetailPage extends StatelessWidget {
+  const DetailPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Text('Detail'),
+        ElevatedButton(
+          onPressed: () =&gt; context.pop(),
+          child: const Text('Back'),
+        ),
+      ],
+    );
+  }
+}
+
+final GoRouter router = GoRouter(
+  routes: [
+    GoRoute(path: '/', builder: (context, state) =&gt; const HomePage()),
+    GoRoute(path: '/detail', builder: (context, state) =&gt; const DetailPage()),
+  ],
+);</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="21-modal">Modal</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import {
+  AlertDialog,
+  Column,
+  ElevatedButton,
+  Text,
+  useNavigation,
+  useState,
+} from 'flutter-tsx';
+
+export const ConfirmDialog = () =&gt; (
+  &lt;AlertDialog title={&lt;Text&gt;Delete this?&lt;/Text&gt;} /&gt;
+);
+
+export const SheetBody = () =&gt; &lt;Text&gt;Options&lt;/Text&gt;;
+
+export const DeleteButton = () =&gt; {
+  const nav = useNavigation();
+  const [asked, setAsked] = useState(false);
+
+  const confirm = () =&gt; {
+    nav.present(&lt;ConfirmDialog /&gt;);
+    setAsked(true);
+  };
+
+  return (
+    &lt;Column&gt;
+      {asked &amp;&amp; &lt;Text&gt;Asked&lt;/Text&gt;}
+      &lt;ElevatedButton onClick={confirm}&gt;Delete&lt;/ElevatedButton&gt;
+      &lt;ElevatedButton onClick={() =&gt; nav.presentSheet(&lt;SheetBody /&gt;)}&gt;
+        More
+      &lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+
+class ConfirmDialog extends StatelessWidget {
+  const ConfirmDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const AlertDialog(title: Text('Delete this?'));
+  }
+}
+
+class SheetBody extends StatelessWidget {
+  const SheetBody({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('Options');
+  }
+}
+
+class DeleteButton extends StatefulWidget {
+  const DeleteButton({super.key});
+
+  @override
+  State&lt;DeleteButton&gt; createState() =&gt; _DeleteButtonState();
+}
+
+class _DeleteButtonState extends State&lt;DeleteButton&gt; {
+  bool _asked = false;
+
+  void _confirm() {
+    showDialog(context: context, builder: (context) =&gt; const ConfirmDialog());
+    setState(() {
+      _asked = true;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        if (_asked) const Text('Asked'),
+        ElevatedButton(onPressed: _confirm, child: const Text('Delete')),
+        ElevatedButton(
+          onPressed: () =&gt; showModalBottomSheet(
+            context: context,
+            builder: (context) =&gt; const SheetBody(),
+          ),
+          child: const Text('More'),
+        ),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="22-mount-dialog">Mount Dialog</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import {
+  AlertDialog,
+  Column,
+  Text,
+  useEffect,
+  useNavigation,
+  useState,
+} from 'flutter-tsx';
+
+export const WelcomeDialog = () =&gt; (
+  &lt;AlertDialog title={&lt;Text&gt;Welcome!&lt;/Text&gt;} /&gt;
+);
+
+export const Onboarding = () =&gt; {
+  const nav = useNavigation();
+  const [greeted, setGreeted] = useState(false);
+
+  useEffect(() =&gt; {
+    nav.present(&lt;WelcomeDialog /&gt;);
+    setGreeted(true);
+  }, []);
+
+  return (
+    &lt;Column&gt;
+      &lt;Text&gt;Onboarding&lt;/Text&gt;
+      {greeted &amp;&amp; &lt;Text&gt;Greeted&lt;/Text&gt;}
+    &lt;/Column&gt;
+  );
+};</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+
+class WelcomeDialog extends StatelessWidget {
+  const WelcomeDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const AlertDialog(title: Text('Welcome!'));
+  }
+}
+
+class Onboarding extends StatefulWidget {
+  const Onboarding({super.key});
+
+  @override
+  State&lt;Onboarding&gt; createState() =&gt; _OnboardingState();
+}
+
+class _OnboardingState extends State&lt;Onboarding&gt; {
+  bool _greeted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showDialog(context: context, builder: (context) =&gt; const WelcomeDialog());
+      setState(() {
+        _greeted = true;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [const Text('Onboarding'), if (_greeted) const Text('Greeted')],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="23-tabs">Tabs</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { TabItem, TabView, Text } from 'flutter-tsx';
+
+export const HomeTab = () =&gt; &lt;Text&gt;Home&lt;/Text&gt;;
+
+export const ProfileTab = () =&gt; &lt;Text&gt;Profile&lt;/Text&gt;;
+
+export const Shell = () =&gt; (
+  &lt;TabView&gt;
+    &lt;TabItem label=&quot;Home&quot; icon=&quot;home&quot;&gt;
+      &lt;HomeTab /&gt;
+    &lt;/TabItem&gt;
+    &lt;TabItem label=&quot;Profile&quot; icon=&quot;person&quot;&gt;
+      &lt;ProfileTab /&gt;
+    &lt;/TabItem&gt;
+  &lt;/TabView&gt;
+);</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+
+class HomeTab extends StatelessWidget {
+  const HomeTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('Home');
+  }
+}
+
+class ProfileTab extends StatelessWidget {
+  const ProfileTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('Profile');
+  }
+}
+
+class Shell extends StatefulWidget {
+  const Shell({super.key});
+
+  @override
+  State&lt;Shell&gt; createState() =&gt; _ShellState();
+}
+
+class _ShellState extends State&lt;Shell&gt; {
+  int _tabIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: IndexedStack(
+        index: _tabIndex,
+        children: const [HomeTab(), ProfileTab()],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _tabIndex,
+        onTap: (index) =&gt; setState(() =&gt; _tabIndex = index),
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        ],
+      ),
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="24-animated">Animated</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Animated, Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+
+export const Fader = () =&gt; {
+  const [shown, setShown] = useState(true);
+
+  const toggle = () =&gt; {
+    setShown(!shown);
+  };
+
+  return (
+    &lt;Column&gt;
+      &lt;Animated type=&quot;fade&quot; visible={shown} duration={300}&gt;
+        &lt;Text&gt;Fades&lt;/Text&gt;
+      &lt;/Animated&gt;
+      &lt;ElevatedButton onClick={toggle}&gt;Toggle&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+
+class Fader extends StatefulWidget {
+  const Fader({super.key});
+
+  @override
+  State&lt;Fader&gt; createState() =&gt; _FaderState();
+}
+
+class _FaderState extends State&lt;Fader&gt; {
+  bool _shown = true;
+
+  void _toggle() {
+    setState(() {
+      _shown = !_shown;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        AnimatedOpacity(
+          opacity: _shown ? 1 : 0,
+          duration: const Duration(milliseconds: 300),
+          child: const Text('Fades'),
+        ),
+        ElevatedButton(onPressed: _toggle, child: const Text('Toggle')),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="25-http-get">Http Get</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { CircularProgressIndicator, Column, Text, useAsync } from 'flutter-tsx';
+import { get } from 'plugin:http';
+
+export const AlbumView = async () =&gt; {
+  const res = await useAsync(() =&gt; get('https://example.com/album/1'), {
+    loading: () =&gt; &lt;CircularProgressIndicator /&gt;,
+    error: (err) =&gt; &lt;Text&gt;{err}&lt;/Text&gt;,
+  });
+
+  return (
+    &lt;Column&gt;
+      &lt;Text&gt;Status: {res.statusCode}&lt;/Text&gt;
+      &lt;Text&gt;{res.body}&lt;/Text&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+class AlbumView extends StatefulWidget {
+  const AlbumView({super.key});
+
+  @override
+  State&lt;AlbumView&gt; createState() =&gt; _AlbumViewState();
+}
+
+class _AlbumViewState extends State&lt;AlbumView&gt; {
+  late final Future&lt;http.Response&gt; _resFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _resFuture = http.get(Uri.parse('https://example.com/album/1'));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder&lt;http.Response&gt;(
+      future: _resFuture,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          final err = '${snapshot.error}';
+          return Text(err);
+        }
+        if (!snapshot.hasData) {
+          return const CircularProgressIndicator();
+        }
+        final res = snapshot.data!;
+        return Column(
+          children: [Text('Status: ${res.statusCode}'), Text(res.body)],
+        );
+      },
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="26-json-model">Json Model</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import {
+  CircularProgressIndicator,
+  Column,
+  json,
+  Text,
+  useAsync,
+} from 'flutter-tsx';
+import { get } from 'plugin:http';
+
+interface Author {
+  name: string;
+}
+
+interface Album {
+  id: number;
+  title: string;
+  tags: string[];
+  author: Author;
+  subtitle?: string;
+}
+
+export const AlbumDetail = async () =&gt; {
+  const res = await useAsync(() =&gt; get('https://example.com/albums/1'), {
+    loading: () =&gt; &lt;CircularProgressIndicator /&gt;,
+    error: (err) =&gt; &lt;Text&gt;{err}&lt;/Text&gt;,
+  });
+  const album = json(res.body) as Album;
+
+  return (
+    &lt;Column&gt;
+      &lt;Text&gt;{album.title}&lt;/Text&gt;
+      &lt;Text&gt;{album.author.name}&lt;/Text&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+class Author {
+  const Author({required this.name});
+
+  factory Author.fromJson(Map&lt;String, dynamic&gt; json) =&gt;
+      Author(name: json['name'] as String);
+
+  final String name;
+}
+
+class Album {
+  const Album({
+    required this.id,
+    required this.title,
+    required this.tags,
+    required this.author,
+    this.subtitle,
+  });
+
+  factory Album.fromJson(Map&lt;String, dynamic&gt; json) =&gt; Album(
+    id: json['id'] as num,
+    title: json['title'] as String,
+    tags: (json['tags'] as List&lt;dynamic&gt;).cast&lt;String&gt;(),
+    author: Author.fromJson(json['author'] as Map&lt;String, dynamic&gt;),
+    subtitle: json['subtitle'] as String?,
+  );
+
+  final num id;
+  final String title;
+  final List&lt;String&gt; tags;
+  final Author author;
+  final String? subtitle;
+}
+
+class AlbumDetail extends StatefulWidget {
+  const AlbumDetail({super.key});
+
+  @override
+  State&lt;AlbumDetail&gt; createState() =&gt; _AlbumDetailState();
+}
+
+class _AlbumDetailState extends State&lt;AlbumDetail&gt; {
+  late final Future&lt;http.Response&gt; _resFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _resFuture = http.get(Uri.parse('https://example.com/albums/1'));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder&lt;http.Response&gt;(
+      future: _resFuture,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          final err = '${snapshot.error}';
+          return Text(err);
+        }
+        if (!snapshot.hasData) {
+          return const CircularProgressIndicator();
+        }
+        final res = snapshot.data!;
+        final album = Album.fromJson(
+          jsonDecode(res.body) as Map&lt;String, dynamic&gt;,
+        );
+        return Column(children: [Text(album.title), Text(album.author.name)]);
+      },
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="27-inline-plugin-call">Inline Plugin Call</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Center, Text } from 'flutter-tsx';
+import { launchUrl } from 'plugin:url_launcher';
+
+export const InlineLink = () =&gt; (
+  &lt;Center&gt;
+    &lt;Text onClick={() =&gt; launchUrl('https://flutter.dev')}&gt;Open&lt;/Text&gt;
+  &lt;/Center&gt;
+);</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+class InlineLink extends StatelessWidget {
+  const InlineLink({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: GestureDetector(
+        onTap: () =&gt; launchUrl(Uri.parse('https://flutter.dev')),
+        child: const Text('Open'),
+      ),
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="28-multi-file">Multi File</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Center } from 'flutter-tsx';
+
+import { UserCard } from './UserCard';
+
+export const Directory = () =&gt; (
+  &lt;Center&gt;
+    &lt;UserCard name=&quot;Ada&quot; admin={true} /&gt;
+  &lt;/Center&gt;
+);</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+
+import 'user_card.dart';
+
+class Directory extends StatelessWidget {
+  const Directory({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: UserCard(name: 'Ada', admin: true));
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="29-branching-handler">Branching Handler</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+
+export const Stepper = () =&gt; {
+  const [count, setCount] = useState(0);
+
+  const bump = () =&gt; {
+    if (count &gt;= 3) {
+      setCount(0);
+    } else if (count === 2) {
+      setCount(count + 2);
+    } else {
+      setCount(count + 1);
+    }
+  };
+
+  return (
+    &lt;Column&gt;
+      &lt;Text&gt;Count: {count}&lt;/Text&gt;
+      &lt;ElevatedButton onClick={bump}&gt;Bump&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+
+class Stepper extends StatefulWidget {
+  const Stepper({super.key});
+
+  @override
+  State&lt;Stepper&gt; createState() =&gt; _StepperState();
+}
+
+class _StepperState extends State&lt;Stepper&gt; {
+  int _count = 0;
+
+  void _bump() {
+    if (_count &gt;= 3) {
+      setState(() {
+        _count = 0;
+      });
+    } else if (_count == 2) {
+      setState(() {
+        _count += 2;
+      });
+    } else {
+      setState(() {
+        _count++;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text('Count: $_count'),
+        ElevatedButton(onPressed: _bump, child: const Text('Bump')),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="30-list-prop">List Prop</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Column, Text } from 'flutter-tsx';
+
+export const TagList = ({ tags }: { tags: string[] }) =&gt; (
+  &lt;Column&gt;
+    {tags.map((tag) =&gt; (
+      &lt;Text&gt;{tag}&lt;/Text&gt;
+    ))}
+  &lt;/Column&gt;
+);</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+
+class TagList extends StatelessWidget {
+  const TagList({super.key, required this.tags});
+
+  final List&lt;String&gt; tags;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [for (final tag in tags) Text(tag)]);
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="31-model-list">Model List</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Column, Text } from 'flutter-tsx';
+
+interface Job {
+  title: string;
+  remote: boolean;
+}
+
+export const JobBoard = ({ jobs }: { jobs: Job[] }) =&gt; (
+  &lt;Column&gt;
+    {jobs.map((job) =&gt; (
+      &lt;Text&gt;{job.title}&lt;/Text&gt;
+    ))}
+  &lt;/Column&gt;
+);</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+
+class Job {
+  const Job({required this.title, required this.remote});
+
+  factory Job.fromJson(Map&lt;String, dynamic&gt; json) =&gt;
+      Job(title: json['title'] as String, remote: json['remote'] as bool);
+
+  final String title;
+  final bool remote;
+}
+
+class JobBoard extends StatelessWidget {
+  const JobBoard({super.key, required this.jobs});
+
+  final List&lt;Job&gt; jobs;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [for (final job in jobs) Text(job.title)]);
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="32-value-methods">Value Methods</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Column, Text } from 'flutter-tsx';
+
+export const ValueMethods = ({
+  name,
+  tags,
+  score,
+}: {
+  name: string;
+  tags: string[];
+  score: number;
+}) =&gt; (
+  &lt;Column&gt;
+    &lt;Text&gt;{name.trim().toUpperCase()}&lt;/Text&gt;
+    &lt;Text&gt;{tags.join(', ')}&lt;/Text&gt;
+    &lt;Text&gt;{score.toFixed(1)}&lt;/Text&gt;
+    &lt;Text&gt;{name.includes('a') ? 'match' : 'no match'}&lt;/Text&gt;
+  &lt;/Column&gt;
+);</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+
+class ValueMethods extends StatelessWidget {
+  const ValueMethods({
+    super.key,
+    required this.name,
+    required this.tags,
+    required this.score,
+  });
+
+  final String name;
+  final List&lt;String&gt; tags;
+  final double score;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(name.trim().toUpperCase()),
+        Text(tags.join(', ')),
+        Text(score.toStringAsFixed(1)),
+        Text(name.contains('a') ? 'match' : 'no match'),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="33-control-flow">Control Flow</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+
+export const Auditor = ({ entries }: { entries: string[] }) =&gt; {
+  const [status, setStatus] = useState('idle');
+  const [seen, setSeen] = useState(0);
+
+  const audit = () =&gt; {
+    try {
+      for (const entry of entries) {
+        setStatus(entry.trim());
+        setSeen(seen + 1);
+      }
+      switch (seen) {
+        case 0:
+          setStatus('empty');
+          break;
+        case 1:
+        case 2:
+          setStatus('sparse');
+          break;
+        default:
+          setStatus('full');
+      }
+    } catch {
+      setStatus('failed');
+    }
+  };
+
+  return (
+    &lt;Column&gt;
+      &lt;Text&gt;{status}&lt;/Text&gt;
+      &lt;ElevatedButton onClick={audit}&gt;Audit&lt;/ElevatedButton&gt;
+    &lt;/Column&gt;
+  );
+};</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+
+class Auditor extends StatefulWidget {
+  const Auditor({super.key, required this.entries});
+
+  final List&lt;String&gt; entries;
+
+  @override
+  State&lt;Auditor&gt; createState() =&gt; _AuditorState();
+}
+
+class _AuditorState extends State&lt;Auditor&gt; {
+  String _status = 'idle';
+  int _seen = 0;
+
+  void _audit() {
+    try {
+      for (final entry in widget.entries) {
+        setState(() {
+          _status = entry.trim();
+          _seen++;
+        });
+      }
+      switch (_seen) {
+        case 0:
+          setState(() {
+            _status = 'empty';
+          });
+          break;
+        case 1:
+        case 2:
+          setState(() {
+            _status = 'sparse';
+          });
+          break;
+        default:
+          setState(() {
+            _status = 'full';
+          });
+      }
+    } catch (_) {
+      setState(() {
+        _status = 'failed';
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(_status),
+        ElevatedButton(onPressed: _audit, child: const Text('Audit')),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="34-list-pipeline">List Pipeline</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Column, Text } from 'flutter-tsx';
+
+export const Totals = ({
+  names,
+  scores,
+}: {
+  names: string[];
+  scores: number[];
+}) =&gt; (
+  &lt;Column&gt;
+    &lt;Text&gt;{scores.reduce((sum, score) =&gt; sum + score, 0)}&lt;/Text&gt;
+    &lt;Text&gt;{names[0] ?? '-'}&lt;/Text&gt;
+    {names
+      .filter((name) =&gt; name !== '')
+      .map((name) =&gt; (
+        &lt;Text&gt;{name}&lt;/Text&gt;
+      ))}
+  &lt;/Column&gt;
+);</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+
+class Totals extends StatelessWidget {
+  const Totals({super.key, required this.names, required this.scores});
+
+  final List&lt;String&gt; names;
+  final List&lt;double&gt; scores;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text('${scores.fold&lt;double&gt;(0, (sum, score) =&gt; sum + score)}'),
+        Text(names.elementAtOrNull(0) ?? '-'),
+        for (final name in names.where((name) =&gt; name != '')) Text(name),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="35-helpers">Helpers</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Column, Text } from 'flutter-tsx';
+
+const initials = (value: string): string =&gt; value.trim().toUpperCase();
+
+const active = (values: string[]): string[] =&gt;
+  values.filter((value) =&gt; value !== '');
+
+export const Roster = ({ names }: { names: string[] }) =&gt; (
+  &lt;Column&gt;
+    {active(names).map((name) =&gt; (
+      &lt;Text&gt;{initials(name)}&lt;/Text&gt;
+    ))}
+  &lt;/Column&gt;
+);</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+
+String initials(String value) =&gt; value.trim().toUpperCase();
+
+List&lt;String&gt; active(List&lt;String&gt; values) =&gt;
+    values.where((value) =&gt; value != '').toList();
+
+class Roster extends StatelessWidget {
+  const Roster({super.key, required this.names});
+
+  final List&lt;String&gt; names;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [for (final name in active(names)) Text(initials(name))],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="36-enums">Enums</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Column, Text } from 'flutter-tsx';
+
+enum BadgeStatus {
+  Active = 'active',
+  Paused = 'paused',
+}
+
+export const Badge = ({
+  status,
+  tone,
+}: {
+  status: BadgeStatus;
+  tone: 'warn' | 'ok';
+}) =&gt; (
+  &lt;Column&gt;
+    &lt;Text&gt;{status === BadgeStatus.Active ? 'running' : 'stopped'}&lt;/Text&gt;
+    &lt;Text&gt;{tone}&lt;/Text&gt;
+  &lt;/Column&gt;
+);</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+
+abstract final class BadgeStatus {
+  static const String active = 'active';
+  static const String paused = 'paused';
+}
+
+class Badge extends StatelessWidget {
+  const Badge({super.key, required this.status, required this.tone});
+
+  final String status;
+  final String tone;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(status == BadgeStatus.active ? 'running' : 'stopped'),
+        Text(tone),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section>
+<h2 id="37-tuples-generics">Tuples Generics</h2>
+<div class="pair">
+<div class="pane"><h3>You write — TSX</h3><pre><code>import { Column, Text } from 'flutter-tsx';
+
+const firstOr = &lt;T,&gt;(values: T[], fallback: T): T =&gt; values[0] ?? fallback;
+
+export const Span = ({
+  range,
+  names,
+}: {
+  range: [string, number];
+  names: string[];
+}) =&gt; (
+  &lt;Column&gt;
+    &lt;Text&gt;{range[0]}&lt;/Text&gt;
+    &lt;Text&gt;{range[1]}&lt;/Text&gt;
+    &lt;Text&gt;{firstOr(names, 'none')}&lt;/Text&gt;
+  &lt;/Column&gt;
+);</code></pre></div>
+<div class="pane"><h3>fsx emits — Dart</h3><pre><code>import 'package:flutter/material.dart';
+
+T firstOr&lt;T&gt;(List&lt;T&gt; values, T fallback) =&gt;
+    values.elementAtOrNull(0) ?? fallback;
+
+class Span extends StatelessWidget {
+  const Span({super.key, required this.range, required this.names});
+
+  final (String, double) range;
+  final List&lt;String&gt; names;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(range.$1),
+        Text('${range.$2}'),
+        Text(firstOr(names, 'none')),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+</main>
+</body>
+</html>

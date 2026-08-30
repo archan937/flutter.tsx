@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flutter.tsx — config mapping</title>
+<link rel="icon" type="image/png" href="./icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --react: #61dafb; --bg: #07090f; --panel: #11151f;
+    --text: #e8ecf4; --dim: #94a3b8; --line: #1f2637;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0 1.25rem 4rem; background: var(--bg); color: var(--text);
+    font: 16px/1.6 'Hanken Grotesk', system-ui, sans-serif;
+  }
+  main { max-width: 62rem; margin: 0 auto; }
+  h1 { font-size: 2.25rem; margin: 2.5rem 0 0.5rem; }
+  h2 { font-size: 1.4rem; margin: 3rem 0 0.75rem; scroll-margin-top: 1rem; }
+  a { color: var(--react); }
+  .lede, .note { color: var(--dim); }
+  .contents { columns: 2; margin: 1.5rem 0 0; padding: 0; list-style: none; }
+  .contents li { margin: 0.15rem 0; break-inside: avoid; }
+  .pair { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; }
+  @media (max-width: 60rem) { .pair { grid-template-columns: 1fr; } }
+  .pane { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
+  .pane h3 {
+    margin: 0; padding: 0.6rem 0.9rem; font-size: 0.75rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--dim); border-bottom: 1px solid var(--line);
+  }
+  pre { margin: 0; padding: 0.9rem; overflow-x: auto; }
+  code { font: 13px/1.55 'JetBrains Mono', ui-monospace, monospace; }
+
+  table { border-collapse: collapse; margin: 1rem 0; width: 100%; }
+  th, td { border: 1px solid var(--line); padding: 0.45rem 0.7rem; text-align: left; vertical-align: top; }
+  th { color: var(--dim); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  pre { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; margin: 1rem 0; }
+  p code, li code, td code { background: var(--panel); border-radius: 4px; padding: 0.1rem 0.35rem; }
+  h3 { margin: 2rem 0 0.5rem; font-size: 1.05rem; }
+</style>
+</head>
+<body>
+<main>
+<p class="note"><a href="./index.html">Home</a> · <a href="./cookbook.html">Cookbook</a> · <a href="./api-reference.html">API reference</a></p>
+<h1>Config mapping — what fsx writes, and what it does not</h1>
+<p>A Flutter.tsx project is configured in two files, and everything native is produced from them by the Flutter toolchain. This page says exactly which of your native project files fsx owns — and, just as importantly, which it leaves to you today.</p>
+<h2>What you configure</h2>
+<table>
+<thead><tr><th>File</th><th>Holds</th></tr></thead>
+<tbody>
+<tr><td><code>fsx.config.ts</code></td><td><code>name</code>, <code>bundleId</code>, and the default <code>target</code> (<code>web</code> · <code>ios</code> · <code>android</code> · <code>macos</code> · <code>windows</code> · <code>linux</code>)</td></tr>
+<tr><td><code>package.json</code></td><td>npm dependencies, and the <code>&quot;plugins&quot;</code> map — pub packages and their version constraints</td></tr>
+</tbody>
+</table>
+<p>Nothing else is a Flutter.tsx config surface. There is no theme file, no permissions file, no locales file: the app is TSX, and everything else belongs to Flutter's own project.</p>
+<h2>What fsx writes</h2>
+<table>
+<thead><tr><th>Target file</th><th>Written by</th><th>When</th></tr></thead>
+<tbody>
+<tr><td><code>lib/**/*.dart</code></td><td><code>fsx dev</code>, <code>fsx build</code></td><td>Every compile, from <code>src/**/*.tsx</code>; formatted with <code>dart format</code></td></tr>
+<tr><td><code>lib/main.dart</code></td><td><code>fsx init</code>, then every compile</td><td>Only while it carries the generated marker — remove the marker and fsx never touches it again</td></tr>
+<tr><td><code>pubspec.yaml</code> dependencies</td><td><code>fsx install</code></td><td>From the <code>&quot;plugins&quot;</code> map, via <code>flutter pub add</code> / <code>pub remove</code> — fsx never edits the YAML itself</td></tr>
+<tr><td><code>pubspec.lock</code></td><td><code>flutter pub</code></td><td>As a consequence of the above</td></tr>
+<tr><td><code>.fsx/types/*.d.ts</code></td><td><code>fsx install</code></td><td>The <code>plugin:&lt;name&gt;</code> typings, generated from the resolved plugin version</td></tr>
+<tr><td><code>.fsx/api/*.json</code></td><td><code>fsx install</code></td><td>The extracted plugin API the compiler compiles against</td></tr>
+<tr><td><code>.fsx/plugins.json</code></td><td><code>fsx install</code></td><td>What was installed, so the next run can tell an unchanged plugin from a removed one</td></tr>
+<tr><td><code>web/</code>, <code>macos/</code>, <code>ios/</code>, <code>android/</code>, <code>windows/</code>, <code>linux/</code></td><td><code>fsx init</code>, <code>fsx build</code></td><td>Created by <code>flutter create</code> for the platform being built, if the project has none</td></tr>
+</tbody>
+</table>
+<p><code>lib/</code> and <code>.fsx/</code> are generated and gitignored. A fresh clone needs <code>bun install &amp;&amp; fsx install</code>, and both are rebuilt.</p>
+<h2>What fsx does not write yet</h2>
+<p><strong>Native permission and capability declarations.</strong> Every plugin states what a host app must declare — <code>NSCameraUsageDescription</code> on Apple platforms, <code>android.permission.CAMERA</code> on Android, the matching entitlements on macOS — and Flutter.tsx already extracts that from each plugin's own source, alongside the API it types. Nothing writes it into <code>Info.plist</code>, <code>AndroidManifest.xml</code> or the entitlements files today: after adding a plugin that needs a capability, add the declaration to the native file yourself, as you would in a Flutter project.</p>
+<p>The extracted requirements per plugin look like this, and are what a later release will merge into the native files:</p>
+<table>
+<thead><tr><th>Capability</th><th>iOS / macOS (<code>Info.plist</code>)</th><th>Android (<code>AndroidManifest.xml</code>)</th><th>macOS entitlement</th></tr></thead>
+<tbody>
+<tr><td>camera</td><td><code>NSCameraUsageDescription</code></td><td><code>android.permission.CAMERA</code></td><td><code>com.apple.security.device.camera</code></td></tr>
+<tr><td>microphone</td><td><code>NSMicrophoneUsageDescription</code></td><td><code>android.permission.RECORD_AUDIO</code></td><td><code>com.apple.security.device.audio-input</code></td></tr>
+<tr><td>location</td><td><code>NSLocationWhenInUseUsageDescription</code></td><td><code>android.permission.ACCESS_FINE_LOCATION</code></td><td><code>com.apple.security.personal-information.location</code></td></tr>
+<tr><td>photos</td><td><code>NSPhotoLibraryUsageDescription</code></td><td><code>android.permission.READ_MEDIA_IMAGES</code></td><td><code>com.apple.security.files.user-selected.read-write</code></td></tr>
+<tr><td>network</td><td>—</td><td><code>android.permission.INTERNET</code></td><td><code>com.apple.security.network.client</code></td></tr>
+</tbody>
+</table>
+<p><strong>Signing, icons, splash screens and store metadata.</strong> These belong to the native projects <code>flutter create</code> produced; edit them there.</p>
+<p><strong>Theme.</strong> An app's theme is Dart in the entry point. <code>fsx</code> generates a plain <code>MaterialApp</code>; to theme it, take over <code>lib/main.dart</code> by removing the generated marker, or wrap your root component in the widgets you want.</p>
+<h2>Why it is drawn this way</h2>
+<p>The native projects are ordinary Flutter projects — nothing in them is Flutter.tsx's invention, and any Flutter documentation about them applies unchanged. Flutter.tsx owns the part it can own completely and provably: the Dart compiled from your TSX, and the plugin surface that Dart compiles against.</p>
+</main>
+</body>
+</html>

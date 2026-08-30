@@ -1,100 +1,66 @@
-# Config mapping — fsx config → native config, per platform
+# Config mapping — what fsx writes, and what it does not
 
-How each **flutter-tsx config key** fans out to the **native files** every platform expects. Cross-platform values are declared **once** (in `config/app.ts` or a semantic surface) and fsx writes the per-platform native config for you; the irreducibly OS-specific bits live in `config/platforms/<os>.ts`.
+A Flutter.tsx project is configured in two files, and everything native is produced from
+them by the Flutter toolchain. This page says exactly which of your native project files
+fsx owns — and, just as importantly, which it leaves to you today.
 
-Legend: ✅ written by fsx · — N/A by platform design (the OS has no such concept) · 🔑 credential file in gitignored `signing/<os>/`.
+## What you configure
 
----
+| File | Holds |
+| --- | --- |
+| `fsx.config.ts` | `name`, `bundleId`, and the default `target` (`web` · `ios` · `android` · `macos` · `windows` · `linux`) |
+| `package.json` | npm dependencies, and the `"plugins"` map — pub packages and their version constraints |
 
-## Permissions — `config/permissions.ts` (+ inferred from hooks)
+Nothing else is a Flutter.tsx config surface. There is no theme file, no permissions file,
+no locales file: the app is TSX, and everything else belongs to Flutter's own project.
 
-Capabilities are **inferred** from the hooks you use (`useCamera()` → `camera`); `config/permissions.ts` only customizes the usage string. One capability → the right native key on every platform that gates it.
+## What fsx writes
 
-| fsx capability | iOS (`Info.plist`)                    | Android (`AndroidManifest.xml`) | macOS (`Info.plist` + `*.entitlements`)                            | Windows | Linux |
-| -------------- | ------------------------------------- | ------------------------------- | ------------------------------------------------------------------ | ------- | ----- |
-| `camera`       | `NSCameraUsageDescription`            | `android.permission.CAMERA`     | `NSCameraUsageDescription` + `com.apple.security.device.camera`    | —       | —     |
-| `microphone`   | `NSMicrophoneUsageDescription`        | `RECORD_AUDIO`                  | usage string + `com.apple.security.device.audio-input`             | —       | —     |
-| `location`     | `NSLocationWhenInUseUsageDescription` | `ACCESS_FINE_LOCATION`          | usage string + `com.apple.security.personal-information.location`  | —       | —     |
-| `photos`       | `NSPhotoLibrary*UsageDescription`     | `READ_EXTERNAL_STORAGE`         | usage string + `com.apple.security.files.user-selected.read-write` | —       | —     |
-| `contacts`     | `NSContactsUsageDescription`          | `READ_CONTACTS`                 | `com.apple.security.personal-information.addressbook`              | —       | —     |
-| `calendar`     | `NSCalendarsUsageDescription`         | `READ/WRITE_CALENDAR`           | `com.apple.security.personal-information.calendars`                | —       | —     |
-| `bluetooth`    | `NSBluetoothAlwaysUsageDescription`   | `BLUETOOTH*`                    | `com.apple.security.device.bluetooth`                              | —       | —     |
+| Target file | Written by | When |
+| --- | --- | --- |
+| `lib/**/*.dart` | `fsx dev`, `fsx build` | Every compile, from `src/**/*.tsx`; formatted with `dart format` |
+| `lib/main.dart` | `fsx init`, then every compile | Only while it carries the generated marker — remove the marker and fsx never touches it again |
+| `pubspec.yaml` dependencies | `fsx install` | From the `"plugins"` map, via `flutter pub add` / `pub remove` — fsx never edits the YAML itself |
+| `pubspec.lock` | `flutter pub` | As a consequence of the above |
+| `.fsx/types/*.d.ts` | `fsx install` | The `plugin:<name>` typings, generated from the resolved plugin version |
+| `.fsx/api/*.json` | `fsx install` | The extracted plugin API the compiler compiles against |
+| `.fsx/plugins.json` | `fsx install` | What was installed, so the next run can tell an unchanged plugin from a removed one |
+| `web/`, `macos/`, `ios/`, `android/`, `windows/`, `linux/` | `fsx init`, `fsx build` | Created by `flutter create` for the platform being built, if the project has none |
 
-**Windows/Linux are "—" by design:** a desktop binary isn't gated behind a capability manifest the way mobile/sandboxed-macOS apps are, so there is nothing to write — not a gap.
+`lib/` and `.fsx/` are generated and gitignored. A fresh clone needs `bun install && fsx
+install`, and both are rebuilt.
 
-Sources: [Apple — Information Property List](https://developer.apple.com/documentation/bundleresources/information_property_list) · [Apple — App Sandbox entitlements](https://developer.apple.com/documentation/security/app_sandbox) · [Android — `<uses-permission>`](https://developer.android.com/guide/topics/manifest/uses-permission-element)
+## What fsx does not write yet
 
----
+**Native permission and capability declarations.** Every plugin states what a host app
+must declare — `NSCameraUsageDescription` on Apple platforms, `android.permission.CAMERA`
+on Android, the matching entitlements on macOS — and Flutter.tsx already extracts that
+from each plugin's own source, alongside the API it types. Nothing writes it into
+`Info.plist`, `AndroidManifest.xml` or the entitlements files today: after adding a plugin
+that needs a capability, add the declaration to the native file yourself, as you would in
+a Flutter project.
 
-## Deep / universal links — `config/links.ts`
+The extracted requirements per plugin look like this, and are what a later release will
+merge into the native files:
 
-`{ scheme, domains }` → custom-scheme handling + verified-domain (universal/app) links.
+| Capability | iOS / macOS (`Info.plist`) | Android (`AndroidManifest.xml`) | macOS entitlement |
+| --- | --- | --- | --- |
+| camera | `NSCameraUsageDescription` | `android.permission.CAMERA` | `com.apple.security.device.camera` |
+| microphone | `NSMicrophoneUsageDescription` | `android.permission.RECORD_AUDIO` | `com.apple.security.device.audio-input` |
+| location | `NSLocationWhenInUseUsageDescription` | `android.permission.ACCESS_FINE_LOCATION` | `com.apple.security.personal-information.location` |
+| photos | `NSPhotoLibraryUsageDescription` | `android.permission.READ_MEDIA_IMAGES` | `com.apple.security.files.user-selected.read-write` |
+| network | — | `android.permission.INTERNET` | `com.apple.security.network.client` |
 
-| field     | iOS                                                         | Android                                          | macOS                                    | Windows                                            | Linux                                            |
-| --------- | ----------------------------------------------------------- | ------------------------------------------------ | ---------------------------------------- | -------------------------------------------------- | ------------------------------------------------ |
-| `scheme`  | `CFBundleURLTypes` (`Info.plist`)                           | `<intent-filter>` scheme (`AndroidManifest.xml`) | `CFBundleURLTypes` (`Info.plist`)        | `signing/`-free `<scheme>.reg` (HKCU URL Protocol) | `<scheme>.desktop` (`x-scheme-handler/<scheme>`) |
-| `domains` | `com.apple.developer.associated-domains` (`*.entitlements`) | `autoVerify` `<intent-filter>` (`https`)         | `com.apple.developer.associated-domains` | —                                                  | —                                                |
+**Signing, icons, splash screens and store metadata.** These belong to the native projects
+`flutter create` produced; edit them there.
 
-Windows `.reg` / Linux `.desktop` registration is partly an install-time step; fsx emits the artifact, the installer/packager applies it.
+**Theme.** An app's theme is Dart in the entry point. `fsx` generates a plain
+`MaterialApp`; to theme it, take over `lib/main.dart` by removing the generated marker,
+or wrap your root component in the widgets you want.
 
-Sources: [Apple — Universal Links](https://developer.apple.com/documentation/xcode/supporting-universal-links-in-your-app) · [Android — App Links](https://developer.android.com/training/app-links)
+## Why it is drawn this way
 
----
-
-## Theme · env · i18n (fully cross-platform — same Dart everywhere)
-
-| fsx config        | Output                                                  | Platforms |
-| ----------------- | ------------------------------------------------------- | --------- |
-| `config/theme.ts` | Material 3 `ThemeData` injected into your `MaterialApp` | all 6     |
-| `config/env.ts`   | `--dart-define=KEY=VALUE` build flags                   | all 6     |
-| `locales/*.json`  | generated `l10n.dart` (`const t = useTranslations()`)   | all 6     |
-
-These are Dart-level — no native files involved, so they're identical on every target.
-
----
-
-## System tray / menubar — `config/tray.ts` (desktop)
-
-Presence of `config/tray.ts` turns a desktop app into a tray/menubar app. fsx
-generates an async `main.dart` bootstrap and adds the native deps.
-
-| fsx config       | Output                                                                                                                                                                   | Platforms               |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------- |
-| `config/tray.ts` | `window_manager` + `tray_manager` deps; `main.dart` tray bootstrap (icon from `icons/tray.png`, falling back to `icons/icon.png`; context menu; Show/Hide/Quit listener) | macOS · Windows · Linux |
-
-```ts
-import type { TrayConfig } from 'flutter-tsx/config';
-export default {
-  tooltip: 'My App',
-  menu: [
-    { label: 'Show', action: 'show' },
-    { label: 'Quit', action: 'quit' },
-  ],
-} satisfies TrayConfig;
-```
-
----
-
-## Signing & release — `config/platforms/<os>.ts` + gitignored `signing/<os>/`
-
-The genuinely platform-bound surface. Typed config is committed; the credential **files** live in gitignored `signing/<os>/` and are referenced by path. Passwords come from environment variables (named in the config), never source.
-
-| platform | `config/platforms/<os>.ts`                           | fsx action                                               | credential 🔑            |
-| -------- | ---------------------------------------------------- | -------------------------------------------------------- | ------------------------ |
-| android  | `signing: { keystore, keyAlias, storePasswordEnv? }` | writes `android/key.properties` (pre-build)              | `signing/android/*.jks`  |
-| ios      | `teamId?`, `firebase?`                               | copies FCM plist; team id for Xcode signing              | profile/cert in Xcode    |
-| macos    | `signing: { identity, notarize? }`                   | `codesign` + `xcrun notarytool` + `stapler` (post-build) | Developer ID in keychain |
-| windows  | `signing: { certificate, passwordEnv? }`             | `signtool sign` (Authenticode, post-build)               | `signing/windows/*.pfx`  |
-| linux    | `signing: { gpgKeyEnv? }`                            | optional GPG artifact signing                            | GPG key                  |
-
-FCM/push files: `config/platforms/android.ts → firebase: 'signing/android/google-services.json'`, `ios.ts → firebase: '…/GoogleService-Info.plist'`.
-
-Sources: [Flutter — Android deployment](https://docs.flutter.dev/deployment/android) · [Apple — Notarizing macOS software](https://developer.apple.com/documentation/security/notarizing-macos-software-before-distribution) · [Microsoft — SignTool](https://learn.microsoft.com/windows/win32/seccrypto/signtool)
-
----
-
-## Key-placement rule (where does a key go?)
-
-1. **Same concept across targets** — even if the natives name it differently (iOS `isSomething` vs Android `something`) — collapses to **one semantic key** in `config/app.ts` / a semantic surface. fsx writes the differently-named native keys for you.
-2. **Genuinely unique to one platform** → `config/platforms/<os>.ts`.
-3. Tie-breaker = ease-of-use: if one key can serve multiple targets, unify it. `config/app.ts` wins; the platform file fills only the OS-specific leftovers.
+The native projects are ordinary Flutter projects — nothing in them is Flutter.tsx's
+invention, and any Flutter documentation about them applies unchanged. Flutter.tsx owns
+the part it can own completely and provably: the Dart compiled from your TSX, and the
+plugin surface that Dart compiles against.
