@@ -15,6 +15,9 @@ const TABLE_DIVIDER = /^\|[\s:|-]+\|$/;
 const INLINE_CODE = /`([^`]+)`/g;
 const BOLD = /\*\*([^*]+)\*\*/g;
 const LINK = /\[([^\]]+)\]\(([^)]+)\)/g;
+// A sibling page, written as the `.md` GitHub renders. The site publishes it
+// as `.html`, where the `.md` would be a raw file rather than a page.
+const SIBLING_PAGE = /^(\.\/[^/:]+)\.md$/;
 
 /** Escapes the text, then applies the inline constructs. */
 const inline = (raw: string): string =>
@@ -23,7 +26,8 @@ const inline = (raw: string): string =>
     .replace(BOLD, (_match, text: string) => `<strong>${text}</strong>`)
     .replace(
       LINK,
-      (_match, text: string, href: string) => `<a href="${href}">${text}</a>`,
+      (_match, text: string, href: string) =>
+        `<a href="${href.replace(SIBLING_PAGE, '$1.html')}">${text}</a>`,
     );
 
 const cells = (row: string): string[] =>

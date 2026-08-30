@@ -53,7 +53,29 @@ describe('renderMarkdown', () => {
 
   test('a link inside a table cell still renders', () => {
     expect(renderMarkdown('| A |\n| --- |\n| [x](./y.md) |\n')).toContain(
-      '<a href="./y.md">x</a>',
+      '<a href="./y.html">x</a>',
     );
+  });
+});
+
+describe('links between the doc pages', () => {
+  test('points a sibling markdown link at the page the site publishes', () => {
+    // The markdown is the source GitHub renders, where `.md` is right; the
+    // site renders each sibling to `.html`, where it is a raw file download.
+    expect(
+      renderMarkdown('See the [config mapping](./config-mapping.md).'),
+    ).toBe(
+      '<p>See the <a href="./config-mapping.html">config mapping</a>.</p>',
+    );
+  });
+
+  test('leaves an external link alone', () => {
+    expect(renderMarkdown('[pub](https://pub.dev/packages/camera)')).toBe(
+      '<p><a href="https://pub.dev/packages/camera">pub</a></p>',
+    );
+  });
+
+  test('leaves an anchor alone', () => {
+    expect(renderMarkdown('[top](#top)')).toBe('<p><a href="#top">top</a></p>');
   });
 });
