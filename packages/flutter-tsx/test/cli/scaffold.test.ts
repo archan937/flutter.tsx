@@ -1,6 +1,11 @@
+import { mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+
 import { describe, expect, test } from 'bun:test';
 
 import { scaffoldFiles, type ScaffoldOptions } from '@src/cli/scaffold';
+import { transpileComponent } from '@src/compiler/transpile';
 import { FLUTTER_TSX_VERSION } from '@src/index';
 
 const options: ScaffoldOptions = {
@@ -24,6 +29,8 @@ describe('scaffoldFiles', () => {
       'fsx.config.ts',
       'package.json',
       'src/App.tsx',
+      'src/components/Greeting.tsx',
+      'src/helpers/format.tsx',
       'tsconfig.json',
     ]);
   });
@@ -82,27 +89,35 @@ export default {
     );
   });
 
-  test('the starter component compiles as it stands', () => {
-    expect(fileNamed('src/App.tsx')).toBe(
-      `import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+  test('the starter app compiles, every file of it', async () => {
+    // The scaffold is the recommended layout, so it has to be a layout that
+    // works: App renders a component from components/, which calls a helper
+    // from helpers/, and each file becomes the Dart file beside it.
+    const root = await mkdtemp(join(tmpdir(), 'fsx-scaffold-'));
+    for (const file of scaffoldFiles(options)) {
+      await Bun.write(join(root, file.path), file.contents);
+    }
 
-export const App = () => {
-  const [count, setCount] = useState(0);
+    const dartFor = async (relative: string): Promise<string> => {
+      const filePath = join(root, 'src', relative);
+      return transpileComponent({
+        source: await Bun.file(filePath).text(),
+        filePath,
+      });
+    };
 
-  const increment = () => {
-    setCount(count + 1);
-  };
-
-  return (
-    <Column>
-      <Text>Count: {count}</Text>
-      <ElevatedButton onClick={increment}>Increment</ElevatedButton>
-    </Column>
-  );
-};
-`,
+    expect(await dartFor('App.tsx')).toContain(
+      "import 'components/greeting.dart';",
     );
-  });
+    expect(await dartFor('components/Greeting.tsx')).toContain(
+      "import '../helpers/format.dart';",
+    );
+    expect(await dartFor('helpers/format.tsx')).toContain(
+      'String shout(String value) => value.trim().toUpperCase();',
+    );
+
+    await rm(root, { recursive: true, force: true });
+  }, 60000);
 
   test('generated Dart and build output stay out of version control', () => {
     expect(fileNamed('.gitignore')).toBe(

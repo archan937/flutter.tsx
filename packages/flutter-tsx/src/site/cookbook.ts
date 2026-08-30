@@ -11,6 +11,8 @@ import {
   SHELL_JS,
   sidebarHtml,
   type SitePageId,
+  TABS_CSS,
+  TABS_JS,
 } from './shell';
 
 /** One file of an example, on both sides of the compiler. */
@@ -124,6 +126,7 @@ export const loadRecipes = async (fixturesDir: string): Promise<Recipe[]> => {
 const PAGE_CSS = `
 ${SHELL_CSS}
 ${NAV_CSS}
+${TABS_CSS}
 main { padding-top: 40px; }
 .lede, .note { color: var(--muted); max-width: 68ch; }
 .note { font-size: 14px; }
@@ -133,12 +136,6 @@ main { padding-top: 40px; }
 .recipe h3 { font-family: var(--display); font-size: 18px; font-weight: 700;
   letter-spacing: -.01em; margin-bottom: 8px; color: var(--text); }
 .recipe .blurb { color: var(--muted); font-size: 14px; margin-bottom: 16px; max-width: 68ch; }
-.pair { display: grid; gap: 14px; grid-template-columns: 1fr 1fr; margin-bottom: 12px; }
-@media (max-width: 1100px) { .pair { grid-template-columns: 1fr; } }
-.pane { border: 1px solid var(--line); border-radius: 10px; overflow: hidden;
-  background: rgba(7,9,15,.5); min-width: 0; }
-.pane h4 { padding: 8px 12px; font-family: var(--mono); font-size: 11px; font-weight: 600;
-  color: var(--dim); border-bottom: 1px solid var(--line); letter-spacing: .02em; }
 pre { margin: 0; padding: 14px; overflow-x: auto; }
 code { font-family: var(--mono); font-size: 12.5px; line-height: 1.6; }
 main table { border-collapse: collapse; margin: 16px 0; width: 100%; font-size: 14px; }
@@ -151,17 +148,38 @@ main h3 { font-family: var(--display); font-size: 17px; margin: 28px 0 8px; }
 main p { margin-bottom: 12px; }
 ${HIGHLIGHT_CSS}`;
 
-const filePanes = (file: RecipeFile): string =>
-  `<div class="pair">
-<div class="pane"><h4>${escapeHtml(file.tsxName)}</h4>${codeBlock(file.tsx, 'tsx')}</div>
-<div class="pane"><h4>${escapeHtml(file.dartName)}</h4>${codeBlock(file.dart, 'dart')}</div>
-</div>`;
+/**
+ * Every file of an example, as tabs.
+ *
+ * Two panes side by side means two narrow columns, each scrolling
+ * horizontally — the code is the point, so it gets the full width and the
+ * reader picks the file.
+ */
+const fileTabs = (files: RecipeFile[]): string => {
+  const panels = files.flatMap((file) => [
+    { name: file.tsxName, code: file.tsx, language: 'tsx' as const },
+    { name: file.dartName, code: file.dart, language: 'dart' as const },
+  ]);
+  const buttons = panels
+    .map(
+      (panel, index) =>
+        `<button class="tab-btn${index === 0 ? ' active' : ''}" data-tab="${escapeHtml(panel.name)}" role="tab" aria-selected="${index === 0}">${escapeHtml(panel.name)}</button>`,
+    )
+    .join('\n');
+  const bodies = panels
+    .map(
+      (panel, index) =>
+        `<div class="tab-panel${index === 0 ? ' active' : ''}" data-panel="${escapeHtml(panel.name)}" role="tabpanel">${codeBlock(panel.code, panel.language)}</div>`,
+    )
+    .join('\n');
+  return `<div class="tabs">\n<div class="tab-btns" role="tablist">\n${buttons}\n</div>\n${bodies}\n</div>`;
+};
 
 const recipeSection = (recipe: Recipe): string =>
   `<section class="recipe" id="${escapeHtml(recipe.id)}" data-name="${escapeHtml(recipe.title)}">
 <h3>${escapeHtml(recipe.title)}</h3>
 <p class="blurb">${inlineDoc(recipe.blurb)}</p>
-${recipe.files.map(filePanes).join('\n')}
+${fileTabs(recipe.files)}
 </section>`;
 
 const byCategory = (recipes: Recipe[]): [string, Recipe[]][] =>
@@ -222,6 +240,7 @@ ${byCategory(recipes)
 (function () {
   'use strict';
 ${SHELL_JS}
+${TABS_JS}
 })();
 </script>
 </body>
@@ -431,6 +450,7 @@ ${body}
 (function () {
   'use strict';
 ${SHELL_JS}
+${TABS_JS}
 })();
 </script>
 </body>

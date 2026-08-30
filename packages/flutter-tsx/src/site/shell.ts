@@ -92,6 +92,38 @@ ${navHtml}
 export const navGroupsHtml = (groups: NavGroup[]): string =>
   groups.map(navGroup).join('\n');
 
+/** The tabbed pane every page shows code in — never two panes side by side. */
+export const TABS_CSS = `
+.tabs { margin-top: 14px; border: 1px solid var(--line); border-radius: 11px; overflow: hidden; background: rgba(7,9,15,.5); }
+.tab-btns { display: flex; flex-wrap: wrap; background: rgba(255,255,255,.02); border-bottom: 1px solid var(--line); }
+.tab-btn { background: none; border: none; border-bottom: 2px solid transparent;
+  margin-bottom: -1px; padding: 9px 18px; cursor: pointer; font-family: var(--mono); font-size: 12px; font-weight: 600;
+  color: var(--muted); transition: color .15s; letter-spacing: .04em; }
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--react); border-bottom-color: var(--react); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+`;
+
+/** Switches the tabbed panes, by delegation, so one listener serves them all. */
+export const TABS_JS = `
+  document.addEventListener('click', function (e) {
+    const btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+    const tabs = btn.closest('.tabs');
+    if (!tabs) return;
+    const tab = btn.dataset.tab;
+    tabs.querySelectorAll('.tab-btn').forEach(function (b) {
+      const active = b.dataset.tab === tab;
+      b.classList.toggle('active', active);
+      b.setAttribute('aria-selected', String(active));
+    });
+    tabs.querySelectorAll('.tab-panel').forEach(function (p) {
+      p.classList.toggle('active', p.dataset.panel === tab);
+    });
+  });
+`;
+
 export const NAV_CSS = `
 .site-nav { display: flex; flex-direction: column; gap: 1px; margin: 0 0 14px; }
 .site-nav a, .site-nav .here {

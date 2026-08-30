@@ -106,6 +106,17 @@ h2:first-of-type { margin-top: 0; }
 .site-nav .ghstars { margin-top: 6px; border-top: 1px solid var(--line-soft); padding-top: 9px; }
 .site-nav .ghstars svg { color: var(--amber, #f5d761); }
 
+
+.tabs { margin-top: 14px; border: 1px solid var(--line); border-radius: 11px; overflow: hidden; background: rgba(7,9,15,.5); }
+.tab-btns { display: flex; flex-wrap: wrap; background: rgba(255,255,255,.02); border-bottom: 1px solid var(--line); }
+.tab-btn { background: none; border: none; border-bottom: 2px solid transparent;
+  margin-bottom: -1px; padding: 9px 18px; cursor: pointer; font-family: var(--mono); font-size: 12px; font-weight: 600;
+  color: var(--muted); transition: color .15s; letter-spacing: .04em; }
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--react); border-bottom-color: var(--react); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
 main { padding-top: 40px; }
 .lede, .note { color: var(--muted); max-width: 68ch; }
 .note { font-size: 14px; }
@@ -115,12 +126,6 @@ main { padding-top: 40px; }
 .recipe h3 { font-family: var(--display); font-size: 18px; font-weight: 700;
   letter-spacing: -.01em; margin-bottom: 8px; color: var(--text); }
 .recipe .blurb { color: var(--muted); font-size: 14px; margin-bottom: 16px; max-width: 68ch; }
-.pair { display: grid; gap: 14px; grid-template-columns: 1fr 1fr; margin-bottom: 12px; }
-@media (max-width: 1100px) { .pair { grid-template-columns: 1fr; } }
-.pane { border: 1px solid var(--line); border-radius: 10px; overflow: hidden;
-  background: rgba(7,9,15,.5); min-width: 0; }
-.pane h4 { padding: 8px 12px; font-family: var(--mono); font-size: 11px; font-weight: 600;
-  color: var(--dim); border-bottom: 1px solid var(--line); letter-spacing: .02em; }
 pre { margin: 0; padding: 14px; overflow-x: auto; }
 code { font-family: var(--mono); font-size: 12.5px; line-height: 1.6; }
 main table { border-collapse: collapse; margin: 16px 0; width: 100%; font-size: 14px; }
@@ -242,8 +247,12 @@ main p { margin-bottom: 12px; }
 <section class="recipe" id="02-hello-column" data-name="Your first screen">
 <h3>Your first screen</h3>
 <p class="blurb">A component is a function returning JSX. Flutter widgets are the tags, their named parameters are the props, and the emitted Dart is a plain StatelessWidget.</p>
-<div class="pair">
-<div class="pane"><h4>src/HelloScreen.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Center</span>, <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/HelloScreen.tsx" role="tab" aria-selected="true">src/HelloScreen.tsx</button>
+<button class="tab-btn" data-tab="hello_screen.dart" role="tab" aria-selected="false">hello_screen.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/HelloScreen.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Center</span>, <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">HelloScreen</span> = () =&gt; (
   &lt;<span class="tok-typ">Column</span> mainAxisAlignment=<span class="tok-str">&quot;center&quot;</span>&gt;
@@ -253,7 +262,7 @@ main p { margin-bottom: 12px; }
     &lt;/<span class="tok-typ">Center</span>&gt;
   &lt;/<span class="tok-typ">Column</span>&gt;
 );</code></pre></div>
-<div class="pane"><h4>hello_screen.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="hello_screen.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">HelloScreen</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">HelloScreen</span>({<span class="tok-kw">super</span>.key});
@@ -274,8 +283,12 @@ main p { margin-bottom: 12px; }
 <section class="recipe" id="03-styled-container" data-name="Padding, colour and text style">
 <h3>Padding, colour and text style</h3>
 <p class="blurb">Values you would write as Dart objects are written as TSX props: <code>padding={16}</code> becomes <code>EdgeInsets.all(16)</code>, a hex string becomes a <code>Color</code>, and a style object becomes a <code>TextStyle</code>.</p>
-<div class="pair">
-<div class="pane"><h4>src/StyledCard.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Container</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/StyledCard.tsx" role="tab" aria-selected="true">src/StyledCard.tsx</button>
+<button class="tab-btn" data-tab="styled_card.dart" role="tab" aria-selected="false">styled_card.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/StyledCard.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Container</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">StyledCard</span> = () =&gt; (
   &lt;<span class="tok-typ">Container</span> padding={<span class="tok-num">16</span>} color=<span class="tok-str">&quot;#7B1FA2&quot;</span> alignment=<span class="tok-str">&quot;center&quot;</span>&gt;
@@ -287,7 +300,7 @@ main p { margin-bottom: 12px; }
     &lt;/<span class="tok-typ">Column</span>&gt;
   &lt;/<span class="tok-typ">Container</span>&gt;
 );</code></pre></div>
-<div class="pane"><h4>styled_card.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="styled_card.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">StyledCard</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">StyledCard</span>({<span class="tok-kw">super</span>.key});
@@ -320,8 +333,12 @@ main p { margin-bottom: 12px; }
 <section class="recipe" id="04-inline-handler" data-name="Handling a callback prop">
 <h3>Handling a callback prop</h3>
 <p class="blurb">An arrow function passed to a widget prop compiles to the Dart callback that prop expects, with the parameter names the SDK declares.</p>
-<div class="pair">
-<div class="pane"><h4>src/Toggles.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Switch</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Toggles.tsx" role="tab" aria-selected="true">src/Toggles.tsx</button>
+<button class="tab-btn" data-tab="toggles.dart" role="tab" aria-selected="false">toggles.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Toggles.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Switch</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Toggles</span> = () =&gt; (
   &lt;<span class="tok-typ">Column</span>&gt;
@@ -330,7 +347,7 @@ main p { margin-bottom: 12px; }
     &lt;<span class="tok-typ">Switch</span> value={<span class="tok-kw">false</span>} onChanged={(_enabled) =&gt; {}} /&gt;
   &lt;/<span class="tok-typ">Column</span>&gt;
 );</code></pre></div>
-<div class="pane"><h4>toggles.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="toggles.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">Toggles</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">Toggles</span>({<span class="tok-kw">super</span>.key});
@@ -351,8 +368,12 @@ main p { margin-bottom: 12px; }
 <section class="recipe" id="05-counter" data-name="State with useState">
 <h3>State with useState</h3>
 <p class="blurb">The hook you already know. The compiler sees the component holds state, emits a StatefulWidget, and wraps the assignment in <code>setState</code> so the rebuild happens.</p>
-<div class="pair">
-<div class="pane"><h4>src/Counter.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Counter.tsx" role="tab" aria-selected="true">src/Counter.tsx</button>
+<button class="tab-btn" data-tab="counter.dart" role="tab" aria-selected="false">counter.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Counter.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Counter</span> = () =&gt; {
   <span class="tok-kw">const</span> [count, setCount] = <span class="tok-fn">useState</span>(<span class="tok-num">0</span>);
@@ -368,7 +389,7 @@ main p { margin-bottom: 12px; }
     &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre></div>
-<div class="pane"><h4>counter.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="counter.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">Counter</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">Counter</span>({<span class="tok-kw">super</span>.key});
@@ -402,8 +423,12 @@ main p { margin-bottom: 12px; }
 <section class="recipe" id="08-composition" data-name="Composing your own components">
 <h3>Composing your own components</h3>
 <p class="blurb">A component used in the same file becomes its own widget class, constructed where you wrote the tag — the same composition you write in React.</p>
-<div class="pair">
-<div class="pane"><h4>src/Welcome.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Center</span>, <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Welcome.tsx" role="tab" aria-selected="true">src/Welcome.tsx</button>
+<button class="tab-btn" data-tab="welcome.dart" role="tab" aria-selected="false">welcome.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Welcome.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Center</span>, <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
 <span class="tok-kw">const</span> <span class="tok-typ">Greeting</span> = ({ name }: { name: string }) =&gt; &lt;<span class="tok-typ">Text</span>&gt;Hello, {name}!&lt;/<span class="tok-typ">Text</span>&gt;;
 
@@ -415,7 +440,7 @@ export const Welcome = () =&gt; (
     &lt;/<span class="tok-typ">Column</span>&gt;
   &lt;/<span class="tok-typ">Center</span>&gt;
 );</code></pre></div>
-<div class="pane"><h4>welcome.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="welcome.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">Greeting</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">Greeting</span>({<span class="tok-kw">super</span>.key, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.name});
@@ -448,8 +473,12 @@ export const Welcome = () =&gt; (
 <section class="recipe" id="09-typed-props" data-name="Typing props with an interface">
 <h3>Typing props with an interface</h3>
 <p class="blurb">A props interface becomes the widget constructor: each field a <code>required</code> named parameter and a <code>final</code> field, so a missing prop is a TypeScript error before it is a Dart one.</p>
-<div class="pair">
-<div class="pane"><h4>src/TaskBoard.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/TaskBoard.tsx" role="tab" aria-selected="true">src/TaskBoard.tsx</button>
+<button class="tab-btn" data-tab="task_board.dart" role="tab" aria-selected="false">task_board.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/TaskBoard.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
 <span class="tok-kw">interface</span> <span class="tok-typ">TaskProps</span> {
   title: string;
@@ -473,7 +502,7 @@ export const TaskBoard = () =&gt; {
     &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre></div>
-<div class="pane"><h4>task_board.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="task_board.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">Task</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">Task</span>({<span class="tok-kw">super</span>.key, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.title, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.done});
@@ -513,8 +542,12 @@ export const TaskBoard = () =&gt; {
 <section class="recipe" id="16-tap-target" data-name="Making anything tappable">
 <h3>Making anything tappable</h3>
 <p class="blurb">Gesture props on any widget compile to the <code>GestureDetector</code> Flutter needs, without you nesting one by hand.</p>
-<div class="pair">
-<div class="pane"><h4>src/TapTarget.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Container</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/TapTarget.tsx" role="tab" aria-selected="true">src/TapTarget.tsx</button>
+<button class="tab-btn" data-tab="tap_target.dart" role="tab" aria-selected="false">tap_target.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/TapTarget.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Container</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">TapTarget</span> = () =&gt; {
   <span class="tok-kw">const</span> [taps, setTaps] = <span class="tok-fn">useState</span>(<span class="tok-num">0</span>);
@@ -532,7 +565,7 @@ export const TaskBoard = () =&gt; {
     &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre></div>
-<div class="pane"><h4>tap_target.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="tap_target.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">TapTarget</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">TapTarget</span>({<span class="tok-kw">super</span>.key});
@@ -573,8 +606,12 @@ export const TaskBoard = () =&gt; {
 <section class="recipe" id="06-mount-effect" data-name="Running code on mount">
 <h3>Running code on mount</h3>
 <p class="blurb"><code>useEffect</code> with an empty dependency list is <code>initState</code> — the same idea, and the generated widget calls <code>super.initState()</code> for you.</p>
-<div class="pair">
-<div class="pane"><h4>src/Status.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useEffect, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Status.tsx" role="tab" aria-selected="true">src/Status.tsx</button>
+<button class="tab-btn" data-tab="status.dart" role="tab" aria-selected="false">status.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Status.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useEffect, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Status</span> = () =&gt; {
   <span class="tok-kw">const</span> [online, setOnline] = <span class="tok-fn">useState</span>(<span class="tok-kw">false</span>);
@@ -594,7 +631,7 @@ export const TaskBoard = () =&gt; {
     &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre></div>
-<div class="pane"><h4>status.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="status.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">Status</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">Status</span>({<span class="tok-kw">super</span>.key});
@@ -632,8 +669,12 @@ export const TaskBoard = () =&gt; {
 <section class="recipe" id="19-store-counter" data-name="State shared across screens">
 <h3>State shared across screens</h3>
 <p class="blurb"><code>createStore</code> emits a <code>ChangeNotifier</code> and one instance of it; <code>useStore</code> reads it and notifies listeners on write. No provider wiring to set up.</p>
-<div class="pair">
-<div class="pane"><h4>src/StoreCounter.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> {
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/StoreCounter.tsx" role="tab" aria-selected="true">src/StoreCounter.tsx</button>
+<button class="tab-btn" data-tab="store_counter.dart" role="tab" aria-selected="false">store_counter.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/StoreCounter.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> {
   <span class="tok-typ">Column</span>,
   createStore,
   <span class="tok-typ">ElevatedButton</span>,
@@ -659,7 +700,7 @@ export const TaskBoard = () =&gt; {
     &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre></div>
-<div class="pane"><h4>store_counter.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="store_counter.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> _CounterStore <span class="tok-kw">extends</span> <span class="tok-typ">ChangeNotifier</span> {
   <span class="tok-fn">_CounterStore</span>({<span class="tok-kw">required</span> <span class="tok-kw">this</span>.count, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.label});
@@ -710,8 +751,12 @@ export const TaskBoard = () =&gt; {
 <section class="recipe" id="29-branching-handler" data-name="Branching inside a handler">
 <h3>Branching inside a handler</h3>
 <p class="blurb">if / else if / else in an event handler compiles to the same branching in Dart, with every state assignment still wrapped in <code>setState</code>.</p>
-<div class="pair">
-<div class="pane"><h4>src/Stepper.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Stepper.tsx" role="tab" aria-selected="true">src/Stepper.tsx</button>
+<button class="tab-btn" data-tab="stepper.dart" role="tab" aria-selected="false">stepper.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Stepper.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Stepper</span> = () =&gt; {
   <span class="tok-kw">const</span> [count, setCount] = <span class="tok-fn">useState</span>(<span class="tok-num">0</span>);
@@ -733,7 +778,7 @@ export const TaskBoard = () =&gt; {
     &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre></div>
-<div class="pane"><h4>stepper.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="stepper.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">Stepper</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">Stepper</span>({<span class="tok-kw">super</span>.key});
@@ -776,8 +821,12 @@ export const TaskBoard = () =&gt; {
 <section class="recipe" id="33-control-flow" data-name="Loops, switch and try/catch">
 <h3>Loops, switch and try/catch</h3>
 <p class="blurb">for-of, switch with fallthrough, and try/catch all compile to their Dart equivalents, so a handler can be as ordinary as any other function you write.</p>
-<div class="pair">
-<div class="pane"><h4>src/Auditor.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Auditor.tsx" role="tab" aria-selected="true">src/Auditor.tsx</button>
+<button class="tab-btn" data-tab="auditor.dart" role="tab" aria-selected="false">auditor.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Auditor.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Auditor</span> = ({ entries }: { entries: string[] }) =&gt; {
   <span class="tok-kw">const</span> [status, setStatus] = <span class="tok-fn">useState</span>(<span class="tok-str">'idle'</span>);
@@ -812,7 +861,7 @@ export const TaskBoard = () =&gt; {
     &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre></div>
-<div class="pane"><h4>auditor.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="auditor.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">Auditor</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">Auditor</span>({<span class="tok-kw">super</span>.key, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.entries});
@@ -874,8 +923,12 @@ export const TaskBoard = () =&gt; {
 <section class="recipe" id="38-effect-cleanup" data-name="Cleaning up when a screen goes away">
 <h3>Cleaning up when a screen goes away</h3>
 <p class="blurb">The function an effect returns is its unmount half: its statements become the widget’s <code>dispose</code>, ahead of any controller the effect was using.</p>
-<div class="pair">
-<div class="pane"><h4>src/Browser.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span>, useEffect, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Browser.tsx" role="tab" aria-selected="true">src/Browser.tsx</button>
+<button class="tab-btn" data-tab="browser.dart" role="tab" aria-selected="false">browser.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Browser.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span>, useEffect, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 <span class="tok-kw">import</span> { closeInAppWebView } <span class="tok-kw">from</span> <span class="tok-str">'plugin:url_launcher'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Browser</span> = () =&gt; {
@@ -894,7 +947,7 @@ export const TaskBoard = () =&gt; {
     &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre></div>
-<div class="pane"><h4>browser.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="browser.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 <span class="tok-kw">import</span> <span class="tok-str">'package:url_launcher/url_launcher.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">Browser</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
@@ -929,8 +982,12 @@ export const TaskBoard = () =&gt; {
 <section class="recipe" id="39-builder-callback" data-name="A callback that returns a widget">
 <h3>A callback that returns a widget</h3>
 <p class="blurb">A builder prop takes an arrow function whose body is a widget — including a conditional one — and becomes an expression-bodied Dart closure.</p>
-<div class="pair">
-<div class="pane"><h4>src/Panel.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Builder</span>, <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Panel.tsx" role="tab" aria-selected="true">src/Panel.tsx</button>
+<button class="tab-btn" data-tab="panel.dart" role="tab" aria-selected="false">panel.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Panel.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Builder</span>, <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Panel</span> = () =&gt; {
   <span class="tok-kw">const</span> [open, setOpen] = <span class="tok-fn">useState</span>(<span class="tok-kw">false</span>);
@@ -944,7 +1001,7 @@ export const TaskBoard = () =&gt; {
     &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre></div>
-<div class="pane"><h4>panel.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="panel.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">Panel</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">Panel</span>({<span class="tok-kw">super</span>.key});
@@ -976,8 +1033,12 @@ export const TaskBoard = () =&gt; {
 <section class="recipe" id="40-layout-builder" data-name="Reading what a callback is handed">
 <h3>Reading what a callback is handed</h3>
 <p class="blurb">A builder’s parameters are typed from the SDK, so <code>constraints.maxWidth</code> completes in the editor and compiles to the Dart member it names.</p>
-<div class="pair">
-<div class="pane"><h4>src/Adaptive.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">LayoutBuilder</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Adaptive.tsx" role="tab" aria-selected="true">src/Adaptive.tsx</button>
+<button class="tab-btn" data-tab="adaptive.dart" role="tab" aria-selected="false">adaptive.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Adaptive.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">LayoutBuilder</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Adaptive</span> = () =&gt; (
   &lt;<span class="tok-typ">Column</span>&gt;
@@ -988,7 +1049,7 @@ export const TaskBoard = () =&gt; {
     /&gt;
   &lt;/<span class="tok-typ">Column</span>&gt;
 );</code></pre></div>
-<div class="pane"><h4>adaptive.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="adaptive.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">Adaptive</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">Adaptive</span>({<span class="tok-kw">super</span>.key});
@@ -1012,8 +1073,12 @@ export const TaskBoard = () =&gt; {
 <section class="recipe" id="07-list-rendering" data-name="Rendering a list">
 <h3>Rendering a list</h3>
 <p class="blurb"><code>.map</code> over state spreads into the parent <code>children</code>, exactly where you wrote it, so a list is written the way it is in React.</p>
-<div class="pair">
-<div class="pane"><h4>src/Groceries.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Groceries.tsx" role="tab" aria-selected="true">src/Groceries.tsx</button>
+<button class="tab-btn" data-tab="groceries.dart" role="tab" aria-selected="false">groceries.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Groceries.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Groceries</span> = () =&gt; {
   <span class="tok-kw">const</span> [items, setItems] = <span class="tok-fn">useState</span>([<span class="tok-str">'Apples'</span>, <span class="tok-str">'Bread'</span>]);
@@ -1031,7 +1096,7 @@ export const TaskBoard = () =&gt; {
     &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre></div>
-<div class="pane"><h4>groceries.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="groceries.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">Groceries</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">Groceries</span>({<span class="tok-kw">super</span>.key});
@@ -1064,8 +1129,12 @@ export const TaskBoard = () =&gt; {
 <section class="recipe" id="30-list-prop" data-name="Taking a list as a prop">
 <h3>Taking a list as a prop</h3>
 <p class="blurb">A <code>string[]</code> prop becomes a <code>List&lt;String&gt;</code> constructor parameter, and mapping over it spreads into the widget tree.</p>
-<div class="pair">
-<div class="pane"><h4>src/TagList.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/TagList.tsx" role="tab" aria-selected="true">src/TagList.tsx</button>
+<button class="tab-btn" data-tab="tag_list.dart" role="tab" aria-selected="false">tag_list.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/TagList.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">TagList</span> = ({ tags }: { tags: string[] }) =&gt; (
   &lt;<span class="tok-typ">Column</span>&gt;
@@ -1074,7 +1143,7 @@ export const TaskBoard = () =&gt; {
     ))}
   &lt;/<span class="tok-typ">Column</span>&gt;
 );</code></pre></div>
-<div class="pane"><h4>tag_list.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="tag_list.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">TagList</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">TagList</span>({<span class="tok-kw">super</span>.key, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.tags});
@@ -1091,8 +1160,12 @@ export const TaskBoard = () =&gt; {
 <section class="recipe" id="31-model-list" data-name="A list of your own model">
 <h3>A list of your own model</h3>
 <p class="blurb">An interface used as a prop type becomes a Dart class, so a list of models is typed on both sides.</p>
-<div class="pair">
-<div class="pane"><h4>src/JobBoard.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/JobBoard.tsx" role="tab" aria-selected="true">src/JobBoard.tsx</button>
+<button class="tab-btn" data-tab="job_board.dart" role="tab" aria-selected="false">job_board.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/JobBoard.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
 <span class="tok-kw">interface</span> <span class="tok-typ">Job</span> {
   title: string;
@@ -1106,7 +1179,7 @@ export const TaskBoard = () =&gt; {
     ))}
   &lt;/<span class="tok-typ">Column</span>&gt;
 );</code></pre></div>
-<div class="pane"><h4>job_board.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="job_board.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">Job</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">Job</span>({<span class="tok-kw">required</span> <span class="tok-kw">this</span>.title, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.remote});
@@ -1133,8 +1206,12 @@ export const TaskBoard = () =&gt; {
 <section class="recipe" id="32-value-methods" data-name="String and number methods">
 <h3>String and number methods</h3>
 <p class="blurb">The methods you reach for — <code>trim</code>, <code>toUpperCase</code>, <code>join</code>, <code>toFixed</code>, <code>includes</code> — map onto their Dart counterparts rather than being reimplemented.</p>
-<div class="pair">
-<div class="pane"><h4>src/ValueMethods.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/ValueMethods.tsx" role="tab" aria-selected="true">src/ValueMethods.tsx</button>
+<button class="tab-btn" data-tab="value_methods.dart" role="tab" aria-selected="false">value_methods.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/ValueMethods.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">ValueMethods</span> = ({
   name,
@@ -1152,7 +1229,7 @@ export const TaskBoard = () =&gt; {
     &lt;<span class="tok-typ">Text</span>&gt;{name.<span class="tok-fn">includes</span>(<span class="tok-str">'a'</span>) ? <span class="tok-str">'match'</span> : <span class="tok-str">'no match'</span>}&lt;/<span class="tok-typ">Text</span>&gt;
   &lt;/<span class="tok-typ">Column</span>&gt;
 );</code></pre></div>
-<div class="pane"><h4>value_methods.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="value_methods.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">ValueMethods</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">ValueMethods</span>({
@@ -1183,8 +1260,12 @@ export const TaskBoard = () =&gt; {
 <section class="recipe" id="34-list-pipeline" data-name="filter, reduce and defaults">
 <h3>filter, reduce and defaults</h3>
 <p class="blurb"><code>filter</code> becomes <code>where</code>, <code>reduce</code> becomes <code>fold</code> typed by its element, and <code>??</code> becomes Dart’s own — chained in one expression as you wrote it.</p>
-<div class="pair">
-<div class="pane"><h4>src/Totals.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Totals.tsx" role="tab" aria-selected="true">src/Totals.tsx</button>
+<button class="tab-btn" data-tab="totals.dart" role="tab" aria-selected="false">totals.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Totals.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Totals</span> = ({
   names,
@@ -1203,7 +1284,7 @@ export const TaskBoard = () =&gt; {
       ))}
   &lt;/<span class="tok-typ">Column</span>&gt;
 );</code></pre></div>
-<div class="pane"><h4>totals.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="totals.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">Totals</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">Totals</span>({<span class="tok-kw">super</span>.key, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.names, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.scores});
@@ -1227,8 +1308,12 @@ export const TaskBoard = () =&gt; {
 <section class="recipe" id="35-helpers" data-name="Helper functions beside a component">
 <h3>Helper functions beside a component</h3>
 <p class="blurb">A plain function in the file becomes a top-level Dart function with the same signature, so shared logic does not have to live in a widget.</p>
-<div class="pair">
-<div class="pane"><h4>src/Roster.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Roster.tsx" role="tab" aria-selected="true">src/Roster.tsx</button>
+<button class="tab-btn" data-tab="roster.dart" role="tab" aria-selected="false">roster.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Roster.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
 <span class="tok-kw">const</span> initials = (value: string): string =&gt; value.<span class="tok-fn">trim</span>().<span class="tok-fn">toUpperCase</span>();
 
@@ -1242,7 +1327,7 @@ export const TaskBoard = () =&gt; {
     ))}
   &lt;/<span class="tok-typ">Column</span>&gt;
 );</code></pre></div>
-<div class="pane"><h4>roster.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="roster.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-typ">String</span> <span class="tok-fn">initials</span>(<span class="tok-typ">String</span> value) =&gt; value.<span class="tok-fn">trim</span>().<span class="tok-fn">toUpperCase</span>();
 
@@ -1266,8 +1351,12 @@ export const TaskBoard = () =&gt; {
 <section class="recipe" id="36-enums" data-name="Enums and string unions">
 <h3>Enums and string unions</h3>
 <p class="blurb">A TypeScript enum becomes a Dart enum, and a string union stays a <code>String</code> the type system still narrows — both usable as props.</p>
-<div class="pair">
-<div class="pane"><h4>src/Badge.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Badge.tsx" role="tab" aria-selected="true">src/Badge.tsx</button>
+<button class="tab-btn" data-tab="badge.dart" role="tab" aria-selected="false">badge.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Badge.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
 <span class="tok-kw">enum</span> <span class="tok-typ">BadgeStatus</span> {
   <span class="tok-typ">Active</span> = <span class="tok-str">'active'</span>,
@@ -1286,7 +1375,7 @@ export const TaskBoard = () =&gt; {
     &lt;<span class="tok-typ">Text</span>&gt;{tone}&lt;/<span class="tok-typ">Text</span>&gt;
   &lt;/<span class="tok-typ">Column</span>&gt;
 );</code></pre></div>
-<div class="pane"><h4>badge.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="badge.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">abstract</span> <span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-typ">BadgeStatus</span> {
   <span class="tok-kw">static</span> <span class="tok-kw">const</span> <span class="tok-typ">String</span> active = <span class="tok-str">'active'</span>;
@@ -1314,8 +1403,12 @@ export const TaskBoard = () =&gt; {
 <section class="recipe" id="37-tuples-generics" data-name="Tuples and a generic helper">
 <h3>Tuples and a generic helper</h3>
 <p class="blurb">A tuple type becomes a Dart record and a generic function keeps its type parameter, so neither has to be widened to <code>dynamic</code>.</p>
-<div class="pair">
-<div class="pane"><h4>src/Span.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Span.tsx" role="tab" aria-selected="true">src/Span.tsx</button>
+<button class="tab-btn" data-tab="span.dart" role="tab" aria-selected="false">span.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Span.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
 <span class="tok-kw">const</span> firstOr = &lt;<span class="tok-typ">T</span>,&gt;(values: T[], fallback: T): T =&gt; values[<span class="tok-num">0</span>] ?? fallback;
 
@@ -1332,7 +1425,7 @@ export const Span = ({
     &lt;<span class="tok-typ">Text</span>&gt;{<span class="tok-fn">firstOr</span>(names, <span class="tok-str">'none'</span>)}&lt;/<span class="tok-typ">Text</span>&gt;
   &lt;/<span class="tok-typ">Column</span>&gt;
 );</code></pre></div>
-<div class="pane"><h4>span.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="span.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-typ">T</span> firstOr&lt;<span class="tok-typ">T</span>&gt;(<span class="tok-typ">List</span>&lt;<span class="tok-typ">T</span>&gt; values, <span class="tok-typ">T</span> fallback) =&gt;
     values.<span class="tok-fn">elementAtOrNull</span>(<span class="tok-num">0</span>) ?? fallback;
@@ -1359,8 +1452,12 @@ export const Span = ({
 <section class="recipe" id="41-model-helper" data-name="A helper that returns a model">
 <h3>A helper that returns a model</h3>
 <p class="blurb">A helper decodes and returns one of your interfaces, and reading a field off the call — <code>decode(body).title</code> — resolves to the Dart member it names.</p>
-<div class="pair">
-<div class="pane"><h4>src/Shelf.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, json, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Shelf.tsx" role="tab" aria-selected="true">src/Shelf.tsx</button>
+<button class="tab-btn" data-tab="shelf.dart" role="tab" aria-selected="false">shelf.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Shelf.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, json, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
 <span class="tok-kw">interface</span> <span class="tok-typ">Track</span> {
   title: string;
@@ -1378,7 +1475,7 @@ export const Span = ({
     &lt;<span class="tok-typ">Text</span>&gt;{(<span class="tok-fn">json</span>(payload) <span class="tok-kw">as</span> <span class="tok-typ">Track</span>).title}&lt;/<span class="tok-typ">Text</span>&gt;
   &lt;/<span class="tok-typ">Column</span>&gt;
 );</code></pre></div>
-<div class="pane"><h4>shelf.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'dart:convert'</span>;
+<div class="tab-panel" data-panel="shelf.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'dart:convert'</span>;
 
 <span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
@@ -1421,8 +1518,12 @@ export const Span = ({
 <section class="recipe" id="17-async-token" data-name="Awaiting a plugin call">
 <h3>Awaiting a plugin call</h3>
 <p class="blurb">The same FutureBuilder, over a plugin instead of a request: anything returning a Future can be awaited this way.</p>
-<div class="pair">
-<div class="pane"><h4>src/TokenCheck.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">CircularProgressIndicator</span>, <span class="tok-typ">Text</span>, useAsync } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/TokenCheck.tsx" role="tab" aria-selected="true">src/TokenCheck.tsx</button>
+<button class="tab-btn" data-tab="token_check.dart" role="tab" aria-selected="false">token_check.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/TokenCheck.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">CircularProgressIndicator</span>, <span class="tok-typ">Text</span>, useAsync } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 <span class="tok-kw">import</span> { useSecureStorage } <span class="tok-kw">from</span> <span class="tok-str">'plugin:flutter_secure_storage'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">TokenCheck</span> = <span class="tok-kw">async</span> () =&gt; {
@@ -1434,7 +1535,7 @@ export const Span = ({
 
   return &lt;<span class="tok-typ">Text</span>&gt;{hasToken ? <span class="tok-str">'Signed in'</span> : <span class="tok-str">'Signed out'</span>}&lt;/<span class="tok-typ">Text</span>&gt;;
 };</code></pre></div>
-<div class="pane"><h4>token_check.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="token_check.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 <span class="tok-kw">import</span> <span class="tok-str">'package:flutter_secure_storage/flutter_secure_storage.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">TokenCheck</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
@@ -1477,8 +1578,12 @@ export const Span = ({
 <section class="recipe" id="18-connectivity-stream" data-name="Following a stream">
 <h3>Following a stream</h3>
 <p class="blurb"><code>useStream</code> is <code>useAsync</code> over a Dart <code>Stream</code>: it emits a <code>StreamBuilder</code>, and the awaited value is the latest event.</p>
-<div class="pair">
-<div class="pane"><h4>src/ConnectionBanner.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">CircularProgressIndicator</span>, <span class="tok-typ">Text</span>, useStream } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/ConnectionBanner.tsx" role="tab" aria-selected="true">src/ConnectionBanner.tsx</button>
+<button class="tab-btn" data-tab="connection_banner.dart" role="tab" aria-selected="false">connection_banner.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/ConnectionBanner.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">CircularProgressIndicator</span>, <span class="tok-typ">Text</span>, useStream } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 <span class="tok-kw">import</span> { useConnectivity } <span class="tok-kw">from</span> <span class="tok-str">'plugin:connectivity_plus'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">ConnectionBanner</span> = <span class="tok-kw">async</span> () =&gt; {
@@ -1490,7 +1595,7 @@ export const Span = ({
 
   return &lt;<span class="tok-typ">Text</span>&gt;Connections: {status.length}&lt;/<span class="tok-typ">Text</span>&gt;;
 };</code></pre></div>
-<div class="pane"><h4>connection_banner.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:connectivity_plus/connectivity_plus.dart'</span>;
+<div class="tab-panel" data-panel="connection_banner.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:connectivity_plus/connectivity_plus.dart'</span>;
 <span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">ConnectionBanner</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
@@ -1533,8 +1638,12 @@ export const Span = ({
 <section class="recipe" id="25-http-get" data-name="Fetching data over HTTP">
 <h3>Fetching data over HTTP</h3>
 <p class="blurb"><code>await useAsync(...)</code> emits a <code>FutureBuilder</code>: the loading and error branches you pass become its waiting and error states, and the awaited value is the data in scope.</p>
-<div class="pair">
-<div class="pane"><h4>src/AlbumView.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">CircularProgressIndicator</span>, <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span>, useAsync } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/AlbumView.tsx" role="tab" aria-selected="true">src/AlbumView.tsx</button>
+<button class="tab-btn" data-tab="album_view.dart" role="tab" aria-selected="false">album_view.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/AlbumView.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">CircularProgressIndicator</span>, <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span>, useAsync } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 <span class="tok-kw">import</span> { <span class="tok-kw">get</span> } <span class="tok-kw">from</span> <span class="tok-str">'plugin:http'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">AlbumView</span> = <span class="tok-kw">async</span> () =&gt; {
@@ -1550,7 +1659,7 @@ export const Span = ({
     &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre></div>
-<div class="pane"><h4>album_view.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="album_view.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 <span class="tok-kw">import</span> <span class="tok-str">'package:http/http.dart'</span> <span class="tok-kw">as</span> http;
 
 <span class="tok-kw">class</span> <span class="tok-typ">AlbumView</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
@@ -1594,8 +1703,12 @@ export const Span = ({
 <section class="recipe" id="26-json-model" data-name="Decoding JSON into a model">
 <h3>Decoding JSON into a model</h3>
 <p class="blurb"><code>json(body) as Album</code> generates the Dart data class and its <code>fromJson</code> factory — including the nested model, the list field and the optional one.</p>
-<div class="pair">
-<div class="pane"><h4>src/AlbumDetail.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> {
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/AlbumDetail.tsx" role="tab" aria-selected="true">src/AlbumDetail.tsx</button>
+<button class="tab-btn" data-tab="album_detail.dart" role="tab" aria-selected="false">album_detail.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/AlbumDetail.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> {
   <span class="tok-typ">CircularProgressIndicator</span>,
   <span class="tok-typ">Column</span>,
   json,
@@ -1630,7 +1743,7 @@ export const Span = ({
     &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre></div>
-<div class="pane"><h4>album_detail.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'dart:convert'</span>;
+<div class="tab-panel" data-panel="album_detail.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'dart:convert'</span>;
 
 <span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 <span class="tok-kw">import</span> <span class="tok-str">'package:http/http.dart'</span> <span class="tok-kw">as</span> http;
@@ -1711,8 +1824,12 @@ export const Span = ({
 <section class="recipe" id="01-camera-screen" data-name="Taking a photo">
 <h3>Taking a photo</h3>
 <p class="blurb"><code>useCamera</code> emits the whole controller lifecycle: <code>availableCameras</code>, <code>initialize</code>, a <code>mounted</code> check before setState, and <code>dispose</code> — the part that is easy to get wrong by hand.</p>
-<div class="pair">
-<div class="pane"><h4>src/CameraScreen.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/CameraScreen.tsx" role="tab" aria-selected="true">src/CameraScreen.tsx</button>
+<button class="tab-btn" data-tab="camera_screen.dart" role="tab" aria-selected="false">camera_screen.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/CameraScreen.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 <span class="tok-kw">import</span> { useCamera } <span class="tok-kw">from</span> <span class="tok-str">'plugin:camera'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">CameraScreen</span> = () =&gt; {
@@ -1731,7 +1848,7 @@ export const Span = ({
     &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre></div>
-<div class="pane"><h4>camera_screen.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:camera/camera.dart'</span>;
+<div class="tab-panel" data-panel="camera_screen.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:camera/camera.dart'</span>;
 <span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">CameraScreen</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
@@ -1792,8 +1909,12 @@ export const Span = ({
 <section class="recipe" id="10-camera-options" data-name="Choosing a camera resolution">
 <h3>Choosing a camera resolution</h3>
 <p class="blurb">Hook options are typed from the plugin’s own enums, so <code>resolution</code> completes in the editor and compiles to <code>ResolutionPreset.veryHigh</code>.</p>
-<div class="pair">
-<div class="pane"><h4>src/HiResCamera.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/HiResCamera.tsx" role="tab" aria-selected="true">src/HiResCamera.tsx</button>
+<button class="tab-btn" data-tab="hi_res_camera.dart" role="tab" aria-selected="false">hi_res_camera.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/HiResCamera.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 <span class="tok-kw">import</span> { useCamera } <span class="tok-kw">from</span> <span class="tok-str">'plugin:camera'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">HiResCamera</span> = () =&gt; {
@@ -1812,7 +1933,7 @@ export const Span = ({
     &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre></div>
-<div class="pane"><h4>hi_res_camera.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:camera/camera.dart'</span>;
+<div class="tab-panel" data-panel="hi_res_camera.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:camera/camera.dart'</span>;
 <span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">HiResCamera</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
@@ -1876,8 +1997,12 @@ export const Span = ({
 <section class="recipe" id="11-preferences" data-name="Storing a preference">
 <h3>Storing a preference</h3>
 <p class="blurb">A service-style plugin becomes a hook returning the instance, so reading and writing preferences is one call.</p>
-<div class="pair">
-<div class="pane"><h4>src/Profile.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Profile.tsx" role="tab" aria-selected="true">src/Profile.tsx</button>
+<button class="tab-btn" data-tab="profile.dart" role="tab" aria-selected="false">profile.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Profile.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 <span class="tok-kw">import</span> { useSharedPreferences } <span class="tok-kw">from</span> <span class="tok-str">'plugin:shared_preferences'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Profile</span> = () =&gt; {
@@ -1896,7 +2021,7 @@ export const Span = ({
     &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre></div>
-<div class="pane"><h4>profile.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="profile.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 <span class="tok-kw">import</span> <span class="tok-str">'package:shared_preferences/shared_preferences.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">Profile</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
@@ -1948,8 +2073,12 @@ export const Span = ({
 <section class="recipe" id="12-secure-storage" data-name="Storing a secret">
 <h3>Storing a secret</h3>
 <p class="blurb">The same shape over the keychain and keystore, with the plugin’s own named arguments preserved.</p>
-<div class="pair">
-<div class="pane"><h4>src/Vault.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Vault.tsx" role="tab" aria-selected="true">src/Vault.tsx</button>
+<button class="tab-btn" data-tab="vault.dart" role="tab" aria-selected="false">vault.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Vault.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 <span class="tok-kw">import</span> { useSecureStorage } <span class="tok-kw">from</span> <span class="tok-str">'plugin:flutter_secure_storage'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Vault</span> = () =&gt; {
@@ -1968,7 +2097,7 @@ export const Span = ({
     &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre></div>
-<div class="pane"><h4>vault.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="vault.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 <span class="tok-kw">import</span> <span class="tok-str">'package:flutter_secure_storage/flutter_secure_storage.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">Vault</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
@@ -2004,8 +2133,12 @@ export const Span = ({
 <section class="recipe" id="13-open-link" data-name="Opening a URL">
 <h3>Opening a URL</h3>
 <p class="blurb">A plugin’s top-level functions are importable directly, and a URL string is wrapped in <code>Uri.parse</code> where Dart wants a <code>Uri</code>.</p>
-<div class="pair">
-<div class="pane"><h4>src/OpenLink.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/OpenLink.tsx" role="tab" aria-selected="true">src/OpenLink.tsx</button>
+<button class="tab-btn" data-tab="open_link.dart" role="tab" aria-selected="false">open_link.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/OpenLink.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 <span class="tok-kw">import</span> { launchUrl } <span class="tok-kw">from</span> <span class="tok-str">'plugin:url_launcher'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">OpenLink</span> = () =&gt; {
@@ -2023,7 +2156,7 @@ export const Span = ({
     &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre></div>
-<div class="pane"><h4>open_link.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="open_link.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 <span class="tok-kw">import</span> <span class="tok-str">'package:url_launcher/url_launcher.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">OpenLink</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
@@ -2061,8 +2194,12 @@ export const Span = ({
 <section class="recipe" id="14-app-info" data-name="Reading app version info">
 <h3>Reading app version info</h3>
 <p class="blurb">A plugin acquired through a static factory becomes a hook that awaits it, so the value is ready where you read it.</p>
-<div class="pair">
-<div class="pane"><h4>src/AppInfo.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/AppInfo.tsx" role="tab" aria-selected="true">src/AppInfo.tsx</button>
+<button class="tab-btn" data-tab="app_info.dart" role="tab" aria-selected="false">app_info.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/AppInfo.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 <span class="tok-kw">import</span> { usePackageInfo } <span class="tok-kw">from</span> <span class="tok-str">'plugin:package_info_plus'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">AppInfo</span> = () =&gt; {
@@ -2075,7 +2212,7 @@ export const Span = ({
     &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre></div>
-<div class="pane"><h4>app_info.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="app_info.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 <span class="tok-kw">import</span> <span class="tok-str">'package:package_info_plus/package_info_plus.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">AppInfo</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
@@ -2116,8 +2253,12 @@ export const Span = ({
 <section class="recipe" id="15-front-camera" data-name="Selecting the front camera">
 <h3>Selecting the front camera</h3>
 <p class="blurb">Passing <code>lens</code> filters the device list the plugin returns, rather than making you find the matching camera yourself.</p>
-<div class="pair">
-<div class="pane"><h4>src/Selfie.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Selfie.tsx" role="tab" aria-selected="true">src/Selfie.tsx</button>
+<button class="tab-btn" data-tab="selfie.dart" role="tab" aria-selected="false">selfie.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Selfie.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 <span class="tok-kw">import</span> { useCamera } <span class="tok-kw">from</span> <span class="tok-str">'plugin:camera'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Selfie</span> = () =&gt; {
@@ -2136,7 +2277,7 @@ export const Span = ({
     &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre></div>
-<div class="pane"><h4>selfie.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:camera/camera.dart'</span>;
+<div class="tab-panel" data-panel="selfie.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:camera/camera.dart'</span>;
 <span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">Selfie</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
@@ -2201,8 +2342,12 @@ export const Span = ({
 <section class="recipe" id="27-inline-plugin-call" data-name="Calling a plugin from a tap">
 <h3>Calling a plugin from a tap</h3>
 <p class="blurb">A plugin call written inline in a handler compiles in place — no controller to thread through the widget.</p>
-<div class="pair">
-<div class="pane"><h4>src/InlineLink.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Center</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/InlineLink.tsx" role="tab" aria-selected="true">src/InlineLink.tsx</button>
+<button class="tab-btn" data-tab="inline_link.dart" role="tab" aria-selected="false">inline_link.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/InlineLink.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Center</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 <span class="tok-kw">import</span> { launchUrl } <span class="tok-kw">from</span> <span class="tok-str">'plugin:url_launcher'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">InlineLink</span> = () =&gt; (
@@ -2210,7 +2355,7 @@ export const Span = ({
     &lt;<span class="tok-typ">Text</span> onClick={() =&gt; launchUrl(<span class="tok-str">'https://flutter.dev'</span>)}&gt;Open&lt;/<span class="tok-typ">Text</span>&gt;
   &lt;/<span class="tok-typ">Center</span>&gt;
 );</code></pre></div>
-<div class="pane"><h4>inline_link.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="inline_link.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 <span class="tok-kw">import</span> <span class="tok-str">'package:url_launcher/url_launcher.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">InlineLink</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
@@ -2232,8 +2377,12 @@ export const Span = ({
 <section class="recipe" id="20-router" data-name="Routing between screens">
 <h3>Routing between screens</h3>
 <p class="blurb"><code>createRouter</code> emits a GoRouter with one route per entry, and <code>useNavigation</code> rewrites onto its BuildContext extensions — no navigator passed around.</p>
-<div class="pair">
-<div class="pane"><h4>src/router.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> {
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/router.tsx" role="tab" aria-selected="true">src/router.tsx</button>
+<button class="tab-btn" data-tab="router.dart" role="tab" aria-selected="false">router.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/router.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> {
   <span class="tok-typ">Column</span>,
   createRouter,
   <span class="tok-typ">ElevatedButton</span>,
@@ -2269,7 +2418,7 @@ export const router = createRouter({
   <span class="tok-str">'/'</span>: <span class="tok-typ">HomePage</span>,
   <span class="tok-str">'/detail'</span>: <span class="tok-typ">DetailPage</span>,
 });</code></pre></div>
-<div class="pane"><h4>router.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="router.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 <span class="tok-kw">import</span> <span class="tok-str">'package:go_router/go_router.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">HomePage</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
@@ -2317,8 +2466,12 @@ export const router = createRouter({
 <section class="recipe" id="21-modal" data-name="Dialogs and bottom sheets">
 <h3>Dialogs and bottom sheets</h3>
 <p class="blurb"><code>present</code> and <code>presentSheet</code> become <code>showDialog</code> and <code>showModalBottomSheet</code>, taking the component you wrote as their builder.</p>
-<div class="pair">
-<div class="pane"><h4>src/DeleteButton.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> {
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/DeleteButton.tsx" role="tab" aria-selected="true">src/DeleteButton.tsx</button>
+<button class="tab-btn" data-tab="delete_button.dart" role="tab" aria-selected="false">delete_button.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/DeleteButton.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> {
   <span class="tok-typ">AlertDialog</span>,
   <span class="tok-typ">Column</span>,
   <span class="tok-typ">ElevatedButton</span>,
@@ -2352,7 +2505,7 @@ export const DeleteButton = () =&gt; {
     &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre></div>
-<div class="pane"><h4>delete_button.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="delete_button.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">ConfirmDialog</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">ConfirmDialog</span>({<span class="tok-kw">super</span>.key});
@@ -2411,8 +2564,12 @@ export const DeleteButton = () =&gt; {
 <section class="recipe" id="22-mount-dialog" data-name="Showing a dialog on mount">
 <h3>Showing a dialog on mount</h3>
 <p class="blurb">Presenting from an effect needs the frame to exist first, so the generated <code>initState</code> schedules it on the post-frame callback.</p>
-<div class="pair">
-<div class="pane"><h4>src/Onboarding.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> {
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Onboarding.tsx" role="tab" aria-selected="true">src/Onboarding.tsx</button>
+<button class="tab-btn" data-tab="onboarding.dart" role="tab" aria-selected="false">onboarding.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Onboarding.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> {
   <span class="tok-typ">AlertDialog</span>,
   <span class="tok-typ">Column</span>,
   <span class="tok-typ">Text</span>,
@@ -2441,7 +2598,7 @@ export const Onboarding = () =&gt; {
     &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre></div>
-<div class="pane"><h4>onboarding.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="onboarding.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">WelcomeDialog</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">WelcomeDialog</span>({<span class="tok-kw">super</span>.key});
@@ -2485,8 +2642,12 @@ export const Onboarding = () =&gt; {
 <section class="recipe" id="23-tabs" data-name="A tabbed app shell">
 <h3>A tabbed app shell</h3>
 <p class="blurb"><code>TabView</code> emits a <code>Scaffold</code> with a <code>BottomNavigationBar</code> over an <code>IndexedStack</code>, so every tab keeps its state while you switch.</p>
-<div class="pair">
-<div class="pane"><h4>src/Shell.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">TabItem</span>, <span class="tok-typ">TabView</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Shell.tsx" role="tab" aria-selected="true">src/Shell.tsx</button>
+<button class="tab-btn" data-tab="shell.dart" role="tab" aria-selected="false">shell.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Shell.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">TabItem</span>, <span class="tok-typ">TabView</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">HomeTab</span> = () =&gt; &lt;<span class="tok-typ">Text</span>&gt;Home&lt;/<span class="tok-typ">Text</span>&gt;;
 
@@ -2502,7 +2663,7 @@ export const Shell = () =&gt; (
     &lt;/<span class="tok-typ">TabItem</span>&gt;
   &lt;/<span class="tok-typ">TabView</span>&gt;
 );</code></pre></div>
-<div class="pane"><h4>shell.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="shell.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">HomeTab</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">HomeTab</span>({<span class="tok-kw">super</span>.key});
@@ -2555,8 +2716,12 @@ export const Shell = () =&gt; (
 <section class="recipe" id="24-animated" data-name="Animating a change">
 <h3>Animating a change</h3>
 <p class="blurb"><code>&lt;Animated type=&quot;fade&quot;&gt;</code> becomes <code>AnimatedOpacity</code> driven by the value you pass — an implicit animation, no controller to manage.</p>
-<div class="pair">
-<div class="pane"><h4>src/Fader.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Animated</span>, <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Fader.tsx" role="tab" aria-selected="true">src/Fader.tsx</button>
+<button class="tab-btn" data-tab="fader.dart" role="tab" aria-selected="false">fader.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Fader.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Animated</span>, <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Fader</span> = () =&gt; {
   <span class="tok-kw">const</span> [shown, setShown] = <span class="tok-fn">useState</span>(<span class="tok-kw">true</span>);
@@ -2574,7 +2739,7 @@ export const Shell = () =&gt; (
     &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre></div>
-<div class="pane"><h4>fader.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="fader.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">Fader</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">Fader</span>({<span class="tok-kw">super</span>.key});
@@ -2612,8 +2777,14 @@ export const Shell = () =&gt; (
 <section class="recipe" id="28-multi-file" data-name="Importing a component from another file">
 <h3>Importing a component from another file</h3>
 <p class="blurb">Each file compiles to its own Dart file, and the import between them is rewritten to match — so a project is laid out the way you would lay out any TypeScript one.</p>
-<div class="pair">
-<div class="pane"><h4>src/Directory.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Center</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Directory.tsx" role="tab" aria-selected="true">src/Directory.tsx</button>
+<button class="tab-btn" data-tab="directory.dart" role="tab" aria-selected="false">directory.dart</button>
+<button class="tab-btn" data-tab="src/UserCard.tsx" role="tab" aria-selected="false">src/UserCard.tsx</button>
+<button class="tab-btn" data-tab="user_card.dart" role="tab" aria-selected="false">user_card.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Directory.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Center</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
 <span class="tok-kw">import</span> { <span class="tok-typ">UserCard</span> } <span class="tok-kw">from</span> <span class="tok-str">'./UserCard'</span>;
 
@@ -2622,7 +2793,7 @@ export const Shell = () =&gt; (
     &lt;<span class="tok-typ">UserCard</span> name=<span class="tok-str">&quot;Ada&quot;</span> admin={<span class="tok-kw">true</span>} /&gt;
   &lt;/<span class="tok-typ">Center</span>&gt;
 );</code></pre></div>
-<div class="pane"><h4>directory.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="directory.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">import</span> <span class="tok-str">'user_card.dart'</span>;
 
@@ -2634,9 +2805,7 @@ export const Shell = () =&gt; (
     <span class="tok-kw">return</span> <span class="tok-kw">const</span> <span class="tok-typ">Center</span>(child: <span class="tok-typ">UserCard</span>(name: <span class="tok-str">'Ada'</span>, admin: <span class="tok-kw">true</span>));
   }
 }</code></pre></div>
-</div>
-<div class="pair">
-<div class="pane"><h4>src/UserCard.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<div class="tab-panel" data-panel="src/UserCard.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">UserCard</span> = ({ name, admin }: { name: string; admin: boolean }) =&gt; (
   &lt;<span class="tok-typ">Column</span>&gt;
@@ -2644,7 +2813,7 @@ export const Shell = () =&gt; (
     &lt;<span class="tok-typ">Text</span>&gt;{admin ? <span class="tok-str">'admin'</span> : <span class="tok-str">'member'</span>}&lt;/<span class="tok-typ">Text</span>&gt;
   &lt;/<span class="tok-typ">Column</span>&gt;
 );</code></pre></div>
-<div class="pane"><h4>user_card.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<div class="tab-panel" data-panel="user_card.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
 <span class="tok-kw">class</span> <span class="tok-typ">UserCard</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">UserCard</span>({<span class="tok-kw">super</span>.key, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.name, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.admin});
@@ -2716,6 +2885,23 @@ export const Shell = () =&gt; (
   };
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+
+
+  document.addEventListener('click', function (e) {
+    const btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+    const tabs = btn.closest('.tabs');
+    if (!tabs) return;
+    const tab = btn.dataset.tab;
+    tabs.querySelectorAll('.tab-btn').forEach(function (b) {
+      const active = b.dataset.tab === tab;
+      b.classList.toggle('active', active);
+      b.setAttribute('aria-selected', String(active));
+    });
+    tabs.querySelectorAll('.tab-panel').forEach(function (p) {
+      p.classList.toggle('active', p.dataset.panel === tab);
+    });
+  });
 
 })();
 </script>

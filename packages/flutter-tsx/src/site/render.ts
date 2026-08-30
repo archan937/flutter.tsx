@@ -10,7 +10,7 @@ import type {
   SiteType,
   SiteWidget,
 } from './model';
-import { NAV_CSS, sidebarHtml } from './shell';
+import { NAV_CSS, sidebarHtml, TABS_CSS, TABS_JS } from './shell';
 
 export const escapeHtml = (raw: string): string =>
   raw
@@ -613,15 +613,6 @@ p.doc { color: var(--muted); font-size: 14px; margin-bottom: 14px; }
 .req { color: #ff7b9c; font-weight: 700; text-align: center; }
 
 /* ── Tabs ─── */
-.tabs { margin-top: 14px; border: 1px solid var(--line); border-radius: 11px; overflow: hidden; background: rgba(7,9,15,.5); }
-.tab-btns { display: flex; background: rgba(255,255,255,.02); border-bottom: 1px solid var(--line); }
-.tab-btn { background: none; border: none; border-bottom: 2px solid transparent;
-  margin-bottom: -1px; padding: 9px 18px; cursor: pointer; font-family: var(--mono); font-size: 12px; font-weight: 600;
-  color: var(--muted); transition: color .15s; letter-spacing: .04em; }
-.tab-btn:hover { color: var(--text); }
-.tab-btn.active { color: var(--react); border-bottom-color: var(--react); }
-.tab-panel { display: none; }
-.tab-panel.active { display: block; }
 pre { margin: 0; background: transparent; padding: 18px; overflow-x: auto; white-space: pre; word-wrap: normal; }
 code { font-family: var(--mono); font-size: 12.5px; line-height: 1.65; color: var(--text); }
 
@@ -656,6 +647,7 @@ details details > ul { padding-left: 24px; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
 ${HIGHLIGHT_CSS}
 ${NAV_CSS}
+${TABS_CSS}
 </style>
 </head>
 <body>
@@ -679,22 +671,7 @@ ${content}
 (function () {
   'use strict';
 
-  // ── Tab switching (event delegation — one listener for all cards) ─────────
-  document.addEventListener('click', function (e) {
-    const btn = e.target.closest('.tab-btn');
-    if (!btn) return;
-    const tabs = btn.closest('.tabs');
-    if (!tabs) return;
-    const tab = btn.dataset.tab;
-    tabs.querySelectorAll('.tab-btn').forEach(function (b) {
-      const active = b.dataset.tab === tab;
-      b.classList.toggle('active', active);
-      b.setAttribute('aria-selected', String(active));
-    });
-    tabs.querySelectorAll('.tab-panel').forEach(function (p) {
-      p.classList.toggle('active', p.dataset.panel === tab);
-    });
-  });
+${TABS_JS}
 
   // ── Search / filter ───────────────────────────────────────────────────────
   const searchEl = document.getElementById('search');

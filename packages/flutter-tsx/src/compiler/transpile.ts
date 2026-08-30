@@ -129,6 +129,19 @@ const loadPlugins = async (
 };
 
 /** Component names this file uses as JSX elements. */
+/** Names called as functions, which is how an imported helper is used. */
+const calledNames = (sourceFile: ts.SourceFile): Set<string> => {
+  const names = new Set<string>();
+  const visit = (node: ts.Node): void => {
+    if (ts.isCallExpression(node) && ts.isIdentifier(node.expression)) {
+      names.add(node.expression.text);
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sourceFile);
+  return names;
+};
+
 const usedJsxNames = (sourceFile: ts.SourceFile): Set<string> => {
   const names = new Set<string>();
   const visit = (node: ts.Node): void => {
@@ -166,6 +179,10 @@ export interface ImportedComponents {
   widgets: Map<string, WidgetInfo>;
   /** local name -> the Dart file to import, relative to this component's. */
   componentImports: Map<string, string>;
+  /** Signatures of helpers imported from a sibling file. */
+  helperReturns: Map<string, HelperSignature>;
+  /** Dart files those helpers live in, which the output has to import. */
+  dartImports: string[];
 }
 
 /**
@@ -180,11 +197,27 @@ const loadImportedComponents = async (
 ): Promise<ImportedComponents> => {
   const widgets = new Map<string, WidgetInfo>();
   const componentImports = new Map<string, string>();
+  const helperReturns = new Map<string, HelperSignature>();
+  const dartImports: string[] = [];
   const used = usedJsxNames(analysis.sourceFile);
+  const called = calledNames(analysis.sourceFile);
   const fromDir = parentDir(filePath);
 
   for (const [name, specifier] of analysis.componentImports) {
-    if (!used.has(name)) continue;
+    if (!used.has(name)) {
+      // A helper imported from a sibling file is called, not rendered. It
+      // needs its file imported too, or the Dart names a function that is
+      // not there.
+      if (called.has(name)) {
+        const helper = await importedHelper(
+          { name, specifier },
+          { dir: fromDir, filePath },
+        );
+        helperReturns.set(name, helper.signature);
+        dartImports.push(helper.dartFile);
+      }
+      continue;
+    }
 
     const resolved = `${resolveSibling(fromDir, specifier)}.tsx`;
     const file = Bun.file(resolved);
@@ -219,14 +252,71 @@ const loadImportedComponents = async (
     );
   }
 
-  return { widgets, componentImports };
+  return { widgets, componentImports, helperReturns, dartImports };
+};
+
+/** One helper from a sibling file, with the signature its declaration gives. */
+const importedHelper = async (
+  binding: { name: string; specifier: string },
+  from: { dir: string; filePath: string },
+): Promise<{ signature: HelperSignature; dartFile: string }> => {
+  const { name, specifier } = binding;
+  const { dir: fromDir, filePath } = from;
+  const resolved = `${resolveSibling(fromDir, specifier)}.tsx`;
+  const file = Bun.file(resolved);
+  if (!(await file.exists())) {
+    throw new TsxError(
+      'TSX0336',
+      `\`${name}\` is imported from '${specifier}', but ${resolved} does ` +
+        'not exist.',
+      { file: filePath, line: 1, column: 1 },
+    );
+  }
+  const imported = analyzeSource(await file.text(), resolved, {
+    requireComponent: false,
+  });
+  const helper = imported.helpers.find((candidate) => candidate.name === name);
+  if (helper === undefined) {
+    throw new TsxError(
+      'TSX0336',
+      `${resolved} exports no component or helper named ${name}.`,
+      { file: filePath, line: 1, column: 1 },
+    );
+  }
+  return {
+    signature: {
+      typeParams: helper.typeParams,
+      params: helper.params,
+      returnDartType: helper.returnDartType,
+    },
+    dartFile: dartFileFor(`${specifier}.tsx`).replace(/^\.\//, ''),
+  };
 };
 
 export const transpileComponent = async (
   input: TranspileInput,
 ): Promise<string> => {
   const context = await compileContext();
-  const analysis = analyzeSource(input.source, input.filePath);
+  // A file of helpers, models or stores exports no component and still
+  // belongs to the project — `src/lib/format.tsx` renders nothing but the
+  // components that call it need its Dart file.
+  const analysis = analyzeSource(input.source, input.filePath, {
+    requireComponent: false,
+  });
+  if (
+    analysis.components.length === 0 &&
+    analysis.helpers.length === 0 &&
+    analysis.models.length === 0 &&
+    analysis.stores.length === 0 &&
+    analysis.enums.length === 0
+  ) {
+    throw new TsxError(
+      'TSX0103',
+      'this file declares nothing: export a component, a helper, a model, ' +
+        'an enum or a store.',
+      { file: input.filePath, line: 1, column: 1 },
+    );
+  }
   const imported = await loadImportedComponents(analysis, input.filePath);
   const fileContext = {
     ...context,
@@ -250,8 +340,10 @@ export const transpileComponent = async (
         new Map(entity.members.map((member) => [member.name, member.dartName])),
       ]),
     ),
-    helperReturns: new Map(
-      analysis.helpers.map((helper): [string, HelperSignature] => [
+    helperReturns: new Map<string, HelperSignature>([
+      // A helper from a sibling file reads the same as one declared here.
+      ...imported.helperReturns,
+      ...analysis.helpers.map((helper): [string, HelperSignature] => [
         helper.name,
         {
           typeParams: helper.typeParams,
@@ -259,7 +351,7 @@ export const transpileComponent = async (
           returnDartType: helper.returnDartType,
         },
       ]),
-    ),
+    ]),
     ...(await loadPlugins(analysis, input.pluginApiDirs ?? [])),
   };
   const components = analysis.components.map((component) =>
@@ -270,6 +362,9 @@ export const transpileComponent = async (
   const helpers = analysis.helpers.map((helper) =>
     lowerHelper(helper, fileContext, (uri) => helperImports.add(uri)),
   );
+  for (const dartFile of imported.dartImports) {
+    helperImports.add(dartFile);
+  }
   const enums = analysis.enums.map((entity): IrEnum => ({
     name: entity.name,
     dartType: entity.dartType,

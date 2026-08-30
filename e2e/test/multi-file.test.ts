@@ -68,10 +68,14 @@ describe('a multi-file project', () => {
       config,
     );
 
+    // This project's own files, plus the two the scaffold ships: every file
+    // under src/ compiles, whether or not this test's App renders it.
     expect(built).toEqual([
       'app.dart',
       'banner.dart',
+      'components/greeting.dart',
       'components/user_card.dart',
+      'helpers/format.dart',
     ]);
 
     // The root imports both components it renders — one of them nested.

@@ -869,6 +869,22 @@ const isJsonCall = (expression: ts.Expression): boolean =>
   ts.isIdentifier(expression.expression) &&
   expression.expression.text === 'json';
 
+/** Exported interfaces and object type aliases, by name. */
+const exportedShapeNames = (sourceFile: ts.SourceFile): string[] =>
+  sourceFile.statements.flatMap((statement) => {
+    const exported =
+      ts.canHaveModifiers(statement) &&
+      (ts.getModifiers(statement) ?? []).some(
+        (modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword,
+      );
+    if (!exported) return [];
+    if (ts.isInterfaceDeclaration(statement)) return [statement.name.text];
+    return ts.isTypeAliasDeclaration(statement) &&
+      ts.isTypeLiteralNode(statement.type)
+      ? [statement.name.text]
+      : [];
+  });
+
 const jsonTargetNames = (sourceFile: ts.SourceFile): Set<string> => {
   const targets = new Set<string>();
   const visit = (node: ts.Node): void => {
@@ -1320,9 +1336,19 @@ export const requireSourceFile = (
   return sourceFile;
 };
 
+export interface AnalyzeOptions {
+  /**
+   * Whether the file must export a component. A file of helpers or models is
+   * a legitimate part of a project — `src/lib/format.tsx` renders nothing —
+   * so a caller importing from one says it expects no component.
+   */
+  requireComponent?: boolean;
+}
+
 export const analyzeSource = (
   source: string,
   filePath: string,
+  options: AnalyzeOptions = {},
 ): SourceAnalysis => {
   const program = createProgramFor(source, filePath);
   const sourceFile = requireSourceFile(program, filePath);
@@ -1366,7 +1392,10 @@ export const analyzeSource = (
     }
   }
 
-  if (!components.some((component) => component.exported)) {
+  if (
+    options.requireComponent !== false &&
+    !components.some((component) => component.exported)
+  ) {
     throw new TsxError(
       'TSX0103',
       'no exported component found: export a const arrow function that ' +
@@ -1386,6 +1415,9 @@ export const analyzeSource = (
       ]),
   );
   const helpers = analyzeHelpers(sourceFile);
+  // A file with no component is a file of declarations: everything it exports
+  // is the reason it exists, so every exported shape becomes a model.
+  const declarationsOnly = components.length === 0;
   // A helper's return type is a model too: `lookup().title` reads it, so the
   // shape has to exist in Dart the same as a prop's or a decoded body's does.
   const models = analyzeModels(
@@ -1396,6 +1428,7 @@ export const analyzeSource = (
       ...helpers.flatMap((helper) =>
         helper.params.map((param) => namedDartType(param.dartType)),
       ),
+      ...(declarationsOnly ? exportedShapeNames(sourceFile) : []),
     ]),
   );
   const enums = analyzeEnums(sourceFile);

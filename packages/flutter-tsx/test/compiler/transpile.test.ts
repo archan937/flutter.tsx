@@ -1,3 +1,7 @@
+import { mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+
 import { describe, expect, test } from 'bun:test';
 
 import { transpileComponent } from '@src/compiler/transpile';
@@ -1459,4 +1463,141 @@ ${body}
       /TSX0337 .* the last `case` of a `switch` needs a body\./,
     );
   });
+});
+
+/**
+ * A project is laid out like any TypeScript one: components, helpers and
+ * models in the directories that suit it. Each file compiles to the Dart file
+ * beside it, and an import between them is rewritten to match.
+ */
+describe('transpileComponent — files beside each other', () => {
+  const project = async (
+    files: Record<string, string>,
+  ): Promise<{ root: string; dartFor: (name: string) => Promise<string> }> => {
+    const root = await mkdtemp(join(tmpdir(), 'fsx-layout-'));
+    for (const [name, contents] of Object.entries(files)) {
+      await Bun.write(join(root, name), contents);
+    }
+    return {
+      root,
+      dartFor: async (name): Promise<string> => {
+        const filePath = join(root, name);
+        return transpileComponent({
+          source: await Bun.file(filePath).text(),
+          filePath,
+        });
+      },
+    };
+  };
+
+  test('a helper in another directory is called, and its file imported', async () => {
+    const { root, dartFor } = await project({
+      'helpers/format.tsx':
+        'export const shout = (value: string): string => value.toUpperCase();\n',
+      'App.tsx':
+        "import { Text } from 'flutter-tsx';\n" +
+        "import { shout } from './helpers/format';\n" +
+        'export const App = () => <Text>{shout("hi")}</Text>;\n',
+    });
+
+    // Without the import the Dart names a function that is not there — which
+    // is what it used to emit.
+    const dart = await dartFor('App.tsx');
+    expect(dart).toContain("import 'helpers/format.dart';");
+    expect(dart).toContain("Text(shout('hi'))");
+
+    // And the helper's own file compiles, though it renders nothing.
+    expect(await dartFor('helpers/format.tsx')).toContain(
+      'String shout(String value) => value.toUpperCase();',
+    );
+
+    await rm(root, { recursive: true, force: true });
+  }, 60000);
+
+  test('a file of models compiles to its data classes', async () => {
+    const { root, dartFor } = await project({
+      'models/album.tsx': 'export interface Album {\n  title: string;\n}\n',
+    });
+
+    expect(await dartFor('models/album.tsx')).toContain('class Album {');
+
+    await rm(root, { recursive: true, force: true });
+  }, 60000);
+
+  test('a file of only a store keeps the Flutter import it needs', async () => {
+    const { root, dartFor } = await project({
+      'stores/session.tsx':
+        "import { createStore } from 'flutter-tsx';\n" +
+        "export const sessionStore = createStore({ name: 'Ada' });\n",
+    });
+
+    // A store extends ChangeNotifier, so this file does need the barrel —
+    // unlike one of plain helpers, where the import would be unused and the
+    // analyzer would reject it.
+    const dart = await dartFor('stores/session.tsx');
+    expect(dart).toContain("import 'package:flutter/material.dart';");
+    expect(dart).toContain('extends ChangeNotifier');
+
+    await rm(root, { recursive: true, force: true });
+  }, 60000);
+
+  test('a file of only helpers carries no Flutter import', async () => {
+    const { root, dartFor } = await project({
+      'helpers/format.tsx':
+        'export const shout = (value: string): string => value.toUpperCase();\n',
+    });
+
+    expect(await dartFor('helpers/format.tsx')).not.toContain(
+      'package:flutter',
+    );
+
+    await rm(root, { recursive: true, force: true });
+  }, 60000);
+
+  test('a helper imported from a file that is not there is a numbered error', async () => {
+    const { root, dartFor } = await project({
+      'App.tsx':
+        "import { Text } from 'flutter-tsx';\n" +
+        "import { shout } from './helpers/format';\n" +
+        'export const App = () => <Text>{shout("hi")}</Text>;\n',
+    });
+
+    expect(dartFor('App.tsx')).rejects.toThrow(/TSX0336[\s\S]*does not exist/);
+
+    await rm(root, { recursive: true, force: true });
+  }, 60000);
+
+  test('a name the sibling file does not export is a numbered error', async () => {
+    const { root, dartFor } = await project({
+      'helpers/format.tsx':
+        'export const other = (value: string): string => value;\n',
+      'App.tsx':
+        "import { Text } from 'flutter-tsx';\n" +
+        "import { shout } from './helpers/format';\n" +
+        'export const App = () => <Text>{shout("hi")}</Text>;\n',
+    });
+
+    expect(dartFor('App.tsx')).rejects.toThrow(
+      /exports no component or helper named shout/,
+    );
+
+    await rm(root, { recursive: true, force: true });
+  }, 60000);
+
+  test('a file that declares nothing is a numbered error', async () => {
+    const { root, dartFor } = await project({
+      'empty.tsx': 'const unused = 1;\n',
+    });
+
+    expect(dartFor('empty.tsx')).rejects.toThrow(
+      new Error(
+        'TSX0103 ' +
+          join(root, 'empty.tsx') +
+          ':1:1 — this file declares nothing: export a component, a helper, ' +
+          'a model, an enum or a store.',
+      ),
+    );
+
+    await rm(root, { recursive: true, force: true });
+  }, 60000);
 });

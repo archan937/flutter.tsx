@@ -64,15 +64,23 @@ const importDirective = (library: string, hidden: string[] = []): string => {
 const importsFor = (
   names: Set<string>,
   context: CompileContext,
-  hidden: string[] = [],
+  options: { hidden?: string[]; needsFlutter: boolean },
 ): string[] => {
+  const { hidden = [], needsFlutter } = options;
   const barrelsOf = (name: string): string[] => context.exports.get(name) ?? [];
   const used = [...names].filter((name) => !context.userWidgets.has(name));
   const covers = (barrel: string): boolean =>
     used.every((name) => barrelsOf(name).includes(barrel));
 
   const libraries = new Set<string>();
-  if (used.length === 0 || covers('material')) {
+  if (used.length === 0) {
+    // A file of plain helpers or models names nothing from Flutter, and an
+    // import it does not use is an analyzer warning.
+    if (!needsFlutter) {
+      return [];
+    }
+    libraries.add('material');
+  } else if (covers('material')) {
     libraries.add('material');
   } else if (covers('cupertino')) {
     libraries.add('cupertino');
@@ -107,6 +115,8 @@ const importsFor = (
 export const importsForComponents = (
   components: IrComponent[],
   context: CompileContext,
+  /** Whether the file declares something that needs the Flutter barrel. */
+  needsFlutter = true,
 ): string[] => {
   const names = new Set<string>();
   for (const component of components) {
@@ -127,5 +137,8 @@ export const importsForComponents = (
     )
     .sort();
 
-  return [...importsFor(names, context, shadowed), ...relative];
+  return [
+    ...importsFor(names, context, { hidden: shadowed, needsFlutter }),
+    ...relative,
+  ];
 };

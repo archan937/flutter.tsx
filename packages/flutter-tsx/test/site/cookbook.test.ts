@@ -126,8 +126,10 @@ describe('buildCookbookHtml', () => {
       '<section class="recipe" id="05-counter" data-name="State with useState">',
     );
     expect(html).toContain('<p class="blurb">The hook you already know.</p>');
-    expect(html).toContain('<h4>src/Counter.tsx</h4>');
-    expect(html).toContain('<h4>counter.dart</h4>');
+    // One tabbed pane per recipe, a tab per file — never two columns.
+    expect(html).toContain('data-tab="src/Counter.tsx"');
+    expect(html).toContain('data-panel="counter.dart"');
+    expect(html).not.toContain('class="pair"');
     expect(html).toContain('Flutter 3.47.1');
   });
 

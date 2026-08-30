@@ -426,7 +426,13 @@ export const emitDartFile = (
     );
   const directives = [
     ...new Set([
-      ...importsForComponents(components, context),
+      // A store extends ChangeNotifier and a component extends
+      // StatelessWidget; a file of only helpers or models extends nothing.
+      ...importsForComponents(
+        components,
+        context,
+        components.length > 0 || stores.length > 0 || router !== null,
+      ),
       ...pluginImports,
       ...dartImports.map((uri) => `import '${uri}';`),
       // GoRouter and GoRoute themselves need the import, even in a file whose

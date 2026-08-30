@@ -69,6 +69,8 @@ describe('runInitCommand', () => {
       'demo-app/lib/main.dart',
       'demo-app/package.json',
       'demo-app/src/App.tsx',
+      'demo-app/src/components/Greeting.tsx',
+      'demo-app/src/helpers/format.tsx',
       'demo-app/tsconfig.json',
     ]);
     expect(written.get('demo-app/fsx.config.ts')).toContain("name: 'demo_app'");

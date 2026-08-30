@@ -31,6 +31,8 @@ describe('fsx init produces a project that builds', () => {
       'fsx.config.ts',
       'package.json',
       'src/App.tsx',
+      'src/components/Greeting.tsx',
+      'src/helpers/format.tsx',
       'tsconfig.json',
       'pubspec.yaml',
     ]) {
@@ -57,7 +59,14 @@ describe('fsx init produces a project that builds', () => {
       flutterBin,
       dartBin,
     }).build(appDir, config);
-    expect(built).toEqual(['app.dart']);
+    // The scaffold is the recommended layout, so the build has three files:
+    // the root component, the component it renders, and the helper that one
+    // calls.
+    expect(built).toEqual([
+      'app.dart',
+      'components/greeting.dart',
+      'helpers/format.dart',
+    ]);
 
     expect(await Bun.file(join(appDir, 'lib', 'app.dart')).text()).toContain(
       'class App extends StatefulWidget',

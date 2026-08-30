@@ -206,17 +206,38 @@ declared — naming the fix for each, and exiting non-zero so CI can gate on it.
 
 ## Project layout
 
+`fsx init` scaffolds this, and the starter app already uses every part of it — `App.tsx`
+renders a component from `components/`, which calls a helper from `helpers/`. You are not
+guessing where the second file goes.
+
 ```
 my-app/
-  fsx.config.ts        typed app config
-  package.json         dependencies, and the "plugins" map
+  fsx.config.ts          typed app config
+  package.json           dependencies, and the "plugins" map
+  tsconfig.json          strict, and wired for TSX
   src/
-    App.tsx            the root component (required)
-    components/…       everything else you write
-  lib/                 generated Dart — never edited by hand
-  .fsx/                generated: plugin typings and extractions
-  web/ macos/ …        the host Flutter app
+    App.tsx              the root component (required)
+    components/          components you reuse
+      Greeting.tsx
+    helpers/             plain functions, no JSX
+      format.tsx
+  lib/                   generated Dart — never edited by hand
+  .fsx/                  generated: plugin typings and extractions
+  web/ macos/ …          the host Flutter app
 ```
+
+Every file under `src/` compiles to the Dart file beside it: `src/components/Greeting.tsx`
+becomes `lib/components/greeting.dart`, and the import between them is rewritten to match.
+Directories are yours to choose — `screens/`, `features/billing/` — and nesting is free.
+Name files `.tsx` even when they hold no JSX, because that is what the compiler reads.
+
+A file does not have to export a component. One that exports only helpers, models, enums
+or a store compiles to a Dart file of those, which is what makes `helpers/format.tsx`
+work.
+
+Two things still live in the file that uses them: a `createStore` and an `interface` used
+as a prop type. Both compile to private Dart declarations, so importing them from another
+file is refused with a numbered error rather than emitting Dart that would not build.
 
 `lib/` and `.fsx/` are generated and gitignored: a fresh clone is `bun install && fsx
 install`, and everything is rebuilt.

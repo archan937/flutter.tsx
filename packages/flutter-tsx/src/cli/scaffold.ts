@@ -61,8 +61,18 @@ export default {
 } satisfies AppConfig;
 `;
 
+/**
+ * The starter app is the recommended layout, working.
+ *
+ * A project needs somewhere to put a second file before it has one, and a
+ * developer should not have to guess where. `App.tsx` composes a component
+ * from `components/` which calls a helper from `helpers/`, so every
+ * directory the guide recommends is already there and already compiling.
+ */
 const starterComponent = (): string =>
   `import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+
+import { Greeting } from './components/Greeting';
 
 export const App = () => {
   const [count, setCount] = useState(0);
@@ -72,12 +82,29 @@ export const App = () => {
   };
 
   return (
-    <Column>
+    <Column mainAxisAlignment="center">
+      <Greeting name="world" />
       <Text>Count: {count}</Text>
       <ElevatedButton onClick={increment}>Increment</ElevatedButton>
     </Column>
   );
 };
+`;
+
+const starterGreeting = (): string =>
+  `import { Text } from 'flutter-tsx';
+
+import { shout } from '../helpers/format';
+
+/** A component of your own: used as \`<Greeting name="world" />\`. */
+export const Greeting = ({ name }: { name: string }) => (
+  <Text>Hello, {shout(name)}!</Text>
+);
+`;
+
+const starterHelper = (): string =>
+  `/** A plain function: compiles to a top-level Dart function of the same name. */
+export const shout = (value: string): string => value.trim().toUpperCase();
 `;
 
 const gitignore = (): string => `.dart_tool/
@@ -96,6 +123,8 @@ export const scaffoldFiles = (options: ScaffoldOptions): ScaffoldFile[] =>
     { path: 'fsx.config.ts', contents: configFile(options) },
     { path: 'package.json', contents: packageJson(options) },
     { path: 'src/App.tsx', contents: starterComponent() },
+    { path: 'src/components/Greeting.tsx', contents: starterGreeting() },
+    { path: 'src/helpers/format.tsx', contents: starterHelper() },
     { path: 'tsconfig.json', contents: tsconfigJson() },
   ].sort((first, second) => first.path.localeCompare(second.path));
 
