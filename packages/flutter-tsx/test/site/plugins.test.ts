@@ -8,8 +8,11 @@ import { buildSitePlugins } from '@src/site/plugins';
 const recipe = (id: string, tsx: string): Recipe => ({
   id,
   title: id,
+  blurb: '',
+  category: 'Start here',
   tsx,
   dart: "import 'package:flutter/material.dart';\n",
+  files: [],
 });
 
 const cameraRecipe = recipe(

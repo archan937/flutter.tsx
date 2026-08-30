@@ -1,5 +1,10 @@
+import { mkdir, mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+
 import { describe, expect, test } from 'bun:test';
 
+import { CATALOGUE, CATEGORIES } from '@src/site/catalogue';
 import {
   buildCookbookHtml,
   loadRecipes,
@@ -15,9 +20,19 @@ const FIXTURES_DIR = new URL('../fixtures', import.meta.url).pathname;
 
 const counter: Recipe = {
   id: '05-counter',
-  title: 'Counter',
+  title: 'State with useState',
+  blurb: 'The hook you already know.',
+  category: 'Start here',
   tsx: 'export const Counter = () => <Text>0</Text>;\n',
   dart: "import 'package:flutter/material.dart';\n",
+  files: [
+    {
+      tsxName: 'src/Counter.tsx',
+      tsx: 'export const Counter = () => <Text>0</Text>;\n',
+      dartName: 'counter.dart',
+      dart: "import 'package:flutter/material.dart';\n",
+    },
+  ],
 };
 
 describe('loadRecipes', () => {
@@ -34,11 +49,62 @@ describe('loadRecipes', () => {
     }
   });
 
-  test('titles a fixture from its directory name', async () => {
+  test('titles and explains a fixture from the catalogue', async () => {
     const recipes = await loadRecipes(FIXTURES_DIR);
-    const counter = recipes.find((recipe) => recipe.id === '05-counter');
+    const found = recipes.find((recipe) => recipe.id === '05-counter');
 
-    expect(counter?.title).toBe('Counter');
+    // A directory name is not a title a newcomer can read.
+    expect(found?.title).toBe(CATALOGUE['05-counter']?.title);
+    expect(found?.blurb).toBe(CATALOGUE['05-counter']?.blurb);
+    expect(found?.category).toBe('Start here');
+  });
+
+  test('carries every file an example is made of', async () => {
+    const recipes = await loadRecipes(FIXTURES_DIR);
+    const multi = recipes.find((recipe) => recipe.id === '28-multi-file');
+
+    // The point of this example is the second file; showing one of them
+    // left the reader with a component that appears from nowhere.
+    expect(multi?.files.map((file) => file.tsxName)).toEqual([
+      'src/Directory.tsx',
+      'src/UserCard.tsx',
+    ]);
+    expect(multi?.files.map((file) => file.dartName)).toEqual([
+      'directory.dart',
+      'user_card.dart',
+    ]);
+    expect(multi?.files[1]?.tsx).toContain('export const UserCard');
+    expect(multi?.files[1]?.dart).toContain('class UserCard');
+  });
+
+  test('describes every fixture, in a category it renders', async () => {
+    const recipes = await loadRecipes(FIXTURES_DIR);
+
+    for (const recipe of recipes) {
+      expect(recipe.blurb.length).toBeGreaterThan(20);
+      expect(CATEGORIES).toContain(recipe.category);
+    }
+    // And nothing is catalogued that no longer exists.
+    const ids = new Set(recipes.map((recipe) => recipe.id));
+    expect(Object.keys(CATALOGUE).filter((id) => !ids.has(id))).toEqual([]);
+  });
+
+  test('refuses a fixture nobody wrote a catalogue entry for', async () => {
+    const dir = await mkdtemp(join(tmpdir(), 'fsx-cookbook-'));
+    await mkdir(join(dir, '99-unknown'), { recursive: true });
+    await Bun.write(
+      join(dir, '99-unknown', 'input.tsx'),
+      'export const A = 1;',
+    );
+    await Bun.write(join(dir, '99-unknown', 'expected.dart'), 'class A {}');
+
+    // A new fixture must be described before it can reach a reader.
+    expect(loadRecipes(dir)).rejects.toThrow(
+      'fixture 99-unknown has no catalogue entry — a reader would get two ' +
+        'unexplained code blocks.',
+    );
+
+    await rm(dir, { recursive: true, force: true });
   });
 
   test('orders recipes the way the fixtures are numbered', async () => {
@@ -56,26 +122,44 @@ describe('buildCookbookHtml', () => {
   test('renders every recipe as the TSX written and the Dart emitted', () => {
     const html = buildCookbookHtml(recipes, '3.47.1');
 
-    expect(html).toContain('<h2 id="05-counter">Counter</h2>');
-    expect(html).toContain('export const Counter = () =&gt; &lt;Text&gt;');
-    expect(html).toContain("import 'package:flutter/material.dart';");
+    expect(html).toContain('<h3 id="05-counter">State with useState</h3>');
+    expect(html).toContain('<p class="blurb">The hook you already know.</p>');
+    expect(html).toContain('<h4>src/Counter.tsx</h4>');
+    expect(html).toContain('<h4>counter.dart</h4>');
     expect(html).toContain('Flutter 3.47.1');
   });
 
+  test('groups recipes under the category they belong to', () => {
+    const html = buildCookbookHtml(recipes, '3.47.1');
+
+    expect(html).toContain('<h2 id="start-here">Start here</h2>');
+    // A category nothing falls into is not rendered as an empty heading.
+    expect(html).not.toContain('Project structure');
+  });
+
+  test('offers a sidebar that reaches every recipe', () => {
+    const html = buildCookbookHtml(recipes, '3.47.1');
+
+    expect(html).toContain('<nav class="sidebar">');
+    expect(html).toContain(
+      '<li><a href="#05-counter">State with useState</a></li>',
+    );
+  });
+
   test('escapes markup so a fixture cannot inject any', () => {
+    const injected = '<script>alert(1)</script>';
     const html = buildCookbookHtml(
-      [{ ...counter, tsx: '<script>alert(1)</script>' }],
+      [
+        {
+          ...counter,
+          files: counter.files.map((file) => ({ ...file, tsx: injected })),
+        },
+      ],
       '3.47.1',
     );
 
-    expect(html).not.toContain('<script>alert(1)</script>');
-    expect(html).toContain('&lt;script&gt;alert(1)&lt;/script&gt;');
-  });
-
-  test('lists every recipe in its contents', () => {
-    const html = buildCookbookHtml(recipes, '3.47.1');
-
-    expect(html).toContain('<a href="#05-counter">Counter</a>');
+    expect(html).not.toContain(injected);
+    expect(html).toContain('&lt;script&gt;alert(');
   });
 });
 

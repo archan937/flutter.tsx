@@ -9,8 +9,11 @@ const SHELL = new URL('../../src/runtime/shell.ts', import.meta.url).pathname;
 const recipe = (id: string, tsx: string): Recipe => ({
   id,
   title: id,
+  blurb: '',
+  category: 'Start here',
   tsx,
   dart: '',
+  files: [],
 });
 
 const everything = (): Recipe[] => [
@@ -37,6 +40,7 @@ describe('extractCoreApi', () => {
         id: '99-everything',
         title: '99-everything',
         label: '99-everything',
+        blurb: '',
         tsx: everything()[0]?.tsx ?? '',
         dart: '',
       },

@@ -1,30 +1,85 @@
 import { dartFileFor } from '../compiler/dart-names';
+import { CATALOGUE, CATEGORIES } from './catalogue';
+import { codeBlock, HIGHLIGHT_CSS } from './highlight';
 import type { SitePage } from './model';
-import { escapeHtml } from './render';
+import { escapeHtml, inlineDoc } from './render';
+
+/** One file of an example, on both sides of the compiler. */
+export interface RecipeFile {
+  tsxName: string;
+  tsx: string;
+  dartName: string;
+  dart: string;
+}
 
 /** One certified fixture, shown as the TSX written and the Dart emitted. */
 export interface Recipe {
   id: string;
   title: string;
+  blurb: string;
+  category: string;
+  /** The entry file's TSX and Dart, which most examples are all of. */
   tsx: string;
   dart: string;
+  /** Every file of the example, entry first — an example spanning two files
+   * that shows one of them explains nothing. */
+  files: RecipeFile[];
 }
 
 const FIXTURE_ID = /^\d+-/;
 
-/** `28-multi-file` reads as “Multi File”. */
-const titleOf = (id: string): string =>
-  id
-    .replace(FIXTURE_ID, '')
-    .split('-')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+// `import { UserCard } from './UserCard'` — the sibling files an example is
+// actually made of, as opposed to the ones a fixture keeps for other reasons.
+const RELATIVE_IMPORT = /from '\.\/([A-Za-z0-9_]+)'/g;
+
+// A file exporting several components is named after its subject, which is
+// the last one: `23-tabs` exports two tabs and then the Shell holding them.
+const EXPORTED_NAMES = /^export const (\w+)/gm;
+
+const subjectOf = (tsx: string, label: string): string => {
+  const subject = [...tsx.matchAll(EXPORTED_NAMES)].at(-1)?.[1];
+  if (subject === undefined) {
+    throw new Error(`the showcase fixture ${label} exports no component.`);
+  }
+  return subject;
+};
+
+const readFile = async (path: string): Promise<string | null> => {
+  const file = Bun.file(path);
+  return (await file.exists()) ? file.text() : null;
+};
 
 /**
  * Every conformance fixture, read straight from the suite. Each pair is
  * proven: the golden test asserts the Dart byte-for-byte, `dart format`
  * certifies its layout, and the analyzer certifies that it compiles.
  */
+const filePair = (tsxName: string, tsx: string, dart: string): RecipeFile => {
+  const subject = subjectOf(tsx, tsxName);
+  return {
+    tsxName: `src/${subject}.tsx`,
+    tsx,
+    dartName: dartFileFor(`${subject}.tsx`),
+    dart,
+  };
+};
+
+const importedFiles = async (
+  dir: string,
+  entryTsx: string,
+): Promise<RecipeFile[]> => {
+  const files: RecipeFile[] = [];
+  for (const match of entryTsx.matchAll(RELATIVE_IMPORT)) {
+    const name = match[1] ?? '';
+    const tsx = await readFile(`${dir}/${name}.tsx`);
+    if (tsx === null) continue;
+    const dart = await readFile(`${dir}/${dartFileFor(`${name}.tsx`)}`);
+    if (dart === null) continue;
+    files.push(filePair(`${name}.tsx`, tsx, dart));
+  }
+  return files;
+};
+
 export const loadRecipes = async (fixturesDir: string): Promise<Recipe[]> => {
   const recipes: Recipe[] = [];
   for await (const entry of new Bun.Glob('*/input.tsx').scan({
@@ -32,13 +87,26 @@ export const loadRecipes = async (fixturesDir: string): Promise<Recipe[]> => {
   })) {
     const id = entry.slice(0, entry.indexOf('/'));
     if (!FIXTURE_ID.test(id)) continue;
-    const dart = Bun.file(`${fixturesDir}/${id}/expected.dart`);
-    if (!(await dart.exists())) continue;
+    const dir = `${fixturesDir}/${id}`;
+    const dart = await readFile(`${dir}/expected.dart`);
+    if (dart === null) continue;
+    const tsx = await Bun.file(`${fixturesDir}/${entry}`).text();
+
+    const listed = CATALOGUE[id];
+    if (listed === undefined) {
+      throw new Error(
+        `fixture ${id} has no catalogue entry — a reader would get two ` +
+          'unexplained code blocks.',
+      );
+    }
     recipes.push({
       id,
-      title: titleOf(id),
-      tsx: await Bun.file(`${fixturesDir}/${entry}`).text(),
-      dart: await dart.text(),
+      title: listed.title,
+      blurb: listed.blurb,
+      category: listed.category,
+      tsx,
+      dart,
+      files: [filePair(entry, tsx, dart), ...(await importedFiles(dir, tsx))],
     });
   }
   return recipes.sort((first, second) => first.id.localeCompare(second.id));
@@ -51,35 +119,86 @@ const STYLE = `
   }
   * { box-sizing: border-box; }
   body {
-    margin: 0; padding: 0 1.25rem 4rem; background: var(--bg); color: var(--text);
+    margin: 0; background: var(--bg); color: var(--text);
     font: 16px/1.6 'Hanken Grotesk', system-ui, sans-serif;
   }
-  main { max-width: 62rem; margin: 0 auto; }
-  h1 { font-size: 2.25rem; margin: 2.5rem 0 0.5rem; }
-  h2 { font-size: 1.4rem; margin: 3rem 0 0.75rem; scroll-margin-top: 1rem; }
   a { color: var(--react); }
+  .shell { display: grid; grid-template-columns: 17rem minmax(0, 1fr); gap: 2.5rem; max-width: 82rem; margin: 0 auto; padding: 0 1.25rem; }
+  .sidebar {
+    position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto;
+    padding: 1.5rem 0.5rem 3rem 0; border-right: 1px solid var(--line);
+  }
+  .sidebar .brand { display: block; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.35rem; color: var(--text); text-decoration: none; }
+  .sidebar .pages { margin: 0 0 1.25rem; font-size: 0.85rem; color: var(--dim); }
+  .sidebar h4 {
+    margin: 1.1rem 0 0.35rem; font-size: 0.7rem; letter-spacing: 0.09em;
+    text-transform: uppercase; color: var(--dim);
+  }
+  .sidebar ul { list-style: none; margin: 0; padding: 0; }
+  .sidebar li { margin: 0.1rem 0; }
+  .sidebar a { display: block; padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.87rem; text-decoration: none; color: var(--text); }
+  .sidebar a:hover { background: var(--panel); }
+  main { min-width: 0; padding: 1.5rem 0 5rem; }
+  h1 { font-size: 2.25rem; margin: 1rem 0 0.5rem; }
+  h2 {
+    font-size: 1.05rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--dim); margin: 3rem 0 0.5rem; scroll-margin-top: 1rem;
+  }
+  h3 { font-size: 1.3rem; margin: 0 0 0.35rem; scroll-margin-top: 1rem; }
   .lede, .note { color: var(--dim); }
-  .contents { columns: 2; margin: 1.5rem 0 0; padding: 0; list-style: none; }
-  .contents li { margin: 0.15rem 0; break-inside: avoid; }
-  .pair { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; }
-  @media (max-width: 60rem) { .pair { grid-template-columns: 1fr; } }
-  .pane { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
-  .pane h3 {
-    margin: 0; padding: 0.6rem 0.9rem; font-size: 0.75rem; letter-spacing: 0.08em;
-    text-transform: uppercase; color: var(--dim); border-bottom: 1px solid var(--line);
+  .recipe { margin: 2rem 0 0; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  .recipe .blurb { color: var(--dim); margin: 0 0 1rem; max-width: 60ch; }
+  .pair { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; margin-bottom: 1rem; }
+  @media (max-width: 70rem) {
+    .shell { grid-template-columns: 1fr; }
+    .sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--line); }
+    .pair { grid-template-columns: 1fr; }
+  }
+  .pane { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .pane h4 {
+    margin: 0; padding: 0.55rem 0.9rem; font-size: 0.72rem; letter-spacing: 0.06em;
+    color: var(--dim); border-bottom: 1px solid var(--line);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
   }
   pre { margin: 0; padding: 0.9rem; overflow-x: auto; }
   code { font: 13px/1.55 'JetBrains Mono', ui-monospace, monospace; }
-`;
+${HIGHLIGHT_CSS}`;
+
+const filePanes = (file: RecipeFile): string =>
+  `<div class="pair">
+<div class="pane"><h4>${escapeHtml(file.tsxName)}</h4>${codeBlock(file.tsx, 'tsx')}</div>
+<div class="pane"><h4>${escapeHtml(file.dartName)}</h4>${codeBlock(file.dart, 'dart')}</div>
+</div>`;
 
 const recipeSection = (recipe: Recipe): string =>
-  `<section>
-<h2 id="${escapeHtml(recipe.id)}">${escapeHtml(recipe.title)}</h2>
-<div class="pair">
-<div class="pane"><h3>You write — TSX</h3><pre><code>${escapeHtml(recipe.tsx.trimEnd())}</code></pre></div>
-<div class="pane"><h3>fsx emits — Dart</h3><pre><code>${escapeHtml(recipe.dart.trimEnd())}</code></pre></div>
-</div>
+  `<section class="recipe">
+<h3 id="${escapeHtml(recipe.id)}">${escapeHtml(recipe.title)}</h3>
+<p class="blurb">${inlineDoc(recipe.blurb)}</p>
+${recipe.files.map(filePanes).join('\n')}
 </section>`;
+
+const byCategory = (recipes: Recipe[]): [string, Recipe[]][] =>
+  CATEGORIES.map((category): [string, Recipe[]] => [
+    category,
+    recipes.filter((recipe) => recipe.category === category),
+  ]).filter(([, members]) => members.length > 0);
+
+const sidebar = (recipes: Recipe[]): string =>
+  `<nav class="sidebar">
+<a class="brand" href="./index.html">Flutter.tsx</a>
+<p class="pages"><a href="./guide.html">Guide</a> · <a href="./api-reference.html">API reference</a></p>
+${byCategory(recipes)
+  .map(
+    ([category, members]) =>
+      `<h4>${escapeHtml(category)}</h4>\n<ul>\n${members
+        .map(
+          (recipe) =>
+            `<li><a href="#${escapeHtml(recipe.id)}">${escapeHtml(recipe.title)}</a></li>`,
+        )
+        .join('\n')}\n</ul>`,
+  )
+  .join('\n')}
+</nav>`;
 
 /** The cookbook page: every fixture, as written and as emitted. */
 export const buildCookbookHtml = (
@@ -100,15 +219,21 @@ export const buildCookbookHtml = (
 <style>${STYLE}</style>
 </head>
 <body>
+<div class="shell">
+${sidebar(recipes)}
 <main>
 <h1>Cookbook</h1>
-<p class="lede">Every conformance fixture in the compiler suite, as the TSX you write and the Dart it emits — nothing here is illustrative. Each pair is asserted byte-for-byte by the golden tests, laid out by <code>dart format</code>, checked by <code>flutter analyze</code>, and built as a real Flutter app on every run.</p>
-<p class="note">Generated from the fixtures. Flutter ${escapeHtml(flutterVersion)}. <a href="./index.html">Home</a> · <a href="./api-reference.html">API reference</a> · <a href="./guide.html">Guide</a></p>
-<ul class="contents">
-${recipes.map((recipe) => `<li><a href="#${escapeHtml(recipe.id)}">${escapeHtml(recipe.title)}</a></li>`).join('\n')}
-</ul>
-${recipes.map(recipeSection).join('\n')}
+<p class="lede">Every example here is a conformance fixture: the TSX you write on the left, the Dart <code>fsx</code> emits on the right, and nothing typed by hand in between. Each pair is asserted byte-for-byte by the golden tests, laid out by <code>dart format</code>, checked by <code>flutter analyze</code>, and built as a real Flutter app on every run.</p>
+<p class="note">Generated from the fixtures. Flutter ${escapeHtml(flutterVersion)}.</p>
+${byCategory(recipes)
+  .map(
+    ([category, members]) =>
+      `<h2 id="${escapeHtml(category.toLowerCase().replaceAll(' ', '-'))}">${escapeHtml(category)}</h2>\n` +
+      members.map(recipeSection).join('\n'),
+  )
+  .join('\n')}
 </main>
+</div>
 </body>
 </html>
 `;
@@ -137,18 +262,11 @@ export const SHOWCASES: readonly [Showcase, ...Showcase[]] = [
   { id: '24-animated', label: 'Animation' },
 ];
 
-// A file exporting several components is named after its subject, which is
-// the last one: `23-tabs` exports two tabs and then the Shell holding them.
-const EXPORTED_NAMES = /^export const (\w+)/gm;
-
 /** What a fixture would be called in a project, on both sides of the compiler. */
 export const showcaseFiles = (
   recipe: Recipe,
 ): { tsx: string; dart: string } => {
-  const subject = [...recipe.tsx.matchAll(EXPORTED_NAMES)].at(-1)?.[1];
-  if (subject === undefined) {
-    throw new Error(`the showcase fixture ${recipe.id} exports no component.`);
-  }
+  const subject = subjectOf(recipe.tsx, recipe.id);
   return { tsx: `src/${subject}.tsx`, dart: dartFileFor(`${subject}.tsx`) };
 };
 
@@ -198,7 +316,7 @@ const codePanel = (
   active: boolean,
 ): string =>
   `<div class="tab-panel${active ? ' active' : ''}" data-example="${escapeHtml(recipe.id)}" data-panel="${kind}">\n` +
-  `<pre>${escapeHtml(recipe[kind].trimEnd())}</pre>\n` +
+  `${codeBlock(recipe[kind], kind === 'tsx' ? 'tsx' : 'dart')}\n` +
   `</div>`;
 
 /**
@@ -269,6 +387,26 @@ export const DOC_PAGES: DocPage[] = [
   { source: 'config-mapping.md', title: 'Config mapping' },
 ];
 
+const BODY_HEADING = /<h2 id="([^"]+)">([\s\S]*?)<\/h2>/g;
+
+/** The page's own sections, so a long guide is navigable from anywhere in it. */
+const docSidebar = (page: DocPage, body: string): string => {
+  const items = [...body.matchAll(BODY_HEADING)]
+    .map(
+      (match) =>
+        `<li><a href="#${match[1] ?? ''}">${(match[2] ?? '').replace(/<[^>]+>/g, '')}</a></li>`,
+    )
+    .join('\n');
+  return `<nav class="sidebar">
+<a class="brand" href="./index.html">Flutter.tsx</a>
+<p class="pages"><a href="./cookbook.html">Cookbook</a> · <a href="./api-reference.html">API reference</a></p>
+<h4>${escapeHtml(page.title)}</h4>
+<ul>
+${items}
+</ul>
+</nav>`;
+};
+
 /** Wraps rendered markdown in the same chrome the cookbook uses. */
 export const buildDocPageHtml = (page: DocPage, body: string): string =>
   `<!doctype html>
@@ -282,6 +420,9 @@ export const buildDocPageHtml = (page: DocPage, body: string): string =>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>${STYLE}
+  main h2 { font-size: 1.5rem; text-transform: none; letter-spacing: 0; color: var(--text); }
+  main h1 { margin-top: 1rem; }
+  main p, main ul, main table { max-width: 68ch; }
   table { border-collapse: collapse; margin: 1rem 0; width: 100%; }
   th, td { border: 1px solid var(--line); padding: 0.45rem 0.7rem; text-align: left; vertical-align: top; }
   th { color: var(--dim); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; }
@@ -291,10 +432,12 @@ export const buildDocPageHtml = (page: DocPage, body: string): string =>
 </style>
 </head>
 <body>
+<div class="shell">
+${docSidebar(page, body)}
 <main>
-<p class="note"><a href="./index.html">Home</a> · <a href="./cookbook.html">Cookbook</a> · <a href="./api-reference.html">API reference</a></p>
 ${body}
 </main>
+</div>
 </body>
 </html>
 `;

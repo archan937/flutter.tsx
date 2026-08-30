@@ -60,6 +60,7 @@ export const extractCoreApi = (
               id: usage.id,
               title: usage.title,
               label: usage.title,
+              blurb: usage.blurb,
               tsx: usage.tsx,
               dart: usage.dart,
             },

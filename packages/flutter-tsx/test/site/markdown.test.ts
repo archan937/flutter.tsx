@@ -5,7 +5,8 @@ import { renderMarkdown } from '@src/site/markdown';
 describe('renderMarkdown', () => {
   test('headings become heading elements', () => {
     expect(renderMarkdown('# Guide\n\n## Install\n\n### Detail\n')).toBe(
-      '<h1>Guide</h1>\n<h2>Install</h2>\n<h3>Detail</h3>',
+      '<h1 id="guide">Guide</h1>\n<h2 id="install">Install</h2>\n' +
+        '<h3 id="detail">Detail</h3>',
     );
   });
 
@@ -77,5 +78,14 @@ describe('links between the doc pages', () => {
 
   test('leaves an anchor alone', () => {
     expect(renderMarkdown('[top](#top)')).toBe('<p><a href="#top">top</a></p>');
+  });
+});
+
+describe('heading anchors', () => {
+  test('slugs a numbered heading with code in it', () => {
+    // The sidebar links to these, so they have to be stable and readable.
+    expect(renderMarkdown('## 2. Install the `fsx` SDK')).toBe(
+      '<h2 id="2-install-the-fsx-sdk">2. Install the <code>fsx</code> SDK</h2>',
+    );
   });
 });

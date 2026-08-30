@@ -1,3 +1,4 @@
+import { codeBlock, HIGHLIGHT_CSS, type Language } from './highlight';
 import type {
   SiteCoreEntry,
   SiteEnum,
@@ -16,6 +17,15 @@ export const escapeHtml = (raw: string): string =>
     .replaceAll('<', '&lt;')
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;');
+
+const INLINE_CODE = /`([^`]+)`/g;
+
+/**
+ * Our own one-line prose, where `backticks` mean code. The text is escaped
+ * first, so the only markup that survives is the tag this adds.
+ */
+export const inlineDoc = (raw: string): string =>
+  escapeHtml(raw).replace(INLINE_CODE, '<code>$1</code>');
 
 export const cleanDoc = (
   raw: string,
@@ -72,19 +82,16 @@ ${table}
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">${escapeHtml(widget.tsxExample)}</code></pre>
+${codeBlock(widget.tsxExample, 'tsx')}
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
-<pre><code class="language-dart">${escapeHtml(widget.dartSignature)}</code></pre>
+${codeBlock(widget.dartSignature, 'dart')}
 </div>
 </div>
 </article>`;
 };
 
 export const enumSection = (entry: SiteEnum): string => {
-  const tsxUnion = entry.values
-    .map((value) => `"${escapeHtml(value)}"`)
-    .join(' | ');
   const dartValues = entry.values
     .map(
       (value) =>
@@ -99,7 +106,7 @@ export const enumSection = (entry: SiteEnum): string => {
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-typescript">${tsxUnion}</code></pre>
+${codeBlock(entry.values.map((value) => `'${value}'`).join(' | '), 'typescript')}
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <ul class="enum-values">${dartValues}</ul>
@@ -109,7 +116,7 @@ export const enumSection = (entry: SiteEnum): string => {
 };
 
 const tabs = (
-  panels: { label: string; language: string; code: string }[],
+  panels: { label: string; language: Language; code: string }[],
 ): string => {
   const buttons = panels
     .map(
@@ -121,7 +128,7 @@ const tabs = (
     .map(
       (panel, index) =>
         `<div class="tab-panel${index === 0 ? ' active' : ''}" data-panel="${escapeHtml(panel.label)}" role="tabpanel">\n` +
-        `<pre><code class="language-${escapeHtml(panel.language)}">${escapeHtml(panel.code.trimEnd())}</code></pre>\n` +
+        `${codeBlock(panel.code, panel.language)}\n` +
         `</div>`,
     )
     .join('\n');
@@ -139,7 +146,8 @@ const fixtureLinks = (ids: string[]): string =>
 /** One worked example: the TSX written beside the Dart it emits. */
 export const exampleSection = (example: SiteExample): string =>
   `<article class="widget" id="example-${escapeHtml(example.id)}" data-name="${escapeHtml(example.label)}">
-<h3>${escapeHtml(example.label)}<span class="badge badge-lib">${escapeHtml(example.title)}</span><a class="badge badge-pkg" href="./cookbook.html#${escapeHtml(example.id)}">certified fixture</a></h3>
+<h3>${escapeHtml(example.title)}<span class="badge badge-lib">${escapeHtml(example.label)}</span><a class="badge badge-pkg" href="./cookbook.html#${escapeHtml(example.id)}">certified fixture</a></h3>
+${example.blurb === '' ? '' : `<p class="doc">${inlineDoc(example.blurb)}</p>`}
 ${tabs([
   { label: 'TSX', language: 'tsx', code: example.tsx },
   { label: 'Dart', language: 'dart', code: example.dart },
@@ -176,7 +184,7 @@ export const coreApiSection = (entry: SiteCoreEntry): string => {
   return `<article class="widget" id="core-${entry.name}" data-name="${entry.name}">
 <h3>${escapeHtml(entry.name)}<span class="badge badge-lib">${CORE_KIND_LABEL[entry.kind]}</span></h3>
 ${entry.doc === '' ? '' : `<p class="doc">${escapeHtml(entry.doc)}</p>`}
-${entry.usage === null ? `<pre><code class="language-typescript">${escapeHtml(entry.signature)}</code></pre>` : usage}
+${entry.usage === null ? codeBlock(entry.signature, 'typescript') : usage}
 ${proof}
 </article>`;
 };
@@ -275,7 +283,7 @@ const importLine = (plugin: SitePlugin): string => {
     ...plugin.hooks.map((hook) => hook.name),
     ...plugin.functions.map((fn) => fn.name),
   ];
-  return `import { ${names.map(escapeHtml).join(', ')} } from '${escapeHtml(plugin.module)}';`;
+  return `import { ${names.join(', ')} } from '${plugin.module}';`;
 };
 
 export const pluginSection = (plugin: SitePlugin): string => {
@@ -285,7 +293,7 @@ export const pluginSection = (plugin: SitePlugin): string => {
   }
   return `<article class="widget" id="plugin-${plugin.package}" data-name="${plugin.package}">
 <h3>${escapeHtml(plugin.package)}<span class="badge badge-lib">${escapeHtml(plugin.version)}</span><a class="badge badge-pkg" href="https://pub.dev/packages/${escapeHtml(plugin.package)}">pub.dev</a></h3>
-<pre><code class="language-typescript">${importLine(plugin)}</code></pre>
+${codeBlock(importLine(plugin), 'typescript')}
 ${hookTable(plugin)}
 ${optionTable(plugin)}
 ${functionTable(plugin)}
@@ -301,9 +309,7 @@ ${tabs([
 
 export const typeSection = (entry: SiteType): string => {
   const shape =
-    entry.shape === null
-      ? ''
-      : `<pre><code class="language-typescript">${escapeHtml(entry.shape)}</code></pre>`;
+    entry.shape === null ? '' : codeBlock(entry.shape, 'typescript');
   const used =
     entry.usedBy.length === 0
       ? ''
@@ -318,7 +324,7 @@ export const typeSection = (entry: SiteType): string => {
   return `<article class="widget" id="type-${entry.name}" data-name="${entry.name}">
 <h3>${escapeHtml(entry.name)}<span class="badge badge-lib">${escapeHtml(entry.dartType)}</span></h3>
 ${entry.doc === '' ? '' : `<p class="doc">${escapeHtml(entry.doc)}</p>`}
-<pre><code class="language-typescript">${escapeHtml(entry.accepts)}</code></pre>
+${codeBlock(entry.accepts, 'typescript')}
 ${shape}
 ${used}
 </article>`;
@@ -647,6 +653,7 @@ details details > ul { padding-left: 24px; }
 .token.inserted { color: #7ee7b0; }
 .token.namespace { opacity: 0.7; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
+${HIGHLIGHT_CSS}
 </style>
 </head>
 <body>

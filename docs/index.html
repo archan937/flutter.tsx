@@ -427,6 +427,12 @@
         background: var(--grad-soft);
         border-color: transparent;
       }
+      .tok-com { color: #6b7a90; font-style: italic; }
+      .tok-str { color: #a5d6a7; }
+      .tok-num { color: #ffcc80; }
+      .tok-kw { color: #c792ea; }
+      .tok-typ { color: #82aaff; }
+      .tok-fn { color: #64d8cb; }
       .toggle button.active {
         color: #06121f;
         background: var(--grad-soft);
@@ -1064,522 +1070,522 @@
 
           <!-- showcase:panels -->
 <div class="tab-panel active" data-example="05-counter" data-panel="tsx">
-<pre>import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+<pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
-export const Counter = () =&gt; {
-  const [count, setCount] = useState(0);
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Counter</span> = () =&gt; {
+  <span class="tok-kw">const</span> [count, setCount] = <span class="tok-fn">useState</span>(<span class="tok-num">0</span>);
 
-  const increment = () =&gt; {
-    setCount(count + 1);
+  <span class="tok-kw">const</span> increment = () =&gt; {
+    <span class="tok-fn">setCount</span>(count + <span class="tok-num">1</span>);
   };
 
-  return (
-    &lt;Column mainAxisAlignment=&quot;center&quot;&gt;
-      &lt;Text&gt;Count: {count}&lt;/Text&gt;
-      &lt;ElevatedButton onClick={increment}&gt;Increment&lt;/ElevatedButton&gt;
-    &lt;/Column&gt;
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span> mainAxisAlignment=<span class="tok-str">&quot;center&quot;</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Count: {count}&lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={increment}&gt;Increment&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
   );
-};</pre>
+};</code></pre>
 </div>
 <div class="tab-panel" data-example="05-counter" data-panel="dart">
-<pre>import 'package:flutter/material.dart';
+<pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
-class Counter extends StatefulWidget {
-  const Counter({super.key});
+<span class="tok-kw">class</span> <span class="tok-typ">Counter</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Counter</span>({<span class="tok-kw">super</span>.key});
 
   @override
-  State&lt;Counter&gt; createState() =&gt; _CounterState();
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">Counter</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_CounterState</span>();
 }
 
-class _CounterState extends State&lt;Counter&gt; {
-  int _count = 0;
+<span class="tok-kw">class</span> _CounterState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">Counter</span>&gt; {
+  int _count = <span class="tok-num">0</span>;
 
-  void _increment() {
-    setState(() {
+  <span class="tok-kw">void</span> <span class="tok-fn">_increment</span>() {
+    <span class="tok-fn">setState</span>(() {
       _count++;
     });
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+      mainAxisAlignment: <span class="tok-typ">MainAxisAlignment</span>.center,
       children: [
-        Text('Count: $_count'),
-        ElevatedButton(onPressed: _increment, child: const Text('Increment')),
+        <span class="tok-typ">Text</span>(<span class="tok-str">'Count: $_count'</span>),
+        <span class="tok-typ">ElevatedButton</span>(onPressed: _increment, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Increment'</span>)),
       ],
     );
   }
-}</pre>
+}</code></pre>
 </div>
 <div class="tab-panel" data-example="01-camera-screen" data-panel="tsx">
-<pre>import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
-import { useCamera } from 'plugin:camera';
+<pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<span class="tok-kw">import</span> { useCamera } <span class="tok-kw">from</span> <span class="tok-str">'plugin:camera'</span>;
 
-export const CameraScreen = () =&gt; {
-  const cam = useCamera();
-  const [taken, setTaken] = useState(false);
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">CameraScreen</span> = () =&gt; {
+  <span class="tok-kw">const</span> cam = <span class="tok-fn">useCamera</span>();
+  <span class="tok-kw">const</span> [taken, setTaken] = <span class="tok-fn">useState</span>(<span class="tok-kw">false</span>);
 
-  const takePhoto = async () =&gt; {
-    await cam.takePicture();
-    setTaken(true);
+  <span class="tok-kw">const</span> takePhoto = <span class="tok-kw">async</span> () =&gt; {
+    <span class="tok-kw">await</span> cam.<span class="tok-fn">takePicture</span>();
+    <span class="tok-fn">setTaken</span>(<span class="tok-kw">true</span>);
   };
 
-  return (
-    &lt;Column&gt;
-      {taken &amp;&amp; &lt;Text&gt;Photo saved!&lt;/Text&gt;}
-      &lt;ElevatedButton onClick={takePhoto}&gt;Take Photo&lt;/ElevatedButton&gt;
-    &lt;/Column&gt;
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      {taken &amp;&amp; &lt;<span class="tok-typ">Text</span>&gt;<span class="tok-typ">Photo</span> saved!&lt;/<span class="tok-typ">Text</span>&gt;}
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={takePhoto}&gt;Take Photo&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
   );
-};</pre>
+};</code></pre>
 </div>
 <div class="tab-panel" data-example="01-camera-screen" data-panel="dart">
-<pre>import 'package:camera/camera.dart';
-import 'package:flutter/material.dart';
+<pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:camera/camera.dart'</span>;
+<span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
-class CameraScreen extends StatefulWidget {
-  const CameraScreen({super.key});
+<span class="tok-kw">class</span> <span class="tok-typ">CameraScreen</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">CameraScreen</span>({<span class="tok-kw">super</span>.key});
 
   @override
-  State&lt;CameraScreen&gt; createState() =&gt; _CameraScreenState();
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">CameraScreen</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_CameraScreenState</span>();
 }
 
-class _CameraScreenState extends State&lt;CameraScreen&gt; {
-  CameraController? _cam;
-  bool _taken = false;
+<span class="tok-kw">class</span> _CameraScreenState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">CameraScreen</span>&gt; {
+  <span class="tok-typ">CameraController</span>? _cam;
+  bool _taken = <span class="tok-kw">false</span>;
 
   @override
-  void initState() {
-    super.initState();
-    _initCam();
+  <span class="tok-kw">void</span> <span class="tok-fn">initState</span>() {
+    <span class="tok-kw">super</span>.<span class="tok-fn">initState</span>();
+    <span class="tok-fn">_initCam</span>();
   }
 
-  Future&lt;void&gt; _initCam() async {
-    final cameras = await availableCameras();
-    final controller = CameraController(cameras.first, ResolutionPreset.high);
-    await controller.initialize();
-    if (!mounted) {
-      await controller.dispose();
-      return;
+  <span class="tok-typ">Future</span>&lt;<span class="tok-kw">void</span>&gt; <span class="tok-fn">_initCam</span>() <span class="tok-kw">async</span> {
+    <span class="tok-kw">final</span> cameras = <span class="tok-kw">await</span> <span class="tok-fn">availableCameras</span>();
+    <span class="tok-kw">final</span> controller = <span class="tok-typ">CameraController</span>(cameras.first, <span class="tok-typ">ResolutionPreset</span>.high);
+    <span class="tok-kw">await</span> controller.<span class="tok-fn">initialize</span>();
+    <span class="tok-kw">if</span> (!mounted) {
+      <span class="tok-kw">await</span> controller.<span class="tok-fn">dispose</span>();
+      <span class="tok-kw">return</span>;
     }
-    setState(() {
+    <span class="tok-fn">setState</span>(() {
       _cam = controller;
     });
   }
 
   @override
-  void dispose() {
-    _cam?.dispose();
-    super.dispose();
+  <span class="tok-kw">void</span> <span class="tok-fn">dispose</span>() {
+    _cam?.<span class="tok-fn">dispose</span>();
+    <span class="tok-kw">super</span>.<span class="tok-fn">dispose</span>();
   }
 
-  Future&lt;void&gt; _takePhoto() async {
-    await _cam?.takePicture();
-    setState(() {
-      _taken = true;
+  <span class="tok-typ">Future</span>&lt;<span class="tok-kw">void</span>&gt; <span class="tok-fn">_takePhoto</span>() <span class="tok-kw">async</span> {
+    <span class="tok-kw">await</span> _cam?.<span class="tok-fn">takePicture</span>();
+    <span class="tok-fn">setState</span>(() {
+      _taken = <span class="tok-kw">true</span>;
     });
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
       children: [
-        if (_taken) const Text('Photo saved!'),
-        ElevatedButton(onPressed: _takePhoto, child: const Text('Take Photo')),
+        <span class="tok-kw">if</span> (_taken) <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Photo saved!'</span>),
+        <span class="tok-typ">ElevatedButton</span>(onPressed: _takePhoto, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Take Photo'</span>)),
       ],
     );
   }
-}</pre>
+}</code></pre>
 </div>
 <div class="tab-panel" data-example="07-list-rendering" data-panel="tsx">
-<pre>import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+<pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
-export const Groceries = () =&gt; {
-  const [items, setItems] = useState(['Apples', 'Bread']);
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Groceries</span> = () =&gt; {
+  <span class="tok-kw">const</span> [items, setItems] = <span class="tok-fn">useState</span>([<span class="tok-str">'Apples'</span>, <span class="tok-str">'Bread'</span>]);
 
-  const addItem = () =&gt; {
-    setItems([...items, 'Milk']);
+  <span class="tok-kw">const</span> addItem = () =&gt; {
+    <span class="tok-fn">setItems</span>([...items, <span class="tok-str">'Milk'</span>]);
   };
 
-  return (
-    &lt;Column&gt;
-      {items.map((item) =&gt; (
-        &lt;Text&gt;{item}&lt;/Text&gt;
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      {items.<span class="tok-fn">map</span>((item) =&gt; (
+        &lt;<span class="tok-typ">Text</span>&gt;{item}&lt;/<span class="tok-typ">Text</span>&gt;
       ))}
-      &lt;ElevatedButton onClick={addItem}&gt;Add&lt;/ElevatedButton&gt;
-    &lt;/Column&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={addItem}&gt;Add&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
   );
-};</pre>
+};</code></pre>
 </div>
 <div class="tab-panel" data-example="07-list-rendering" data-panel="dart">
-<pre>import 'package:flutter/material.dart';
+<pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
-class Groceries extends StatefulWidget {
-  const Groceries({super.key});
+<span class="tok-kw">class</span> <span class="tok-typ">Groceries</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Groceries</span>({<span class="tok-kw">super</span>.key});
 
   @override
-  State&lt;Groceries&gt; createState() =&gt; _GroceriesState();
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">Groceries</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_GroceriesState</span>();
 }
 
-class _GroceriesState extends State&lt;Groceries&gt; {
-  List&lt;String&gt; _items = ['Apples', 'Bread'];
+<span class="tok-kw">class</span> _GroceriesState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">Groceries</span>&gt; {
+  <span class="tok-typ">List</span>&lt;<span class="tok-typ">String</span>&gt; _items = [<span class="tok-str">'Apples'</span>, <span class="tok-str">'Bread'</span>];
 
-  void _addItem() {
-    setState(() {
-      _items = [..._items, 'Milk'];
+  <span class="tok-kw">void</span> <span class="tok-fn">_addItem</span>() {
+    <span class="tok-fn">setState</span>(() {
+      _items = [..._items, <span class="tok-str">'Milk'</span>];
     });
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
       children: [
-        for (final item in _items) Text(item),
-        ElevatedButton(onPressed: _addItem, child: const Text('Add')),
+        <span class="tok-kw">for</span> (<span class="tok-kw">final</span> item <span class="tok-kw">in</span> _items) <span class="tok-typ">Text</span>(item),
+        <span class="tok-typ">ElevatedButton</span>(onPressed: _addItem, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Add'</span>)),
       ],
     );
   }
-}</pre>
+}</code></pre>
 </div>
 <div class="tab-panel" data-example="25-http-get" data-panel="tsx">
-<pre>import { CircularProgressIndicator, Column, Text, useAsync } from 'flutter-tsx';
-import { get } from 'plugin:http';
+<pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">CircularProgressIndicator</span>, <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span>, useAsync } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<span class="tok-kw">import</span> { <span class="tok-kw">get</span> } <span class="tok-kw">from</span> <span class="tok-str">'plugin:http'</span>;
 
-export const AlbumView = async () =&gt; {
-  const res = await useAsync(() =&gt; get('https://example.com/album/1'), {
-    loading: () =&gt; &lt;CircularProgressIndicator /&gt;,
-    error: (err) =&gt; &lt;Text&gt;{err}&lt;/Text&gt;,
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">AlbumView</span> = <span class="tok-kw">async</span> () =&gt; {
+  <span class="tok-kw">const</span> res = <span class="tok-kw">await</span> <span class="tok-fn">useAsync</span>(() =&gt; <span class="tok-kw">get</span>(<span class="tok-str">'https://example.com/album/1'</span>), {
+    loading: () =&gt; &lt;<span class="tok-typ">CircularProgressIndicator</span> /&gt;,
+    error: (err) =&gt; &lt;<span class="tok-typ">Text</span>&gt;{err}&lt;/<span class="tok-typ">Text</span>&gt;,
   });
 
   return (
-    &lt;Column&gt;
-      &lt;Text&gt;Status: {res.statusCode}&lt;/Text&gt;
-      &lt;Text&gt;{res.body}&lt;/Text&gt;
-    &lt;/Column&gt;
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Status: {res.statusCode}&lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;{res.body}&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
   );
-};</pre>
+};</code></pre>
 </div>
 <div class="tab-panel" data-example="25-http-get" data-panel="dart">
-<pre>import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+<pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<span class="tok-kw">import</span> <span class="tok-str">'package:http/http.dart'</span> <span class="tok-kw">as</span> http;
 
-class AlbumView extends StatefulWidget {
-  const AlbumView({super.key});
+<span class="tok-kw">class</span> <span class="tok-typ">AlbumView</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">AlbumView</span>({<span class="tok-kw">super</span>.key});
 
   @override
-  State&lt;AlbumView&gt; createState() =&gt; _AlbumViewState();
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">AlbumView</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_AlbumViewState</span>();
 }
 
-class _AlbumViewState extends State&lt;AlbumView&gt; {
-  late final Future&lt;http.Response&gt; _resFuture;
+<span class="tok-kw">class</span> _AlbumViewState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">AlbumView</span>&gt; {
+  <span class="tok-kw">late</span> <span class="tok-kw">final</span> <span class="tok-typ">Future</span>&lt;http.<span class="tok-typ">Response</span>&gt; _resFuture;
 
   @override
-  void initState() {
-    super.initState();
-    _resFuture = http.get(Uri.parse('https://example.com/album/1'));
+  <span class="tok-kw">void</span> <span class="tok-fn">initState</span>() {
+    <span class="tok-kw">super</span>.<span class="tok-fn">initState</span>();
+    _resFuture = http.<span class="tok-kw">get</span>(<span class="tok-typ">Uri</span>.<span class="tok-fn">parse</span>(<span class="tok-str">'https://example.com/album/1'</span>));
   }
 
   @override
-  Widget build(BuildContext context) {
-    return FutureBuilder&lt;http.Response&gt;(
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">FutureBuilder</span>&lt;http.<span class="tok-typ">Response</span>&gt;(
       future: _resFuture,
       builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          final err = '${snapshot.error}';
-          return Text(err);
+        <span class="tok-kw">if</span> (snapshot.hasError) {
+          <span class="tok-kw">final</span> err = <span class="tok-str">'${snapshot.error}'</span>;
+          <span class="tok-kw">return</span> <span class="tok-typ">Text</span>(err);
         }
-        if (!snapshot.hasData) {
-          return const CircularProgressIndicator();
+        <span class="tok-kw">if</span> (!snapshot.hasData) {
+          <span class="tok-kw">return</span> <span class="tok-kw">const</span> <span class="tok-typ">CircularProgressIndicator</span>();
         }
-        final res = snapshot.data!;
-        return Column(
-          children: [Text('Status: ${res.statusCode}'), Text(res.body)],
+        <span class="tok-kw">final</span> res = snapshot.data!;
+        <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+          children: [<span class="tok-typ">Text</span>(<span class="tok-str">'Status: ${res.statusCode}'</span>), <span class="tok-typ">Text</span>(res.body)],
         );
       },
     );
   }
-}</pre>
+}</code></pre>
 </div>
 <div class="tab-panel" data-example="19-store-counter" data-panel="tsx">
-<pre>import {
-  Column,
+<pre><code class="language-tsx"><span class="tok-kw">import</span> {
+  <span class="tok-typ">Column</span>,
   createStore,
-  ElevatedButton,
-  Text,
+  <span class="tok-typ">ElevatedButton</span>,
+  <span class="tok-typ">Text</span>,
   useStore,
-} from 'flutter-tsx';
+} <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
-const counterStore = createStore({ count: 0, label: 'Taps' });
+<span class="tok-kw">const</span> counterStore = <span class="tok-fn">createStore</span>({ count: <span class="tok-num">0</span>, label: <span class="tok-str">'Taps'</span> });
 
-export const StoreCounter = () =&gt; {
-  const [state, setState] = useStore(counterStore);
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">StoreCounter</span> = () =&gt; {
+  <span class="tok-kw">const</span> [state, setState] = <span class="tok-fn">useStore</span>(counterStore);
 
-  const increment = () =&gt; {
-    setState({ count: state.count + 1 });
+  <span class="tok-kw">const</span> increment = () =&gt; {
+    <span class="tok-fn">setState</span>({ count: state.count + <span class="tok-num">1</span> });
   };
 
-  return (
-    &lt;Column&gt;
-      &lt;Text&gt;
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;
         {state.label}: {state.count}
-      &lt;/Text&gt;
-      &lt;ElevatedButton onClick={increment}&gt;Increment&lt;/ElevatedButton&gt;
-    &lt;/Column&gt;
+      &lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={increment}&gt;Increment&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
   );
-};</pre>
+};</code></pre>
 </div>
 <div class="tab-panel" data-example="19-store-counter" data-panel="dart">
-<pre>import 'package:flutter/material.dart';
+<pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
-class _CounterStore extends ChangeNotifier {
-  _CounterStore({required this.count, required this.label});
+<span class="tok-kw">class</span> _CounterStore <span class="tok-kw">extends</span> <span class="tok-typ">ChangeNotifier</span> {
+  <span class="tok-fn">_CounterStore</span>({<span class="tok-kw">required</span> <span class="tok-kw">this</span>.count, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.label});
 
   int count;
-  String label;
+  <span class="tok-typ">String</span> label;
 
-  void update({int? count, String? label}) {
-    if (count != null) {
-      this.count = count;
+  <span class="tok-kw">void</span> <span class="tok-fn">update</span>({int? count, <span class="tok-typ">String</span>? label}) {
+    <span class="tok-kw">if</span> (count != <span class="tok-kw">null</span>) {
+      <span class="tok-kw">this</span>.count = count;
     }
-    if (label != null) {
-      this.label = label;
+    <span class="tok-kw">if</span> (label != <span class="tok-kw">null</span>) {
+      <span class="tok-kw">this</span>.label = label;
     }
-    notifyListeners();
+    <span class="tok-fn">notifyListeners</span>();
   }
 }
 
-final _CounterStore _counterStore = _CounterStore(count: 0, label: 'Taps');
+<span class="tok-kw">final</span> _CounterStore _counterStore = <span class="tok-fn">_CounterStore</span>(count: <span class="tok-num">0</span>, label: <span class="tok-str">'Taps'</span>);
 
-class StoreCounter extends StatelessWidget {
-  const StoreCounter({super.key});
+<span class="tok-kw">class</span> <span class="tok-typ">StoreCounter</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">StoreCounter</span>({<span class="tok-kw">super</span>.key});
 
-  void _increment() {
-    _counterStore.update(count: _counterStore.count + 1);
+  <span class="tok-kw">void</span> <span class="tok-fn">_increment</span>() {
+    _counterStore.<span class="tok-fn">update</span>(count: _counterStore.count + <span class="tok-num">1</span>);
   }
 
   @override
-  Widget build(BuildContext context) {
-    return ListenableBuilder(
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">ListenableBuilder</span>(
       listenable: _counterStore,
       builder: (context, child) {
-        return Column(
+        <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
           children: [
-            Text('${_counterStore.label}: ${_counterStore.count}'),
-            ElevatedButton(
+            <span class="tok-typ">Text</span>(<span class="tok-str">'${_counterStore.label}: ${_counterStore.count}'</span>),
+            <span class="tok-typ">ElevatedButton</span>(
               onPressed: _increment,
-              child: const Text('Increment'),
+              child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Increment'</span>),
             ),
           ],
         );
       },
     );
   }
-}</pre>
+}</code></pre>
 </div>
 <div class="tab-panel" data-example="20-router" data-panel="tsx">
-<pre>import {
-  Column,
+<pre><code class="language-tsx"><span class="tok-kw">import</span> {
+  <span class="tok-typ">Column</span>,
   createRouter,
-  ElevatedButton,
-  Text,
+  <span class="tok-typ">ElevatedButton</span>,
+  <span class="tok-typ">Text</span>,
   useNavigation,
-} from 'flutter-tsx';
+} <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
-export const HomePage = () =&gt; {
-  const nav = useNavigation();
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">HomePage</span> = () =&gt; {
+  <span class="tok-kw">const</span> nav = <span class="tok-fn">useNavigation</span>();
 
-  return (
-    &lt;Column&gt;
-      &lt;Text&gt;Home&lt;/Text&gt;
-      &lt;ElevatedButton onClick={() =&gt; nav.push('/detail')}&gt;
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Home&lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={() =&gt; nav.push(<span class="tok-str">'/detail'</span>)}&gt;
         Open detail
-      &lt;/ElevatedButton&gt;
-    &lt;/Column&gt;
+      &lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };
 
 export const DetailPage = () =&gt; {
-  const nav = useNavigation();
+  <span class="tok-kw">const</span> nav = <span class="tok-fn">useNavigation</span>();
 
-  return (
-    &lt;Column&gt;
-      &lt;Text&gt;Detail&lt;/Text&gt;
-      &lt;ElevatedButton onClick={() =&gt; nav.pop()}&gt;Back&lt;/ElevatedButton&gt;
-    &lt;/Column&gt;
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;<span class="tok-typ">Detail</span>&lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={() =&gt; nav.<span class="tok-fn">pop</span>()}&gt;<span class="tok-typ">Back</span>&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };
 
 export const router = createRouter({
-  '/': HomePage,
-  '/detail': DetailPage,
-});</pre>
+  <span class="tok-str">'/'</span>: <span class="tok-typ">HomePage</span>,
+  <span class="tok-str">'/detail'</span>: <span class="tok-typ">DetailPage</span>,
+});</code></pre>
 </div>
 <div class="tab-panel" data-example="20-router" data-panel="dart">
-<pre>import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+<pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<span class="tok-kw">import</span> <span class="tok-str">'package:go_router/go_router.dart'</span>;
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+<span class="tok-kw">class</span> <span class="tok-typ">HomePage</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">HomePage</span>({<span class="tok-kw">super</span>.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
       children: [
-        const Text('Home'),
-        ElevatedButton(
-          onPressed: () =&gt; context.push('/detail'),
-          child: const Text('Open detail'),
+        <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Home'</span>),
+        <span class="tok-typ">ElevatedButton</span>(
+          onPressed: () =&gt; context.<span class="tok-fn">push</span>(<span class="tok-str">'/detail'</span>),
+          child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Open detail'</span>),
         ),
       ],
     );
   }
 }
 
-class DetailPage extends StatelessWidget {
-  const DetailPage({super.key});
+<span class="tok-kw">class</span> <span class="tok-typ">DetailPage</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">DetailPage</span>({<span class="tok-kw">super</span>.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
       children: [
-        const Text('Detail'),
-        ElevatedButton(
-          onPressed: () =&gt; context.pop(),
-          child: const Text('Back'),
+        <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Detail'</span>),
+        <span class="tok-typ">ElevatedButton</span>(
+          onPressed: () =&gt; context.<span class="tok-fn">pop</span>(),
+          child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Back'</span>),
         ),
       ],
     );
   }
 }
 
-final GoRouter router = GoRouter(
+<span class="tok-kw">final</span> <span class="tok-typ">GoRouter</span> router = <span class="tok-typ">GoRouter</span>(
   routes: [
-    GoRoute(path: '/', builder: (context, state) =&gt; const HomePage()),
-    GoRoute(path: '/detail', builder: (context, state) =&gt; const DetailPage()),
+    <span class="tok-typ">GoRoute</span>(path: <span class="tok-str">'/'</span>, builder: (context, state) =&gt; <span class="tok-kw">const</span> <span class="tok-typ">HomePage</span>()),
+    <span class="tok-typ">GoRoute</span>(path: <span class="tok-str">'/detail'</span>, builder: (context, state) =&gt; <span class="tok-kw">const</span> <span class="tok-typ">DetailPage</span>()),
   ],
-);</pre>
+);</code></pre>
 </div>
 <div class="tab-panel" data-example="23-tabs" data-panel="tsx">
-<pre>import { TabItem, TabView, Text } from 'flutter-tsx';
+<pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">TabItem</span>, <span class="tok-typ">TabView</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
-export const HomeTab = () =&gt; &lt;Text&gt;Home&lt;/Text&gt;;
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">HomeTab</span> = () =&gt; &lt;<span class="tok-typ">Text</span>&gt;Home&lt;/<span class="tok-typ">Text</span>&gt;;
 
-export const ProfileTab = () =&gt; &lt;Text&gt;Profile&lt;/Text&gt;;
+export const ProfileTab = () =&gt; &lt;<span class="tok-typ">Text</span>&gt;Profile&lt;/<span class="tok-typ">Text</span>&gt;;
 
 export const Shell = () =&gt; (
-  &lt;TabView&gt;
-    &lt;TabItem label=&quot;Home&quot; icon=&quot;home&quot;&gt;
-      &lt;HomeTab /&gt;
-    &lt;/TabItem&gt;
-    &lt;TabItem label=&quot;Profile&quot; icon=&quot;person&quot;&gt;
-      &lt;ProfileTab /&gt;
-    &lt;/TabItem&gt;
-  &lt;/TabView&gt;
-);</pre>
+  &lt;<span class="tok-typ">TabView</span>&gt;
+    &lt;<span class="tok-typ">TabItem</span> label=<span class="tok-str">&quot;Home&quot;</span> icon=<span class="tok-str">&quot;home&quot;</span>&gt;
+      &lt;<span class="tok-typ">HomeTab</span> /&gt;
+    &lt;/<span class="tok-typ">TabItem</span>&gt;
+    &lt;<span class="tok-typ">TabItem</span> label=<span class="tok-str">&quot;Profile&quot;</span> icon=<span class="tok-str">&quot;person&quot;</span>&gt;
+      &lt;<span class="tok-typ">ProfileTab</span> /&gt;
+    &lt;/<span class="tok-typ">TabItem</span>&gt;
+  &lt;/<span class="tok-typ">TabView</span>&gt;
+);</code></pre>
 </div>
 <div class="tab-panel" data-example="23-tabs" data-panel="dart">
-<pre>import 'package:flutter/material.dart';
+<pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
-class HomeTab extends StatelessWidget {
-  const HomeTab({super.key});
+<span class="tok-kw">class</span> <span class="tok-typ">HomeTab</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">HomeTab</span>({<span class="tok-kw">super</span>.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const Text('Home');
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Home'</span>);
   }
 }
 
-class ProfileTab extends StatelessWidget {
-  const ProfileTab({super.key});
+<span class="tok-kw">class</span> <span class="tok-typ">ProfileTab</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">ProfileTab</span>({<span class="tok-kw">super</span>.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const Text('Profile');
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Profile'</span>);
   }
 }
 
-class Shell extends StatefulWidget {
-  const Shell({super.key});
+<span class="tok-kw">class</span> <span class="tok-typ">Shell</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Shell</span>({<span class="tok-kw">super</span>.key});
 
   @override
-  State&lt;Shell&gt; createState() =&gt; _ShellState();
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">Shell</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_ShellState</span>();
 }
 
-class _ShellState extends State&lt;Shell&gt; {
-  int _tabIndex = 0;
+<span class="tok-kw">class</span> _ShellState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">Shell</span>&gt; {
+  int _tabIndex = <span class="tok-num">0</span>;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Scaffold</span>(
+      body: <span class="tok-typ">IndexedStack</span>(
         index: _tabIndex,
-        children: const [HomeTab(), ProfileTab()],
+        children: <span class="tok-kw">const</span> [<span class="tok-typ">HomeTab</span>(), <span class="tok-typ">ProfileTab</span>()],
       ),
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: <span class="tok-typ">BottomNavigationBar</span>(
         currentIndex: _tabIndex,
-        onTap: (index) =&gt; setState(() =&gt; _tabIndex = index),
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        onTap: (index) =&gt; <span class="tok-fn">setState</span>(() =&gt; _tabIndex = index),
+        items: <span class="tok-kw">const</span> [
+          <span class="tok-typ">BottomNavigationBarItem</span>(icon: <span class="tok-typ">Icon</span>(<span class="tok-typ">Icons</span>.home), label: <span class="tok-str">'Home'</span>),
+          <span class="tok-typ">BottomNavigationBarItem</span>(icon: <span class="tok-typ">Icon</span>(<span class="tok-typ">Icons</span>.person), label: <span class="tok-str">'Profile'</span>),
         ],
       ),
     );
   }
-}</pre>
+}</code></pre>
 </div>
 <div class="tab-panel" data-example="24-animated" data-panel="tsx">
-<pre>import { Animated, Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+<pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Animated</span>, <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
-export const Fader = () =&gt; {
-  const [shown, setShown] = useState(true);
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Fader</span> = () =&gt; {
+  <span class="tok-kw">const</span> [shown, setShown] = <span class="tok-fn">useState</span>(<span class="tok-kw">true</span>);
 
-  const toggle = () =&gt; {
-    setShown(!shown);
+  <span class="tok-kw">const</span> toggle = () =&gt; {
+    <span class="tok-fn">setShown</span>(!shown);
   };
 
-  return (
-    &lt;Column&gt;
-      &lt;Animated type=&quot;fade&quot; visible={shown} duration={300}&gt;
-        &lt;Text&gt;Fades&lt;/Text&gt;
-      &lt;/Animated&gt;
-      &lt;ElevatedButton onClick={toggle}&gt;Toggle&lt;/ElevatedButton&gt;
-    &lt;/Column&gt;
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">Animated</span> <span class="tok-kw">type</span>=<span class="tok-str">&quot;fade&quot;</span> visible={shown} duration={<span class="tok-num">300</span>}&gt;
+        &lt;<span class="tok-typ">Text</span>&gt;Fades&lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;/<span class="tok-typ">Animated</span>&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={toggle}&gt;Toggle&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
   );
-};</pre>
+};</code></pre>
 </div>
 <div class="tab-panel" data-example="24-animated" data-panel="dart">
-<pre>import 'package:flutter/material.dart';
+<pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
-class Fader extends StatefulWidget {
-  const Fader({super.key});
+<span class="tok-kw">class</span> <span class="tok-typ">Fader</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Fader</span>({<span class="tok-kw">super</span>.key});
 
   @override
-  State&lt;Fader&gt; createState() =&gt; _FaderState();
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">Fader</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_FaderState</span>();
 }
 
-class _FaderState extends State&lt;Fader&gt; {
-  bool _shown = true;
+<span class="tok-kw">class</span> _FaderState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">Fader</span>&gt; {
+  bool _shown = <span class="tok-kw">true</span>;
 
-  void _toggle() {
-    setState(() {
+  <span class="tok-kw">void</span> <span class="tok-fn">_toggle</span>() {
+    <span class="tok-fn">setState</span>(() {
       _shown = !_shown;
     });
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
       children: [
-        AnimatedOpacity(
-          opacity: _shown ? 1 : 0,
-          duration: const Duration(milliseconds: 300),
-          child: const Text('Fades'),
+        <span class="tok-typ">AnimatedOpacity</span>(
+          opacity: _shown ? <span class="tok-num">1</span> : <span class="tok-num">0</span>,
+          duration: <span class="tok-kw">const</span> <span class="tok-typ">Duration</span>(milliseconds: <span class="tok-num">300</span>),
+          child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Fades'</span>),
         ),
-        ElevatedButton(onPressed: _toggle, child: const Text('Toggle')),
+        <span class="tok-typ">ElevatedButton</span>(onPressed: _toggle, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Toggle'</span>)),
       ],
     );
   }
-}</pre>
+}</code></pre>
 </div>
 <!-- /showcase:panels -->
         </div>

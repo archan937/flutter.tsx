@@ -1,4 +1,23 @@
+import { codeBlock, type Language } from './highlight';
 import { escapeHtml } from './render';
+
+/** Fence languages these pages write, mapped to the ones we colour. */
+const HIGHLIGHTED: Record<string, Language | undefined> = {
+  tsx: 'tsx',
+  ts: 'typescript',
+  typescript: 'typescript',
+  dart: 'dart',
+};
+
+const NON_SLUG = /[^a-z0-9]+/g;
+
+/** A heading's anchor: “2. Install the SDK” becomes `2-install-the-sdk`. */
+export const slug = (text: string): string =>
+  text
+    .toLowerCase()
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(NON_SLUG, '-')
+    .replace(/^-|-$/g, '');
 
 /**
  * The markdown these docs are written in, and no more: headings, paragraphs,
@@ -63,10 +82,12 @@ export const renderMarkdown = (markdown: string): string => {
         code.push(lines[index] ?? '');
         index += 1;
       }
-      const language =
-        fence[1] === '' ? '' : ` class="language-${fence[1] ?? ''}"`;
+      const named = fence[1] ?? '';
+      const language = HIGHLIGHTED[named];
       blocks.push(
-        `<pre><code${language}>${escapeHtml(code.join('\n'))}</code></pre>`,
+        language === undefined
+          ? `<pre><code${named === '' ? '' : ` class="language-${named}"`}>${escapeHtml(code.join('\n'))}</code></pre>`
+          : codeBlock(code.join('\n'), language),
       );
       continue;
     }
@@ -75,7 +96,9 @@ export const renderMarkdown = (markdown: string): string => {
     if (heading !== null) {
       flushParagraph();
       const level = (heading[1] ?? '').length;
-      blocks.push(`<h${level}>${inline(heading[2] ?? '')}</h${level}>`);
+      const text = heading[2] ?? '';
+      // An id per heading is what makes a page navigable from a sidebar.
+      blocks.push(`<h${level} id="${slug(text)}">${inline(text)}</h${level}>`);
       continue;
     }
 

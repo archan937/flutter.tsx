@@ -80,6 +80,8 @@ export interface SiteExample {
   title: string;
   /** The capability it leads with, e.g. “Async data”. */
   label: string;
+  /** One line on what it shows; empty when the example carries none. */
+  blurb: string;
   tsx: string;
   dart: string;
 }

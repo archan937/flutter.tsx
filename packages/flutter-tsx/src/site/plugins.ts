@@ -58,6 +58,7 @@ const exampleOf = (recipe: Recipe): SiteExample => ({
   id: recipe.id,
   title: recipe.title,
   label: recipe.title,
+  blurb: recipe.blurb,
   tsx: recipe.tsx,
   dart: recipe.dart,
 });

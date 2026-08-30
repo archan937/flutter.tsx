@@ -186,6 +186,7 @@ describe('buildSitePage', () => {
         id: '01-camera-screen',
         title: 'Camera Screen',
         label: 'Camera',
+        blurb: '',
         tsx: "import { useCamera } from 'plugin:camera';\n",
         dart: "import 'package:camera/camera.dart';\n",
       },

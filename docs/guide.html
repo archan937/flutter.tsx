@@ -15,26 +15,60 @@
   }
   * { box-sizing: border-box; }
   body {
-    margin: 0; padding: 0 1.25rem 4rem; background: var(--bg); color: var(--text);
+    margin: 0; background: var(--bg); color: var(--text);
     font: 16px/1.6 'Hanken Grotesk', system-ui, sans-serif;
   }
-  main { max-width: 62rem; margin: 0 auto; }
-  h1 { font-size: 2.25rem; margin: 2.5rem 0 0.5rem; }
-  h2 { font-size: 1.4rem; margin: 3rem 0 0.75rem; scroll-margin-top: 1rem; }
   a { color: var(--react); }
+  .shell { display: grid; grid-template-columns: 17rem minmax(0, 1fr); gap: 2.5rem; max-width: 82rem; margin: 0 auto; padding: 0 1.25rem; }
+  .sidebar {
+    position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto;
+    padding: 1.5rem 0.5rem 3rem 0; border-right: 1px solid var(--line);
+  }
+  .sidebar .brand { display: block; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.35rem; color: var(--text); text-decoration: none; }
+  .sidebar .pages { margin: 0 0 1.25rem; font-size: 0.85rem; color: var(--dim); }
+  .sidebar h4 {
+    margin: 1.1rem 0 0.35rem; font-size: 0.7rem; letter-spacing: 0.09em;
+    text-transform: uppercase; color: var(--dim);
+  }
+  .sidebar ul { list-style: none; margin: 0; padding: 0; }
+  .sidebar li { margin: 0.1rem 0; }
+  .sidebar a { display: block; padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.87rem; text-decoration: none; color: var(--text); }
+  .sidebar a:hover { background: var(--panel); }
+  main { min-width: 0; padding: 1.5rem 0 5rem; }
+  h1 { font-size: 2.25rem; margin: 1rem 0 0.5rem; }
+  h2 {
+    font-size: 1.05rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--dim); margin: 3rem 0 0.5rem; scroll-margin-top: 1rem;
+  }
+  h3 { font-size: 1.3rem; margin: 0 0 0.35rem; scroll-margin-top: 1rem; }
   .lede, .note { color: var(--dim); }
-  .contents { columns: 2; margin: 1.5rem 0 0; padding: 0; list-style: none; }
-  .contents li { margin: 0.15rem 0; break-inside: avoid; }
-  .pair { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; }
-  @media (max-width: 60rem) { .pair { grid-template-columns: 1fr; } }
-  .pane { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
-  .pane h3 {
-    margin: 0; padding: 0.6rem 0.9rem; font-size: 0.75rem; letter-spacing: 0.08em;
-    text-transform: uppercase; color: var(--dim); border-bottom: 1px solid var(--line);
+  .recipe { margin: 2rem 0 0; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  .recipe .blurb { color: var(--dim); margin: 0 0 1rem; max-width: 60ch; }
+  .pair { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; margin-bottom: 1rem; }
+  @media (max-width: 70rem) {
+    .shell { grid-template-columns: 1fr; }
+    .sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--line); }
+    .pair { grid-template-columns: 1fr; }
+  }
+  .pane { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .pane h4 {
+    margin: 0; padding: 0.55rem 0.9rem; font-size: 0.72rem; letter-spacing: 0.06em;
+    color: var(--dim); border-bottom: 1px solid var(--line);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
   }
   pre { margin: 0; padding: 0.9rem; overflow-x: auto; }
   code { font: 13px/1.55 'JetBrains Mono', ui-monospace, monospace; }
 
+  .tok-com { color: #6b7a90; font-style: italic; }
+  .tok-str { color: #a5d6a7; }
+  .tok-num { color: #ffcc80; }
+  .tok-kw  { color: #c792ea; }
+  .tok-typ { color: #82aaff; }
+  .tok-fn  { color: #64d8cb; }
+
+  main h2 { font-size: 1.5rem; text-transform: none; letter-spacing: 0; color: var(--text); }
+  main h1 { margin-top: 1rem; }
+  main p, main ul, main table { max-width: 68ch; }
   table { border-collapse: collapse; margin: 1rem 0; width: 100%; }
   th, td { border: 1px solid var(--line); padding: 0.45rem 0.7rem; text-align: left; vertical-align: top; }
   th { color: var(--dim); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; }
@@ -44,12 +78,29 @@
 </style>
 </head>
 <body>
+<div class="shell">
+<nav class="sidebar">
+<a class="brand" href="./index.html">Flutter.tsx</a>
+<p class="pages"><a href="./cookbook.html">Cookbook</a> · <a href="./api-reference.html">API reference</a></p>
+<h4>Guide</h4>
+<ul>
+<li><a href="#1-create-a-project">1. Create a project</a></li>
+<li><a href="#2-install-the-sdk-and-your-plugins">2. Install the SDK and your plugins</a></li>
+<li><a href="#3-develop">3. Develop</a></li>
+<li><a href="#4-write-components">4. Write components</a></li>
+<li><a href="#5-use-a-plugin">5. Use a plugin</a></li>
+<li><a href="#6-configure">6. Configure</a></li>
+<li><a href="#7-build">7. Build</a></li>
+<li><a href="#8-check-the-project">8. Check the project</a></li>
+<li><a href="#project-layout">Project layout</a></li>
+<li><a href="#when-something-is-not-expressible">When something is not expressible</a></li>
+</ul>
+</nav>
 <main>
-<p class="note"><a href="./index.html">Home</a> · <a href="./cookbook.html">Cookbook</a> · <a href="./api-reference.html">API reference</a></p>
-<h1>Guide — working with Flutter.tsx</h1>
+<h1 id="guide-working-with-flutter-tsx">Guide — working with Flutter.tsx</h1>
 <p>You write TSX; <code>fsx</code> compiles it to idiomatic Dart and drives Flutter. You never write Dart by hand, and one codebase builds for web, iOS, Android, macOS, Windows and Linux. Two of those — web and macOS — are built from TSX by the end-to-end suite on every run; the other four take the same path through <code>flutter build</code> but are not covered by CI.</p>
 <p>Every TSX snippet on this page is a conformance fixture from the compiler's test suite. The Dart each one emits is asserted byte-for-byte, laid out by <code>dart format</code>, checked by <code>flutter analyze</code> and built as a real Flutter app on every run — see the <a href="./cookbook.html">cookbook</a> for all of them, side by side.</p>
-<h2>1. Create a project</h2>
+<h2 id="1-create-a-project">1. Create a project</h2>
 <p>Flutter.tsx is not on npm yet — the <code>0.x</code> releases there are the previous implementation. Until 1.0, run it from a clone:</p>
 <pre><code class="language-sh">git clone https://github.com/archan937/flutter.tsx
 cd flutter.tsx &amp;&amp; bun install
@@ -60,43 +111,43 @@ cd ~/my-app &amp;&amp; bun install</code></pre>
 cd my-app
 bun install</code></pre>
 <p>You get <code>fsx.config.ts</code>, a <code>src/App.tsx</code> to start from, a <code>tsconfig.json</code> wired for TSX, and the host Flutter app.</p>
-<h2>2. Install the SDK and your plugins</h2>
+<h2 id="2-install-the-sdk-and-your-plugins">2. Install the SDK and your plugins</h2>
 <pre><code class="language-sh">fsx install</code></pre>
 <p>One command does both: it downloads the pinned Flutter SDK into <code>~/.fsx</code> (shared by every project on the machine, so it happens once), then brings the project's plugins in line with what <code>package.json</code> declares.</p>
-<h2>3. Develop</h2>
+<h2 id="3-develop">3. Develop</h2>
 <pre><code class="language-sh">fsx dev</code></pre>
 <p><code>fsx dev</code> compiles every component under <code>src/</code> to Dart under <code>lib/</code>, runs the app on the device your target maps to, and watches for saves: each one recompiles and hot reloads. A compile error is reported and the app keeps running, so a typo never ends the session.</p>
-<h2>4. Write components</h2>
+<h2 id="4-write-components">4. Write components</h2>
 <p>A component is an exported arrow function returning JSX. State is <code>useState</code>, and a handler is a plain function:</p>
-<pre><code class="language-tsx">import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+<pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
-export const Counter = () =&gt; {
-  const [count, setCount] = useState(0);
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Counter</span> = () =&gt; {
+  <span class="tok-kw">const</span> [count, setCount] = <span class="tok-fn">useState</span>(<span class="tok-num">0</span>);
 
-  const increment = () =&gt; {
-    setCount(count + 1);
+  <span class="tok-kw">const</span> increment = () =&gt; {
+    <span class="tok-fn">setCount</span>(count + <span class="tok-num">1</span>);
   };
 
-  return (
-    &lt;Column mainAxisAlignment=&quot;center&quot;&gt;
-      &lt;Text&gt;Count: {count}&lt;/Text&gt;
-      &lt;ElevatedButton onClick={increment}&gt;Increment&lt;/ElevatedButton&gt;
-    &lt;/Column&gt;
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span> mainAxisAlignment=<span class="tok-str">&quot;center&quot;</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Count: {count}&lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={increment}&gt;Increment&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre>
 <p>That compiles to a <code>StatefulWidget</code> with a private <code>_count</code> field, a <code>_increment</code> method that calls <code>setState</code>, and a <code>build</code> returning the <code>Column</code> — the Dart a Flutter developer would have written.</p>
 <p>Props are destructured with an inline type, and a component that both takes props and owns state reads its props through <code>widget</code> in the emitted Dart — you never write that:</p>
-<pre><code class="language-tsx">import { Column, Text } from 'flutter-tsx';
+<pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
-export const TagList = ({ tags }: { tags: string[] }) =&gt; (
-  &lt;Column&gt;
-    {tags.map((tag) =&gt; (
-      &lt;Text&gt;{tag}&lt;/Text&gt;
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">TagList</span> = ({ tags }: { tags: string[] }) =&gt; (
+  &lt;<span class="tok-typ">Column</span>&gt;
+    {tags.<span class="tok-fn">map</span>((tag) =&gt; (
+      &lt;<span class="tok-typ">Text</span>&gt;{tag}&lt;/<span class="tok-typ">Text</span>&gt;
     ))}
-  &lt;/Column&gt;
+  &lt;/<span class="tok-typ">Column</span>&gt;
 );</code></pre>
 <p>Components in other files are imported the way you would expect, and the compiler emits the Dart import for you — including hiding a Flutter widget of the same name, so a component called <code>Card</code> or <code>Banner</code> is yours, not the SDK's.</p>
-<h2>5. Use a plugin</h2>
+<h2 id="5-use-a-plugin">5. Use a plugin</h2>
 <p>Plugins are declared like npm dependencies, in <code>package.json</code>:</p>
 <pre><code class="language-jsonc">{
   &quot;plugins&quot;: {
@@ -104,35 +155,35 @@ export const TagList = ({ tags }: { tags: string[] }) =&gt; (
   }
 }</code></pre>
 <p><code>fsx install</code> resolves them with pub, writes them into <code>pubspec.yaml</code>, extracts each plugin's real API from the resolved source, and generates the <code>plugin:&lt;name&gt;</code> typings your editor completes against. Then import from the plugin and call it:</p>
-<pre><code class="language-tsx">import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
-import { launchUrl } from 'plugin:url_launcher';
+<pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<span class="tok-kw">import</span> { launchUrl } <span class="tok-kw">from</span> <span class="tok-str">'plugin:url_launcher'</span>;
 
-export const OpenLink = () =&gt; {
-  const [opened, setOpened] = useState(false);
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">OpenLink</span> = () =&gt; {
+  <span class="tok-kw">const</span> [opened, setOpened] = <span class="tok-fn">useState</span>(<span class="tok-kw">false</span>);
 
-  const open = async () =&gt; {
-    await launchUrl('https://flutter.dev', { mode: 'externalApplication' });
-    setOpened(true);
+  <span class="tok-kw">const</span> open = <span class="tok-kw">async</span> () =&gt; {
+    <span class="tok-kw">await</span> <span class="tok-fn">launchUrl</span>(<span class="tok-str">'https://flutter.dev'</span>, { mode: <span class="tok-str">'externalApplication'</span> });
+    <span class="tok-fn">setOpened</span>(<span class="tok-kw">true</span>);
   };
 
-  return (
-    &lt;Column&gt;
-      {opened &amp;&amp; &lt;Text&gt;Opened!&lt;/Text&gt;}
-      &lt;ElevatedButton onClick={open}&gt;Open&lt;/ElevatedButton&gt;
-    &lt;/Column&gt;
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      {opened &amp;&amp; &lt;<span class="tok-typ">Text</span>&gt;<span class="tok-typ">Opened</span>!&lt;/<span class="tok-typ">Text</span>&gt;}
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={open}&gt;Open&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre>
 <p>The typings are generated from the plugin version your project resolved, so what the IDE completes is what the plugin actually exposes. Dart types map to their TypeScript counterparts — a Dart <code>Uri</code> is a <code>string</code>, an enum is a union of string literals — and the compiler maps them back (<code>launchUrl('https://flutter.dev')</code> emits <code>launchUrl(Uri.parse('https://flutter.dev'))</code>).</p>
 <p>Plugins whose lifecycle needs owning get a hook: <code>useCamera()</code>, <code>useLocation()</code>, <code>useSecureStorage()</code> and the rest acquire on mount and dispose on unmount, so a controller is never left running.</p>
-<h2>6. Configure</h2>
+<h2 id="6-configure">6. Configure</h2>
 <p><code>fsx.config.ts</code> is typed TypeScript — <code>satisfies AppConfig</code>, so the IDE completes every field and a wrong value is a compile error:</p>
-<pre><code class="language-ts">import type { AppConfig } from 'flutter-tsx';
+<pre><code class="language-typescript"><span class="tok-kw">import</span> <span class="tok-kw">type</span> { <span class="tok-typ">AppConfig</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
-export default {
-  name: 'my_app',
-  bundleId: 'dev.fluttertsx.myapp',
-  target: 'web',
-} satisfies AppConfig;</code></pre>
+<span class="tok-kw">export</span> <span class="tok-kw">default</span> {
+  name: <span class="tok-str">'my_app'</span>,
+  bundleId: <span class="tok-str">'dev.fluttertsx.myapp'</span>,
+  target: <span class="tok-str">'web'</span>,
+} satisfies <span class="tok-typ">AppConfig</span>;</code></pre>
 <table>
 <thead><tr><th>Field</th><th>Meaning</th></tr></thead>
 <tbody>
@@ -142,7 +193,7 @@ export default {
 </tbody>
 </table>
 <p>See <a href="./config-mapping.html">config mapping</a> for what fsx writes into the native projects, and what it does not.</p>
-<h2>7. Build</h2>
+<h2 id="7-build">7. Build</h2>
 <pre><code class="language-sh">fsx build                    # the target fsx.config.ts names
 fsx build --target=macos     # or pick one</code></pre>
 <p>A platform the project has never built for is set up on the way — the SDK's desktop support is enabled and the native folder is created — so a web-only app ships for macOS without anyone touching native directories. The suite proves that for web and macOS; the remaining four targets run the same code path, on toolchains this project's CI does not have.</p>
@@ -157,10 +208,10 @@ fsx build --target=macos     # or pick one</code></pre>
 <tr><td><code>linux</code></td><td><code>build/linux/x64/release/bundle</code></td></tr>
 </tbody>
 </table>
-<h2>8. Check the project</h2>
+<h2 id="8-check-the-project">8. Check the project</h2>
 <pre><code class="language-sh">fsx doctor</code></pre>
 <p>Reports whether the SDK matches the pinned version, whether this is a project, whether its root component exists, and whether every declared plugin is installed with its typings — naming the command that fixes anything it finds, and exiting non-zero so CI can gate on it.</p>
-<h2>Project layout</h2>
+<h2 id="project-layout">Project layout</h2>
 <pre><code>my-app/
   fsx.config.ts        typed app config
   package.json         dependencies, and the &quot;plugins&quot; map
@@ -171,10 +222,11 @@ fsx build --target=macos     # or pick one</code></pre>
   .fsx/                generated: plugin typings and extractions
   web/ macos/ …        the host Flutter app</code></pre>
 <p><code>lib/</code> and <code>.fsx/</code> are generated and gitignored: a fresh clone is <code>bun install &amp;&amp; fsx install</code>, and everything is rebuilt.</p>
-<h3>Owning the entry point</h3>
+<h3 id="owning-the-entry-point">Owning the entry point</h3>
 <p><code>fsx</code> generates <code>lib/main.dart</code>, marked with a line saying so. Delete that line and fsx never touches the file again — which is how an app that needs its own <code>main</code> (a menu-bar app setting up a tray and window, say) takes over, while every component still compiles from TSX.</p>
-<h2>When something is not expressible</h2>
+<h2 id="when-something-is-not-expressible">When something is not expressible</h2>
 <p>Dart cannot express everything TypeScript can. Rather than emit something subtly different, the compiler refuses with a numbered error naming the reason and the way round: <code>any</code> (TSX1001), <code>eval</code> (TSX1002), mapped and conditional types (TSX2002, TSX2003), generators (TSX2006), dynamic <code>import()</code> (TSX3001), and the rest of the inventory. The same applies inside a component: a method whose Dart counterpart behaves differently (<code>slice</code>, <code>find</code>, <code>sort</code>) is refused rather than mapped to something that looks right and is not.</p>
 </main>
+</div>
 </body>
 </html>

@@ -20,8 +20,9 @@ describe('examplesFrom', () => {
 
     expect(examples[0]).toEqual({
       id: '05-counter',
-      title: 'Counter',
+      title: counter?.title ?? '',
       label: 'State',
+      blurb: counter?.blurb ?? '',
       tsx: counter?.tsx ?? '',
       dart: counter?.dart ?? '',
     });

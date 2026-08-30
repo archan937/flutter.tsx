@@ -168,6 +168,14 @@ details details > ul { padding-left: 24px; }
 .token.inserted { color: #7ee7b0; }
 .token.namespace { opacity: 0.7; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
+
+  .tok-com { color: #6b7a90; font-style: italic; }
+  .tok-str { color: #a5d6a7; }
+  .tok-num { color: #ffcc80; }
+  .tok-kw  { color: #c792ea; }
+  .tok-typ { color: #82aaff; }
+  .tok-fn  { color: #64d8cb; }
+
 </style>
 </head>
 <body>
@@ -236,17 +244,18 @@ details details > ul { padding-left: 24px; }
 <p class="doc">The TSX on the left is what a developer writes; the Dart on the right is what <code>fsx</code> emits from it — nothing on this page was typed by hand. Each pair is asserted byte-for-byte by the golden tests, laid out by <code>dart format</code>, checked by <code>flutter analyze</code> and built as a real Flutter app on every run. The <a href="./cookbook.html">cookbook</a> has the rest.</p>
 </article>
 <article class="widget" id="example-01-camera-screen" data-name="Camera">
-<h3>Camera<span class="badge badge-lib">Camera Screen</span><a class="badge badge-pkg" href="./cookbook.html#01-camera-screen">certified fixture</a></h3>
+<h3>Camera Screen<span class="badge badge-lib">Camera</span><a class="badge badge-pkg" href="./cookbook.html#01-camera-screen">certified fixture</a></h3>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="TSX" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
 </div>
 <div class="tab-panel active" data-panel="TSX" role="tabpanel">
-<pre><code class="language-tsx">import { useCamera } from 'plugin:camera';</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">import</span> { useCamera } <span class="tok-kw">from</span> <span class="tok-str">'plugin:camera'</span>;</code></pre>
 </div>
 <div class="tab-panel" data-panel="Dart" role="tabpanel">
-<pre><code class="language-dart">import 'package:camera/camera.dart';</code></pre>
+<pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:camera/camera.dart'</span>;</code></pre>
 </div>
 </div>
 </article>
@@ -259,7 +268,7 @@ details details > ul { padding-left: 24px; }
 <article class="widget" id="core-useState" data-name="useState">
 <h3>useState<span class="badge badge-lib">hook</span></h3>
 
-<pre><code class="language-typescript">&lt;TValue&gt;(initial: TValue) =&gt; [TValue, StateSetter&lt;TValue&gt;]</code></pre>
+<pre><code class="language-typescript">&lt;<span class="tok-typ">TValue</span>&gt;(initial: TValue) =&gt; [TValue, StateSetter&lt;<span class="tok-typ">TValue</span>&gt;]</code></pre>
 <p class="note">Used by <a href="./cookbook.html#05-counter"><code>05-counter</code></a></p>
 </article>
 <h2 id="lib-widgets">Widgets — widgets</h2>
@@ -279,15 +288,15 @@ details details > ul { padding-left: 24px; }
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;Frame color={Colors.blue}&gt;
-  &lt;Text&gt;Content&lt;/Text&gt;
-&lt;/Frame&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">Frame</span> color={<span class="tok-typ">Colors</span>.blue}&gt;
+  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+&lt;/<span class="tok-typ">Frame</span>&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
-<pre><code class="language-dart">Frame({
-  Key? key,
-  Widget? child,
-  Color? color,
+<pre><code class="language-dart"><span class="tok-typ">Frame</span>({
+  <span class="tok-typ">Key</span>? key,
+  <span class="tok-typ">Widget</span>? child,
+  <span class="tok-typ">Color</span>? color,
 })</code></pre>
 </div>
 </div>
@@ -295,7 +304,7 @@ details details > ul { padding-left: 24px; }
 <h2 id="plugins">Native plugins</h2>
 <article class="widget" id="plugin-camera" data-name="camera">
 <h3>camera<span class="badge badge-lib">0.12.0+2</span><a class="badge badge-pkg" href="https://pub.dev/packages/camera">pub.dev</a></h3>
-<pre><code class="language-typescript">import { useCamera, availableCameras } from 'plugin:camera';</code></pre>
+<pre><code class="language-typescript"><span class="tok-kw">import</span> { useCamera, availableCameras } <span class="tok-kw">from</span> <span class="tok-str">'plugin:camera'</span>;</code></pre>
 <table class="props">
 <thead><tr><th>Hook</th><th>Signature</th><th>Manages for you</th></tr></thead>
 <tbody>
@@ -323,13 +332,13 @@ details details > ul { padding-left: 24px; }
 <button class="tab-btn" data-tab="Typings" role="tab" aria-selected="false">Typings</button>
 </div>
 <div class="tab-panel active" data-panel="TSX" role="tabpanel">
-<pre><code class="language-tsx">import { useCamera } from 'plugin:camera';</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">import</span> { useCamera } <span class="tok-kw">from</span> <span class="tok-str">'plugin:camera'</span>;</code></pre>
 </div>
 <div class="tab-panel" data-panel="Dart" role="tabpanel">
-<pre><code class="language-dart">import 'package:camera/camera.dart';</code></pre>
+<pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:camera/camera.dart'</span>;</code></pre>
 </div>
 <div class="tab-panel" data-panel="Typings" role="tabpanel">
-<pre><code class="language-typescript">declare module 'plugin:camera' {}</code></pre>
+<pre><code class="language-typescript">declare module <span class="tok-str">'plugin:camera'</span> {}</code></pre>
 </div>
 </div>
 <p class="note">Proven by <a href="./cookbook.html#01-camera-screen"><code>01-camera-screen</code></a></p>
@@ -338,7 +347,7 @@ details details > ul { padding-left: 24px; }
 <article class="widget" id="type-ColorValue" data-name="ColorValue">
 <h3>ColorValue<span class="badge badge-lib">Color</span></h3>
 
-<pre><code class="language-typescript">export type ColorValue = Color | `#${string}`;</code></pre>
+<pre><code class="language-typescript"><span class="tok-kw">export</span> <span class="tok-kw">type</span> <span class="tok-typ">ColorValue</span> = <span class="tok-typ">Color</span> | <span class="tok-str">`#${string}`</span>;</code></pre>
 
 <p class="note">Accepted by <a href="#Frame">Frame</a></p>
 </article>
@@ -351,7 +360,7 @@ details details > ul { padding-left: 24px; }
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-typescript">"start" | "end"</code></pre>
+<pre><code class="language-typescript"><span class="tok-str">'start'</span> | <span class="tok-str">'end'</span></code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <ul class="enum-values"><li><code>TestAlign.start</code></li>

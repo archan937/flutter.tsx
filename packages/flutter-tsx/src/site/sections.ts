@@ -38,6 +38,7 @@ export const examplesFrom = (recipes: Recipe[]): SiteSections['examples'] =>
     id: recipe.id,
     title: recipe.title,
     label: SHOWCASES[index]?.label ?? recipe.title,
+    blurb: recipe.blurb,
     tsx: recipe.tsx,
     dart: recipe.dart,
   }));

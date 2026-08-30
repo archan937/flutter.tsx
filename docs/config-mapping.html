@@ -15,26 +15,60 @@
   }
   * { box-sizing: border-box; }
   body {
-    margin: 0; padding: 0 1.25rem 4rem; background: var(--bg); color: var(--text);
+    margin: 0; background: var(--bg); color: var(--text);
     font: 16px/1.6 'Hanken Grotesk', system-ui, sans-serif;
   }
-  main { max-width: 62rem; margin: 0 auto; }
-  h1 { font-size: 2.25rem; margin: 2.5rem 0 0.5rem; }
-  h2 { font-size: 1.4rem; margin: 3rem 0 0.75rem; scroll-margin-top: 1rem; }
   a { color: var(--react); }
+  .shell { display: grid; grid-template-columns: 17rem minmax(0, 1fr); gap: 2.5rem; max-width: 82rem; margin: 0 auto; padding: 0 1.25rem; }
+  .sidebar {
+    position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto;
+    padding: 1.5rem 0.5rem 3rem 0; border-right: 1px solid var(--line);
+  }
+  .sidebar .brand { display: block; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.35rem; color: var(--text); text-decoration: none; }
+  .sidebar .pages { margin: 0 0 1.25rem; font-size: 0.85rem; color: var(--dim); }
+  .sidebar h4 {
+    margin: 1.1rem 0 0.35rem; font-size: 0.7rem; letter-spacing: 0.09em;
+    text-transform: uppercase; color: var(--dim);
+  }
+  .sidebar ul { list-style: none; margin: 0; padding: 0; }
+  .sidebar li { margin: 0.1rem 0; }
+  .sidebar a { display: block; padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.87rem; text-decoration: none; color: var(--text); }
+  .sidebar a:hover { background: var(--panel); }
+  main { min-width: 0; padding: 1.5rem 0 5rem; }
+  h1 { font-size: 2.25rem; margin: 1rem 0 0.5rem; }
+  h2 {
+    font-size: 1.05rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--dim); margin: 3rem 0 0.5rem; scroll-margin-top: 1rem;
+  }
+  h3 { font-size: 1.3rem; margin: 0 0 0.35rem; scroll-margin-top: 1rem; }
   .lede, .note { color: var(--dim); }
-  .contents { columns: 2; margin: 1.5rem 0 0; padding: 0; list-style: none; }
-  .contents li { margin: 0.15rem 0; break-inside: avoid; }
-  .pair { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; }
-  @media (max-width: 60rem) { .pair { grid-template-columns: 1fr; } }
-  .pane { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
-  .pane h3 {
-    margin: 0; padding: 0.6rem 0.9rem; font-size: 0.75rem; letter-spacing: 0.08em;
-    text-transform: uppercase; color: var(--dim); border-bottom: 1px solid var(--line);
+  .recipe { margin: 2rem 0 0; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  .recipe .blurb { color: var(--dim); margin: 0 0 1rem; max-width: 60ch; }
+  .pair { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; margin-bottom: 1rem; }
+  @media (max-width: 70rem) {
+    .shell { grid-template-columns: 1fr; }
+    .sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--line); }
+    .pair { grid-template-columns: 1fr; }
+  }
+  .pane { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .pane h4 {
+    margin: 0; padding: 0.55rem 0.9rem; font-size: 0.72rem; letter-spacing: 0.06em;
+    color: var(--dim); border-bottom: 1px solid var(--line);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
   }
   pre { margin: 0; padding: 0.9rem; overflow-x: auto; }
   code { font: 13px/1.55 'JetBrains Mono', ui-monospace, monospace; }
 
+  .tok-com { color: #6b7a90; font-style: italic; }
+  .tok-str { color: #a5d6a7; }
+  .tok-num { color: #ffcc80; }
+  .tok-kw  { color: #c792ea; }
+  .tok-typ { color: #82aaff; }
+  .tok-fn  { color: #64d8cb; }
+
+  main h2 { font-size: 1.5rem; text-transform: none; letter-spacing: 0; color: var(--text); }
+  main h1 { margin-top: 1rem; }
+  main p, main ul, main table { max-width: 68ch; }
   table { border-collapse: collapse; margin: 1rem 0; width: 100%; }
   th, td { border: 1px solid var(--line); padding: 0.45rem 0.7rem; text-align: left; vertical-align: top; }
   th { color: var(--dim); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; }
@@ -44,11 +78,22 @@
 </style>
 </head>
 <body>
+<div class="shell">
+<nav class="sidebar">
+<a class="brand" href="./index.html">Flutter.tsx</a>
+<p class="pages"><a href="./cookbook.html">Cookbook</a> · <a href="./api-reference.html">API reference</a></p>
+<h4>Config mapping</h4>
+<ul>
+<li><a href="#what-you-configure">What you configure</a></li>
+<li><a href="#what-fsx-writes">What fsx writes</a></li>
+<li><a href="#what-fsx-does-not-write-yet">What fsx does not write yet</a></li>
+<li><a href="#why-it-is-drawn-this-way">Why it is drawn this way</a></li>
+</ul>
+</nav>
 <main>
-<p class="note"><a href="./index.html">Home</a> · <a href="./cookbook.html">Cookbook</a> · <a href="./api-reference.html">API reference</a></p>
-<h1>Config mapping — what fsx writes, and what it does not</h1>
+<h1 id="config-mapping-what-fsx-writes-and-what-it-does-not">Config mapping — what fsx writes, and what it does not</h1>
 <p>A Flutter.tsx project is configured in two files, and everything native is produced from them by the Flutter toolchain. This page says exactly which of your native project files fsx owns — and, just as importantly, which it leaves to you today.</p>
-<h2>What you configure</h2>
+<h2 id="what-you-configure">What you configure</h2>
 <table>
 <thead><tr><th>File</th><th>Holds</th></tr></thead>
 <tbody>
@@ -57,7 +102,7 @@
 </tbody>
 </table>
 <p>Nothing else is a Flutter.tsx config surface. There is no theme file, no permissions file, no locales file: the app is TSX, and everything else belongs to Flutter's own project.</p>
-<h2>What fsx writes</h2>
+<h2 id="what-fsx-writes">What fsx writes</h2>
 <table>
 <thead><tr><th>Target file</th><th>Written by</th><th>When</th></tr></thead>
 <tbody>
@@ -72,7 +117,7 @@
 </tbody>
 </table>
 <p><code>lib/</code> and <code>.fsx/</code> are generated and gitignored. A fresh clone needs <code>bun install &amp;&amp; fsx install</code>, and both are rebuilt.</p>
-<h2>What fsx does not write yet</h2>
+<h2 id="what-fsx-does-not-write-yet">What fsx does not write yet</h2>
 <p><strong>Native permission and capability declarations.</strong> Every plugin states what a host app must declare — <code>NSCameraUsageDescription</code> on Apple platforms, <code>android.permission.CAMERA</code> on Android, the matching entitlements on macOS — and Flutter.tsx already extracts that from each plugin's own source, alongside the API it types. Nothing writes it into <code>Info.plist</code>, <code>AndroidManifest.xml</code> or the entitlements files today: after adding a plugin that needs a capability, add the declaration to the native file yourself, as you would in a Flutter project.</p>
 <p>The extracted requirements per plugin look like this, and are what a later release will merge into the native files:</p>
 <table>
@@ -87,8 +132,9 @@
 </table>
 <p><strong>Signing, icons, splash screens and store metadata.</strong> These belong to the native projects <code>flutter create</code> produced; edit them there.</p>
 <p><strong>Theme.</strong> An app's theme is Dart in the entry point. <code>fsx</code> generates a plain <code>MaterialApp</code>; to theme it, take over <code>lib/main.dart</code> by removing the generated marker, or wrap your root component in the widgets you want.</p>
-<h2>Why it is drawn this way</h2>
+<h2 id="why-it-is-drawn-this-way">Why it is drawn this way</h2>
 <p>The native projects are ordinary Flutter projects — nothing in them is Flutter.tsx's invention, and any Flutter documentation about them applies unchanged. Flutter.tsx owns the part it can own completely and provably: the Dart compiled from your TSX, and the plugin surface that Dart compiles against.</p>
 </main>
+</div>
 </body>
 </html>

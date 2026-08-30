@@ -73,15 +73,15 @@ describe('widgetSection', () => {
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;Frame color={Colors.blue}&gt;
-  &lt;Text&gt;Content&lt;/Text&gt;
-&lt;/Frame&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">Frame</span> color={<span class="tok-typ">Colors</span>.blue}&gt;
+  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+&lt;/<span class="tok-typ">Frame</span>&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
-<pre><code class="language-dart">Frame({
-  Key? key,
-  Widget? child,
-  Color? color,
+<pre><code class="language-dart"><span class="tok-typ">Frame</span>({
+  <span class="tok-typ">Key</span>? key,
+  <span class="tok-typ">Widget</span>? child,
+  <span class="tok-typ">Color</span>? color,
 })</code></pre>
 </div>
 </div>
@@ -105,7 +105,7 @@ describe('enumSection', () => {
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-typescript">"start" | "end"</code></pre>
+<pre><code class="language-typescript"><span class="tok-str">'start'</span> | <span class="tok-str">'end'</span></code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <ul class="enum-values"><li><code>TestAlign.start</code></li>
