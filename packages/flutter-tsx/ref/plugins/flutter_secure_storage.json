@@ -2197,6 +2197,7 @@
     }
   ],
   "functions": [],
+  "instances": [],
   "permissions": {
     "android": {
       "manifestSource": "flutter_secure_storage/android/src/main/AndroidManifest.xml",

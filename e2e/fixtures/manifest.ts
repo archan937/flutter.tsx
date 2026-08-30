@@ -299,4 +299,10 @@ export const FIXTURE_APPS: FixtureApp[] = [
     deps: [],
     siblings: ['song.dart', 'playlist.dart'],
   },
+  {
+    id: '43-tray-singleton',
+    component: 'TrayTooltip',
+    dartFile: 'tray_tooltip.dart',
+    deps: ['tray_manager'],
+  },
 ];

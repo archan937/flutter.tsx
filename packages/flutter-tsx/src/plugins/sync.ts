@@ -80,7 +80,8 @@ const apiFor = async (
 ): Promise<ReturnType<typeof parsePluginApi>> => {
   const { packageName, version, projectDir } = request;
   const cachePath = `${deps.cacheDir}/${packageName}@${version}.json`;
-  if (!(await deps.pathExists(cachePath))) {
+
+  const extract = async (): Promise<string> => {
     const exitCode = await deps.extractPlugin(
       packageName,
       projectDir,
@@ -91,16 +92,43 @@ const apiFor = async (
         `extracting the ${packageName} ${version} API failed (exit ${exitCode}).`,
       );
     }
+    const written = await deps.readFile(cachePath);
+    if (written === null) {
+      throw new Error(`${cachePath} was not written by the extractor.`);
+    }
+    return written;
+  };
+
+  // The cache is keyed by package version, not by the extractor's — so an
+  // extraction written by an older one can be missing what this reader needs.
+  // Extracting again is cheap; failing the install over a stale cache is not.
+  const cached = (await deps.pathExists(cachePath))
+    ? await deps.readFile(cachePath)
+    : null;
+  let contents = cached ?? (await extract());
+  let api = tryParsePluginApi(contents, cachePath);
+  if (api === null) {
+    contents = await extract();
+    api = parsePluginApi(JSON.parse(contents), cachePath);
   }
-  const contents = await deps.readFile(cachePath);
-  if (contents === null) {
-    throw new Error(`${cachePath} was not written by the extractor.`);
-  }
+
   await deps.writeFile(
     `${projectApiDir(projectDir)}/${packageName}.json`,
     contents,
   );
-  return parsePluginApi(JSON.parse(contents), cachePath);
+  return api;
+};
+
+/** Null when the document is not one this version of the reader understands. */
+const tryParsePluginApi = (
+  contents: string,
+  label: string,
+): ReturnType<typeof parsePluginApi> | null => {
+  try {
+    return parsePluginApi(JSON.parse(contents), label);
+  } catch {
+    return null;
+  }
 };
 
 /**

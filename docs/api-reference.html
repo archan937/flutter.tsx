@@ -808,7 +808,7 @@ details details > ul { padding-left: 24px; }
 </details>
 </details>
 <details>
-<summary>Native plugins<span class="nav-count">7</span></summary>
+<summary>Native plugins<span class="nav-count">8</span></summary>
 <ul>
 <li data-name="camera"><a href="#plugin-camera">camera</a></li>
 <li data-name="connectivity_plus"><a href="#plugin-connectivity_plus">connectivity_plus</a></li>
@@ -816,6 +816,7 @@ details details > ul { padding-left: 24px; }
 <li data-name="http"><a href="#plugin-http">http</a></li>
 <li data-name="package_info_plus"><a href="#plugin-package_info_plus">package_info_plus</a></li>
 <li data-name="shared_preferences"><a href="#plugin-shared_preferences">shared_preferences</a></li>
+<li data-name="tray_manager"><a href="#plugin-tray_manager">tray_manager</a></li>
 <li data-name="url_launcher"><a href="#plugin-url_launcher">url_launcher</a></li>
 </ul>
 </details>
@@ -1853,7 +1854,7 @@ export const Shell = () =&gt; (
 }</code></pre>
 </div>
 </div>
-<p class="note">Used by <a href="./cookbook.html#01-camera-screen"><code>01-camera-screen</code></a>, <a href="./cookbook.html#05-counter"><code>05-counter</code></a>, <a href="./cookbook.html#06-mount-effect"><code>06-mount-effect</code></a>, <a href="./cookbook.html#07-list-rendering"><code>07-list-rendering</code></a>, <a href="./cookbook.html#09-typed-props"><code>09-typed-props</code></a>, <a href="./cookbook.html#10-camera-options"><code>10-camera-options</code></a>, <a href="./cookbook.html#11-preferences"><code>11-preferences</code></a>, <a href="./cookbook.html#12-secure-storage"><code>12-secure-storage</code></a>, <a href="./cookbook.html#13-open-link"><code>13-open-link</code></a>, <a href="./cookbook.html#15-front-camera"><code>15-front-camera</code></a>, <a href="./cookbook.html#16-tap-target"><code>16-tap-target</code></a>, <a href="./cookbook.html#21-modal"><code>21-modal</code></a>, <a href="./cookbook.html#22-mount-dialog"><code>22-mount-dialog</code></a>, <a href="./cookbook.html#24-animated"><code>24-animated</code></a>, <a href="./cookbook.html#29-branching-handler"><code>29-branching-handler</code></a>, <a href="./cookbook.html#33-control-flow"><code>33-control-flow</code></a>, <a href="./cookbook.html#38-effect-cleanup"><code>38-effect-cleanup</code></a>, <a href="./cookbook.html#39-builder-callback"><code>39-builder-callback</code></a></p>
+<p class="note">Used by <a href="./cookbook.html#01-camera-screen"><code>01-camera-screen</code></a>, <a href="./cookbook.html#05-counter"><code>05-counter</code></a>, <a href="./cookbook.html#06-mount-effect"><code>06-mount-effect</code></a>, <a href="./cookbook.html#07-list-rendering"><code>07-list-rendering</code></a>, <a href="./cookbook.html#09-typed-props"><code>09-typed-props</code></a>, <a href="./cookbook.html#10-camera-options"><code>10-camera-options</code></a>, <a href="./cookbook.html#11-preferences"><code>11-preferences</code></a>, <a href="./cookbook.html#12-secure-storage"><code>12-secure-storage</code></a>, <a href="./cookbook.html#13-open-link"><code>13-open-link</code></a>, <a href="./cookbook.html#15-front-camera"><code>15-front-camera</code></a>, <a href="./cookbook.html#16-tap-target"><code>16-tap-target</code></a>, <a href="./cookbook.html#21-modal"><code>21-modal</code></a>, <a href="./cookbook.html#22-mount-dialog"><code>22-mount-dialog</code></a>, <a href="./cookbook.html#24-animated"><code>24-animated</code></a>, <a href="./cookbook.html#29-branching-handler"><code>29-branching-handler</code></a>, <a href="./cookbook.html#33-control-flow"><code>33-control-flow</code></a>, <a href="./cookbook.html#38-effect-cleanup"><code>38-effect-cleanup</code></a>, <a href="./cookbook.html#39-builder-callback"><code>39-builder-callback</code></a>, <a href="./cookbook.html#43-tray-singleton"><code>43-tray-singleton</code></a></p>
 </article>
 <article class="widget" id="core-EffectCleanup" data-name="EffectCleanup">
 <h3>EffectCleanup<span class="badge badge-lib">type</span></h3>
@@ -27278,6 +27279,152 @@ declare module <span class="tok-str">'plugin:shared_preferences'</span> {
 </div>
 </div>
 <p class="note">Proven by <a href="./cookbook.html#11-preferences"><code>11-preferences</code></a></p>
+</article>
+<article class="widget" id="plugin-tray_manager" data-name="tray_manager">
+<h3>tray_manager<span class="badge badge-lib">0.5.3</span><a class="badge badge-pkg" href="https://pub.dev/packages/tray_manager">pub.dev</a></h3>
+<pre><code class="language-typescript"><span class="tok-kw">import</span> { useTrayManager } <span class="tok-kw">from</span> <span class="tok-str">'plugin:tray_manager'</span>;</code></pre>
+<table class="props">
+<thead><tr><th>Hook</th><th>Signature</th><th>Manages for you</th></tr></thead>
+<tbody>
+<tr><td><code>useTrayManager</code></td><td><code>() =&gt; TrayManager</code></td><td></td></tr>
+</tbody>
+</table>
+
+
+<p class="note">Declares nothing a host app has to know about.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="TSX" role="tab" aria-selected="true">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+<button class="tab-btn" data-tab="Typings" role="tab" aria-selected="false">Typings</button>
+</div>
+<div class="tab-panel active" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<span class="tok-kw">import</span> { useTrayManager } <span class="tok-kw">from</span> <span class="tok-str">'plugin:tray_manager'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">TrayTooltip</span> = () =&gt; {
+  <span class="tok-kw">const</span> tray = <span class="tok-fn">useTrayManager</span>();
+  <span class="tok-kw">const</span> [shown, setShown] = <span class="tok-fn">useState</span>(<span class="tok-kw">false</span>);
+
+  <span class="tok-kw">const</span> show = <span class="tok-kw">async</span> () =&gt; {
+    <span class="tok-kw">await</span> tray.<span class="tok-fn">setToolTip</span>(<span class="tok-str">'Flutter.tsx'</span>);
+    <span class="tok-fn">setShown</span>(<span class="tok-kw">true</span>);
+  };
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      {shown &amp;&amp; &lt;<span class="tok-typ">Text</span>&gt;<span class="tok-typ">Tray</span> ready&lt;/<span class="tok-typ">Text</span>&gt;}
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={show}&gt;Set tooltip&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
+  );
+};</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<span class="tok-kw">import</span> <span class="tok-str">'package:tray_manager/tray_manager.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">TrayTooltip</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">TrayTooltip</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">TrayTooltip</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_TrayTooltipState</span>();
+}
+
+<span class="tok-kw">class</span> _TrayTooltipState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">TrayTooltip</span>&gt; {
+  bool _shown = <span class="tok-kw">false</span>;
+
+  <span class="tok-typ">Future</span>&lt;<span class="tok-kw">void</span>&gt; <span class="tok-fn">_show</span>() <span class="tok-kw">async</span> {
+    <span class="tok-kw">await</span> trayManager.<span class="tok-fn">setToolTip</span>(<span class="tok-str">'Flutter.tsx'</span>);
+    <span class="tok-fn">setState</span>(() {
+      _shown = <span class="tok-kw">true</span>;
+    });
+  }
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+      children: [
+        <span class="tok-kw">if</span> (_shown) <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Tray ready'</span>),
+        <span class="tok-typ">ElevatedButton</span>(onPressed: _show, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Set tooltip'</span>)),
+      ],
+    );
+  }
+}</code></pre>
+</div>
+<div class="tab-panel" data-panel="Typings" role="tabpanel">
+<pre><code class="language-typescript"><span class="tok-com">// GENERATED by `bun run generate:plugin tray_manager` from ref/plugins/tray_manager.json — do not edit.</span>
+<span class="tok-com">// tray_manager 0.5.3</span>
+
+declare module <span class="tok-str">'plugin:tray_manager'</span> {
+  <span class="tok-kw">export</span> <span class="tok-kw">type</span> <span class="tok-typ">Placement</span> = <span class="tok-str">'topLeft'</span> | <span class="tok-str">'topRight'</span> | <span class="tok-str">'bottomLeft'</span> | <span class="tok-str">'bottomRight'</span>;
+
+  <span class="tok-kw">export</span> <span class="tok-kw">type</span> <span class="tok-typ">TrayIconPosition</span> = <span class="tok-str">'left'</span> | <span class="tok-str">'right'</span>;
+
+  <span class="tok-kw">export</span> <span class="tok-kw">interface</span> <span class="tok-typ">Offset</span> {
+    <span class="tok-kw">readonly</span> __external: <span class="tok-str">'Offset'</span>;
+  }
+
+  <span class="tok-kw">export</span> <span class="tok-kw">interface</span> <span class="tok-typ">Rect</span> {
+    <span class="tok-kw">readonly</span> __external: <span class="tok-str">'Rect'</span>;
+  }
+
+  <span class="tok-kw">export</span> <span class="tok-kw">class</span> <span class="tok-typ">Menu</span> {
+    <span class="tok-fn">constructor</span>(options?: { items?: <span class="tok-typ">MenuItem</span>[] | <span class="tok-kw">null</span> });
+    <span class="tok-kw">readonly</span> items: <span class="tok-typ">MenuItem</span>[] | <span class="tok-kw">null</span>;
+    <span class="tok-fn">getMenuItem</span>(key: string): <span class="tok-typ">MenuItem</span> | <span class="tok-kw">null</span>;
+    <span class="tok-fn">getMenuItemById</span>(id: number): <span class="tok-typ">MenuItem</span> | <span class="tok-kw">null</span>;
+    <span class="tok-fn">toJson</span>(): <span class="tok-typ">Record</span>&lt;string, unknown&gt;;
+  }
+
+  export class MenuBehavior {
+    <span class="tok-fn">popUp</span>(menu: <span class="tok-typ">Menu</span>, options?: { position?: <span class="tok-typ">Offset</span> | <span class="tok-kw">null</span>; placement?: <span class="tok-typ">Placement</span> }): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+  }
+
+  export class MenuItem {
+    <span class="tok-fn">constructor</span>(options?: { key?: string | <span class="tok-kw">null</span>; <span class="tok-kw">type</span>?: string; label?: string | <span class="tok-kw">null</span>; sublabel?: string | <span class="tok-kw">null</span>; toolTip?: string | <span class="tok-kw">null</span>; icon?: string | <span class="tok-kw">null</span>; checked?: boolean | <span class="tok-kw">null</span>; disabled?: boolean; submenu?: <span class="tok-typ">Menu</span> | <span class="tok-kw">null</span>; onClick?: ((menuItem: <span class="tok-typ">MenuItem</span>) =&gt; <span class="tok-kw">void</span>) | <span class="tok-kw">null</span>; onHighlight?: ((menuItem: <span class="tok-typ">MenuItem</span>) =&gt; <span class="tok-kw">void</span>) | <span class="tok-kw">null</span>; onLoseHighlight?: ((menuItem: <span class="tok-typ">MenuItem</span>) =&gt; <span class="tok-kw">void</span>) | <span class="tok-kw">null</span> });
+    <span class="tok-kw">readonly</span> checked: boolean | <span class="tok-kw">null</span>;
+    <span class="tok-kw">readonly</span> disabled: boolean;
+    <span class="tok-kw">readonly</span> icon: string | <span class="tok-kw">null</span>;
+    <span class="tok-kw">readonly</span> id: number;
+    <span class="tok-kw">readonly</span> key: string | <span class="tok-kw">null</span>;
+    <span class="tok-kw">readonly</span> label: string | <span class="tok-kw">null</span>;
+    <span class="tok-kw">readonly</span> onClick: ((menuItem: <span class="tok-typ">MenuItem</span>) =&gt; <span class="tok-kw">void</span>) | <span class="tok-kw">null</span>;
+    <span class="tok-kw">readonly</span> onHighlight: ((menuItem: <span class="tok-typ">MenuItem</span>) =&gt; <span class="tok-kw">void</span>) | <span class="tok-kw">null</span>;
+    <span class="tok-kw">readonly</span> onLoseHighlight: ((menuItem: <span class="tok-typ">MenuItem</span>) =&gt; <span class="tok-kw">void</span>) | <span class="tok-kw">null</span>;
+    <span class="tok-kw">readonly</span> sublabel: string | <span class="tok-kw">null</span>;
+    <span class="tok-kw">readonly</span> submenu: <span class="tok-typ">Menu</span> | <span class="tok-kw">null</span>;
+    <span class="tok-kw">readonly</span> toolTip: string | <span class="tok-kw">null</span>;
+    <span class="tok-kw">readonly</span> <span class="tok-kw">type</span>: string;
+    <span class="tok-fn">toJson</span>(): <span class="tok-typ">Record</span>&lt;string, unknown&gt;;
+  }
+
+  export class TrayListener {
+    <span class="tok-fn">onTrayIconMouseDown</span>(): <span class="tok-kw">void</span>;
+    <span class="tok-fn">onTrayIconMouseUp</span>(): <span class="tok-kw">void</span>;
+    <span class="tok-fn">onTrayIconRightMouseDown</span>(): <span class="tok-kw">void</span>;
+    <span class="tok-fn">onTrayIconRightMouseUp</span>(): <span class="tok-kw">void</span>;
+    <span class="tok-fn">onTrayMenuItemClick</span>(menuItem: <span class="tok-typ">MenuItem</span>): <span class="tok-kw">void</span>;
+  }
+
+  export class TrayManager {
+    <span class="tok-kw">readonly</span> hasListeners: boolean;
+    <span class="tok-fn">addListener</span>(listener: <span class="tok-typ">TrayListener</span>): <span class="tok-kw">void</span>;
+    <span class="tok-fn">destroy</span>(): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">getBounds</span>(): <span class="tok-typ">Promise</span>&lt;<span class="tok-typ">Rect</span> | <span class="tok-kw">null</span>&gt;;
+    <span class="tok-fn">popUpContextMenu</span>(options?: { bringAppToFront?: boolean }): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">removeListener</span>(listener: <span class="tok-typ">TrayListener</span>): <span class="tok-kw">void</span>;
+    <span class="tok-fn">setContextMenu</span>(menu: <span class="tok-typ">Menu</span>): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">setIcon</span>(iconPath: string, options?: { isTemplate?: boolean; iconPosition?: <span class="tok-typ">TrayIconPosition</span>; iconSize?: number }): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">setIconPosition</span>(trayIconPosition: <span class="tok-typ">TrayIconPosition</span>): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">setTitle</span>(title: string): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">setToolTip</span>(toolTip: string): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+  }
+
+  export const useTrayManager: () =&gt; TrayManager;
+}</code></pre>
+</div>
+</div>
+<p class="note">Proven by <a href="./cookbook.html#43-tray-singleton"><code>43-tray-singleton</code></a></p>
 </article>
 <article class="widget" id="plugin-url_launcher" data-name="url_launcher">
 <h3>url_launcher<span class="badge badge-lib">6.3.2</span><a class="badge badge-pkg" href="https://pub.dev/packages/url_launcher">pub.dev</a></h3>

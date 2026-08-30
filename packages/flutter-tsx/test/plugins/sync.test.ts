@@ -9,6 +9,7 @@ const API = (packageName: string, version: string): string =>
     classes: [],
     enums: [],
     functions: [],
+    instances: [],
     permissions: {
       android: {
         manifestSource: null,
@@ -223,6 +224,23 @@ describe('syncProjectPlugins', () => {
     expect(syncProjectPlugins('/app', deps)).rejects.toThrow(
       'camera is not in /app/pubspec.lock — `flutter pub add` did not resolve it.',
     );
+  });
+
+  test('takes a cached extraction again when an older extractor wrote it', async () => {
+    // The cache is keyed by package version, not by the extractor's, so a
+    // document written before a field existed must not fail the install.
+    const { deps, extracted } = harness({
+      '/app/package.json': manifest({ url_launcher: '^6.3.0' }),
+      '/app/pubspec.lock': LOCK,
+      '/cache/plugins/url_launcher@6.3.2.json': JSON.stringify({
+        package: 'url_launcher',
+        version: '6.3.2',
+      }),
+    });
+
+    await syncProjectPlugins('/app', deps);
+
+    expect(extracted).toEqual(['url_launcher']);
   });
 
   test('reports a failing extraction', () => {

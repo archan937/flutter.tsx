@@ -239,6 +239,12 @@ export const CATALOGUE: Readonly<Record<string, CatalogueEntry>> = {
       'A plugin call written inline in a handler compiles in place — no controller to thread through the widget.',
     category: 'Native plugins',
   },
+  '43-tray-singleton': {
+    title: 'A plugin that hands you its own instance',
+    blurb:
+      'Some packages expose a ready singleton — `final trayManager = ...`. The hook returns that one, so the call compiles to `trayManager.setToolTip(...)` with no controller to build or dispose.',
+    category: 'Native plugins',
+  },
   '14-app-info': {
     title: 'Reading app version info',
     blurb:

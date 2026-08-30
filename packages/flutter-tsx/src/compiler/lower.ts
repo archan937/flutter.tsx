@@ -2239,9 +2239,8 @@ const resolvePluginCall = (
       { sourceFile: context.sourceFile, node: errorNode },
     );
   }
-  const accessor = info.hook.acquisition.kind === 'constField' ? '.' : '?.';
   return {
-    invocation: `_${binding}${accessor}${methodName}`,
+    invocation: `${pluginReceiver(binding, info)}${pluginAccessor(info)}${methodName}`,
     args: pluginCallArguments(call, method, context),
     returnType: method.returnType,
   };
@@ -2772,7 +2771,8 @@ const supplierLocalName = (functionName: string, paramType: string): string =>
     : `${lowerFirst(paramType)}s`;
 
 interface LoweredPlugin {
-  field: IrField;
+  /** Null when the package holds the instance and this file just uses it. */
+  field: IrField | null;
   setup: { name: string; lines: string[] } | null;
   initCall: IrStatement | null;
   disposeLine: string | null;
@@ -2920,6 +2920,19 @@ const singletonSetupLines = (
   '});',
 ];
 
+/** What a plugin call is written against: a field, or the package's own instance. */
+const pluginReceiver = (binding: string, info: PluginHookInfo): string =>
+  info.hook.acquisition.kind === 'topLevelInstance'
+    ? info.hook.acquisition.instanceName
+    : `_${binding}`;
+
+/** A nullable handle needs `?.`; one that always exists does not. */
+const pluginAccessor = (info: PluginHookInfo): string =>
+  info.hook.acquisition.kind === 'constField' ||
+  info.hook.acquisition.kind === 'topLevelInstance'
+    ? '.'
+    : '?.';
+
 const lowerPluginBinding = (
   binding: PluginBinding,
   info: PluginHookInfo,
@@ -2927,6 +2940,18 @@ const lowerPluginBinding = (
 ): LoweredPlugin => {
   const fieldName = `_${binding.binding}`;
   const { acquisition } = info.hook;
+
+  // The package already declares the instance; a field aliasing it would be
+  // noise, so calls go straight to `trayManager`.
+  if (acquisition.kind === 'topLevelInstance') {
+    return {
+      field: null,
+      setup: null,
+      initCall: null,
+      disposeLine: null,
+      pluginImport: info.hook.dartImport,
+    };
+  }
 
   if (acquisition.kind === 'constField') {
     const constPrefix = acquisition.isConst ? 'const ' : '';
@@ -3085,8 +3110,8 @@ export const lowerComponent = (
     context.pluginBindings.set(binding.binding, info);
     memberReads.set(binding.binding, {
       className: info.hook.className,
-      receiver: `_${binding.binding}`,
-      nullable: info.hook.acquisition.kind !== 'constField',
+      receiver: pluginReceiver(binding.binding, info),
+      nullable: pluginAccessor(info) === '?.',
       fields: info.fields,
     });
     return {
@@ -3188,7 +3213,9 @@ export const lowerComponent = (
     handlers: component.handlers,
     effects: component.effects,
     fields: [
-      ...loweredPlugins.map(({ lowered: plugin }) => plugin.field),
+      ...loweredPlugins.flatMap(({ lowered: plugin }) =>
+        plugin.field === null ? [] : [plugin.field],
+      ),
       ...(lowered === null ? [] : [lowered.field]),
       ...tabField,
       ...component.states.map((state) => ({

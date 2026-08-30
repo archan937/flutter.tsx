@@ -3027,6 +3027,7 @@
       "params": []
     }
   ],
+  "instances": [],
   "permissions": {
     "android": {
       "manifestSource": "camera_android_camerax/android/src/main/AndroidManifest.xml",

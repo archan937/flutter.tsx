@@ -39,6 +39,7 @@ Future<PluginApi> extractPluginApi({
   final classes = <PluginClass>[];
   final enums = <EnumEntity>[];
   final functions = <FunctionModel>[];
+  final instances = <InstanceModel>[];
   final seenNames = <String>{};
 
   for (final element in result.element.exportNamespace.definedNames2.values) {
@@ -58,6 +59,14 @@ Future<PluginApi> extractPluginApi({
         }
       case TopLevelFunctionElement():
         functions.add(mapTopLevelFunction(element));
+      // `final trayManager = TrayManager.instance;` — the singleton a plugin
+      // means you to use. The export namespace exposes it as its getter, not
+      // as the variable. Without it the class is typed and unreachable.
+      case GetterElement():
+        final typeName = element.returnType.element?.name ?? '';
+        if (typeName.isNotEmpty && !typeName.startsWith('_')) {
+          instances.add(InstanceModel(name: elementName, type: typeName));
+        }
       default:
         break;
     }
@@ -72,12 +81,14 @@ Future<PluginApi> extractPluginApi({
   classes.sort((first, second) => first.name.compareTo(second.name));
   enums.sort((first, second) => first.name.compareTo(second.name));
   functions.sort((first, second) => first.name.compareTo(second.name));
+  instances.sort((first, second) => first.name.compareTo(second.name));
   return PluginApi(
     package: packageName,
     version: version,
     classes: classes,
     enums: enums,
     functions: functions,
+    instances: instances,
     permissions: readPluginPermissions(
       packageName: packageName,
       projectDir: projectDir,

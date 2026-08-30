@@ -146,6 +146,7 @@ describe('parsePluginApi — malformed documents', () => {
           ],
           enums: [],
           functions: [],
+          instances: [],
         },
         'plugins/demo.json',
       ),
@@ -189,6 +190,7 @@ describe('manifestRequirements — what a host app must declare', () => {
       classes: [],
       enums: [],
       functions: [],
+      instances: [],
       permissions: {
         android: {
           manifestSource: null,

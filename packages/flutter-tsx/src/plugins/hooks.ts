@@ -33,7 +33,10 @@ export interface HookOption {
 export type HookAcquisition =
   | { kind: 'constructor' }
   | { kind: 'staticFactory'; method: string }
-  | { kind: 'constField'; isConst: boolean };
+  | { kind: 'constField'; isConst: boolean }
+  // `final trayManager = TrayManager.instance;` — the package already holds
+  // the instance, so the hook hands back that one rather than making another.
+  | { kind: 'topLevelInstance'; instanceName: string };
 
 export interface DerivedHook {
   hookName: string;
@@ -234,6 +237,27 @@ export const deriveHooks = (
       .replace(/^Flutter/, '')
       .replace(/Controller$/, '')}`;
     const dartImport = `package:${api.package}/${api.package}.dart`;
+
+    // A package that exposes its own singleton means that one to be used.
+    const instance = api.instances.find(
+      (candidate) => candidate.type === entity.name,
+    );
+    if (instance !== undefined) {
+      return [
+        {
+          hookName,
+          className: entity.name,
+          dartImport,
+          acquisition: {
+            kind: 'topLevelInstance' as const,
+            instanceName: instance.name,
+          },
+          construct: [],
+          managed: [],
+          options: [],
+        },
+      ];
+    }
 
     const service = serviceConstructor(api, entity);
     if (service !== null) {

@@ -19,6 +19,7 @@ describe('emitPluginDeclaration', () => {
     const api: PluginApi = {
       package: 'demo',
       version: '1.2.3',
+      instances: [],
       classes: [
         {
           name: 'DemoController',
@@ -191,6 +192,7 @@ declare module 'plugin:demo' {
     const api: PluginApi = {
       package: 'linker',
       version: '1.0.0',
+      instances: [],
       classes: [],
       enums: [],
       permissions: {

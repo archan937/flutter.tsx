@@ -58,6 +58,7 @@ their own artifacts:
 | `http` | — | — | — |
 | `package_info_plus` | — | — | — |
 | `shared_preferences` | — | — | — |
+| `tray_manager` | — | — | — |
 | `url_launcher` | — | — | `https`<br>`sms`<br>`tel` |
 
 <!-- /generated:plugin-requirements -->

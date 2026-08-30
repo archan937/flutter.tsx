@@ -160,7 +160,7 @@ main p { margin-bottom: 12px; }
     <a href="https://github.com/archan937/flutter.tsx" target="_blank" rel="noopener">GitHub ↗</a>
   </nav>
   <input id="search" type="search" placeholder="Search recipes…" autocomplete="off" spellcheck="false">
-  <div class="meta-info">42 recipes · Flutter 3.47.1</div>
+  <div class="meta-info">43 recipes · Flutter 3.47.1</div>
   <nav id="sidebar-nav">
 <details open>
 <summary>Start here<span class="nav-count">7</span></summary>
@@ -210,7 +210,7 @@ main p { margin-bottom: 12px; }
 </ul>
 </details>
 <details>
-<summary>Native plugins<span class="nav-count">8</span></summary>
+<summary>Native plugins<span class="nav-count">9</span></summary>
 <ul>
 <li data-name="Taking a photo"><a href="#01-camera-screen">Taking a photo</a></li>
 <li data-name="Choosing a camera resolution"><a href="#10-camera-options">Choosing a camera resolution</a></li>
@@ -220,6 +220,7 @@ main p { margin-bottom: 12px; }
 <li data-name="Reading app version info"><a href="#14-app-info">Reading app version info</a></li>
 <li data-name="Selecting the front camera"><a href="#15-front-camera">Selecting the front camera</a></li>
 <li data-name="Calling a plugin from a tap"><a href="#27-inline-plugin-call">Calling a plugin from a tap</a></li>
+<li data-name="A plugin that hands you its own instance"><a href="#43-tray-singleton">A plugin that hands you its own instance</a></li>
 </ul>
 </details>
 <details>
@@ -2369,6 +2370,65 @@ export const Span = ({
         onTap: () =&gt; <span class="tok-fn">launchUrl</span>(<span class="tok-typ">Uri</span>.<span class="tok-fn">parse</span>(<span class="tok-str">'https://flutter.dev'</span>)),
         child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Open'</span>),
       ),
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section class="recipe" id="43-tray-singleton" data-name="A plugin that hands you its own instance">
+<h3>A plugin that hands you its own instance</h3>
+<p class="blurb">Some packages expose a ready singleton — <code>final trayManager = ...</code>. The hook returns that one, so the call compiles to <code>trayManager.setToolTip(...)</code> with no controller to build or dispose.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/TrayTooltip.tsx" role="tab" aria-selected="true">src/TrayTooltip.tsx</button>
+<button class="tab-btn" data-tab="tray_tooltip.dart" role="tab" aria-selected="false">tray_tooltip.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/TrayTooltip.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<span class="tok-kw">import</span> { useTrayManager } <span class="tok-kw">from</span> <span class="tok-str">'plugin:tray_manager'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">TrayTooltip</span> = () =&gt; {
+  <span class="tok-kw">const</span> tray = <span class="tok-fn">useTrayManager</span>();
+  <span class="tok-kw">const</span> [shown, setShown] = <span class="tok-fn">useState</span>(<span class="tok-kw">false</span>);
+
+  <span class="tok-kw">const</span> show = <span class="tok-kw">async</span> () =&gt; {
+    <span class="tok-kw">await</span> tray.<span class="tok-fn">setToolTip</span>(<span class="tok-str">'Flutter.tsx'</span>);
+    <span class="tok-fn">setShown</span>(<span class="tok-kw">true</span>);
+  };
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      {shown &amp;&amp; &lt;<span class="tok-typ">Text</span>&gt;<span class="tok-typ">Tray</span> ready&lt;/<span class="tok-typ">Text</span>&gt;}
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={show}&gt;Set tooltip&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
+  );
+};</code></pre></div>
+<div class="tab-panel" data-panel="tray_tooltip.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<span class="tok-kw">import</span> <span class="tok-str">'package:tray_manager/tray_manager.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">TrayTooltip</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">TrayTooltip</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">TrayTooltip</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_TrayTooltipState</span>();
+}
+
+<span class="tok-kw">class</span> _TrayTooltipState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">TrayTooltip</span>&gt; {
+  bool _shown = <span class="tok-kw">false</span>;
+
+  <span class="tok-typ">Future</span>&lt;<span class="tok-kw">void</span>&gt; <span class="tok-fn">_show</span>() <span class="tok-kw">async</span> {
+    <span class="tok-kw">await</span> trayManager.<span class="tok-fn">setToolTip</span>(<span class="tok-str">'Flutter.tsx'</span>);
+    <span class="tok-fn">setState</span>(() {
+      _shown = <span class="tok-kw">true</span>;
+    });
+  }
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+      children: [
+        <span class="tok-kw">if</span> (_shown) <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Tray ready'</span>),
+        <span class="tok-typ">ElevatedButton</span>(onPressed: _show, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Set tooltip'</span>)),
+      ],
     );
   }
 }</code></pre></div>

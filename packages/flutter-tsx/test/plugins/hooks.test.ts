@@ -194,6 +194,7 @@ describe('deriveHooks — underivable shapes', () => {
     ],
     enums: [],
     functions: [],
+    instances: [],
     permissions: {
       android: {
         manifestSource: null,

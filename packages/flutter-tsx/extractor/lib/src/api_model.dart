@@ -248,6 +248,16 @@ class PluginPermissions {
   };
 }
 
+/// A top-level instance a plugin exposes: `final trayManager = ...`.
+class InstanceModel {
+  const InstanceModel({required this.name, required this.type});
+
+  final String name;
+  final String type;
+
+  Map<String, Object?> toJson() => {'name': name, 'type': type};
+}
+
 class PluginApi {
   const PluginApi({
     required this.package,
@@ -255,6 +265,7 @@ class PluginApi {
     required this.classes,
     required this.enums,
     required this.functions,
+    required this.instances,
     required this.permissions,
   });
 
@@ -263,6 +274,9 @@ class PluginApi {
   final List<PluginClass> classes;
   final List<EnumEntity> enums;
   final List<FunctionModel> functions;
+
+  /// Top-level singletons the package exposes, e.g. `trayManager`.
+  final List<InstanceModel> instances;
   final PluginPermissions permissions;
 }
 

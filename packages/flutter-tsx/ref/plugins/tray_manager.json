@@ -1,0 +1,1482 @@
+{
+  "package": "tray_manager",
+  "version": "0.5.3",
+  "classes": [
+    {
+      "name": "Menu",
+      "doc": "",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "",
+          "const": false,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": [
+            {
+              "name": "items",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "list",
+                  "item": {
+                    "kind": "named",
+                    "name": "MenuItem"
+                  }
+                }
+              },
+              "display": "List<MenuItem>?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "name": "items",
+          "doc": "",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "list",
+              "item": {
+                "kind": "named",
+                "name": "MenuItem"
+              }
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "getMenuItem",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "named",
+              "name": "MenuItem"
+            }
+          },
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "getMenuItemById",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "named",
+              "name": "MenuItem"
+            }
+          },
+          "params": [
+            {
+              "name": "id",
+              "type": {
+                "kind": "scalar",
+                "name": "int"
+              },
+              "display": "int",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "toJson",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "unknown"
+            }
+          },
+          "params": []
+        }
+      ],
+      "constants": []
+    },
+    {
+      "name": "MenuBehavior",
+      "doc": "",
+      "constructors": [],
+      "fields": [],
+      "methods": [
+        {
+          "name": "popUp",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "menu",
+              "type": {
+                "kind": "named",
+                "name": "Menu"
+              },
+              "display": "Menu",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "position",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Offset"
+                }
+              },
+              "display": "Offset?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "placement",
+              "type": {
+                "kind": "enum",
+                "name": "Placement"
+              },
+              "display": "Placement",
+              "named": true,
+              "required": false,
+              "defaultValue": "Placement.topLeft",
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "constants": []
+    },
+    {
+      "name": "MenuItem",
+      "doc": "",
+      "constructors": [
+        {
+          "name": "",
+          "doc": "",
+          "const": false,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "type",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": true,
+              "required": false,
+              "defaultValue": "'normal'",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "label",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "sublabel",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "toolTip",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "icon",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "checked",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "bool"
+                }
+              },
+              "display": "bool?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": false,
+              "defaultValue": "false",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "submenu",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Menu"
+                }
+              },
+              "display": "Menu?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "onClick",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "function",
+                  "returnType": {
+                    "kind": "void"
+                  },
+                  "params": [
+                    {
+                      "name": "menuItem",
+                      "type": {
+                        "kind": "named",
+                        "name": "MenuItem"
+                      },
+                      "named": false,
+                      "required": true
+                    }
+                  ]
+                }
+              },
+              "display": "void Function(MenuItem)?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "onHighlight",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "function",
+                  "returnType": {
+                    "kind": "void"
+                  },
+                  "params": [
+                    {
+                      "name": "menuItem",
+                      "type": {
+                        "kind": "named",
+                        "name": "MenuItem"
+                      },
+                      "named": false,
+                      "required": true
+                    }
+                  ]
+                }
+              },
+              "display": "void Function(MenuItem)?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "onLoseHighlight",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "function",
+                  "returnType": {
+                    "kind": "void"
+                  },
+                  "params": [
+                    {
+                      "name": "menuItem",
+                      "type": {
+                        "kind": "named",
+                        "name": "MenuItem"
+                      },
+                      "named": false,
+                      "required": true
+                    }
+                  ]
+                }
+              },
+              "display": "void Function(MenuItem)?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "checkbox",
+          "doc": "",
+          "const": false,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "label",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "sublabel",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "toolTip",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "icon",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "checked",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "bool"
+                }
+              },
+              "display": "bool?",
+              "named": true,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": false,
+              "defaultValue": "false",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "onClick",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "function",
+                  "returnType": {
+                    "kind": "void"
+                  },
+                  "params": [
+                    {
+                      "name": "menuItem",
+                      "type": {
+                        "kind": "named",
+                        "name": "MenuItem"
+                      },
+                      "named": false,
+                      "required": true
+                    }
+                  ]
+                }
+              },
+              "display": "void Function(MenuItem)?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "onHighlight",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "function",
+                  "returnType": {
+                    "kind": "void"
+                  },
+                  "params": [
+                    {
+                      "name": "menuItem",
+                      "type": {
+                        "kind": "named",
+                        "name": "MenuItem"
+                      },
+                      "named": false,
+                      "required": true
+                    }
+                  ]
+                }
+              },
+              "display": "void Function(MenuItem)?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "onLoseHighlight",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "function",
+                  "returnType": {
+                    "kind": "void"
+                  },
+                  "params": [
+                    {
+                      "name": "menuItem",
+                      "type": {
+                        "kind": "named",
+                        "name": "MenuItem"
+                      },
+                      "named": false,
+                      "required": true
+                    }
+                  ]
+                }
+              },
+              "display": "void Function(MenuItem)?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "separator",
+          "doc": "",
+          "const": false,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": []
+        },
+        {
+          "name": "submenu",
+          "doc": "",
+          "const": false,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": [
+            {
+              "name": "key",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "label",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "sublabel",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "toolTip",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "icon",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "scalar",
+                  "name": "String"
+                }
+              },
+              "display": "String?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": false,
+              "defaultValue": "false",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "submenu",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "named",
+                  "name": "Menu"
+                }
+              },
+              "display": "Menu?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "onClick",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "function",
+                  "returnType": {
+                    "kind": "void"
+                  },
+                  "params": [
+                    {
+                      "name": "menuItem",
+                      "type": {
+                        "kind": "named",
+                        "name": "MenuItem"
+                      },
+                      "named": false,
+                      "required": true
+                    }
+                  ]
+                }
+              },
+              "display": "void Function(MenuItem)?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "onHighlight",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "function",
+                  "returnType": {
+                    "kind": "void"
+                  },
+                  "params": [
+                    {
+                      "name": "menuItem",
+                      "type": {
+                        "kind": "named",
+                        "name": "MenuItem"
+                      },
+                      "named": false,
+                      "required": true
+                    }
+                  ]
+                }
+              },
+              "display": "void Function(MenuItem)?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "onLoseHighlight",
+              "type": {
+                "kind": "nullable",
+                "inner": {
+                  "kind": "function",
+                  "returnType": {
+                    "kind": "void"
+                  },
+                  "params": [
+                    {
+                      "name": "menuItem",
+                      "type": {
+                        "kind": "named",
+                        "name": "MenuItem"
+                      },
+                      "named": false,
+                      "required": true
+                    }
+                  ]
+                }
+              },
+              "display": "void Function(MenuItem)?",
+              "named": true,
+              "required": false,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "name": "checked",
+          "doc": "",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "bool"
+            }
+          }
+        },
+        {
+          "name": "disabled",
+          "doc": "",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        },
+        {
+          "name": "icon",
+          "doc": "",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "id",
+          "doc": "",
+          "type": {
+            "kind": "scalar",
+            "name": "int"
+          }
+        },
+        {
+          "name": "key",
+          "doc": "",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "label",
+          "doc": "",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "onClick",
+          "doc": "",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "function",
+              "returnType": {
+                "kind": "void"
+              },
+              "params": [
+                {
+                  "name": "menuItem",
+                  "type": {
+                    "kind": "named",
+                    "name": "MenuItem"
+                  },
+                  "named": false,
+                  "required": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "onHighlight",
+          "doc": "",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "function",
+              "returnType": {
+                "kind": "void"
+              },
+              "params": [
+                {
+                  "name": "menuItem",
+                  "type": {
+                    "kind": "named",
+                    "name": "MenuItem"
+                  },
+                  "named": false,
+                  "required": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "onLoseHighlight",
+          "doc": "",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "function",
+              "returnType": {
+                "kind": "void"
+              },
+              "params": [
+                {
+                  "name": "menuItem",
+                  "type": {
+                    "kind": "named",
+                    "name": "MenuItem"
+                  },
+                  "named": false,
+                  "required": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "sublabel",
+          "doc": "",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "submenu",
+          "doc": "",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "named",
+              "name": "Menu"
+            }
+          }
+        },
+        {
+          "name": "toolTip",
+          "doc": "",
+          "type": {
+            "kind": "nullable",
+            "inner": {
+              "kind": "scalar",
+              "name": "String"
+            }
+          }
+        },
+        {
+          "name": "type",
+          "doc": "",
+          "type": {
+            "kind": "scalar",
+            "name": "String"
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "toJson",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "map",
+            "key": {
+              "kind": "scalar",
+              "name": "String"
+            },
+            "value": {
+              "kind": "unknown"
+            }
+          },
+          "params": []
+        }
+      ],
+      "constants": []
+    },
+    {
+      "name": "TrayListener",
+      "doc": "",
+      "constructors": [],
+      "fields": [],
+      "methods": [
+        {
+          "name": "onTrayIconMouseDown",
+          "doc": "/// Emitted when the mouse clicks the tray icon.",
+          "static": false,
+          "returnType": {
+            "kind": "void"
+          },
+          "params": []
+        },
+        {
+          "name": "onTrayIconMouseUp",
+          "doc": "/// Emitted when the mouse is released from clicking the tray icon.",
+          "static": false,
+          "returnType": {
+            "kind": "void"
+          },
+          "params": []
+        },
+        {
+          "name": "onTrayIconRightMouseDown",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "void"
+          },
+          "params": []
+        },
+        {
+          "name": "onTrayIconRightMouseUp",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "void"
+          },
+          "params": []
+        },
+        {
+          "name": "onTrayMenuItemClick",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "void"
+          },
+          "params": [
+            {
+              "name": "menuItem",
+              "type": {
+                "kind": "named",
+                "name": "MenuItem"
+              },
+              "display": "MenuItem",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "constants": []
+    },
+    {
+      "name": "TrayManager",
+      "doc": "",
+      "constructors": [],
+      "fields": [
+        {
+          "name": "hasListeners",
+          "doc": "/// Whether any listeners are currently registered.",
+          "type": {
+            "kind": "scalar",
+            "name": "bool"
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "addListener",
+          "doc": "/// Register a closure to be called when the tray events.",
+          "static": false,
+          "returnType": {
+            "kind": "void"
+          },
+          "params": [
+            {
+              "name": "listener",
+              "type": {
+                "kind": "named",
+                "name": "TrayListener"
+              },
+              "display": "TrayListener",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "destroy",
+          "doc": "",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "getBounds",
+          "doc": "/// The bounds of this tray icon.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "nullable",
+              "inner": {
+                "kind": "named",
+                "name": "Rect"
+              }
+            }
+          },
+          "params": []
+        },
+        {
+          "name": "popUpContextMenu",
+          "doc": "/// Pops up the context menu of the tray icon.\n///\n/// [bringAppToFront] If true, the app will be brought to the front when the\n/// context menu is shown. Only works on Windows.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "bringAppToFront",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": false,
+              "defaultValue": "false",
+              "doc": "",
+              "deprecated": true
+            }
+          ]
+        },
+        {
+          "name": "removeListener",
+          "doc": "/// Remove a previously registered closure from the list of closures that are\n/// notified when the tray events.",
+          "static": false,
+          "returnType": {
+            "kind": "void"
+          },
+          "params": [
+            {
+              "name": "listener",
+              "type": {
+                "kind": "named",
+                "name": "TrayListener"
+              },
+              "display": "TrayListener",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setContextMenu",
+          "doc": "/// Sets the context menu for this icon.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "menu",
+              "type": {
+                "kind": "named",
+                "name": "Menu"
+              },
+              "display": "Menu",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setIcon",
+          "doc": "/// Sets the image associated with this tray icon.\n///\n/// [iconPath] is the path to the image file.\n///\n/// However, if the app is running in a sandbox like Flatpak or Snap,\n/// [iconPath] should be the name of the icon as specified in the app's\n/// manifest file, without the path or file extension. For example, if the\n/// icon is specified as `org.example.app` in the Flatpak manifest file, then\n/// the icon should be passed as `org.example.app`.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "iconPath",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "isTemplate",
+              "type": {
+                "kind": "scalar",
+                "name": "bool"
+              },
+              "display": "bool",
+              "named": true,
+              "required": false,
+              "defaultValue": "false",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "iconPosition",
+              "type": {
+                "kind": "enum",
+                "name": "TrayIconPosition"
+              },
+              "display": "TrayIconPosition",
+              "named": true,
+              "required": false,
+              "defaultValue": "TrayIconPosition.left",
+              "doc": "",
+              "deprecated": false
+            },
+            {
+              "name": "iconSize",
+              "type": {
+                "kind": "scalar",
+                "name": "int"
+              },
+              "display": "int",
+              "named": true,
+              "required": false,
+              "defaultValue": "18",
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setIconPosition",
+          "doc": "/// Sets the icon position of the tray icon.\n///\n/// @platforms macos",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "trayIconPosition",
+              "type": {
+                "kind": "enum",
+                "name": "TrayIconPosition"
+              },
+              "display": "TrayIconPosition",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setTitle",
+          "doc": "/// Sets the title for this tray icon.",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "title",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "setToolTip",
+          "doc": "/// Sets the hover text for this tray icon.\n///\n/// Must be called after the icon is set.\n/// ```dart\n/// await trayManager.setIcon(...);\n/// await trayManager.setToolTip(...);\n/// ```",
+          "static": false,
+          "returnType": {
+            "kind": "future",
+            "item": {
+              "kind": "void"
+            }
+          },
+          "params": [
+            {
+              "name": "toolTip",
+              "type": {
+                "kind": "scalar",
+                "name": "String"
+              },
+              "display": "String",
+              "named": false,
+              "required": true,
+              "defaultValue": null,
+              "doc": "",
+              "deprecated": false
+            }
+          ]
+        }
+      ],
+      "constants": []
+    }
+  ],
+  "enums": [
+    {
+      "kind": "enum",
+      "name": "Placement",
+      "library": "tray_manager",
+      "doc": "",
+      "values": [
+        {
+          "name": "topLeft",
+          "doc": ""
+        },
+        {
+          "name": "topRight",
+          "doc": ""
+        },
+        {
+          "name": "bottomLeft",
+          "doc": ""
+        },
+        {
+          "name": "bottomRight",
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "kind": "enum",
+      "name": "TrayIconPosition",
+      "library": "tray_manager",
+      "doc": "",
+      "values": [
+        {
+          "name": "left",
+          "doc": ""
+        },
+        {
+          "name": "right",
+          "doc": ""
+        }
+      ]
+    }
+  ],
+  "functions": [],
+  "instances": [
+    {
+      "name": "kEventOnTrayIconMouseDown",
+      "type": "String"
+    },
+    {
+      "name": "kEventOnTrayIconMouseUp",
+      "type": "String"
+    },
+    {
+      "name": "kEventOnTrayIconRightMouseDown",
+      "type": "String"
+    },
+    {
+      "name": "kEventOnTrayIconRightMouseUp",
+      "type": "String"
+    },
+    {
+      "name": "kEventOnTrayMenuItemClick",
+      "type": "String"
+    },
+    {
+      "name": "trayManager",
+      "type": "TrayManager"
+    }
+  ],
+  "permissions": {
+    "android": {
+      "manifestSource": null,
+      "permissions": [],
+      "exampleSource": null,
+      "querySchemes": []
+    },
+    "ios": {
+      "exampleSource": null,
+      "usageDescriptionKeys": [],
+      "querySchemes": []
+    }
+  }
+}

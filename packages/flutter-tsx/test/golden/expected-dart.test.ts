@@ -59,6 +59,7 @@ describe('committed golden expected.dart files', () => {
       '40-layout-builder',
       '41-model-helper',
       '42-project-layout',
+      '43-tray-singleton',
     ]);
   });
 

@@ -61,12 +61,19 @@ export interface PluginPermissions {
   ios: IosManifestNeeds;
 }
 
+/** A top-level singleton a plugin exposes: `final trayManager = ...`. */
+export interface PluginInstance {
+  name: string;
+  type: string;
+}
+
 export interface PluginApi {
   package: string;
   version: string;
   classes: PluginClass[];
   enums: PluginEnum[];
   functions: PluginMethod[];
+  instances: PluginInstance[];
   permissions: PluginPermissions;
 }
 
@@ -140,6 +147,15 @@ export const parsePluginApi = (value: unknown, label: string): PluginApi => {
     ),
     functions: asArray(record.functions, `${label}: functions`).map(
       (entity, index) => parseCallable(entity, `${label}: functions[${index}]`),
+    ),
+    instances: asArray(record.instances, `${label}: instances`).map(
+      (entity, index) => {
+        const instance = asObject(entity, `${label}: instances[${index}]`);
+        return {
+          name: asString(instance.name, `${label}: instances[${index}].name`),
+          type: asString(instance.type, `${label}: instances[${index}].type`),
+        };
+      },
     ),
     permissions: parsePermissions(record.permissions, `${label}: permissions`),
   };

@@ -1718,6 +1718,7 @@
   ],
   "enums": [],
   "functions": [],
+  "instances": [],
   "permissions": {
     "android": {
       "manifestSource": "shared_preferences_android/android/src/main/AndroidManifest.xml",

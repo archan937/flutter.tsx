@@ -526,6 +526,7 @@
   ],
   "enums": [],
   "functions": [],
+  "instances": [],
   "permissions": {
     "android": {
       "manifestSource": "package_info_plus/android/src/main/AndroidManifest.xml",

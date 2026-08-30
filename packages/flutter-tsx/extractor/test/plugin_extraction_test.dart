@@ -297,6 +297,7 @@ void main() {
       const api = PluginApi(
         package: 'demo',
         version: '1.0.0',
+        instances: [],
         classes: [],
         enums: [
           EnumEntity(
@@ -365,6 +366,7 @@ void main() {
         ],
         enums: const [],
         functions: const [],
+        instances: const [],
         permissions: const PluginPermissions(
           android: AndroidPermissions(
             manifestSource: 'demo_android/android/src/main/AndroidManifest.xml',
@@ -418,6 +420,7 @@ void main() {
   ],
   "enums": [],
   "functions": [],
+  "instances": [],
   "permissions": {
     "android": {
       "manifestSource": "demo_android/android/src/main/AndroidManifest.xml",

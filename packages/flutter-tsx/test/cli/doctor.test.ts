@@ -57,6 +57,7 @@ const cameraApi = (): string =>
     classes: [],
     enums: [],
     functions: [],
+    instances: [],
     permissions: {
       android: {
         manifestSource: 'camera/android/src/main/AndroidManifest.xml',

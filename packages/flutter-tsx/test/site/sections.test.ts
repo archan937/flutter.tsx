@@ -57,6 +57,7 @@ describe('loadSiteSections', () => {
       'http',
       'package_info_plus',
       'shared_preferences',
+      'tray_manager',
       'url_launcher',
     ]);
     expect(sections.examples.map((each) => each.id)).toContain(

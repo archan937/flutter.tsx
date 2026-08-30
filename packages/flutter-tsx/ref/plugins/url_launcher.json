@@ -524,6 +524,7 @@
       ]
     }
   ],
+  "instances": [],
   "permissions": {
     "android": {
       "manifestSource": "url_launcher_android/android/src/main/AndroidManifest.xml",
