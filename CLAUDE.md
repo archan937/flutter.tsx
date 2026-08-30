@@ -910,13 +910,9 @@ bun run test:extractor             # dart tests + 100% coverage gate
       equal a fresh render, and **every TSX snippet in the guide and both READMEs
       must be a conformance fixture verbatim** — a documented snippet that
       nothing compiles cannot exist. Published by
-      `.github/workflows/pages.yml`, run deliberately rather than on every
-      push: a deploy needs the repository to have Pages enabled, which a
-      private repository needs a plan for. The site goes live with the 1.0
-      publish — enable Pages (Settings → Pages → Source: GitHub Actions) and
-      run the workflow, which provisions the site itself from there. CI already
-      fails if any page differs from a fresh render, so whatever publishes is
-      current whenever it is published.
+      `.github/workflows/pages.yml` after CI passes on master, so a page can
+      never describe a build that did not; `enablement: true` provisions the
+      Pages site on the first run.
 - [ ] 31. 1.0 publish (Paul triggers).
       **Paul (2026-08-25): the preserved v1 pages (docs/index.html, guide.md,
       config-mapping.md) stay frozen and unmarked until the step-30 refresh —

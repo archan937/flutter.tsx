@@ -4,13 +4,13 @@ name: Pages
 # conformance fixtures, and gated by CI: `bun run quality` fails if any page
 # differs from a fresh render, so what would publish is always current.
 #
-# Publishing is deliberate rather than automatic. A repository has to have
-# Pages enabled for a deploy to have anywhere to go — and while this one is
-# private, that needs a plan where Pages is available. Running on every push
-# before then only produces a red run that says nothing new. It goes live when
-# the 1.0 publish does: enable Pages (Settings → Pages → Source: GitHub
-# Actions), then run this workflow.
+# It publishes after CI has passed on master, so a page can never describe a
+# build that did not — and can be run by hand for the first deploy.
 on:
+  workflow_run:
+    workflows: [CI]
+    branches: [master]
+    types: [completed]
   workflow_dispatch:
 
 permissions:
@@ -24,6 +24,7 @@ concurrency:
 
 jobs:
   deploy:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
