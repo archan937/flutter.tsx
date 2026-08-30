@@ -43,8 +43,9 @@ const dartBin = (): string =>
  */
 export const ensurePackageResolved = async (
   packageDir: string,
+  run: (command: string[], cwd: string) => Promise<number> = runCommand,
 ): Promise<void> => {
-  const exitCode = await runCommand([flutterBin(), 'pub', 'get'], packageDir);
+  const exitCode = await run([flutterBin(), 'pub', 'get'], packageDir);
   if (exitCode !== 0) {
     throw new Error(
       `flutter pub get failed (exit ${exitCode}) in ${packageDir}`,

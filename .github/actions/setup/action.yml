@@ -35,7 +35,7 @@ runs:
     # the latter every run re-downloads them.
     - name: Cache the Flutter SDK and pub packages
       if: inputs.flutter == 'true'
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: |
           ~/.fsx

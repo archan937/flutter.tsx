@@ -15,7 +15,7 @@ jobs:
     name: flutter-tsx
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
       # typecheck · format · lint · extractor lint · tests at 100% coverage ·
       # extractor tests at 100% line coverage.
@@ -27,7 +27,7 @@ jobs:
     name: create-flutter-tsx
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
         with:
           flutter: 'false'
@@ -40,7 +40,7 @@ jobs:
     # macOS, because the suite builds a real macOS app as well as a web one.
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
       - name: Typecheck and lint
         run: bun run typecheck && bun run lint
