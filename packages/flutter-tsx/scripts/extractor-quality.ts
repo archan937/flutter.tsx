@@ -38,6 +38,36 @@ const TEST_STEPS: string[][] = [
   ],
 ];
 
+/**
+ * The ground-truth tests analyze the installed SDK, which needs its framework
+ * packages resolved: without `<flutter-root>/.dart_tool/package_config.json`
+ * every dart:ui type resolves as invalid. A downloaded SDK does not ship that
+ * file — it is written by `flutter update-packages`, which the SDK documents
+ * as being for CI and repo maintainers. It is slow, so it runs only when the
+ * file is absent.
+ */
+const bootstrapSdk = async (): Promise<void> => {
+  const packageConfig = join(paths.sdkDir, '.dart_tool', 'package_config.json');
+  if (await Bun.file(packageConfig).exists()) {
+    return;
+  }
+  process.stdout.write('Resolving the Flutter SDK packages…\n');
+  const exitCode = await runCommand(
+    [join(paths.sdkDir, 'bin', 'flutter'), 'update-packages'],
+    paths.sdkDir,
+  );
+  if (exitCode !== 0) {
+    process.stderr.write(
+      `✖ flutter update-packages failed (exit ${exitCode}) in ${paths.sdkDir}\n`,
+    );
+    process.exit(exitCode);
+  }
+};
+
+if (mode === 'test') {
+  await bootstrapSdk();
+}
+
 for (const step of mode === 'lint' ? LINT_STEPS : TEST_STEPS) {
   const exitCode = await runCommand(step, extractorDir);
   if (exitCode !== 0) {
