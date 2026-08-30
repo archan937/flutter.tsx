@@ -92,6 +92,12 @@ export const CATALOGUE: Readonly<Record<string, CatalogueEntry>> = {
       'A builder prop takes an arrow function whose body is a widget — including a conditional one — and becomes an expression-bodied Dart closure.',
     category: 'State and effects',
   },
+  '40-layout-builder': {
+    title: 'Reading what a callback is handed',
+    blurb:
+      'A builder’s parameters are typed from the SDK, so `constraints.maxWidth` completes in the editor and compiles to the Dart member it names.',
+    category: 'State and effects',
+  },
   '29-branching-handler': {
     title: 'Branching inside a handler',
     blurb:

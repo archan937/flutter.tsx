@@ -290,11 +290,15 @@ abstract class ConstructedEntity extends EntityModel {
     required this.supertypes,
     required this.constructors,
     required this.constants,
+    required this.fields,
   });
 
   final List<String> supertypes;
   final List<ConstructorModel> constructors;
   final List<ConstantModel> constants;
+
+  /// Public instance fields and getters, so a value of this type can be read.
+  final List<FieldModel> fields;
 
   @override
   Map<String, Object?> toJson() => {
@@ -307,6 +311,7 @@ abstract class ConstructedEntity extends EntityModel {
         .map((constructor) => constructor.toJson())
         .toList(),
     'constants': constants.map((constant) => constant.toJson()).toList(),
+    'fields': fields.map((field) => field.toJson()).toList(),
   };
 }
 
@@ -318,6 +323,7 @@ class WidgetEntity extends ConstructedEntity {
     required super.supertypes,
     required super.constructors,
     required super.constants,
+    required super.fields,
   });
 
   @override
@@ -332,6 +338,7 @@ class ClassEntity extends ConstructedEntity {
     required super.supertypes,
     required super.constructors,
     required super.constants,
+    required super.fields,
   });
 
   @override

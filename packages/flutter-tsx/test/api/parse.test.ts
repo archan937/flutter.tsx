@@ -44,6 +44,7 @@ const widgetEntity = {
       doc: '/// Zero.',
     },
   ],
+  fields: [],
 };
 
 const enumEntity = {
@@ -110,6 +111,7 @@ describe('parseApiSnapshot', () => {
               doc: '/// Zero.',
             },
           ],
+          fields: [],
         },
         {
           kind: 'enum',

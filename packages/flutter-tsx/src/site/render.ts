@@ -3,7 +3,6 @@ import type {
   SiteCoreEntry,
   SiteEnum,
   SiteExample,
-  SiteLimitation,
   SitePage,
   SitePlugin,
   SitePluginRequirement,
@@ -308,19 +307,6 @@ ${tabs([
 </article>`;
 };
 
-/**
- * What the compiler refuses, read out of the compiler rather than written
- * beside it — a limitation that stops being true disappears from this page on
- * the next build, and one that is added shows up without anyone remembering.
- */
-export const limitationSection = (entry: SiteLimitation): string =>
-  `<article class="widget" id="limit-${escapeHtml(entry.code)}-${escapeHtml(
-    entry.message.slice(0, 24).replace(/[^A-Za-z0-9]+/g, '-'),
-  )}" data-name="${escapeHtml(entry.code)}">
-<h3>${escapeHtml(entry.code)}<span class="badge badge-lib">refused</span></h3>
-<p class="doc">${inlineDoc(entry.message)}</p>
-</article>`;
-
 export const typeSection = (entry: SiteType): string => {
   const shape =
     entry.shape === null ? '' : codeBlock(entry.shape, 'typescript');
@@ -452,24 +438,8 @@ ${page.types
 <ul>
 ${navList(page.enums.map((entry) => entry.name))}
 </ul>
-</details>
-<details>
-<summary>Limitations<span class="nav-count">${page.limitations.length}</span></summary>
-<ul>
-${page.limitations
-  .map(
-    (entry) =>
-      `<li data-name="${escapeHtml(entry.code)}"><a href="#limitations">${escapeHtml(entry.code)}</a></li>`,
-  )
-  .join('\n')}
-</ul>
 </details>`;
 };
-
-const LIMITATIONS_INTRO = `<article class="widget" id="limitations-about" data-name="about the limitations">
-<h3>What the compiler will not do</h3>
-<p class="doc">Every entry here is read out of the compiler on each build, from the place that raises it. A limitation is a numbered error at compile time, never silently different Dart — so nothing on this list can reach a running app. The list shrinks as the compiler grows; it is not written by hand beside the code.</p>
-</article>`;
 
 const verificationSection = `<article class="widget" id="verification" data-name="verification">
 <h3>✓ typechecked — what the badge means</h3>
@@ -501,9 +471,6 @@ export const pageContent = (page: SitePage): string => {
     `<h2 id="types">Types</h2>`,
     page.types.map(typeSection).join('\n'),
     enumSections,
-    `<h2 id="limitations">Limitations</h2>`,
-    LIMITATIONS_INTRO,
-    page.limitations.map(limitationSection).join('\n'),
   ];
   return sections.join('\n');
 };

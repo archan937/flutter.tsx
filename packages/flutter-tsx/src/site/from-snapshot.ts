@@ -15,7 +15,6 @@ import { jsxPropName } from '../generate/renames';
 import type {
   SiteCoreEntry,
   SiteExample,
-  SiteLimitation,
   SitePage,
   SitePlugin,
   SiteProp,
@@ -118,7 +117,6 @@ export interface SiteSections {
   examples: SiteExample[];
   coreApi: SiteCoreEntry[];
   plugins: SitePlugin[];
-  limitations: SiteLimitation[];
   /** Generated declaration files the value types are read from. */
   generatedFiles: string[];
 }
@@ -187,7 +185,6 @@ export const buildSitePage = (
         : [],
     ),
     plugins: sections.plugins,
-    limitations: sections.limitations,
     incompleteExamples,
   };
 };

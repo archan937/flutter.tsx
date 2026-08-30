@@ -58,6 +58,7 @@ const classEntity = (
   supertypes: [],
   constructors: [],
   constants: [],
+  fields: [],
   ...overrides,
 });
 
@@ -87,6 +88,7 @@ describe('deriveValueForms — constant unions', () => {
               namedConstant('crimson', 'Swatch'),
               namedConstant('azure', 'Swatch'),
             ],
+            fields: [],
           }),
         ],
         { Swatch: ['Ink'] },
@@ -118,12 +120,14 @@ describe('deriveValueForms — constant unions', () => {
       snapshotWith([
         classEntity('Anchor', {
           constants: [namedConstant('center', 'Anchor')],
+          fields: [],
         }),
         classEntity('Offsets', {
           constants: [
             namedConstant('center', 'Anchor'),
             namedConstant('edge', 'Anchor'),
           ],
+          fields: [],
         }),
       ]),
     );
@@ -145,6 +149,7 @@ describe('deriveValueForms — constant unions', () => {
             namedConstant('loud', 'Tone'),
             namedConstant('soft', 'Tone'),
           ],
+          fields: [],
         }),
         classEntity('Small', { constants: [namedConstant('loud', 'Tone')] }),
         classEntity('Aside', { constants: [namedConstant('quiet', 'Tone')] }),
@@ -205,6 +210,7 @@ describe('deriveValueForms — constructible value classes', () => {
           defaultConstructor([param('style', 'Style'), param('depth', 'Gap')]),
         ],
         constants: [],
+        fields: [],
       },
       classEntity('Style', {
         constructors: [defaultConstructor([param('tint', 'Swatch')])],
@@ -213,6 +219,7 @@ describe('deriveValueForms — constructible value classes', () => {
       classEntity('Swatch'),
       classEntity('Palette', {
         constants: [namedConstant('crimson', 'Swatch')],
+        fields: [],
       }),
       classEntity('Orphan', {
         constructors: [defaultConstructor([param('tint', 'Swatch')])],
@@ -240,6 +247,7 @@ describe('deriveValueForms — constructible value classes', () => {
           ]),
         ],
         constants: [],
+        fields: [],
       },
     ]);
     const forms = deriveValueForms(snapshot);
@@ -260,6 +268,7 @@ describe('deriveValueForms — constructible value classes', () => {
           supertypes: ['Widget'],
           constructors: [defaultConstructor([param('spacing', 'Ink')])],
           constants: [],
+          fields: [],
         },
       ]),
     );

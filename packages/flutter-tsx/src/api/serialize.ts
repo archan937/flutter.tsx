@@ -94,6 +94,11 @@ const entityToJson = (entity: Entity): Record<string, unknown> => {
     supertypes: entity.supertypes,
     constructors: entity.constructors.map(constructorToJson),
     constants: entity.constants.map(constantToJson),
+    fields: entity.fields.map((field) => ({
+      name: field.name,
+      doc: field.doc,
+      type: typeNodeToJson(field.type),
+    })),
   };
 };
 

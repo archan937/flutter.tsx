@@ -116,11 +116,6 @@ export interface SiteType {
   usedBy: string[];
 }
 
-export interface SiteLimitation {
-  code: string;
-  message: string;
-}
-
 export interface SitePage {
   flutterVersion: string;
   /** The worked examples the reference opens with. */
@@ -130,7 +125,5 @@ export interface SitePage {
   types: SiteType[];
   enums: SiteEnum[];
   plugins: SitePlugin[];
-  /** What the compiler still refuses, read out of the compiler itself. */
-  limitations: SiteLimitation[];
   incompleteExamples: string[];
 }

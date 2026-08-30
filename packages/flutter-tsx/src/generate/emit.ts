@@ -217,6 +217,49 @@ const widgetBlocks = (widget: WidgetEntity, scope: WidgetScope): string[] => {
   return [propsInterface, component];
 };
 
+const isDeclaredType = (
+  node: TypeNode,
+  declared: ReadonlySet<string>,
+  enumRefs: ReadonlySet<string>,
+): boolean => {
+  switch (node.kind) {
+    case 'scalar':
+      return true;
+    case 'enum':
+      return enumRefs.has(node.name);
+    case 'named':
+      return declared.has(node.name);
+    case 'nullable':
+      return isDeclaredType(node.inner, declared, enumRefs);
+    case 'list':
+    case 'set':
+      return isDeclaredType(node.item, declared, enumRefs);
+    default:
+      return false;
+  }
+};
+
+/** The named types a callback receives, at any depth of the signature. */
+const collectHandedTypes = (node: TypeNode, into: Set<string>): void => {
+  switch (node.kind) {
+    case 'function':
+      for (const param of node.params) {
+        if (param.type.kind === 'named') into.add(param.type.name);
+      }
+      break;
+    case 'nullable':
+      collectHandedTypes(node.inner, into);
+      break;
+    case 'list':
+    case 'set':
+    case 'future':
+      collectHandedTypes(node.item, into);
+      break;
+    default:
+      break;
+  }
+};
+
 const EMPTY_NAMES: ReadonlySet<string> = new Set();
 
 const indentBlock = (block: string): string =>
@@ -225,13 +268,56 @@ const indentBlock = (block: string): string =>
     .map((line) => `  ${line}`)
     .join('\n');
 
+/** What a nominal interface needs beyond the snapshot to declare its members. */
+interface ReadableTypes {
+  /** Types a callback hands back, whose members are therefore readable. */
+  handed: ReadonlySet<string>;
+  /** Every named type the surface declares, so a member can be typed. */
+  declared: ReadonlySet<string>;
+  enums: ReadonlySet<string>;
+  forms: ReadonlySet<string>;
+}
+
 const brandInterface = (
   name: string,
-  hierarchy: ApiSnapshot['hierarchy'],
+  snapshot: ApiSnapshot,
+  readable: ReadableTypes,
 ): string => {
-  const brandKeys = [...new Set([name, ...(hierarchy[name] ?? [])])].sort();
+  const { handed, declared, enums: enumRefs, forms: formNames } = readable;
+  const brandKeys = [
+    ...new Set([name, ...(snapshot.hierarchy[name] ?? [])]),
+  ].sort();
   const brand = brandKeys.map((key) => `readonly ${key}: true`).join('; ');
-  return `export interface ${name} {\n  readonly __fsxBrand?: { ${brand} };\n}`;
+  // What a value of this type can be read for. A callback is handed one of
+  // these — `(context, constraints) => …` — and the compiler resolves
+  // `constraints.maxWidth`, so the editor has to know it too.
+  const entity = handed.has(name)
+    ? snapshot.entities.find(
+        (candidate) => candidate.name === name && candidate.kind !== 'enum',
+      )
+    : undefined;
+  const fields =
+    entity === undefined || entity.kind === 'enum'
+      ? []
+      : entity.fields
+          // A field is exposed when its type is one the surface already
+          // declares. Closing over the rest reaches most of the SDK, and a
+          // member typed as something the editor has never heard of guides
+          // nobody.
+          .filter((field) => isDeclaredType(field.type, declared, enumRefs))
+          .map(
+            (field) =>
+              `  readonly ${field.name}: ${valueFormTsType(
+                unwrapNullable(field.type),
+                formNames,
+              )};`,
+          );
+  return [
+    `export interface ${name} {`,
+    `  readonly __fsxBrand?: { ${brand} };`,
+    ...fields,
+    '}',
+  ].join('\n');
 };
 
 const unwrapNullable = (node: TypeNode): TypeNode =>
@@ -325,9 +411,14 @@ export const emitWidgetsFile = (
 
   const namedRefs = new Set<string>();
   const enumRefs = new Set<string>();
+  // The types a callback is handed — `(context, constraints) => …`. These are
+  // the values a developer receives and reads, so these are the ones whose
+  // members the editor has to know; everything else is only ever constructed.
+  const handed = new Set<string>();
   for (const widget of widgets) {
     for (const param of defaultConstructorOf(widget)?.params ?? []) {
       collectRefs(param.type, namedRefs, enumRefs);
+      collectHandedTypes(param.type, handed);
     }
   }
   for (const name of formNames) {
@@ -343,6 +434,16 @@ export const emitWidgetsFile = (
       }
     }
   }
+  // A subtype must carry what its supertype exposes or it stops being
+  // assignable to it — `MaterialColor` has to keep satisfying `Color`. The
+  // extractor already merges inherited getters, so this is just a wider set.
+  for (const entity of snapshot.entities) {
+    if (entity.kind === 'enum' || !namedRefs.has(entity.name)) continue;
+    if (entity.supertypes.some((supertype) => handed.has(supertype))) {
+      handed.add(entity.name);
+    }
+  }
+
   for (const name of formNames) {
     for (const generated of [`${name}Value`, `${name}Object`]) {
       if (namedRefs.has(generated) || enumRefs.has(generated)) {
@@ -387,7 +488,14 @@ export const emitWidgetsFile = (
     }
   }
   for (const name of [...namedRefs].sort()) {
-    blocks.push(brandInterface(name, snapshot.hierarchy));
+    blocks.push(
+      brandInterface(name, snapshot, {
+        handed,
+        declared: namedRefs,
+        enums: enumRefs,
+        forms: formNames,
+      }),
+    );
   }
   for (const name of formNames) {
     blocks.push(...valueFormBlocks(name, forms, formNames));

@@ -2936,6 +2936,11 @@ export interface AndroidViewController {
     readonly AndroidViewController: true;
     readonly PlatformViewController: true;
   };
+  readonly awaitingCreation: boolean;
+  readonly isCreated: boolean;
+  readonly requiresViewComposition: boolean;
+  readonly textureId: number;
+  readonly viewId: number;
 }
 
 export interface Animatable {
@@ -2964,6 +2969,20 @@ export interface AnimationController {
     readonly Listenable: true;
     readonly ValueListenable: true;
   };
+  readonly debugLabel: string;
+  readonly duration: DurationValue;
+  readonly isAnimating: boolean;
+  readonly isCompleted: boolean;
+  readonly isDismissed: boolean;
+  readonly isForwardOrCompleted: boolean;
+  readonly lastElapsedDuration: DurationValue;
+  readonly lowerBound: number;
+  readonly reverseDuration: DurationValue;
+  readonly status: AnimationStatus;
+  readonly upperBound: number;
+  readonly value: number;
+  readonly velocity: number;
+  readonly view: Animation;
 }
 
 export interface AnimationStyle {
@@ -2971,6 +2990,10 @@ export interface AnimationStyle {
     readonly AnimationStyle: true;
     readonly Diagnosticable: true;
   };
+  readonly curve: CurveValue;
+  readonly duration: DurationValue;
+  readonly reverseCurve: CurveValue;
+  readonly reverseDuration: DurationValue;
 }
 
 export interface AppBarThemeData {
@@ -2986,6 +3009,10 @@ export interface AssetBundle {
 
 export interface AsyncSnapshot {
   readonly __fsxBrand?: { readonly AsyncSnapshot: true };
+  readonly error: Object;
+  readonly hasData: boolean;
+  readonly hasError: boolean;
+  readonly stackTrace: StackTrace;
 }
 
 export interface AttributedString {
@@ -3082,6 +3109,21 @@ export interface BoxConstraints {
     readonly BoxConstraints: true;
     readonly Constraints: true;
   };
+  readonly biggest: SizeValue;
+  readonly flipped: BoxConstraintsValue;
+  readonly hasBoundedHeight: boolean;
+  readonly hasBoundedWidth: boolean;
+  readonly hasInfiniteHeight: boolean;
+  readonly hasInfiniteWidth: boolean;
+  readonly hasTightHeight: boolean;
+  readonly hasTightWidth: boolean;
+  readonly isNormalized: boolean;
+  readonly isTight: boolean;
+  readonly maxHeight: number;
+  readonly maxWidth: number;
+  readonly minHeight: number;
+  readonly minWidth: number;
+  readonly smallest: SizeValue;
 }
 
 export interface BoxDecoration {
@@ -3136,6 +3178,14 @@ export interface CarouselController {
     readonly Listenable: true;
     readonly ScrollController: true;
   };
+  readonly debugLabel: string;
+  readonly hasClients: boolean;
+  readonly hasListeners: boolean;
+  readonly initialItem: number;
+  readonly initialScrollOffset: number;
+  readonly keepScrollOffset: boolean;
+  readonly leadingItem: number;
+  readonly offset: number;
 }
 
 export interface CarouselViewThemeData {
@@ -3202,6 +3252,9 @@ export interface ContextMenuButtonItem {
 
 export interface ControlsDetails {
   readonly __fsxBrand?: { readonly ControlsDetails: true };
+  readonly currentStep: number;
+  readonly isActive: boolean;
+  readonly stepIndex: number;
 }
 
 export interface CopySelectionTextIntent {
@@ -3363,6 +3416,10 @@ export interface DialogThemeData {
 
 export interface DismissUpdateDetails {
   readonly __fsxBrand?: { readonly DismissUpdateDetails: true };
+  readonly direction: DismissDirection;
+  readonly previousReached: boolean;
+  readonly progress: number;
+  readonly reached: boolean;
 }
 
 export interface DisplayFeature {
@@ -3394,6 +3451,8 @@ export interface DragDownDetails {
     readonly DragDownDetails: true;
     readonly PositionedGestureDetails: true;
   };
+  readonly globalPosition: OffsetValue;
+  readonly localPosition: OffsetValue;
 }
 
 export interface DragEndDetails {
@@ -3402,6 +3461,10 @@ export interface DragEndDetails {
     readonly DragEndDetails: true;
     readonly PositionedGestureDetails: true;
   };
+  readonly globalPosition: OffsetValue;
+  readonly localPosition: OffsetValue;
+  readonly primaryVelocity: number;
+  readonly velocity: VelocityValue;
 }
 
 export interface DragStartDetails {
@@ -3410,10 +3473,15 @@ export interface DragStartDetails {
     readonly DragStartDetails: true;
     readonly PositionedGestureDetails: true;
   };
+  readonly globalPosition: OffsetValue;
+  readonly kind: PointerDeviceKind;
+  readonly localPosition: OffsetValue;
+  readonly sourceTimeStamp: DurationValue;
 }
 
 export interface DragTargetDetails {
   readonly __fsxBrand?: { readonly DragTargetDetails: true };
+  readonly offset: OffsetValue;
 }
 
 export interface DragUpdateDetails {
@@ -3422,6 +3490,12 @@ export interface DragUpdateDetails {
     readonly DragUpdateDetails: true;
     readonly PositionedGestureDetails: true;
   };
+  readonly delta: OffsetValue;
+  readonly globalPosition: OffsetValue;
+  readonly kind: PointerDeviceKind;
+  readonly localPosition: OffsetValue;
+  readonly primaryDelta: number;
+  readonly sourceTimeStamp: DurationValue;
 }
 
 export interface Draggable {
@@ -3432,10 +3506,22 @@ export interface Draggable {
     readonly StatefulWidget: true;
     readonly Widget: true;
   };
+  readonly affinity: Axis;
+  readonly axis: Axis;
+  readonly feedbackOffset: OffsetValue;
+  readonly hitTestBehavior: HitTestBehavior;
+  readonly ignoringFeedbackPointer: boolean;
+  readonly ignoringFeedbackSemantics: boolean;
+  readonly key: Key;
+  readonly maxSimultaneousDrags: number;
+  readonly rootOverlay: boolean;
 }
 
 export interface DraggableDetails {
   readonly __fsxBrand?: { readonly DraggableDetails: true };
+  readonly offset: OffsetValue;
+  readonly velocity: VelocityValue;
+  readonly wasAccepted: boolean;
 }
 
 export interface DraggableScrollableController {
@@ -3509,6 +3595,26 @@ export interface EditableTextState {
     readonly TickerProviderStateMixin: true;
     readonly WidgetsBindingObserver: true;
   };
+  readonly autofillId: string;
+  readonly context: BuildContext;
+  readonly contextMenuAnchors: TextSelectionToolbarAnchors;
+  readonly contextMenuButtonItems: ContextMenuButtonItem[];
+  readonly copyEnabled: boolean;
+  readonly currentTextEditingValue: TextEditingValueValue;
+  readonly cursorBlinkInterval: DurationValue;
+  readonly cursorCurrentlyVisible: boolean;
+  readonly cutEnabled: boolean;
+  readonly liveTextInputEnabled: boolean;
+  readonly lookUpEnabled: boolean;
+  readonly mounted: boolean;
+  readonly pasteEnabled: boolean;
+  readonly searchWebEnabled: boolean;
+  readonly selectAllEnabled: boolean;
+  readonly shareEnabled: boolean;
+  readonly spellCheckConfiguration: SpellCheckConfigurationValue;
+  readonly spellCheckEnabled: boolean;
+  readonly textEditingValue: TextEditingValueValue;
+  readonly wantKeepAlive: boolean;
 }
 
 export interface ElasticInCurve {
@@ -3583,6 +3689,14 @@ export interface FixedExtentScrollController {
     readonly Listenable: true;
     readonly ScrollController: true;
   };
+  readonly debugLabel: string;
+  readonly hasClients: boolean;
+  readonly hasListeners: boolean;
+  readonly initialItem: number;
+  readonly initialScrollOffset: number;
+  readonly keepScrollOffset: boolean;
+  readonly offset: number;
+  readonly selectedItem: number;
 }
 
 export interface FloatingActionButtonAnimator {
@@ -3621,6 +3735,26 @@ export interface FocusNode {
     readonly FocusNode: true;
     readonly Listenable: true;
   };
+  readonly ancestors: FocusNode[];
+  readonly canRequestFocus: boolean;
+  readonly children: FocusNode[];
+  readonly context: BuildContext;
+  readonly debugLabel: string;
+  readonly descendants: FocusNode[];
+  readonly descendantsAreFocusable: boolean;
+  readonly descendantsAreTraversable: boolean;
+  readonly enclosingScope: FocusScopeNode;
+  readonly hasFocus: boolean;
+  readonly hasListeners: boolean;
+  readonly hasPrimaryFocus: boolean;
+  readonly nearestScope: FocusScopeNode;
+  readonly offset: OffsetValue;
+  readonly parent: FocusNode;
+  readonly rect: RectValue;
+  readonly size: SizeValue;
+  readonly skipTraversal: boolean;
+  readonly traversalChildren: FocusNode[];
+  readonly traversalDescendants: FocusNode[];
 }
 
 export interface FocusOrder {
@@ -3641,6 +3775,30 @@ export interface FocusScopeNode {
     readonly FocusScopeNode: true;
     readonly Listenable: true;
   };
+  readonly ancestors: FocusNode[];
+  readonly canRequestFocus: boolean;
+  readonly children: FocusNode[];
+  readonly context: BuildContext;
+  readonly debugLabel: string;
+  readonly descendants: FocusNode[];
+  readonly descendantsAreFocusable: boolean;
+  readonly descendantsAreTraversable: boolean;
+  readonly directionalTraversalEdgeBehavior: TraversalEdgeBehavior;
+  readonly enclosingScope: FocusScopeNode;
+  readonly focusedChild: FocusNode;
+  readonly hasFocus: boolean;
+  readonly hasListeners: boolean;
+  readonly hasPrimaryFocus: boolean;
+  readonly isFirstFocus: boolean;
+  readonly nearestScope: FocusScopeNode;
+  readonly offset: OffsetValue;
+  readonly parent: FocusNode;
+  readonly rect: RectValue;
+  readonly size: SizeValue;
+  readonly skipTraversal: boolean;
+  readonly traversalChildren: FocusNode[];
+  readonly traversalDescendants: FocusNode[];
+  readonly traversalEdgeBehavior: TraversalEdgeBehavior;
 }
 
 export interface FocusTraversalPolicy {
@@ -3668,6 +3826,9 @@ export interface ForcePressDetails {
     readonly ForcePressDetails: true;
     readonly PositionedGestureDetails: true;
   };
+  readonly globalPosition: OffsetValue;
+  readonly localPosition: OffsetValue;
+  readonly pressure: number;
 }
 
 export interface FormFieldState {
@@ -3677,6 +3838,15 @@ export interface FormFieldState {
     readonly RestorationMixin: true;
     readonly State: true;
   };
+  readonly bucket: RestorationBucket;
+  readonly context: BuildContext;
+  readonly errorText: string;
+  readonly hasError: boolean;
+  readonly hasInteractedByUser: boolean;
+  readonly isValid: boolean;
+  readonly mounted: boolean;
+  readonly restorationId: string;
+  readonly restorePending: boolean;
 }
 
 export interface FractionalOffset {
@@ -3880,6 +4050,9 @@ export interface LongPressDownDetails {
     readonly LongPressDownDetails: true;
     readonly PositionedGestureDetails: true;
   };
+  readonly globalPosition: OffsetValue;
+  readonly kind: PointerDeviceKind;
+  readonly localPosition: OffsetValue;
 }
 
 export interface LongPressEndDetails {
@@ -3888,6 +4061,9 @@ export interface LongPressEndDetails {
     readonly LongPressEndDetails: true;
     readonly PositionedGestureDetails: true;
   };
+  readonly globalPosition: OffsetValue;
+  readonly localPosition: OffsetValue;
+  readonly velocity: VelocityValue;
 }
 
 export interface LongPressMoveUpdateDetails {
@@ -3896,6 +4072,10 @@ export interface LongPressMoveUpdateDetails {
     readonly LongPressMoveUpdateDetails: true;
     readonly PositionedGestureDetails: true;
   };
+  readonly globalPosition: OffsetValue;
+  readonly localOffsetFromOrigin: OffsetValue;
+  readonly localPosition: OffsetValue;
+  readonly offsetFromOrigin: OffsetValue;
 }
 
 export interface LongPressStartDetails {
@@ -3904,6 +4084,8 @@ export interface LongPressStartDetails {
     readonly LongPressStartDetails: true;
     readonly PositionedGestureDetails: true;
   };
+  readonly globalPosition: OffsetValue;
+  readonly localPosition: OffsetValue;
 }
 
 export interface MagnifierController {
@@ -3966,6 +4148,7 @@ export interface MenuButtonThemeData {
 
 export interface MenuController {
   readonly __fsxBrand?: { readonly MenuController: true };
+  readonly isOpen: boolean;
 }
 
 export interface MenuSerializableShortcut {
@@ -4031,6 +4214,7 @@ export interface NavigationNotification {
     readonly NavigationNotification: true;
     readonly Notification: true;
   };
+  readonly canHandlePop: boolean;
 }
 
 export interface NavigationRailDestination {
@@ -4057,6 +4241,14 @@ export interface NavigatorState {
     readonly TickerProvider: true;
     readonly TickerProviderStateMixin: true;
   };
+  readonly bucket: RestorationBucket;
+  readonly context: BuildContext;
+  readonly focusNode: FocusNode;
+  readonly mounted: boolean;
+  readonly restorationId: string;
+  readonly restorePending: boolean;
+  readonly userGestureInProgress: boolean;
+  readonly userGestureInProgressNotifier: ValueNotifier;
 }
 
 export interface NotchedShape {
@@ -4079,6 +4271,13 @@ export interface ObstructingPreferredSizeWidget {
 
 export interface Offset {
   readonly __fsxBrand?: { readonly Offset: true; readonly OffsetBase: true };
+  readonly direction: number;
+  readonly distance: number;
+  readonly distanceSquared: number;
+  readonly dx: number;
+  readonly dy: number;
+  readonly isFinite: boolean;
+  readonly isInfinite: boolean;
 }
 
 export interface OffsetPair {
@@ -4128,6 +4327,16 @@ export interface PageController {
     readonly PageController: true;
     readonly ScrollController: true;
   };
+  readonly debugLabel: string;
+  readonly hasClients: boolean;
+  readonly hasListeners: boolean;
+  readonly initialPage: number;
+  readonly initialScrollOffset: number;
+  readonly keepPage: boolean;
+  readonly keepScrollOffset: boolean;
+  readonly offset: number;
+  readonly page: number;
+  readonly viewportFraction: number;
 }
 
 export interface PageRoute {
@@ -4188,6 +4397,8 @@ export interface PlatformViewController {
 
 export interface PlatformViewCreationParams {
   readonly __fsxBrand?: { readonly PlatformViewCreationParams: true };
+  readonly id: number;
+  readonly viewType: string;
 }
 
 export interface PointerCancelEvent {
@@ -4196,6 +4407,35 @@ export interface PointerCancelEvent {
     readonly PointerCancelEvent: true;
     readonly PointerEvent: true;
   };
+  readonly buttons: number;
+  readonly delta: OffsetValue;
+  readonly device: number;
+  readonly distance: number;
+  readonly distanceMax: number;
+  readonly distanceMin: number;
+  readonly down: boolean;
+  readonly embedderId: number;
+  readonly kind: PointerDeviceKind;
+  readonly localDelta: OffsetValue;
+  readonly localPosition: OffsetValue;
+  readonly obscured: boolean;
+  readonly orientation: number;
+  readonly platformData: number;
+  readonly pointer: number;
+  readonly position: OffsetValue;
+  readonly pressure: number;
+  readonly pressureMax: number;
+  readonly pressureMin: number;
+  readonly radiusMajor: number;
+  readonly radiusMax: number;
+  readonly radiusMin: number;
+  readonly radiusMinor: number;
+  readonly size: number;
+  readonly synthesized: boolean;
+  readonly tilt: number;
+  readonly timeStamp: DurationValue;
+  readonly transform: Matrix4;
+  readonly viewId: number;
 }
 
 export interface PointerDownEvent {
@@ -4204,6 +4444,35 @@ export interface PointerDownEvent {
     readonly PointerDownEvent: true;
     readonly PointerEvent: true;
   };
+  readonly buttons: number;
+  readonly delta: OffsetValue;
+  readonly device: number;
+  readonly distance: number;
+  readonly distanceMax: number;
+  readonly distanceMin: number;
+  readonly down: boolean;
+  readonly embedderId: number;
+  readonly kind: PointerDeviceKind;
+  readonly localDelta: OffsetValue;
+  readonly localPosition: OffsetValue;
+  readonly obscured: boolean;
+  readonly orientation: number;
+  readonly platformData: number;
+  readonly pointer: number;
+  readonly position: OffsetValue;
+  readonly pressure: number;
+  readonly pressureMax: number;
+  readonly pressureMin: number;
+  readonly radiusMajor: number;
+  readonly radiusMax: number;
+  readonly radiusMin: number;
+  readonly radiusMinor: number;
+  readonly size: number;
+  readonly synthesized: boolean;
+  readonly tilt: number;
+  readonly timeStamp: DurationValue;
+  readonly transform: Matrix4;
+  readonly viewId: number;
 }
 
 export interface PointerEnterEvent {
@@ -4212,6 +4481,35 @@ export interface PointerEnterEvent {
     readonly PointerEnterEvent: true;
     readonly PointerEvent: true;
   };
+  readonly buttons: number;
+  readonly delta: OffsetValue;
+  readonly device: number;
+  readonly distance: number;
+  readonly distanceMax: number;
+  readonly distanceMin: number;
+  readonly down: boolean;
+  readonly embedderId: number;
+  readonly kind: PointerDeviceKind;
+  readonly localDelta: OffsetValue;
+  readonly localPosition: OffsetValue;
+  readonly obscured: boolean;
+  readonly orientation: number;
+  readonly platformData: number;
+  readonly pointer: number;
+  readonly position: OffsetValue;
+  readonly pressure: number;
+  readonly pressureMax: number;
+  readonly pressureMin: number;
+  readonly radiusMajor: number;
+  readonly radiusMax: number;
+  readonly radiusMin: number;
+  readonly radiusMinor: number;
+  readonly size: number;
+  readonly synthesized: boolean;
+  readonly tilt: number;
+  readonly timeStamp: DurationValue;
+  readonly transform: Matrix4;
+  readonly viewId: number;
 }
 
 export interface PointerExitEvent {
@@ -4220,6 +4518,35 @@ export interface PointerExitEvent {
     readonly PointerEvent: true;
     readonly PointerExitEvent: true;
   };
+  readonly buttons: number;
+  readonly delta: OffsetValue;
+  readonly device: number;
+  readonly distance: number;
+  readonly distanceMax: number;
+  readonly distanceMin: number;
+  readonly down: boolean;
+  readonly embedderId: number;
+  readonly kind: PointerDeviceKind;
+  readonly localDelta: OffsetValue;
+  readonly localPosition: OffsetValue;
+  readonly obscured: boolean;
+  readonly orientation: number;
+  readonly platformData: number;
+  readonly pointer: number;
+  readonly position: OffsetValue;
+  readonly pressure: number;
+  readonly pressureMax: number;
+  readonly pressureMin: number;
+  readonly radiusMajor: number;
+  readonly radiusMax: number;
+  readonly radiusMin: number;
+  readonly radiusMinor: number;
+  readonly size: number;
+  readonly synthesized: boolean;
+  readonly tilt: number;
+  readonly timeStamp: DurationValue;
+  readonly transform: Matrix4;
+  readonly viewId: number;
 }
 
 export interface PointerHoverEvent {
@@ -4228,6 +4555,35 @@ export interface PointerHoverEvent {
     readonly PointerEvent: true;
     readonly PointerHoverEvent: true;
   };
+  readonly buttons: number;
+  readonly delta: OffsetValue;
+  readonly device: number;
+  readonly distance: number;
+  readonly distanceMax: number;
+  readonly distanceMin: number;
+  readonly down: boolean;
+  readonly embedderId: number;
+  readonly kind: PointerDeviceKind;
+  readonly localDelta: OffsetValue;
+  readonly localPosition: OffsetValue;
+  readonly obscured: boolean;
+  readonly orientation: number;
+  readonly platformData: number;
+  readonly pointer: number;
+  readonly position: OffsetValue;
+  readonly pressure: number;
+  readonly pressureMax: number;
+  readonly pressureMin: number;
+  readonly radiusMajor: number;
+  readonly radiusMax: number;
+  readonly radiusMin: number;
+  readonly radiusMinor: number;
+  readonly size: number;
+  readonly synthesized: boolean;
+  readonly tilt: number;
+  readonly timeStamp: DurationValue;
+  readonly transform: Matrix4;
+  readonly viewId: number;
 }
 
 export interface PointerMoveEvent {
@@ -4236,6 +4592,35 @@ export interface PointerMoveEvent {
     readonly PointerEvent: true;
     readonly PointerMoveEvent: true;
   };
+  readonly buttons: number;
+  readonly delta: OffsetValue;
+  readonly device: number;
+  readonly distance: number;
+  readonly distanceMax: number;
+  readonly distanceMin: number;
+  readonly down: boolean;
+  readonly embedderId: number;
+  readonly kind: PointerDeviceKind;
+  readonly localDelta: OffsetValue;
+  readonly localPosition: OffsetValue;
+  readonly obscured: boolean;
+  readonly orientation: number;
+  readonly platformData: number;
+  readonly pointer: number;
+  readonly position: OffsetValue;
+  readonly pressure: number;
+  readonly pressureMax: number;
+  readonly pressureMin: number;
+  readonly radiusMajor: number;
+  readonly radiusMax: number;
+  readonly radiusMin: number;
+  readonly radiusMinor: number;
+  readonly size: number;
+  readonly synthesized: boolean;
+  readonly tilt: number;
+  readonly timeStamp: DurationValue;
+  readonly transform: Matrix4;
+  readonly viewId: number;
 }
 
 export interface PointerPanZoomEndEvent {
@@ -4244,6 +4629,35 @@ export interface PointerPanZoomEndEvent {
     readonly PointerEvent: true;
     readonly PointerPanZoomEndEvent: true;
   };
+  readonly buttons: number;
+  readonly delta: OffsetValue;
+  readonly device: number;
+  readonly distance: number;
+  readonly distanceMax: number;
+  readonly distanceMin: number;
+  readonly down: boolean;
+  readonly embedderId: number;
+  readonly kind: PointerDeviceKind;
+  readonly localDelta: OffsetValue;
+  readonly localPosition: OffsetValue;
+  readonly obscured: boolean;
+  readonly orientation: number;
+  readonly platformData: number;
+  readonly pointer: number;
+  readonly position: OffsetValue;
+  readonly pressure: number;
+  readonly pressureMax: number;
+  readonly pressureMin: number;
+  readonly radiusMajor: number;
+  readonly radiusMax: number;
+  readonly radiusMin: number;
+  readonly radiusMinor: number;
+  readonly size: number;
+  readonly synthesized: boolean;
+  readonly tilt: number;
+  readonly timeStamp: DurationValue;
+  readonly transform: Matrix4;
+  readonly viewId: number;
 }
 
 export interface PointerPanZoomStartEvent {
@@ -4252,6 +4666,35 @@ export interface PointerPanZoomStartEvent {
     readonly PointerEvent: true;
     readonly PointerPanZoomStartEvent: true;
   };
+  readonly buttons: number;
+  readonly delta: OffsetValue;
+  readonly device: number;
+  readonly distance: number;
+  readonly distanceMax: number;
+  readonly distanceMin: number;
+  readonly down: boolean;
+  readonly embedderId: number;
+  readonly kind: PointerDeviceKind;
+  readonly localDelta: OffsetValue;
+  readonly localPosition: OffsetValue;
+  readonly obscured: boolean;
+  readonly orientation: number;
+  readonly platformData: number;
+  readonly pointer: number;
+  readonly position: OffsetValue;
+  readonly pressure: number;
+  readonly pressureMax: number;
+  readonly pressureMin: number;
+  readonly radiusMajor: number;
+  readonly radiusMax: number;
+  readonly radiusMin: number;
+  readonly radiusMinor: number;
+  readonly size: number;
+  readonly synthesized: boolean;
+  readonly tilt: number;
+  readonly timeStamp: DurationValue;
+  readonly transform: Matrix4;
+  readonly viewId: number;
 }
 
 export interface PointerPanZoomUpdateEvent {
@@ -4260,6 +4703,41 @@ export interface PointerPanZoomUpdateEvent {
     readonly PointerEvent: true;
     readonly PointerPanZoomUpdateEvent: true;
   };
+  readonly buttons: number;
+  readonly delta: OffsetValue;
+  readonly device: number;
+  readonly distance: number;
+  readonly distanceMax: number;
+  readonly distanceMin: number;
+  readonly down: boolean;
+  readonly embedderId: number;
+  readonly kind: PointerDeviceKind;
+  readonly localDelta: OffsetValue;
+  readonly localPan: OffsetValue;
+  readonly localPanDelta: OffsetValue;
+  readonly localPosition: OffsetValue;
+  readonly obscured: boolean;
+  readonly orientation: number;
+  readonly pan: OffsetValue;
+  readonly panDelta: OffsetValue;
+  readonly platformData: number;
+  readonly pointer: number;
+  readonly position: OffsetValue;
+  readonly pressure: number;
+  readonly pressureMax: number;
+  readonly pressureMin: number;
+  readonly radiusMajor: number;
+  readonly radiusMax: number;
+  readonly radiusMin: number;
+  readonly radiusMinor: number;
+  readonly rotation: number;
+  readonly scale: number;
+  readonly size: number;
+  readonly synthesized: boolean;
+  readonly tilt: number;
+  readonly timeStamp: DurationValue;
+  readonly transform: Matrix4;
+  readonly viewId: number;
 }
 
 export interface PointerSignalEvent {
@@ -4276,6 +4754,35 @@ export interface PointerUpEvent {
     readonly PointerEvent: true;
     readonly PointerUpEvent: true;
   };
+  readonly buttons: number;
+  readonly delta: OffsetValue;
+  readonly device: number;
+  readonly distance: number;
+  readonly distanceMax: number;
+  readonly distanceMin: number;
+  readonly down: boolean;
+  readonly embedderId: number;
+  readonly kind: PointerDeviceKind;
+  readonly localDelta: OffsetValue;
+  readonly localPosition: OffsetValue;
+  readonly obscured: boolean;
+  readonly orientation: number;
+  readonly platformData: number;
+  readonly pointer: number;
+  readonly position: OffsetValue;
+  readonly pressure: number;
+  readonly pressureMax: number;
+  readonly pressureMin: number;
+  readonly radiusMajor: number;
+  readonly radiusMax: number;
+  readonly radiusMin: number;
+  readonly radiusMinor: number;
+  readonly size: number;
+  readonly synthesized: boolean;
+  readonly tilt: number;
+  readonly timeStamp: DurationValue;
+  readonly transform: Matrix4;
+  readonly viewId: number;
 }
 
 export interface PopupMenuEntry {
@@ -4360,6 +4867,8 @@ export interface RangeSliderValueIndicatorShape {
 
 export interface RangeValues {
   readonly __fsxBrand?: { readonly RangeValues: true };
+  readonly end: number;
+  readonly start: number;
 }
 
 export interface RawKeyEvent {
@@ -4371,10 +4880,36 @@ export interface RawKeyEvent {
 
 export interface RawMenuOverlayInfo {
   readonly __fsxBrand?: { readonly RawMenuOverlayInfo: true };
+  readonly anchorRect: RectValue;
+  readonly overlaySize: SizeValue;
+  readonly position: OffsetValue;
+  readonly tapRegionGroupId: Object;
 }
 
 export interface Rect {
   readonly __fsxBrand?: { readonly Rect: true };
+  readonly bottom: number;
+  readonly bottomCenter: OffsetValue;
+  readonly bottomLeft: OffsetValue;
+  readonly bottomRight: OffsetValue;
+  readonly center: OffsetValue;
+  readonly centerLeft: OffsetValue;
+  readonly centerRight: OffsetValue;
+  readonly hasNaN: boolean;
+  readonly height: number;
+  readonly isEmpty: boolean;
+  readonly isFinite: boolean;
+  readonly isInfinite: boolean;
+  readonly left: number;
+  readonly longestSide: number;
+  readonly right: number;
+  readonly shortestSide: number;
+  readonly size: SizeValue;
+  readonly top: number;
+  readonly topCenter: OffsetValue;
+  readonly topLeft: OffsetValue;
+  readonly topRight: OffsetValue;
+  readonly width: number;
 }
 
 export interface RelativeRect {
@@ -4437,6 +4972,8 @@ export interface RouteInformationProvider {
 
 export interface RouteSettings {
   readonly __fsxBrand?: { readonly RouteSettings: true };
+  readonly arguments: Object;
+  readonly name: string;
 }
 
 export interface RouterDelegate {
@@ -4451,6 +4988,9 @@ export interface ScaleEndDetails {
     readonly Diagnosticable: true;
     readonly ScaleEndDetails: true;
   };
+  readonly pointerCount: number;
+  readonly scaleVelocity: number;
+  readonly velocity: VelocityValue;
 }
 
 export interface ScaleStartDetails {
@@ -4458,6 +4998,11 @@ export interface ScaleStartDetails {
     readonly Diagnosticable: true;
     readonly ScaleStartDetails: true;
   };
+  readonly focalPoint: OffsetValue;
+  readonly kind: PointerDeviceKind;
+  readonly localFocalPoint: OffsetValue;
+  readonly pointerCount: number;
+  readonly sourceTimeStamp: DurationValue;
 }
 
 export interface ScaleUpdateDetails {
@@ -4465,6 +5010,15 @@ export interface ScaleUpdateDetails {
     readonly Diagnosticable: true;
     readonly ScaleUpdateDetails: true;
   };
+  readonly focalPoint: OffsetValue;
+  readonly focalPointDelta: OffsetValue;
+  readonly horizontalScale: number;
+  readonly localFocalPoint: OffsetValue;
+  readonly pointerCount: number;
+  readonly rotation: number;
+  readonly scale: number;
+  readonly sourceTimeStamp: DurationValue;
+  readonly verticalScale: number;
 }
 
 export interface ScrollBehavior {
@@ -4481,6 +5035,12 @@ export interface ScrollController {
     readonly Listenable: true;
     readonly ScrollController: true;
   };
+  readonly debugLabel: string;
+  readonly hasClients: boolean;
+  readonly hasListeners: boolean;
+  readonly initialScrollOffset: number;
+  readonly keepScrollOffset: boolean;
+  readonly offset: number;
 }
 
 export interface ScrollIncrementDetails {
@@ -4527,6 +5087,11 @@ export interface SearchController {
     readonly ValueListenable: true;
     readonly ValueNotifier: true;
   };
+  readonly hasListeners: boolean;
+  readonly isAttached: boolean;
+  readonly isOpen: boolean;
+  readonly selection: TextSelection;
+  readonly text: string;
 }
 
 export interface SearchViewThemeData {
@@ -4551,6 +5116,21 @@ export interface SelectableRegionState {
     readonly State: true;
     readonly TextSelectionDelegate: true;
   };
+  readonly context: BuildContext;
+  readonly contextMenuAnchors: TextSelectionToolbarAnchors;
+  readonly contextMenuButtonItems: ContextMenuButtonItem[];
+  readonly copyEnabled: boolean;
+  readonly cutEnabled: boolean;
+  readonly endGlyphHeight: number;
+  readonly liveTextInputEnabled: boolean;
+  readonly lookUpEnabled: boolean;
+  readonly mounted: boolean;
+  readonly pasteEnabled: boolean;
+  readonly searchWebEnabled: boolean;
+  readonly selectAllEnabled: boolean;
+  readonly shareEnabled: boolean;
+  readonly startGlyphHeight: number;
+  readonly textEditingValue: TextEditingValueValue;
 }
 
 export interface SelectedContent {
@@ -4628,6 +5208,15 @@ export interface SingleChildLayoutDelegate {
 
 export interface Size {
   readonly __fsxBrand?: { readonly OffsetBase: true; readonly Size: true };
+  readonly aspectRatio: number;
+  readonly flipped: SizeValue;
+  readonly height: number;
+  readonly isEmpty: boolean;
+  readonly isFinite: boolean;
+  readonly isInfinite: boolean;
+  readonly longestSide: number;
+  readonly shortestSide: number;
+  readonly width: number;
 }
 
 export interface SliderComponentShape {
@@ -4658,6 +5247,19 @@ export interface SliverConstraints {
     readonly Constraints: true;
     readonly SliverConstraints: true;
   };
+  readonly axis: Axis;
+  readonly axisDirection: AxisDirection;
+  readonly cacheOrigin: number;
+  readonly crossAxisDirection: AxisDirection;
+  readonly crossAxisExtent: number;
+  readonly isNormalized: boolean;
+  readonly isTight: boolean;
+  readonly overlap: number;
+  readonly precedingScrollExtent: number;
+  readonly remainingCacheExtent: number;
+  readonly remainingPaintExtent: number;
+  readonly scrollOffset: number;
+  readonly viewportMainAxisExtent: number;
 }
 
 export interface SliverGeometry {
@@ -4673,6 +5275,10 @@ export interface SliverGridDelegate {
 
 export interface SliverLayoutDimensions {
   readonly __fsxBrand?: { readonly SliverLayoutDimensions: true };
+  readonly crossAxisExtent: number;
+  readonly precedingScrollExtent: number;
+  readonly scrollOffset: number;
+  readonly viewportMainAxisExtent: number;
 }
 
 export interface SliverOverlapAbsorberHandle {
@@ -4776,6 +5382,12 @@ export interface TabBarScrollController {
     readonly ScrollController: true;
     readonly TabBarScrollController: true;
   };
+  readonly debugLabel: string;
+  readonly hasClients: boolean;
+  readonly hasListeners: boolean;
+  readonly initialScrollOffset: number;
+  readonly keepScrollOffset: boolean;
+  readonly offset: number;
 }
 
 export interface TabBarThemeData {
@@ -4811,6 +5423,9 @@ export interface TapDownDetails {
     readonly PositionedGestureDetails: true;
     readonly TapDownDetails: true;
   };
+  readonly globalPosition: OffsetValue;
+  readonly kind: PointerDeviceKind;
+  readonly localPosition: OffsetValue;
 }
 
 export interface TapDragDownDetails {
@@ -4819,6 +5434,10 @@ export interface TapDragDownDetails {
     readonly PositionedGestureDetails: true;
     readonly TapDragDownDetails: true;
   };
+  readonly consecutiveTapCount: number;
+  readonly globalPosition: OffsetValue;
+  readonly kind: PointerDeviceKind;
+  readonly localPosition: OffsetValue;
 }
 
 export interface TapDragEndDetails {
@@ -4827,6 +5446,11 @@ export interface TapDragEndDetails {
     readonly PositionedGestureDetails: true;
     readonly TapDragEndDetails: true;
   };
+  readonly consecutiveTapCount: number;
+  readonly globalPosition: OffsetValue;
+  readonly localPosition: OffsetValue;
+  readonly primaryVelocity: number;
+  readonly velocity: VelocityValue;
 }
 
 export interface TapDragStartDetails {
@@ -4835,6 +5459,11 @@ export interface TapDragStartDetails {
     readonly PositionedGestureDetails: true;
     readonly TapDragStartDetails: true;
   };
+  readonly consecutiveTapCount: number;
+  readonly globalPosition: OffsetValue;
+  readonly kind: PointerDeviceKind;
+  readonly localPosition: OffsetValue;
+  readonly sourceTimeStamp: DurationValue;
 }
 
 export interface TapDragUpDetails {
@@ -4843,6 +5472,10 @@ export interface TapDragUpDetails {
     readonly PositionedGestureDetails: true;
     readonly TapDragUpDetails: true;
   };
+  readonly consecutiveTapCount: number;
+  readonly globalPosition: OffsetValue;
+  readonly kind: PointerDeviceKind;
+  readonly localPosition: OffsetValue;
 }
 
 export interface TapDragUpdateDetails {
@@ -4851,10 +5484,23 @@ export interface TapDragUpdateDetails {
     readonly PositionedGestureDetails: true;
     readonly TapDragUpdateDetails: true;
   };
+  readonly consecutiveTapCount: number;
+  readonly delta: OffsetValue;
+  readonly globalPosition: OffsetValue;
+  readonly kind: PointerDeviceKind;
+  readonly localOffsetFromOrigin: OffsetValue;
+  readonly localPosition: OffsetValue;
+  readonly offsetFromOrigin: OffsetValue;
+  readonly primaryDelta: number;
+  readonly sourceTimeStamp: DurationValue;
 }
 
 export interface TapMoveDetails {
   readonly __fsxBrand?: { readonly TapMoveDetails: true };
+  readonly delta: OffsetValue;
+  readonly globalPosition: OffsetValue;
+  readonly kind: PointerDeviceKind;
+  readonly localPosition: OffsetValue;
 }
 
 export interface TapUpDetails {
@@ -4863,6 +5509,9 @@ export interface TapUpDetails {
     readonly PositionedGestureDetails: true;
     readonly TapUpDetails: true;
   };
+  readonly globalPosition: OffsetValue;
+  readonly kind: PointerDeviceKind;
+  readonly localPosition: OffsetValue;
 }
 
 export interface TextAlignVertical {
@@ -4888,10 +5537,17 @@ export interface TextEditingController {
     readonly ValueListenable: true;
     readonly ValueNotifier: true;
   };
+  readonly hasListeners: boolean;
+  readonly selection: TextSelection;
+  readonly text: string;
 }
 
 export interface TextEditingValue {
   readonly __fsxBrand?: { readonly TextEditingValue: true };
+  readonly composing: TextRangeValue;
+  readonly isComposingRangeValid: boolean;
+  readonly selection: TextSelection;
+  readonly text: string;
 }
 
 export interface TextHeightBehavior {
@@ -4923,6 +5579,14 @@ export interface TextSelection {
     readonly TextRange: true;
     readonly TextSelection: true;
   };
+  readonly baseOffset: number;
+  readonly end: number;
+  readonly extentOffset: number;
+  readonly isCollapsed: boolean;
+  readonly isDirectional: boolean;
+  readonly isNormalized: boolean;
+  readonly isValid: boolean;
+  readonly start: number;
 }
 
 export interface TextSelectionControls {
@@ -5011,6 +5675,12 @@ export interface ToolbarOptions {
 
 export interface TooltipPositionContext {
   readonly __fsxBrand?: { readonly TooltipPositionContext: true };
+  readonly overlaySize: SizeValue;
+  readonly preferBelow: boolean;
+  readonly target: OffsetValue;
+  readonly targetSize: SizeValue;
+  readonly tooltipSize: SizeValue;
+  readonly verticalOffset: number;
 }
 
 export interface TooltipThemeData {
@@ -5044,6 +5714,10 @@ export interface TreeSliverIndentationType {
 
 export interface TreeSliverNode {
   readonly __fsxBrand?: { readonly TreeSliverNode: true };
+  readonly children: TreeSliverNode[];
+  readonly depth: number;
+  readonly isExpanded: boolean;
+  readonly parent: TreeSliverNode;
 }
 
 export interface Tween {
@@ -5090,6 +5764,7 @@ export interface ValueNotifier {
 
 export interface Velocity {
   readonly __fsxBrand?: { readonly Velocity: true };
+  readonly pixelsPerSecond: OffsetValue;
 }
 
 export interface ViewPadding {

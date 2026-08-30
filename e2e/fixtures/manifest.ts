@@ -275,4 +275,10 @@ export const FIXTURE_APPS: FixtureApp[] = [
     dartFile: 'panel.dart',
     deps: [],
   },
+  {
+    id: '40-layout-builder',
+    component: 'Adaptive',
+    dartFile: 'adaptive.dart',
+    deps: [],
+  },
 ];

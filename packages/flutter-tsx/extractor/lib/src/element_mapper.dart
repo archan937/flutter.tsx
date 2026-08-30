@@ -25,6 +25,10 @@ EntityModel? mapClass(
   final supertypes = publicSupertypeNames(classElement);
   final doc = classElement.documentationComment ?? '';
 
+  // What a value of this type can be read for — `constraints.maxWidth` is
+  // only compilable because the field is known here.
+  final fields = _mapInstanceFields(classElement);
+
   if (supertypes.contains('Widget')) {
     return WidgetEntity(
       name: name,
@@ -33,6 +37,7 @@ EntityModel? mapClass(
       supertypes: supertypes,
       constructors: constructors,
       constants: constants,
+      fields: fields,
     );
   }
   return ClassEntity(
@@ -42,6 +47,7 @@ EntityModel? mapClass(
     supertypes: supertypes,
     constructors: constructors,
     constants: constants,
+    fields: fields,
   );
 }
 

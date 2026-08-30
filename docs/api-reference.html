@@ -1160,16 +1160,6 @@ details details > ul { padding-left: 24px; }
 <li data-name="WrapCrossAlignment"><a href="#WrapCrossAlignment">WrapCrossAlignment</a></li>
 </ul>
 </details>
-<details>
-<summary>Limitations<span class="nav-count">5</span></summary>
-<ul>
-<li data-name="TSX0305"><a href="#limitations">TSX0305</a></li>
-<li data-name="TSX0305"><a href="#limitations">TSX0305</a></li>
-<li data-name="TSX0305"><a href="#limitations">TSX0305</a></li>
-<li data-name="TSX0316"><a href="#limitations">TSX0316</a></li>
-<li data-name="TSX0337"><a href="#limitations">TSX0337</a></li>
-</ul>
-</details>
   </nav>
 </aside>
 <main>
@@ -45805,6 +45795,10 @@ declare module <span class="tok-str">'plugin:url_launcher'</span> {
 
 <pre><code class="language-typescript"><span class="tok-kw">export</span> <span class="tok-kw">interface</span> <span class="tok-typ">TextEditingValue</span> {
   <span class="tok-kw">readonly</span> __fsxBrand?: { <span class="tok-kw">readonly</span> <span class="tok-typ">TextEditingValue</span>: <span class="tok-kw">true</span> };
+  <span class="tok-kw">readonly</span> composing: <span class="tok-typ">TextRangeValue</span>;
+  <span class="tok-kw">readonly</span> isComposingRangeValid: boolean;
+  <span class="tok-kw">readonly</span> selection: <span class="tok-typ">TextSelection</span>;
+  <span class="tok-kw">readonly</span> text: string;
 }</code></pre>
 
 
@@ -50776,31 +50770,6 @@ declare module <span class="tok-str">'plugin:url_launcher'</span> {
 <li><code>WrapCrossAlignment.center</code></li></ul>
 </div>
 </div>
-</article>
-<h2 id="limitations">Limitations</h2>
-<article class="widget" id="limitations-about" data-name="about the limitations">
-<h3>What the compiler will not do</h3>
-<p class="doc">Every entry here is read out of the compiler on each build, from the place that raises it. A limitation is a numbered error at compile time, never silently different Dart — so nothing on this list can reach a running app. The list shrinks as the compiler grows; it is not written by hand beside the code.</p>
-</article>
-<article class="widget" id="limit-TSX0305--is-an-expression-for" data-name="TSX0305">
-<h3>TSX0305<span class="badge badge-lib">refused</span></h3>
-<p class="doc"><code>…</code> is an expression form the compiler does not translate to Dart.</p>
-</article>
-<article class="widget" id="limit-TSX0305--reads-a-member-the-c" data-name="TSX0305">
-<h3>TSX0305<span class="badge badge-lib">refused</span></h3>
-<p class="doc"><code>…</code> reads a member the compiler cannot resolve to a Dart one.</p>
-</article>
-<article class="widget" id="limit-TSX0305-only-useAsync-and-use" data-name="TSX0305">
-<h3>TSX0305<span class="badge badge-lib">refused</span></h3>
-<p class="doc">only <code>useAsync</code> and <code>useStream</code> can be awaited in a component.</p>
-</article>
-<article class="widget" id="limit-TSX0316-reading-needs-a-fa" data-name="TSX0316">
-<h3>TSX0316<span class="badge badge-lib">refused</span></h3>
-<p class="doc">reading <code>…</code> needs a … fallback, which is not compiled yet. Read it inside a handler and store the result in state.</p>
-</article>
-<article class="widget" id="limit-TSX0337-a-try-needs-a-catch-" data-name="TSX0337">
-<h3>TSX0337<span class="badge badge-lib">refused</span></h3>
-<p class="doc">a <code>try</code> needs a <code>catch</code>: <code>finally</code> on its own is not compiled.</p>
 </article>
   <p id="no-results">No widgets match your search.</p>
 </main>

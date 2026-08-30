@@ -2,6 +2,7 @@ import ts from 'typescript';
 
 import type {
   ApiSnapshot,
+  FunctionParam,
   ParamModel,
   ScalarName,
   TypeNode,
@@ -88,6 +89,8 @@ export interface CompileContext {
   // Fields of every class an imported plugin exposes, so a value of that type
   // can be read even when it did not come from a hook.
   pluginClassFields: Map<string, Map<string, TypeNode>>;
+  // The same for the SDK's own classes, which is what a callback parameter is.
+  sdkClassFields: Map<string, Map<string, TypeNode>>;
   // Models generated from this file's interfaces, by name.
   models: Map<string, IrModel>;
   // Dart type name -> prefixed name, for plugins imported with a prefix.
@@ -152,6 +155,9 @@ export const buildCompileContext = (
   const enums = new Map<string, Set<string>>();
   const constantOwners = new Map<string, Set<string>>();
   const libraries = new Map<string, string>();
+  // What a value of an SDK type can be read for, so a callback parameter —
+  // `constraints.maxWidth` — resolves to the Dart member it names.
+  const sdkClassFields = new Map<string, Map<string, TypeNode>>();
 
   for (const entity of snapshot.entities) {
     libraries.set(entity.name, entity.library);
@@ -163,6 +169,12 @@ export const buildCompileContext = (
       constantOwners.set(
         entity.name,
         new Set(entity.constants.map((constant) => constant.name)),
+      );
+    }
+    if (entity.fields.length > 0) {
+      sdkClassFields.set(
+        entity.name,
+        new Map(entity.fields.map((field) => [field.name, field.type])),
       );
     }
     if (entity.kind !== 'widget') {
@@ -194,6 +206,7 @@ export const buildCompileContext = (
     gestures: gestureWrapOf(widgets.get(GESTURE_WIDGET)),
     stores: new Map(),
     pluginClassFields: new Map(),
+    sdkClassFields,
     prefixedTypes: new Map(),
     models: new Map(),
     userWidgets: new Map(),
@@ -682,6 +695,52 @@ const lowerPropertyAccess = (
   );
 };
 
+/**
+ * A closure's parameters, in scope for its body.
+ *
+ * Without this a builder can only ignore what it is handed: the compiler
+ * would see `constraints` as an unknown identifier and refuse the read.
+ */
+const withClosureParams = (
+  declared: FunctionParam[],
+  names: string[],
+  context: LowerContext,
+): LowerContext => {
+  const scoped = declared.flatMap(
+    (param, index): [string, MemberReadInfo][] => {
+      const name = names[index];
+      // `_` is what an unnamed or deliberately ignored parameter lowers to.
+      if (name === undefined || name === '_' || param.type.kind !== 'named') {
+        return [];
+      }
+      const fields = context.compile.sdkClassFields.get(param.type.name);
+      return fields === undefined
+        ? []
+        : [
+            [
+              name,
+              {
+                className: param.type.name,
+                receiver: name,
+                nullable: false,
+                fields,
+              },
+            ],
+          ];
+    },
+  );
+  if (scoped.length === 0) {
+    return context;
+  }
+  return {
+    ...context,
+    translate: {
+      ...context.translate,
+      memberReads: new Map([...context.translate.memberReads, ...scoped]),
+    },
+  };
+};
+
 const lowerArrowFunction = (
   arrow: ts.ArrowFunction,
   site: ValueSite,
@@ -698,6 +757,10 @@ const lowerArrowFunction = (
     const name = arrow.parameters[index]?.name.getText() ?? '_';
     return name.startsWith('_') ? '_' : name;
   });
+  // Each named parameter is readable inside the body, for the members its
+  // declared SDK type has — `(context, constraints) => …` can read
+  // `constraints.maxWidth` because BoxConstraints declares it.
+  const scoped = withClosureParams(type.params, params, context);
   // A builder prop — `builder={() => <Text>…</Text>}` — is a callback whose
   // body is a widget rather than a block, so it becomes an expression-bodied
   // Dart closure. Lowering it against the declared return type means a
@@ -710,13 +773,13 @@ const lowerArrowFunction = (
     return {
       kind: 'closureValue',
       params,
-      value: lowerChildValue(unwrapParenthesized(body), context),
+      value: lowerChildValue(unwrapParenthesized(body), scoped),
     };
   }
   return {
     kind: 'closure',
     params,
-    statements: lowerBodyStatements(body, context, true),
+    statements: lowerBodyStatements(body, scoped, true),
   };
 };
 
@@ -2941,6 +3004,7 @@ export const lowerComponent = (
       privateMembers: true,
       memberReads,
       classFields: new Map<string, Map<string, TypeNode>>([
+        ...compile.sdkClassFields,
         ...compile.pluginClassFields,
         ...[...compile.models.values()].map(
           (model): [string, Map<string, TypeNode>] => [

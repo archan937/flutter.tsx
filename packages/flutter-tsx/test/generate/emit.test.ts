@@ -155,6 +155,7 @@ const snapshot: ApiSnapshot = {
         },
       ],
       constants: [],
+      fields: [],
     },
     {
       kind: 'widget',
@@ -204,6 +205,7 @@ const snapshot: ApiSnapshot = {
           doc: '/// The default line limit.',
         },
       ],
+      fields: [],
     },
     {
       kind: 'class',
@@ -249,6 +251,7 @@ const snapshot: ApiSnapshot = {
         },
       ],
       constants: [],
+      fields: [],
     },
     {
       kind: 'class',
@@ -265,6 +268,7 @@ const snapshot: ApiSnapshot = {
           doc: '/// The main color.',
         },
       ],
+      fields: [],
     },
     {
       kind: 'enum',
@@ -489,6 +493,7 @@ describe('emitWidgetsFile value-form guards', () => {
               doc: '',
             },
           ],
+          fields: [],
         },
         {
           kind: 'widget',
@@ -521,6 +526,7 @@ describe('emitWidgetsFile value-form guards', () => {
             },
           ],
           constants: [],
+          fields: [],
         },
       ],
     };
@@ -645,6 +651,7 @@ describe('emitWidgetsFile — gesture props', () => {
       },
     ],
     constants: [],
+    fields: [],
   };
 
   const withDetector: ApiSnapshot = {
@@ -707,6 +714,7 @@ describe('emitWidgetsFile — gesture props', () => {
         },
       ],
       constants: [],
+      fields: [],
     };
     const emitted = emitWidgetsFile(
       {
@@ -783,6 +791,7 @@ describe('emitConstantsFile — IconName', () => {
             doc: '',
           },
         ],
+        fields: [],
       },
     ],
   };

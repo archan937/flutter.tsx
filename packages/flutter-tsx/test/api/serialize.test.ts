@@ -20,6 +20,7 @@ const snapshot: ApiSnapshot = {
       supertypes: [],
       constructors: [],
       constants: [],
+      fields: [],
     },
     {
       kind: 'enum',
@@ -54,7 +55,8 @@ describe('serializeApiSnapshot', () => {
       "doc": "",
       "supertypes": [],
       "constructors": [],
-      "constants": []
+      "constants": [],
+      "fields": []
     },
     {
       "kind": "enum",

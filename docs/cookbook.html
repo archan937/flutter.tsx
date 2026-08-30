@@ -135,7 +135,7 @@ main p { margin-bottom: 12px; }
 <aside id="sidebar">
   <a class="sb-brand" href="./index.html"><img class="mark" src="./icon.png" alt="flutter.tsx logo" width="28" height="28"><span>flutter<b>.tsx</b></span></a>
   <input id="search" type="search" placeholder="Search recipes…" autocomplete="off" spellcheck="false">
-  <div class="meta-info">39 recipes · Flutter 3.47.1</div>
+  <div class="meta-info">40 recipes · Flutter 3.47.1</div>
   <div class="sb-gh">
     <a href="./guide.html">Guide</a>
     <a href="./api-reference.html">API ↗</a>
@@ -154,7 +154,7 @@ main p { margin-bottom: 12px; }
 </ul>
 </details>
 <details>
-<summary>State and effects<span class="nav-count">6</span></summary>
+<summary>State and effects<span class="nav-count">7</span></summary>
 <ul>
 <li data-name="Running code on mount"><a href="#06-mount-effect">Running code on mount</a></li>
 <li data-name="State shared across screens"><a href="#19-store-counter">State shared across screens</a></li>
@@ -162,6 +162,7 @@ main p { margin-bottom: 12px; }
 <li data-name="Loops, switch and try/catch"><a href="#33-control-flow">Loops, switch and try/catch</a></li>
 <li data-name="Cleaning up when a screen goes away"><a href="#38-effect-cleanup">Cleaning up when a screen goes away</a></li>
 <li data-name="A callback that returns a widget"><a href="#39-builder-callback">A callback that returns a widget</a></li>
+<li data-name="Reading what a callback is handed"><a href="#40-layout-builder">Reading what a callback is handed</a></li>
 </ul>
 </details>
 <details>
@@ -948,6 +949,41 @@ export const TaskBoard = () =&gt; {
         <span class="tok-typ">ElevatedButton</span>(
           onPressed: () =&gt; <span class="tok-fn">setState</span>(() =&gt; _open = !_open),
           child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Toggle'</span>),
+        ),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section class="recipe" id="40-layout-builder" data-name="Reading what a callback is handed">
+<h3>Reading what a callback is handed</h3>
+<p class="blurb">A builder’s parameters are typed from the SDK, so <code>constraints.maxWidth</code> completes in the editor and compiles to the Dart member it names.</p>
+<div class="pair">
+<div class="pane"><h4>src/Adaptive.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">LayoutBuilder</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Adaptive</span> = () =&gt; (
+  &lt;<span class="tok-typ">Column</span>&gt;
+    &lt;<span class="tok-typ">LayoutBuilder</span>
+      builder={(context, constraints) =&gt;
+        constraints.maxWidth &gt; <span class="tok-num">600</span> ? &lt;<span class="tok-typ">Text</span>&gt;Wide&lt;/<span class="tok-typ">Text</span>&gt; : &lt;<span class="tok-typ">Text</span>&gt;Narrow&lt;/<span class="tok-typ">Text</span>&gt;
+      }
+    /&gt;
+  &lt;/<span class="tok-typ">Column</span>&gt;
+);</code></pre></div>
+<div class="pane"><h4>adaptive.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">Adaptive</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Adaptive</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+      children: [
+        <span class="tok-typ">LayoutBuilder</span>(
+          builder: (context, constraints) =&gt; constraints.maxWidth &gt; <span class="tok-num">600</span>
+              ? <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Wide'</span>)
+              : <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Narrow'</span>),
         ),
       ],
     );

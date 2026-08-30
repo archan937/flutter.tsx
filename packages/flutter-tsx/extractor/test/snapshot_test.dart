@@ -37,6 +37,13 @@ void main() {
           supertypes: const [],
           constructors: const [],
           constants: const [],
+          fields: const [
+            FieldModel(
+              name: 'maxWidth',
+              doc: '',
+              type: ScalarTypeNode('double'),
+            ),
+          ],
         ),
       ],
     );
@@ -72,7 +79,17 @@ void main() {
       "doc": "",
       "supertypes": [],
       "constructors": [],
-      "constants": []
+      "constants": [],
+      "fields": [
+        {
+          "name": "maxWidth",
+          "doc": "",
+          "type": {
+            "kind": "scalar",
+            "name": "double"
+          }
+        }
+      ]
     },
     {
       "kind": "enum",

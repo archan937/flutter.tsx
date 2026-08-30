@@ -52,6 +52,13 @@ export interface ConstructorModel {
   params: ParamModel[];
 }
 
+/** A readable member of a class: `BoxConstraints.maxWidth`. */
+export interface FieldModel {
+  name: string;
+  type: TypeNode;
+  doc: string;
+}
+
 export interface ConstantModel {
   name: string;
   type: TypeNode;
@@ -70,6 +77,7 @@ export interface WidgetEntity extends EntityBase {
   supertypes: string[];
   constructors: ConstructorModel[];
   constants: ConstantModel[];
+  fields: FieldModel[];
 }
 
 export interface ClassEntity extends EntityBase {
@@ -77,6 +85,7 @@ export interface ClassEntity extends EntityBase {
   supertypes: string[];
   constructors: ConstructorModel[];
   constants: ConstantModel[];
+  fields: FieldModel[];
 }
 
 export interface EnumValue {

@@ -4,6 +4,7 @@ import {
   type ConstructorModel,
   type Entity,
   type EnumValue,
+  type FieldModel,
   type FunctionParam,
   type Hierarchy,
   type ParamModel,
@@ -143,6 +144,15 @@ export const parseConstructor = (
   };
 };
 
+export const parseField = (value: unknown, path: string): FieldModel => {
+  const record = asObject(value, path);
+  return {
+    name: asString(record.name, `${path}.name`),
+    type: parseTypeNode(record.type, `${path}.type`),
+    doc: asString(record.doc, `${path}.doc`),
+  };
+};
+
 export const parseConstant = (value: unknown, path: string): ConstantModel => {
   const record = asObject(value, path);
   return {
@@ -187,6 +197,9 @@ const parseEntity = (value: unknown, path: string): Entity => {
         constants: asArray(record.constants, `${path}.constants`).map(
           (constant, index) =>
             parseConstant(constant, `${path}.constants[${index}]`),
+        ),
+        fields: asArray(record.fields, `${path}.fields`).map((field, index) =>
+          parseField(field, `${path}.fields[${index}]`),
         ),
       };
     case 'enum':
