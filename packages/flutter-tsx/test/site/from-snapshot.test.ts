@@ -2,7 +2,11 @@ import { describe, expect, test } from 'bun:test';
 
 import type { ApiSnapshot, ConstructorModel, ParamModel } from '@src/api/model';
 import type { SlotMap } from '@src/derive/slots';
-import { buildSitePage, dartSignature } from '@src/site/from-snapshot';
+import {
+  buildSitePage,
+  dartSignature,
+  type SiteSections,
+} from '@src/site/from-snapshot';
 
 const param = (
   name: string,
@@ -176,9 +180,27 @@ describe('buildSitePage', () => {
     Frame: { children: { param: 'child', kind: 'widget' }, slots: [] },
   };
 
+  const sections: SiteSections = {
+    example: {
+      id: '01-camera-screen',
+      title: 'Camera Screen',
+      tsx: "import { useCamera } from 'plugin:camera';\n",
+      dart: "import 'package:camera/camera.dart';\n",
+    },
+    coreApi: [],
+    plugins: [],
+    // No generated declarations: the value types come from the file that
+    // ships them, and this snapshot ships none.
+    generatedFiles: [],
+  };
+
   test('builds the complete page model', () => {
-    expect(buildSitePage(snapshot, slots)).toEqual({
+    expect(buildSitePage(snapshot, slots, sections)).toEqual({
       flutterVersion: '3.47.1',
+      example: sections.example,
+      coreApi: [],
+      types: [],
+      plugins: [],
       widgets: [
         {
           name: 'Frame',

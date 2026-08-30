@@ -167,6 +167,26 @@ const methodLine = (method: PluginMethod): string => {
   return `    ${modifier}${method.name}(${signatureParams(method.params)}): ${tsTypeOf(withCoreStrings(method.returnType))};`;
 };
 
+/**
+ * The type a hook is declared with — the one the IDE shows and the one the
+ * API reference documents, so the two can never disagree. Options are named
+ * after the plugin's own fields; the managed lifecycle calls are `Omit`ted
+ * because the generated widget makes them, not the developer.
+ */
+export const hookSignature = (hook: DerivedHook): string => {
+  const optionMembers = hook.options
+    .map((option) => `${option.name}?: ${option.enumName}`)
+    .join('; ');
+  const parameters =
+    hook.options.length === 0 ? '' : `options?: { ${optionMembers} }`;
+  const managed = hook.managed.map((name) => `'${name}'`).join(' | ');
+  const handle =
+    hook.managed.length === 0
+      ? hook.className
+      : `Omit<${hook.className}, ${managed}>`;
+  return `(${parameters}) => ${handle}`;
+};
+
 export const emitPluginDeclaration = (
   api: PluginApi,
   hooks: DerivedHook[],
@@ -260,19 +280,7 @@ export const emitPluginDeclaration = (
   }
 
   for (const hook of hooks) {
-    const optionMembers = hook.options
-      .map((option) => `${option.name}?: ${option.enumName}`)
-      .join('; ');
-    const parameters =
-      hook.options.length === 0 ? '' : `options?: { ${optionMembers} }`;
-    const managed = hook.managed.map((name) => `'${name}'`).join(' | ');
-    const handle =
-      hook.managed.length === 0
-        ? hook.className
-        : `Omit<${hook.className}, ${managed}>`;
-    blocks.push(
-      `  export const ${hook.hookName}: (${parameters}) => ${handle};`,
-    );
+    blocks.push(`  export const ${hook.hookName}: ${hookSignature(hook)};`);
   }
 
   return (

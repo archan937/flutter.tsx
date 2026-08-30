@@ -185,6 +185,18 @@ details details > ul { padding-left: 24px; }
     <a href="https://github.com/archan937/flutter.tsx" target="_blank" rel="noopener">GitHub ↗</a>
   </div>
   <nav id="sidebar-nav">
+<details>
+<summary>Example<span class="nav-count">1</span></summary>
+<ul>
+<li data-name="Camera Screen"><a href="#example">Camera Screen</a></li>
+</ul>
+</details>
+<details>
+<summary>Hooks &amp; core APIs<span class="nav-count">1</span></summary>
+<ul>
+<li data-name="useState"><a href="#core-useState">useState</a></li>
+</ul>
+</details>
 <details open>
 <summary>Widgets<span class="nav-count">1</span></summary>
 <ul></ul>
@@ -194,6 +206,18 @@ details details > ul { padding-left: 24px; }
 <li data-name="Frame"><a href="#Frame">Frame</a></li>
 </ul>
 </details>
+</details>
+<details>
+<summary>Native plugins<span class="nav-count">1</span></summary>
+<ul>
+<li data-name="camera"><a href="#plugin-camera">camera</a></li>
+</ul>
+</details>
+<details>
+<summary>Types<span class="nav-count">1</span></summary>
+<ul>
+<li data-name="ColorValue"><a href="#type-ColorValue">ColorValue</a></li>
+</ul>
 </details>
 <details>
 <summary>Enums<span class="nav-count">1</span></summary>
@@ -206,10 +230,34 @@ details details > ul { padding-left: 24px; }
 <main>
   <h1>Flutter.tsx — API Reference</h1>
   <p class="subtitle">Auto-generated from the Flutter 3.47.1 widget catalog. Run <code>bun run docs</code> to regenerate.</p>
+<h2 id="example-heading">Example</h2>
+<article class="widget" id="example" data-name="example">
+<h3>Camera Screen<span class="badge badge-pkg">certified fixture</span></h3>
+<p class="doc">The TSX a developer writes and the Dart <code>fsx</code> emits from it. This pair is asserted byte-for-byte by the golden tests, laid out by <code>dart format</code>, checked by <code>flutter analyze</code> and built as a real Flutter app on every run — see <a href="./cookbook.html#01-camera-screen"><code>01-camera-screen</code></a>.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="TSX" role="tab" aria-selected="true">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+</div>
+<div class="tab-panel active" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx">import { useCamera } from 'plugin:camera';</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart">import 'package:camera/camera.dart';</code></pre>
+</div>
+</div>
+</article>
 <h2 id="about-verification">Verification</h2>
 <article class="widget" id="verification" data-name="verification">
 <h3>✓ typechecked — what the badge means</h3>
 <p class="doc">Every example carrying the badge is generated into a probe module and compiled by the TypeScript compiler against the published <code>flutter-tsx</code> package surface on every CI run. Examples showing a <code>{…}</code> placeholder need a value kind a later compiler step makes expressible (callbacks with bodies, controllers, animations); they are excluded from the probe and carry no badge until then.</p>
+</article>
+<h2 id="core">Hooks &amp; core APIs</h2>
+<article class="widget" id="core-useState" data-name="useState">
+<h3>useState<span class="badge badge-lib">hook</span></h3>
+
+<pre><code class="language-typescript">&lt;TValue&gt;(initial: TValue) =&gt; [TValue, StateSetter&lt;TValue&gt;]</code></pre>
+<p class="note">Used by <a href="./cookbook.html#05-counter"><code>05-counter</code></a></p>
 </article>
 <h2 id="lib-widgets">Widgets — widgets</h2>
 <article class="widget" id="Frame" data-name="Frame">
@@ -240,6 +288,50 @@ details details > ul { padding-left: 24px; }
 })</code></pre>
 </div>
 </div>
+</article>
+<h2 id="plugins">Native plugins</h2>
+<article class="widget" id="plugin-camera" data-name="camera">
+<h3>camera<span class="badge badge-lib">0.12.0+2</span><a class="badge badge-pkg" href="https://pub.dev/packages/camera">pub.dev</a></h3>
+<pre><code class="language-typescript">import { useCamera } from 'plugin:camera';</code></pre>
+<table class="props">
+<thead><tr><th>Hook</th><th>Signature</th><th>Manages for you</th></tr></thead>
+<tbody>
+<tr><td><code>useCamera</code></td><td><code>() =&gt; Omit&lt;CameraController, 'initialize'&gt;</code></td><td><code>initialize</code></td></tr>
+</tbody>
+</table>
+<table class="props">
+<thead><tr><th>Hook</th><th>Option</th><th>Type</th><th>Values</th><th>Omitted means</th></tr></thead>
+<tbody>
+<tr><td><code>useCamera</code></td><td><code>lens</code></td><td><code>CameraLensDirection</code></td><td><code>front</code>, <code>back</code></td><td>the plugin's first</td></tr>
+</tbody>
+</table>
+<p class="note">Extracted from the plugin's own manifests — the host app must declare them:</p>
+<ul class="enum-values"><li>iOS — Info.plist usage descriptions: <code>NSCameraUsageDescription</code></li></ul>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="TSX" role="tab" aria-selected="true">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+<button class="tab-btn" data-tab="Typings" role="tab" aria-selected="false">Typings</button>
+</div>
+<div class="tab-panel active" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx">import { useCamera } from 'plugin:camera';</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart">import 'package:camera/camera.dart';</code></pre>
+</div>
+<div class="tab-panel" data-panel="Typings" role="tabpanel">
+<pre><code class="language-typescript">declare module 'plugin:camera' {}</code></pre>
+</div>
+</div>
+<p class="note">Proven by <a href="./cookbook.html#01-camera-screen"><code>01-camera-screen</code></a></p>
+</article>
+<h2 id="types">Types</h2>
+<article class="widget" id="type-ColorValue" data-name="ColorValue">
+<h3>ColorValue<span class="badge badge-lib">Color</span></h3>
+
+<pre><code class="language-typescript">export type ColorValue = Color | `#${string}`;</code></pre>
+
+<p class="note">Accepted by <a href="#Frame">Frame</a></p>
 </article>
 <h2 id="enums">Enums</h2>
 <article class="widget enum-entry" id="TestAlign" data-name="TestAlign">

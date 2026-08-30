@@ -1,47 +1,16 @@
 import { describe, expect, test } from 'bun:test';
 
-import type { SitePage, SiteWidget } from '@src/site/model';
 import {
   buildApiReferenceHtml,
   cleanDoc,
   enumSection,
   escapeHtml,
   navHtml,
+  pluginSection,
   propTable,
   widgetSection,
 } from '@src/site/render';
-
-const frame: SiteWidget = {
-  name: 'Frame',
-  library: 'widgets',
-  doc: '/// A frame around a child.\n///\n/// Second paragraph.',
-  props: [
-    {
-      tsxProp: 'children',
-      tsType: 'FlutterChild',
-      dartType: 'Widget?',
-      required: false,
-    },
-    { tsxProp: 'color', tsType: 'Color', dartType: 'Color?', required: true },
-  ],
-  tsxExample: '<Frame color={Colors.blue}>\n  <Text>Content</Text>\n</Frame>',
-  exampleComplete: true,
-  dartSignature: 'Frame({\n  Key? key,\n  Widget? child,\n  Color? color,\n})',
-};
-
-const page: SitePage = {
-  flutterVersion: '3.47.1',
-  widgets: [frame],
-  enums: [
-    {
-      name: 'TestAlign',
-      library: 'painting',
-      doc: '/// How to align.',
-      values: ['start', 'end'],
-    },
-  ],
-  incompleteExamples: [],
-};
+import { frame, page } from '@test/support/sample-page';
 
 describe('escapeHtml', () => {
   test('escapes markup characters', () => {
@@ -151,7 +120,19 @@ describe('enumSection', () => {
 describe('navHtml', () => {
   test('groups widgets by library with counts', () => {
     expect(navHtml(page)).toBe(
-      `<details open>
+      `<details>
+<summary>Example<span class="nav-count">1</span></summary>
+<ul>
+<li data-name="Camera Screen"><a href="#example">Camera Screen</a></li>
+</ul>
+</details>
+<details>
+<summary>Hooks &amp; core APIs<span class="nav-count">1</span></summary>
+<ul>
+<li data-name="useState"><a href="#core-useState">useState</a></li>
+</ul>
+</details>
+<details open>
 <summary>Widgets<span class="nav-count">1</span></summary>
 <ul></ul>
 <details>
@@ -160,6 +141,18 @@ describe('navHtml', () => {
 <li data-name="Frame"><a href="#Frame">Frame</a></li>
 </ul>
 </details>
+</details>
+<details>
+<summary>Native plugins<span class="nav-count">1</span></summary>
+<ul>
+<li data-name="camera"><a href="#plugin-camera">camera</a></li>
+</ul>
+</details>
+<details>
+<summary>Types<span class="nav-count">1</span></summary>
+<ul>
+<li data-name="ColorValue"><a href="#type-ColorValue">ColorValue</a></li>
+</ul>
 </details>
 <details>
 <summary>Enums<span class="nav-count">1</span></summary>
@@ -180,6 +173,18 @@ describe('widgetSection without a verified example', () => {
         '<a class="badge badge-pkg" href="#verification">✓ typechecked</a>',
         '',
       ),
+    );
+  });
+});
+
+describe('pluginSection', () => {
+  test('refuses a plugin that reached the page without an example', () => {
+    const [plugin] = page.plugins;
+    if (plugin === undefined)
+      throw new Error('the sample page lost its plugin');
+
+    expect(() => pluginSection({ ...plugin, examples: [] })).toThrow(
+      'plugin camera reached the page unproven.',
     );
   });
 });

@@ -1,4 +1,13 @@
-import type { SiteEnum, SitePage, SiteProp, SiteWidget } from './model';
+import type {
+  SiteCoreEntry,
+  SiteEnum,
+  SiteExample,
+  SitePage,
+  SitePlugin,
+  SiteProp,
+  SiteType,
+  SiteWidget,
+} from './model';
 
 export const escapeHtml = (raw: string): string =>
   raw
@@ -98,6 +107,167 @@ export const enumSection = (entry: SiteEnum): string => {
 </article>`;
 };
 
+const tabs = (
+  panels: { label: string; language: string; code: string }[],
+): string => {
+  const buttons = panels
+    .map(
+      (panel, index) =>
+        `<button class="tab-btn${index === 0 ? ' active' : ''}" data-tab="${escapeHtml(panel.label)}" role="tab" aria-selected="${index === 0}">${escapeHtml(panel.label)}</button>`,
+    )
+    .join('\n');
+  const bodies = panels
+    .map(
+      (panel, index) =>
+        `<div class="tab-panel${index === 0 ? ' active' : ''}" data-panel="${escapeHtml(panel.label)}" role="tabpanel">\n` +
+        `<pre><code class="language-${escapeHtml(panel.language)}">${escapeHtml(panel.code.trimEnd())}</code></pre>\n` +
+        `</div>`,
+    )
+    .join('\n');
+  return `<div class="tabs">\n<div class="tab-btns" role="tablist">\n${buttons}\n</div>\n${bodies}\n</div>`;
+};
+
+const fixtureLinks = (ids: string[]): string =>
+  ids
+    .map(
+      (id) =>
+        `<a href="./cookbook.html#${escapeHtml(id)}"><code>${escapeHtml(id)}</code></a>`,
+    )
+    .join(', ');
+
+/** The worked example the reference opens with: one certified fixture. */
+export const exampleSection = (example: SiteExample): string =>
+  `<article class="widget" id="example" data-name="example">
+<h3>${escapeHtml(example.title)}<span class="badge badge-pkg">certified fixture</span></h3>
+<p class="doc">The TSX a developer writes and the Dart <code>fsx</code> emits from it. This pair is asserted byte-for-byte by the golden tests, laid out by <code>dart format</code>, checked by <code>flutter analyze</code> and built as a real Flutter app on every run — see ${fixtureLinks([example.id])}.</p>
+${tabs([
+  { label: 'TSX', language: 'tsx', code: example.tsx },
+  { label: 'Dart', language: 'dart', code: example.dart },
+])}
+</article>`;
+
+const CORE_KIND_LABEL: Record<SiteCoreEntry['kind'], string> = {
+  hook: 'hook',
+  function: 'function',
+  component: 'component',
+  type: 'type',
+};
+
+export const coreApiSection = (entry: SiteCoreEntry): string => {
+  const proof =
+    entry.examples.length === 0
+      ? ''
+      : `<p class="note">Used by ${fixtureLinks(entry.examples)}</p>`;
+  return `<article class="widget" id="core-${entry.name}" data-name="${entry.name}">
+<h3>${escapeHtml(entry.name)}<span class="badge badge-lib">${CORE_KIND_LABEL[entry.kind]}</span></h3>
+${entry.doc === '' ? '' : `<p class="doc">${escapeHtml(entry.doc)}</p>`}
+<pre><code class="language-typescript">${escapeHtml(entry.signature)}</code></pre>
+${proof}
+</article>`;
+};
+
+const requirementList = (plugin: SitePlugin): string => {
+  if (plugin.requirements.length === 0) {
+    return '<p class="note">Needs nothing declared by the host app — extracted from the plugin\'s own manifests.</p>';
+  }
+  const items = plugin.requirements
+    .map(
+      (requirement) =>
+        `<li>${escapeHtml(requirement.platform)} — ${escapeHtml(requirement.kind)}: ` +
+        `${requirement.values.map((value) => `<code>${escapeHtml(value)}</code>`).join(', ')}</li>`,
+    )
+    .join('\n');
+  return `<p class="note">Extracted from the plugin's own manifests — the host app must declare them:</p>\n<ul class="enum-values">${items}</ul>`;
+};
+
+const hookTable = (plugin: SitePlugin): string => {
+  const rows = plugin.hooks
+    .map(
+      (hook) =>
+        `<tr><td><code>${escapeHtml(hook.name)}</code></td><td><code>${escapeHtml(hook.signature)}</code></td>` +
+        `<td>${hook.manages.map((name) => `<code>${escapeHtml(name)}</code>`).join(', ')}</td></tr>`,
+    )
+    .join('\n');
+  return `<table class="props">
+<thead><tr><th>Hook</th><th>Signature</th><th>Manages for you</th></tr></thead>
+<tbody>
+${rows}
+</tbody>
+</table>`;
+};
+
+const optionTable = (plugin: SitePlugin): string => {
+  const rows = plugin.hooks
+    .flatMap((hook) =>
+      hook.options.map(
+        (option) =>
+          `<tr><td><code>${escapeHtml(hook.name)}</code></td><td><code>${escapeHtml(option.name)}</code></td>` +
+          `<td><code>${escapeHtml(option.type)}</code></td>` +
+          `<td>${option.values.map((value) => `<code>${escapeHtml(value)}</code>`).join(', ')}</td>` +
+          `<td>${option.defaultValue === null ? "the plugin's first" : `<code>${escapeHtml(option.defaultValue)}</code>`}</td></tr>`,
+      ),
+    )
+    .join('\n');
+  if (rows === '') {
+    return '';
+  }
+  return `<table class="props">
+<thead><tr><th>Hook</th><th>Option</th><th>Type</th><th>Values</th><th>Omitted means</th></tr></thead>
+<tbody>
+${rows}
+</tbody>
+</table>`;
+};
+
+export const pluginSection = (plugin: SitePlugin): string => {
+  const [example] = plugin.examples;
+  if (example === undefined) {
+    throw new Error(`plugin ${plugin.package} reached the page unproven.`);
+  }
+  return `<article class="widget" id="plugin-${plugin.package}" data-name="${plugin.package}">
+<h3>${escapeHtml(plugin.package)}<span class="badge badge-lib">${escapeHtml(plugin.version)}</span><a class="badge badge-pkg" href="https://pub.dev/packages/${escapeHtml(plugin.package)}">pub.dev</a></h3>
+<pre><code class="language-typescript">import { ${plugin.hooks.map((hook) => escapeHtml(hook.name)).join(', ')} } from '${escapeHtml(plugin.module)}';</code></pre>
+${hookTable(plugin)}
+${optionTable(plugin)}
+${requirementList(plugin)}
+${tabs([
+  { label: 'TSX', language: 'tsx', code: example.tsx },
+  { label: 'Dart', language: 'dart', code: example.dart },
+  { label: 'Typings', language: 'typescript', code: plugin.declaration },
+])}
+<p class="note">Proven by ${fixtureLinks(plugin.examples.map((each) => each.id))}</p>
+</article>`;
+};
+
+export const typeSection = (entry: SiteType): string => {
+  const shape =
+    entry.shape === null
+      ? ''
+      : `<pre><code class="language-typescript">${escapeHtml(entry.shape)}</code></pre>`;
+  const used =
+    entry.usedBy.length === 0
+      ? ''
+      : `<p class="note">Accepted by ${entry.usedBy
+          .slice(0, USED_BY_LIMIT)
+          .map(
+            (name) => `<a href="#${escapeHtml(name)}">${escapeHtml(name)}</a>`,
+          )
+          .join(
+            ', ',
+          )}${entry.usedBy.length > USED_BY_LIMIT ? ` and ${entry.usedBy.length - USED_BY_LIMIT} more` : ''}</p>`;
+  return `<article class="widget" id="type-${entry.name}" data-name="${entry.name}">
+<h3>${escapeHtml(entry.name)}<span class="badge badge-lib">${escapeHtml(entry.dartType)}</span></h3>
+${entry.doc === '' ? '' : `<p class="doc">${escapeHtml(entry.doc)}</p>`}
+<pre><code class="language-typescript">${escapeHtml(entry.accepts)}</code></pre>
+${shape}
+${used}
+</article>`;
+};
+
+// A value type reaches hundreds of widgets; listing every one would bury the
+// declaration the entry exists to show.
+const USED_BY_LIMIT = 12;
+
 export const LIBRARY_ORDER = [
   'widgets',
   'material',
@@ -148,10 +318,49 @@ ${navList(members.map((member) => member.name))}
     )
     .join('\n');
 
-  return `<details open>
+  return `<details>
+<summary>Example<span class="nav-count">1</span></summary>
+<ul>
+<li data-name="${escapeHtml(page.example.title)}"><a href="#example">${escapeHtml(page.example.title)}</a></li>
+</ul>
+</details>
+<details>
+<summary>Hooks &amp; core APIs<span class="nav-count">${page.coreApi.length}</span></summary>
+<ul>
+${page.coreApi
+  .map(
+    (entry) =>
+      `<li data-name="${entry.name}"><a href="#core-${entry.name}">${escapeHtml(entry.name)}</a></li>`,
+  )
+  .join('\n')}
+</ul>
+</details>
+<details open>
 <summary>Widgets<span class="nav-count">${page.widgets.length}</span></summary>
 <ul></ul>
 ${widgetGroups}
+</details>
+<details>
+<summary>Native plugins<span class="nav-count">${page.plugins.length}</span></summary>
+<ul>
+${page.plugins
+  .map(
+    (plugin) =>
+      `<li data-name="${plugin.package}"><a href="#plugin-${plugin.package}">${escapeHtml(plugin.package)}</a></li>`,
+  )
+  .join('\n')}
+</ul>
+</details>
+<details>
+<summary>Types<span class="nav-count">${page.types.length}</span></summary>
+<ul>
+${page.types
+  .map(
+    (entry) =>
+      `<li data-name="${entry.name}"><a href="#type-${entry.name}">${escapeHtml(entry.name)}</a></li>`,
+  )
+  .join('\n')}
+</ul>
 </details>
 <details>
 <summary>Enums<span class="nav-count">${page.enums.length}</span></summary>
@@ -177,7 +386,21 @@ export const pageContent = (page: SitePage): string => {
   const enumSections = `<h2 id="enums">Enums</h2>\n${page.enums
     .map(enumSection)
     .join('\n')}`;
-  return `<h2 id="about-verification">Verification</h2>\n${verificationSection}\n${widgetSections}\n${enumSections}`;
+  const sections = [
+    `<h2 id="example-heading">Example</h2>`,
+    exampleSection(page.example),
+    `<h2 id="about-verification">Verification</h2>`,
+    verificationSection,
+    `<h2 id="core">Hooks &amp; core APIs</h2>`,
+    page.coreApi.map(coreApiSection).join('\n'),
+    widgetSections,
+    `<h2 id="plugins">Native plugins</h2>`,
+    page.plugins.map(pluginSection).join('\n'),
+    `<h2 id="types">Types</h2>`,
+    page.types.map(typeSection).join('\n'),
+    enumSections,
+  ];
+  return sections.join('\n');
 };
 
 export const pageShell = (

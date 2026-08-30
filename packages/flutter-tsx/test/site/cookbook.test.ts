@@ -76,25 +76,69 @@ describe('buildCookbookHtml', () => {
 });
 
 describe('withShowcase', () => {
-  const page =
-    '<x><!-- showcase:tsx -->old<!-- /showcase:tsx -->' +
-    '<!-- showcase:dart -->old<!-- /showcase:dart --></x>';
+  const camera: Recipe = {
+    id: '01-camera-screen',
+    title: 'Camera Screen',
+    tsx:
+      "import { useCamera } from 'plugin:camera';\n\n" +
+      'export const CameraScreen = () => <Text>Take Photo</Text>;\n',
+    dart: "import 'package:camera/camera.dart';\n",
+  };
+  const page = [
+    '<span class="eyebrow"><span class="dot"></span> TSX in · Dart out · Flutter 3.44.0</span>',
+    '<div class="compile-bar">',
+    '  <span>Old.tsx</span>',
+    '  <span class="arrow">⟶</span>',
+    '  <span>idiomatic Dart · Flutter 3.44.0</span>',
+    '</div>',
+    '<span class="fname" id="fname">src/Old.tsx</span>',
+    '<!-- showcase:tsx -->old<!-- /showcase:tsx -->',
+    '<!-- showcase:dart -->old<!-- /showcase:dart -->',
+    "const names = { tsx: 'src/Old.tsx', dart: 'Old.g.dart' };",
+  ].join('\n');
 
   test('replaces both panels with the fixture they claim to show', () => {
-    const html = withShowcase(page, [counter]);
+    const html = withShowcase(page, [camera], '3.47.1');
 
     expect(html).toContain(
-      '<pre>export const Counter = () =&gt; &lt;Text&gt;0&lt;/Text&gt;;</pre>',
+      "<pre>import { useCamera } from 'plugin:camera';\n\n" +
+        'export const CameraScreen = () =&gt; &lt;Text&gt;Take Photo&lt;/Text&gt;;</pre>',
     );
-    expect(html).toContain(
-      "<pre>import 'package:flutter/material.dart';</pre>",
-    );
+    expect(html).toContain("<pre>import 'package:camera/camera.dart';</pre>");
     expect(html).not.toContain('>old<');
   });
 
-  test('refuses to render a showcase whose fixture is gone', () => {
-    expect(() => withShowcase(page, [])).toThrow(
-      'the showcase fixture 05-counter is missing.',
+  test('names the files the compiler reads and writes', () => {
+    const html = withShowcase(page, [camera], '3.47.1');
+
+    expect(html).toContain(
+      '<span class="fname" id="fname">src/CameraScreen.tsx</span>',
     );
+    expect(html).toContain('<span>CameraScreen.tsx</span>');
+    // The emitted file is snake_case — not the `.g.dart` this page claimed.
+    expect(html).toContain(
+      "const names = { tsx: 'src/CameraScreen.tsx', dart: 'camera_screen.dart' };",
+    );
+    expect(html).not.toContain('Old');
+  });
+
+  test('states the Flutter version the page was generated against', () => {
+    const html = withShowcase(page, [camera], '3.47.1');
+
+    expect(html).toContain('TSX in · Dart out · Flutter 3.47.1');
+    expect(html).toContain('idiomatic Dart · Flutter 3.47.1');
+    expect(html).not.toContain('3.44.0');
+  });
+
+  test('refuses to render a showcase whose fixture is gone', () => {
+    expect(() => withShowcase(page, [counter], '3.47.1')).toThrow(
+      'the showcase fixture 01-camera-screen is missing.',
+    );
+  });
+
+  test('refuses a showcase fixture that exports no component', () => {
+    expect(() =>
+      withShowcase(page, [{ ...camera, tsx: 'const x = 1;\n' }], '3.47.1'),
+    ).toThrow('the showcase fixture 01-camera-screen exports no component.');
   });
 });

@@ -12,9 +12,14 @@ import { buildSitePage } from '@src/site/from-snapshot';
 import { renderMarkdown } from '@src/site/markdown';
 import { emitExampleProbe } from '@src/site/probe';
 import { buildApiReferenceHtml } from '@src/site/render';
+import { loadSiteSections } from '@src/site/sections';
 
 const snapshot = await loadApiSnapshot();
-const page = buildSitePage(snapshot, deriveSlots(snapshot));
+const page = buildSitePage(
+  snapshot,
+  deriveSlots(snapshot),
+  await loadSiteSections(),
+);
 const html = buildApiReferenceHtml(page);
 
 const outputUrl = new URL('../../../docs/api-reference.html', import.meta.url);
@@ -34,7 +39,10 @@ process.stdout.write(
 // The landing page shows one of those pairs; keep it the fixture's own.
 const indexUrl = new URL('../../../docs/index.html', import.meta.url);
 const indexHtml = await Bun.file(indexUrl).text();
-await Bun.write(indexUrl, withShowcase(indexHtml, recipes));
+await Bun.write(
+  indexUrl,
+  withShowcase(indexHtml, recipes, page.flutterVersion),
+);
 process.stdout.write(`Wrote ${indexUrl.pathname} — showcase from fixtures.\n`);
 
 // The prose pages are markdown in the repository — where GitHub renders them —
@@ -63,8 +71,10 @@ process.stdout.write(
 );
 
 process.stdout.write(
-  `Wrote ${outputUrl.pathname} — ${page.widgets.length} widgets, ` +
-    `${page.enums.length} enums, Flutter ${page.flutterVersion} ` +
+  `Wrote ${outputUrl.pathname} — ${page.coreApi.length} core APIs, ` +
+    `${page.widgets.length} widgets, ${page.plugins.length} plugins, ` +
+    `${page.types.length} types, ${page.enums.length} enums, ` +
+    `Flutter ${page.flutterVersion} ` +
     `(${(html.length / 1024).toFixed(0)} KB).\n`,
 );
 if (page.incompleteExamples.length > 0) {

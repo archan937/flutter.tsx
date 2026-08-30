@@ -14,11 +14,16 @@ import { buildSitePage } from '@src/site/from-snapshot';
 import { renderMarkdown } from '@src/site/markdown';
 import { emitExampleProbe } from '@src/site/probe';
 import { buildApiReferenceHtml } from '@src/site/render';
+import { loadSiteSections } from '@src/site/sections';
 
 describe('committed generated docs', () => {
   test('docs/api-reference.html and the example probe are byte-identical to a fresh render', async () => {
     const snapshot = await loadApiSnapshot();
-    const page = buildSitePage(snapshot, deriveSlots(snapshot));
+    const page = buildSitePage(
+      snapshot,
+      deriveSlots(snapshot),
+      await loadSiteSections(),
+    );
 
     const committedHtml = await Bun.file(
       new URL('../../../../docs/api-reference.html', import.meta.url),
@@ -50,11 +55,14 @@ describe('committed generated docs', () => {
     const recipes = await loadRecipes(
       new URL('../fixtures', import.meta.url).pathname,
     );
+    const snapshot = await loadApiSnapshot();
     const indexUrl = new URL('../../../../docs/index.html', import.meta.url);
 
     const committed = await Bun.file(indexUrl).text();
 
-    expect(committed).toBe(withShowcase(committed, recipes));
+    expect(committed).toBe(
+      withShowcase(committed, recipes, snapshot.meta.frameworkVersion),
+    );
   }, 60000);
 
   test('each prose page is a fresh render of its markdown source', async () => {

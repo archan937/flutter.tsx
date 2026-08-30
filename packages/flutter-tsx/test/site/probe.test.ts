@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 
-import type { SitePage, SiteWidget } from '@src/site/model';
+import type { SiteWidget } from '@src/site/model';
 import { emitExampleProbe } from '@src/site/probe';
 
 const widget = (
@@ -17,8 +17,7 @@ const widget = (
   dartSignature: `${name}()`,
 });
 
-const page: SitePage = {
-  flutterVersion: '3.47.1',
+const page = {
   widgets: [
     widget('Icon', '<Icon icon={Icons.add} />', true),
     widget(
@@ -28,8 +27,6 @@ const page: SitePage = {
     ),
     widget('Canvas', '<Canvas painter={…} />', false),
   ],
-  enums: [],
-  incompleteExamples: ['Canvas'],
 };
 
 describe('emitExampleProbe', () => {

@@ -1,8 +1,8 @@
-import type { SitePage } from './model';
+import type { SiteWidget } from './model';
 
 const NAMESPACE_REFERENCE = /\{([A-Z][A-Za-z0-9_]*)\./g;
 
-export const emitExampleProbe = (page: SitePage): string => {
+export const emitExampleProbe = (page: { widgets: SiteWidget[] }): string => {
   const complete = page.widgets.filter((widget) => widget.exampleComplete);
 
   const identifiers = new Set<string>(['Text']);

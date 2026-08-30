@@ -1,3 +1,4 @@
+import { dartFileFor } from '../compiler/dart-names';
 import { escapeHtml } from './render';
 
 /** One certified fixture, shown as the TSX written and the Dart emitted. */
@@ -111,30 +112,55 @@ ${recipes.map(recipeSection).join('\n')}
 </html>
 `;
 
-const SHOWCASE = '05-counter';
+/** The fixture the landing page and the API reference both open with. */
+export const SHOWCASE = '01-camera-screen';
+
+const EXPORTED_COMPONENT = /^export const (\w+)/m;
+
+/** Every place the landing page names the showcase or the Flutter version. */
+const TSX_PANEL = /<!-- showcase:tsx -->[\s\S]*?<!-- \/showcase:tsx -->/;
+const DART_PANEL = /<!-- showcase:dart -->[\s\S]*?<!-- \/showcase:dart -->/;
+const WINDOW_NAME = /(<span class="fname" id="fname">)[^<]*(<\/span>)/;
+const COMPILE_BAR = /(<div class="compile-bar">\s*<span>)[^<]*(<\/span>)/;
+const TAB_NAMES = /const names = \{ tsx: '[^']*', dart: '[^']*' \};/;
+const FLUTTER_VERSION = /Flutter \d+\.\d+\.\d+/g;
 
 const panel = (kind: 'tsx' | 'dart', code: string): string =>
   `<!-- showcase:${kind} -->\n<pre>${escapeHtml(code.trimEnd())}</pre>\n<!-- /showcase:${kind} -->`;
 
 /**
- * The landing page's showcase, replaced with the fixture it claims to show.
- * The Dart there was written by hand and did not match what the compiler
- * emits; taking it from the fixture makes the page provably true.
+ * The landing page's showcase, replaced with the fixture it claims to show —
+ * both panels, both file names, and the Flutter version the pages were
+ * generated against. The page carried hand-written Dart, a `.g.dart` name the
+ * compiler never emits, and a stale version; deriving all of it from the
+ * fixture and the snapshot makes the page provably true and unable to drift.
  */
-export const withShowcase = (html: string, recipes: Recipe[]): string => {
+export const withShowcase = (
+  html: string,
+  recipes: Recipe[],
+  flutterVersion: string,
+): string => {
   const recipe = recipes.find((each) => each.id === SHOWCASE);
   if (recipe === undefined) {
     throw new Error(`the showcase fixture ${SHOWCASE} is missing.`);
   }
+  const component = EXPORTED_COMPONENT.exec(recipe.tsx)?.[1];
+  if (component === undefined) {
+    throw new Error(`the showcase fixture ${SHOWCASE} exports no component.`);
+  }
+  const tsxFile = `src/${component}.tsx`;
+  const dartFile = dartFileFor(`${component}.tsx`);
+
   return html
+    .replace(TSX_PANEL, panel('tsx', recipe.tsx))
+    .replace(DART_PANEL, panel('dart', recipe.dart))
+    .replace(WINDOW_NAME, `$1${escapeHtml(tsxFile)}$2`)
+    .replace(COMPILE_BAR, `$1${escapeHtml(component)}.tsx$2`)
     .replace(
-      /<!-- showcase:tsx -->[\s\S]*?<!-- \/showcase:tsx -->/,
-      panel('tsx', recipe.tsx),
+      TAB_NAMES,
+      `const names = { tsx: '${tsxFile}', dart: '${dartFile}' };`,
     )
-    .replace(
-      /<!-- showcase:dart -->[\s\S]*?<!-- \/showcase:dart -->/,
-      panel('dart', recipe.dart),
-    );
+    .replace(FLUTTER_VERSION, `Flutter ${flutterVersion}`);
 };
 
 export interface DocPage {

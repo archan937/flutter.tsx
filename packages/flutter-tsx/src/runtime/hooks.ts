@@ -11,10 +11,10 @@ export const useState = <TValue>(
 
 export type EffectCleanup = (() => void) | undefined;
 
-export const useEffect = (
-  _effect: () => EffectCleanup | void,
-  _dependencies?: readonly unknown[],
-): void => undefined;
+export const useEffect: (
+  effect: () => EffectCleanup | void,
+  dependencies?: readonly unknown[],
+) => void = () => undefined;
 
 export interface AsyncOptions {
   loading: () => FlutterElement;
@@ -23,17 +23,19 @@ export interface AsyncOptions {
 
 // Compile target: the transpiler reads the call from the AST and generates a
 // FutureBuilder; the awaited value is the resolved data in that scope.
-export const useAsync = <TValue>(
-  _load: () => Promise<TValue>,
-  _options: AsyncOptions,
-): Promise<TValue> => Promise.reject(new Error('useAsync is compile-time'));
+export const useAsync: <TValue>(
+  load: () => Promise<TValue>,
+  options: AsyncOptions,
+) => Promise<TValue> = () =>
+  Promise.reject(new Error('useAsync is compile-time'));
 
 // Same compile-time contract as useAsync, over a Dart Stream: the awaited
 // value is the latest event inside the generated StreamBuilder.
-export const useStream = <TValue>(
-  _source: () => AsyncIterable<TValue>,
-  _options: AsyncOptions,
-): Promise<TValue> => Promise.reject(new Error('useStream is compile-time'));
+export const useStream: <TValue>(
+  source: () => AsyncIterable<TValue>,
+  options: AsyncOptions,
+) => Promise<TValue> = () =>
+  Promise.reject(new Error('useStream is compile-time'));
 
 /**
  * A module-level store. The transpiler reads the initial shape from the AST

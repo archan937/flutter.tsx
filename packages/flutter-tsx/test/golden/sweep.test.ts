@@ -7,6 +7,7 @@ import { loadApiSnapshot } from '@src/api/load';
 import { transpileComponent } from '@src/compiler/transpile';
 import { deriveSlots } from '@src/derive/slots';
 import { buildSitePage } from '@src/site/from-snapshot';
+import { loadSiteSections } from '@src/site/sections';
 import {
   ensurePackageResolved,
   flutterAnalyze,
@@ -26,7 +27,11 @@ describe('543-widget analyze sweep', () => {
   // ts.Programs slow; the sweep must never fail on time alone.
   test('every complete synthesized example transpiles and analyzes clean', async () => {
     const snapshot = await loadApiSnapshot();
-    const page = buildSitePage(snapshot, deriveSlots(snapshot));
+    const page = buildSitePage(
+      snapshot,
+      deriveSlots(snapshot),
+      await loadSiteSections(),
+    );
     const complete = page.widgets.filter((widget) => widget.exampleComplete);
     expect(complete.length).toBeGreaterThanOrEqual(349);
 

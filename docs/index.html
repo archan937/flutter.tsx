@@ -960,7 +960,7 @@
     <main class="wrap" id="top">
       <header>
         <span class="eyebrow reveal"
-          ><span class="dot"></span> TSX in · Dart out · Flutter 3.44.0</span
+          ><span class="dot"></span> TSX in · Dart out · Flutter 3.47.1</span
         >
         <h1 class="reveal">
           <span class="grad">Write Flutter<br />in TSX.</span>
@@ -995,9 +995,9 @@
 
       <section class="showcase reveal">
         <div class="compile-bar">
-          <span>Counter.tsx</span>
+          <span>CameraScreen.tsx</span>
           <span class="arrow">⟶</span>
-          <span>idiomatic Dart · Flutter 3.44.0</span>
+          <span>idiomatic Dart · Flutter 3.47.1</span>
         </div>
 
         <div class="toggle" role="tablist" id="toggle">
@@ -1010,24 +1010,27 @@
         <div class="code-block" style="margin-top: 16px">
           <div class="window-bar">
             <span class="lights"><i></i><i></i><i></i></span>
-            <span class="fname" id="fname">src/Counter.tsx</span>
+            <span class="fname" id="fname">src/CameraScreen.tsx</span>
           </div>
 
           <div class="tab-panel active" data-panel="tsx">
             <!-- showcase:tsx -->
 <pre>import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+import { useCamera } from 'plugin:camera';
 
-export const Counter = () =&gt; {
-  const [count, setCount] = useState(0);
+export const CameraScreen = () =&gt; {
+  const cam = useCamera();
+  const [taken, setTaken] = useState(false);
 
-  const increment = () =&gt; {
-    setCount(count + 1);
+  const takePhoto = async () =&gt; {
+    await cam.takePicture();
+    setTaken(true);
   };
 
   return (
-    &lt;Column mainAxisAlignment=&quot;center&quot;&gt;
-      &lt;Text&gt;Count: {count}&lt;/Text&gt;
-      &lt;ElevatedButton onClick={increment}&gt;Increment&lt;/ElevatedButton&gt;
+    &lt;Column&gt;
+      {taken &amp;&amp; &lt;Text&gt;Photo saved!&lt;/Text&gt;}
+      &lt;ElevatedButton onClick={takePhoto}&gt;Take Photo&lt;/ElevatedButton&gt;
     &lt;/Column&gt;
   );
 };</pre>
@@ -1036,31 +1039,58 @@ export const Counter = () =&gt; {
 
           <div class="tab-panel" data-panel="dart">
             <!-- showcase:dart -->
-<pre>import 'package:flutter/material.dart';
+<pre>import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
 
-class Counter extends StatefulWidget {
-  const Counter({super.key});
+class CameraScreen extends StatefulWidget {
+  const CameraScreen({super.key});
 
   @override
-  State&lt;Counter&gt; createState() =&gt; _CounterState();
+  State&lt;CameraScreen&gt; createState() =&gt; _CameraScreenState();
 }
 
-class _CounterState extends State&lt;Counter&gt; {
-  int _count = 0;
+class _CameraScreenState extends State&lt;CameraScreen&gt; {
+  CameraController? _cam;
+  bool _taken = false;
 
-  void _increment() {
+  @override
+  void initState() {
+    super.initState();
+    _initCam();
+  }
+
+  Future&lt;void&gt; _initCam() async {
+    final cameras = await availableCameras();
+    final controller = CameraController(cameras.first, ResolutionPreset.high);
+    await controller.initialize();
+    if (!mounted) {
+      await controller.dispose();
+      return;
+    }
     setState(() {
-      _count++;
+      _cam = controller;
+    });
+  }
+
+  @override
+  void dispose() {
+    _cam?.dispose();
+    super.dispose();
+  }
+
+  Future&lt;void&gt; _takePhoto() async {
+    await _cam?.takePicture();
+    setState(() {
+      _taken = true;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('Count: $_count'),
-        ElevatedButton(onPressed: _increment, child: const Text('Increment')),
+        if (_taken) const Text('Photo saved!'),
+        ElevatedButton(onPressed: _takePhoto, child: const Text('Take Photo')),
       ],
     );
   }
@@ -1344,7 +1374,7 @@ class _CounterState extends State&lt;Counter&gt; {
       (function () {
         const toggle = document.getElementById('toggle');
         const fname = document.getElementById('fname');
-        const names = { tsx: 'src/Counter.tsx', dart: 'Counter.g.dart' };
+        const names = { tsx: 'src/CameraScreen.tsx', dart: 'camera_screen.dart' };
         toggle.addEventListener('click', function (e) {
           const btn = e.target.closest('button');
           if (!btn) return;

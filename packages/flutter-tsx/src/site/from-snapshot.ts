@@ -12,8 +12,16 @@ import {
 } from '../derive/value-forms';
 import { CHILDREN_TS_TYPES, propTsType } from '../generate/prop-type';
 import { jsxPropName } from '../generate/renames';
-import type { SitePage, SiteProp, SiteWidget } from './model';
+import type {
+  SiteCoreEntry,
+  SiteExample,
+  SitePage,
+  SitePlugin,
+  SiteProp,
+  SiteWidget,
+} from './model';
 import { type SynthesisContext, synthesizeTsx } from './synthesize';
+import { buildSiteTypes } from './types';
 
 const EMPTY_SLOTS: WidgetSlots = { children: null, slots: [] };
 
@@ -104,9 +112,19 @@ const propRows = (
   return rows;
 };
 
+/** What the reference documents beside the SDK: derived elsewhere, verified there. */
+export interface SiteSections {
+  example: SiteExample;
+  coreApi: SiteCoreEntry[];
+  plugins: SitePlugin[];
+  /** Generated declaration files the value types are read from. */
+  generatedFiles: string[];
+}
+
 export const buildSitePage = (
   snapshot: ApiSnapshot,
   slots: SlotMap,
+  sections: SiteSections,
 ): SitePage => {
   const forms = deriveValueForms(snapshot);
   const context = synthesisContext(snapshot, forms);
@@ -150,7 +168,10 @@ export const buildSitePage = (
 
   return {
     flutterVersion: snapshot.meta.frameworkVersion,
+    example: sections.example,
+    coreApi: sections.coreApi,
     widgets,
+    types: buildSiteTypes(sections.generatedFiles, widgets),
     enums: snapshot.entities.flatMap((entity) =>
       entity.kind === 'enum'
         ? [
@@ -163,6 +184,7 @@ export const buildSitePage = (
           ]
         : [],
     ),
+    plugins: sections.plugins,
     incompleteExamples,
   };
 };
