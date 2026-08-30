@@ -272,11 +272,39 @@ const materialisesList = (
   ts.isPropertyAccessExpression(body.expression) &&
   LAZY_RESULTS.has(body.expression.name.text);
 
+const LIST_SUFFIX = /^List<(.+)>$/;
+
+const namedDartTypeOf = (dartType: string): string =>
+  LIST_SUFFIX.exec(dartType)?.[1] ?? dartType;
+
+const memberReadOf = (receiver: string, model: IrModel): MemberReadInfo => ({
+  className: model.name,
+  receiver,
+  nullable: false,
+  fields: modelFieldTypes(model),
+});
+
+const modelClassFields = (
+  compile: CompileContext,
+): Map<string, Map<string, TypeNode>> =>
+  new Map(
+    [...compile.models.values()].map(
+      (model): [string, Map<string, TypeNode>] => [
+        model.name,
+        modelFieldTypes(model),
+      ],
+    ),
+  );
+
 /**
  * Lowers a module-level helper to its Dart function. A helper reads only its
  * own parameters, so it needs nothing from a component's context.
  */
-export const lowerHelper = (helper: HelperBinding): IrHelper => {
+export const lowerHelper = (
+  helper: HelperBinding,
+  compile: CompileContext,
+  useDartImport: (uri: string) => void,
+): IrHelper => {
   const localDartTypes = new Map(
     helper.params.map((param): [string, string] => [
       param.name,
@@ -293,8 +321,19 @@ export const lowerHelper = (helper: HelperBinding): IrHelper => {
     privateHelpers: new Set(),
     enumMembers: new Map(),
     privateMembers: false,
-    memberReads: new Map(),
-    classFields: new Map(),
+    // A helper reads its own parameters, and the models this file declares:
+    // decoding or reading one is as ordinary there as in a component.
+    memberReads: new Map(
+      helper.params.flatMap((param): [string, MemberReadInfo][] => {
+        const model = compile.models.get(namedDartTypeOf(param.dartType));
+        return model === undefined
+          ? []
+          : [[param.name, memberReadOf(param.name, model)]];
+      }),
+    ),
+    classFields: modelClassFields(compile),
+    jsonModels: new Set(compile.models.keys()),
+    useDartImport,
   });
   return {
     name: helper.name,
@@ -3003,6 +3042,10 @@ export const lowerComponent = (
       enumMembers: compile.enumMembers,
       privateMembers: true,
       memberReads,
+      jsonModels: new Set(compile.models.keys()),
+      useDartImport: (uri: string): void => {
+        context.usedDartImports.add(uri);
+      },
       classFields: new Map<string, Map<string, TypeNode>>([
         ...compile.sdkClassFields,
         ...compile.pluginClassFields,

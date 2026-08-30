@@ -872,6 +872,15 @@ const isJsonCall = (expression: ts.Expression): boolean =>
 const jsonTargetNames = (sourceFile: ts.SourceFile): Set<string> => {
   const targets = new Set<string>();
   const visit = (node: ts.Node): void => {
+    // A decode is a decode wherever it is written — a local, a helper body,
+    // an argument, or straight into a child.
+    if (
+      ts.isAsExpression(node) &&
+      isJsonCall(node.expression) &&
+      ts.isTypeReferenceNode(node.type)
+    ) {
+      targets.add(node.type.typeName.getText());
+    }
     if (ts.isVariableDeclaration(node)) {
       const { initializer } = node;
       const decoded =
@@ -1376,8 +1385,19 @@ export const analyzeSource = (
         },
       ]),
   );
-  const models = analyzeModels(sourceFile, propModelNames(components));
   const helpers = analyzeHelpers(sourceFile);
+  // A helper's return type is a model too: `lookup().title` reads it, so the
+  // shape has to exist in Dart the same as a prop's or a decoded body's does.
+  const models = analyzeModels(
+    sourceFile,
+    new Set([
+      ...propModelNames(components),
+      ...helpers.map((helper) => namedDartType(helper.returnDartType)),
+      ...helpers.flatMap((helper) =>
+        helper.params.map((param) => namedDartType(param.dartType)),
+      ),
+    ]),
+  );
   const enums = analyzeEnums(sourceFile);
   const componentImports = new Map(
     [...hookModules].filter(([, module]) => module.startsWith('.')),

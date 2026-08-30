@@ -2505,121 +2505,66 @@ types a parsed body, and it means the value cannot be used untyped.</p>
 <pre><code class="language-typescript">(body: string) =&gt; unknown</code></pre>
 </div>
 <div class="tab-panel" data-panel="TSX" role="tabpanel">
-<pre><code class="language-tsx"><span class="tok-kw">import</span> {
-  <span class="tok-typ">CircularProgressIndicator</span>,
-  <span class="tok-typ">Column</span>,
-  json,
-  <span class="tok-typ">Text</span>,
-  useAsync,
-} <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
-<span class="tok-kw">import</span> { <span class="tok-kw">get</span> } <span class="tok-kw">from</span> <span class="tok-str">'plugin:http'</span>;
+<pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, json, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
-<span class="tok-kw">interface</span> <span class="tok-typ">Author</span> {
-  name: string;
-}
-
-<span class="tok-kw">interface</span> <span class="tok-typ">Album</span> {
-  id: number;
+<span class="tok-kw">interface</span> <span class="tok-typ">Track</span> {
   title: string;
-  tags: string[];
-  author: <span class="tok-typ">Author</span>;
-  subtitle?: string;
+  year: number;
 }
 
-<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">AlbumDetail</span> = <span class="tok-kw">async</span> () =&gt; {
-  <span class="tok-kw">const</span> res = <span class="tok-kw">await</span> <span class="tok-fn">useAsync</span>(() =&gt; <span class="tok-kw">get</span>(<span class="tok-str">'https://example.com/albums/1'</span>), {
-    loading: () =&gt; &lt;<span class="tok-typ">CircularProgressIndicator</span> /&gt;,
-    error: (err) =&gt; &lt;<span class="tok-typ">Text</span>&gt;{err}&lt;/<span class="tok-typ">Text</span>&gt;,
-  });
-  const album = json(res.body) as Album;
+<span class="tok-kw">const</span> decodeTrack = (body: string): <span class="tok-typ">Track</span> =&gt; <span class="tok-fn">json</span>(body) <span class="tok-kw">as</span> <span class="tok-typ">Track</span>;
 
-  return (
-    &lt;<span class="tok-typ">Column</span>&gt;
-      &lt;<span class="tok-typ">Text</span>&gt;{album.title}&lt;/<span class="tok-typ">Text</span>&gt;
-      &lt;<span class="tok-typ">Text</span>&gt;{album.author.name}&lt;/<span class="tok-typ">Text</span>&gt;
-    &lt;/<span class="tok-typ">Column</span>&gt;
-  );
-};</code></pre>
+<span class="tok-kw">const</span> billing = (track: <span class="tok-typ">Track</span>): string =&gt; track.title.<span class="tok-fn">toUpperCase</span>();
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Shelf</span> = ({ payload }: { payload: string }) =&gt; (
+  &lt;<span class="tok-typ">Column</span>&gt;
+    &lt;<span class="tok-typ">Text</span>&gt;{<span class="tok-fn">billing</span>(<span class="tok-fn">decodeTrack</span>(payload))}&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;<span class="tok-typ">Text</span>&gt;{<span class="tok-fn">decodeTrack</span>(payload).year}&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;<span class="tok-typ">Text</span>&gt;{(<span class="tok-fn">json</span>(payload) <span class="tok-kw">as</span> <span class="tok-typ">Track</span>).title}&lt;/<span class="tok-typ">Text</span>&gt;
+  &lt;/<span class="tok-typ">Column</span>&gt;
+);</code></pre>
 </div>
 <div class="tab-panel" data-panel="Dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'dart:convert'</span>;
 
 <span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
-<span class="tok-kw">import</span> <span class="tok-str">'package:http/http.dart'</span> <span class="tok-kw">as</span> http;
 
-<span class="tok-kw">class</span> <span class="tok-typ">Author</span> {
-  <span class="tok-kw">const</span> <span class="tok-typ">Author</span>({<span class="tok-kw">required</span> <span class="tok-kw">this</span>.name});
+<span class="tok-typ">Track</span> <span class="tok-fn">decodeTrack</span>(<span class="tok-typ">String</span> body) =&gt;
+    <span class="tok-typ">Track</span>.<span class="tok-fn">fromJson</span>(<span class="tok-fn">jsonDecode</span>(body) <span class="tok-kw">as</span> <span class="tok-typ">Map</span>&lt;<span class="tok-typ">String</span>, dynamic&gt;);
 
-  <span class="tok-kw">factory</span> <span class="tok-typ">Author</span>.<span class="tok-fn">fromJson</span>(<span class="tok-typ">Map</span>&lt;<span class="tok-typ">String</span>, dynamic&gt; json) =&gt;
-      <span class="tok-typ">Author</span>(name: json[<span class="tok-str">'name'</span>] <span class="tok-kw">as</span> <span class="tok-typ">String</span>);
+<span class="tok-typ">String</span> <span class="tok-fn">billing</span>(<span class="tok-typ">Track</span> track) =&gt; track.title.<span class="tok-fn">toUpperCase</span>();
 
-  <span class="tok-kw">final</span> <span class="tok-typ">String</span> name;
-}
+<span class="tok-kw">class</span> <span class="tok-typ">Track</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Track</span>({<span class="tok-kw">required</span> <span class="tok-kw">this</span>.title, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.year});
 
-<span class="tok-kw">class</span> <span class="tok-typ">Album</span> {
-  <span class="tok-kw">const</span> <span class="tok-typ">Album</span>({
-    <span class="tok-kw">required</span> <span class="tok-kw">this</span>.id,
-    <span class="tok-kw">required</span> <span class="tok-kw">this</span>.title,
-    <span class="tok-kw">required</span> <span class="tok-kw">this</span>.tags,
-    <span class="tok-kw">required</span> <span class="tok-kw">this</span>.author,
-    <span class="tok-kw">this</span>.subtitle,
-  });
+  <span class="tok-kw">factory</span> <span class="tok-typ">Track</span>.<span class="tok-fn">fromJson</span>(<span class="tok-typ">Map</span>&lt;<span class="tok-typ">String</span>, dynamic&gt; json) =&gt;
+      <span class="tok-typ">Track</span>(title: json[<span class="tok-str">'title'</span>] <span class="tok-kw">as</span> <span class="tok-typ">String</span>, year: json[<span class="tok-str">'year'</span>] <span class="tok-kw">as</span> num);
 
-  <span class="tok-kw">factory</span> <span class="tok-typ">Album</span>.<span class="tok-fn">fromJson</span>(<span class="tok-typ">Map</span>&lt;<span class="tok-typ">String</span>, dynamic&gt; json) =&gt; <span class="tok-typ">Album</span>(
-    id: json[<span class="tok-str">'id'</span>] <span class="tok-kw">as</span> num,
-    title: json[<span class="tok-str">'title'</span>] <span class="tok-kw">as</span> <span class="tok-typ">String</span>,
-    tags: (json[<span class="tok-str">'tags'</span>] <span class="tok-kw">as</span> <span class="tok-typ">List</span>&lt;dynamic&gt;).cast&lt;<span class="tok-typ">String</span>&gt;(),
-    author: <span class="tok-typ">Author</span>.<span class="tok-fn">fromJson</span>(json[<span class="tok-str">'author'</span>] <span class="tok-kw">as</span> <span class="tok-typ">Map</span>&lt;<span class="tok-typ">String</span>, dynamic&gt;),
-    subtitle: json[<span class="tok-str">'subtitle'</span>] <span class="tok-kw">as</span> <span class="tok-typ">String</span>?,
-  );
-
-  <span class="tok-kw">final</span> num id;
   <span class="tok-kw">final</span> <span class="tok-typ">String</span> title;
-  <span class="tok-kw">final</span> <span class="tok-typ">List</span>&lt;<span class="tok-typ">String</span>&gt; tags;
-  <span class="tok-kw">final</span> <span class="tok-typ">Author</span> author;
-  <span class="tok-kw">final</span> <span class="tok-typ">String</span>? subtitle;
+  <span class="tok-kw">final</span> num year;
 }
 
-<span class="tok-kw">class</span> <span class="tok-typ">AlbumDetail</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
-  <span class="tok-kw">const</span> <span class="tok-typ">AlbumDetail</span>({<span class="tok-kw">super</span>.key});
+<span class="tok-kw">class</span> <span class="tok-typ">Shelf</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Shelf</span>({<span class="tok-kw">super</span>.key, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.payload});
 
-  @override
-  <span class="tok-typ">State</span>&lt;<span class="tok-typ">AlbumDetail</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_AlbumDetailState</span>();
-}
-
-<span class="tok-kw">class</span> _AlbumDetailState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">AlbumDetail</span>&gt; {
-  <span class="tok-kw">late</span> <span class="tok-kw">final</span> <span class="tok-typ">Future</span>&lt;http.<span class="tok-typ">Response</span>&gt; _resFuture;
-
-  @override
-  <span class="tok-kw">void</span> <span class="tok-fn">initState</span>() {
-    <span class="tok-kw">super</span>.<span class="tok-fn">initState</span>();
-    _resFuture = http.<span class="tok-kw">get</span>(<span class="tok-typ">Uri</span>.<span class="tok-fn">parse</span>(<span class="tok-str">'https://example.com/albums/1'</span>));
-  }
+  <span class="tok-kw">final</span> <span class="tok-typ">String</span> payload;
 
   @override
   <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
-    <span class="tok-kw">return</span> <span class="tok-typ">FutureBuilder</span>&lt;http.<span class="tok-typ">Response</span>&gt;(
-      future: _resFuture,
-      builder: (context, snapshot) {
-        <span class="tok-kw">if</span> (snapshot.hasError) {
-          <span class="tok-kw">final</span> err = <span class="tok-str">'${snapshot.error}'</span>;
-          <span class="tok-kw">return</span> <span class="tok-typ">Text</span>(err);
-        }
-        <span class="tok-kw">if</span> (!snapshot.hasData) {
-          <span class="tok-kw">return</span> <span class="tok-kw">const</span> <span class="tok-typ">CircularProgressIndicator</span>();
-        }
-        <span class="tok-kw">final</span> res = snapshot.data!;
-        <span class="tok-kw">final</span> album = <span class="tok-typ">Album</span>.<span class="tok-fn">fromJson</span>(
-          <span class="tok-fn">jsonDecode</span>(res.body) <span class="tok-kw">as</span> <span class="tok-typ">Map</span>&lt;<span class="tok-typ">String</span>, dynamic&gt;,
-        );
-        <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(children: [<span class="tok-typ">Text</span>(album.title), <span class="tok-typ">Text</span>(album.author.name)]);
-      },
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+      children: [
+        <span class="tok-typ">Text</span>(<span class="tok-fn">billing</span>(<span class="tok-fn">decodeTrack</span>(payload))),
+        <span class="tok-typ">Text</span>(<span class="tok-str">'${decodeTrack(payload).year}'</span>),
+        <span class="tok-typ">Text</span>(
+          (<span class="tok-typ">Track</span>.<span class="tok-fn">fromJson</span>(<span class="tok-fn">jsonDecode</span>(payload) <span class="tok-kw">as</span> <span class="tok-typ">Map</span>&lt;<span class="tok-typ">String</span>, dynamic&gt;)).title,
+        ),
+      ],
     );
   }
 }</code></pre>
 </div>
 </div>
-<p class="note">Used by <a href="./cookbook.html#26-json-model"><code>26-json-model</code></a></p>
+<p class="note">Used by <a href="./cookbook.html#26-json-model"><code>26-json-model</code></a>, <a href="./cookbook.html#41-model-helper"><code>41-model-helper</code></a></p>
 </article>
 <article class="widget" id="core-TabItemProps" data-name="TabItemProps">
 <h3>TabItemProps<span class="badge badge-lib">type</span></h3>

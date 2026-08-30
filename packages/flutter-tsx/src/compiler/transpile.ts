@@ -265,7 +265,11 @@ export const transpileComponent = async (
   const components = analysis.components.map((component) =>
     lowerComponent(component, fileContext),
   );
-  const helpers = analysis.helpers.map(lowerHelper);
+  // A helper may decode a model, which needs `dart:convert` on the file.
+  const helperImports = new Set<string>();
+  const helpers = analysis.helpers.map((helper) =>
+    lowerHelper(helper, fileContext, (uri) => helperImports.add(uri)),
+  );
   const enums = analysis.enums.map((entity): IrEnum => ({
     name: entity.name,
     dartType: entity.dartType,
@@ -280,5 +284,6 @@ export const transpileComponent = async (
     stores: [...fileContext.stores.values()],
     router: analysis.router === null ? null : lowerRouter(analysis.router),
     models: [...fileContext.models.values()],
+    dartImports: [...helperImports],
   });
 };

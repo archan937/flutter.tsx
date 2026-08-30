@@ -147,6 +147,12 @@ export const CATALOGUE: Readonly<Record<string, CatalogueEntry>> = {
       'The methods you reach for — `trim`, `toUpperCase`, `join`, `toFixed`, `includes` — map onto their Dart counterparts rather than being reimplemented.',
     category: 'Lists and data',
   },
+  '41-model-helper': {
+    title: 'A helper that returns a model',
+    blurb:
+      'A helper decodes and returns one of your interfaces, and reading a field off the call — `decode(body).title` — resolves to the Dart member it names.',
+    category: 'Lists and data',
+  },
   '35-helpers': {
     title: 'Helper functions beside a component',
     blurb:

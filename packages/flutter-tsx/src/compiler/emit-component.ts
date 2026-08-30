@@ -338,6 +338,8 @@ export interface DartFileParts {
   models?: IrModel[];
   helpers?: IrHelper[];
   enums?: IrEnum[];
+  /** Dart libraries a helper's body needs, e.g. `dart:convert` to decode. */
+  dartImports?: string[];
 }
 
 /** A helper the component owns: a private method, indented into the class. */
@@ -406,6 +408,7 @@ export const emitDartFile = (
     models = [],
     helpers = [],
     enums = [],
+    dartImports = [],
   } = parts;
   const classes = [
     ...enums.map(emitEnum),
@@ -425,6 +428,7 @@ export const emitDartFile = (
     ...new Set([
       ...importsForComponents(components, context),
       ...pluginImports,
+      ...dartImports.map((uri) => `import '${uri}';`),
       // GoRouter and GoRoute themselves need the import, even in a file whose
       // components never navigate.
       ...(router === null ? [] : [`import '${GO_ROUTER_IMPORT}';`]),

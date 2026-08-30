@@ -135,7 +135,7 @@ main p { margin-bottom: 12px; }
 <aside id="sidebar">
   <a class="sb-brand" href="./index.html"><img class="mark" src="./icon.png" alt="flutter.tsx logo" width="28" height="28"><span>flutter<b>.tsx</b></span></a>
   <input id="search" type="search" placeholder="Search recipes…" autocomplete="off" spellcheck="false">
-  <div class="meta-info">40 recipes · Flutter 3.47.1</div>
+  <div class="meta-info">41 recipes · Flutter 3.47.1</div>
   <div class="sb-gh">
     <a href="./guide.html">Guide</a>
     <a href="./api-reference.html">API ↗</a>
@@ -166,7 +166,7 @@ main p { margin-bottom: 12px; }
 </ul>
 </details>
 <details>
-<summary>Lists and data<span class="nav-count">8</span></summary>
+<summary>Lists and data<span class="nav-count">9</span></summary>
 <ul>
 <li data-name="Rendering a list"><a href="#07-list-rendering">Rendering a list</a></li>
 <li data-name="Taking a list as a prop"><a href="#30-list-prop">Taking a list as a prop</a></li>
@@ -176,6 +176,7 @@ main p { margin-bottom: 12px; }
 <li data-name="Helper functions beside a component"><a href="#35-helpers">Helper functions beside a component</a></li>
 <li data-name="Enums and string unions"><a href="#36-enums">Enums and string unions</a></li>
 <li data-name="Tuples and a generic helper"><a href="#37-tuples-generics">Tuples and a generic helper</a></li>
+<li data-name="A helper that returns a model"><a href="#41-model-helper">A helper that returns a model</a></li>
 </ul>
 </details>
 <details>
@@ -1333,6 +1334,67 @@ export const Span = ({
         <span class="tok-typ">Text</span>(range.$1),
         <span class="tok-typ">Text</span>(<span class="tok-str">'${range.$2}'</span>),
         <span class="tok-typ">Text</span>(<span class="tok-fn">firstOr</span>(names, <span class="tok-str">'none'</span>)),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section class="recipe" id="41-model-helper" data-name="A helper that returns a model">
+<h3>A helper that returns a model</h3>
+<p class="blurb">A helper decodes and returns one of your interfaces, and reading a field off the call — <code>decode(body).title</code> — resolves to the Dart member it names.</p>
+<div class="pair">
+<div class="pane"><h4>src/Shelf.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, json, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-kw">interface</span> <span class="tok-typ">Track</span> {
+  title: string;
+  year: number;
+}
+
+<span class="tok-kw">const</span> decodeTrack = (body: string): <span class="tok-typ">Track</span> =&gt; <span class="tok-fn">json</span>(body) <span class="tok-kw">as</span> <span class="tok-typ">Track</span>;
+
+<span class="tok-kw">const</span> billing = (track: <span class="tok-typ">Track</span>): string =&gt; track.title.<span class="tok-fn">toUpperCase</span>();
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Shelf</span> = ({ payload }: { payload: string }) =&gt; (
+  &lt;<span class="tok-typ">Column</span>&gt;
+    &lt;<span class="tok-typ">Text</span>&gt;{<span class="tok-fn">billing</span>(<span class="tok-fn">decodeTrack</span>(payload))}&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;<span class="tok-typ">Text</span>&gt;{<span class="tok-fn">decodeTrack</span>(payload).year}&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;<span class="tok-typ">Text</span>&gt;{(<span class="tok-fn">json</span>(payload) <span class="tok-kw">as</span> <span class="tok-typ">Track</span>).title}&lt;/<span class="tok-typ">Text</span>&gt;
+  &lt;/<span class="tok-typ">Column</span>&gt;
+);</code></pre></div>
+<div class="pane"><h4>shelf.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'dart:convert'</span>;
+
+<span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-typ">Track</span> <span class="tok-fn">decodeTrack</span>(<span class="tok-typ">String</span> body) =&gt;
+    <span class="tok-typ">Track</span>.<span class="tok-fn">fromJson</span>(<span class="tok-fn">jsonDecode</span>(body) <span class="tok-kw">as</span> <span class="tok-typ">Map</span>&lt;<span class="tok-typ">String</span>, dynamic&gt;);
+
+<span class="tok-typ">String</span> <span class="tok-fn">billing</span>(<span class="tok-typ">Track</span> track) =&gt; track.title.<span class="tok-fn">toUpperCase</span>();
+
+<span class="tok-kw">class</span> <span class="tok-typ">Track</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Track</span>({<span class="tok-kw">required</span> <span class="tok-kw">this</span>.title, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.year});
+
+  <span class="tok-kw">factory</span> <span class="tok-typ">Track</span>.<span class="tok-fn">fromJson</span>(<span class="tok-typ">Map</span>&lt;<span class="tok-typ">String</span>, dynamic&gt; json) =&gt;
+      <span class="tok-typ">Track</span>(title: json[<span class="tok-str">'title'</span>] <span class="tok-kw">as</span> <span class="tok-typ">String</span>, year: json[<span class="tok-str">'year'</span>] <span class="tok-kw">as</span> num);
+
+  <span class="tok-kw">final</span> <span class="tok-typ">String</span> title;
+  <span class="tok-kw">final</span> num year;
+}
+
+<span class="tok-kw">class</span> <span class="tok-typ">Shelf</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Shelf</span>({<span class="tok-kw">super</span>.key, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.payload});
+
+  <span class="tok-kw">final</span> <span class="tok-typ">String</span> payload;
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+      children: [
+        <span class="tok-typ">Text</span>(<span class="tok-fn">billing</span>(<span class="tok-fn">decodeTrack</span>(payload))),
+        <span class="tok-typ">Text</span>(<span class="tok-str">'${decodeTrack(payload).year}'</span>),
+        <span class="tok-typ">Text</span>(
+          (<span class="tok-typ">Track</span>.<span class="tok-fn">fromJson</span>(<span class="tok-fn">jsonDecode</span>(payload) <span class="tok-kw">as</span> <span class="tok-typ">Map</span>&lt;<span class="tok-typ">String</span>, dynamic&gt;)).title,
+        ),
       ],
     );
   }

@@ -86,6 +86,8 @@ const translate = (source: string): string => {
     privateMembers: true,
     memberReads: memberReads(),
     classFields: new Map(),
+    jsonModels: new Set(),
+    useDartImport: (): void => undefined,
   };
   return translateExpression(expression, context);
 };
@@ -135,6 +137,11 @@ describe('translateExpression', () => {
   test('.length property access translates with renamed targets', () => {
     expect(translate('label.length')).toBe('_label.length');
     expect(translate('label.length + 1')).toBe('_label.length + 1');
+  });
+
+  test('a parenthesised expression keeps its parentheses', () => {
+    // Precedence is the author's, not the compiler's to rearrange.
+    expect(translate('(count + 1) * 2')).toBe('(_count + 1) * 2');
   });
 
   test('an unsupported property access is a numbered error', () => {

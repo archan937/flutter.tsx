@@ -57,6 +57,7 @@ describe('committed golden expected.dart files', () => {
       '38-effect-cleanup',
       '39-builder-callback',
       '40-layout-builder',
+      '41-model-helper',
     ]);
   });
 

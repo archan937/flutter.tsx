@@ -695,6 +695,26 @@ describe('transpileComponent — json models', () => {
     );
   });
 
+  test('a cast that is not a json decode stays a numbered error', () => {
+    // Only `json(body) as Model` decodes; any other cast is not a decode and
+    // must not be silently translated into one.
+    expect(
+      transpileComponent({
+        source:
+          "import { Text } from 'flutter-tsx';\n" +
+          'interface Album {\n  title: string;\n}\n' +
+          'const pick = (body: string): Album => body as Album;\n' +
+          'export const Probe = () => <Text>{pick("x").title}</Text>;\n',
+        filePath: 'probe.tsx',
+      }),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0305 probe.tsx:5:39 — `body as Album` is an expression form the ' +
+          'compiler does not translate to Dart.',
+      ),
+    );
+  });
+
   // In either position an unresolvable read is refused rather than emitted
   // verbatim, which would have produced Dart naming something that does not
   // exist there.

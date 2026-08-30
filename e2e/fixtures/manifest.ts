@@ -281,4 +281,10 @@ export const FIXTURE_APPS: FixtureApp[] = [
     dartFile: 'adaptive.dart',
     deps: [],
   },
+  {
+    id: '41-model-helper',
+    component: 'Shelf',
+    dartFile: 'shelf.dart',
+    deps: [],
+  },
 ];

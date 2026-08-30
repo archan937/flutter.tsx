@@ -52,6 +52,7 @@ const GREEN_FIXTURES = new Set([
   '38-effect-cleanup',
   '39-builder-callback',
   '40-layout-builder',
+  '41-model-helper',
 ]);
 
 const fixtures = await listFixtures();

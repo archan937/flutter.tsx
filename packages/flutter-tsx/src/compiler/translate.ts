@@ -39,6 +39,10 @@ export interface TranslateContext {
   // Fields by class name, so a read can continue through a field whose type
   // is another known class: `album.author.name`.
   classFields: Map<string, Map<string, TypeNode>>;
+  /** Models declared in this file, so `json(body) as Album` can be decoded. */
+  jsonModels: ReadonlySet<string>;
+  /** Records a Dart import the translation needs, e.g. `dart:convert`. */
+  useDartImport: (uri: string) => void;
 }
 
 const BINARY_OPERATORS = new Map<ts.SyntaxKind, string>([
@@ -124,8 +128,29 @@ const fieldsOf = (
   expression: ts.Expression,
   context: TranslateContext,
 ): Map<string, TypeNode> | undefined => {
+  if (ts.isParenthesizedExpression(expression)) {
+    return fieldsOf(expression.expression, context);
+  }
+  // `(json(body) as Track).title` — the cast names the type being read.
+  if (
+    ts.isAsExpression(expression) &&
+    ts.isTypeReferenceNode(expression.type)
+  ) {
+    return context.classFields.get(expression.type.typeName.getText());
+  }
   if (ts.isIdentifier(expression)) {
     return context.memberReads.get(expression.text)?.fields;
+  }
+  // `lookup().title` — a helper's result is readable for whatever its declared
+  // return type is, the same as any other value of that type.
+  if (
+    ts.isCallExpression(expression) &&
+    ts.isIdentifier(expression.expression)
+  ) {
+    const helper = context.helperReturns.get(expression.expression.text);
+    return helper === undefined
+      ? undefined
+      : context.classFields.get(helper.returnDartType);
   }
   if (!ts.isPropertyAccessExpression(expression)) {
     return undefined;
@@ -146,15 +171,43 @@ export const readFieldType = (
 ): TypeNode | null =>
   fieldsOf(expression.expression, context)?.get(expression.name.text) ?? null;
 
-// A read may continue through fields whose type is another known class:
-// `album.author.name`, at any depth.
+/** `json(body) as Album` — null when this is some other cast. */
+const jsonDecodeDart = (
+  expression: ts.AsExpression,
+  context: TranslateContext,
+): string | null => {
+  const call = expression.expression;
+  const model = ts.isTypeReferenceNode(expression.type)
+    ? expression.type.typeName.getText()
+    : '';
+  const body = ts.isCallExpression(call) ? call.arguments[0] : undefined;
+  if (
+    !ts.isCallExpression(call) ||
+    !ts.isIdentifier(call.expression) ||
+    call.expression.text !== 'json' ||
+    body === undefined ||
+    !context.jsonModels.has(model)
+  ) {
+    return null;
+  }
+  context.useDartImport('dart:convert');
+  const decoded = `jsonDecode(${translateExpression(body, context)}) as Map<String, dynamic>`;
+  return `${model}.fromJson(${decoded})`;
+};
+
+// A read may continue through anything whose type is a known class: another
+// read (`album.author.name`) or a call that returns one (`lookup().title`).
 const nestedReadDart = (
   expression: ts.PropertyAccessExpression,
   context: TranslateContext,
 ): string | null => {
   const target = expression.expression;
   if (
-    !ts.isPropertyAccessExpression(target) ||
+    !(
+      ts.isPropertyAccessExpression(target) ||
+      ts.isCallExpression(target) ||
+      ts.isParenthesizedExpression(target)
+    ) ||
     readFieldType(expression, context) === null
   ) {
     return null;
@@ -334,6 +387,14 @@ export const translateExpression = (
       ?.get(expression.name.text);
     if (member !== undefined) {
       return `${expression.expression.text}.${member}`;
+    }
+  }
+  // `json(body) as Album` reads the same in a helper, a handler or a child, so
+  // it is translated as an expression rather than only as a component local.
+  if (ts.isAsExpression(expression)) {
+    const decoded = jsonDecodeDart(expression, context);
+    if (decoded !== null) {
+      return decoded;
     }
   }
   if (ts.isPropertyAccessExpression(expression)) {
