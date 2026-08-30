@@ -158,9 +158,19 @@ void main() {
           isA<StateError>().having(
             (error) => error.message,
             'message',
-            'Could not load library '
+            allOf(
+              startsWith(
+                'Could not load library '
                 'package:definitely_not_a_real_package/missing.dart '
                 '(CannotResolveUriResult)',
+              ),
+              // The context is named, so a failure says what was analyzed
+              // rather than only what could not be found.
+              contains('sdkPath='),
+              contains('includedPaths=[${tempDir.path}]'),
+              contains('context root ${tempDir.path}'),
+              contains('package config '),
+            ),
           ),
         ),
       );

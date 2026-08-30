@@ -40,6 +40,18 @@ void main() {
     );
     await skyEngine.parent.create(recursive: true);
     await skyEngine.writeAsString('// dart:ui');
+    // The embedder file is what the mapping has to lead to.
+    await File(
+      path.join(
+        flutterRoot.path,
+        'bin',
+        'cache',
+        'pkg',
+        'sky_engine',
+        'lib',
+        '_embedder.yaml',
+      ),
+    ).writeAsString('embedded_libs:\n  "dart:ui": "ui/ui.dart"\n');
     final packageConfig = File(
       path.join(flutterRoot.path, '.dart_tool', 'package_config.json'),
     );

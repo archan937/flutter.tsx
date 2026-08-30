@@ -60,8 +60,17 @@ const mapsSkyEngine = async (packageConfig: string): Promise<boolean> => {
   if (!(await file.exists())) {
     return false;
   }
-  const parsed = (await file.json()) as { packages?: { name?: string }[] };
-  return parsed.packages?.some((entry) => entry.name === 'sky_engine') === true;
+  const parsed = (await file.json()) as {
+    packages?: { name?: string; rootUri?: string }[];
+  };
+  const engine = parsed.packages?.find((entry) => entry.name === 'sky_engine');
+  if (engine?.rootUri === undefined) {
+    return false;
+  }
+  // The mapping has to lead somewhere: the analyzer follows it to the engine's
+  // embedder file, and that is what makes dart:ui resolvable.
+  const root = new URL(engine.rootUri, Bun.pathToFileURL(packageConfig));
+  return Bun.file(new URL('lib/_embedder.yaml', `${root.href}/`)).exists();
 };
 
 const bootstrapSdk = async (): Promise<void> => {

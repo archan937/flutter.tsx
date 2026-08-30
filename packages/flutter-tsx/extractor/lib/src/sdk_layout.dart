@@ -81,9 +81,9 @@ class SdkLayout {
     // an unresolved URI rather than anything naming the cause.
     if (!_mapsSkyEngine(packageConfigFile)) {
       throw StateError(
-        'Package resolution at $packageConfigPath does not map sky_engine — '
-        'dart:ui cannot be resolved without it. Run '
-        '`flutter update-packages` in $normalizedRoot first.',
+        'Package resolution at $packageConfigPath does not map sky_engine to '
+        'an engine with lib/_embedder.yaml — dart:ui cannot be resolved '
+        'without it. Run `flutter update-packages` in $normalizedRoot first.',
       );
     }
 
@@ -95,6 +95,10 @@ class SdkLayout {
     );
   }
 
+  /// Whether the config maps sky_engine to a directory that actually holds
+  /// the engine's embedder file. A name alone is not enough: the mapping is
+  /// what the analyzer follows to find `_embedder.yaml`, and that is what
+  /// makes `dart:ui` resolvable.
   static bool _mapsSkyEngine(File packageConfig) {
     final decoded = jsonDecode(packageConfig.readAsStringSync());
     if (decoded is! Map<String, dynamic>) {
@@ -104,10 +108,22 @@ class SdkLayout {
     if (packages is! List) {
       return false;
     }
-    return packages.any(
-      (package) =>
-          package is Map<String, dynamic> && package['name'] == 'sky_engine',
-    );
+    for (final package in packages) {
+      if (package is! Map<String, dynamic> || package['name'] != 'sky_engine') {
+        continue;
+      }
+      final rootUri = package['rootUri'];
+      if (rootUri is! String) {
+        return false;
+      }
+      // package_config rootUris carry no trailing slash, and resolving a
+      // relative path against a slashless URI drops its last segment.
+      final root = packageConfig.parent.uri.resolve(
+        rootUri.endsWith('/') ? rootUri : '$rootUri/',
+      );
+      return File.fromUri(root.resolve('lib/_embedder.yaml')).existsSync();
+    }
+    return false;
   }
 
   static SdkMeta _readMeta(String flutterRoot) {

@@ -38,7 +38,11 @@ Future<LibraryExtraction> extractLibrary({
   final result = await session.getLibraryByUri(libraryUri);
   if (result is! LibraryElementResult) {
     throw StateError(
-      'Could not load library $libraryUri (${result.runtimeType})',
+      'Could not load library $libraryUri (${result.runtimeType}) — '
+      'analyzed with sdkPath=$sdkPath, includedPaths=$includedPaths, '
+      'context root ${collection.contexts.first.contextRoot.root.path}, '
+      'package config '
+      '${collection.contexts.first.contextRoot.packagesFile?.path}',
     );
   }
 
