@@ -499,8 +499,8 @@ describe('transpileComponent — a store that must wrap', () => {
     expect(await transpileComponent({ source, filePath: 'settings.tsx' }))
       .toBe(`import 'package:flutter/material.dart';
 
-class _SettingsStore extends ChangeNotifier {
-  _SettingsStore({
+class SettingsStore extends ChangeNotifier {
+  SettingsStore({
     required this.firstUserFacingLabel,
     required this.secondUserFacingLabel,
     required this.thirdUserFacingLabel,
@@ -528,7 +528,7 @@ class _SettingsStore extends ChangeNotifier {
   }
 }
 
-final _SettingsStore _settingsStore = _SettingsStore(
+final SettingsStore settingsStore = SettingsStore(
   firstUserFacingLabel: 'one',
   secondUserFacingLabel: 'two',
   thirdUserFacingLabel: 'three',
@@ -540,9 +540,9 @@ class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
-      listenable: _settingsStore,
+      listenable: settingsStore,
       builder: (context, child) {
-        return Text(_settingsStore.firstUserFacingLabel);
+        return Text(settingsStore.firstUserFacingLabel);
       },
     );
   }

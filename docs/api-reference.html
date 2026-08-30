@@ -1501,8 +1501,8 @@ details details > ul { padding-left: 24px; }
 <div class="tab-panel" data-panel="Dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
-<span class="tok-kw">class</span> _CounterStore <span class="tok-kw">extends</span> <span class="tok-typ">ChangeNotifier</span> {
-  <span class="tok-fn">_CounterStore</span>({<span class="tok-kw">required</span> <span class="tok-kw">this</span>.count, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.label});
+<span class="tok-kw">class</span> <span class="tok-typ">CounterStore</span> <span class="tok-kw">extends</span> <span class="tok-typ">ChangeNotifier</span> {
+  <span class="tok-typ">CounterStore</span>({<span class="tok-kw">required</span> <span class="tok-kw">this</span>.count, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.label});
 
   int count;
   <span class="tok-typ">String</span> label;
@@ -1518,23 +1518,23 @@ details details > ul { padding-left: 24px; }
   }
 }
 
-<span class="tok-kw">final</span> _CounterStore _counterStore = <span class="tok-fn">_CounterStore</span>(count: <span class="tok-num">0</span>, label: <span class="tok-str">'Taps'</span>);
+<span class="tok-kw">final</span> <span class="tok-typ">CounterStore</span> counterStore = <span class="tok-typ">CounterStore</span>(count: <span class="tok-num">0</span>, label: <span class="tok-str">'Taps'</span>);
 
 <span class="tok-kw">class</span> <span class="tok-typ">StoreCounter</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">StoreCounter</span>({<span class="tok-kw">super</span>.key});
 
   <span class="tok-kw">void</span> <span class="tok-fn">_increment</span>() {
-    _counterStore.<span class="tok-fn">update</span>(count: _counterStore.count + <span class="tok-num">1</span>);
+    counterStore.<span class="tok-fn">update</span>(count: counterStore.count + <span class="tok-num">1</span>);
   }
 
   @override
   <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
     <span class="tok-kw">return</span> <span class="tok-typ">ListenableBuilder</span>(
-      listenable: _counterStore,
+      listenable: counterStore,
       builder: (context, child) {
         <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
           children: [
-            <span class="tok-typ">Text</span>(<span class="tok-str">'${_counterStore.label}: ${_counterStore.count}'</span>),
+            <span class="tok-typ">Text</span>(<span class="tok-str">'${counterStore.label}: ${counterStore.count}'</span>),
             <span class="tok-typ">ElevatedButton</span>(
               onPressed: _increment,
               child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Increment'</span>),
@@ -2134,8 +2134,8 @@ handle only needs to carry the value's type.</p>
 <div class="tab-panel" data-panel="Dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
-<span class="tok-kw">class</span> _CounterStore <span class="tok-kw">extends</span> <span class="tok-typ">ChangeNotifier</span> {
-  <span class="tok-fn">_CounterStore</span>({<span class="tok-kw">required</span> <span class="tok-kw">this</span>.count, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.label});
+<span class="tok-kw">class</span> <span class="tok-typ">CounterStore</span> <span class="tok-kw">extends</span> <span class="tok-typ">ChangeNotifier</span> {
+  <span class="tok-typ">CounterStore</span>({<span class="tok-kw">required</span> <span class="tok-kw">this</span>.count, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.label});
 
   int count;
   <span class="tok-typ">String</span> label;
@@ -2151,23 +2151,23 @@ handle only needs to carry the value's type.</p>
   }
 }
 
-<span class="tok-kw">final</span> _CounterStore _counterStore = <span class="tok-fn">_CounterStore</span>(count: <span class="tok-num">0</span>, label: <span class="tok-str">'Taps'</span>);
+<span class="tok-kw">final</span> <span class="tok-typ">CounterStore</span> counterStore = <span class="tok-typ">CounterStore</span>(count: <span class="tok-num">0</span>, label: <span class="tok-str">'Taps'</span>);
 
 <span class="tok-kw">class</span> <span class="tok-typ">StoreCounter</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">StoreCounter</span>({<span class="tok-kw">super</span>.key});
 
   <span class="tok-kw">void</span> <span class="tok-fn">_increment</span>() {
-    _counterStore.<span class="tok-fn">update</span>(count: _counterStore.count + <span class="tok-num">1</span>);
+    counterStore.<span class="tok-fn">update</span>(count: counterStore.count + <span class="tok-num">1</span>);
   }
 
   @override
   <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
     <span class="tok-kw">return</span> <span class="tok-typ">ListenableBuilder</span>(
-      listenable: _counterStore,
+      listenable: counterStore,
       builder: (context, child) {
         <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
           children: [
-            <span class="tok-typ">Text</span>(<span class="tok-str">'${_counterStore.label}: ${_counterStore.count}'</span>),
+            <span class="tok-typ">Text</span>(<span class="tok-str">'${counterStore.label}: ${counterStore.count}'</span>),
             <span class="tok-typ">ElevatedButton</span>(
               onPressed: _increment,
               child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Increment'</span>),
@@ -2231,8 +2231,8 @@ handle only needs to carry the value's type.</p>
 <div class="tab-panel" data-panel="Dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
-<span class="tok-kw">class</span> _CounterStore <span class="tok-kw">extends</span> <span class="tok-typ">ChangeNotifier</span> {
-  <span class="tok-fn">_CounterStore</span>({<span class="tok-kw">required</span> <span class="tok-kw">this</span>.count, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.label});
+<span class="tok-kw">class</span> <span class="tok-typ">CounterStore</span> <span class="tok-kw">extends</span> <span class="tok-typ">ChangeNotifier</span> {
+  <span class="tok-typ">CounterStore</span>({<span class="tok-kw">required</span> <span class="tok-kw">this</span>.count, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.label});
 
   int count;
   <span class="tok-typ">String</span> label;
@@ -2248,23 +2248,23 @@ handle only needs to carry the value's type.</p>
   }
 }
 
-<span class="tok-kw">final</span> _CounterStore _counterStore = <span class="tok-fn">_CounterStore</span>(count: <span class="tok-num">0</span>, label: <span class="tok-str">'Taps'</span>);
+<span class="tok-kw">final</span> <span class="tok-typ">CounterStore</span> counterStore = <span class="tok-typ">CounterStore</span>(count: <span class="tok-num">0</span>, label: <span class="tok-str">'Taps'</span>);
 
 <span class="tok-kw">class</span> <span class="tok-typ">StoreCounter</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">StoreCounter</span>({<span class="tok-kw">super</span>.key});
 
   <span class="tok-kw">void</span> <span class="tok-fn">_increment</span>() {
-    _counterStore.<span class="tok-fn">update</span>(count: _counterStore.count + <span class="tok-num">1</span>);
+    counterStore.<span class="tok-fn">update</span>(count: counterStore.count + <span class="tok-num">1</span>);
   }
 
   @override
   <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
     <span class="tok-kw">return</span> <span class="tok-typ">ListenableBuilder</span>(
-      listenable: _counterStore,
+      listenable: counterStore,
       builder: (context, child) {
         <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
           children: [
-            <span class="tok-typ">Text</span>(<span class="tok-str">'${_counterStore.label}: ${_counterStore.count}'</span>),
+            <span class="tok-typ">Text</span>(<span class="tok-str">'${counterStore.label}: ${counterStore.count}'</span>),
             <span class="tok-typ">ElevatedButton</span>(
               onPressed: _increment,
               child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Increment'</span>),
@@ -2277,7 +2277,7 @@ handle only needs to carry the value's type.</p>
 }</code></pre>
 </div>
 </div>
-<p class="note">Used by <a href="./cookbook.html#19-store-counter"><code>19-store-counter</code></a></p>
+<p class="note">Used by <a href="./cookbook.html#19-store-counter"><code>19-store-counter</code></a>, <a href="./cookbook.html#42-project-layout"><code>42-project-layout</code></a></p>
 </article>
 <article class="widget" id="core-Navigation" data-name="Navigation">
 <h3>Navigation<span class="badge badge-lib">type</span></h3>

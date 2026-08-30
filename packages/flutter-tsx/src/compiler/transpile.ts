@@ -6,7 +6,13 @@ import { deriveSlots } from '../derive/slots';
 import { loadPluginApi, type PluginApi } from '../plugins/api';
 import { deriveHooks } from '../plugins/hooks';
 import { PACKAGE_OVERRIDES, PLUGIN_OVERRIDES } from '../plugins/overrides';
-import { analyzeSource, type SourceAnalysis } from './analyze';
+import {
+  analyzeSource,
+  type ModelBinding,
+  relativeTypeImports,
+  type SourceAnalysis,
+  type StoreBinding,
+} from './analyze';
 import { dartFileFor } from './dart-names';
 import { TsxError } from './diagnostics';
 import { emitDartFile } from './emit-component';
@@ -160,7 +166,11 @@ const usedJsxNames = (sourceFile: ts.SourceFile): Set<string> => {
 const parentDir = (filePath: string): string =>
   filePath.slice(0, filePath.lastIndexOf('/'));
 
-/** Resolves `./Card` against the importing file, without a path library. */
+/**
+ * Resolves `./Card` against the importing file, without a path library. The
+ * result keeps the form the importing path had: making a relative one
+ * absolute would look for the file at the root of the disk.
+ */
 const resolveSibling = (fromDir: string, specifier: string): string => {
   const segments = [...fromDir.split('/'), ...specifier.split('/')];
   const resolved: string[] = [];
@@ -172,7 +182,8 @@ const resolveSibling = (fromDir: string, specifier: string): string => {
     }
     resolved.push(segment);
   }
-  return `/${resolved.join('/')}`;
+  const joined = resolved.join('/');
+  return fromDir.startsWith('/') ? `/${joined}` : joined;
 };
 
 export interface ImportedComponents {
@@ -181,6 +192,10 @@ export interface ImportedComponents {
   componentImports: Map<string, string>;
   /** Signatures of helpers imported from a sibling file. */
   helperReturns: Map<string, HelperSignature>;
+  /** Models declared in a sibling file, which this file reads but never emits. */
+  models: Map<string, ModelBinding>;
+  /** Stores declared in a sibling file, read the same way. */
+  stores: Map<string, StoreBinding>;
   /** Dart files those helpers live in, which the output has to import. */
   dartImports: string[];
 }
@@ -198,6 +213,8 @@ const loadImportedComponents = async (
   const widgets = new Map<string, WidgetInfo>();
   const componentImports = new Map<string, string>();
   const helperReturns = new Map<string, HelperSignature>();
+  const models = new Map<string, ModelBinding>();
+  const stores = new Map<string, StoreBinding>();
   const dartImports: string[] = [];
   const used = usedJsxNames(analysis.sourceFile);
   const called = calledNames(analysis.sourceFile);
@@ -215,6 +232,7 @@ const loadImportedComponents = async (
         );
         helperReturns.set(name, helper.signature);
         dartImports.push(helper.dartFile);
+        continue;
       }
       continue;
     }
@@ -252,7 +270,42 @@ const loadImportedComponents = async (
     );
   }
 
-  return { widgets, componentImports, helperReturns, dartImports };
+  // A type imported from a sibling file: its Dart class is emitted there, so
+  // this file reads the shape and imports the file rather than declaring it
+  // twice.
+  for (const [name, specifier] of relativeTypeImports(analysis.sourceFile)) {
+    if (used.has(name) || called.has(name)) continue;
+    const resolved = `${resolveSibling(fromDir, specifier)}.tsx`;
+    const file = Bun.file(resolved);
+    if (!(await file.exists())) continue;
+    const declared = analyzeSource(await file.text(), resolved, {
+      requireComponent: false,
+    });
+
+    // A model's Dart class and a store's instance are both emitted by the
+    // file that declares them; this one reads the shape and imports the file.
+    const model = declared.models.find((candidate) => candidate.name === name);
+    const store = declared.stores.find((candidate) => candidate.name === name);
+    if (model === undefined && store === undefined) continue;
+    if (model !== undefined) {
+      for (const each of declared.models) {
+        models.set(each.name, each);
+      }
+    }
+    if (store !== undefined) {
+      stores.set(store.name, store);
+    }
+    dartImports.push(dartFileFor(`${specifier}.tsx`).replace(/^\.\//, ''));
+  }
+
+  return {
+    widgets,
+    componentImports,
+    helperReturns,
+    models,
+    stores,
+    dartImports,
+  };
 };
 
 /** One helper from a sibling file, with the signature its declaration gives. */
@@ -326,12 +379,22 @@ export const transpileComponent = async (
       ...buildUserWidgets(analysis.components),
     ]),
     stores: new Map(
-      analysis.stores.map((store) => [store.name, lowerStore(store)]),
+      [...imported.stores.values(), ...analysis.stores].map((store) => [
+        store.name,
+        lowerStore(store),
+      ]),
     ),
     models: new Map(
-      analysis.models.map((model) => [
+      [...imported.models.values(), ...analysis.models].map((model) => [
         model.name,
-        lowerModel(model, new Set(analysis.models.map((each) => each.name))),
+        lowerModel(
+          model,
+          new Set(
+            [...imported.models.values(), ...analysis.models].map(
+              (each) => each.name,
+            ),
+          ),
+        ),
       ]),
     ),
     enumMembers: new Map(
@@ -376,9 +439,15 @@ export const transpileComponent = async (
   return emitDartFile(components, fileContext, {
     helpers,
     enums,
-    stores: [...fileContext.stores.values()],
+    // An imported store belongs to the file that declares it.
+    stores: [...fileContext.stores.values()].filter(
+      (store) => !imported.stores.has(store.instanceName),
+    ),
     router: analysis.router === null ? null : lowerRouter(analysis.router),
-    models: [...fileContext.models.values()],
+    // An imported model belongs to the file that declares it.
+    models: [...fileContext.models.values()].filter(
+      (model) => !imported.models.has(model.name),
+    ),
     dartImports: [...helperImports],
   });
 };

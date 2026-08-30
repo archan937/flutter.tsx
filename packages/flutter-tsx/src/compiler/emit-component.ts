@@ -459,5 +459,10 @@ export const emitDartFile = (
       (all, lines) => (all.length === 0 ? lines : [...all, '', ...lines]),
       [],
     );
-  return `${imports.join('\n')}\n\n${classes.join('\n\n')}\n`;
+  // A file of plain models imports nothing, and `dart format` will not keep
+  // the blank lines an empty import block would leave at the top.
+  const body = classes.join('\n\n');
+  return imports.length === 0
+    ? `${body}\n`
+    : `${imports.join('\n')}\n\n${body}\n`;
 };

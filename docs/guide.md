@@ -235,9 +235,18 @@ A file does not have to export a component. One that exports only helpers, model
 or a store compiles to a Dart file of those, which is what makes `helpers/format.tsx`
 work.
 
-Two things still live in the file that uses them: a `createStore` and an `interface` used
-as a prop type. Both compile to private Dart declarations, so importing them from another
-file is refused with a numbered error rather than emitting Dart that would not build.
+A model and a store belong in their own files too:
+
+```
+src/
+  models/song.tsx        an interface, compiled to a Dart data class
+  stores/playlist.tsx    a createStore, compiled to a ChangeNotifier
+  NowPlaying.tsx         imports both
+```
+
+The file that declares one emits it; the file that imports it reads the shape and imports
+the Dart. A store is emitted public, because a store no other file can reach is not a
+shared store.
 
 `lib/` and `.fsx/` are generated and gitignored: a fresh clone is `bun install && fsx
 install`, and everything is rebuilt.

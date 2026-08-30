@@ -603,8 +603,8 @@ describe('analyzeSource — createStore / useStore', () => {
       ),
     ).toThrow(
       new Error(
-        'TSX0322 probe.tsx:3:38 — `ghostStore` is not a store created in ' +
-          'this file with `createStore({ … })`.',
+        'TSX0322 probe.tsx:3:38 — `ghostStore` is not a store: create one ' +
+          'with `createStore({ … })`, here or in a file this one imports.',
       ),
     );
   });

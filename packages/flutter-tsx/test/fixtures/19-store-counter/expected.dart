@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class _CounterStore extends ChangeNotifier {
-  _CounterStore({required this.count, required this.label});
+class CounterStore extends ChangeNotifier {
+  CounterStore({required this.count, required this.label});
 
   int count;
   String label;
@@ -17,23 +17,23 @@ class _CounterStore extends ChangeNotifier {
   }
 }
 
-final _CounterStore _counterStore = _CounterStore(count: 0, label: 'Taps');
+final CounterStore counterStore = CounterStore(count: 0, label: 'Taps');
 
 class StoreCounter extends StatelessWidget {
   const StoreCounter({super.key});
 
   void _increment() {
-    _counterStore.update(count: _counterStore.count + 1);
+    counterStore.update(count: counterStore.count + 1);
   }
 
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
-      listenable: _counterStore,
+      listenable: counterStore,
       builder: (context, child) {
         return Column(
           children: [
-            Text('${_counterStore.label}: ${_counterStore.count}'),
+            Text('${counterStore.label}: ${counterStore.count}'),
             ElevatedButton(
               onPressed: _increment,
               child: const Text('Increment'),

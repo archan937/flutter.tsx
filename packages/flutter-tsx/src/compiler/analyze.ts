@@ -215,8 +215,35 @@ const dartPropType = (
     if (localTypeMembers(type.typeName.text, sourceFile) !== null) {
       return type.typeName.text;
     }
+    // A model declared in another file of this project: the Dart class is
+    // emitted there, and this file imports it.
+    if (relativeTypeImports(sourceFile).has(type.typeName.text)) {
+      return type.typeName.text;
+    }
   }
   return null;
+};
+
+/** Names this file imports from a sibling module, by the module they came from. */
+export const relativeTypeImports = (
+  sourceFile: ts.SourceFile,
+): Map<string, string> => {
+  const imports = new Map<string, string>();
+  for (const statement of sourceFile.statements) {
+    if (
+      !ts.isImportDeclaration(statement) ||
+      !ts.isStringLiteral(statement.moduleSpecifier) ||
+      !statement.moduleSpecifier.text.startsWith('.')
+    ) {
+      continue;
+    }
+    const bindings = statement.importClause?.namedBindings;
+    if (bindings === undefined || !ts.isNamedImports(bindings)) continue;
+    for (const element of bindings.elements) {
+      imports.set(element.name.text, statement.moduleSpecifier.text);
+    }
+  }
+  return imports;
 };
 
 /** The Dart type an enum's members hold, when this names an enum. */
@@ -691,8 +718,8 @@ const analyzeStoreUse = (
   if (!context.storeNames.has(store.text)) {
     throw tsxErrorAt(
       'TSX0322',
-      `\`${store.text}\` is not a store created in this file with ` +
-        '`createStore({ … })`.',
+      `\`${store.text}\` is not a store: create one with ` +
+        '`createStore({ … })`, here or in a file this one imports.',
       { sourceFile: context.sourceFile, node: store },
     );
   }
@@ -1357,7 +1384,13 @@ export const analyzeSource = (
   const { modules: hookModules, originals: importedOriginals } =
     importedHookModules(sourceFile);
   const stores = analyzeStores(sourceFile);
-  const storeNames = new Set(stores.map((store) => store.name));
+  // A store is as often declared in its own file as in this one; the file it
+  // came from is resolved when the imports are, and refused there if it holds
+  // no such store.
+  const storeNames = new Set([
+    ...stores.map((store) => store.name),
+    ...relativeTypeImports(sourceFile).keys(),
+  ]);
 
   const components: ComponentAnalysis[] = [];
   for (const statement of sourceFile.statements) {

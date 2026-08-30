@@ -277,6 +277,12 @@ export const CATALOGUE: Readonly<Record<string, CatalogueEntry>> = {
     category: 'Navigation and shell',
   },
 
+  '42-project-layout': {
+    title: 'A model and a store in their own files',
+    blurb:
+      'A shared store and the shapes your app passes around live where you would put them in any TypeScript project; each compiles to its own Dart file and the imports are rewritten to match.',
+    category: 'Project structure',
+  },
   '28-multi-file': {
     title: 'Importing a component from another file',
     blurb:

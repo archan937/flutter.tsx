@@ -2365,9 +2365,14 @@ export const lowerRouter = (router: RouterBinding): IrRouter => ({
   routes: router.routes,
 });
 
+/**
+ * A store is shared by definition — that is what `createStore` is for — so it
+ * is emitted public. A private one could not be read from the file next door,
+ * which is where a store usually belongs.
+ */
 export const lowerStore = (store: StoreBinding): IrStore => ({
-  className: `_${pascalCase(store.name)}`,
-  instanceName: `_${store.name}`,
+  className: pascalCase(store.name),
+  instanceName: store.name,
   fields: store.fields.map((field) => ({
     name: field.name,
     dartType: field.dartType,

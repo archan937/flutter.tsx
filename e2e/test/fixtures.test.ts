@@ -95,6 +95,14 @@ describe('every fixture builds and behaves in a real Flutter app', () => {
       expect(generated).toBe(golden);
 
       await Bun.write(join(appDir, 'lib', fixture.dartFile), generated);
+      // A model or a store in its own file is emitted there, and the app
+      // needs that file too or the import resolves to nothing.
+      for (const sibling of fixture.siblings ?? []) {
+        await Bun.write(
+          join(appDir, 'lib', sibling),
+          await Bun.file(join(fixturesDir, fixture.id, sibling)).text(),
+        );
+      }
       if (fixture.behavior === true) {
         const widgetTest = await Bun.file(
           join(behaviorDir, `${fixture.id}.dart`),

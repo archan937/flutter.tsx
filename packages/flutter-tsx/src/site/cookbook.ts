@@ -80,13 +80,23 @@ const importedFiles = async (
   entryTsx: string,
 ): Promise<RecipeFile[]> => {
   const files: RecipeFile[] = [];
+  const seen = new Set<string>();
   for (const match of entryTsx.matchAll(RELATIVE_IMPORT)) {
     const name = match[1] ?? '';
+    if (seen.has(name)) continue;
+    seen.add(name);
     const tsx = await readFile(`${dir}/${name}.tsx`);
     if (tsx === null) continue;
     const dart = await readFile(`${dir}/${dartFileFor(`${name}.tsx`)}`);
     if (dart === null) continue;
-    files.push(filePair(`${name}.tsx`, tsx, dart));
+    // A sibling has a real name on disk; only the entry file is called
+    // `input.tsx` and has to be named after what it exports.
+    files.push({
+      tsxName: `src/${name}.tsx`,
+      tsx,
+      dartName: dartFileFor(`${name}.tsx`),
+      dart,
+    });
   }
   return files;
 };

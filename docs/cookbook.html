@@ -160,7 +160,7 @@ main p { margin-bottom: 12px; }
     <a href="https://github.com/archan937/flutter.tsx" target="_blank" rel="noopener">GitHub ↗</a>
   </nav>
   <input id="search" type="search" placeholder="Search recipes…" autocomplete="off" spellcheck="false">
-  <div class="meta-info">41 recipes · Flutter 3.47.1</div>
+  <div class="meta-info">42 recipes · Flutter 3.47.1</div>
   <nav id="sidebar-nav">
 <details open>
 <summary>Start here<span class="nav-count">7</span></summary>
@@ -233,9 +233,10 @@ main p { margin-bottom: 12px; }
 </ul>
 </details>
 <details>
-<summary>Project structure<span class="nav-count">1</span></summary>
+<summary>Project structure<span class="nav-count">2</span></summary>
 <ul>
 <li data-name="Importing a component from another file"><a href="#28-multi-file">Importing a component from another file</a></li>
+<li data-name="A model and a store in their own files"><a href="#42-project-layout">A model and a store in their own files</a></li>
 </ul>
 </details>
   </nav>
@@ -702,8 +703,8 @@ export const TaskBoard = () =&gt; {
 };</code></pre></div>
 <div class="tab-panel" data-panel="store_counter.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
-<span class="tok-kw">class</span> _CounterStore <span class="tok-kw">extends</span> <span class="tok-typ">ChangeNotifier</span> {
-  <span class="tok-fn">_CounterStore</span>({<span class="tok-kw">required</span> <span class="tok-kw">this</span>.count, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.label});
+<span class="tok-kw">class</span> <span class="tok-typ">CounterStore</span> <span class="tok-kw">extends</span> <span class="tok-typ">ChangeNotifier</span> {
+  <span class="tok-typ">CounterStore</span>({<span class="tok-kw">required</span> <span class="tok-kw">this</span>.count, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.label});
 
   int count;
   <span class="tok-typ">String</span> label;
@@ -719,23 +720,23 @@ export const TaskBoard = () =&gt; {
   }
 }
 
-<span class="tok-kw">final</span> _CounterStore _counterStore = <span class="tok-fn">_CounterStore</span>(count: <span class="tok-num">0</span>, label: <span class="tok-str">'Taps'</span>);
+<span class="tok-kw">final</span> <span class="tok-typ">CounterStore</span> counterStore = <span class="tok-typ">CounterStore</span>(count: <span class="tok-num">0</span>, label: <span class="tok-str">'Taps'</span>);
 
 <span class="tok-kw">class</span> <span class="tok-typ">StoreCounter</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">StoreCounter</span>({<span class="tok-kw">super</span>.key});
 
   <span class="tok-kw">void</span> <span class="tok-fn">_increment</span>() {
-    _counterStore.<span class="tok-fn">update</span>(count: _counterStore.count + <span class="tok-num">1</span>);
+    counterStore.<span class="tok-fn">update</span>(count: counterStore.count + <span class="tok-num">1</span>);
   }
 
   @override
   <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
     <span class="tok-kw">return</span> <span class="tok-typ">ListenableBuilder</span>(
-      listenable: _counterStore,
+      listenable: counterStore,
       builder: (context, child) {
         <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
           children: [
-            <span class="tok-typ">Text</span>(<span class="tok-str">'${_counterStore.label}: ${_counterStore.count}'</span>),
+            <span class="tok-typ">Text</span>(<span class="tok-str">'${counterStore.label}: ${counterStore.count}'</span>),
             <span class="tok-typ">ElevatedButton</span>(
               onPressed: _increment,
               child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Increment'</span>),
@@ -2825,6 +2826,102 @@ export const Shell = () =&gt; (
   <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
     <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(children: [<span class="tok-typ">Text</span>(name), <span class="tok-typ">Text</span>(admin ? <span class="tok-str">'admin'</span> : <span class="tok-str">'member'</span>)]);
   }
+}</code></pre></div>
+</div>
+</section>
+<section class="recipe" id="42-project-layout" data-name="A model and a store in their own files">
+<h3>A model and a store in their own files</h3>
+<p class="blurb">A shared store and the shapes your app passes around live where you would put them in any TypeScript project; each compiles to its own Dart file and the imports are rewritten to match.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/NowPlaying.tsx" role="tab" aria-selected="true">src/NowPlaying.tsx</button>
+<button class="tab-btn" data-tab="now_playing.dart" role="tab" aria-selected="false">now_playing.dart</button>
+<button class="tab-btn" data-tab="src/playlist.tsx" role="tab" aria-selected="false">src/playlist.tsx</button>
+<button class="tab-btn" data-tab="playlist.dart" role="tab" aria-selected="false">playlist.dart</button>
+<button class="tab-btn" data-tab="src/song.tsx" role="tab" aria-selected="false">src/song.tsx</button>
+<button class="tab-btn" data-tab="song.dart" role="tab" aria-selected="false">song.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/NowPlaying.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useStore } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-kw">import</span> { playlistStore } <span class="tok-kw">from</span> <span class="tok-str">'./playlist'</span>;
+<span class="tok-kw">import</span> <span class="tok-kw">type</span> { <span class="tok-typ">Song</span> } <span class="tok-kw">from</span> <span class="tok-str">'./song'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">NowPlaying</span> = ({ song }: { song: <span class="tok-typ">Song</span> }) =&gt; {
+  <span class="tok-kw">const</span> [state, setState] = <span class="tok-fn">useStore</span>(playlistStore);
+
+  <span class="tok-kw">const</span> play = () =&gt; {
+    <span class="tok-fn">setState</span>({ plays: state.plays + <span class="tok-num">1</span> });
+  };
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;{song.title}&lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Played: {state.plays}&lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={play}&gt;Play&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
+  );
+};</code></pre></div>
+<div class="tab-panel" data-panel="now_playing.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">import</span> <span class="tok-str">'playlist.dart'</span>;
+<span class="tok-kw">import</span> <span class="tok-str">'song.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">NowPlaying</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">NowPlaying</span>({<span class="tok-kw">super</span>.key, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.song});
+
+  <span class="tok-kw">final</span> <span class="tok-typ">Song</span> song;
+
+  <span class="tok-kw">void</span> <span class="tok-fn">_play</span>() {
+    playlistStore.<span class="tok-fn">update</span>(plays: playlistStore.plays + <span class="tok-num">1</span>);
+  }
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">ListenableBuilder</span>(
+      listenable: playlistStore,
+      builder: (context, child) {
+        <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+          children: [
+            <span class="tok-typ">Text</span>(song.title),
+            <span class="tok-typ">Text</span>(<span class="tok-str">'Played: ${playlistStore.plays}'</span>),
+            <span class="tok-typ">ElevatedButton</span>(onPressed: _play, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Play'</span>)),
+          ],
+        );
+      },
+    );
+  }
+}</code></pre></div>
+<div class="tab-panel" data-panel="src/playlist.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { createStore } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> playlistStore = <span class="tok-fn">createStore</span>({ plays: <span class="tok-num">0</span> });</code></pre></div>
+<div class="tab-panel" data-panel="playlist.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">PlaylistStore</span> <span class="tok-kw">extends</span> <span class="tok-typ">ChangeNotifier</span> {
+  <span class="tok-typ">PlaylistStore</span>({<span class="tok-kw">required</span> <span class="tok-kw">this</span>.plays});
+
+  int plays;
+
+  <span class="tok-kw">void</span> <span class="tok-fn">update</span>({int? plays}) {
+    <span class="tok-kw">if</span> (plays != <span class="tok-kw">null</span>) {
+      <span class="tok-kw">this</span>.plays = plays;
+    }
+    <span class="tok-fn">notifyListeners</span>();
+  }
+}
+
+<span class="tok-kw">final</span> <span class="tok-typ">PlaylistStore</span> playlistStore = <span class="tok-typ">PlaylistStore</span>(plays: <span class="tok-num">0</span>);</code></pre></div>
+<div class="tab-panel" data-panel="src/song.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">interface</span> <span class="tok-typ">Song</span> {
+  title: string;
+  seconds: number;
+}</code></pre></div>
+<div class="tab-panel" data-panel="song.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">class</span> <span class="tok-typ">Song</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Song</span>({<span class="tok-kw">required</span> <span class="tok-kw">this</span>.title, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.seconds});
+
+  <span class="tok-kw">factory</span> <span class="tok-typ">Song</span>.<span class="tok-fn">fromJson</span>(<span class="tok-typ">Map</span>&lt;<span class="tok-typ">String</span>, dynamic&gt; json) =&gt;
+      <span class="tok-typ">Song</span>(title: json[<span class="tok-str">'title'</span>] <span class="tok-kw">as</span> <span class="tok-typ">String</span>, seconds: json[<span class="tok-str">'seconds'</span>] <span class="tok-kw">as</span> num);
+
+  <span class="tok-kw">final</span> <span class="tok-typ">String</span> title;
+  <span class="tok-kw">final</span> num seconds;
 }</code></pre></div>
 </div>
 </section>

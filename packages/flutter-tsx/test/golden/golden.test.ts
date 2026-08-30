@@ -53,6 +53,7 @@ const GREEN_FIXTURES = new Set([
   '39-builder-callback',
   '40-layout-builder',
   '41-model-helper',
+  '42-project-layout',
 ]);
 
 const fixtures = await listFixtures();

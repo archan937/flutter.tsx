@@ -312,7 +312,12 @@ fsx build --target=macos     # or pick one</code></pre>
   web/ macos/ …          the host Flutter app</code></pre>
 <p>Every file under <code>src/</code> compiles to the Dart file beside it: <code>src/components/Greeting.tsx</code> becomes <code>lib/components/greeting.dart</code>, and the import between them is rewritten to match. Directories are yours to choose — <code>screens/</code>, <code>features/billing/</code> — and nesting is free. Name files <code>.tsx</code> even when they hold no JSX, because that is what the compiler reads.</p>
 <p>A file does not have to export a component. One that exports only helpers, models, enums or a store compiles to a Dart file of those, which is what makes <code>helpers/format.tsx</code> work.</p>
-<p>Two things still live in the file that uses them: a <code>createStore</code> and an <code>interface</code> used as a prop type. Both compile to private Dart declarations, so importing them from another file is refused with a numbered error rather than emitting Dart that would not build.</p>
+<p>A model and a store belong in their own files too:</p>
+<pre><code>src/
+  models/song.tsx        an interface, compiled to a Dart data class
+  stores/playlist.tsx    a createStore, compiled to a ChangeNotifier
+  NowPlaying.tsx         imports both</code></pre>
+<p>The file that declares one emits it; the file that imports it reads the shape and imports the Dart. A store is emitted public, because a store no other file can reach is not a shared store.</p>
 <p><code>lib/</code> and <code>.fsx/</code> are generated and gitignored: a fresh clone is <code>bun install &amp;&amp; fsx install</code>, and everything is rebuilt.</p>
 <h3 id="owning-the-entry-point">Owning the entry point</h3>
 <p><code>fsx</code> generates <code>lib/main.dart</code>, marked with a line saying so. Delete that line and fsx never touches the file again — which is how an app that needs its own <code>main</code> (a menu-bar app setting up a tray and window, say) takes over, while every component still compiles from TSX.</p>

@@ -21,6 +21,11 @@ export interface FixtureApp {
   testDeps?: string[];
   /** True when fixtures/behavior/<id>.dart drives it at runtime. */
   behavior?: boolean;
+  /**
+   * Dart files the fixture emits beside `expected.dart`, for an example
+   * spanning several files — a model or a store in its own file.
+   */
+  siblings?: string[];
 }
 
 export const FIXTURE_APPS: FixtureApp[] = [
@@ -286,5 +291,12 @@ export const FIXTURE_APPS: FixtureApp[] = [
     component: 'Shelf',
     dartFile: 'shelf.dart',
     deps: [],
+  },
+  {
+    id: '42-project-layout',
+    component: 'NowPlaying',
+    dartFile: 'now_playing.dart',
+    deps: [],
+    siblings: ['song.dart', 'playlist.dart'],
   },
 ];
