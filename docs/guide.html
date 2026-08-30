@@ -210,7 +210,7 @@ fsx build --target=macos     # or pick one</code></pre>
 </table>
 <h2 id="8-check-the-project">8. Check the project</h2>
 <pre><code class="language-sh">fsx doctor</code></pre>
-<p>Reports whether the SDK matches the pinned version, whether this is a project, whether its root component exists, and whether every declared plugin is installed with its typings — naming the command that fixes anything it finds, and exiting non-zero so CI can gate on it.</p>
+<p>Reports whether the SDK matches the pinned version, whether this is a project, whether its root component exists, whether every declared plugin is installed with its typings, and which iOS usage descriptions your <code>Info.plist</code> is still missing for the plugins you declared — naming the fix for each, and exiting non-zero so CI can gate on it.</p>
 <h2 id="project-layout">Project layout</h2>
 <pre><code>my-app/
   fsx.config.ts        typed app config

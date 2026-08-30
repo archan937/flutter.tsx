@@ -14,6 +14,7 @@ import { buildSitePage } from '@src/site/from-snapshot';
 import { renderMarkdown } from '@src/site/markdown';
 import { emitExampleProbe } from '@src/site/probe';
 import { buildApiReferenceHtml } from '@src/site/render';
+import { withRequirementsTable } from '@src/site/requirements-table';
 import { loadSiteSections } from '@src/site/sections';
 
 describe('committed generated docs', () => {
@@ -66,6 +67,25 @@ describe('committed generated docs', () => {
     const committed = await Bun.file(indexUrl).text();
 
     expect(committed).toBe(withShowcase(committed, recipes, page));
+  }, 60000);
+
+  test('the committed markdown carries the derived requirements table', async () => {
+    const snapshot = await loadApiSnapshot();
+    const page = buildSitePage(
+      snapshot,
+      deriveSlots(snapshot),
+      await loadSiteSections(),
+    );
+    const sourceUrl = new URL(
+      '../../../../docs/config-mapping.md',
+      import.meta.url,
+    );
+
+    const committed = await Bun.file(sourceUrl).text();
+
+    // The table was hand-written and listed capabilities nothing extracts.
+    expect(committed).toBe(withRequirementsTable(committed, page.plugins));
+    expect(committed).toContain('`NSCameraUsageDescription`');
   }, 60000);
 
   test('each prose page is a fresh render of its markdown source', async () => {

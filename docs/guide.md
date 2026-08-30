@@ -200,9 +200,9 @@ fsx doctor
 ```
 
 Reports whether the SDK matches the pinned version, whether this is a project, whether
-its root component exists, and whether every declared plugin is installed with its
-typings — naming the command that fixes anything it finds, and exiting non-zero so CI can
-gate on it.
+its root component exists, whether every declared plugin is installed with its typings,
+and which iOS usage descriptions your `Info.plist` is still missing for the plugins you
+declared — naming the fix for each, and exiting non-zero so CI can gate on it.
 
 ## Project layout
 

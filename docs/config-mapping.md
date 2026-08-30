@@ -40,16 +40,30 @@ from each plugin's own source, alongside the API it types. Nothing writes it int
 that needs a capability, add the declaration to the native file yourself, as you would in
 a Flutter project.
 
-The extracted requirements per plugin look like this, and are what a later release will
-merge into the native files:
+`fsx doctor` reports the iOS keys a declared plugin needs and your `Info.plist` does not
+have — the one duty nothing else can discharge, since the value is a purpose string Apple
+reviews. Android permissions declared by a plugin's own manifest are merged into your app
+by Gradle, so there is nothing to copy for those.
 
-| Capability | iOS / macOS (`Info.plist`) | Android (`AndroidManifest.xml`) | macOS entitlement |
+This is what the extractor found in the plugins bundled with this release, generated from
+their own artifacts:
+
+<!-- generated:plugin-requirements -->
+
+| Plugin | iOS `Info.plist` | Android permissions | Android `<queries>` |
 | --- | --- | --- | --- |
-| camera | `NSCameraUsageDescription` | `android.permission.CAMERA` | `com.apple.security.device.camera` |
-| microphone | `NSMicrophoneUsageDescription` | `android.permission.RECORD_AUDIO` | `com.apple.security.device.audio-input` |
-| location | `NSLocationWhenInUseUsageDescription` | `android.permission.ACCESS_FINE_LOCATION` | `com.apple.security.personal-information.location` |
-| photos | `NSPhotoLibraryUsageDescription` | `android.permission.READ_MEDIA_IMAGES` | `com.apple.security.files.user-selected.read-write` |
-| network | — | `android.permission.INTERNET` | `com.apple.security.network.client` |
+| `camera` | `NSCameraUsageDescription`<br>`NSMicrophoneUsageDescription` | `android.permission.CAMERA`<br>`android.permission.RECORD_AUDIO`<br>`android.permission.WRITE_EXTERNAL_STORAGE` | — |
+| `connectivity_plus` | — | `android.permission.ACCESS_NETWORK_STATE` | — |
+| `flutter_secure_storage` | — | — | — |
+| `http` | — | — | — |
+| `package_info_plus` | — | — | — |
+| `shared_preferences` | — | — | — |
+| `url_launcher` | — | — | `https`<br>`sms`<br>`tel` |
+
+<!-- /generated:plugin-requirements -->
+
+Android `<queries>` entries come from a plugin's example app, where its author shows them
+behind “if your app looks these up” — add them only if yours does.
 
 **Signing, icons, splash screens and store metadata.** These belong to the native projects
 `flutter create` produced; edit them there.

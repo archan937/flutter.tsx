@@ -70,7 +70,7 @@ Dart to `lib/`, which nothing needs to edit by hand.
 | `fsx init <dir>` | Scaffolds a project and its host Flutter app |
 | `fsx dev` | Compiles `src/**/*.tsx` → `lib/`, runs the app, hot reloads on save |
 | `fsx build [--target=<platform>]` | Release build for `web`, `ios`, `android`, `macos`, `windows` or `linux`; a platform the project has never built for is set up on the way |
-| `fsx doctor` | Reports whether the SDK, project and plugins are ready, naming the command that fixes each problem |
+| `fsx doctor` | Reports whether the SDK, project and plugins are ready, and which iOS usage descriptions a declared plugin still needs — naming the fix for each, and exiting non-zero so CI can gate on it |
 
 Plugins are declared the way npm dependencies are, and installed by the same command:
 
@@ -154,8 +154,10 @@ Rewrite progress:
 - [x] High-level abstractions: `useAsync`/`useStream` → `FutureBuilder`/`StreamBuilder`,
       `createStore`/`useStore`, routing, modals, tabs, animation, gestures, typed JSON
 - [x] `fsx` CLI (`install` · `init` · `dev` · `build` · `doctor`) and the scaffolder,
-      building for web, iOS, Android, macOS, Windows and Linux
-- [ ] CI pipeline, docs site, and 1.0 on npm
+      building for web, iOS, Android, macOS, Windows and Linux — web and macOS are
+      built end to end on every CI run
+- [x] CI pipeline (three jobs; the macOS one builds real Flutter apps) and the docs site
+- [ ] 1.0 on npm
 
 ## Repository layout
 

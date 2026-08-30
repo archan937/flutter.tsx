@@ -119,17 +119,23 @@
 <p><code>lib/</code> and <code>.fsx/</code> are generated and gitignored. A fresh clone needs <code>bun install &amp;&amp; fsx install</code>, and both are rebuilt.</p>
 <h2 id="what-fsx-does-not-write-yet">What fsx does not write yet</h2>
 <p><strong>Native permission and capability declarations.</strong> Every plugin states what a host app must declare — <code>NSCameraUsageDescription</code> on Apple platforms, <code>android.permission.CAMERA</code> on Android, the matching entitlements on macOS — and Flutter.tsx already extracts that from each plugin's own source, alongside the API it types. Nothing writes it into <code>Info.plist</code>, <code>AndroidManifest.xml</code> or the entitlements files today: after adding a plugin that needs a capability, add the declaration to the native file yourself, as you would in a Flutter project.</p>
-<p>The extracted requirements per plugin look like this, and are what a later release will merge into the native files:</p>
+<p><code>fsx doctor</code> reports the iOS keys a declared plugin needs and your <code>Info.plist</code> does not have — the one duty nothing else can discharge, since the value is a purpose string Apple reviews. Android permissions declared by a plugin's own manifest are merged into your app by Gradle, so there is nothing to copy for those.</p>
+<p>This is what the extractor found in the plugins bundled with this release, generated from their own artifacts:</p>
+<p>&lt;!-- generated:plugin-requirements --&gt;</p>
 <table>
-<thead><tr><th>Capability</th><th>iOS / macOS (<code>Info.plist</code>)</th><th>Android (<code>AndroidManifest.xml</code>)</th><th>macOS entitlement</th></tr></thead>
+<thead><tr><th>Plugin</th><th>iOS <code>Info.plist</code></th><th>Android permissions</th><th>Android <code>&lt;queries&gt;</code></th></tr></thead>
 <tbody>
-<tr><td>camera</td><td><code>NSCameraUsageDescription</code></td><td><code>android.permission.CAMERA</code></td><td><code>com.apple.security.device.camera</code></td></tr>
-<tr><td>microphone</td><td><code>NSMicrophoneUsageDescription</code></td><td><code>android.permission.RECORD_AUDIO</code></td><td><code>com.apple.security.device.audio-input</code></td></tr>
-<tr><td>location</td><td><code>NSLocationWhenInUseUsageDescription</code></td><td><code>android.permission.ACCESS_FINE_LOCATION</code></td><td><code>com.apple.security.personal-information.location</code></td></tr>
-<tr><td>photos</td><td><code>NSPhotoLibraryUsageDescription</code></td><td><code>android.permission.READ_MEDIA_IMAGES</code></td><td><code>com.apple.security.files.user-selected.read-write</code></td></tr>
-<tr><td>network</td><td>—</td><td><code>android.permission.INTERNET</code></td><td><code>com.apple.security.network.client</code></td></tr>
+<tr><td><code>camera</code></td><td><code>NSCameraUsageDescription</code>&lt;br&gt;<code>NSMicrophoneUsageDescription</code></td><td><code>android.permission.CAMERA</code>&lt;br&gt;<code>android.permission.RECORD_AUDIO</code>&lt;br&gt;<code>android.permission.WRITE_EXTERNAL_STORAGE</code></td><td>—</td></tr>
+<tr><td><code>connectivity_plus</code></td><td>—</td><td><code>android.permission.ACCESS_NETWORK_STATE</code></td><td>—</td></tr>
+<tr><td><code>flutter_secure_storage</code></td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td><code>http</code></td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td><code>package_info_plus</code></td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td><code>shared_preferences</code></td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td><code>url_launcher</code></td><td>—</td><td>—</td><td><code>https</code>&lt;br&gt;<code>sms</code>&lt;br&gt;<code>tel</code></td></tr>
 </tbody>
 </table>
+<p>&lt;!-- /generated:plugin-requirements --&gt;</p>
+<p>Android <code>&lt;queries&gt;</code> entries come from a plugin's example app, where its author shows them behind “if your app looks these up” — add them only if yours does.</p>
 <p><strong>Signing, icons, splash screens and store metadata.</strong> These belong to the native projects <code>flutter create</code> produced; edit them there.</p>
 <p><strong>Theme.</strong> An app's theme is Dart in the entry point. <code>fsx</code> generates a plain <code>MaterialApp</code>; to theme it, take over <code>lib/main.dart</code> by removing the generated marker, or wrap your root component in the widgets you want.</p>
 <h2 id="why-it-is-drawn-this-way">Why it is drawn this way</h2>

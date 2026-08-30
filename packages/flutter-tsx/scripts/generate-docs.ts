@@ -12,6 +12,7 @@ import { buildSitePage } from '@src/site/from-snapshot';
 import { renderMarkdown } from '@src/site/markdown';
 import { emitExampleProbe } from '@src/site/probe';
 import { buildApiReferenceHtml } from '@src/site/render';
+import { withRequirementsTable } from '@src/site/requirements-table';
 import { loadSiteSections } from '@src/site/sections';
 
 const snapshot = await loadApiSnapshot();
@@ -45,9 +46,14 @@ process.stdout.write(`Wrote ${indexUrl.pathname} — showcase from fixtures.\n`)
 // The prose pages are markdown in the repository — where GitHub renders them —
 // and HTML on the site, from that same source.
 for (const docPage of DOC_PAGES) {
-  const markdown = await Bun.file(
-    new URL(`../../../docs/${docPage.source}`, import.meta.url),
-  ).text();
+  const sourceUrl = new URL(`../../../docs/${docPage.source}`, import.meta.url);
+  // The requirements table is derived, so the markdown that GitHub renders is
+  // rewritten too — not just the page built from it.
+  const markdown = withRequirementsTable(
+    await Bun.file(sourceUrl).text(),
+    page.plugins,
+  );
+  await Bun.write(sourceUrl, markdown);
   const pageUrl = new URL(
     `../../../docs/${docPage.source.replace(/\.md$/, '.html')}`,
     import.meta.url,
