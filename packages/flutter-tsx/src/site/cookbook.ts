@@ -1,4 +1,5 @@
 import { dartFileFor } from '../compiler/dart-names';
+import type { SitePage } from './model';
 import { escapeHtml } from './render';
 
 /** One certified fixture, shown as the TSX written and the Dart emitted. */
@@ -169,7 +170,24 @@ const PANELS = /<!-- showcase:panels -->[\s\S]*?<!-- \/showcase:panels -->/;
 const WINDOW_NAME = /(<span class="fname" id="fname">)[^<]*(<\/span>)/;
 const COMPILE_NAME = /(<span id="compile-name">)[^<]*(<\/span>)/;
 const EXAMPLE_MAP = /const EXAMPLES = \{[\s\S]*?\};/;
+const STATS = /<!-- showcase:stats -->[\s\S]*?<!-- \/showcase:stats -->/;
+const WIDGET_COUNT = /every one of the [\d,]+\n?\s*widgets/;
 const FLUTTER_VERSION = /Flutter \d+\.\d+\.\d+/g;
+
+/** What the page counts, in the order it shows them. */
+const statCounts = (page: SitePage): { count: number; label: string }[] => [
+  { count: page.widgets.length, label: 'Flutter Widgets' },
+  { count: page.plugins.length, label: 'Native Plugins' },
+  { count: page.coreApi.length, label: 'Hooks &amp; Core APIs' },
+  { count: page.enums.length, label: 'Enums' },
+  { count: page.types.length, label: 'Types' },
+];
+
+const statBlock = (stat: { count: number; label: string }): string =>
+  `        <div class="stat">
+          <div class="stat-value" data-count="${stat.count}">0</div>
+          <div class="stat-label">${stat.label}</div>
+        </div>`;
 
 const pickerButton = (showcase: Showcase, index: number): string =>
   `<button class="${index === 0 ? 'active' : ''}" data-example="${escapeHtml(showcase.id)}" role="tab" aria-selected="${index === 0}">${escapeHtml(showcase.label)}</button>`;
@@ -195,7 +213,7 @@ const codePanel = (
 export const withShowcase = (
   html: string,
   recipes: Recipe[],
-  flutterVersion: string,
+  page: SitePage,
 ): string => {
   const chosen = showcaseRecipes(recipes);
   // SHOWCASES is a non-empty tuple, so the page always has something to open
@@ -228,7 +246,15 @@ export const withShowcase = (
     .replace(WINDOW_NAME, `$1${escapeHtml(lead.tsx)}$2`)
     .replace(COMPILE_NAME, `$1${escapeHtml(lead.tsx.replace('src/', ''))}$2`)
     .replace(EXAMPLE_MAP, `const EXAMPLES = {\n${map}\n          };`)
-    .replace(FLUTTER_VERSION, `Flutter ${flutterVersion}`);
+    .replace(
+      STATS,
+      `<!-- showcase:stats -->\n${statCounts(page).map(statBlock).join('\n')}\n        <!-- /showcase:stats -->`,
+    )
+    .replace(
+      WIDGET_COUNT,
+      `every one of the ${page.widgets.length}\n            widgets`,
+    )
+    .replace(FLUTTER_VERSION, `Flutter ${page.flutterVersion}`);
 };
 
 export interface DocPage {

@@ -959,7 +959,7 @@
             <a href="./api-reference.html">API Reference</a>
           <a
             class="ghstars"
-            href="https://github.com/archan937/flutter-tsx/stargazers"
+            href="https://github.com/archan937/flutter.tsx/stargazers"
             target="_blank"
             rel="noopener"
             aria-label="Star flutter-tsx on GitHub"
@@ -979,7 +979,7 @@
           </a>
           <a
             class="ghbtn"
-            href="https://github.com/archan937/flutter-tsx"
+            href="https://github.com/archan937/flutter.tsx"
             target="_blank"
             rel="noopener"
             >GitHub ↗</a
@@ -1015,13 +1015,18 @@
           <button
             class="cta npm"
             id="npm"
-            data-cmd="npm create flutter-tsx@latest"
+            data-cmd="git clone https://github.com/archan937/flutter.tsx"
           >
             <span class="prompt">$</span>
-            <span class="cmd">npm create flutter-tsx@latest</span>
+            <span class="cmd">git clone https://github.com/archan937/flutter.tsx</span>
             <span class="copy-ico" aria-hidden="true">⧉</span>
           </button>
         </div>
+        <p class="lead reveal" style="font-size: 0.95rem; opacity: 0.75">
+          Pre-1.0: the engine is built from this repository — the
+          <a href="./guide.html">Guide</a> has the three-line setup.
+          <code>npm create flutter-tsx@latest</code> ships with 1.0.
+        </p>
       </header>
 
       <section class="showcase reveal">
@@ -1581,26 +1586,28 @@ class _FaderState extends State&lt;Fader&gt; {
       </section>
 
       <section class="stats reveal" aria-label="By the numbers">
+        <!-- showcase:stats -->
         <div class="stat">
-          <div class="stat-value" data-count="542">0</div>
+          <div class="stat-value" data-count="539">0</div>
           <div class="stat-label">Flutter Widgets</div>
         </div>
         <div class="stat">
-          <div class="stat-value" data-count="38">0</div>
+          <div class="stat-value" data-count="7">0</div>
           <div class="stat-label">Native Plugins</div>
         </div>
         <div class="stat">
-          <div class="stat-value" data-count="12">0</div>
+          <div class="stat-value" data-count="23">0</div>
           <div class="stat-label">Hooks &amp; Core APIs</div>
         </div>
         <div class="stat">
-          <div class="stat-value" data-count="147">0</div>
+          <div class="stat-value" data-count="217">0</div>
           <div class="stat-label">Enums</div>
         </div>
         <div class="stat">
-          <div class="stat-value" data-count="770">0</div>
+          <div class="stat-value" data-count="129">0</div>
           <div class="stat-label">Types</div>
         </div>
+        <!-- /showcase:stats -->
       </section>
 
       <section class="why" id="why">
@@ -1645,16 +1652,16 @@ class _FaderState extends State&lt;Fader&gt; {
           <p>
             And because
             <span class="hl">you build on top of Flutter</span> rather than
-            reinventing it, the hard parts stay solved for you. Google ships the
-            SDK churn upstream and fsx absorbs it under the hood —
-            <span class="hl">no breaking upgrades to chase</span>. Camera,
-            photos, audio, maps, storage and auth are
-            <span class="hl">typed first-party hooks</span> — not a gamble on an
+            reinventing it, the hard parts stay solved for you. fsx pins the SDK
+            and <span class="hl">regenerates every type from it</span>, so an
+            upgrade arrives as one version bump rather than a migration. Camera,
+            preferences, secure storage, connectivity, HTTP, links and device
+            info are
+            <span class="hl">typed hooks over maintained pub packages</span> —
+            most of them from Flutter's and Dart's own teams, not a gamble on an
             unmaintained npm package. And
-            <span class="hl"
-              >ESLint, Prettier, and end-to-end TypeScript types</span
-            >
-            are wired in from <code>fsx init</code>: every one of the 542
+            <span class="hl">end-to-end TypeScript types</span>
+            are wired in from <code>fsx init</code>: every one of the 539
             widgets is fully typed, so it's autocomplete and red squiggles,
             never guesswork.
           </p>
@@ -1729,7 +1736,8 @@ class _FaderState extends State&lt;Fader&gt; {
                   <span class="g yes">✓</span>First-party + vetted plugins
                 </td>
                 <td class="col-fsx">
-                  <span class="g yes">✓</span>Typed first-party hooks
+                  <span class="g yes">✓</span>Typed hooks over maintained
+                  pub packages
                 </td>
               </tr>
               <tr>
@@ -1739,8 +1747,8 @@ class _FaderState extends State&lt;Fader&gt; {
                 </td>
                 <td><span class="g yes">✓</span>Dart analyzer + dartfmt</td>
                 <td class="col-fsx">
-                  <span class="g yes">✓</span>ESLint + Prettier + full TS,
-                  preconfigured
+                  <span class="g yes">✓</span>Strict TS project; every prop
+                  typed from the SDK
                 </td>
               </tr>
               <tr>
@@ -1762,7 +1770,8 @@ class _FaderState extends State&lt;Fader&gt; {
                   Windows · Linux
                 </td>
                 <td class="col-fsx">
-                  <span class="g yes">✓</span>All six, from one TSX source
+                  <span class="g yes">✓</span>All six — web and macOS built
+                  in CI
                 </td>
               </tr>
             </tbody>
@@ -1785,29 +1794,29 @@ class _FaderState extends State&lt;Fader&gt; {
           </div>
           <div class="feature reveal">
             <div class="ico">✓</div>
-            <h3>Real tooling, on by default</h3>
+            <h3>Typed to the last prop</h3>
             <p>
-              ESLint, Prettier, and end-to-end TypeScript types come standard.
-              Every widget prop is typed — autocomplete and red squiggles, not
-              guesswork.
+              <code>fsx init</code> writes a strict TypeScript project, and every
+              widget prop is typed from the SDK itself — autocomplete and red
+              squiggles, not guesswork.
             </p>
           </div>
           <div class="feature reveal">
             <div class="ico">▲</div>
             <h3>Stands on Google's Flutter</h3>
             <p>
-              Flutter is built and maintained by Google. Breaking SDK changes
-              are absorbed under the hood — you write components, not migration
-              scripts.
+              Flutter is built and maintained by Google. fsx pins the SDK and
+              regenerates every type from it, so you write components, not
+              migration scripts.
             </p>
           </div>
           <div class="feature reveal">
             <div class="ico">⚡</div>
             <h3>First-party native power</h3>
             <p>
-              Camera, photos, audio, maps, storage, auth — typed hooks mapping
-              to maintained plugins. No stitching together unvetted community
-              packages.
+              Camera, preferences, secure storage, connectivity, HTTP, links,
+              device info — typed hooks over maintained pub packages, most from
+              Flutter's and Dart's own teams.
             </p>
           </div>
           <div class="feature reveal">
@@ -1824,7 +1833,7 @@ class _FaderState extends State&lt;Fader&gt; {
             <h3>One codebase, six targets</h3>
             <p>
               iOS, Android, web, macOS, Windows, and Linux — from a single TSX
-              source.
+              source. Web and macOS are built from the fixtures on every run.
             </p>
           </div>
         </div>
@@ -1839,7 +1848,7 @@ class _FaderState extends State&lt;Fader&gt; {
             <a href="./cookbook.html">Cookbook</a> ·
             <a href="./api-reference.html">API Reference</a> ·
           <a
-            href="https://github.com/archan937/flutter-tsx"
+            href="https://github.com/archan937/flutter.tsx"
             target="_blank"
             rel="noopener"
             >GitHub</a
@@ -1914,7 +1923,7 @@ class _FaderState extends State&lt;Fader&gt; {
       (function () {
         const el = document.getElementById('gh-stars');
         if (!el) return;
-        fetch('https://api.github.com/repos/archan937/flutter-tsx')
+        fetch('https://api.github.com/repos/archan937/flutter.tsx')
           .then(function (r) {
             return r.ok ? r.json() : null;
           })

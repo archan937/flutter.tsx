@@ -8,6 +8,8 @@ import {
   SHOWCASES,
   withShowcase,
 } from '@src/site/cookbook';
+import type { SitePage } from '@src/site/model';
+import { page as samplePage } from '@test/support/sample-page';
 
 const FIXTURES_DIR = new URL('../fixtures', import.meta.url).pathname;
 
@@ -90,8 +92,11 @@ describe('withShowcase', () => {
 
   const load = async (): Promise<Recipe[]> => loadRecipes(FIXTURES_DIR);
 
+  // Only the counts and the version are read from the page model.
+  const model: SitePage = { ...samplePage, flutterVersion: '3.47.1' };
+
   test('offers every showcase, so one example does not stand for the whole compiler', async () => {
-    const html = withShowcase(page, await load(), '3.47.1');
+    const html = withShowcase(page, await load(), model);
 
     for (const showcase of SHOWCASES) {
       expect(html).toContain(`data-example="${showcase.id}"`);
@@ -101,7 +106,7 @@ describe('withShowcase', () => {
   }, 60000);
 
   test('renders both panels for every showcase, only the first one open', async () => {
-    const html = withShowcase(page, await load(), '3.47.1');
+    const html = withShowcase(page, await load(), model);
 
     for (const showcase of SHOWCASES) {
       expect(html).toContain(`data-example="${showcase.id}" data-panel="tsx"`);
@@ -115,7 +120,7 @@ describe('withShowcase', () => {
   }, 60000);
 
   test('names the files the compiler reads and writes', async () => {
-    const html = withShowcase(page, await load(), '3.47.1');
+    const html = withShowcase(page, await load(), model);
 
     // `05-counter` exports Counter, so a project would hold these two files.
     expect(html).toContain(
@@ -133,7 +138,7 @@ describe('withShowcase', () => {
   }, 60000);
 
   test('states the Flutter version the page was generated against', async () => {
-    const html = withShowcase(page, await load(), '3.47.1');
+    const html = withShowcase(page, await load(), model);
 
     expect(html).toContain('TSX in · Dart out · Flutter 3.47.1');
     expect(html).toContain('idiomatic Dart · Flutter 3.47.1');
@@ -141,7 +146,7 @@ describe('withShowcase', () => {
   }, 60000);
 
   test('refuses to render a showcase whose fixture is gone', () => {
-    expect(() => withShowcase(page, [counter], '3.47.1')).toThrow(
+    expect(() => withShowcase(page, [counter], model)).toThrow(
       'the showcase fixture 01-camera-screen is missing.',
     );
   });

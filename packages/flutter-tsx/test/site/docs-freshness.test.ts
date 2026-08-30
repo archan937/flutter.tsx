@@ -56,13 +56,16 @@ describe('committed generated docs', () => {
       new URL('../fixtures', import.meta.url).pathname,
     );
     const snapshot = await loadApiSnapshot();
+    const page = buildSitePage(
+      snapshot,
+      deriveSlots(snapshot),
+      await loadSiteSections(),
+    );
     const indexUrl = new URL('../../../../docs/index.html', import.meta.url);
 
     const committed = await Bun.file(indexUrl).text();
 
-    expect(committed).toBe(
-      withShowcase(committed, recipes, snapshot.meta.frameworkVersion),
-    );
+    expect(committed).toBe(withShowcase(committed, recipes, page));
   }, 60000);
 
   test('each prose page is a fresh render of its markdown source', async () => {

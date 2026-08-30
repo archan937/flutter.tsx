@@ -1,6 +1,10 @@
 import { describe, expect, test } from 'bun:test';
 
+import { loadApiSnapshot } from '@src/api/load';
+import { deriveSlots } from '@src/derive/slots';
 import { SHOWCASES } from '@src/site/cookbook';
+import { buildSitePage } from '@src/site/from-snapshot';
+import { loadSiteSections } from '@src/site/sections';
 
 const landingPage = async (): Promise<string> =>
   Bun.file(new URL('../../../../docs/index.html', import.meta.url)).text();
@@ -46,5 +50,45 @@ describe('the landing page showcase', () => {
         );
       }
     }
+  });
+
+  test('counts what the reference documents, not what a past release had', async () => {
+    const snapshot = await loadApiSnapshot();
+    const page = buildSitePage(
+      snapshot,
+      deriveSlots(snapshot),
+      await loadSiteSections(),
+    );
+    const html = await landingPage();
+
+    // These were typed by hand and carried the previous engine's figures:
+    // 542 widgets, 38 plugins, 12 hooks, 147 enums, 770 types.
+    expect(matches(html, /data-count="(\d+)"/g)).toEqual([
+      String(page.widgets.length),
+      String(page.plugins.length),
+      String(page.coreApi.length),
+      String(page.enums.length),
+      String(page.types.length),
+    ]);
+    expect(html).toContain(`every one of the ${page.widgets.length}`);
+  }, 60000);
+
+  test('points at the repository it is published from', async () => {
+    const html = await landingPage();
+
+    // `archan937/flutter-tsx` is the previous engine's repository.
+    expect(html).not.toContain('archan937/flutter-tsx');
+    expect(html).toContain('archan937/flutter.tsx');
+  });
+
+  test('offers a command that works today', async () => {
+    const html = await landingPage();
+
+    // `npm create flutter-tsx@latest` installs 0.3.3 — the previous engine —
+    // until 1.0 publishes, so the hero cannot hand it to a newcomer.
+    expect(html).not.toContain('data-cmd="npm create flutter-tsx@latest"');
+    expect(html).toContain(
+      'data-cmd="git clone https://github.com/archan937/flutter.tsx"',
+    );
   });
 });

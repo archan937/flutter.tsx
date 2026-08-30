@@ -39,10 +39,7 @@ process.stdout.write(
 // The landing page shows one of those pairs; keep it the fixture's own.
 const indexUrl = new URL('../../../docs/index.html', import.meta.url);
 const indexHtml = await Bun.file(indexUrl).text();
-await Bun.write(
-  indexUrl,
-  withShowcase(indexHtml, recipes, page.flutterVersion),
-);
+await Bun.write(indexUrl, withShowcase(indexHtml, recipes, page));
 process.stdout.write(`Wrote ${indexUrl.pathname} — showcase from fixtures.\n`);
 
 // The prose pages are markdown in the repository — where GitHub renders them —
