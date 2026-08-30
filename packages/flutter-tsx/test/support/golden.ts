@@ -34,13 +34,16 @@ export const flutterBin = (): string =>
 const dartBin = (): string =>
   join(resolveFsxPaths(process.env, homedir()).sdkDir, 'bin', 'dart');
 
+/**
+ * Resolves a Dart package's dependencies. Unconditional on purpose: skipping
+ * when `.dart_tool` happens to exist made the suite behave differently on a
+ * machine that had run before than on a clean checkout — and made the coverage
+ * gate depend on which of the two it was. `pub get` is a no-op against a warm
+ * cache.
+ */
 export const ensurePackageResolved = async (
   packageDir: string,
 ): Promise<void> => {
-  const configPath = join(packageDir, '.dart_tool', 'package_config.json');
-  if (await Bun.file(configPath).exists()) {
-    return;
-  }
   const exitCode = await runCommand([flutterBin(), 'pub', 'get'], packageDir);
   if (exitCode !== 0) {
     throw new Error(

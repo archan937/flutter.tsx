@@ -13,12 +13,19 @@ const extractorDir = new URL('../extractor', import.meta.url).pathname;
 // a Dart formatting nit must never cost a full TypeScript test run first.
 const mode = process.argv[2] === 'lint' ? 'lint' : 'test';
 
+// The extractor is a Dart package: on a clean checkout nothing has resolved
+// its dependencies yet, and every step below would fail on missing imports.
+// `pub get` is a no-op against a warm cache, so it runs unconditionally.
+const RESOLVE: string[] = [dartBin, 'pub', 'get'];
+
 const LINT_STEPS: string[][] = [
+  RESOLVE,
   [dartBin, 'format', '--set-exit-if-changed', '.'],
   [dartBin, 'analyze', '--fatal-infos'],
 ];
 
 const TEST_STEPS: string[][] = [
+  RESOLVE,
   [dartBin, 'test', '--coverage=coverage'],
   [
     dartBin,

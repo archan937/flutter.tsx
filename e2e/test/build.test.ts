@@ -5,11 +5,13 @@ import { join } from 'node:path';
 import { describe, expect, test } from 'bun:test';
 import {
   artifactPath,
+  type BuildDeps,
+  defaultDevDeps,
   defaultInitDeps,
+  loadAppConfig,
   runBuildCommand,
   runInitCommand,
 } from 'flutter-tsx/cli';
-import { loadAppConfig } from 'flutter-tsx/cli';
 
 import { dartBin, flutterBin } from './support/flutter-app';
 import { commandRunner, pathExists } from './support/io';
@@ -34,16 +36,10 @@ export const App = () => {
 };
 `;
 
-const deps = (out: string[]) => ({
+const deps = (out: string[]): BuildDeps => ({
   loadConfig: loadAppConfig,
-  build: async (projectDir: string, config: { name: string }) => {
-    const { defaultDevDeps } = await import('flutter-tsx/cli');
-    return defaultDevDeps({ flutterBin, dartBin }).build(projectDir, {
-      ...config,
-      bundleId: 'dev.fluttertsx.demo',
-      target: 'web' as const,
-    });
-  },
+  build: (projectDir, config): Promise<string[]> =>
+    defaultDevDeps({ flutterBin, dartBin }).build(projectDir, config),
   runFlutter: commandRunner(flutterBin),
   pathExists,
   out: (line: string): void => {

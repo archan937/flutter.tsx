@@ -31,11 +31,15 @@ runs:
         version=$(bun -e "import { FLUTTER_VERSION } from './packages/flutter-tsx/src/sdk/version.ts'; console.log(FLUTTER_VERSION);")
         echo "version=$version" >> "$GITHUB_OUTPUT"
 
-    - name: Cache the Flutter SDK
+    # The SDK, and the pub cache the Dart packages resolve against — without
+    # the latter every run re-downloads them.
+    - name: Cache the Flutter SDK and pub packages
       if: inputs.flutter == 'true'
       uses: actions/cache@v4
       with:
-        path: ~/.fsx
+        path: |
+          ~/.fsx
+          ~/.pub-cache
         key: fsx-${{ runner.os }}-flutter-${{ steps.pinned.outputs.version }}
 
     # `fsx install` is a no-op when the cache already holds the pinned SDK, so
