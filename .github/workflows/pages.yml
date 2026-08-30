@@ -1,13 +1,16 @@
 name: Pages
 
-# The site is the docs directory, which is generated from the SDK snapshot and
-# the conformance fixtures. It publishes only after CI has passed on master,
-# so a page can never describe a build that did not.
+# The site is the docs directory, generated from the SDK snapshot and the
+# conformance fixtures, and gated by CI: `bun run quality` fails if any page
+# differs from a fresh render, so what would publish is always current.
+#
+# Publishing is deliberate rather than automatic. A repository has to have
+# Pages enabled for a deploy to have anywhere to go — and while this one is
+# private, that needs a plan where Pages is available. Running on every push
+# before then only produces a red run that says nothing new. It goes live when
+# the 1.0 publish does: enable Pages (Settings → Pages → Source: GitHub
+# Actions), then run this workflow.
 on:
-  workflow_run:
-    workflows: [CI]
-    branches: [master]
-    types: [completed]
   workflow_dispatch:
 
 permissions:
@@ -21,14 +24,17 @@ concurrency:
 
 jobs:
   deploy:
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v5
+      # Provisions the Pages site rather than requiring it to exist first,
+      # for the run that publishes it the first time.
       - uses: actions/configure-pages@v6
+        with:
+          enablement: true
       - uses: actions/upload-pages-artifact@v5
         with:
           path: docs
