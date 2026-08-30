@@ -41,6 +41,27 @@ class SdkLayout {
       );
     }
 
+    // dart:ui is not in the Dart SDK: it comes from the engine package the
+    // Flutter cache holds. Without it every dart:ui type resolves as invalid,
+    // which reads downstream as a missing enum rather than a missing SDK.
+    final skyEnginePath = path.join(
+      normalizedRoot,
+      'bin',
+      'cache',
+      'pkg',
+      'sky_engine',
+      'lib',
+      'ui',
+      'ui.dart',
+    );
+    if (!File(skyEnginePath).existsSync()) {
+      throw StateError(
+        'Engine sources not found at $skyEnginePath — dart:ui cannot be '
+        'analyzed without them. Run `flutter precache` once to populate the '
+        'cache.',
+      );
+    }
+
     final packageConfigPath = path.join(
       normalizedRoot,
       '.dart_tool',

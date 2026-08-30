@@ -25,6 +25,7 @@ export interface InstallDeps {
   ensureDir: (path: string) => Promise<void>;
   remove: (path: string) => Promise<void>;
   replaceDir: (source: string, destination: string) => Promise<void>;
+  runFlutter: (args: string[], cwd: string) => Promise<number>;
   readManifest: (path: string) => Promise<SdkManifest | null>;
   writeManifest: (path: string, manifest: SdkManifest) => Promise<void>;
   now: () => string;
@@ -36,6 +37,41 @@ export interface InstallResult {
   status: 'already-installed' | 'installed';
   version: string;
 }
+
+/**
+ * The engine sources `dart:ui` comes from. They live in the Flutter cache
+ * rather than the archive, so their presence is what tells an extracted SDK
+ * from a usable one.
+ */
+const ENGINE_SOURCES = [
+  'bin',
+  'cache',
+  'pkg',
+  'sky_engine',
+  'lib',
+  'ui',
+  'ui.dart',
+];
+
+/**
+ * Completes an extracted SDK. Downloading and unpacking leaves a tree that
+ * cannot analyze or build until something populates the cache; doing it here
+ * means `fsx install` finishing is the same thing as the SDK being ready —
+ * for an SDK installed just now, and for one installed before this ran.
+ */
+const ensureCachePopulated = async (deps: InstallDeps): Promise<void> => {
+  const engineSources = join(deps.paths.sdkDir, ...ENGINE_SOURCES);
+  if (await deps.pathExists(engineSources)) {
+    return;
+  }
+  deps.report('Populating the Flutter cache…');
+  const exitCode = await deps.runFlutter(['precache'], deps.paths.sdkDir);
+  if (exitCode !== 0) {
+    throw new Error(
+      `flutter precache failed (exit ${exitCode}) in ${deps.paths.sdkDir}.`,
+    );
+  }
+};
 
 export const installSdk = async (deps: InstallDeps): Promise<InstallResult> => {
   const { paths, target, pinnedVersion } = deps;
@@ -49,6 +85,7 @@ export const installSdk = async (deps: InstallDeps): Promise<InstallResult> => {
     deps.report(
       `Flutter ${pinnedVersion} already installed at ${paths.sdkDir}`,
     );
+    await ensureCachePopulated(deps);
     return { status: 'already-installed', version: pinnedVersion };
   }
 
@@ -99,5 +136,6 @@ export const installSdk = async (deps: InstallDeps): Promise<InstallResult> => {
   await deps.remove(workDir);
 
   deps.report(`Flutter ${pinnedVersion} installed at ${paths.sdkDir}`);
+  await ensureCachePopulated(deps);
   return { status: 'installed', version: pinnedVersion };
 };

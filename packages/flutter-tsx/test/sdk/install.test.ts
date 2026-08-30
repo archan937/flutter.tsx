@@ -29,6 +29,7 @@ interface Recorded {
   downloads: string[];
   replaced: { source: string; destination: string }[];
   written: SdkManifest[];
+  flutterRuns: [string[], string][];
 }
 
 const record = (overrides: Partial<InstallDeps> = {}): Recorded => {
@@ -37,6 +38,7 @@ const record = (overrides: Partial<InstallDeps> = {}): Recorded => {
   const downloads: string[] = [];
   const replaced: { source: string; destination: string }[] = [];
   const written: SdkManifest[] = [];
+  const flutterRuns: [string[], string][] = [];
 
   const deps: InstallDeps = {
     paths: {
@@ -64,6 +66,10 @@ const record = (overrides: Partial<InstallDeps> = {}): Recorded => {
       replaced.push({ source, destination });
       return Promise.resolve();
     },
+    runFlutter: (args, cwd) => {
+      flutterRuns.push([args, cwd]);
+      return Promise.resolve(0);
+    },
     readManifest: () => Promise.resolve(null),
     writeManifest: (_path, manifest) => {
       written.push(manifest);
@@ -76,7 +82,15 @@ const record = (overrides: Partial<InstallDeps> = {}): Recorded => {
     ...overrides,
   };
 
-  return { deps, reported, fetched, downloads, replaced, written };
+  return {
+    deps,
+    reported,
+    fetched,
+    downloads,
+    replaced,
+    written,
+    flutterRuns,
+  };
 };
 
 const installedManifest: SdkManifest = {
@@ -174,6 +188,58 @@ describe('installSdk', () => {
 
     expect(installSdk(deps)).rejects.toThrow(
       'extracted archive has no flutter binary at /fsx/tmp/flutter-3.47.1/flutter',
+    );
+  });
+});
+
+const ENGINE_SOURCES = '/fsx/flutter/bin/cache/pkg/sky_engine/lib/ui/ui.dart';
+
+describe('installSdk — leaving a usable SDK', () => {
+  // Extracting the archive is not the whole job: the engine sources dart:ui
+  // comes from live in the Flutter cache, which a download does not always
+  // carry. An install that stops at extraction leaves an SDK that cannot
+  // analyze or build until some later command happens to populate it.
+  test('populates the cache when the engine sources are absent', async () => {
+    const { deps, flutterRuns, reported } = record({
+      pathExists: (path) => Promise.resolve(path !== ENGINE_SOURCES),
+    });
+
+    await installSdk(deps);
+
+    expect(flutterRuns).toEqual([[['precache'], '/fsx/flutter']]);
+    expect(reported.at(-1)).toBe('Populating the Flutter cache…');
+  });
+
+  test('leaves a cache that is already populated alone', async () => {
+    const { deps, flutterRuns } = record();
+
+    await installSdk(deps);
+
+    expect(flutterRuns).toEqual([]);
+  });
+
+  test('completes an SDK that was installed before but never populated', async () => {
+    const { deps, flutterRuns, downloads } = record({
+      readManifest: () => Promise.resolve(installedManifest),
+      pathExists: (path) => Promise.resolve(path !== ENGINE_SOURCES),
+    });
+
+    const result = await installSdk(deps);
+
+    // Nothing is downloaded again; the SDK is only completed.
+    expect(result.status).toBe('already-installed');
+    expect(downloads).toEqual([]);
+    expect(flutterRuns).toEqual([[['precache'], '/fsx/flutter']]);
+  });
+
+  test('reports a cache that could not be populated', () => {
+    const { deps } = record({
+      pathExists: (path) => Promise.resolve(path !== ENGINE_SOURCES),
+      runFlutter: () => Promise.resolve(69),
+    });
+
+    expect(installSdk(deps)).rejects.toThrow(
+      'flutter precache failed (exit 69) in /fsx/flutter.',
     );
   });
 });

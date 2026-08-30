@@ -99,8 +99,10 @@ export const runInstallCommand = async (
   overrides: Partial<InstallDeps> = {},
   plugins: PluginPhase = defaultPluginPhase(),
 ): Promise<void> => {
+  const paths = resolveFsxPaths(process.env, homedir());
+
   await installSdk({
-    paths: resolveFsxPaths(process.env, homedir()),
+    paths,
     target: resolveReleaseTarget(process.platform, process.arch),
     pinnedVersion: FLUTTER_VERSION,
     releasesBaseUrl: process.env.FSX_RELEASES_URL ?? OFFICIAL_RELEASES_BASE_URL,
@@ -111,6 +113,7 @@ export const runInstallCommand = async (
     ensureDir,
     remove,
     replaceDir,
+    runFlutter: commandRunner(join(paths.sdkDir, 'bin', 'flutter')),
     readManifest,
     writeManifest,
     now: isoNow,

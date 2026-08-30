@@ -16,7 +16,7 @@ void main() {
     await versionFile.writeAsString(jsonEncode(content));
   }
 
-  Matcher throwsStateErrorWith(String message) => throwsA(
+  Matcher throwsStateErrorWith(Object message) => throwsA(
     isA<StateError>().having((error) => error.message, 'message', message),
   );
 
@@ -26,6 +26,20 @@ void main() {
         .create(recursive: true);
     await Directory(path.join(flutterRoot.path, 'bin', 'cache', 'dart-sdk'))
         .create(recursive: true);
+    final skyEngine = File(
+      path.join(
+        flutterRoot.path,
+        'bin',
+        'cache',
+        'pkg',
+        'sky_engine',
+        'lib',
+        'ui',
+        'ui.dart',
+      ),
+    );
+    await skyEngine.parent.create(recursive: true);
+    await skyEngine.writeAsString('// dart:ui');
     final packageConfig = File(
       path.join(flutterRoot.path, '.dart_tool', 'package_config.json'),
     );
@@ -140,5 +154,27 @@ void main() {
         ),
       );
     });
+
+    test(
+      'reports engine sources the Flutter cache has not populated',
+      () async {
+        await writeVersionFile({
+          'frameworkVersion': '3.47.1',
+          'dartSdkVersion': '3.13.1',
+          'frameworkRevision': 'abc123',
+        });
+        final skyEngine = Directory(
+          path.join(flutterRoot.path, 'bin', 'cache', 'pkg'),
+        );
+        await skyEngine.delete(recursive: true);
+
+        expect(
+          () => SdkLayout.resolve(flutterRoot.path),
+          throwsStateErrorWith(
+            contains('Run `flutter precache` once to populate the cache.'),
+          ),
+        );
+      },
+    );
   });
 }

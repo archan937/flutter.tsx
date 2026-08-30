@@ -38,13 +38,14 @@ const TEST_STEPS: string[][] = [
   ],
 ];
 
+const flutterBin = join(paths.sdkDir, 'bin', 'flutter');
+
 /**
- * The ground-truth tests analyze the installed SDK, which needs its framework
- * packages resolved: without `<flutter-root>/.dart_tool/package_config.json`
- * every dart:ui type resolves as invalid. A downloaded SDK does not ship that
- * file — it is written by `flutter update-packages`, which the SDK documents
- * as being for CI and repo maintainers. It is slow, so it runs only when the
- * file is absent.
+ * The ground-truth tests analyze the framework's own sources, which need its
+ * packages resolved — `flutter update-packages` writes that, and the SDK
+ * documents it as a command for CI and repo maintainers. Populating the
+ * engine cache is not done here: that is what makes an SDK usable at all, so
+ * `fsx install` owns it.
  */
 const bootstrapSdk = async (): Promise<void> => {
   const packageConfig = join(paths.sdkDir, '.dart_tool', 'package_config.json');
@@ -53,7 +54,7 @@ const bootstrapSdk = async (): Promise<void> => {
   }
   process.stdout.write('Resolving the Flutter SDK packages…\n');
   const exitCode = await runCommand(
-    [join(paths.sdkDir, 'bin', 'flutter'), 'update-packages'],
+    [flutterBin, 'update-packages'],
     paths.sdkDir,
   );
   if (exitCode !== 0) {
