@@ -196,7 +196,8 @@ const memberReadDart = (
 const notYetCompiled = (node: ts.Node, context: TranslateContext): never => {
   throw tsxErrorAt(
     'TSX0305',
-    'this expression is not compiled yet (roadmap step 18).',
+    `\`${node.getText()}\` is an expression form the compiler does not ` +
+      'translate to Dart.',
     { sourceFile: context.sourceFile, node },
   );
 };

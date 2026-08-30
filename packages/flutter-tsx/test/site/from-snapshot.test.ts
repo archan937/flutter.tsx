@@ -193,6 +193,7 @@ describe('buildSitePage', () => {
     ],
     coreApi: [],
     plugins: [],
+    limitations: [],
     // No generated declarations: the value types come from the file that
     // ships them, and this snapshot ships none.
     generatedFiles: [],
@@ -205,6 +206,7 @@ describe('buildSitePage', () => {
       coreApi: [],
       types: [],
       plugins: [],
+      limitations: [],
       widgets: [
         {
           name: 'Frame',

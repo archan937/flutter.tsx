@@ -122,7 +122,9 @@ describe('buildCookbookHtml', () => {
   test('renders every recipe as the TSX written and the Dart emitted', () => {
     const html = buildCookbookHtml(recipes, '3.47.1');
 
-    expect(html).toContain('<h3 id="05-counter">State with useState</h3>');
+    expect(html).toContain(
+      '<section class="recipe" id="05-counter" data-name="State with useState">',
+    );
     expect(html).toContain('<p class="blurb">The hook you already know.</p>');
     expect(html).toContain('<h4>src/Counter.tsx</h4>');
     expect(html).toContain('<h4>counter.dart</h4>');
@@ -140,9 +142,11 @@ describe('buildCookbookHtml', () => {
   test('offers a sidebar that reaches every recipe', () => {
     const html = buildCookbookHtml(recipes, '3.47.1');
 
-    expect(html).toContain('<nav class="sidebar">');
+    // The same sidebar the API reference has: search, groups, scroll-spy.
+    expect(html).toContain('<aside id="sidebar">');
+    expect(html).toContain('<input id="search"');
     expect(html).toContain(
-      '<li><a href="#05-counter">State with useState</a></li>',
+      '<li data-name="State with useState"><a href="#05-counter">State with useState</a></li>',
     );
   });
 

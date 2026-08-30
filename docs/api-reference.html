@@ -1160,6 +1160,16 @@ details details > ul { padding-left: 24px; }
 <li data-name="WrapCrossAlignment"><a href="#WrapCrossAlignment">WrapCrossAlignment</a></li>
 </ul>
 </details>
+<details>
+<summary>Limitations<span class="nav-count">5</span></summary>
+<ul>
+<li data-name="TSX0305"><a href="#limitations">TSX0305</a></li>
+<li data-name="TSX0305"><a href="#limitations">TSX0305</a></li>
+<li data-name="TSX0305"><a href="#limitations">TSX0305</a></li>
+<li data-name="TSX0316"><a href="#limitations">TSX0316</a></li>
+<li data-name="TSX0337"><a href="#limitations">TSX0337</a></li>
+</ul>
+</details>
   </nav>
 </aside>
 <main>
@@ -1793,19 +1803,17 @@ export const Shell = () =&gt; (
 <pre><code class="language-typescript">&lt;<span class="tok-typ">TValue</span>&gt;(initial: TValue) =&gt; [TValue, StateSetter&lt;<span class="tok-typ">TValue</span>&gt;]</code></pre>
 </div>
 <div class="tab-panel" data-panel="TSX" role="tabpanel">
-<pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Builder</span>, <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
-<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Counter</span> = () =&gt; {
-  <span class="tok-kw">const</span> [count, setCount] = <span class="tok-fn">useState</span>(<span class="tok-num">0</span>);
-
-  <span class="tok-kw">const</span> increment = () =&gt; {
-    <span class="tok-fn">setCount</span>(count + <span class="tok-num">1</span>);
-  };
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Panel</span> = () =&gt; {
+  <span class="tok-kw">const</span> [open, setOpen] = <span class="tok-fn">useState</span>(<span class="tok-kw">false</span>);
 
   <span class="tok-kw">return</span> (
-    &lt;<span class="tok-typ">Column</span> mainAxisAlignment=<span class="tok-str">&quot;center&quot;</span>&gt;
-      &lt;<span class="tok-typ">Text</span>&gt;Count: {count}&lt;/<span class="tok-typ">Text</span>&gt;
-      &lt;<span class="tok-typ">ElevatedButton</span> onClick={increment}&gt;Increment&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">Builder</span>
+        builder={() =&gt; (open ? &lt;<span class="tok-typ">Text</span>&gt;Open&lt;/<span class="tok-typ">Text</span>&gt; : &lt;<span class="tok-typ">Text</span>&gt;Closed&lt;/<span class="tok-typ">Text</span>&gt;)}
+      /&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={() =&gt; setOpen(!open)}&gt;Toggle&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
     &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre>
@@ -1813,36 +1821,34 @@ export const Shell = () =&gt; (
 <div class="tab-panel" data-panel="Dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
-<span class="tok-kw">class</span> <span class="tok-typ">Counter</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
-  <span class="tok-kw">const</span> <span class="tok-typ">Counter</span>({<span class="tok-kw">super</span>.key});
+<span class="tok-kw">class</span> <span class="tok-typ">Panel</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Panel</span>({<span class="tok-kw">super</span>.key});
 
   @override
-  <span class="tok-typ">State</span>&lt;<span class="tok-typ">Counter</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_CounterState</span>();
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">Panel</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_PanelState</span>();
 }
 
-<span class="tok-kw">class</span> _CounterState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">Counter</span>&gt; {
-  int _count = <span class="tok-num">0</span>;
-
-  <span class="tok-kw">void</span> <span class="tok-fn">_increment</span>() {
-    <span class="tok-fn">setState</span>(() {
-      _count++;
-    });
-  }
+<span class="tok-kw">class</span> _PanelState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">Panel</span>&gt; {
+  bool _open = <span class="tok-kw">false</span>;
 
   @override
   <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
     <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
-      mainAxisAlignment: <span class="tok-typ">MainAxisAlignment</span>.center,
       children: [
-        <span class="tok-typ">Text</span>(<span class="tok-str">'Count: $_count'</span>),
-        <span class="tok-typ">ElevatedButton</span>(onPressed: _increment, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Increment'</span>)),
+        <span class="tok-typ">Builder</span>(
+          builder: (_) =&gt; _open ? <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Open'</span>) : <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Closed'</span>),
+        ),
+        <span class="tok-typ">ElevatedButton</span>(
+          onPressed: () =&gt; <span class="tok-fn">setState</span>(() =&gt; _open = !_open),
+          child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Toggle'</span>),
+        ),
       ],
     );
   }
 }</code></pre>
 </div>
 </div>
-<p class="note">Used by <a href="./cookbook.html#01-camera-screen"><code>01-camera-screen</code></a>, <a href="./cookbook.html#05-counter"><code>05-counter</code></a>, <a href="./cookbook.html#06-mount-effect"><code>06-mount-effect</code></a>, <a href="./cookbook.html#07-list-rendering"><code>07-list-rendering</code></a>, <a href="./cookbook.html#09-typed-props"><code>09-typed-props</code></a>, <a href="./cookbook.html#10-camera-options"><code>10-camera-options</code></a>, <a href="./cookbook.html#11-preferences"><code>11-preferences</code></a>, <a href="./cookbook.html#12-secure-storage"><code>12-secure-storage</code></a>, <a href="./cookbook.html#13-open-link"><code>13-open-link</code></a>, <a href="./cookbook.html#15-front-camera"><code>15-front-camera</code></a>, <a href="./cookbook.html#16-tap-target"><code>16-tap-target</code></a>, <a href="./cookbook.html#21-modal"><code>21-modal</code></a>, <a href="./cookbook.html#22-mount-dialog"><code>22-mount-dialog</code></a>, <a href="./cookbook.html#24-animated"><code>24-animated</code></a>, <a href="./cookbook.html#29-branching-handler"><code>29-branching-handler</code></a>, <a href="./cookbook.html#33-control-flow"><code>33-control-flow</code></a></p>
+<p class="note">Used by <a href="./cookbook.html#01-camera-screen"><code>01-camera-screen</code></a>, <a href="./cookbook.html#05-counter"><code>05-counter</code></a>, <a href="./cookbook.html#06-mount-effect"><code>06-mount-effect</code></a>, <a href="./cookbook.html#07-list-rendering"><code>07-list-rendering</code></a>, <a href="./cookbook.html#09-typed-props"><code>09-typed-props</code></a>, <a href="./cookbook.html#10-camera-options"><code>10-camera-options</code></a>, <a href="./cookbook.html#11-preferences"><code>11-preferences</code></a>, <a href="./cookbook.html#12-secure-storage"><code>12-secure-storage</code></a>, <a href="./cookbook.html#13-open-link"><code>13-open-link</code></a>, <a href="./cookbook.html#15-front-camera"><code>15-front-camera</code></a>, <a href="./cookbook.html#16-tap-target"><code>16-tap-target</code></a>, <a href="./cookbook.html#21-modal"><code>21-modal</code></a>, <a href="./cookbook.html#22-mount-dialog"><code>22-mount-dialog</code></a>, <a href="./cookbook.html#24-animated"><code>24-animated</code></a>, <a href="./cookbook.html#29-branching-handler"><code>29-branching-handler</code></a>, <a href="./cookbook.html#33-control-flow"><code>33-control-flow</code></a>, <a href="./cookbook.html#38-effect-cleanup"><code>38-effect-cleanup</code></a>, <a href="./cookbook.html#39-builder-callback"><code>39-builder-callback</code></a></p>
 </article>
 <article class="widget" id="core-EffectCleanup" data-name="EffectCleanup">
 <h3>EffectCleanup<span class="badge badge-lib">type</span></h3>
@@ -1863,64 +1869,60 @@ export const Shell = () =&gt; (
 <pre><code class="language-typescript">(effect: () =&gt; <span class="tok-typ">EffectCleanup</span> | <span class="tok-kw">void</span>, dependencies?: <span class="tok-kw">readonly</span> unknown[]) =&gt; <span class="tok-kw">void</span></code></pre>
 </div>
 <div class="tab-panel" data-panel="TSX" role="tabpanel">
-<pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useEffect, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span>, useEffect, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<span class="tok-kw">import</span> { closeInAppWebView } <span class="tok-kw">from</span> <span class="tok-str">'plugin:url_launcher'</span>;
 
-<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Status</span> = () =&gt; {
-  <span class="tok-kw">const</span> [online, setOnline] = <span class="tok-fn">useState</span>(<span class="tok-kw">false</span>);
-  <span class="tok-kw">const</span> [checks, setChecks] = <span class="tok-fn">useState</span>(<span class="tok-num">0</span>);
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Browser</span> = () =&gt; {
+  <span class="tok-kw">const</span> [open, setOpen] = <span class="tok-fn">useState</span>(<span class="tok-kw">false</span>);
 
   <span class="tok-fn">useEffect</span>(() =&gt; {
-    <span class="tok-fn">setOnline</span>(<span class="tok-kw">true</span>);
+    <span class="tok-fn">setOpen</span>(<span class="tok-kw">true</span>);
+    <span class="tok-kw">return</span> () =&gt; {
+      <span class="tok-kw">void</span> <span class="tok-fn">closeInAppWebView</span>();
+    };
   }, []);
 
   <span class="tok-kw">return</span> (
     &lt;<span class="tok-typ">Column</span>&gt;
-      {online ? &lt;<span class="tok-typ">Text</span>&gt;<span class="tok-typ">Online</span>&lt;/<span class="tok-typ">Text</span>&gt; : &lt;<span class="tok-typ">Text</span>&gt;<span class="tok-typ">Offline</span>&lt;/<span class="tok-typ">Text</span>&gt;}
-      &lt;<span class="tok-typ">Text</span>&gt;Checks: {checks}&lt;/<span class="tok-typ">Text</span>&gt;
-      &lt;<span class="tok-typ">ElevatedButton</span> onClick={() =&gt; setChecks(checks + <span class="tok-num">1</span>)}&gt;
-        Check
-      &lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;{open ? <span class="tok-str">'Open'</span> : <span class="tok-str">'Closed'</span>}&lt;/<span class="tok-typ">Text</span>&gt;
     &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre>
 </div>
 <div class="tab-panel" data-panel="Dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<span class="tok-kw">import</span> <span class="tok-str">'package:url_launcher/url_launcher.dart'</span>;
 
-<span class="tok-kw">class</span> <span class="tok-typ">Status</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
-  <span class="tok-kw">const</span> <span class="tok-typ">Status</span>({<span class="tok-kw">super</span>.key});
+<span class="tok-kw">class</span> <span class="tok-typ">Browser</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Browser</span>({<span class="tok-kw">super</span>.key});
 
   @override
-  <span class="tok-typ">State</span>&lt;<span class="tok-typ">Status</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_StatusState</span>();
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">Browser</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_BrowserState</span>();
 }
 
-<span class="tok-kw">class</span> _StatusState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">Status</span>&gt; {
-  bool _online = <span class="tok-kw">false</span>;
-  int _checks = <span class="tok-num">0</span>;
+<span class="tok-kw">class</span> _BrowserState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">Browser</span>&gt; {
+  bool _open = <span class="tok-kw">false</span>;
 
   @override
   <span class="tok-kw">void</span> <span class="tok-fn">initState</span>() {
     <span class="tok-kw">super</span>.<span class="tok-fn">initState</span>();
-    _online = <span class="tok-kw">true</span>;
+    _open = <span class="tok-kw">true</span>;
+  }
+
+  @override
+  <span class="tok-kw">void</span> <span class="tok-fn">dispose</span>() {
+    <span class="tok-fn">closeInAppWebView</span>();
+    <span class="tok-kw">super</span>.<span class="tok-fn">dispose</span>();
   }
 
   @override
   <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
-    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
-      children: [
-        _online ? <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Online'</span>) : <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Offline'</span>),
-        <span class="tok-typ">Text</span>(<span class="tok-str">'Checks: $_checks'</span>),
-        <span class="tok-typ">ElevatedButton</span>(
-          onPressed: () =&gt; <span class="tok-fn">setState</span>(() =&gt; _checks++),
-          child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Check'</span>),
-        ),
-      ],
-    );
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(children: [<span class="tok-typ">Text</span>(_open ? <span class="tok-str">'Open'</span> : <span class="tok-str">'Closed'</span>)]);
   }
 }</code></pre>
 </div>
 </div>
-<p class="note">Used by <a href="./cookbook.html#06-mount-effect"><code>06-mount-effect</code></a>, <a href="./cookbook.html#22-mount-dialog"><code>22-mount-dialog</code></a></p>
+<p class="note">Used by <a href="./cookbook.html#06-mount-effect"><code>06-mount-effect</code></a>, <a href="./cookbook.html#22-mount-dialog"><code>22-mount-dialog</code></a>, <a href="./cookbook.html#38-effect-cleanup"><code>38-effect-cleanup</code></a></p>
 </article>
 <article class="widget" id="core-AsyncOptions" data-name="AsyncOptions">
 <h3>AsyncOptions<span class="badge badge-lib">type</span></h3>
@@ -27452,7 +27454,7 @@ declare module <span class="tok-str">'plugin:url_launcher'</span> {
 }</code></pre>
 </div>
 </div>
-<p class="note">Proven by <a href="./cookbook.html#13-open-link"><code>13-open-link</code></a>, <a href="./cookbook.html#27-inline-plugin-call"><code>27-inline-plugin-call</code></a></p>
+<p class="note">Proven by <a href="./cookbook.html#13-open-link"><code>13-open-link</code></a>, <a href="./cookbook.html#27-inline-plugin-call"><code>27-inline-plugin-call</code></a>, <a href="./cookbook.html#38-effect-cleanup"><code>38-effect-cleanup</code></a></p>
 </article>
 <h2 id="types">Types</h2>
 <article class="widget" id="type-ActionIconThemeDataValue" data-name="ActionIconThemeDataValue">
@@ -50774,6 +50776,31 @@ declare module <span class="tok-str">'plugin:url_launcher'</span> {
 <li><code>WrapCrossAlignment.center</code></li></ul>
 </div>
 </div>
+</article>
+<h2 id="limitations">Limitations</h2>
+<article class="widget" id="limitations-about" data-name="about the limitations">
+<h3>What the compiler will not do</h3>
+<p class="doc">Every entry here is read out of the compiler on each build, from the place that raises it. A limitation is a numbered error at compile time, never silently different Dart — so nothing on this list can reach a running app. The list shrinks as the compiler grows; it is not written by hand beside the code.</p>
+</article>
+<article class="widget" id="limit-TSX0305--is-an-expression-for" data-name="TSX0305">
+<h3>TSX0305<span class="badge badge-lib">refused</span></h3>
+<p class="doc"><code>…</code> is an expression form the compiler does not translate to Dart.</p>
+</article>
+<article class="widget" id="limit-TSX0305--reads-a-member-the-c" data-name="TSX0305">
+<h3>TSX0305<span class="badge badge-lib">refused</span></h3>
+<p class="doc"><code>…</code> reads a member the compiler cannot resolve to a Dart one.</p>
+</article>
+<article class="widget" id="limit-TSX0305-only-useAsync-and-use" data-name="TSX0305">
+<h3>TSX0305<span class="badge badge-lib">refused</span></h3>
+<p class="doc">only <code>useAsync</code> and <code>useStream</code> can be awaited in a component.</p>
+</article>
+<article class="widget" id="limit-TSX0316-reading-needs-a-fa" data-name="TSX0316">
+<h3>TSX0316<span class="badge badge-lib">refused</span></h3>
+<p class="doc">reading <code>…</code> needs a … fallback, which is not compiled yet. Read it inside a handler and store the result in state.</p>
+</article>
+<article class="widget" id="limit-TSX0337-a-try-needs-a-catch-" data-name="TSX0337">
+<h3>TSX0337<span class="badge badge-lib">refused</span></h3>
+<p class="doc">a <code>try</code> needs a <code>catch</code>: <code>finally</code> on its own is not compiled.</p>
 </article>
   <p id="no-results">No widgets match your search.</p>
 </main>

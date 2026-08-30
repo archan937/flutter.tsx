@@ -708,8 +708,8 @@ describe('transpileComponent — json models', () => {
       }),
     ).rejects.toThrow(
       new Error(
-        'TSX0305 probe.tsx:2:35 — this expression is not compiled yet ' +
-          '(roadmap step 18).',
+        'TSX0305 probe.tsx:2:35 — `lookup().name` is an expression form the ' +
+          'compiler does not translate to Dart.',
       ),
     );
 
@@ -724,8 +724,8 @@ describe('transpileComponent — json models', () => {
       }),
     ).rejects.toThrow(
       new Error(
-        'TSX0305 probe.tsx:3:25 — this expression is not compiled yet ' +
-          '(roadmap step 18).',
+        'TSX0305 probe.tsx:3:25 — `lookup().name` reads a member the ' +
+          'compiler cannot resolve to a Dart one.',
       ),
     );
   });

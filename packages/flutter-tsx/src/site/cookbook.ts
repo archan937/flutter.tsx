@@ -3,6 +3,13 @@ import { CATALOGUE, CATEGORIES } from './catalogue';
 import { codeBlock, HIGHLIGHT_CSS } from './highlight';
 import type { SitePage } from './model';
 import { escapeHtml, inlineDoc } from './render';
+import {
+  type NavGroup,
+  navGroupsHtml,
+  SHELL_CSS,
+  SHELL_JS,
+  sidebarHtml,
+} from './shell';
 
 /** One file of an example, on both sides of the compiler. */
 export interface RecipeFile {
@@ -112,56 +119,33 @@ export const loadRecipes = async (fixturesDir: string): Promise<Recipe[]> => {
   return recipes.sort((first, second) => first.id.localeCompare(second.id));
 };
 
-const STYLE = `
-  :root {
-    --react: #61dafb; --bg: #07090f; --panel: #11151f;
-    --text: #e8ecf4; --dim: #94a3b8; --line: #1f2637;
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; background: var(--bg); color: var(--text);
-    font: 16px/1.6 'Hanken Grotesk', system-ui, sans-serif;
-  }
-  a { color: var(--react); }
-  .shell { display: grid; grid-template-columns: 17rem minmax(0, 1fr); gap: 2.5rem; max-width: 82rem; margin: 0 auto; padding: 0 1.25rem; }
-  .sidebar {
-    position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto;
-    padding: 1.5rem 0.5rem 3rem 0; border-right: 1px solid var(--line);
-  }
-  .sidebar .brand { display: block; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.35rem; color: var(--text); text-decoration: none; }
-  .sidebar .pages { margin: 0 0 1.25rem; font-size: 0.85rem; color: var(--dim); }
-  .sidebar h4 {
-    margin: 1.1rem 0 0.35rem; font-size: 0.7rem; letter-spacing: 0.09em;
-    text-transform: uppercase; color: var(--dim);
-  }
-  .sidebar ul { list-style: none; margin: 0; padding: 0; }
-  .sidebar li { margin: 0.1rem 0; }
-  .sidebar a { display: block; padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.87rem; text-decoration: none; color: var(--text); }
-  .sidebar a:hover { background: var(--panel); }
-  main { min-width: 0; padding: 1.5rem 0 5rem; }
-  h1 { font-size: 2.25rem; margin: 1rem 0 0.5rem; }
-  h2 {
-    font-size: 1.05rem; letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--dim); margin: 3rem 0 0.5rem; scroll-margin-top: 1rem;
-  }
-  h3 { font-size: 1.3rem; margin: 0 0 0.35rem; scroll-margin-top: 1rem; }
-  .lede, .note { color: var(--dim); }
-  .recipe { margin: 2rem 0 0; padding-top: 1.5rem; border-top: 1px solid var(--line); }
-  .recipe .blurb { color: var(--dim); margin: 0 0 1rem; max-width: 60ch; }
-  .pair { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; margin-bottom: 1rem; }
-  @media (max-width: 70rem) {
-    .shell { grid-template-columns: 1fr; }
-    .sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--line); }
-    .pair { grid-template-columns: 1fr; }
-  }
-  .pane { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
-  .pane h4 {
-    margin: 0; padding: 0.55rem 0.9rem; font-size: 0.72rem; letter-spacing: 0.06em;
-    color: var(--dim); border-bottom: 1px solid var(--line);
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-  }
-  pre { margin: 0; padding: 0.9rem; overflow-x: auto; }
-  code { font: 13px/1.55 'JetBrains Mono', ui-monospace, monospace; }
+const PAGE_CSS = `
+${SHELL_CSS}
+main { padding-top: 40px; }
+.lede, .note { color: var(--muted); max-width: 68ch; }
+.note { font-size: 14px; }
+.recipe { border: 1px solid var(--line); border-radius: 14px; padding: 22px 24px;
+  margin-bottom: 22px; scroll-margin-top: 20px; background: var(--panel); }
+.recipe[hidden] { display: none; }
+.recipe h3 { font-family: var(--display); font-size: 18px; font-weight: 700;
+  letter-spacing: -.01em; margin-bottom: 8px; color: var(--text); }
+.recipe .blurb { color: var(--muted); font-size: 14px; margin-bottom: 16px; max-width: 68ch; }
+.pair { display: grid; gap: 14px; grid-template-columns: 1fr 1fr; margin-bottom: 12px; }
+@media (max-width: 1100px) { .pair { grid-template-columns: 1fr; } }
+.pane { border: 1px solid var(--line); border-radius: 10px; overflow: hidden;
+  background: rgba(7,9,15,.5); min-width: 0; }
+.pane h4 { padding: 8px 12px; font-family: var(--mono); font-size: 11px; font-weight: 600;
+  color: var(--dim); border-bottom: 1px solid var(--line); letter-spacing: .02em; }
+pre { margin: 0; padding: 14px; overflow-x: auto; }
+code { font-family: var(--mono); font-size: 12.5px; line-height: 1.6; }
+main table { border-collapse: collapse; margin: 16px 0; width: 100%; font-size: 14px; }
+main th, main td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; vertical-align: top; }
+main th { color: var(--dim); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+main p code, main li code, main td code { font-family: var(--mono); font-size: .9em;
+  background: rgba(255,255,255,.06); padding: .1em .4em; border-radius: 5px; color: var(--react); }
+main ul { margin: 12px 0 12px 20px; }
+main h3 { font-family: var(--display); font-size: 17px; margin: 28px 0 8px; }
+main p { margin-bottom: 12px; }
 ${HIGHLIGHT_CSS}`;
 
 const filePanes = (file: RecipeFile): string =>
@@ -171,8 +155,8 @@ const filePanes = (file: RecipeFile): string =>
 </div>`;
 
 const recipeSection = (recipe: Recipe): string =>
-  `<section class="recipe">
-<h3 id="${escapeHtml(recipe.id)}">${escapeHtml(recipe.title)}</h3>
+  `<section class="recipe" id="${escapeHtml(recipe.id)}" data-name="${escapeHtml(recipe.title)}">
+<h3>${escapeHtml(recipe.title)}</h3>
 <p class="blurb">${inlineDoc(recipe.blurb)}</p>
 ${recipe.files.map(filePanes).join('\n')}
 </section>`;
@@ -183,22 +167,12 @@ const byCategory = (recipes: Recipe[]): [string, Recipe[]][] =>
     recipes.filter((recipe) => recipe.category === category),
   ]).filter(([, members]) => members.length > 0);
 
-const sidebar = (recipes: Recipe[]): string =>
-  `<nav class="sidebar">
-<a class="brand" href="./index.html">Flutter.tsx</a>
-<p class="pages"><a href="./guide.html">Guide</a> · <a href="./api-reference.html">API reference</a></p>
-${byCategory(recipes)
-  .map(
-    ([category, members]) =>
-      `<h4>${escapeHtml(category)}</h4>\n<ul>\n${members
-        .map(
-          (recipe) =>
-            `<li><a href="#${escapeHtml(recipe.id)}">${escapeHtml(recipe.title)}</a></li>`,
-        )
-        .join('\n')}\n</ul>`,
-  )
-  .join('\n')}
-</nav>`;
+const cookbookNav = (recipes: Recipe[]): NavGroup[] =>
+  byCategory(recipes).map(([category, members], index) => ({
+    title: category,
+    open: index === 0,
+    items: members.map((recipe) => ({ id: recipe.id, label: recipe.title })),
+  }));
 
 /** The cookbook page: every fixture, as written and as emitted. */
 export const buildCookbookHtml = (
@@ -215,16 +189,26 @@ export const buildCookbookHtml = (
 <link rel="icon" type="image/png" href="./icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>${STYLE}</style>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>${PAGE_CSS}</style>
 </head>
 <body>
-<div class="shell">
-${sidebar(recipes)}
+<div class="bg-layer bg-grid"></div>
+<div class="bg-layer bg-glow"></div>
+${sidebarHtml(
+  {
+    meta: `${recipes.length} recipes · Flutter ${flutterVersion}`,
+    searchPlaceholder: 'Search recipes…',
+    pages: [
+      { href: './guide.html', label: 'Guide' },
+      { href: './api-reference.html', label: 'API ↗' },
+    ],
+  },
+  navGroupsHtml(cookbookNav(recipes)),
+)}
 <main>
 <h1>Cookbook</h1>
 <p class="lede">Every example here is a conformance fixture: the TSX you write on the left, the Dart <code>fsx</code> emits on the right, and nothing typed by hand in between. Each pair is asserted byte-for-byte by the golden tests, laid out by <code>dart format</code>, checked by <code>flutter analyze</code>, and built as a real Flutter app on every run.</p>
-<p class="note">Generated from the fixtures. Flutter ${escapeHtml(flutterVersion)}.</p>
 ${byCategory(recipes)
   .map(
     ([category, members]) =>
@@ -232,8 +216,14 @@ ${byCategory(recipes)
       members.map(recipeSection).join('\n'),
   )
   .join('\n')}
+<p id="no-results">No recipes match your search.</p>
 </main>
-</div>
+<script>
+(function () {
+  'use strict';
+${SHELL_JS}
+})();
+</script>
 </body>
 </html>
 `;
@@ -390,24 +380,18 @@ export const DOC_PAGES: DocPage[] = [
 const BODY_HEADING = /<h2 id="([^"]+)">([\s\S]*?)<\/h2>/g;
 
 /** The page's own sections, so a long guide is navigable from anywhere in it. */
-const docSidebar = (page: DocPage, body: string): string => {
-  const items = [...body.matchAll(BODY_HEADING)]
-    .map(
-      (match) =>
-        `<li><a href="#${match[1] ?? ''}">${(match[2] ?? '').replace(/<[^>]+>/g, '')}</a></li>`,
-    )
-    .join('\n');
-  return `<nav class="sidebar">
-<a class="brand" href="./index.html">Flutter.tsx</a>
-<p class="pages"><a href="./cookbook.html">Cookbook</a> · <a href="./api-reference.html">API reference</a></p>
-<h4>${escapeHtml(page.title)}</h4>
-<ul>
-${items}
-</ul>
-</nav>`;
-};
+const docNav = (page: DocPage, body: string): NavGroup[] => [
+  {
+    title: page.title,
+    open: true,
+    items: [...body.matchAll(BODY_HEADING)].map((match) => ({
+      id: match[1] ?? '',
+      label: (match[2] ?? '').replace(/<[^>]+>/g, ''),
+    })),
+  },
+];
 
-/** Wraps rendered markdown in the same chrome the cookbook uses. */
+/** Wraps rendered markdown in the same chrome the rest of the site uses. */
 export const buildDocPageHtml = (page: DocPage, body: string): string =>
   `<!doctype html>
 <html lang="en">
@@ -418,26 +402,34 @@ export const buildDocPageHtml = (page: DocPage, body: string): string =>
 <link rel="icon" type="image/png" href="./icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>${STYLE}
-  main h2 { font-size: 1.5rem; text-transform: none; letter-spacing: 0; color: var(--text); }
-  main h1 { margin-top: 1rem; }
-  main p, main ul, main table { max-width: 68ch; }
-  table { border-collapse: collapse; margin: 1rem 0; width: 100%; }
-  th, td { border: 1px solid var(--line); padding: 0.45rem 0.7rem; text-align: left; vertical-align: top; }
-  th { color: var(--dim); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; }
-  pre { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; margin: 1rem 0; }
-  p code, li code, td code { background: var(--panel); border-radius: 4px; padding: 0.1rem 0.35rem; }
-  h3 { margin: 2rem 0 0.5rem; font-size: 1.05rem; }
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>${PAGE_CSS}
+main pre { border: 1px solid var(--line); border-radius: 10px; background: rgba(7,9,15,.5); margin: 14px 0; }
 </style>
 </head>
 <body>
-<div class="shell">
-${docSidebar(page, body)}
+<div class="bg-layer bg-grid"></div>
+<div class="bg-layer bg-glow"></div>
+${sidebarHtml(
+  {
+    meta: `${page.title} · Flutter.tsx`,
+    searchPlaceholder: 'Search sections…',
+    pages: [
+      { href: './cookbook.html', label: 'Cookbook' },
+      { href: './api-reference.html', label: 'API ↗' },
+    ],
+  },
+  navGroupsHtml(docNav(page, body)),
+)}
 <main>
 ${body}
 </main>
-</div>
+<script>
+(function () {
+  'use strict';
+${SHELL_JS}
+})();
+</script>
 </body>
 </html>
 `;

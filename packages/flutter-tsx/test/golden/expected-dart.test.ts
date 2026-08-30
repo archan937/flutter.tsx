@@ -54,6 +54,8 @@ describe('committed golden expected.dart files', () => {
       '35-helpers',
       '36-enums',
       '37-tuples-generics',
+      '38-effect-cleanup',
+      '39-builder-callback',
     ]);
   });
 

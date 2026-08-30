@@ -140,8 +140,8 @@ describe('translateExpression', () => {
   test('an unsupported property access is a numbered error', () => {
     expect(() => translate('label.size')).toThrow(
       new Error(
-        'TSX0305 probe.tsx:6:17 — this expression is not compiled yet ' +
-          '(roadmap step 18).',
+        'TSX0305 probe.tsx:6:17 — `label.size` is an expression form the ' +
+          'compiler does not translate to Dart.',
       ),
     );
   });
@@ -149,8 +149,8 @@ describe('translateExpression', () => {
   test('an unsupported binary operator is a numbered error', () => {
     expect(() => translate('count & 1')).toThrow(
       new Error(
-        'TSX0305 probe.tsx:6:23 — this expression is not compiled yet ' +
-          '(roadmap step 18).',
+        'TSX0305 probe.tsx:6:23 — `&` is an expression form the compiler ' +
+          'does not translate to Dart.',
       ),
     );
   });
@@ -160,8 +160,8 @@ describe('translateExpression', () => {
     // how they clamp, so it raises rather than compiling to something else.
     expect(() => translate('count.slice(0)')).toThrow(
       new Error(
-        'TSX0305 probe.tsx:6:17 — this expression is not compiled yet ' +
-          '(roadmap step 18).',
+        'TSX0305 probe.tsx:6:17 — `count.slice(0)` is an expression form the ' +
+          'compiler does not translate to Dart.',
       ),
     );
   });

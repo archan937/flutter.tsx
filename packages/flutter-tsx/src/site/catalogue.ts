@@ -74,10 +74,22 @@ export const CATALOGUE: Readonly<Record<string, CatalogueEntry>> = {
     category: 'Start here',
   },
 
+  '38-effect-cleanup': {
+    title: 'Cleaning up when a screen goes away',
+    blurb:
+      'The function an effect returns is its unmount half: its statements become the widget’s `dispose`, ahead of any controller the effect was using.',
+    category: 'State and effects',
+  },
   '06-mount-effect': {
     title: 'Running code on mount',
     blurb:
       '`useEffect` with an empty dependency list is `initState` — the same idea, and the generated widget calls `super.initState()` for you.',
+    category: 'State and effects',
+  },
+  '39-builder-callback': {
+    title: 'A callback that returns a widget',
+    blurb:
+      'A builder prop takes an arrow function whose body is a widget — including a conditional one — and becomes an expression-bodied Dart closure.',
     category: 'State and effects',
   },
   '29-branching-handler': {

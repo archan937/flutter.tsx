@@ -263,4 +263,16 @@ export const FIXTURE_APPS: FixtureApp[] = [
     dartFile: 'span.dart',
     deps: [],
   },
+  {
+    id: '38-effect-cleanup',
+    component: 'Browser',
+    dartFile: 'browser.dart',
+    deps: ['url_launcher'],
+  },
+  {
+    id: '39-builder-callback',
+    component: 'Panel',
+    dartFile: 'panel.dart',
+    deps: [],
+  },
 ];

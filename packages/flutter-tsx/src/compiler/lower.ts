@@ -676,7 +676,8 @@ const lowerPropertyAccess = (
   // does not exist there, so an unresolvable read is refused instead.
   throw tsxErrorAt(
     'TSX0305',
-    'this expression is not compiled yet (roadmap step 18).',
+    `\`${expression.getText()}\` reads a member the compiler cannot resolve ` +
+      'to a Dart one.',
     { sourceFile: context.sourceFile, node: expression },
   );
 };
@@ -697,10 +698,25 @@ const lowerArrowFunction = (
     const name = arrow.parameters[index]?.name.getText() ?? '_';
     return name.startsWith('_') ? '_' : name;
   });
+  // A builder prop — `builder={() => <Text>…</Text>}` — is a callback whose
+  // body is a widget rather than a block, so it becomes an expression-bodied
+  // Dart closure. Lowering it against the declared return type means a
+  // conditional builder reads the same as a conditional child does.
+  const { body } = arrow;
+  if (!ts.isBlock(body) && type.returnType.kind === 'widget') {
+    // Lowered as a child, not as a prop value: a builder body is the same
+    // expression a child is, so a conditional one lowers the same way rather
+    // than falling through to a path that would emit the TSX verbatim.
+    return {
+      kind: 'closureValue',
+      params,
+      value: lowerChildValue(unwrapParenthesized(body), context),
+    };
+  }
   return {
     kind: 'closure',
     params,
-    statements: lowerBodyStatements(arrow.body, context, true),
+    statements: lowerBodyStatements(body, context, true),
   };
 };
 
@@ -861,6 +877,9 @@ const lowerChildValue = (
   }
   return lowerScalarChild(expression, context);
 };
+
+const unwrapVoid = (expression: ts.Expression): ts.Expression =>
+  ts.isVoidExpression(expression) ? expression.expression : expression;
 
 const unwrapParenthesized = (expression: ts.Expression): ts.Expression =>
   ts.isParenthesizedExpression(expression)
@@ -1784,7 +1803,7 @@ const setterAssignment = (
   if (argument === undefined) {
     throw tsxErrorAt(
       'TSX0305',
-      'this statement is not compiled yet (roadmap step 18).',
+      'a state setter takes the new value (`setCount(count + 1)`).',
       { sourceFile: context.sourceFile, node: call },
     );
   }
@@ -1978,8 +1997,11 @@ const lowerStatement = (
   if (controlFlow !== null) return controlFlow;
   return lowerExpressionStatement(
     {
+      // `void doIt();` is how TypeScript says a promise is deliberately not
+      // awaited — which is the only thing a synchronous `dispose` can do with
+      // one. Dart has no such marker, so the call is emitted on its own.
       expression: ts.isExpressionStatement(statement)
-        ? statement.expression
+        ? unwrapVoid(statement.expression)
         : undefined,
       errorNode: statement,
     },
@@ -2052,7 +2074,8 @@ const lowerExpressionStatement = (
   ) {
     throw tsxErrorAt(
       'TSX0305',
-      'this statement is not compiled yet (roadmap step 18).',
+      'only a state setter call compiles here — this statement does not ' +
+        'update state.',
       { sourceFile: context.sourceFile, node: errorNode },
     );
   }
@@ -2565,11 +2588,20 @@ const PRESENTATION_OPENERS: Record<string, true> = {
   showModalBottomSheet: true,
 };
 
+/** A mount effect's own statements, and the cleanup it returns. */
+interface LoweredEffects {
+  init: IrStatement[];
+  dispose: IrStatement[];
+}
+
 const lowerEffects = (
   effects: ts.CallExpression[],
   context: LowerContext,
-): IrStatement[] =>
-  effects.flatMap((effect) => {
+): LoweredEffects => {
+  const init: IrStatement[] = [];
+  const dispose: IrStatement[] = [];
+
+  for (const effect of effects) {
     const [body, dependencies] = effect.arguments;
     if (
       body === undefined ||
@@ -2585,23 +2617,41 @@ const lowerEffects = (
         { sourceFile: context.sourceFile, node: effect },
       );
     }
+    // `return () => { … }` is the unmount half of the effect: its statements
+    // become the widget's `dispose`, which is where Flutter frees what a
+    // mount set up.
+    let mountBody: ts.ConciseBody = body.body;
     if (ts.isBlock(body.body)) {
       const cleanup = body.body.statements.find((statement) =>
         ts.isReturnStatement(statement),
       );
-      if (cleanup !== undefined) {
-        throw tsxErrorAt(
-          'TSX0307',
-          'effect cleanups land with plugin controllers (roadmap step 22).',
-          { sourceFile: context.sourceFile, node: cleanup },
+      if (cleanup !== undefined && ts.isReturnStatement(cleanup)) {
+        const returned = cleanup.expression;
+        if (returned === undefined || !ts.isArrowFunction(returned)) {
+          throw tsxErrorAt(
+            'TSX0307',
+            'an effect returns either nothing or its cleanup function ' +
+              '(`return () => { … }`).',
+            { sourceFile: context.sourceFile, node: cleanup },
+          );
+        }
+        dispose.push(...lowerBodyStatements(returned.body, context, true));
+        mountBody = ts.factory.createBlock(
+          body.body.statements.filter((statement) => statement !== cleanup),
+          true,
         );
       }
     }
-    const statements = lowerBodyStatements(body.body, context);
-    return needsPostFrame(statements)
-      ? [{ kind: 'postFrame', statements }]
-      : statements;
-  });
+    const statements = lowerBodyStatements(mountBody, context);
+    init.push(
+      ...(needsPostFrame(statements)
+        ? [{ kind: 'postFrame' as const, statements }]
+        : statements),
+    );
+  }
+
+  return { init, dispose };
+};
 
 const capitalize = (name: string): string =>
   name === '' ? name : `${name[0]?.toUpperCase() ?? ''}${name.slice(1)}`;
@@ -2947,6 +2997,8 @@ export const lowerComponent = (
 
   // A helper declared inside the component reads its props and state, so it
   // is lowered in the component's own context and emitted as a private method.
+  const effects = lowerEffects(component.effects, context);
+
   const componentHelpers: IrHelper[] = component.helpers.map((helper) => ({
     name: helper.name,
     typeParams: helper.typeParams,
@@ -3044,11 +3096,12 @@ export const lowerComponent = (
         plugin.initCall === null ? [] : [plugin.initCall],
       ),
       ...(lowered === null ? [] : [lowered.initStatement]),
-      ...lowerEffects(component.effects, context),
+      ...effects.init,
     ],
     disposeLines: loweredPlugins.flatMap(({ lowered }) =>
       lowered.disposeLine === null ? [] : [lowered.disposeLine],
     ),
+    disposeStatements: effects.dispose,
     buildLocals,
     pluginImports: [
       ...new Map<string, string | null>([

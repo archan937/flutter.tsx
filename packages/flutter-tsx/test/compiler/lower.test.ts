@@ -533,8 +533,8 @@ describe('lowerComponent — value forms', () => {
       ),
     ).rejects.toThrow(
       new Error(
-        'TSX0305 probe.tsx:3:18 — this expression is not compiled yet ' +
-          '(roadmap step 18).',
+        'TSX0305 probe.tsx:3:18 — `{ factor: 2 }` is an expression form the ' +
+          'compiler does not translate to Dart.',
       ),
     );
   });
@@ -705,8 +705,8 @@ describe('lowerComponent — value forms', () => {
       ),
     ).rejects.toThrow(
       new Error(
-        'TSX0305 probe.tsx:4:48 — this statement is not compiled yet ' +
-          '(roadmap step 18).',
+        'TSX0305 probe.tsx:4:48 — only a state setter call compiles here — ' +
+          'this statement does not update state.',
       ),
     );
   });
@@ -891,8 +891,8 @@ describe('lowerComponent — stateful pieces', () => {
       ),
     ).rejects.toThrow(
       new Error(
-        'TSX0305 probe.tsx:4:22 — this statement is not compiled yet ' +
-          '(roadmap step 18).',
+        'TSX0305 probe.tsx:4:22 — a state setter takes the new value ' +
+          '(`setCount(count + 1)`).',
       ),
     );
   });
@@ -912,8 +912,8 @@ describe('lowerComponent — stateful pieces', () => {
       ),
     ).rejects.toThrow(
       new Error(
-        'TSX0305 probe.tsx:5:5 — this statement is not compiled yet ' +
-          '(roadmap step 18).',
+        'TSX0305 probe.tsx:5:5 — only a state setter call compiles here — this ' +
+          'statement does not update state.',
       ),
     );
   });
@@ -991,7 +991,29 @@ describe('lowerComponent — effects and conditionals', () => {
     );
   });
 
-  test('effect cleanups are a numbered error until plugin controllers', () => {
+  test('an effect cleanup lowers into dispose', async () => {
+    const component = await lowerFirst(
+      "import { Text, useEffect, useState } from 'flutter-tsx';\n" +
+        'export const Probe = () => {\n' +
+        '  const [n, setN] = useState(0);\n' +
+        '  useEffect(() => {\n' +
+        '    setN(1);\n' +
+        '    return () => {\n' +
+        '      setN(0);\n' +
+        '    };\n' +
+        '  }, []);\n' +
+        '  return <Text>hi</Text>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+
+    // The mount half stays in initState; the returned function is the
+    // unmount half, which is what Flutter's dispose is for.
+    expect(component.initStatements).toHaveLength(1);
+    expect(component.disposeStatements).toHaveLength(1);
+  });
+
+  test('an effect returning something other than a function is an error', () => {
     expect(
       lowerFirst(
         "import { Text, useEffect, useState } from 'flutter-tsx';\n" +
@@ -999,7 +1021,7 @@ describe('lowerComponent — effects and conditionals', () => {
           '  const [n, setN] = useState(0);\n' +
           '  useEffect(() => {\n' +
           '    setN(1);\n' +
-          '    return () => setN(0);\n' +
+          '    return n;\n' +
           '  }, []);\n' +
           '  return <Text>hi</Text>;\n' +
           '};\n',
@@ -1007,8 +1029,8 @@ describe('lowerComponent — effects and conditionals', () => {
       ),
     ).rejects.toThrow(
       new Error(
-        'TSX0307 probe.tsx:6:5 — effect cleanups land with plugin ' +
-          'controllers (roadmap step 22).',
+        'TSX0307 probe.tsx:6:5 — an effect returns either nothing or its ' +
+          'cleanup function (`return () => { … }`).',
       ),
     );
   });
@@ -1087,8 +1109,9 @@ describe('lowerComponent — list rendering', () => {
       ),
     ).rejects.toThrow(
       new Error(
-        'TSX0305 probe.tsx:4:19 — this expression is not compiled yet ' +
-          '(roadmap step 18).',
+        'TSX0305 probe.tsx:4:19 — `items.map((item) => { return ' +
+          '<Text>{item}</Text>; })` is an expression form the compiler does ' +
+          'not translate to Dart.',
       ),
     );
   });
@@ -1105,8 +1128,8 @@ describe('lowerComponent — list rendering', () => {
       ),
     ).rejects.toThrow(
       new Error(
-        'TSX0305 probe.tsx:4:19 — this expression is not compiled yet ' +
-          '(roadmap step 18).',
+        'TSX0305 probe.tsx:4:19 — `items.slice(1)` is an expression form the ' +
+          'compiler does not translate to Dart.',
       ),
     );
   });
@@ -1123,8 +1146,9 @@ describe('lowerComponent — list rendering', () => {
       ),
     ).rejects.toThrow(
       new Error(
-        'TSX0305 probe.tsx:4:19 — this expression is not compiled yet ' +
-          '(roadmap step 18).',
+        'TSX0305 probe.tsx:4:19 — `items.map((item, index) => ' +
+          '<Text>{item}</Text>)` is an expression form the compiler does not ' +
+          'translate to Dart.',
       ),
     );
   });
@@ -1825,8 +1849,8 @@ describe('lowerComponent — plugin functions', () => {
   test('a bare expression statement in a handler is a numbered error', () => {
     expect(lowerProbe('opened;')).rejects.toThrow(
       new Error(
-        'TSX0305 probe.tsx:6:5 — this statement is not compiled yet ' +
-          '(roadmap step 18).',
+        'TSX0305 probe.tsx:6:5 — only a state setter call compiles here — this ' +
+          'statement does not update state.',
       ),
     );
   });
@@ -1834,8 +1858,8 @@ describe('lowerComponent — plugin functions', () => {
   test('a nested member call in a handler is a numbered error', () => {
     expect(lowerProbe('window.history.back();')).rejects.toThrow(
       new Error(
-        'TSX0305 probe.tsx:6:5 — this statement is not compiled yet ' +
-          '(roadmap step 18).',
+        'TSX0305 probe.tsx:6:5 — only a state setter call compiles here — this ' +
+          'statement does not update state.',
       ),
     );
   });

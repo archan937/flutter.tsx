@@ -33,10 +33,18 @@ const emitSetupMethods = (component: IrComponent): string[] =>
   });
 
 const emitDispose = (component: IrComponent): string[] => {
-  if (component.disposeLines.length === 0) {
+  if (
+    component.disposeLines.length === 0 &&
+    component.disposeStatements.length === 0
+  ) {
     return [];
   }
-  const lines = component.disposeLines.map((line) => `    ${line}`);
+  // An effect's cleanup releases what the effect set up, which may be using a
+  // plugin controller — so it runs before the controller is disposed.
+  const lines = [
+    ...initStateLines(component.disposeStatements),
+    ...component.disposeLines,
+  ].map((line) => `    ${line}`);
   return [
     `  @override\n  void dispose() {\n${lines.join('\n')}\n    super.dispose();\n  }`,
   ];

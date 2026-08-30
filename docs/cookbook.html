@@ -8,57 +8,118 @@
 <link rel="icon" type="image/png" href="./icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --react: #61dafb; --bg: #07090f; --panel: #11151f;
-    --text: #e8ecf4; --dim: #94a3b8; --line: #1f2637;
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; background: var(--bg); color: var(--text);
-    font: 16px/1.6 'Hanken Grotesk', system-ui, sans-serif;
-  }
-  a { color: var(--react); }
-  .shell { display: grid; grid-template-columns: 17rem minmax(0, 1fr); gap: 2.5rem; max-width: 82rem; margin: 0 auto; padding: 0 1.25rem; }
-  .sidebar {
-    position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto;
-    padding: 1.5rem 0.5rem 3rem 0; border-right: 1px solid var(--line);
-  }
-  .sidebar .brand { display: block; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.35rem; color: var(--text); text-decoration: none; }
-  .sidebar .pages { margin: 0 0 1.25rem; font-size: 0.85rem; color: var(--dim); }
-  .sidebar h4 {
-    margin: 1.1rem 0 0.35rem; font-size: 0.7rem; letter-spacing: 0.09em;
-    text-transform: uppercase; color: var(--dim);
-  }
-  .sidebar ul { list-style: none; margin: 0; padding: 0; }
-  .sidebar li { margin: 0.1rem 0; }
-  .sidebar a { display: block; padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.87rem; text-decoration: none; color: var(--text); }
-  .sidebar a:hover { background: var(--panel); }
-  main { min-width: 0; padding: 1.5rem 0 5rem; }
-  h1 { font-size: 2.25rem; margin: 1rem 0 0.5rem; }
-  h2 {
-    font-size: 1.05rem; letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--dim); margin: 3rem 0 0.5rem; scroll-margin-top: 1rem;
-  }
-  h3 { font-size: 1.3rem; margin: 0 0 0.35rem; scroll-margin-top: 1rem; }
-  .lede, .note { color: var(--dim); }
-  .recipe { margin: 2rem 0 0; padding-top: 1.5rem; border-top: 1px solid var(--line); }
-  .recipe .blurb { color: var(--dim); margin: 0 0 1rem; max-width: 60ch; }
-  .pair { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; margin-bottom: 1rem; }
-  @media (max-width: 70rem) {
-    .shell { grid-template-columns: 1fr; }
-    .sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--line); }
-    .pair { grid-template-columns: 1fr; }
-  }
-  .pane { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
-  .pane h4 {
-    margin: 0; padding: 0.55rem 0.9rem; font-size: 0.72rem; letter-spacing: 0.06em;
-    color: var(--dim); border-bottom: 1px solid var(--line);
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-  }
-  pre { margin: 0; padding: 0.9rem; overflow-x: auto; }
-  code { font: 13px/1.55 'JetBrains Mono', ui-monospace, monospace; }
+:root {
+  --react:#61dafb; --flutter:#54a4ff; --violet:#a78bfa;
+  --bg:#07090f; --panel:rgba(20,26,38,.62);
+  --line:rgba(120,150,200,.16); --line-soft:rgba(120,150,200,.09);
+  --text:#e8eef7; --muted:#9aa6bb; --dim:#6f7c93;
+  --grad:linear-gradient(115deg,#61dafb 0%,#54a4ff 48%,#a78bfa 100%);
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Hanken Grotesk",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { display: flex; font-family: var(--body); color: var(--text); line-height: 1.6;
+  background: var(--bg); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+/* ── Atmosphere ─── */
+.bg-layer { position: fixed; inset: 0; z-index: -2; pointer-events: none; }
+.bg-grid { background-image:
+    linear-gradient(var(--line-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(120% 90% at 50% 0%, #000 35%, transparent 78%);
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 0%, #000 35%, transparent 78%); }
+.bg-glow { background:
+    radial-gradient(900px 520px at 50% -160px, rgba(97,218,251,.16), transparent 70%),
+    radial-gradient(820px 520px at 95% 4%, rgba(167,139,250,.12), transparent 66%); }
+
+/* ── Sidebar ─── */
+#sidebar { position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  width: 250px; min-width: 250px; flex-shrink: 0; padding: 18px 12px 24px; font-size: 13px;
+  background: linear-gradient(180deg, rgba(17,21,31,.92), rgba(11,14,20,.84));
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-right: 1px solid var(--line); }
+.sb-brand { display: flex; align-items: center; gap: 10px; text-decoration: none;
+  color: var(--text); font-family: var(--mono); font-weight: 700; font-size: .95rem;
+  letter-spacing: -.02em; padding: 4px 6px 16px; }
+.sb-brand .mark { width: 28px; height: 28px; border-radius: 7px; object-fit: cover; display: block;
+  border: 1px solid rgba(97,218,251,.4); box-shadow: 0 0 9px rgba(167,139,250,.3), 0 3px 12px rgba(167,139,250,.16); }
+.sb-brand b { background: var(--grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+#search { width: 100%; padding: 9px 11px; border: 1px solid var(--line); border-radius: 9px;
+  font-family: var(--body); font-size: 13px; margin-bottom: 10px; outline: none;
+  background: rgba(7,9,15,.6); color: var(--text); }
+#search::placeholder { color: var(--dim); }
+#search:focus { border-color: var(--flutter); box-shadow: 0 0 0 2px rgba(84,164,255,.18); }
+.meta-info { font-family: var(--mono); font-size: 10.5px; color: var(--dim); margin-bottom: 12px; padding: 0 2px; }
+.sb-gh { display: flex; gap: 8px; margin-bottom: 14px; }
+.sb-gh a { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; border: 1px solid var(--line);
+  border-radius: 8px; font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--text);
+  text-decoration: none; background: rgba(7,9,15,.5); transition: border-color .15s; }
+.sb-gh a:hover { border-color: rgba(245,215,97,.45); }
+.sb-gh a.ghstars svg { color: var(--amber); }
+
+/* ── Sidebar accordion ─── */
+details { margin-bottom: 2px; }
+details > summary {
+  cursor: pointer; list-style: none; display: flex; align-items: center;
+  padding: 6px 8px; border-radius: 7px; font-weight: 600; color: var(--muted);
+  user-select: none; gap: 6px; }
+details > summary:hover { background: rgba(255,255,255,.04); color: var(--text); }
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before {
+  content: '▶'; font-size: 8px; color: var(--dim); flex-shrink: 0;
+  transition: transform .18s; display: inline-block; width: 10px; }
+details[open] > summary::before { transform: rotate(90deg); }
+.nav-count { font-weight: 400; color: var(--dim); font-size: 11px; margin-left: auto; font-family: var(--mono); }
+details > ul { list-style: none; padding: 2px 0 4px 18px; }
+details > ul li { margin: 1px 0; }
+details > ul li a {
+  display: block; padding: 3px 8px; border-radius: 6px; color: var(--muted);
+  text-decoration: none; font-size: 12px; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; transition: background .12s, color .12s; }
+details > ul li a:hover { background: rgba(255,255,255,.04); color: var(--text); }
+details > ul li a.active { background: rgba(97,218,251,.12); color: var(--react); font-weight: 600; }
+
+/* ── Main content ─── */
+main { flex: 1; max-width: 920px; padding: 48px 56px; min-width: 0; }
+h1 {
+  font-family: var(--display); font-size: 36px; font-weight: 800; letter-spacing: -.03em; margin-bottom: 8px;
+  background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.subtitle { color: var(--muted); margin-bottom: 40px; font-size: 15px; }
+.subtitle code { font-family: var(--mono); font-size: .9em; background: rgba(255,255,255,.06); padding: .1em .4em; border-radius: 5px; color: var(--react); }
+h2 { font-family: var(--display); font-size: 22px; font-weight: 700; letter-spacing: -.02em;
+  margin: 56px 0 22px; padding-bottom: 10px; border-bottom: 1px solid var(--line); color: var(--text); }
+h2:first-of-type { margin-top: 0; }
+
+main { padding-top: 40px; }
+.lede, .note { color: var(--muted); max-width: 68ch; }
+.note { font-size: 14px; }
+.recipe { border: 1px solid var(--line); border-radius: 14px; padding: 22px 24px;
+  margin-bottom: 22px; scroll-margin-top: 20px; background: var(--panel); }
+.recipe[hidden] { display: none; }
+.recipe h3 { font-family: var(--display); font-size: 18px; font-weight: 700;
+  letter-spacing: -.01em; margin-bottom: 8px; color: var(--text); }
+.recipe .blurb { color: var(--muted); font-size: 14px; margin-bottom: 16px; max-width: 68ch; }
+.pair { display: grid; gap: 14px; grid-template-columns: 1fr 1fr; margin-bottom: 12px; }
+@media (max-width: 1100px) { .pair { grid-template-columns: 1fr; } }
+.pane { border: 1px solid var(--line); border-radius: 10px; overflow: hidden;
+  background: rgba(7,9,15,.5); min-width: 0; }
+.pane h4 { padding: 8px 12px; font-family: var(--mono); font-size: 11px; font-weight: 600;
+  color: var(--dim); border-bottom: 1px solid var(--line); letter-spacing: .02em; }
+pre { margin: 0; padding: 14px; overflow-x: auto; }
+code { font-family: var(--mono); font-size: 12.5px; line-height: 1.6; }
+main table { border-collapse: collapse; margin: 16px 0; width: 100%; font-size: 14px; }
+main th, main td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; vertical-align: top; }
+main th { color: var(--dim); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+main p code, main li code, main td code { font-family: var(--mono); font-size: .9em;
+  background: rgba(255,255,255,.06); padding: .1em .4em; border-radius: 5px; color: var(--react); }
+main ul { margin: 12px 0 12px 20px; }
+main h3 { font-family: var(--display); font-size: 17px; margin: 28px 0 8px; }
+main p { margin-bottom: 12px; }
 
   .tok-com { color: #6b7a90; font-style: italic; }
   .tok-str { color: #a5d6a7; }
@@ -69,76 +130,99 @@
 </style>
 </head>
 <body>
-<div class="shell">
-<nav class="sidebar">
-<a class="brand" href="./index.html">Flutter.tsx</a>
-<p class="pages"><a href="./guide.html">Guide</a> · <a href="./api-reference.html">API reference</a></p>
-<h4>Start here</h4>
+<div class="bg-layer bg-grid"></div>
+<div class="bg-layer bg-glow"></div>
+<aside id="sidebar">
+  <a class="sb-brand" href="./index.html"><img class="mark" src="./icon.png" alt="flutter.tsx logo" width="28" height="28"><span>flutter<b>.tsx</b></span></a>
+  <input id="search" type="search" placeholder="Search recipes…" autocomplete="off" spellcheck="false">
+  <div class="meta-info">39 recipes · Flutter 3.47.1</div>
+  <div class="sb-gh">
+    <a href="./guide.html">Guide</a>
+    <a href="./api-reference.html">API ↗</a>
+  </div>
+  <nav id="sidebar-nav">
+<details open>
+<summary>Start here<span class="nav-count">7</span></summary>
 <ul>
-<li><a href="#02-hello-column">Your first screen</a></li>
-<li><a href="#03-styled-container">Padding, colour and text style</a></li>
-<li><a href="#04-inline-handler">Handling a callback prop</a></li>
-<li><a href="#05-counter">State with useState</a></li>
-<li><a href="#08-composition">Composing your own components</a></li>
-<li><a href="#09-typed-props">Typing props with an interface</a></li>
-<li><a href="#16-tap-target">Making anything tappable</a></li>
+<li data-name="Your first screen"><a href="#02-hello-column">Your first screen</a></li>
+<li data-name="Padding, colour and text style"><a href="#03-styled-container">Padding, colour and text style</a></li>
+<li data-name="Handling a callback prop"><a href="#04-inline-handler">Handling a callback prop</a></li>
+<li data-name="State with useState"><a href="#05-counter">State with useState</a></li>
+<li data-name="Composing your own components"><a href="#08-composition">Composing your own components</a></li>
+<li data-name="Typing props with an interface"><a href="#09-typed-props">Typing props with an interface</a></li>
+<li data-name="Making anything tappable"><a href="#16-tap-target">Making anything tappable</a></li>
 </ul>
-<h4>State and effects</h4>
+</details>
+<details>
+<summary>State and effects<span class="nav-count">6</span></summary>
 <ul>
-<li><a href="#06-mount-effect">Running code on mount</a></li>
-<li><a href="#19-store-counter">State shared across screens</a></li>
-<li><a href="#29-branching-handler">Branching inside a handler</a></li>
-<li><a href="#33-control-flow">Loops, switch and try/catch</a></li>
+<li data-name="Running code on mount"><a href="#06-mount-effect">Running code on mount</a></li>
+<li data-name="State shared across screens"><a href="#19-store-counter">State shared across screens</a></li>
+<li data-name="Branching inside a handler"><a href="#29-branching-handler">Branching inside a handler</a></li>
+<li data-name="Loops, switch and try/catch"><a href="#33-control-flow">Loops, switch and try/catch</a></li>
+<li data-name="Cleaning up when a screen goes away"><a href="#38-effect-cleanup">Cleaning up when a screen goes away</a></li>
+<li data-name="A callback that returns a widget"><a href="#39-builder-callback">A callback that returns a widget</a></li>
 </ul>
-<h4>Lists and data</h4>
+</details>
+<details>
+<summary>Lists and data<span class="nav-count">8</span></summary>
 <ul>
-<li><a href="#07-list-rendering">Rendering a list</a></li>
-<li><a href="#30-list-prop">Taking a list as a prop</a></li>
-<li><a href="#31-model-list">A list of your own model</a></li>
-<li><a href="#32-value-methods">String and number methods</a></li>
-<li><a href="#34-list-pipeline">filter, reduce and defaults</a></li>
-<li><a href="#35-helpers">Helper functions beside a component</a></li>
-<li><a href="#36-enums">Enums and string unions</a></li>
-<li><a href="#37-tuples-generics">Tuples and a generic helper</a></li>
+<li data-name="Rendering a list"><a href="#07-list-rendering">Rendering a list</a></li>
+<li data-name="Taking a list as a prop"><a href="#30-list-prop">Taking a list as a prop</a></li>
+<li data-name="A list of your own model"><a href="#31-model-list">A list of your own model</a></li>
+<li data-name="String and number methods"><a href="#32-value-methods">String and number methods</a></li>
+<li data-name="filter, reduce and defaults"><a href="#34-list-pipeline">filter, reduce and defaults</a></li>
+<li data-name="Helper functions beside a component"><a href="#35-helpers">Helper functions beside a component</a></li>
+<li data-name="Enums and string unions"><a href="#36-enums">Enums and string unions</a></li>
+<li data-name="Tuples and a generic helper"><a href="#37-tuples-generics">Tuples and a generic helper</a></li>
 </ul>
-<h4>Loading data</h4>
+</details>
+<details>
+<summary>Loading data<span class="nav-count">4</span></summary>
 <ul>
-<li><a href="#17-async-token">Awaiting a plugin call</a></li>
-<li><a href="#18-connectivity-stream">Following a stream</a></li>
-<li><a href="#25-http-get">Fetching data over HTTP</a></li>
-<li><a href="#26-json-model">Decoding JSON into a model</a></li>
+<li data-name="Awaiting a plugin call"><a href="#17-async-token">Awaiting a plugin call</a></li>
+<li data-name="Following a stream"><a href="#18-connectivity-stream">Following a stream</a></li>
+<li data-name="Fetching data over HTTP"><a href="#25-http-get">Fetching data over HTTP</a></li>
+<li data-name="Decoding JSON into a model"><a href="#26-json-model">Decoding JSON into a model</a></li>
 </ul>
-<h4>Native plugins</h4>
+</details>
+<details>
+<summary>Native plugins<span class="nav-count">8</span></summary>
 <ul>
-<li><a href="#01-camera-screen">Taking a photo</a></li>
-<li><a href="#10-camera-options">Choosing a camera resolution</a></li>
-<li><a href="#11-preferences">Storing a preference</a></li>
-<li><a href="#12-secure-storage">Storing a secret</a></li>
-<li><a href="#13-open-link">Opening a URL</a></li>
-<li><a href="#14-app-info">Reading app version info</a></li>
-<li><a href="#15-front-camera">Selecting the front camera</a></li>
-<li><a href="#27-inline-plugin-call">Calling a plugin from a tap</a></li>
+<li data-name="Taking a photo"><a href="#01-camera-screen">Taking a photo</a></li>
+<li data-name="Choosing a camera resolution"><a href="#10-camera-options">Choosing a camera resolution</a></li>
+<li data-name="Storing a preference"><a href="#11-preferences">Storing a preference</a></li>
+<li data-name="Storing a secret"><a href="#12-secure-storage">Storing a secret</a></li>
+<li data-name="Opening a URL"><a href="#13-open-link">Opening a URL</a></li>
+<li data-name="Reading app version info"><a href="#14-app-info">Reading app version info</a></li>
+<li data-name="Selecting the front camera"><a href="#15-front-camera">Selecting the front camera</a></li>
+<li data-name="Calling a plugin from a tap"><a href="#27-inline-plugin-call">Calling a plugin from a tap</a></li>
 </ul>
-<h4>Navigation and shell</h4>
+</details>
+<details>
+<summary>Navigation and shell<span class="nav-count">5</span></summary>
 <ul>
-<li><a href="#20-router">Routing between screens</a></li>
-<li><a href="#21-modal">Dialogs and bottom sheets</a></li>
-<li><a href="#22-mount-dialog">Showing a dialog on mount</a></li>
-<li><a href="#23-tabs">A tabbed app shell</a></li>
-<li><a href="#24-animated">Animating a change</a></li>
+<li data-name="Routing between screens"><a href="#20-router">Routing between screens</a></li>
+<li data-name="Dialogs and bottom sheets"><a href="#21-modal">Dialogs and bottom sheets</a></li>
+<li data-name="Showing a dialog on mount"><a href="#22-mount-dialog">Showing a dialog on mount</a></li>
+<li data-name="A tabbed app shell"><a href="#23-tabs">A tabbed app shell</a></li>
+<li data-name="Animating a change"><a href="#24-animated">Animating a change</a></li>
 </ul>
-<h4>Project structure</h4>
+</details>
+<details>
+<summary>Project structure<span class="nav-count">1</span></summary>
 <ul>
-<li><a href="#28-multi-file">Importing a component from another file</a></li>
+<li data-name="Importing a component from another file"><a href="#28-multi-file">Importing a component from another file</a></li>
 </ul>
-</nav>
+</details>
+  </nav>
+</aside>
 <main>
 <h1>Cookbook</h1>
 <p class="lede">Every example here is a conformance fixture: the TSX you write on the left, the Dart <code>fsx</code> emits on the right, and nothing typed by hand in between. Each pair is asserted byte-for-byte by the golden tests, laid out by <code>dart format</code>, checked by <code>flutter analyze</code>, and built as a real Flutter app on every run.</p>
-<p class="note">Generated from the fixtures. Flutter 3.47.1.</p>
 <h2 id="start-here">Start here</h2>
-<section class="recipe">
-<h3 id="02-hello-column">Your first screen</h3>
+<section class="recipe" id="02-hello-column" data-name="Your first screen">
+<h3>Your first screen</h3>
 <p class="blurb">A component is a function returning JSX. Flutter widgets are the tags, their named parameters are the props, and the emitted Dart is a plain StatelessWidget.</p>
 <div class="pair">
 <div class="pane"><h4>src/HelloScreen.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Center</span>, <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -169,8 +253,8 @@
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="03-styled-container">Padding, colour and text style</h3>
+<section class="recipe" id="03-styled-container" data-name="Padding, colour and text style">
+<h3>Padding, colour and text style</h3>
 <p class="blurb">Values you would write as Dart objects are written as TSX props: <code>padding={16}</code> becomes <code>EdgeInsets.all(16)</code>, a hex string becomes a <code>Color</code>, and a style object becomes a <code>TextStyle</code>.</p>
 <div class="pair">
 <div class="pane"><h4>src/StyledCard.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Container</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -215,8 +299,8 @@
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="04-inline-handler">Handling a callback prop</h3>
+<section class="recipe" id="04-inline-handler" data-name="Handling a callback prop">
+<h3>Handling a callback prop</h3>
 <p class="blurb">An arrow function passed to a widget prop compiles to the Dart callback that prop expects, with the parameter names the SDK declares.</p>
 <div class="pair">
 <div class="pane"><h4>src/Toggles.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Switch</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -246,8 +330,8 @@
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="05-counter">State with useState</h3>
+<section class="recipe" id="05-counter" data-name="State with useState">
+<h3>State with useState</h3>
 <p class="blurb">The hook you already know. The compiler sees the component holds state, emits a StatefulWidget, and wraps the assignment in <code>setState</code> so the rebuild happens.</p>
 <div class="pair">
 <div class="pane"><h4>src/Counter.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -297,8 +381,8 @@
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="08-composition">Composing your own components</h3>
+<section class="recipe" id="08-composition" data-name="Composing your own components">
+<h3>Composing your own components</h3>
 <p class="blurb">A component used in the same file becomes its own widget class, constructed where you wrote the tag — the same composition you write in React.</p>
 <div class="pair">
 <div class="pane"><h4>src/Welcome.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Center</span>, <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -343,8 +427,8 @@ export const Welcome = () =&gt; (
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="09-typed-props">Typing props with an interface</h3>
+<section class="recipe" id="09-typed-props" data-name="Typing props with an interface">
+<h3>Typing props with an interface</h3>
 <p class="blurb">A props interface becomes the widget constructor: each field a <code>required</code> named parameter and a <code>final</code> field, so a missing prop is a TypeScript error before it is a Dart one.</p>
 <div class="pair">
 <div class="pane"><h4>src/TaskBoard.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -408,8 +492,8 @@ export const TaskBoard = () =&gt; {
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="16-tap-target">Making anything tappable</h3>
+<section class="recipe" id="16-tap-target" data-name="Making anything tappable">
+<h3>Making anything tappable</h3>
 <p class="blurb">Gesture props on any widget compile to the <code>GestureDetector</code> Flutter needs, without you nesting one by hand.</p>
 <div class="pair">
 <div class="pane"><h4>src/TapTarget.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Container</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -468,8 +552,8 @@ export const TaskBoard = () =&gt; {
 </div>
 </section>
 <h2 id="state-and-effects">State and effects</h2>
-<section class="recipe">
-<h3 id="06-mount-effect">Running code on mount</h3>
+<section class="recipe" id="06-mount-effect" data-name="Running code on mount">
+<h3>Running code on mount</h3>
 <p class="blurb"><code>useEffect</code> with an empty dependency list is <code>initState</code> — the same idea, and the generated widget calls <code>super.initState()</code> for you.</p>
 <div class="pair">
 <div class="pane"><h4>src/Status.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useEffect, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -527,8 +611,8 @@ export const TaskBoard = () =&gt; {
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="19-store-counter">State shared across screens</h3>
+<section class="recipe" id="19-store-counter" data-name="State shared across screens">
+<h3>State shared across screens</h3>
 <p class="blurb"><code>createStore</code> emits a <code>ChangeNotifier</code> and one instance of it; <code>useStore</code> reads it and notifies listeners on write. No provider wiring to set up.</p>
 <div class="pair">
 <div class="pane"><h4>src/StoreCounter.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> {
@@ -605,8 +689,8 @@ export const TaskBoard = () =&gt; {
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="29-branching-handler">Branching inside a handler</h3>
+<section class="recipe" id="29-branching-handler" data-name="Branching inside a handler">
+<h3>Branching inside a handler</h3>
 <p class="blurb">if / else if / else in an event handler compiles to the same branching in Dart, with every state assignment still wrapped in <code>setState</code>.</p>
 <div class="pair">
 <div class="pane"><h4>src/Stepper.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -671,8 +755,8 @@ export const TaskBoard = () =&gt; {
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="33-control-flow">Loops, switch and try/catch</h3>
+<section class="recipe" id="33-control-flow" data-name="Loops, switch and try/catch">
+<h3>Loops, switch and try/catch</h3>
 <p class="blurb">for-of, switch with fallthrough, and try/catch all compile to their Dart equivalents, so a handler can be as ordinary as any other function you write.</p>
 <div class="pair">
 <div class="pane"><h4>src/Auditor.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -769,9 +853,111 @@ export const TaskBoard = () =&gt; {
 }</code></pre></div>
 </div>
 </section>
+<section class="recipe" id="38-effect-cleanup" data-name="Cleaning up when a screen goes away">
+<h3>Cleaning up when a screen goes away</h3>
+<p class="blurb">The function an effect returns is its unmount half: its statements become the widget’s <code>dispose</code>, ahead of any controller the effect was using.</p>
+<div class="pair">
+<div class="pane"><h4>src/Browser.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span>, useEffect, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<span class="tok-kw">import</span> { closeInAppWebView } <span class="tok-kw">from</span> <span class="tok-str">'plugin:url_launcher'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Browser</span> = () =&gt; {
+  <span class="tok-kw">const</span> [open, setOpen] = <span class="tok-fn">useState</span>(<span class="tok-kw">false</span>);
+
+  <span class="tok-fn">useEffect</span>(() =&gt; {
+    <span class="tok-fn">setOpen</span>(<span class="tok-kw">true</span>);
+    <span class="tok-kw">return</span> () =&gt; {
+      <span class="tok-kw">void</span> <span class="tok-fn">closeInAppWebView</span>();
+    };
+  }, []);
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;{open ? <span class="tok-str">'Open'</span> : <span class="tok-str">'Closed'</span>}&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
+  );
+};</code></pre></div>
+<div class="pane"><h4>browser.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<span class="tok-kw">import</span> <span class="tok-str">'package:url_launcher/url_launcher.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">Browser</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Browser</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">Browser</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_BrowserState</span>();
+}
+
+<span class="tok-kw">class</span> _BrowserState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">Browser</span>&gt; {
+  bool _open = <span class="tok-kw">false</span>;
+
+  @override
+  <span class="tok-kw">void</span> <span class="tok-fn">initState</span>() {
+    <span class="tok-kw">super</span>.<span class="tok-fn">initState</span>();
+    _open = <span class="tok-kw">true</span>;
+  }
+
+  @override
+  <span class="tok-kw">void</span> <span class="tok-fn">dispose</span>() {
+    <span class="tok-fn">closeInAppWebView</span>();
+    <span class="tok-kw">super</span>.<span class="tok-fn">dispose</span>();
+  }
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(children: [<span class="tok-typ">Text</span>(_open ? <span class="tok-str">'Open'</span> : <span class="tok-str">'Closed'</span>)]);
+  }
+}</code></pre></div>
+</div>
+</section>
+<section class="recipe" id="39-builder-callback" data-name="A callback that returns a widget">
+<h3>A callback that returns a widget</h3>
+<p class="blurb">A builder prop takes an arrow function whose body is a widget — including a conditional one — and becomes an expression-bodied Dart closure.</p>
+<div class="pair">
+<div class="pane"><h4>src/Panel.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Builder</span>, <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Panel</span> = () =&gt; {
+  <span class="tok-kw">const</span> [open, setOpen] = <span class="tok-fn">useState</span>(<span class="tok-kw">false</span>);
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">Builder</span>
+        builder={() =&gt; (open ? &lt;<span class="tok-typ">Text</span>&gt;Open&lt;/<span class="tok-typ">Text</span>&gt; : &lt;<span class="tok-typ">Text</span>&gt;Closed&lt;/<span class="tok-typ">Text</span>&gt;)}
+      /&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={() =&gt; setOpen(!open)}&gt;Toggle&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
+  );
+};</code></pre></div>
+<div class="pane"><h4>panel.dart</h4><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">Panel</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Panel</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">Panel</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_PanelState</span>();
+}
+
+<span class="tok-kw">class</span> _PanelState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">Panel</span>&gt; {
+  bool _open = <span class="tok-kw">false</span>;
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+      children: [
+        <span class="tok-typ">Builder</span>(
+          builder: (_) =&gt; _open ? <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Open'</span>) : <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Closed'</span>),
+        ),
+        <span class="tok-typ">ElevatedButton</span>(
+          onPressed: () =&gt; <span class="tok-fn">setState</span>(() =&gt; _open = !_open),
+          child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Toggle'</span>),
+        ),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
 <h2 id="lists-and-data">Lists and data</h2>
-<section class="recipe">
-<h3 id="07-list-rendering">Rendering a list</h3>
+<section class="recipe" id="07-list-rendering" data-name="Rendering a list">
+<h3>Rendering a list</h3>
 <p class="blurb"><code>.map</code> over state spreads into the parent <code>children</code>, exactly where you wrote it, so a list is written the way it is in React.</p>
 <div class="pair">
 <div class="pane"><h4>src/Groceries.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -822,8 +1008,8 @@ export const TaskBoard = () =&gt; {
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="30-list-prop">Taking a list as a prop</h3>
+<section class="recipe" id="30-list-prop" data-name="Taking a list as a prop">
+<h3>Taking a list as a prop</h3>
 <p class="blurb">A <code>string[]</code> prop becomes a <code>List&lt;String&gt;</code> constructor parameter, and mapping over it spreads into the widget tree.</p>
 <div class="pair">
 <div class="pane"><h4>src/TagList.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -849,8 +1035,8 @@ export const TaskBoard = () =&gt; {
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="31-model-list">A list of your own model</h3>
+<section class="recipe" id="31-model-list" data-name="A list of your own model">
+<h3>A list of your own model</h3>
 <p class="blurb">An interface used as a prop type becomes a Dart class, so a list of models is typed on both sides.</p>
 <div class="pair">
 <div class="pane"><h4>src/JobBoard.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -891,8 +1077,8 @@ export const TaskBoard = () =&gt; {
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="32-value-methods">String and number methods</h3>
+<section class="recipe" id="32-value-methods" data-name="String and number methods">
+<h3>String and number methods</h3>
 <p class="blurb">The methods you reach for — <code>trim</code>, <code>toUpperCase</code>, <code>join</code>, <code>toFixed</code>, <code>includes</code> — map onto their Dart counterparts rather than being reimplemented.</p>
 <div class="pair">
 <div class="pane"><h4>src/ValueMethods.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -941,8 +1127,8 @@ export const TaskBoard = () =&gt; {
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="34-list-pipeline">filter, reduce and defaults</h3>
+<section class="recipe" id="34-list-pipeline" data-name="filter, reduce and defaults">
+<h3>filter, reduce and defaults</h3>
 <p class="blurb"><code>filter</code> becomes <code>where</code>, <code>reduce</code> becomes <code>fold</code> typed by its element, and <code>??</code> becomes Dart’s own — chained in one expression as you wrote it.</p>
 <div class="pair">
 <div class="pane"><h4>src/Totals.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -985,8 +1171,8 @@ export const TaskBoard = () =&gt; {
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="35-helpers">Helper functions beside a component</h3>
+<section class="recipe" id="35-helpers" data-name="Helper functions beside a component">
+<h3>Helper functions beside a component</h3>
 <p class="blurb">A plain function in the file becomes a top-level Dart function with the same signature, so shared logic does not have to live in a widget.</p>
 <div class="pair">
 <div class="pane"><h4>src/Roster.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -1024,8 +1210,8 @@ export const TaskBoard = () =&gt; {
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="36-enums">Enums and string unions</h3>
+<section class="recipe" id="36-enums" data-name="Enums and string unions">
+<h3>Enums and string unions</h3>
 <p class="blurb">A TypeScript enum becomes a Dart enum, and a string union stays a <code>String</code> the type system still narrows — both usable as props.</p>
 <div class="pair">
 <div class="pane"><h4>src/Badge.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -1072,8 +1258,8 @@ export const TaskBoard = () =&gt; {
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="37-tuples-generics">Tuples and a generic helper</h3>
+<section class="recipe" id="37-tuples-generics" data-name="Tuples and a generic helper">
+<h3>Tuples and a generic helper</h3>
 <p class="blurb">A tuple type becomes a Dart record and a generic function keeps its type parameter, so neither has to be widened to <code>dynamic</code>.</p>
 <div class="pair">
 <div class="pane"><h4>src/Span.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -1118,8 +1304,8 @@ export const Span = ({
 </div>
 </section>
 <h2 id="loading-data">Loading data</h2>
-<section class="recipe">
-<h3 id="17-async-token">Awaiting a plugin call</h3>
+<section class="recipe" id="17-async-token" data-name="Awaiting a plugin call">
+<h3>Awaiting a plugin call</h3>
 <p class="blurb">The same FutureBuilder, over a plugin instead of a request: anything returning a Future can be awaited this way.</p>
 <div class="pair">
 <div class="pane"><h4>src/TokenCheck.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">CircularProgressIndicator</span>, <span class="tok-typ">Text</span>, useAsync } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -1174,8 +1360,8 @@ export const Span = ({
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="18-connectivity-stream">Following a stream</h3>
+<section class="recipe" id="18-connectivity-stream" data-name="Following a stream">
+<h3>Following a stream</h3>
 <p class="blurb"><code>useStream</code> is <code>useAsync</code> over a Dart <code>Stream</code>: it emits a <code>StreamBuilder</code>, and the awaited value is the latest event.</p>
 <div class="pair">
 <div class="pane"><h4>src/ConnectionBanner.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">CircularProgressIndicator</span>, <span class="tok-typ">Text</span>, useStream } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -1230,8 +1416,8 @@ export const Span = ({
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="25-http-get">Fetching data over HTTP</h3>
+<section class="recipe" id="25-http-get" data-name="Fetching data over HTTP">
+<h3>Fetching data over HTTP</h3>
 <p class="blurb"><code>await useAsync(...)</code> emits a <code>FutureBuilder</code>: the loading and error branches you pass become its waiting and error states, and the awaited value is the data in scope.</p>
 <div class="pair">
 <div class="pane"><h4>src/AlbumView.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">CircularProgressIndicator</span>, <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span>, useAsync } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -1291,8 +1477,8 @@ export const Span = ({
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="26-json-model">Decoding JSON into a model</h3>
+<section class="recipe" id="26-json-model" data-name="Decoding JSON into a model">
+<h3>Decoding JSON into a model</h3>
 <p class="blurb"><code>json(body) as Album</code> generates the Dart data class and its <code>fromJson</code> factory — including the nested model, the list field and the optional one.</p>
 <div class="pair">
 <div class="pane"><h4>src/AlbumDetail.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> {
@@ -1408,8 +1594,8 @@ export const Span = ({
 </div>
 </section>
 <h2 id="native-plugins">Native plugins</h2>
-<section class="recipe">
-<h3 id="01-camera-screen">Taking a photo</h3>
+<section class="recipe" id="01-camera-screen" data-name="Taking a photo">
+<h3>Taking a photo</h3>
 <p class="blurb"><code>useCamera</code> emits the whole controller lifecycle: <code>availableCameras</code>, <code>initialize</code>, a <code>mounted</code> check before setState, and <code>dispose</code> — the part that is easy to get wrong by hand.</p>
 <div class="pair">
 <div class="pane"><h4>src/CameraScreen.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -1489,8 +1675,8 @@ export const Span = ({
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="10-camera-options">Choosing a camera resolution</h3>
+<section class="recipe" id="10-camera-options" data-name="Choosing a camera resolution">
+<h3>Choosing a camera resolution</h3>
 <p class="blurb">Hook options are typed from the plugin’s own enums, so <code>resolution</code> completes in the editor and compiles to <code>ResolutionPreset.veryHigh</code>.</p>
 <div class="pair">
 <div class="pane"><h4>src/HiResCamera.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -1573,8 +1759,8 @@ export const Span = ({
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="11-preferences">Storing a preference</h3>
+<section class="recipe" id="11-preferences" data-name="Storing a preference">
+<h3>Storing a preference</h3>
 <p class="blurb">A service-style plugin becomes a hook returning the instance, so reading and writing preferences is one call.</p>
 <div class="pair">
 <div class="pane"><h4>src/Profile.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -1645,8 +1831,8 @@ export const Span = ({
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="12-secure-storage">Storing a secret</h3>
+<section class="recipe" id="12-secure-storage" data-name="Storing a secret">
+<h3>Storing a secret</h3>
 <p class="blurb">The same shape over the keychain and keystore, with the plugin’s own named arguments preserved.</p>
 <div class="pair">
 <div class="pane"><h4>src/Vault.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -1701,8 +1887,8 @@ export const Span = ({
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="13-open-link">Opening a URL</h3>
+<section class="recipe" id="13-open-link" data-name="Opening a URL">
+<h3>Opening a URL</h3>
 <p class="blurb">A plugin’s top-level functions are importable directly, and a URL string is wrapped in <code>Uri.parse</code> where Dart wants a <code>Uri</code>.</p>
 <div class="pair">
 <div class="pane"><h4>src/OpenLink.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -1758,8 +1944,8 @@ export const Span = ({
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="14-app-info">Reading app version info</h3>
+<section class="recipe" id="14-app-info" data-name="Reading app version info">
+<h3>Reading app version info</h3>
 <p class="blurb">A plugin acquired through a static factory becomes a hook that awaits it, so the value is ready where you read it.</p>
 <div class="pair">
 <div class="pane"><h4>src/AppInfo.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -1813,8 +1999,8 @@ export const Span = ({
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="15-front-camera">Selecting the front camera</h3>
+<section class="recipe" id="15-front-camera" data-name="Selecting the front camera">
+<h3>Selecting the front camera</h3>
 <p class="blurb">Passing <code>lens</code> filters the device list the plugin returns, rather than making you find the matching camera yourself.</p>
 <div class="pair">
 <div class="pane"><h4>src/Selfie.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -1898,8 +2084,8 @@ export const Span = ({
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="27-inline-plugin-call">Calling a plugin from a tap</h3>
+<section class="recipe" id="27-inline-plugin-call" data-name="Calling a plugin from a tap">
+<h3>Calling a plugin from a tap</h3>
 <p class="blurb">A plugin call written inline in a handler compiles in place — no controller to thread through the widget.</p>
 <div class="pair">
 <div class="pane"><h4>src/InlineLink.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Center</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -1929,8 +2115,8 @@ export const Span = ({
 </div>
 </section>
 <h2 id="navigation-and-shell">Navigation and shell</h2>
-<section class="recipe">
-<h3 id="20-router">Routing between screens</h3>
+<section class="recipe" id="20-router" data-name="Routing between screens">
+<h3>Routing between screens</h3>
 <p class="blurb"><code>createRouter</code> emits a GoRouter with one route per entry, and <code>useNavigation</code> rewrites onto its BuildContext extensions — no navigator passed around.</p>
 <div class="pair">
 <div class="pane"><h4>src/router.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> {
@@ -2014,8 +2200,8 @@ export const router = createRouter({
 );</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="21-modal">Dialogs and bottom sheets</h3>
+<section class="recipe" id="21-modal" data-name="Dialogs and bottom sheets">
+<h3>Dialogs and bottom sheets</h3>
 <p class="blurb"><code>present</code> and <code>presentSheet</code> become <code>showDialog</code> and <code>showModalBottomSheet</code>, taking the component you wrote as their builder.</p>
 <div class="pair">
 <div class="pane"><h4>src/DeleteButton.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> {
@@ -2108,8 +2294,8 @@ export const DeleteButton = () =&gt; {
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="22-mount-dialog">Showing a dialog on mount</h3>
+<section class="recipe" id="22-mount-dialog" data-name="Showing a dialog on mount">
+<h3>Showing a dialog on mount</h3>
 <p class="blurb">Presenting from an effect needs the frame to exist first, so the generated <code>initState</code> schedules it on the post-frame callback.</p>
 <div class="pair">
 <div class="pane"><h4>src/Onboarding.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> {
@@ -2182,8 +2368,8 @@ export const Onboarding = () =&gt; {
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="23-tabs">A tabbed app shell</h3>
+<section class="recipe" id="23-tabs" data-name="A tabbed app shell">
+<h3>A tabbed app shell</h3>
 <p class="blurb"><code>TabView</code> emits a <code>Scaffold</code> with a <code>BottomNavigationBar</code> over an <code>IndexedStack</code>, so every tab keeps its state while you switch.</p>
 <div class="pair">
 <div class="pane"><h4>src/Shell.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">TabItem</span>, <span class="tok-typ">TabView</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -2252,8 +2438,8 @@ export const Shell = () =&gt; (
 }</code></pre></div>
 </div>
 </section>
-<section class="recipe">
-<h3 id="24-animated">Animating a change</h3>
+<section class="recipe" id="24-animated" data-name="Animating a change">
+<h3>Animating a change</h3>
 <p class="blurb"><code>&lt;Animated type=&quot;fade&quot;&gt;</code> becomes <code>AnimatedOpacity</code> driven by the value you pass — an implicit animation, no controller to manage.</p>
 <div class="pair">
 <div class="pane"><h4>src/Fader.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Animated</span>, <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -2309,8 +2495,8 @@ export const Shell = () =&gt; (
 </div>
 </section>
 <h2 id="project-structure">Project structure</h2>
-<section class="recipe">
-<h3 id="28-multi-file">Importing a component from another file</h3>
+<section class="recipe" id="28-multi-file" data-name="Importing a component from another file">
+<h3>Importing a component from another file</h3>
 <p class="blurb">Each file compiles to its own Dart file, and the import between them is rewritten to match — so a project is laid out the way you would lay out any TypeScript one.</p>
 <div class="pair">
 <div class="pane"><h4>src/Directory.tsx</h4><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Center</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
@@ -2359,7 +2545,65 @@ export const Shell = () =&gt; (
 }</code></pre></div>
 </div>
 </section>
+<p id="no-results">No recipes match your search.</p>
 </main>
-</div>
+<script>
+(function () {
+  'use strict';
+  // ── Search / filter ───────────────────────────────────────────────────────
+  const searchEl = document.getElementById('search');
+  const noResults = document.getElementById('no-results');
+  const navDetails = Array.from(document.querySelectorAll('#sidebar-nav details'));
+  const initialOpen = new Map(navDetails.map(function (d) { return [d, d.open]; }));
+
+  searchEl.addEventListener('input', function () {
+    const q = this.value.trim().toLowerCase();
+    let visible = 0;
+    document.querySelectorAll('.widget').forEach(function (el) {
+      const name = (el.dataset.name || '').toLowerCase();
+      const show = !q || name.includes(q);
+      el.hidden = !show;
+      if (show) visible++;
+    });
+    if (noResults) noResults.style.display = (!q || visible > 0) ? 'none' : 'block';
+    document.querySelectorAll('#sidebar-nav li[data-name]').forEach(function (li) {
+      const name = (li.dataset.name || '').toLowerCase();
+      li.hidden = q ? !name.includes(q) : false;
+    });
+    navDetails.forEach(function (d) {
+      if (!q) {
+        d.hidden = false;
+        d.open = initialOpen.get(d) || false;
+      } else {
+        const hasVisible = Array.from(
+          d.querySelectorAll('li[data-name]'),
+        ).some(function (li) { return !li.hidden; });
+        d.hidden = !hasVisible;
+        if (hasVisible) d.open = true;
+      }
+    });
+  });
+
+  // ── Scrollspy — highlight the active sidebar link ─────────────────────────
+  const anchors = Array.from(
+    document.querySelectorAll('main .widget[id], main section[id]'),
+  );
+  const sideLinks = Array.from(document.querySelectorAll('#sidebar-nav a'));
+
+  const onScroll = function () {
+    const scrollY = window.scrollY + 100;
+    let activeId = null;
+    for (const el of anchors) {
+      if (el.offsetTop <= scrollY) activeId = el.id;
+    }
+    sideLinks.forEach(function (a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + activeId);
+    });
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+})();
+</script>
 </body>
 </html>

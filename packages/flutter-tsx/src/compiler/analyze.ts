@@ -241,9 +241,8 @@ const enumDeclaration = (
 const propsError = (sourceFile: ts.SourceFile, node: ts.Node): never => {
   throw tsxErrorAt(
     'TSX0309',
-    'props must be destructured with an inline type: ' +
-      '`({ name }: { name: string })` (named prop types land at roadmap ' +
-      'step 21).',
+    'props must be destructured, and their type must be an object type: ' +
+      '`({ name }: { name: string })` or an interface declared in this file.',
     { sourceFile, node },
   );
 };
@@ -603,7 +602,7 @@ const analyzeAsyncDeclaration = (
   ) {
     throw tsxErrorAt(
       'TSX0305',
-      'this expression is not compiled yet (roadmap step 18).',
+      'only `useAsync` and `useStream` can be awaited in a component.',
       { sourceFile: context.sourceFile, node: awaited },
     );
   }

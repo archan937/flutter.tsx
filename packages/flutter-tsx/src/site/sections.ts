@@ -7,6 +7,7 @@ import {
   SHOWCASES,
 } from './cookbook';
 import { extractCoreApi } from './core-api';
+import { extractDeferrals } from './deferrals';
 import type { SiteSections } from './from-snapshot';
 import { buildSitePlugins } from './plugins';
 
@@ -18,6 +19,15 @@ const CORE_SOURCES = ['../runtime/hooks.ts', '../runtime/shell.ts'];
 
 /** The generated declarations that ship: where the value types are read from. */
 const GENERATED_SOURCES = ['../generated/widgets.ts'];
+
+/** Where the compiler raises what it refuses, swept for the docs. */
+const COMPILER_SOURCES = [
+  '../compiler/analyze.ts',
+  '../compiler/lower.ts',
+  '../compiler/translate.ts',
+  '../compiler/strict-mode.ts',
+  '../compiler/transpile.ts',
+];
 
 const resolve = (relative: string): string =>
   new URL(relative, import.meta.url).pathname;
@@ -58,6 +68,14 @@ export const loadSiteSections = async (): Promise<SiteSections> => {
       PLUGIN_OVERRIDES,
       recipes,
     ),
+    limitations: (
+      await Promise.all(
+        COMPILER_SOURCES.map(async (path) => ({
+          path,
+          text: await Bun.file(resolve(path)).text(),
+        })),
+      ).then(extractDeferrals)
+    ).map((deferral) => ({ code: deferral.code, message: deferral.message })),
     generatedFiles: GENERATED_SOURCES.map(resolve),
   };
 };

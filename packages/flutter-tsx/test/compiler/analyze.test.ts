@@ -208,9 +208,9 @@ describe('analyzeSource — component shapes', () => {
       ),
     ).toThrow(
       new Error(
-        'TSX0309 probe.tsx:2:30 — props must be destructured with an inline ' +
-          'type: `({ name }: { name: string })` (named prop types land at ' +
-          'roadmap step 21).',
+        'TSX0309 probe.tsx:2:30 — props must be destructured, and their type ' +
+          'must be an object type: `({ name }: { name: string })` or an ' +
+          'interface declared in this file.',
       ),
     );
   });
@@ -224,9 +224,9 @@ describe('analyzeSource — component shapes', () => {
       ),
     ).toThrow(
       new Error(
-        'TSX0309 probe.tsx:2:30 — props must be destructured with an inline ' +
-          'type: `({ name }: { name: string })` (named prop types land at ' +
-          'roadmap step 21).',
+        'TSX0309 probe.tsx:2:30 — props must be destructured, and their type ' +
+          'must be an object type: `({ name }: { name: string })` or an ' +
+          'interface declared in this file.',
       ),
     );
   });
@@ -265,9 +265,9 @@ describe('analyzeSource — component shapes', () => {
       ),
     ).toThrow(
       new Error(
-        'TSX0309 probe.tsx:2:23 — props must be destructured with an inline ' +
-          'type: `({ name }: { name: string })` (named prop types land at ' +
-          'roadmap step 21).',
+        'TSX0309 probe.tsx:2:23 — props must be destructured, and their type ' +
+          'must be an object type: `({ name }: { name: string })` or an ' +
+          'interface declared in this file.',
       ),
     );
   });
@@ -281,9 +281,9 @@ describe('analyzeSource — component shapes', () => {
       ),
     ).toThrow(
       new Error(
-        'TSX0309 probe.tsx:2:34 — props must be destructured with an inline ' +
-          'type: `({ name }: { name: string })` (named prop types land at ' +
-          'roadmap step 21).',
+        'TSX0309 probe.tsx:2:34 — props must be destructured, and their type ' +
+          'must be an object type: `({ name }: { name: string })` or an ' +
+          'interface declared in this file.',
       ),
     );
   });
@@ -297,9 +297,9 @@ describe('analyzeSource — component shapes', () => {
       ),
     ).toThrow(
       new Error(
-        'TSX0309 probe.tsx:2:41 — props must be destructured with an inline ' +
-          'type: `({ name }: { name: string })` (named prop types land at ' +
-          'roadmap step 21).',
+        'TSX0309 probe.tsx:2:41 — props must be destructured, and their type ' +
+          'must be an object type: `({ name }: { name: string })` or an ' +
+          'interface declared in this file.',
       ),
     );
   });
@@ -519,8 +519,8 @@ describe('analyzeSource — useAsync', () => {
   test('awaiting anything else is a numbered error', () => {
     expect(() => probe('  const a = await storage.readAll();\n')).toThrow(
       new Error(
-        'TSX0305 probe.tsx:5:13 — this expression is not compiled yet ' +
-          '(roadmap step 18).',
+        'TSX0305 probe.tsx:5:13 — only `useAsync` and `useStream` can be ' +
+          'awaited in a component.',
       ),
     );
   });

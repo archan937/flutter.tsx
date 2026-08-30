@@ -188,6 +188,8 @@ export interface IrComponent {
   setupMethods: { name: string; lines: string[] }[];
   initStatements: IrStatement[];
   disposeLines: string[];
+  /** Statements from an effect's cleanup, run before the plugin lines. */
+  disposeStatements: IrStatement[];
   pluginImports: IrImport[];
   /// `const x = …` from the component body, bound at the top of build().
   buildLocals: IrBuilderBind[];

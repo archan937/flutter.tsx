@@ -112,5 +112,11 @@ export const page: SitePage = {
       ],
     },
   ],
+  limitations: [
+    {
+      code: 'TSX0305',
+      message: '`…` reads a member the compiler cannot resolve to a Dart one.',
+    },
+  ],
   incompleteExamples: [],
 };

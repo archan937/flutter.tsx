@@ -159,6 +159,12 @@ describe('navHtml', () => {
 <ul>
 <li data-name="TestAlign"><a href="#TestAlign">TestAlign</a></li>
 </ul>
+</details>
+<details>
+<summary>Limitations<span class="nav-count">1</span></summary>
+<ul>
+<li data-name="TSX0305"><a href="#limitations">TSX0305</a></li>
+</ul>
 </details>`,
     );
   });
