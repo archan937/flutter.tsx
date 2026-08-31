@@ -520,12 +520,28 @@ const analyzeBodyStatement = (
 ): void => {
   if (ts.isExpressionStatement(statement)) {
     const call = statement.expression;
-    if (
-      ts.isCallExpression(call) &&
-      ts.isIdentifier(call.expression) &&
-      call.expression.text === 'useEffect'
-    ) {
+    if (!ts.isCallExpression(call) || !ts.isIdentifier(call.expression)) {
+      return;
+    }
+    const callee = call.expression.text;
+    if (callee === 'useEffect') {
       context.analysis.effects.push(call);
+      return;
+    }
+    // `useTrayManager({ onTrayIconMouseDown: … })` — a component that only
+    // wants the events has nothing to bind, and the callbacks it wrote must
+    // not be quietly dropped.
+    const module = context.hookModules.get(callee);
+    if (
+      callee.startsWith('use') &&
+      module?.startsWith(PLUGIN_MODULE_PREFIX) === true
+    ) {
+      context.analysis.plugins.push({
+        binding: lowerFirstLetter(callee.slice('use'.length)),
+        hook: callee,
+        package: module.slice(PLUGIN_MODULE_PREFIX.length),
+        call,
+      });
     }
     return;
   }

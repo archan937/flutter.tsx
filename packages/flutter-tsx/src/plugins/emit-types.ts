@@ -1,7 +1,7 @@
 import type { ParamModel, TypeNode } from '../api/model';
 import { tsTypeOf } from '../generate/ts-types';
 import type { PluginApi, PluginMethod } from './api';
-import type { DerivedHook } from './hooks';
+import type { DerivedHook, HookEvent } from './hooks';
 
 interface TypeRefs {
   named: Set<string>;
@@ -180,12 +180,24 @@ const methodLine = (method: PluginMethod): string => {
  * after the plugin's own fields; the managed lifecycle calls are `Omit`ted
  * because the generated widget makes them, not the developer.
  */
+/** An event's values, as the callback that receives them declares them. */
+const eventParams = (event: HookEvent): string =>
+  event.params
+    .map((param) => `${param.name}: ${tsTypeOf(withCoreStrings(param.type))}`)
+    .join(', ');
+
 export const hookSignature = (hook: DerivedHook): string => {
-  const optionMembers = hook.options
-    .map((option) => `${option.name}?: ${option.enumName}`)
-    .join('; ');
+  const members = [
+    ...hook.options.map((option) => `${option.name}?: ${option.enumName}`),
+    // A listener's callbacks are options too: writing one is how a component
+    // says it wants that event, and the widget is registered because it did.
+    ...(hook.listener?.events ?? []).map(
+      (event) => `${event.name}?: (${eventParams(event)}) => void`,
+    ),
+  ];
+  const optionMembers = members.join('; ');
   const parameters =
-    hook.options.length === 0 ? '' : `options?: { ${optionMembers} }`;
+    members.length === 0 ? '' : `options?: { ${optionMembers} }`;
   const managed = hook.managed.map((name) => `'${name}'`).join(' | ');
   const handle =
     hook.managed.length === 0

@@ -66,5 +66,5 @@ declare module 'plugin:tray_manager' {
     setToolTip(toolTip: string): Promise<void>;
   }
 
-  export const useTrayManager: () => TrayManager;
+  export const useTrayManager: (options?: { onTrayIconMouseDown?: () => void; onTrayIconMouseUp?: () => void; onTrayIconRightMouseDown?: () => void; onTrayIconRightMouseUp?: () => void; onTrayMenuItemClick?: (menuItem: MenuItem) => void }) => TrayManager;
 }

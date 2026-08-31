@@ -1,4 +1,5 @@
 import type { TypeNode } from '../api/model';
+import { dartTypeOf } from '../derive/dart-types';
 import type { PluginApi, PluginClass } from './api';
 
 export interface SupplierFilter {
@@ -38,6 +39,32 @@ export type HookAcquisition =
   // the instance, so the hook hands back that one rather than making another.
   | { kind: 'topLevelInstance'; instanceName: string };
 
+/** One value an event hands over, named on both sides of the compiler. */
+export interface HookEventParam {
+  name: string;
+  type: TypeNode;
+  dartType: string;
+}
+
+/** One callback a plugin's listener delivers, e.g. `onTrayMenuItemClick`. */
+export interface HookEvent {
+  name: string;
+  params: HookEventParam[];
+}
+
+/**
+ * How a plugin reports back: a mixin the widget implements, registered with
+ * the instance while it is mounted. Derived from the shape rather than named
+ * per package — a class with `addListener(X)`/`removeListener(X)` reports
+ * through `X`, which is how both tray_manager and window_manager are built.
+ */
+export interface HookListener {
+  className: string;
+  addMethod: string;
+  removeMethod: string;
+  events: HookEvent[];
+}
+
 export interface DerivedHook {
   hookName: string;
   className: string;
@@ -46,6 +73,7 @@ export interface DerivedHook {
   construct: ConstructArg[];
   managed: string[];
   options: HookOption[];
+  listener: HookListener | null;
 }
 
 export interface HookOverrides {
@@ -59,6 +87,66 @@ export interface HookOverrides {
 export interface PackageOverrides {
   importPrefix?: string;
 }
+
+const LISTENER_PAIR = { add: 'addListener', remove: 'removeListener' };
+
+/** The listener mixin a class reports through, when it has one. */
+const listenerOf = (
+  api: PluginApi,
+  entity: PluginClass,
+): HookListener | null => {
+  const register = entity.methods.find(
+    (method) =>
+      method.name === LISTENER_PAIR.add &&
+      method.params.length === 1 &&
+      method.params[0]?.type.kind === 'named',
+  );
+  const param = register?.params[0];
+  if (register === undefined || param === undefined) {
+    return null;
+  }
+  const className = param.type.kind === 'named' ? param.type.name : '';
+  const unregister = entity.methods.find(
+    (method) => method.name === LISTENER_PAIR.remove,
+  );
+  const listener = api.classes.find(
+    (candidate) => candidate.name === className,
+  );
+  if (unregister === undefined || listener === undefined) {
+    return null;
+  }
+  // Every callback the mixin declares is an event, and each returns nothing:
+  // a listener reports, it does not answer.
+  // An event whose values have no Dart name is not offered at all, rather
+  // than typed in the editor and refused by the compiler later.
+  const events = listener.methods
+    .filter((method) => !method.isStatic && method.returnType.kind === 'void')
+    .flatMap((method): HookEvent[] => {
+      const params = method.params.map((param) => ({
+        name: param.name,
+        type: param.type,
+        dartType: dartTypeOf(param.type),
+      }));
+      return params.some((param) => param.dartType === null)
+        ? []
+        : [
+            {
+              name: method.name,
+              params: params.filter(
+                (param): param is HookEventParam => param.dartType !== null,
+              ),
+            },
+          ];
+    });
+  return events.length === 0
+    ? null
+    : {
+        className,
+        addMethod: register.name,
+        removeMethod: unregister.name,
+        events,
+      };
+};
 
 const isFutureVoid = (type: TypeNode): boolean =>
   type.kind === 'future' && type.item.kind === 'void';
@@ -255,6 +343,7 @@ export const deriveHooks = (
           construct: [],
           managed: [],
           options: [],
+          listener: listenerOf(api, entity),
         },
       ];
     }
@@ -273,6 +362,7 @@ export const deriveHooks = (
           construct: [],
           managed: [],
           options: [],
+          listener: listenerOf(api, entity),
         },
       ];
     }
@@ -288,6 +378,7 @@ export const deriveHooks = (
           construct: [],
           managed: [],
           options: [],
+          listener: listenerOf(api, entity),
         },
       ];
     }
@@ -308,6 +399,7 @@ export const deriveHooks = (
         construct: derived.plan,
         managed: ['initialize', 'dispose'],
         options: derived.options,
+        listener: listenerOf(api, entity),
       },
     ];
   });

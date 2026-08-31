@@ -856,3 +856,22 @@ describe('analyzeSource — JSON models', () => {
     );
   });
 });
+
+describe('analyzeSource — statements that declare nothing', () => {
+  test('an expression statement that is not a call is ignored', () => {
+    // `widget.doSomething();` is a call on a member, not a hook, and a bare
+    // expression is neither: a component may contain them and still compile.
+    const analysis = analyzeSource(
+      "import { Text } from 'flutter-tsx';\n" +
+        'export const Probe = () => {\n' +
+        '  const label = "hi";\n' +
+        '  label;\n' +
+        '  return <Text>{label}</Text>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+
+    expect(analysis.components[0]?.plugins).toEqual([]);
+    expect(analysis.components[0]?.effects).toEqual([]);
+  });
+});

@@ -55,6 +55,7 @@ const GREEN_FIXTURES = new Set([
   '41-model-helper',
   '42-project-layout',
   '43-tray-singleton',
+  '44-tray-listener',
 ]);
 
 const fixtures = await listFixtures();

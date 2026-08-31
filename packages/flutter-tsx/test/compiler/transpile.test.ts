@@ -1601,3 +1601,112 @@ describe('transpileComponent — files beside each other', () => {
     await rm(root, { recursive: true, force: true });
   }, 60000);
 });
+
+/**
+ * A component says which of a plugin's events it wants by writing the
+ * callback; the mixin, the registration and the unregistration follow from
+ * that. Nothing about tray_manager is named in the compiler — the shape is
+ * derived from the package.
+ */
+describe('transpileComponent — a plugin that reports through a listener', () => {
+  const trayComponent = (body: string): string =>
+    "import { Text, useState } from 'flutter-tsx';\n" +
+    "import { useTrayManager } from 'plugin:tray_manager';\n" +
+    'export const Probe = () => {\n' +
+    "  const [label, setLabel] = useState('none');\n" +
+    body +
+    '  return <Text>{label}</Text>;\n' +
+    '};\n';
+
+  test('a component that answers no event carries no mixin', async () => {
+    const dart = await transpileComponent({
+      source: trayComponent('  const tray = useTrayManager();\n'),
+      filePath: 'probe.tsx',
+    });
+
+    expect(dart).not.toContain('with TrayListener');
+    expect(dart).not.toContain('addListener');
+  });
+
+  test('answering an event registers the widget for exactly as long as it lives', async () => {
+    const dart = await transpileComponent({
+      source: trayComponent(
+        '  useTrayManager({\n' +
+          "    onTrayIconMouseDown: () => {\n      setLabel('icon');\n    },\n" +
+          '  });\n',
+      ),
+      filePath: 'probe.tsx',
+    });
+
+    // The hook's result is not bound to anything: a component may want the
+    // events and nothing else, and the callbacks must not be dropped.
+    expect(dart).toContain(
+      'class _ProbeState extends State<Probe> with TrayListener {',
+    );
+    expect(dart).toContain(
+      '  @override\n' +
+        '  void initState() {\n' +
+        '    super.initState();\n' +
+        '    trayManager.addListener(this);\n' +
+        '  }',
+    );
+    expect(dart).toContain(
+      '  @override\n' +
+        '  void dispose() {\n' +
+        '    trayManager.removeListener(this);\n' +
+        '    super.dispose();\n' +
+        '  }',
+    );
+    expect(dart).toContain(
+      "  @override\n  void onTrayIconMouseDown() {\n    setState(() {\n      _label = 'icon';\n    });\n  }",
+    );
+  });
+
+  test('an event body reads the value it is handed', async () => {
+    const dart = await transpileComponent({
+      source: trayComponent(
+        '  useTrayManager({\n' +
+          '    onTrayMenuItemClick: (item) => {\n' +
+          "      setLabel(item.key ?? 'none');\n" +
+          '    },\n' +
+          '  });\n',
+      ),
+      filePath: 'probe.tsx',
+    });
+
+    expect(dart).toContain(
+      "  @override\n  void onTrayMenuItemClick(MenuItem item) {\n    setState(() {\n      _label = item.key ?? 'none';\n    });\n  }",
+    );
+  });
+
+  test('a callback may ignore the value it is handed', async () => {
+    const dart = await transpileComponent({
+      source: trayComponent(
+        '  useTrayManager({\n' +
+          "    onTrayMenuItemClick: () => {\n      setLabel('clicked');\n    },\n" +
+          '  });\n',
+      ),
+      filePath: 'probe.tsx',
+    });
+
+    // The override still declares what the plugin delivers, named as the
+    // plugin names it, because Dart demands the signature match.
+    expect(dart).toContain('void onTrayMenuItemClick(MenuItem menuItem) {');
+  });
+
+  test('an event given something other than a function is a numbered error', () => {
+    expect(
+      transpileComponent({
+        source: trayComponent(
+          "  useTrayManager({ onTrayIconMouseDown: 'yes' });\n",
+        ),
+        filePath: 'probe.tsx',
+      }),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0313 probe.tsx:5:20 — onTrayIconMouseDown is an event: give it ' +
+          'a function, `onTrayIconMouseDown: () => { … }`.',
+      ),
+    );
+  });
+});

@@ -48,13 +48,13 @@ fsx dev        # compile, run, hot reload on save
 
 ## The CLI
 
-| Command                           | What it does                                                                                                                                                        |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `fsx install`                     | Downloads the pinned Flutter SDK to `~/.fsx`, syncs `pubspec.yaml` from the `"plugins"` map in package.json, generates `plugin:*` typings for the resolved versions |
-| `fsx init <dir>`                  | Scaffolds a project and its host Flutter app                                                                                                                        |
-| `fsx dev`                         | Compiles `src/**/*.tsx` → `lib/`, runs the app, hot reloads on save                                                                                                 |
-| `fsx build [--target=<platform>]` | Release build for `web`, `ios`, `android`, `macos`, `windows` or `linux`                                                                                            |
-| `fsx doctor`                      | Reports whether the SDK, project and plugins are ready, naming the fix for each problem                                                                             |
+| Command                                           | What it does                                                                                                                                                        |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `fsx install`                                     | Downloads the pinned Flutter SDK to `~/.fsx`, syncs `pubspec.yaml` from the `"plugins"` map in package.json, generates `plugin:*` typings for the resolved versions |
+| `fsx init <dir>`                                  | Scaffolds a project and its host Flutter app                                                                                                                        |
+| `fsx dev`                                         | Compiles `src/**/*.tsx` → `lib/`, runs the app, hot reloads on save                                                                                                 |
+| `fsx build [--target=<platform>] [--no-codesign]` | Release build for `web`, `ios`, `android`, `macos`, `windows` or `linux`; `--no-codesign` builds the unsigned iOS app                                               |
+| `fsx doctor`                                      | Reports whether the SDK, project and plugins are ready, naming the fix for each problem                                                                             |
 
 ## Plugins
 

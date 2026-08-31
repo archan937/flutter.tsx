@@ -69,7 +69,7 @@ Dart to `lib/`, which nothing needs to edit by hand.
 | `fsx install` | Downloads the pinned Flutter SDK to `~/.fsx`, syncs `pubspec.yaml` from the `"plugins"` map in package.json, and generates `plugin:*` typings for the resolved versions |
 | `fsx init <dir>` | Scaffolds a project and its host Flutter app |
 | `fsx dev` | Compiles `src/**/*.tsx` → `lib/`, runs the app, hot reloads on save |
-| `fsx build [--target=<platform>]` | Release build for `web`, `ios`, `android`, `macos`, `windows` or `linux`; a platform the project has never built for is set up on the way |
+| `fsx build [--target=<platform>] [--no-codesign]` | Release build for `web`, `ios`, `android`, `macos`, `windows` or `linux`; a platform the project has never built for is set up on the way. `--no-codesign` builds the unsigned iOS app, for a machine with no Apple developer account |
 | `fsx doctor` | Reports whether the SDK, project and plugins are ready, and which iOS usage descriptions a declared plugin still needs — naming the fix for each, and exiting non-zero so CI can gate on it |
 
 Plugins are declared the way npm dependencies are, and installed by the same command:

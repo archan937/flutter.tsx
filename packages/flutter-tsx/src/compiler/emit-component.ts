@@ -7,6 +7,7 @@ import type {
   IrMethod,
   IrModel,
   IrModelField,
+  IrOverride,
   IrRouter,
   IrStore,
 } from './ir';
@@ -146,6 +147,7 @@ const emitStatefulClass = (component: IrComponent): string => {
     ...emitInitState(component),
     ...emitSetupMethods(component),
     ...emitDispose(component),
+    ...component.overrides.map(emitOverride),
     ...component.helpers.map(emitComponentHelper),
     ...component.methods.map(emitMethod),
     buildMethod(component),
@@ -160,8 +162,25 @@ const emitStatefulClass = (component: IrComponent): string => {
     `class ${name} extends StatefulWidget {\n` +
     `${widgetMembers.join('\n\n')}\n` +
     `}\n\n` +
-    `class _${name}State extends State<${name}> {\n` +
+    `class _${name}State extends State<${name}>${mixinClause(component)} {\n` +
     `${stateMembers.join('\n\n')}\n}`
+  );
+};
+
+/** `with TrayListener` — how a widget says it answers a plugin's events. */
+const mixinClause = (component: IrComponent): string =>
+  component.mixins.length === 0 ? '' : ` with ${component.mixins.join(', ')}`;
+
+const emitOverride = (override: IrOverride): string => {
+  const params = override.params
+    .map((param) => `${param.dartType} ${param.name}`)
+    .join(', ');
+  const lines = methodStatementLines(override.statements).map(
+    (line) => `    ${line}`,
+  );
+  return (
+    `  @override\n  void ${override.name}(${params}) {\n` +
+    `${lines.join('\n')}\n  }`
   );
 };
 

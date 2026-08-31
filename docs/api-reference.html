@@ -1854,7 +1854,7 @@ export const Shell = () =&gt; (
 }</code></pre>
 </div>
 </div>
-<p class="note">Used by <a href="./cookbook.html#01-camera-screen"><code>01-camera-screen</code></a>, <a href="./cookbook.html#05-counter"><code>05-counter</code></a>, <a href="./cookbook.html#06-mount-effect"><code>06-mount-effect</code></a>, <a href="./cookbook.html#07-list-rendering"><code>07-list-rendering</code></a>, <a href="./cookbook.html#09-typed-props"><code>09-typed-props</code></a>, <a href="./cookbook.html#10-camera-options"><code>10-camera-options</code></a>, <a href="./cookbook.html#11-preferences"><code>11-preferences</code></a>, <a href="./cookbook.html#12-secure-storage"><code>12-secure-storage</code></a>, <a href="./cookbook.html#13-open-link"><code>13-open-link</code></a>, <a href="./cookbook.html#15-front-camera"><code>15-front-camera</code></a>, <a href="./cookbook.html#16-tap-target"><code>16-tap-target</code></a>, <a href="./cookbook.html#21-modal"><code>21-modal</code></a>, <a href="./cookbook.html#22-mount-dialog"><code>22-mount-dialog</code></a>, <a href="./cookbook.html#24-animated"><code>24-animated</code></a>, <a href="./cookbook.html#29-branching-handler"><code>29-branching-handler</code></a>, <a href="./cookbook.html#33-control-flow"><code>33-control-flow</code></a>, <a href="./cookbook.html#38-effect-cleanup"><code>38-effect-cleanup</code></a>, <a href="./cookbook.html#39-builder-callback"><code>39-builder-callback</code></a>, <a href="./cookbook.html#43-tray-singleton"><code>43-tray-singleton</code></a></p>
+<p class="note">Used by <a href="./cookbook.html#01-camera-screen"><code>01-camera-screen</code></a>, <a href="./cookbook.html#05-counter"><code>05-counter</code></a>, <a href="./cookbook.html#06-mount-effect"><code>06-mount-effect</code></a>, <a href="./cookbook.html#07-list-rendering"><code>07-list-rendering</code></a>, <a href="./cookbook.html#09-typed-props"><code>09-typed-props</code></a>, <a href="./cookbook.html#10-camera-options"><code>10-camera-options</code></a>, <a href="./cookbook.html#11-preferences"><code>11-preferences</code></a>, <a href="./cookbook.html#12-secure-storage"><code>12-secure-storage</code></a>, <a href="./cookbook.html#13-open-link"><code>13-open-link</code></a>, <a href="./cookbook.html#15-front-camera"><code>15-front-camera</code></a>, <a href="./cookbook.html#16-tap-target"><code>16-tap-target</code></a>, <a href="./cookbook.html#21-modal"><code>21-modal</code></a>, <a href="./cookbook.html#22-mount-dialog"><code>22-mount-dialog</code></a>, <a href="./cookbook.html#24-animated"><code>24-animated</code></a>, <a href="./cookbook.html#29-branching-handler"><code>29-branching-handler</code></a>, <a href="./cookbook.html#33-control-flow"><code>33-control-flow</code></a>, <a href="./cookbook.html#38-effect-cleanup"><code>38-effect-cleanup</code></a>, <a href="./cookbook.html#39-builder-callback"><code>39-builder-callback</code></a>, <a href="./cookbook.html#43-tray-singleton"><code>43-tray-singleton</code></a>, <a href="./cookbook.html#44-tray-listener"><code>44-tray-listener</code></a></p>
 </article>
 <article class="widget" id="core-EffectCleanup" data-name="EffectCleanup">
 <h3>EffectCleanup<span class="badge badge-lib">type</span></h3>
@@ -27286,7 +27286,7 @@ declare module <span class="tok-str">'plugin:shared_preferences'</span> {
 <table class="props">
 <thead><tr><th>Hook</th><th>Signature</th><th>Manages for you</th></tr></thead>
 <tbody>
-<tr><td><code>useTrayManager</code></td><td><code>() =&gt; TrayManager</code></td><td></td></tr>
+<tr><td><code>useTrayManager</code></td><td><code>(options?: { onTrayIconMouseDown?: () =&gt; void; onTrayIconMouseUp?: () =&gt; void; onTrayIconRightMouseDown?: () =&gt; void; onTrayIconRightMouseUp?: () =&gt; void; onTrayMenuItemClick?: (menuItem: MenuItem) =&gt; void }) =&gt; TrayManager</code></td><td></td></tr>
 </tbody>
 </table>
 
@@ -27420,11 +27420,11 @@ declare module <span class="tok-str">'plugin:tray_manager'</span> {
     <span class="tok-fn">setToolTip</span>(toolTip: string): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
   }
 
-  export const useTrayManager: () =&gt; TrayManager;
+  export const useTrayManager: (options?: { onTrayIconMouseDown?: () =&gt; <span class="tok-kw">void</span>; onTrayIconMouseUp?: () =&gt; <span class="tok-kw">void</span>; onTrayIconRightMouseDown?: () =&gt; <span class="tok-kw">void</span>; onTrayIconRightMouseUp?: () =&gt; <span class="tok-kw">void</span>; onTrayMenuItemClick?: (menuItem: <span class="tok-typ">MenuItem</span>) =&gt; <span class="tok-kw">void</span> }) =&gt; TrayManager;
 }</code></pre>
 </div>
 </div>
-<p class="note">Proven by <a href="./cookbook.html#43-tray-singleton"><code>43-tray-singleton</code></a></p>
+<p class="note">Proven by <a href="./cookbook.html#43-tray-singleton"><code>43-tray-singleton</code></a>, <a href="./cookbook.html#44-tray-listener"><code>44-tray-listener</code></a></p>
 </article>
 <article class="widget" id="plugin-url_launcher" data-name="url_launcher">
 <h3>url_launcher<span class="badge badge-lib">6.3.2</span><a class="badge badge-pkg" href="https://pub.dev/packages/url_launcher">pub.dev</a></h3>

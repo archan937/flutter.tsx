@@ -62,6 +62,7 @@ describe('deriveHooks — camera', () => {
             defaultMember: 'high',
           },
         ],
+        listener: null,
       },
     ]);
   });
@@ -86,6 +87,7 @@ describe('deriveHooks — singleton services (shared_preferences)', () => {
         construct: [],
         managed: [],
         options: [],
+        listener: null,
       },
     ]);
   });
@@ -105,6 +107,7 @@ describe('deriveHooks — plain-constructor services (flutter_secure_storage)', 
         construct: [],
         managed: [],
         options: [],
+        listener: null,
       },
     ]);
   });
@@ -130,6 +133,7 @@ describe('deriveHooks — static factories beyond getInstance (package_info_plus
         construct: [],
         managed: [],
         options: [],
+        listener: null,
       },
     ]);
   });
@@ -249,6 +253,7 @@ describe('deriveHooks — plus-family services', () => {
         construct: [],
         managed: [],
         options: [],
+        listener: null,
       },
     ]);
   });
@@ -262,5 +267,147 @@ describe('deriveHooks — plus-family services', () => {
       kind: 'staticFactory',
       method: 'fromPlatform',
     });
+  });
+});
+
+describe('deriveHooks — listeners', () => {
+  test('derives the mixin a plugin reports through, and its events', async () => {
+    const api = await loadPluginApi('tray_manager');
+
+    const [hook] = deriveHooks(api, undefined).filter(
+      (candidate) => candidate.hookName === 'useTrayManager',
+    );
+
+    // Derived from the shape — a class with addListener(X)/removeListener(X)
+    // reports through X — not from the package's name.
+    expect(hook?.listener?.className).toBe('TrayListener');
+    expect(hook?.listener?.addMethod).toBe('addListener');
+    expect(hook?.listener?.removeMethod).toBe('removeListener');
+    expect(hook?.listener?.events.map((event) => event.name)).toEqual([
+      'onTrayIconMouseDown',
+      'onTrayIconMouseUp',
+      'onTrayIconRightMouseDown',
+      'onTrayIconRightMouseUp',
+      'onTrayMenuItemClick',
+    ]);
+  });
+
+  test('an event carries the parameters it delivers', async () => {
+    const api = await loadPluginApi('tray_manager');
+
+    const [hook] = deriveHooks(api, undefined).filter(
+      (candidate) => candidate.hookName === 'useTrayManager',
+    );
+    const click = hook?.listener?.events.find(
+      (event) => event.name === 'onTrayMenuItemClick',
+    );
+
+    // Named on both sides: the Dart type the override declares, and the type
+    // the callback receives in the editor.
+    expect(click?.params).toEqual([
+      {
+        name: 'menuItem',
+        type: { kind: 'named', name: 'MenuItem' },
+        dartType: 'MenuItem',
+      },
+    ]);
+  });
+
+  test('a plugin with no listener derives none', async () => {
+    const api = await loadPluginApi('camera');
+
+    for (const hook of deriveHooks(api, PLUGIN_OVERRIDES.camera)) {
+      expect([hook.hookName, hook.listener]).toEqual([hook.hookName, null]);
+    }
+  });
+});
+
+describe('deriveHooks — a listener the package does not declare', () => {
+  const method = (
+    name: string,
+    params: ParamModel[] = [],
+  ): PluginApi['classes'][number]['methods'][number] => ({
+    name,
+    doc: '',
+    isStatic: false,
+    returnType: { kind: 'void' },
+    params,
+  });
+
+  const listenerParam: ParamModel = {
+    name: 'listener',
+    type: { kind: 'named', name: 'GhostListener' },
+    display: 'GhostListener',
+    named: false,
+    required: true,
+    defaultValue: null,
+    doc: '',
+    deprecated: false,
+  };
+
+  const service = (
+    methods: PluginApi['classes'][number]['methods'],
+  ): PluginApi => ({
+    package: 'demo',
+    version: '1.0.0',
+    classes: [
+      {
+        name: 'Demo',
+        doc: '',
+        constructors: [
+          {
+            name: '',
+            doc: '',
+            isConst: false,
+            paramMemberAsserts: false,
+            requiredOneOf: [],
+            params: [],
+          },
+        ],
+        fields: [],
+        methods,
+        constants: [],
+      },
+    ],
+    enums: [],
+    functions: [],
+    instances: [],
+    permissions: {
+      android: {
+        manifestSource: null,
+        permissions: [],
+        exampleSource: null,
+        querySchemes: [],
+      },
+      ios: {
+        exampleSource: null,
+        usageDescriptionKeys: [],
+        querySchemes: [],
+      },
+    },
+  });
+
+  test('a listener type the package never exports derives no listener', () => {
+    // Registering something the package does not declare cannot be typed, so
+    // the hook offers no events rather than events nothing can satisfy.
+    const [hook] = deriveHooks(
+      service([
+        method('addListener', [listenerParam]),
+        method('removeListener', [listenerParam]),
+        method('work'),
+      ]),
+      undefined,
+    );
+
+    expect(hook?.listener).toBeNull();
+  });
+
+  test('a class that registers but never unregisters derives no listener', () => {
+    const [hook] = deriveHooks(
+      service([method('addListener', [listenerParam]), method('work')]),
+      undefined,
+    );
+
+    expect(hook?.listener).toBeNull();
   });
 });

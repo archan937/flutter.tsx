@@ -4,7 +4,7 @@ import {
   artifactPath,
   type BuildDeps,
   buildSubcommand,
-  parseTargetFlag,
+  parseBuildArgs,
   runBuildCommand,
 } from '@src/cli/build';
 import type { AppConfig, AppTarget } from '@src/runtime/config';
@@ -30,24 +30,35 @@ describe('artifactPath', () => {
   });
 });
 
-describe('parseTargetFlag', () => {
+describe('parseBuildArgs', () => {
   test('reads --target', () => {
-    expect(parseTargetFlag(['--target=macos'])).toBe('macos');
+    expect(parseBuildArgs(['--target=macos'])).toEqual({
+      target: 'macos',
+      codesign: true,
+    });
   });
 
   test('is null when the flag is absent, so the config decides', () => {
-    expect(parseTargetFlag([])).toBeNull();
+    expect(parseBuildArgs([])).toEqual({ target: null, codesign: true });
+  });
+
+  test('reads --no-codesign', () => {
+    expect(parseBuildArgs(['--target=ios', '--no-codesign'])).toEqual({
+      target: 'ios',
+      codesign: false,
+    });
   });
 
   test('reports an unknown target', () => {
-    expect(() => parseTargetFlag(['--target=toaster'])).toThrow(
+    expect(() => parseBuildArgs(['--target=toaster'])).toThrow(
       'unknown target `toaster`: one of web, ios, android, macos, windows, linux.',
     );
   });
 
   test('reports an argument that is not understood', () => {
-    expect(() => parseTargetFlag(['--verbose'])).toThrow(
-      'unexpected argument `--verbose`: fsx build takes --target=<platform>.',
+    expect(() => parseBuildArgs(['--verbose'])).toThrow(
+      'unexpected argument `--verbose`: fsx build takes --target=<platform> ' +
+        'and --no-codesign.',
     );
   });
 });
@@ -169,5 +180,38 @@ describe('runBuildCommand', () => {
     expect(
       runBuildCommand('/app', ['--target=linux'], context.deps),
     ).rejects.toThrow('`flutter create --platforms linux .` failed (exit 2).');
+  });
+});
+
+describe('runBuildCommand — an iOS build without an Apple account', () => {
+  test('builds the unsigned app rather than a signed archive', async () => {
+    const context = harness({
+      loadConfig: () => Promise.resolve({ ...CONFIG, target: 'ios' }),
+    });
+
+    await runBuildCommand('/app', ['--no-codesign'], context.deps);
+
+    // `flutter build ipa` needs a provisioning profile; the `.app` is what a
+    // machine without one can produce, and what a simulator runs.
+    expect(context.commands).toContainEqual([
+      'build',
+      'ios',
+      '--release',
+      '--no-codesign',
+      '(in /app)',
+    ]);
+    expect(context.lines).toContain('Built build/ios/iphoneos');
+  });
+
+  test('refuses the flag where nothing is signed anyway', () => {
+    const context = harness({
+      loadConfig: () => Promise.resolve({ ...CONFIG, target: 'macos' }),
+    });
+
+    expect(
+      runBuildCommand('/app', ['--no-codesign'], context.deps),
+    ).rejects.toThrow(
+      '--no-codesign is an iOS option; macos builds are not signed.',
+    );
   });
 });

@@ -153,6 +153,7 @@ describe('emitPluginDeclaration', () => {
             defaultMember: 'off',
           },
         ],
+        listener: null,
       },
     ];
 

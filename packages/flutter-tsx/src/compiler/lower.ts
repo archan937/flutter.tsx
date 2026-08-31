@@ -40,6 +40,7 @@ import type {
   IrHelper,
   IrMethod,
   IrModel,
+  IrOverride,
   IrRouter,
   IrStatement,
   IrStore,
@@ -740,34 +741,41 @@ const lowerPropertyAccess = (
  * Without this a builder can only ignore what it is handed: the compiler
  * would see `constraints` as an unknown identifier and refuse the read.
  */
-const withClosureParams = (
-  declared: FunctionParam[],
-  names: string[],
+/** One parameter a callback is handed, and where its members are declared. */
+interface ScopedParam {
+  name: string;
+  type: TypeNode;
+  fieldsOf: (className: string) => Map<string, TypeNode> | undefined;
+}
+
+/**
+ * A callback's parameters, readable inside its body.
+ *
+ * Without this a callback can only ignore what it is handed: the compiler
+ * would see `constraints` or `item` as an unknown identifier and refuse the
+ * read. Where the members are declared differs — the SDK for a builder, the
+ * plugin for a listener — so the caller says which.
+ */
+const withScopedParams = (
+  params: ScopedParam[],
   context: LowerContext,
 ): LowerContext => {
-  const scoped = declared.flatMap(
-    (param, index): [string, MemberReadInfo][] => {
-      const name = names[index];
-      // `_` is what an unnamed or deliberately ignored parameter lowers to.
-      if (name === undefined || name === '_' || param.type.kind !== 'named') {
-        return [];
-      }
-      const fields = context.compile.sdkClassFields.get(param.type.name);
-      return fields === undefined
-        ? []
-        : [
-            [
-              name,
-              {
-                className: param.type.name,
-                receiver: name,
-                nullable: false,
-                fields,
-              },
-            ],
-          ];
-    },
-  );
+  const scoped = params.flatMap((param): [string, MemberReadInfo][] => {
+    // `_` is what an unnamed or deliberately ignored parameter lowers to.
+    if (param.name === '_' || param.type.kind !== 'named') {
+      return [];
+    }
+    const className = param.type.name;
+    const fields = param.fieldsOf(className);
+    return fields === undefined
+      ? []
+      : [
+          [
+            param.name,
+            { className, receiver: param.name, nullable: false, fields },
+          ],
+        ];
+  });
   if (scoped.length === 0) {
     return context;
   }
@@ -779,6 +787,30 @@ const withClosureParams = (
     },
   };
 };
+
+const withClosureParams = (
+  declared: FunctionParam[],
+  names: string[],
+  context: LowerContext,
+): LowerContext =>
+  withScopedParams(
+    declared.flatMap((param, index) => {
+      const name = names[index];
+      return name === undefined
+        ? []
+        : [
+            {
+              name,
+              type: param.type,
+              fieldsOf: (
+                className: string,
+              ): Map<string, TypeNode> | undefined =>
+                context.compile.sdkClassFields.get(className),
+            },
+          ];
+    }),
+    context,
+  );
 
 const lowerArrowFunction = (
   arrow: ts.ArrowFunction,
@@ -2779,6 +2811,63 @@ interface LoweredPlugin {
   pluginImport: string;
 }
 
+/**
+ * The listener callbacks a component wrote, lowered into the overrides that
+ * answer them. A component that writes none is never registered, so a widget
+ * carries a mixin only because it asked for the events.
+ */
+const lowerListenerOverrides = (
+  binding: PluginBinding,
+  info: PluginHookInfo,
+  context: LowerContext,
+): IrOverride[] => {
+  const { listener } = info.hook;
+  const [argument] = binding.call.arguments;
+  if (
+    listener === null ||
+    argument === undefined ||
+    !ts.isObjectLiteralExpression(argument)
+  ) {
+    return [];
+  }
+  const eventsByName = new Map(
+    listener.events.map((event) => [event.name, event]),
+  );
+  const overrides: IrOverride[] = [];
+  for (const entry of objectEntries(argument, 'TSX0206', context)) {
+    const event = eventsByName.get(entry.key);
+    if (event === undefined) continue;
+    if (!ts.isArrowFunction(entry.initializer)) {
+      throw tsxErrorAt(
+        'TSX0313',
+        `${entry.key} is an event: give it a function, ` +
+          `\`${entry.key}: () => { … }\`.`,
+        { sourceFile: context.sourceFile, node: entry.node },
+      );
+    }
+    const callback = entry.initializer;
+    const scoped = withScopedParams(
+      event.params.map((param, index) => ({
+        name: callback.parameters[index]?.name.getText() ?? param.name,
+        type: param.type,
+        fieldsOf: (className: string): Map<string, TypeNode> | undefined =>
+          context.compile.pluginClassFields.get(className),
+      })),
+      context,
+    );
+    overrides.push({
+      name: event.name,
+      params: event.params.map((param, index) => ({
+        // The developer names the value; the plugin says what it is.
+        name: callback.parameters[index]?.name.getText() ?? param.name,
+        dartType: param.dartType,
+      })),
+      statements: lowerBodyStatements(callback.body, scoped, true),
+    });
+  }
+  return overrides;
+};
+
 const hookOptionSelections = (
   binding: PluginBinding,
   info: PluginHookInfo,
@@ -2800,6 +2889,9 @@ const hookOptionSelections = (
     info.hook.options.map((option) => [option.name, option]),
   );
   for (const entry of objectEntries(argument, 'TSX0206', context)) {
+    // A function is never an option: it is a callback, lowered separately
+    // into the override that answers it.
+    if (ts.isArrowFunction(entry.initializer)) continue;
     const option = optionsByName.get(entry.key);
     if (option === undefined) {
       throw tsxErrorAt(
@@ -2932,6 +3024,21 @@ const pluginAccessor = (info: PluginHookInfo): string =>
   info.hook.acquisition.kind === 'topLevelInstance'
     ? '.'
     : '?.';
+
+/** `trayManager.addListener(this)` while the widget is mounted, and off again. */
+const listenerLines = (
+  binding: string,
+  info: PluginHookInfo,
+): { register: string; unregister: string } | null => {
+  const { listener } = info.hook;
+  if (listener === null) return null;
+  const receiver = pluginReceiver(binding, info);
+  const accessor = pluginAccessor(info);
+  return {
+    register: `${receiver}${accessor}${listener.addMethod}(this);`,
+    unregister: `${receiver}${accessor}${listener.removeMethod}(this);`,
+  };
+};
 
 const lowerPluginBinding = (
   binding: PluginBinding,
@@ -3116,6 +3223,8 @@ export const lowerComponent = (
     });
     return {
       binding,
+      info,
+      overrides: lowerListenerOverrides(binding, info, context),
       lowered: lowerPluginBinding(binding, info, context),
     };
   });
@@ -3134,6 +3243,24 @@ export const lowerComponent = (
 
   // A helper declared inside the component reads its props and state, so it
   // is lowered in the component's own context and emitted as a private method.
+  // A component answers a plugin's events only where it wrote the callbacks;
+  // the mixin and the registration follow from that, not the other way round.
+  const listening = loweredPlugins.filter(
+    ({ overrides: answered }) => answered.length > 0,
+  );
+  const overrides = listening.flatMap(({ overrides: answered }) => answered);
+  const mixins = [
+    ...new Set(
+      listening.flatMap(({ info }) =>
+        info.hook.listener === null ? [] : [info.hook.listener.className],
+      ),
+    ),
+  ];
+  const listenerRegistrations = listening.flatMap(({ binding, info }) => {
+    const lines = listenerLines(binding.binding, info);
+    return lines === null ? [] : [lines];
+  });
+
   const effects = lowerEffects(component.effects, context);
 
   const componentHelpers: IrHelper[] = component.helpers.map((helper) => ({
@@ -3230,16 +3357,25 @@ export const lowerComponent = (
     setupMethods: loweredPlugins.flatMap(({ lowered }) =>
       lowered.setup === null ? [] : [lowered.setup],
     ),
+    mixins,
+    overrides,
     initStatements: [
       ...loweredPlugins.flatMap(({ lowered: plugin }) =>
         plugin.initCall === null ? [] : [plugin.initCall],
       ),
+      ...listenerRegistrations.map((lines): IrStatement => ({
+        kind: 'dart',
+        line: lines.register,
+      })),
       ...(lowered === null ? [] : [lowered.initStatement]),
       ...effects.init,
     ],
-    disposeLines: loweredPlugins.flatMap(({ lowered }) =>
-      lowered.disposeLine === null ? [] : [lowered.disposeLine],
-    ),
+    disposeLines: [
+      ...listenerRegistrations.map((lines) => lines.unregister),
+      ...loweredPlugins.flatMap(({ lowered }) =>
+        lowered.disposeLine === null ? [] : [lowered.disposeLine],
+      ),
+    ],
     disposeStatements: effects.dispose,
     buildLocals,
     pluginImports: [

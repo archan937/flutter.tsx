@@ -245,6 +245,12 @@ export const CATALOGUE: Readonly<Record<string, CatalogueEntry>> = {
       'Some packages expose a ready singleton — `final trayManager = ...`. The hook returns that one, so the call compiles to `trayManager.setToolTip(...)` with no controller to build or dispose.',
     category: 'Native plugins',
   },
+  '44-tray-listener': {
+    title: 'Answering a plugin’s events',
+    blurb:
+      'Write the callbacks you want on the hook and the widget becomes that plugin’s listener — the mixin, the `addListener(this)` on mount and the `removeListener(this)` on dispose are generated because you asked for the events.',
+    category: 'Native plugins',
+  },
   '14-app-info': {
     title: 'Reading app version info',
     blurb:

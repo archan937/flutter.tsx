@@ -305,4 +305,10 @@ export const FIXTURE_APPS: FixtureApp[] = [
     dartFile: 'tray_tooltip.dart',
     deps: ['tray_manager'],
   },
+  {
+    id: '44-tray-listener',
+    component: 'TrayMenu',
+    dartFile: 'tray_menu.dart',
+    deps: ['tray_manager'],
+  },
 ];

@@ -42,22 +42,47 @@ const SCAFFOLDED: Partial<Record<AppTarget, string>> = {
 const TARGETS = Object.keys(SUBCOMMANDS) as AppTarget[];
 
 const TARGET_FLAG = '--target=';
+const NO_CODESIGN_FLAG = '--no-codesign';
+
+/**
+ * An iOS build without signing.
+ *
+ * `flutter build ipa` packages for the App Store and needs a provisioning
+ * profile, which a machine without an Apple developer account does not have —
+ * so there would be no way to check that an app builds for iOS at all. The
+ * unsigned build is the `.app`, which is what CI checks and what a simulator
+ * runs.
+ */
+const UNSIGNED_IOS = { subcommand: 'ios', artifact: 'build/ios/iphoneos' };
 
 export const buildSubcommand = (target: AppTarget): string =>
   SUBCOMMANDS[target];
 
 export const artifactPath = (target: AppTarget): string => ARTIFACTS[target];
 
+/** What `fsx build` was asked to do. */
+export interface BuildOptions {
+  /** Null when the project's configured target stands. */
+  target: AppTarget | null;
+  codesign: boolean;
+}
+
 const isTarget = (value: string): value is AppTarget =>
   TARGETS.includes(value as AppTarget);
 
-/** The `--target=<platform>` override, or null to use the project's own. */
-export const parseTargetFlag = (args: string[]): AppTarget | null => {
-  let chosen: AppTarget | null = null;
+/** The flags `fsx build` accepts, refusing anything it does not understand. */
+export const parseBuildArgs = (args: string[]): BuildOptions => {
+  let target: AppTarget | null = null;
+  let codesign = true;
   for (const argument of args) {
+    if (argument === NO_CODESIGN_FLAG) {
+      codesign = false;
+      continue;
+    }
     if (!argument.startsWith(TARGET_FLAG)) {
       throw new Error(
-        `unexpected argument \`${argument}\`: fsx build takes --target=<platform>.`,
+        `unexpected argument \`${argument}\`: fsx build takes ` +
+          '--target=<platform> and --no-codesign.',
       );
     }
     const value = argument.slice(TARGET_FLAG.length);
@@ -66,9 +91,9 @@ export const parseTargetFlag = (args: string[]): AppTarget | null => {
         `unknown target \`${value}\`: one of ${TARGETS.join(', ')}.`,
       );
     }
-    chosen = value;
+    target = value;
   }
-  return chosen;
+  return { target, codesign };
 };
 
 export interface BuildDeps {
@@ -100,10 +125,18 @@ export const runBuildCommand = async (
   args: string[],
   deps: BuildDeps,
 ): Promise<void> => {
-  const override = parseTargetFlag(args);
+  const options = parseBuildArgs(args);
   const configured = await deps.loadConfig(projectDir);
   const config =
-    override === null ? configured : { ...configured, target: override };
+    options.target === null
+      ? configured
+      : { ...configured, target: options.target };
+  if (!options.codesign && config.target !== 'ios') {
+    throw new Error(
+      `--no-codesign is an iOS option; ${config.target} builds are not signed.`,
+    );
+  }
+  const unsigned = !options.codesign;
 
   deps.out(`Building ${config.name} for ${config.target}…`);
   await deps.build(projectDir, config);
@@ -122,9 +155,16 @@ export const runBuildCommand = async (
   }
 
   await run(
-    ['build', buildSubcommand(config.target), '--release'],
+    [
+      'build',
+      unsigned ? UNSIGNED_IOS.subcommand : buildSubcommand(config.target),
+      '--release',
+      ...(unsigned ? [NO_CODESIGN_FLAG] : []),
+    ],
     projectDir,
     deps,
   );
-  deps.out(`Built ${artifactPath(config.target)}`);
+  deps.out(
+    `Built ${unsigned ? UNSIGNED_IOS.artifact : artifactPath(config.target)}`,
+  );
 };

@@ -1353,6 +1353,7 @@ describe('lowerComponent — plugin hooks', () => {
               ],
               managed: ['initialize', 'dispose'],
               options: [],
+              listener: null,
             },
             fields: new Map(),
             methods: new Map(

@@ -2,7 +2,7 @@ export {
   artifactPath,
   type BuildDeps,
   buildSubcommand,
-  parseTargetFlag,
+  parseBuildArgs,
   runBuildCommand,
 } from './build';
 export { defaultBuild } from './build-command';

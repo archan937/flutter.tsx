@@ -174,9 +174,20 @@ export interface IrMethod {
   statements: IrStatement[];
 }
 
+/** A callback a plugin's listener mixin declares, as this widget answers it. */
+export interface IrOverride {
+  name: string;
+  params: { name: string; dartType: string }[];
+  statements: IrStatement[];
+}
+
 export interface IrComponent {
   name: string;
   kind: 'stateless' | 'stateful';
+  /** Mixins the State class carries, e.g. a plugin's listener. */
+  mixins: string[];
+  /** The listener callbacks this component answers. */
+  overrides: IrOverride[];
   props: PropBinding[];
   states: StateBinding[];
   plugins: PluginBinding[];

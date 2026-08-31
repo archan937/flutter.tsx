@@ -187,7 +187,7 @@ have.
 | Target | Artifact |
 | --- | --- |
 | `web` | `build/web` |
-| `ios` | `build/ios/ipa` |
+| `ios` | `build/ios/ipa` — or `build/ios/iphoneos` with `--no-codesign` |
 | `android` | `build/app/outputs/bundle/release/app-release.aab` |
 | `macos` | `build/macos/Build/Products/Release` |
 | `windows` | `build/windows/x64/runner/Release` |
