@@ -10,8 +10,10 @@ import {
   DOC_PAGES,
   loadRecipes,
   withShowcase,
+  withTemplates,
+  withVersion,
 } from '@src/site/cookbook';
-import { examplesMarkdown } from '@src/site/examples';
+import { examplesMarkdown, summarizeExample } from '@src/site/examples';
 import { buildSitePage } from '@src/site/from-snapshot';
 import { renderMarkdown } from '@src/site/markdown';
 import { emitExampleProbe } from '@src/site/probe';
@@ -69,6 +71,67 @@ describe('committed generated docs', () => {
     const committed = await Bun.file(indexUrl).text();
 
     expect(committed).toBe(withShowcase(committed, recipes, page));
+  }, 60000);
+
+  // The cards are written from the template registry. Hand-editing them would
+  // let the page advertise an app that is not there, or miss one that is.
+  test('the landing page shows exactly the templates that exist', async () => {
+    const templates = await Promise.all(
+      TEMPLATE_NAMES.map((name) => loadTemplate(name)),
+    );
+    const indexUrl = new URL('../../../../docs/index.html', import.meta.url);
+
+    const committed = await Bun.file(indexUrl).text();
+
+    expect(committed).toBe(
+      withTemplates(committed, templates.map(summarizeExample)),
+    );
+    for (const name of TEMPLATE_NAMES) {
+      expect([name, committed.includes(`./examples.html#${name}`)]).toEqual([
+        name,
+        true,
+      ]);
+    }
+  }, 60000);
+
+  // The page names the SDK it was built against; a bump that left the prose
+  // behind would have it claiming a Flutter the compiler no longer targets.
+  test('the landing page names the Flutter it was built against', async () => {
+    const snapshot = await loadApiSnapshot();
+    const page = buildSitePage(
+      snapshot,
+      deriveSlots(snapshot),
+      await loadSiteSections(),
+    );
+    const indexUrl = new URL('../../../../docs/index.html', import.meta.url);
+
+    const committed = await Bun.file(indexUrl).text();
+
+    expect(committed).toContain(`Flutter ${page.flutterVersion}`);
+    expect(committed).toBe(withVersion(committed, page.flutterVersion));
+  }, 60000);
+
+  // The prose pages name the templates by hand, so a template added, renamed
+  // or removed has to be reflected in both — or the command a reader copies
+  // would not work.
+  test('the guide and the README name every template, and only those', async () => {
+    for (const source of [
+      '../../../../docs/guide.md',
+      '../../../../README.md',
+    ]) {
+      const text = await Bun.file(new URL(source, import.meta.url)).text();
+      const named = [
+        ...new Set(
+          [...text.matchAll(/--template=([a-z<|>]+)/g)].map(
+            (match) => match[1] ?? '',
+          ),
+        ),
+      ]
+        .filter((name) => !name.startsWith('<'))
+        .sort();
+
+      expect([source, named]).toEqual([source, [...TEMPLATE_NAMES].sort()]);
+    }
   }, 60000);
 
   test('the committed markdown carries the derived requirements table', async () => {

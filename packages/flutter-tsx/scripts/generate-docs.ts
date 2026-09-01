@@ -9,6 +9,7 @@ import {
   loadRecipes,
   withShowcase,
   withTemplates,
+  withVersion,
 } from '@src/site/cookbook';
 import { examplesMarkdown, summarizeExample } from '@src/site/examples';
 import { buildSitePage } from '@src/site/from-snapshot';
@@ -51,9 +52,12 @@ const indexUrl = new URL('../../../docs/index.html', import.meta.url);
 const indexHtml = await Bun.file(indexUrl).text();
 await Bun.write(
   indexUrl,
-  withTemplates(
-    withShowcase(indexHtml, recipes, page),
-    templates.map(summarizeExample),
+  withVersion(
+    withTemplates(
+      withShowcase(indexHtml, recipes, page),
+      templates.map(summarizeExample),
+    ),
+    page.flutterVersion,
   ),
 );
 process.stdout.write(`Wrote ${indexUrl.pathname} — showcase from fixtures.\n`);

@@ -370,6 +370,19 @@ const templateCard = (example: ExampleSummary): string =>
     '          </a>',
   ].join('\n');
 
+/** The Flutter version the page names, wherever it names one. */
+const VERSION_MENTION = /Flutter (\d+\.\d+\.\d+)/g;
+
+/**
+ * The landing page's Flutter version, from the snapshot it was built against.
+ *
+ * The page mentions it in prose rather than in a region of its own, so the
+ * mentions are rewritten instead of maintained — a version bump cannot leave
+ * the page claiming an SDK the compiler no longer targets.
+ */
+export const withVersion = (html: string, flutterVersion: string): string =>
+  html.replace(VERSION_MENTION, `Flutter ${flutterVersion}`);
+
 /**
  * The landing page's example apps, written from the template registry so the
  * page cannot advertise an app that is not there.

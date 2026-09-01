@@ -1,3 +1,6 @@
+import { readdir } from 'node:fs/promises';
+import { join } from 'node:path';
+
 import { describe, expect, test } from 'bun:test';
 
 import { loadApiSnapshot } from '@src/api/load';
@@ -122,6 +125,54 @@ describe('the main navigation', () => {
       const expected = PAGES.filter((other) => other !== name);
       expect([name, [...reached].sort()]).toEqual([name, expected.sort()]);
     }
+  }, 60000);
+
+  // A link that goes nowhere is the cheapest kind of broken documentation,
+  // and the only way to know is to resolve every one of them.
+  test('every link inside the site resolves, anchors included', async () => {
+    const docsDir = new URL('../../../../docs/', import.meta.url).pathname;
+    const present = new Set(await readdir(docsDir));
+    const pages = new Map(
+      await Promise.all(
+        [...present]
+          .filter((name) => name.endsWith('.html'))
+          .map(async (name): Promise<[string, string]> => [
+            name,
+            await Bun.file(join(docsDir, name)).text(),
+          ]),
+      ),
+    );
+    const anchorsOf = (html: string): Set<string> =>
+      new Set(
+        [...html.matchAll(/id="([^"]+)"/g)].map((match) => match[1] ?? ''),
+      );
+
+    const broken: string[] = [];
+    for (const [name, html] of pages) {
+      for (const match of html.matchAll(/href="(\.\/[^"]+|#[^"]+)"/g)) {
+        const href = match[1] ?? '';
+        const [target, anchor] = href.startsWith('#')
+          ? [name, href.slice(1)]
+          : [
+              href.slice(2).split('#')[0] ?? '',
+              href.slice(2).split('#')[1] ?? '',
+            ];
+        if (!present.has(target)) {
+          broken.push(`${name} → ${href} (no such file)`);
+          continue;
+        }
+        const html = pages.get(target);
+        if (
+          anchor !== '' &&
+          html !== undefined &&
+          !anchorsOf(html).has(anchor)
+        ) {
+          broken.push(`${name} → ${href} (no such anchor)`);
+        }
+      }
+    }
+
+    expect(broken).toEqual([]);
   }, 60000);
 
   test('marks the page the reader is on, on every generated page', async () => {
