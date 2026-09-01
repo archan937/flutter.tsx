@@ -6,6 +6,10 @@ declare module 'plugin:url_launcher' {
 
   export type LaunchMode = 'platformDefault' | 'inAppWebView' | 'inAppBrowserView' | 'externalApplication' | 'externalNonBrowserApplication';
 
+  export type BrowserConfigurationArgs = ConstructorParameters<typeof BrowserConfiguration>[0];
+
+  export type WebViewConfigurationArgs = ConstructorParameters<typeof WebViewConfiguration>[0];
+
   export class BrowserConfiguration {
     constructor(options?: { showTitle?: boolean });
     readonly showTitle: boolean;
@@ -28,7 +32,7 @@ declare module 'plugin:url_launcher' {
 
   export const launch: (urlString: string, options?: { forceSafariVC?: boolean | null; forceWebView?: boolean; enableJavaScript?: boolean; enableDomStorage?: boolean; universalLinksOnly?: boolean; headers?: Record<string, string>; statusBarBrightness?: Brightness | null; webOnlyWindowName?: string | null }) => Promise<boolean>;
 
-  export const launchUrl: (url: string, options?: { mode?: LaunchMode; webViewConfiguration?: WebViewConfiguration; browserConfiguration?: BrowserConfiguration; webOnlyWindowName?: string | null }) => Promise<boolean>;
+  export const launchUrl: (url: string, options?: { mode?: LaunchMode; webViewConfiguration?: WebViewConfiguration | WebViewConfigurationArgs; browserConfiguration?: BrowserConfiguration | BrowserConfigurationArgs; webOnlyWindowName?: string | null }) => Promise<boolean>;
 
   export const supportsCloseForLaunchMode: (mode: LaunchMode) => Promise<boolean>;
 

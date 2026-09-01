@@ -239,6 +239,12 @@ export const CATALOGUE: Readonly<Record<string, CatalogueEntry>> = {
       'Seed data, lookup tables and labels live beside the code that reads them: an exported const becomes a top-level Dart constant, and `{ … }` where a model is expected constructs one.',
     category: 'Lists and data',
   },
+  '51-plugin-values': {
+    title: 'Building a value a plugin takes',
+    blurb:
+      'Where a package asks for one of its own classes, an object literal builds it — `webViewConfiguration: { enableJavaScript: true }` — and `new MediaType(…)` builds one by name.',
+    category: 'Native plugins',
+  },
   '10-camera-options': {
     title: 'Choosing a camera resolution',
     blurb:

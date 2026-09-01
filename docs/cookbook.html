@@ -153,15 +153,15 @@ main p { margin-bottom: 12px; }
   <nav class="site-nav" aria-label="Site">
     <a href="./index.html">Home</a>
     <a href="./guide.html">Guide</a>
-    <span class="here" aria-current="page">Cookbook</span>
     <a href="./examples.html">Examples</a>
+    <span class="here" aria-current="page">Cookbook</span>
     <a href="./api-reference.html">API reference</a>
     <a href="./config-mapping.html">Config mapping</a>
     <a class="ghstars" href="https://github.com/archan937/flutter.tsx/stargazers" target="_blank" rel="noopener" aria-label="Star flutter.tsx on GitHub"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M8 .25l2.06 4.17 4.6.67-3.33 3.24.79 4.59L8 11.42l-4.12 2.16.79-4.59L1.34 5.09l4.6-.67z" /></svg><span id="gh-stars">Star</span></a>
     <a href="https://github.com/archan937/flutter.tsx" target="_blank" rel="noopener">GitHub ↗</a>
   </nav>
   <input id="search" type="search" placeholder="Search recipes…" autocomplete="off" spellcheck="false">
-  <div class="meta-info">50 recipes · Flutter 3.47.1</div>
+  <div class="meta-info">51 recipes · Flutter 3.47.1</div>
   <nav id="sidebar-nav">
 <details open>
 <summary>Start here<span class="nav-count">7</span></summary>
@@ -214,7 +214,7 @@ main p { margin-bottom: 12px; }
 </ul>
 </details>
 <details>
-<summary>Native plugins<span class="nav-count">13</span></summary>
+<summary>Native plugins<span class="nav-count">14</span></summary>
 <ul>
 <li data-name="Taking a photo"><a href="#01-camera-screen">Taking a photo</a></li>
 <li data-name="Choosing a camera resolution"><a href="#10-camera-options">Choosing a camera resolution</a></li>
@@ -229,6 +229,7 @@ main p { margin-bottom: 12px; }
 <li data-name="Using what a plugin hands back"><a href="#45-camera-capture">Using what a plugin hands back</a></li>
 <li data-name="Rendering a plugin’s own widget"><a href="#46-camera-preview">Rendering a plugin’s own widget</a></li>
 <li data-name="Guarding before you use a handle"><a href="#47-guarded-handler">Guarding before you use a handle</a></li>
+<li data-name="Building a value a plugin takes"><a href="#51-plugin-values">Building a value a plugin takes</a></li>
 </ul>
 </details>
 <details>
@@ -3021,6 +3022,74 @@ export const Span = ({
       children: [
         <span class="tok-typ">Text</span>(_savedTo),
         <span class="tok-typ">ElevatedButton</span>(onPressed: _take, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Take photo'</span>)),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section class="recipe" id="51-plugin-values" data-name="Building a value a plugin takes">
+<h3>Building a value a plugin takes</h3>
+<p class="blurb">Where a package asks for one of its own classes, an object literal builds it — <code>webViewConfiguration: { enableJavaScript: true }</code> — and <code>new MediaType(…)</code> builds one by name.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/OpenInApp.tsx" role="tab" aria-selected="true">src/OpenInApp.tsx</button>
+<button class="tab-btn" data-tab="open_in_app.dart" role="tab" aria-selected="false">open_in_app.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/OpenInApp.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<span class="tok-kw">import</span> { launchUrl } <span class="tok-kw">from</span> <span class="tok-str">'plugin:url_launcher'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">OpenInApp</span> = () =&gt; {
+  <span class="tok-kw">const</span> [opened, setOpened] = <span class="tok-fn">useState</span>(<span class="tok-str">'nothing yet'</span>);
+
+  <span class="tok-kw">const</span> open = <span class="tok-kw">async</span> () =&gt; {
+    <span class="tok-kw">await</span> <span class="tok-fn">launchUrl</span>(<span class="tok-str">'https://flutter.dev'</span>, {
+      mode: <span class="tok-str">'inAppWebView'</span>,
+      webViewConfiguration: { enableJavaScript: <span class="tok-kw">true</span>, enableDomStorage: <span class="tok-kw">false</span> },
+    });
+    <span class="tok-fn">setOpened</span>(<span class="tok-str">'flutter.dev'</span>);
+  };
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;{opened}&lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={open}&gt;Open in app&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
+  );
+};</code></pre></div>
+<div class="tab-panel" data-panel="open_in_app.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<span class="tok-kw">import</span> <span class="tok-str">'package:url_launcher/url_launcher.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">OpenInApp</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">OpenInApp</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">OpenInApp</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_OpenInAppState</span>();
+}
+
+<span class="tok-kw">class</span> _OpenInAppState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">OpenInApp</span>&gt; {
+  <span class="tok-typ">String</span> _opened = <span class="tok-str">'nothing yet'</span>;
+
+  <span class="tok-typ">Future</span>&lt;<span class="tok-kw">void</span>&gt; <span class="tok-fn">_open</span>() <span class="tok-kw">async</span> {
+    <span class="tok-kw">await</span> <span class="tok-fn">launchUrl</span>(
+      <span class="tok-typ">Uri</span>.<span class="tok-fn">parse</span>(<span class="tok-str">'https://flutter.dev'</span>),
+      mode: <span class="tok-typ">LaunchMode</span>.inAppWebView,
+      webViewConfiguration: <span class="tok-kw">const</span> <span class="tok-typ">WebViewConfiguration</span>(
+        enableJavaScript: <span class="tok-kw">true</span>,
+        enableDomStorage: <span class="tok-kw">false</span>,
+      ),
+    );
+    <span class="tok-fn">setState</span>(() {
+      _opened = <span class="tok-str">'flutter.dev'</span>;
+    });
+  }
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+      children: [
+        <span class="tok-typ">Text</span>(_opened),
+        <span class="tok-typ">ElevatedButton</span>(onPressed: _open, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Open in app'</span>)),
       ],
     );
   }

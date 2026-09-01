@@ -154,8 +154,8 @@ main pre { border: 1px solid var(--line); border-radius: 10px; background: rgba(
   <nav class="site-nav" aria-label="Site">
     <a href="./index.html">Home</a>
     <span class="here" aria-current="page">Guide</span>
-    <a href="./cookbook.html">Cookbook</a>
     <a href="./examples.html">Examples</a>
+    <a href="./cookbook.html">Cookbook</a>
     <a href="./api-reference.html">API reference</a>
     <a href="./config-mapping.html">Config mapping</a>
     <a class="ghstars" href="https://github.com/archan937/flutter.tsx/stargazers" target="_blank" rel="noopener" aria-label="Star flutter.tsx on GitHub"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M8 .25l2.06 4.17 4.6.67-3.33 3.24.79 4.59L8 11.42l-4.12 2.16.79-4.59L1.34 5.09l4.6-.67z" /></svg><span id="gh-stars">Star</span></a>
@@ -165,16 +165,17 @@ main pre { border: 1px solid var(--line); border-radius: 10px; background: rgba(
   <div class="meta-info">Guide · Flutter.tsx</div>
   <nav id="sidebar-nav">
 <details open>
-<summary>Guide<span class="nav-count">10</span></summary>
+<summary>Guide<span class="nav-count">11</span></summary>
 <ul>
 <li data-name="1. Create a project"><a href="#1-create-a-project">1. Create a project</a></li>
-<li data-name="2. Install the SDK and your plugins"><a href="#2-install-the-sdk-and-your-plugins">2. Install the SDK and your plugins</a></li>
-<li data-name="3. Develop"><a href="#3-develop">3. Develop</a></li>
-<li data-name="4. Write components"><a href="#4-write-components">4. Write components</a></li>
-<li data-name="5. Use a plugin"><a href="#5-use-a-plugin">5. Use a plugin</a></li>
-<li data-name="6. Configure"><a href="#6-configure">6. Configure</a></li>
-<li data-name="7. Build"><a href="#7-build">7. Build</a></li>
-<li data-name="8. Check the project"><a href="#8-check-the-project">8. Check the project</a></li>
+<li data-name="2. Start from a complete app"><a href="#2-start-from-a-complete-app">2. Start from a complete app</a></li>
+<li data-name="3. Install the SDK and your plugins"><a href="#3-install-the-sdk-and-your-plugins">3. Install the SDK and your plugins</a></li>
+<li data-name="4. Develop"><a href="#4-develop">4. Develop</a></li>
+<li data-name="5. Write components"><a href="#5-write-components">5. Write components</a></li>
+<li data-name="6. Use a plugin"><a href="#6-use-a-plugin">6. Use a plugin</a></li>
+<li data-name="7. Configure"><a href="#7-configure">7. Configure</a></li>
+<li data-name="8. Build"><a href="#8-build">8. Build</a></li>
+<li data-name="9. Check the project"><a href="#9-check-the-project">9. Check the project</a></li>
 <li data-name="Project layout"><a href="#project-layout">Project layout</a></li>
 <li data-name="When something is not expressible"><a href="#when-something-is-not-expressible">When something is not expressible</a></li>
 </ul>
@@ -196,7 +197,7 @@ cd ~/my-app &amp;&amp; bun install</code></pre>
 cd my-app
 bun install</code></pre>
 <p>You get <code>fsx.config.ts</code>, a <code>src/App.tsx</code> to start from, a <code>tsconfig.json</code> wired for TSX, and the host Flutter app.</p>
-<h3 id="start-from-a-complete-app-instead">Start from a complete app instead</h3>
+<h2 id="2-start-from-a-complete-app">2. Start from a complete app</h2>
 <p><code>--template</code> scaffolds one of four finished apps rather than the starter — the same files, plus that app's own source and the pub packages it needs:</p>
 <pre><code class="language-sh">fsx init my-app --template=web       # album browser: routes, a store, models
 fsx init my-app --template=mobile    # field notes: tabs, camera preview, keychain
@@ -204,13 +205,13 @@ fsx init my-app --template=desktop   # service console: master–detail, live bu
 fsx init my-app --template=tray      # menu-bar companion: tray events, a live stream</code></pre>
 <p>Add <code>--target=&lt;platform&gt;</code> to build the same app for somewhere else — <code>fsx init my-app --template=mobile --target=web</code> scaffolds the field-notes app as a web project. The platforms are <code>android</code>, <code>ios</code>, <code>linux</code>, <code>macos</code>, <code>web</code> and <code>windows</code>.</p>
 <p>Every template is transpiled, analysed and built for its own platform on every run of the end-to-end suite, and each one is committed under <a href="https://github.com/archan937/flutter.tsx/tree/master/examples"><code>examples/</code></a> so you can read it before you run anything. The <a href="./examples.html">Examples</a> page lists what each app demonstrates, file by file.</p>
-<h2 id="2-install-the-sdk-and-your-plugins">2. Install the SDK and your plugins</h2>
+<h2 id="3-install-the-sdk-and-your-plugins">3. Install the SDK and your plugins</h2>
 <pre><code class="language-sh">fsx install</code></pre>
 <p>One command does both: it downloads the pinned Flutter SDK into <code>~/.fsx</code> (shared by every project on the machine, so it happens once), then brings the project's plugins in line with what <code>package.json</code> declares.</p>
-<h2 id="3-develop">3. Develop</h2>
+<h2 id="4-develop">4. Develop</h2>
 <pre><code class="language-sh">fsx dev</code></pre>
 <p><code>fsx dev</code> compiles every component under <code>src/</code> to Dart under <code>lib/</code>, runs the app on the device your target maps to, and watches for saves: each one recompiles and hot reloads. A compile error is reported and the app keeps running, so a typo never ends the session.</p>
-<h2 id="4-write-components">4. Write components</h2>
+<h2 id="5-write-components">5. Write components</h2>
 <p>A component is an exported arrow function returning JSX. State is <code>useState</code>, and a handler is a plain function:</p>
 <pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
@@ -240,7 +241,7 @@ fsx init my-app --template=tray      # menu-bar companion: tray events, a live s
   &lt;/<span class="tok-typ">Column</span>&gt;
 );</code></pre>
 <p>Components in other files are imported the way you would expect, and the compiler emits the Dart import for you — including hiding a Flutter widget of the same name, so a component called <code>Card</code> or <code>Banner</code> is yours, not the SDK's.</p>
-<h2 id="5-use-a-plugin">5. Use a plugin</h2>
+<h2 id="6-use-a-plugin">6. Use a plugin</h2>
 <p>Plugins are declared like npm dependencies, in <code>package.json</code>:</p>
 <pre><code class="language-jsonc">{
   &quot;plugins&quot;: {
@@ -268,7 +269,7 @@ fsx init my-app --template=tray      # menu-bar companion: tray events, a live s
 };</code></pre>
 <p>The typings are generated from the plugin version your project resolved, so what the IDE completes is what the plugin actually exposes. Dart types map to their TypeScript counterparts — a Dart <code>Uri</code> is a <code>string</code>, an enum is a union of string literals — and the compiler maps them back (<code>launchUrl('https://flutter.dev')</code> emits <code>launchUrl(Uri.parse('https://flutter.dev'))</code>).</p>
 <p>Plugins whose lifecycle needs owning get a hook: <code>useCamera()</code>, <code>useLocation()</code>, <code>useSecureStorage()</code> and the rest acquire on mount and dispose on unmount, so a controller is never left running.</p>
-<h2 id="6-configure">6. Configure</h2>
+<h2 id="7-configure">7. Configure</h2>
 <p><code>fsx.config.ts</code> is typed TypeScript — <code>satisfies AppConfig</code>, so the IDE completes every field and a wrong value is a compile error:</p>
 <pre><code class="language-typescript"><span class="tok-kw">import</span> <span class="tok-kw">type</span> { <span class="tok-typ">AppConfig</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
@@ -286,7 +287,7 @@ fsx init my-app --template=tray      # menu-bar companion: tray events, a live s
 </tbody>
 </table>
 <p>See <a href="./config-mapping.html">config mapping</a> for what fsx writes into the native projects, and what it does not.</p>
-<h2 id="7-build">7. Build</h2>
+<h2 id="8-build">8. Build</h2>
 <pre><code class="language-sh">fsx build                    # the target fsx.config.ts names
 fsx build --target=macos     # or pick one</code></pre>
 <p>A platform the project has never built for is set up on the way — the SDK's desktop support is enabled and the native folder is created — so a web-only app ships for macOS without anyone touching native directories. The suite proves that for web and macOS; the remaining four targets run the same code path, on toolchains this project's CI does not have.</p>
@@ -301,7 +302,7 @@ fsx build --target=macos     # or pick one</code></pre>
 <tr><td><code>linux</code></td><td><code>build/linux/x64/release/bundle</code></td></tr>
 </tbody>
 </table>
-<h2 id="8-check-the-project">8. Check the project</h2>
+<h2 id="9-check-the-project">9. Check the project</h2>
 <pre><code class="language-sh">fsx doctor</code></pre>
 <p>Reports whether the SDK matches the pinned version, whether this is a project, whether its root component exists, whether every declared plugin is installed with its typings, and which iOS usage descriptions your <code>Info.plist</code> is still missing for the plugins you declared — naming the fix for each, and exiting non-zero so CI can gate on it.</p>
 <h2 id="project-layout">Project layout</h2>

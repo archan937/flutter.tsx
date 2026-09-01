@@ -60,8 +60,12 @@ declare module 'plugin:camera' {
     readonly __external: 'Uint8List';
   }
 
+  export type CameraDescriptionArgs = ConstructorParameters<typeof CameraDescription>[0];
+
+  export type CameraValueArgs = ConstructorParameters<typeof CameraValue>[0];
+
   export class CameraController {
-    constructor(description: CameraDescription, resolutionPreset: ResolutionPreset, options?: { enableAudio?: boolean; fps?: number | null; videoBitrate?: number | null; audioBitrate?: number | null; imageFormatGroup?: ImageFormatGroup | null });
+    constructor(description: CameraDescription | CameraDescriptionArgs, resolutionPreset: ResolutionPreset, options?: { enableAudio?: boolean; fps?: number | null; videoBitrate?: number | null; audioBitrate?: number | null; imageFormatGroup?: ImageFormatGroup | null });
     readonly cameraId: number;
     readonly description: CameraDescription;
     readonly enableAudio: boolean;
@@ -85,7 +89,7 @@ declare module 'plugin:camera' {
     removeListener(listener: () => void): void;
     resumePreview(): Promise<void>;
     resumeVideoRecording(): Promise<void>;
-    setDescription(description: CameraDescription): Promise<void>;
+    setDescription(description: CameraDescription | CameraDescriptionArgs): Promise<void>;
     setExposureMode(mode: ExposureMode): Promise<void>;
     setExposureOffset(offset: number): Promise<number>;
     setExposurePoint(point: Offset | null): Promise<void>;
@@ -138,7 +142,7 @@ declare module 'plugin:camera' {
   export const CameraPreview: FlutterComponent<CameraPreviewProps>;
 
   export class CameraValue {
-    constructor(options: { isInitialized: boolean; errorDescription?: string | null; previewSize?: Size | null; isRecordingVideo: boolean; isTakingPicture: boolean; isStreamingImages: boolean; isRecordingPaused: boolean; flashMode: FlashMode; exposureMode: ExposureMode; focusMode: FocusMode; exposurePointSupported: boolean; focusPointSupported: boolean; deviceOrientation: DeviceOrientation; description: CameraDescription; lockedCaptureOrientation?: DeviceOrientation | null; recordingOrientation?: DeviceOrientation | null; isPreviewPaused?: boolean; previewPauseOrientation?: DeviceOrientation | null; videoStabilizationMode?: VideoStabilizationMode });
+    constructor(options: { isInitialized: boolean; errorDescription?: string | null; previewSize?: Size | null; isRecordingVideo: boolean; isTakingPicture: boolean; isStreamingImages: boolean; isRecordingPaused: boolean; flashMode: FlashMode; exposureMode: ExposureMode; focusMode: FocusMode; exposurePointSupported: boolean; focusPointSupported: boolean; deviceOrientation: DeviceOrientation; description: CameraDescription | CameraDescriptionArgs; lockedCaptureOrientation?: DeviceOrientation | null; recordingOrientation?: DeviceOrientation | null; isPreviewPaused?: boolean; previewPauseOrientation?: DeviceOrientation | null; videoStabilizationMode?: VideoStabilizationMode });
     readonly aspectRatio: number;
     readonly description: CameraDescription;
     readonly deviceOrientation: DeviceOrientation;
@@ -161,7 +165,7 @@ declare module 'plugin:camera' {
     readonly previewSize: Size | null;
     readonly recordingOrientation: DeviceOrientation | null;
     readonly videoStabilizationMode: VideoStabilizationMode;
-    copyWith(options?: { isInitialized?: boolean | null; isRecordingVideo?: boolean | null; isTakingPicture?: boolean | null; isStreamingImages?: boolean | null; errorDescription?: string | null; previewSize?: Size | null; isRecordingPaused?: boolean | null; flashMode?: FlashMode | null; exposureMode?: ExposureMode | null; focusMode?: FocusMode | null; exposurePointSupported?: boolean | null; focusPointSupported?: boolean | null; deviceOrientation?: DeviceOrientation | null; lockedCaptureOrientation?: Optional | null; recordingOrientation?: Optional | null; isPreviewPaused?: boolean | null; description?: CameraDescription | null; previewPauseOrientation?: Optional | null; videoStabilizationMode?: VideoStabilizationMode | null }): CameraValue;
+    copyWith(options?: { isInitialized?: boolean | null; isRecordingVideo?: boolean | null; isTakingPicture?: boolean | null; isStreamingImages?: boolean | null; errorDescription?: string | null; previewSize?: Size | null; isRecordingPaused?: boolean | null; flashMode?: FlashMode | null; exposureMode?: ExposureMode | null; focusMode?: FocusMode | null; exposurePointSupported?: boolean | null; focusPointSupported?: boolean | null; deviceOrientation?: DeviceOrientation | null; lockedCaptureOrientation?: Optional | null; recordingOrientation?: Optional | null; isPreviewPaused?: boolean | null; description?: CameraDescription | null | CameraDescriptionArgs; previewPauseOrientation?: Optional | null; videoStabilizationMode?: VideoStabilizationMode | null }): CameraValue;
     toString(): string;
   }
 

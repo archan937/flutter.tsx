@@ -1210,6 +1210,92 @@ export const Meter = ({ level }: { level: Level }) => (
   });
 });
 
+describe('transpileComponent — values a plugin declares', () => {
+  const probe = (body: string): Promise<string> =>
+    transpileComponent({
+      source:
+        "import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';\n" +
+        "import { MediaType } from 'plugin:http';\n" +
+        "import { SharedPreferencesWithCache } from 'plugin:shared_preferences';\n" +
+        "import { launchUrl, WebViewConfiguration } from 'plugin:url_launcher';\n" +
+        'export const Probe = () => {\n' +
+        "  const [label, setLabel] = useState('none');\n" +
+        '  const run = async () => {\n' +
+        body +
+        '  };\n' +
+        '  return (\n' +
+        '    <Column>\n' +
+        '      <Text>{label}</Text>\n' +
+        '      <ElevatedButton onClick={run}>Go</ElevatedButton>\n' +
+        '    </Column>\n' +
+        '  );\n' +
+        '};\n',
+      filePath: 'probe.tsx',
+      pluginApiDirs: [new URL('../../ref/plugins', import.meta.url).pathname],
+    });
+
+  test('`new` builds a value the plugin exports', async () => {
+    const dart = await probe(
+      "    const type = new MediaType('text', 'plain');\n" +
+        '    setLabel(type.mimeType);\n',
+    );
+
+    expect(dart).toContain("final type = MediaType('text', 'plain');");
+    expect(dart).toContain('_label = type.mimeType;');
+  });
+
+  test('a static of a plugin class is the way some values are made', async () => {
+    const dart = await probe(
+      '    const cached = await SharedPreferencesWithCache.create({\n' +
+        '      cacheOptions: { allowList: null },\n' +
+        '    });\n' +
+        "    setLabel('ready');\n",
+    );
+
+    expect(dart).toContain(
+      'final cached = await SharedPreferencesWithCache.create(\n' +
+        '      cacheOptions: SharedPreferencesWithCacheOptions(allowList: null),\n' +
+        '    );',
+    );
+  });
+
+  test('`new` with an object builds a constructor of named parameters', async () => {
+    const dart = await probe(
+      '    const config = new WebViewConfiguration({ enableJavaScript: true });\n' +
+        "    await launchUrl('https://flutter.dev', {\n" +
+        '      webViewConfiguration: config,\n' +
+        '    });\n' +
+        "    setLabel('opened');\n",
+    );
+
+    expect(dart).toContain(
+      'final config = WebViewConfiguration(enableJavaScript: true);',
+    );
+    expect(dart).toContain('webViewConfiguration: config');
+  });
+
+  test('a spread where a constructor wants named arguments is refused', () => {
+    expect(
+      probe(
+        '    const config = new WebViewConfiguration({ ...{ enableJavaScript: true } });\n' +
+          "    setLabel('made');\n",
+      ),
+    ).rejects.toThrow(/TSX0305/);
+  });
+
+  test('`new` on something no plugin exports is a numbered error', () => {
+    expect(probe('    const thing = new Whatever();\n')).rejects.toThrow(
+      /TSX0349 .* `Whatever` is not a class this project can construct/,
+    );
+  });
+
+  test('a static no plugin class declares is a numbered error', () => {
+    expect(probe("    await MediaType.conjure('text');\n")).rejects.toThrow(
+      /TSX03/,
+    );
+  });
+});
+
 describe('transpileComponent — model literals', () => {
   const probe = (value: string): Promise<string> =>
     transpileComponent({

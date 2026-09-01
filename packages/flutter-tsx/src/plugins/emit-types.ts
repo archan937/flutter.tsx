@@ -2,7 +2,12 @@ import type { ParamModel, TypeNode } from '../api/model';
 import { jsxPropName } from '../generate/renames';
 import { tsTypeOf } from '../generate/ts-types';
 import type { PluginApi, PluginMethod } from './api';
-import { type DerivedHook, type HookEvent, isNullableHandle } from './hooks';
+import {
+  type DerivedHook,
+  type HookEvent,
+  isNullableHandle,
+  isPlatformImplementation,
+} from './hooks';
 
 interface TypeRefs {
   named: Set<string>;
@@ -129,14 +134,46 @@ const TS_RESERVED = new Set([
 ]);
 
 /**
+ * Classes an object literal can build.
+ *
+ * Only those whose constructor is one bag of named parameters: that is the
+ * shape `{ enableJavaScript: true }` has. A constructor taking positional
+ * arguments is written as a call — `new MediaType('text', 'plain')`.
+ */
+export const buildableClassNames = (api: PluginApi): Set<string> =>
+  new Set(
+    api.classes
+      .filter((entity) => {
+        const constructor = entity.constructors.find(
+          (candidate) => candidate.name === '',
+        );
+        return (
+          !isPlatformImplementation(entity) &&
+          widgetComponent(entity) === null &&
+          constructor !== undefined &&
+          constructor.params.length > 0 &&
+          constructor.params.every((param) => param.named)
+        );
+      })
+      .map((entity) => entity.name),
+  );
+
+/**
  * The type a top-level plugin function is declared with — the one the IDE
  * shows and the one the API reference documents, from a single source.
  */
-export const functionSignature = (fn: PluginMethod): string =>
-  `(${signatureParams(fn.params)}) => ${tsTypeOf(withCoreStrings(fn.returnType))}`;
+export const functionSignature = (
+  fn: PluginMethod,
+  buildable: ReadonlySet<string> = new Set(),
+): string =>
+  `(${signatureParams(fn.params, buildable)}) => ` +
+  tsTypeOf(withCoreStrings(fn.returnType));
 
-const reservedFunction = (fn: PluginMethod): string => {
-  const signature = functionSignature(fn);
+const reservedFunction = (
+  fn: PluginMethod,
+  buildable: ReadonlySet<string>,
+): string => {
+  const signature = functionSignature(fn, buildable);
   if (!TS_RESERVED.has(fn.name)) {
     return `  export const ${fn.name}: ${signature};`;
   }
@@ -146,12 +183,34 @@ const reservedFunction = (fn: PluginMethod): string => {
   );
 };
 
-const signatureParams = (params: ParamModel[]): string => {
+/**
+ * The type an argument may be written as.
+ *
+ * A class the package builds from its own constructor can be written as the
+ * value itself — `new WebViewConfiguration(…)` — or as the object literal the
+ * compiler turns into that constructor call. Both are true, so both are in
+ * the type; anywhere else the plain type stands.
+ */
+const argumentType = (
+  param: ParamModel,
+  buildable: ReadonlySet<string>,
+): string => {
+  const declared = tsTypeOf(withCoreStrings(param.type));
+  const inner = param.type.kind === 'nullable' ? param.type.inner : param.type;
+  return inner.kind === 'named' && buildable.has(inner.name)
+    ? `${declared} | ${inner.name}Args`
+    : declared;
+};
+
+const signatureParams = (
+  params: ParamModel[],
+  buildable: ReadonlySet<string> = new Set(),
+): string => {
   const positional = params
     .filter((param) => !param.named)
     .map((param) => {
       const optional = param.required ? '' : '?';
-      return `${param.name}${optional}: ${tsTypeOf(withCoreStrings(param.type))}`;
+      return `${param.name}${optional}: ${argumentType(param, buildable)}`;
     });
   const named = params.filter((param) => param.named);
   if (named.length === 0) {
@@ -160,7 +219,7 @@ const signatureParams = (params: ParamModel[]): string => {
   const members = named
     .map((param) => {
       const optional = param.required ? '' : '?';
-      return `${param.name}${optional}: ${tsTypeOf(withCoreStrings(param.type))}`;
+      return `${param.name}${optional}: ${argumentType(param, buildable)}`;
     })
     .join('; ');
   const allNamedOptional = named.every((param) => !param.required);
@@ -170,9 +229,15 @@ const signatureParams = (params: ParamModel[]): string => {
   ].join(', ');
 };
 
-const methodLine = (method: PluginMethod): string => {
+const methodLine = (
+  method: PluginMethod,
+  buildable: ReadonlySet<string>,
+): string => {
   const modifier = method.isStatic ? 'static ' : '';
-  return `    ${modifier}${method.name}(${signatureParams(method.params)}): ${tsTypeOf(withCoreStrings(method.returnType))};`;
+  return (
+    `    ${modifier}${method.name}(${signatureParams(method.params, buildable)}): ` +
+    `${tsTypeOf(withCoreStrings(method.returnType))};`
+  );
 };
 
 /**
@@ -305,7 +370,25 @@ export const emitPluginDeclaration = (
   }
 
   const managedMembers = managedByClass(hooks);
+  // A class the compiler can build from an object literal is written either
+  // way, so each one gets the shape of its constructor beside it.
+  const buildable = buildableClassNames(api);
+  const buildableClasses = api.classes.filter((entity) =>
+    buildable.has(entity.name),
+  );
+  for (const entity of buildableClasses) {
+    blocks.push(
+      `  export type ${entity.name}Args = ` +
+        `ConstructorParameters<typeof ${entity.name}>[0];`,
+    );
+  }
   for (const entity of api.classes) {
+    // A platform's own implementation is registered by Flutter and named by
+    // nobody: declaring it would offer a developer something to write that
+    // does nothing.
+    if (isPlatformImplementation(entity)) {
+      continue;
+    }
     const widget = widgetComponent(entity);
     if (widget !== null) {
       blocks.push(widget);
@@ -317,7 +400,9 @@ export const emitPluginDeclaration = (
       (candidate) => candidate.name === '',
     );
     if (constructor !== undefined) {
-      lines.push(`    constructor(${signatureParams(constructor.params)});`);
+      lines.push(
+        `    constructor(${signatureParams(constructor.params, buildable)});`,
+      );
     }
     lines.push(
       ...entity.fields
@@ -330,7 +415,7 @@ export const emitPluginDeclaration = (
     lines.push(
       ...tsMethods(entity)
         .filter((method) => !hidden.has(method.name))
-        .map(methodLine),
+        .map((method) => methodLine(method, buildable)),
     );
     blocks.push(
       lines.length === 0
@@ -340,7 +425,7 @@ export const emitPluginDeclaration = (
   }
 
   for (const fn of api.functions) {
-    blocks.push(reservedFunction(fn));
+    blocks.push(reservedFunction(fn, buildable));
   }
 
   for (const hook of hooks) {

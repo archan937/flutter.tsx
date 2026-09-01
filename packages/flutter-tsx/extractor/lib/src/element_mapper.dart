@@ -19,9 +19,7 @@ EntityModel? mapClass(
     return null;
   }
 
-  final constructors = classElement.isAbstract
-      ? const <ConstructorModel>[]
-      : _mapConstructors(classElement, asserts);
+  final constructors = _mapConstructors(classElement, asserts);
   final supertypes = publicSupertypeNames(classElement);
   final doc = classElement.documentationComment ?? '';
 
@@ -97,9 +95,7 @@ PluginClass mapPluginClass(ClassElement classElement, AssertInspector asserts) {
     name: classElement.name ?? '',
     doc: classElement.documentationComment ?? '',
     supertypes: publicSupertypeNames(classElement),
-    constructors: classElement.isAbstract
-        ? const <ConstructorModel>[]
-        : _mapConstructors(classElement, asserts),
+    constructors: _mapConstructors(classElement, asserts),
     fields: _mapInstanceFields(classElement),
     methods: methods,
     constants: _mapConstants(classElement),
@@ -172,12 +168,22 @@ ParamModel _mapFunctionParam(FormalParameterElement param) => ParamModel(
   isDeprecated: param.metadata.hasDeprecated,
 );
 
+/// The constructors a caller can actually invoke.
+///
+/// An abstract class cannot be instantiated by its generative constructors,
+/// but a factory one on it is a real way to make a value — `Client()` in
+/// package:http is exactly that. Dropping every constructor of an abstract
+/// class hid those classes from TSX entirely.
 List<ConstructorModel> _mapConstructors(
   ClassElement classElement,
   AssertInspector asserts,
 ) {
   final constructors = classElement.constructors
-      .where((constructor) => constructor.isPublic)
+      .where(
+        (constructor) =>
+            constructor.isPublic &&
+            (!classElement.isAbstract || constructor.isFactory),
+      )
       .map(
         (constructor) => ConstructorModel(
           name: _constructorName(constructor),

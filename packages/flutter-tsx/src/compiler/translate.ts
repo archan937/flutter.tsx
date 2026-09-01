@@ -1,6 +1,6 @@
 import ts from 'typescript';
 
-import type { TypeNode } from '../api/model';
+import type { ParamModel, TypeNode } from '../api/model';
 import { dartConstantName, listElementType } from './dart-names';
 import { escapeDartString } from './dart-print';
 import { tsxErrorAt } from './diagnostics';
@@ -52,6 +52,14 @@ export interface TranslateContext {
    * `{cam && …}`); Dart has no truthiness, so they become null checks.
    */
   nullableHandles: ReadonlyMap<string, string>;
+  /**
+   * Plugin classes a `new` expression may build, with the parameters each
+   * constructor declares. Dart has no `new`, so it is dropped — but only for
+   * a class the plugin really exports, never for an arbitrary name.
+   */
+  pluginConstructibles: ReadonlyMap<string, readonly ParamModel[]>;
+  /** Every plugin class `new` can call, and the parameters it declares. */
+  pluginConstructors: ReadonlyMap<string, readonly ParamModel[]>;
   /**
    * Names an early return has proven non-null at this point.
    *
@@ -407,6 +415,36 @@ const withCallbackItem = (
   };
 };
 
+/**
+ * What `new C(…)` hands the constructor.
+ *
+ * A constructor of named parameters is written with one object — the shape
+ * the typings declare — and Dart takes them as named arguments; a positional
+ * one is written and translated as it stands.
+ */
+const constructorArguments = (
+  expression: ts.NewExpression,
+  params: readonly ParamModel[],
+  context: TranslateContext,
+): string[] => {
+  const args = [...(expression.arguments ?? [])];
+  const [only] = args;
+  if (
+    args.length === 1 &&
+    only !== undefined &&
+    ts.isObjectLiteralExpression(only) &&
+    params.length > 0 &&
+    params.every((param) => param.named)
+  ) {
+    return only.properties.map((property) =>
+      !ts.isPropertyAssignment(property) || !ts.isIdentifier(property.name)
+        ? notYetCompiled(property, context)
+        : `${property.name.text}: ${translateExpression(property.initializer, context)}`,
+    );
+  }
+  return args.map((argument) => translateExpression(argument, context));
+};
+
 const LOOSE_NULL_OPERATORS = new Map([
   [ts.SyntaxKind.EqualsEqualsToken, '=='],
   [ts.SyntaxKind.ExclamationEqualsToken, '!='],
@@ -691,6 +729,9 @@ export const translateExpression = (
   if (math !== null) {
     return math;
   }
+  if (expression.kind === ts.SyntaxKind.NullKeyword) {
+    return 'null';
+  }
   if (expression.kind === ts.SyntaxKind.TrueKeyword) {
     return 'true';
   }
@@ -877,6 +918,26 @@ export const translateExpression = (
       ? `_${expression.expression.text}`
       : expression.expression.text;
     return `${name}(${args.join(', ')})`;
+  }
+  // `new MediaType('text', 'plain')` — a value the plugin exports and you
+  // build yourself. Dart writes the same call without the keyword.
+  if (
+    ts.isNewExpression(expression) &&
+    ts.isIdentifier(expression.expression)
+  ) {
+    const className = expression.expression.text;
+    const params = context.pluginConstructors.get(className);
+    if (params === undefined) {
+      throw tsxErrorAt(
+        'TSX0349',
+        `\`${className}\` is not a class this project can construct — a ` +
+          'plugin exports the ones that are, and a model of your own is ' +
+          'written as `{ field: value }`.',
+        { sourceFile: context.sourceFile, node: expression.expression },
+      );
+    }
+    const args = constructorArguments(expression, params, context);
+    return `${className}(${args.join(', ')})`;
   }
   if (ts.isBinaryExpression(expression)) {
     // `x == null` is the one loose comparison TypeScript itself endorses, and

@@ -154,16 +154,16 @@ describe('buildSitePlugins', () => {
     expect(plugin?.requirements).toEqual([]);
   });
 
-  test('carries the top-level functions a hookless plugin is made of', async () => {
+  test('carries the top-level functions a plugin is also made of', async () => {
     const http = await loadPluginApi('http');
 
     const [plugin] = buildSitePlugins([http], PLUGIN_OVERRIDES, [
       recipe('25-http-get', "import { get } from 'plugin:http';\n"),
     ]);
 
-    // http exposes no hook at all: an import line built from hooks alone
-    // would name nothing a developer can write.
-    expect(plugin?.hooks).toEqual([]);
+    // http is reached two ways: `get(url)` for a one-off, and the client for
+    // anything that needs headers or a connection kept open.
+    expect(plugin?.hooks.map((hook) => hook.name)).toEqual(['useClient']);
     expect(plugin?.functions.find((fn) => fn.name === 'get')).toEqual({
       name: 'get',
       signature:

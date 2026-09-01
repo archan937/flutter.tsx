@@ -163,27 +163,36 @@ const isFutureVoid = (type: TypeNode): boolean =>
 
 // The pub "plus family" (connectivity_plus, battery_plus, sensors_plus) names
 // its classes without the suffix, so drop it before matching.
-const serviceClassName = (packageName: string): string =>
-  packageName
-    .replace(/_plus$/, '')
-    .split('_')
-    .map((part) => `${part[0]?.toUpperCase() ?? ''}${part.slice(1)}`)
-    .join('');
-
+/**
+ * Whether a class is a service: something you make once and then ask to do
+ * work.
+ *
+ * Recognised by shape, never by name. A service can be constructed with
+ * nothing — `FlutterSecureStorage()`, `Client()` — and its instance methods
+ * hand back futures or streams, which is what asking a platform to do
+ * something looks like. A value class with the same empty constructor has no
+ * such methods, and an options bag has none at all.
+ *
+ * Matching on the package's own name instead left every second service in a
+ * package extracted and unusable: `SharedPreferencesAsync` beside
+ * `SharedPreferences`, and the whole of `http` behind `Client`.
+ */
 const serviceConstructor = (
   api: PluginApi,
   entity: PluginClass,
 ): { isConst: boolean } | null => {
-  if (entity.name !== serviceClassName(api.package)) {
-    return null;
-  }
   const constructor = entity.constructors.find(
     (candidate) => candidate.name === '',
   );
-  const hasInstanceMethods = entity.methods.some((method) => !method.isStatic);
+  const doesWork = entity.methods.some(
+    (method) =>
+      !method.isStatic &&
+      (method.returnType.kind === 'future' ||
+        method.returnType.kind === 'stream'),
+  );
   if (
     constructor === undefined ||
-    !hasInstanceMethods ||
+    !doesWork ||
     constructor.params.some((param) => param.required)
   ) {
     return null;
@@ -326,11 +335,24 @@ const constructPlan = (
   return { plan, options };
 };
 
+/**
+ * A platform's own implementation of a federated plugin.
+ *
+ * Flutter's federated packages register these with the framework and app code
+ * never names one — they extend `PlatformInterface`, which is what says so
+ * without knowing any package's naming.
+ */
+export const isPlatformImplementation = (entity: PluginClass): boolean =>
+  entity.supertypes.includes('PlatformInterface');
+
 export const deriveHooks = (
   api: PluginApi,
   overrides: Record<string, HookOverrides> | undefined,
 ): DerivedHook[] =>
   api.classes.flatMap((entity): DerivedHook[] => {
+    if (isPlatformImplementation(entity)) {
+      return [];
+    }
     const hookName = `use${entity.name
       .replace(/^Flutter/, '')
       .replace(/Controller$/, '')}`;

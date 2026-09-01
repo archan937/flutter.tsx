@@ -1700,7 +1700,16 @@
       "name": "Client",
       "doc": "/// The interface for HTTP clients that take care of maintaining persistent\n/// connections across multiple requests to the same server.\n///\n/// If you only need to send a single request, it's usually easier to use\n/// [http.head], [http.get], [http.post], [http.put], [http.patch], or\n/// [http.delete] instead.\n///\n/// All methods will emit a [ClientException] if there is a transport-level\n/// failure when communication with the server. For example, if the server could\n/// not be reached.\n///\n/// When creating an HTTP client class with additional functionality, you must\n/// extend [BaseClient] rather than [Client]. In most cases, you can wrap\n/// another instance of [Client] and add functionality on top of that. This\n/// allows all classes implementing [Client] to be mutually composable.",
       "supertypes": [],
-      "constructors": [],
+      "constructors": [
+        {
+          "name": "",
+          "doc": "/// Creates a new platform appropriate client.\n///\n/// Creates an `IOClient` if `dart:io` is available and a `BrowserClient` if\n/// `dart:js_interop` is available, otherwise it will throw an unsupported\n/// error.",
+          "const": false,
+          "paramMemberAsserts": false,
+          "requiredOneOf": [],
+          "params": []
+        }
+      ],
       "fields": [],
       "methods": [
         {

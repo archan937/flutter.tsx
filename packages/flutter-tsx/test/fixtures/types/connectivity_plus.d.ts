@@ -14,13 +14,5 @@ declare module 'plugin:connectivity_plus' {
     checkConnectivity(): Promise<ConnectivityResult[]>;
   }
 
-  export class ConnectivityPlusLinuxPlugin {
-    constructor();
-    readonly createClient: () => NetworkManagerClient;
-    readonly onConnectivityChanged: AsyncIterable<ConnectivityResult[]>;
-    checkConnectivity(): Promise<ConnectivityResult[]>;
-    static registerWith(): void;
-  }
-
   export const useConnectivity: () => Connectivity;
 }

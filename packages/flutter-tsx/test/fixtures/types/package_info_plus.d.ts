@@ -10,6 +10,8 @@ declare module 'plugin:package_info_plus' {
     readonly __external: 'PackageInfoData';
   }
 
+  export type PackageInfoArgs = ConstructorParameters<typeof PackageInfo>[0];
+
   export class PackageInfo {
     constructor(options: { appName: string; packageName: string; version: string; buildNumber: string; buildSignature?: string; installerStore?: string | null; installTime?: DateTime | null; updateTime?: DateTime | null });
     readonly appName: string;
@@ -24,18 +26,6 @@ declare module 'plugin:package_info_plus' {
     static fromPlatform(options?: { baseUrl?: string | null }): Promise<PackageInfo>;
     static setMockInitialValues(options: { appName: string; packageName: string; version: string; buildNumber: string; buildSignature: string; installerStore?: string | null; installTime?: DateTime | null; updateTime?: DateTime | null }): void;
     toString(): string;
-  }
-
-  export class PackageInfoPlusLinuxPlugin {
-    constructor();
-    getAll(options?: { baseUrl?: string | null }): Promise<PackageInfoData>;
-    static registerWith(): void;
-  }
-
-  export class PackageInfoPlusWindowsPlugin {
-    constructor();
-    getAll(options?: { baseUrl?: string | null }): Promise<PackageInfoData>;
-    static registerWith(): void;
   }
 
   export const usePackageInfo: () => PackageInfo | null;

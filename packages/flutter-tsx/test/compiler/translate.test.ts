@@ -92,6 +92,8 @@ const translate = (
     jsonModels: new Set(),
     nullableHandles: new Map(),
     narrowed: new Set<string>(),
+    pluginConstructibles: new Map([['MediaType', []]]),
+    pluginConstructors: new Map([['MediaType', []]]),
     useDartImport,
   };
   return translateExpression(expression, context);

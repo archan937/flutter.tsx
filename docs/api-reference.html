@@ -199,8 +199,8 @@ details details > ul { padding-left: 24px; }
   <nav class="site-nav" aria-label="Site">
     <a href="./index.html">Home</a>
     <a href="./guide.html">Guide</a>
-    <a href="./cookbook.html">Cookbook</a>
     <a href="./examples.html">Examples</a>
+    <a href="./cookbook.html">Cookbook</a>
     <span class="here" aria-current="page">API reference</span>
     <a href="./config-mapping.html">Config mapping</a>
     <a class="ghstars" href="https://github.com/archan937/flutter.tsx/stargazers" target="_blank" rel="noopener" aria-label="Star flutter.tsx on GitHub"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M8 .25l2.06 4.17 4.6.67-3.33 3.24.79 4.59L8 11.42l-4.12 2.16.79-4.59L1.34 5.09l4.6-.67z" /></svg><span id="gh-stars">Star</span></a>
@@ -1855,7 +1855,7 @@ export const Shell = () =&gt; (
 }</code></pre>
 </div>
 </div>
-<p class="note">Used by <a href="./cookbook.html#01-camera-screen"><code>01-camera-screen</code></a>, <a href="./cookbook.html#05-counter"><code>05-counter</code></a>, <a href="./cookbook.html#06-mount-effect"><code>06-mount-effect</code></a>, <a href="./cookbook.html#07-list-rendering"><code>07-list-rendering</code></a>, <a href="./cookbook.html#09-typed-props"><code>09-typed-props</code></a>, <a href="./cookbook.html#10-camera-options"><code>10-camera-options</code></a>, <a href="./cookbook.html#11-preferences"><code>11-preferences</code></a>, <a href="./cookbook.html#12-secure-storage"><code>12-secure-storage</code></a>, <a href="./cookbook.html#13-open-link"><code>13-open-link</code></a>, <a href="./cookbook.html#15-front-camera"><code>15-front-camera</code></a>, <a href="./cookbook.html#16-tap-target"><code>16-tap-target</code></a>, <a href="./cookbook.html#21-modal"><code>21-modal</code></a>, <a href="./cookbook.html#22-mount-dialog"><code>22-mount-dialog</code></a>, <a href="./cookbook.html#24-animated"><code>24-animated</code></a>, <a href="./cookbook.html#29-branching-handler"><code>29-branching-handler</code></a>, <a href="./cookbook.html#33-control-flow"><code>33-control-flow</code></a>, <a href="./cookbook.html#38-effect-cleanup"><code>38-effect-cleanup</code></a>, <a href="./cookbook.html#39-builder-callback"><code>39-builder-callback</code></a>, <a href="./cookbook.html#43-tray-singleton"><code>43-tray-singleton</code></a>, <a href="./cookbook.html#44-tray-listener"><code>44-tray-listener</code></a>, <a href="./cookbook.html#45-camera-capture"><code>45-camera-capture</code></a>, <a href="./cookbook.html#47-guarded-handler"><code>47-guarded-handler</code></a>, <a href="./cookbook.html#48-number-types"><code>48-number-types</code></a></p>
+<p class="note">Used by <a href="./cookbook.html#01-camera-screen"><code>01-camera-screen</code></a>, <a href="./cookbook.html#05-counter"><code>05-counter</code></a>, <a href="./cookbook.html#06-mount-effect"><code>06-mount-effect</code></a>, <a href="./cookbook.html#07-list-rendering"><code>07-list-rendering</code></a>, <a href="./cookbook.html#09-typed-props"><code>09-typed-props</code></a>, <a href="./cookbook.html#10-camera-options"><code>10-camera-options</code></a>, <a href="./cookbook.html#11-preferences"><code>11-preferences</code></a>, <a href="./cookbook.html#12-secure-storage"><code>12-secure-storage</code></a>, <a href="./cookbook.html#13-open-link"><code>13-open-link</code></a>, <a href="./cookbook.html#15-front-camera"><code>15-front-camera</code></a>, <a href="./cookbook.html#16-tap-target"><code>16-tap-target</code></a>, <a href="./cookbook.html#21-modal"><code>21-modal</code></a>, <a href="./cookbook.html#22-mount-dialog"><code>22-mount-dialog</code></a>, <a href="./cookbook.html#24-animated"><code>24-animated</code></a>, <a href="./cookbook.html#29-branching-handler"><code>29-branching-handler</code></a>, <a href="./cookbook.html#33-control-flow"><code>33-control-flow</code></a>, <a href="./cookbook.html#38-effect-cleanup"><code>38-effect-cleanup</code></a>, <a href="./cookbook.html#39-builder-callback"><code>39-builder-callback</code></a>, <a href="./cookbook.html#43-tray-singleton"><code>43-tray-singleton</code></a>, <a href="./cookbook.html#44-tray-listener"><code>44-tray-listener</code></a>, <a href="./cookbook.html#45-camera-capture"><code>45-camera-capture</code></a>, <a href="./cookbook.html#47-guarded-handler"><code>47-guarded-handler</code></a>, <a href="./cookbook.html#48-number-types"><code>48-number-types</code></a>, <a href="./cookbook.html#51-plugin-values"><code>51-plugin-values</code></a></p>
 </article>
 <article class="widget" id="core-EffectCleanup" data-name="EffectCleanup">
 <h3>EffectCleanup<span class="badge badge-lib">type</span></h3>
@@ -26195,8 +26195,12 @@ declare module <span class="tok-str">'plugin:camera'</span> {
     <span class="tok-kw">readonly</span> __external: <span class="tok-str">'Uint8List'</span>;
   }
 
-  <span class="tok-kw">export</span> <span class="tok-kw">class</span> <span class="tok-typ">CameraController</span> {
-    <span class="tok-fn">constructor</span>(description: <span class="tok-typ">CameraDescription</span>, resolutionPreset: <span class="tok-typ">ResolutionPreset</span>, options?: { enableAudio?: boolean; fps?: number | <span class="tok-kw">null</span>; videoBitrate?: number | <span class="tok-kw">null</span>; audioBitrate?: number | <span class="tok-kw">null</span>; imageFormatGroup?: <span class="tok-typ">ImageFormatGroup</span> | <span class="tok-kw">null</span> });
+  <span class="tok-kw">export</span> <span class="tok-kw">type</span> <span class="tok-typ">CameraDescriptionArgs</span> = <span class="tok-typ">ConstructorParameters</span>&lt;<span class="tok-kw">typeof</span> <span class="tok-typ">CameraDescription</span>&gt;[<span class="tok-num">0</span>];
+
+  export type CameraValueArgs = ConstructorParameters&lt;<span class="tok-kw">typeof</span> <span class="tok-typ">CameraValue</span>&gt;[<span class="tok-num">0</span>];
+
+  export class CameraController {
+    <span class="tok-fn">constructor</span>(description: <span class="tok-typ">CameraDescription</span> | <span class="tok-typ">CameraDescriptionArgs</span>, resolutionPreset: <span class="tok-typ">ResolutionPreset</span>, options?: { enableAudio?: boolean; fps?: number | <span class="tok-kw">null</span>; videoBitrate?: number | <span class="tok-kw">null</span>; audioBitrate?: number | <span class="tok-kw">null</span>; imageFormatGroup?: <span class="tok-typ">ImageFormatGroup</span> | <span class="tok-kw">null</span> });
     <span class="tok-kw">readonly</span> cameraId: number;
     <span class="tok-kw">readonly</span> description: <span class="tok-typ">CameraDescription</span>;
     <span class="tok-kw">readonly</span> enableAudio: boolean;
@@ -26208,34 +26212,34 @@ declare module <span class="tok-str">'plugin:camera'</span> {
     <span class="tok-fn">buildPreview</span>(): <span class="tok-typ">FlutterElement</span>;
     <span class="tok-fn">debugCheckIsDisposed</span>(): <span class="tok-kw">void</span>;
     <span class="tok-fn">getExposureOffsetStepSize</span>(): <span class="tok-typ">Promise</span>&lt;number&gt;;
-    getMaxExposureOffset(): Promise&lt;number&gt;;
-    getMaxZoomLevel(): Promise&lt;number&gt;;
-    getMinExposureOffset(): Promise&lt;number&gt;;
-    getMinZoomLevel(): Promise&lt;number&gt;;
-    getSupportedVideoStabilizationModes(): Promise&lt;<span class="tok-typ">VideoStabilizationMode</span>[]&gt;;
-    lockCaptureOrientation(orientation?: DeviceOrientation | null): Promise&lt;<span class="tok-kw">void</span>&gt;;
-    pausePreview(): Promise&lt;<span class="tok-kw">void</span>&gt;;
-    pauseVideoRecording(): Promise&lt;<span class="tok-kw">void</span>&gt;;
-    prepareForVideoRecording(): Promise&lt;<span class="tok-kw">void</span>&gt;;
-    removeListener(listener: () =&gt; void): void;
-    resumePreview(): Promise&lt;<span class="tok-kw">void</span>&gt;;
-    resumeVideoRecording(): Promise&lt;<span class="tok-kw">void</span>&gt;;
-    setDescription(description: CameraDescription): Promise&lt;<span class="tok-kw">void</span>&gt;;
-    setExposureMode(mode: ExposureMode): Promise&lt;<span class="tok-kw">void</span>&gt;;
-    setExposureOffset(offset: number): Promise&lt;number&gt;;
-    setExposurePoint(point: Offset | null): Promise&lt;<span class="tok-kw">void</span>&gt;;
-    setFlashMode(mode: FlashMode): Promise&lt;<span class="tok-kw">void</span>&gt;;
-    setFocusMode(mode: FocusMode): Promise&lt;<span class="tok-kw">void</span>&gt;;
-    setFocusPoint(point: Offset | null): Promise&lt;<span class="tok-kw">void</span>&gt;;
-    setVideoStabilizationMode(mode: VideoStabilizationMode, options?: { allowFallback?: boolean }): Promise&lt;<span class="tok-kw">void</span>&gt;;
-    setZoomLevel(zoom: number): Promise&lt;<span class="tok-kw">void</span>&gt;;
-    startImageStream(onAvailable: (image: CameraImage) =&gt; void): Promise&lt;<span class="tok-kw">void</span>&gt;;
-    startVideoRecording(options?: { onAvailable?: ((image: <span class="tok-typ">CameraImage</span>) =&gt; <span class="tok-kw">void</span>) | <span class="tok-kw">null</span>; enablePersistentRecording?: boolean }): Promise&lt;<span class="tok-kw">void</span>&gt;;
-    stopImageStream(): Promise&lt;<span class="tok-kw">void</span>&gt;;
-    stopVideoRecording(): Promise&lt;<span class="tok-typ">XFile</span>&gt;;
-    supportsImageStreaming(): boolean;
-    takePicture(): Promise&lt;<span class="tok-typ">XFile</span>&gt;;
-    unlockCaptureOrientation(): Promise&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">getMaxExposureOffset</span>(): <span class="tok-typ">Promise</span>&lt;number&gt;;
+    <span class="tok-fn">getMaxZoomLevel</span>(): <span class="tok-typ">Promise</span>&lt;number&gt;;
+    <span class="tok-fn">getMinExposureOffset</span>(): <span class="tok-typ">Promise</span>&lt;number&gt;;
+    <span class="tok-fn">getMinZoomLevel</span>(): <span class="tok-typ">Promise</span>&lt;number&gt;;
+    <span class="tok-fn">getSupportedVideoStabilizationModes</span>(): <span class="tok-typ">Promise</span>&lt;<span class="tok-typ">VideoStabilizationMode</span>[]&gt;;
+    <span class="tok-fn">lockCaptureOrientation</span>(orientation?: <span class="tok-typ">DeviceOrientation</span> | <span class="tok-kw">null</span>): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">pausePreview</span>(): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">pauseVideoRecording</span>(): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">prepareForVideoRecording</span>(): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">removeListener</span>(listener: () =&gt; <span class="tok-kw">void</span>): <span class="tok-kw">void</span>;
+    <span class="tok-fn">resumePreview</span>(): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">resumeVideoRecording</span>(): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">setDescription</span>(description: <span class="tok-typ">CameraDescription</span> | <span class="tok-typ">CameraDescriptionArgs</span>): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">setExposureMode</span>(mode: <span class="tok-typ">ExposureMode</span>): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">setExposureOffset</span>(offset: number): <span class="tok-typ">Promise</span>&lt;number&gt;;
+    <span class="tok-fn">setExposurePoint</span>(point: <span class="tok-typ">Offset</span> | <span class="tok-kw">null</span>): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">setFlashMode</span>(mode: <span class="tok-typ">FlashMode</span>): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">setFocusMode</span>(mode: <span class="tok-typ">FocusMode</span>): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">setFocusPoint</span>(point: <span class="tok-typ">Offset</span> | <span class="tok-kw">null</span>): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">setVideoStabilizationMode</span>(mode: <span class="tok-typ">VideoStabilizationMode</span>, options?: { allowFallback?: boolean }): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">setZoomLevel</span>(zoom: number): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">startImageStream</span>(onAvailable: (image: <span class="tok-typ">CameraImage</span>) =&gt; <span class="tok-kw">void</span>): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">startVideoRecording</span>(options?: { onAvailable?: ((image: <span class="tok-typ">CameraImage</span>) =&gt; <span class="tok-kw">void</span>) | <span class="tok-kw">null</span>; enablePersistentRecording?: boolean }): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">stopImageStream</span>(): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">stopVideoRecording</span>(): <span class="tok-typ">Promise</span>&lt;<span class="tok-typ">XFile</span>&gt;;
+    <span class="tok-fn">supportsImageStreaming</span>(): boolean;
+    <span class="tok-fn">takePicture</span>(): <span class="tok-typ">Promise</span>&lt;<span class="tok-typ">XFile</span>&gt;;
+    <span class="tok-fn">unlockCaptureOrientation</span>(): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
   }
 
   export class CameraDescription {
@@ -26273,7 +26277,7 @@ declare module <span class="tok-str">'plugin:camera'</span> {
   export const CameraPreview: FlutterComponent&lt;<span class="tok-typ">CameraPreviewProps</span>&gt;;
 
   export class CameraValue {
-    <span class="tok-fn">constructor</span>(options: { isInitialized: boolean; errorDescription?: string | <span class="tok-kw">null</span>; previewSize?: <span class="tok-typ">Size</span> | <span class="tok-kw">null</span>; isRecordingVideo: boolean; isTakingPicture: boolean; isStreamingImages: boolean; isRecordingPaused: boolean; flashMode: <span class="tok-typ">FlashMode</span>; exposureMode: <span class="tok-typ">ExposureMode</span>; focusMode: <span class="tok-typ">FocusMode</span>; exposurePointSupported: boolean; focusPointSupported: boolean; deviceOrientation: <span class="tok-typ">DeviceOrientation</span>; description: <span class="tok-typ">CameraDescription</span>; lockedCaptureOrientation?: <span class="tok-typ">DeviceOrientation</span> | <span class="tok-kw">null</span>; recordingOrientation?: <span class="tok-typ">DeviceOrientation</span> | <span class="tok-kw">null</span>; isPreviewPaused?: boolean; previewPauseOrientation?: <span class="tok-typ">DeviceOrientation</span> | <span class="tok-kw">null</span>; videoStabilizationMode?: <span class="tok-typ">VideoStabilizationMode</span> });
+    <span class="tok-fn">constructor</span>(options: { isInitialized: boolean; errorDescription?: string | <span class="tok-kw">null</span>; previewSize?: <span class="tok-typ">Size</span> | <span class="tok-kw">null</span>; isRecordingVideo: boolean; isTakingPicture: boolean; isStreamingImages: boolean; isRecordingPaused: boolean; flashMode: <span class="tok-typ">FlashMode</span>; exposureMode: <span class="tok-typ">ExposureMode</span>; focusMode: <span class="tok-typ">FocusMode</span>; exposurePointSupported: boolean; focusPointSupported: boolean; deviceOrientation: <span class="tok-typ">DeviceOrientation</span>; description: <span class="tok-typ">CameraDescription</span> | <span class="tok-typ">CameraDescriptionArgs</span>; lockedCaptureOrientation?: <span class="tok-typ">DeviceOrientation</span> | <span class="tok-kw">null</span>; recordingOrientation?: <span class="tok-typ">DeviceOrientation</span> | <span class="tok-kw">null</span>; isPreviewPaused?: boolean; previewPauseOrientation?: <span class="tok-typ">DeviceOrientation</span> | <span class="tok-kw">null</span>; videoStabilizationMode?: <span class="tok-typ">VideoStabilizationMode</span> });
     <span class="tok-kw">readonly</span> aspectRatio: number;
     <span class="tok-kw">readonly</span> description: <span class="tok-typ">CameraDescription</span>;
     <span class="tok-kw">readonly</span> deviceOrientation: <span class="tok-typ">DeviceOrientation</span>;
@@ -26296,7 +26300,7 @@ declare module <span class="tok-str">'plugin:camera'</span> {
     <span class="tok-kw">readonly</span> previewSize: <span class="tok-typ">Size</span> | <span class="tok-kw">null</span>;
     <span class="tok-kw">readonly</span> recordingOrientation: <span class="tok-typ">DeviceOrientation</span> | <span class="tok-kw">null</span>;
     <span class="tok-kw">readonly</span> videoStabilizationMode: <span class="tok-typ">VideoStabilizationMode</span>;
-    <span class="tok-fn">copyWith</span>(options?: { isInitialized?: boolean | <span class="tok-kw">null</span>; isRecordingVideo?: boolean | <span class="tok-kw">null</span>; isTakingPicture?: boolean | <span class="tok-kw">null</span>; isStreamingImages?: boolean | <span class="tok-kw">null</span>; errorDescription?: string | <span class="tok-kw">null</span>; previewSize?: <span class="tok-typ">Size</span> | <span class="tok-kw">null</span>; isRecordingPaused?: boolean | <span class="tok-kw">null</span>; flashMode?: <span class="tok-typ">FlashMode</span> | <span class="tok-kw">null</span>; exposureMode?: <span class="tok-typ">ExposureMode</span> | <span class="tok-kw">null</span>; focusMode?: <span class="tok-typ">FocusMode</span> | <span class="tok-kw">null</span>; exposurePointSupported?: boolean | <span class="tok-kw">null</span>; focusPointSupported?: boolean | <span class="tok-kw">null</span>; deviceOrientation?: <span class="tok-typ">DeviceOrientation</span> | <span class="tok-kw">null</span>; lockedCaptureOrientation?: <span class="tok-typ">Optional</span> | <span class="tok-kw">null</span>; recordingOrientation?: <span class="tok-typ">Optional</span> | <span class="tok-kw">null</span>; isPreviewPaused?: boolean | <span class="tok-kw">null</span>; description?: <span class="tok-typ">CameraDescription</span> | <span class="tok-kw">null</span>; previewPauseOrientation?: <span class="tok-typ">Optional</span> | <span class="tok-kw">null</span>; videoStabilizationMode?: <span class="tok-typ">VideoStabilizationMode</span> | <span class="tok-kw">null</span> }): <span class="tok-typ">CameraValue</span>;
+    <span class="tok-fn">copyWith</span>(options?: { isInitialized?: boolean | <span class="tok-kw">null</span>; isRecordingVideo?: boolean | <span class="tok-kw">null</span>; isTakingPicture?: boolean | <span class="tok-kw">null</span>; isStreamingImages?: boolean | <span class="tok-kw">null</span>; errorDescription?: string | <span class="tok-kw">null</span>; previewSize?: <span class="tok-typ">Size</span> | <span class="tok-kw">null</span>; isRecordingPaused?: boolean | <span class="tok-kw">null</span>; flashMode?: <span class="tok-typ">FlashMode</span> | <span class="tok-kw">null</span>; exposureMode?: <span class="tok-typ">ExposureMode</span> | <span class="tok-kw">null</span>; focusMode?: <span class="tok-typ">FocusMode</span> | <span class="tok-kw">null</span>; exposurePointSupported?: boolean | <span class="tok-kw">null</span>; focusPointSupported?: boolean | <span class="tok-kw">null</span>; deviceOrientation?: <span class="tok-typ">DeviceOrientation</span> | <span class="tok-kw">null</span>; lockedCaptureOrientation?: <span class="tok-typ">Optional</span> | <span class="tok-kw">null</span>; recordingOrientation?: <span class="tok-typ">Optional</span> | <span class="tok-kw">null</span>; isPreviewPaused?: boolean | <span class="tok-kw">null</span>; description?: <span class="tok-typ">CameraDescription</span> | <span class="tok-kw">null</span> | <span class="tok-typ">CameraDescriptionArgs</span>; previewPauseOrientation?: <span class="tok-typ">Optional</span> | <span class="tok-kw">null</span>; videoStabilizationMode?: <span class="tok-typ">VideoStabilizationMode</span> | <span class="tok-kw">null</span> }): <span class="tok-typ">CameraValue</span>;
     <span class="tok-fn">toString</span>(): string;
   }
 
@@ -26438,14 +26442,6 @@ declare module <span class="tok-str">'plugin:connectivity_plus'</span> {
     checkConnectivity(): Promise&lt;<span class="tok-typ">ConnectivityResult</span>[]&gt;;
   }
 
-  export class ConnectivityPlusLinuxPlugin {
-    <span class="tok-fn">constructor</span>();
-    <span class="tok-kw">readonly</span> createClient: () =&gt; <span class="tok-typ">NetworkManagerClient</span>;
-    <span class="tok-kw">readonly</span> onConnectivityChanged: <span class="tok-typ">AsyncIterable</span>&lt;<span class="tok-typ">ConnectivityResult</span>[]&gt;;
-    <span class="tok-fn">checkConnectivity</span>(): <span class="tok-typ">Promise</span>&lt;<span class="tok-typ">ConnectivityResult</span>[]&gt;;
-    <span class="tok-kw">static</span> <span class="tok-fn">registerWith</span>(): <span class="tok-kw">void</span>;
-  }
-
   export const useConnectivity: () =&gt; Connectivity;
 }</code></pre>
 </div>
@@ -26535,13 +26531,25 @@ declare module <span class="tok-str">'plugin:flutter_secure_storage'</span> {
 
   <span class="tok-kw">export</span> <span class="tok-kw">type</span> <span class="tok-typ">StorageCipherAlgorithm</span> = <span class="tok-str">'AES_CBC_PKCS7Padding'</span> | <span class="tok-str">'AES_GCM_NoPadding'</span>;
 
-  <span class="tok-kw">export</span> <span class="tok-kw">class</span> <span class="tok-typ">AndroidOptions</span> {
+  <span class="tok-kw">export</span> <span class="tok-kw">type</span> <span class="tok-typ">AndroidOptionsArgs</span> = <span class="tok-typ">ConstructorParameters</span>&lt;<span class="tok-kw">typeof</span> <span class="tok-typ">AndroidOptions</span>&gt;[<span class="tok-num">0</span>];
+
+  export type FlutterSecureStorageArgs = ConstructorParameters&lt;<span class="tok-kw">typeof</span> <span class="tok-typ">FlutterSecureStorage</span>&gt;[<span class="tok-num">0</span>];
+
+  export type IOSOptionsArgs = ConstructorParameters&lt;<span class="tok-kw">typeof</span> <span class="tok-typ">IOSOptions</span>&gt;[<span class="tok-num">0</span>];
+
+  export type MacOsOptionsArgs = ConstructorParameters&lt;<span class="tok-kw">typeof</span> <span class="tok-typ">MacOsOptions</span>&gt;[<span class="tok-num">0</span>];
+
+  export type WebOptionsArgs = ConstructorParameters&lt;<span class="tok-kw">typeof</span> <span class="tok-typ">WebOptions</span>&gt;[<span class="tok-num">0</span>];
+
+  export type WindowsOptionsArgs = ConstructorParameters&lt;<span class="tok-kw">typeof</span> <span class="tok-typ">WindowsOptions</span>&gt;[<span class="tok-num">0</span>];
+
+  export class AndroidOptions {
     <span class="tok-fn">constructor</span>(options?: { encryptedSharedPreferences?: boolean; resetOnError?: boolean; keyCipherAlgorithm?: <span class="tok-typ">KeyCipherAlgorithm</span>; storageCipherAlgorithm?: <span class="tok-typ">StorageCipherAlgorithm</span>; sharedPreferencesName?: string | <span class="tok-kw">null</span>; preferencesKeyPrefix?: string | <span class="tok-kw">null</span> });
     <span class="tok-kw">readonly</span> params: <span class="tok-typ">Record</span>&lt;string, string&gt;;
-    readonly preferencesKeyPrefix: string | null;
-    readonly sharedPreferencesName: string | null;
-    copyWith(options?: { encryptedSharedPreferences?: boolean | <span class="tok-kw">null</span>; resetOnError?: boolean | <span class="tok-kw">null</span>; keyCipherAlgorithm?: <span class="tok-typ">KeyCipherAlgorithm</span> | <span class="tok-kw">null</span>; storageCipherAlgorithm?: <span class="tok-typ">StorageCipherAlgorithm</span> | <span class="tok-kw">null</span>; preferencesKeyPrefix?: string | <span class="tok-kw">null</span>; sharedPreferencesName?: string | <span class="tok-kw">null</span> }): AndroidOptions;
-    toMap(): Record&lt;string, string&gt;;
+    <span class="tok-kw">readonly</span> preferencesKeyPrefix: string | <span class="tok-kw">null</span>;
+    <span class="tok-kw">readonly</span> sharedPreferencesName: string | <span class="tok-kw">null</span>;
+    <span class="tok-fn">copyWith</span>(options?: { encryptedSharedPreferences?: boolean | <span class="tok-kw">null</span>; resetOnError?: boolean | <span class="tok-kw">null</span>; keyCipherAlgorithm?: <span class="tok-typ">KeyCipherAlgorithm</span> | <span class="tok-kw">null</span>; storageCipherAlgorithm?: <span class="tok-typ">StorageCipherAlgorithm</span> | <span class="tok-kw">null</span>; preferencesKeyPrefix?: string | <span class="tok-kw">null</span>; sharedPreferencesName?: string | <span class="tok-kw">null</span> }): <span class="tok-typ">AndroidOptions</span>;
+    <span class="tok-fn">toMap</span>(): <span class="tok-typ">Record</span>&lt;string, string&gt;;
   }
 
   export class AppleOptions {
@@ -26550,7 +26558,7 @@ declare module <span class="tok-str">'plugin:flutter_secure_storage'</span> {
   }
 
   export class FlutterSecureStorage {
-    <span class="tok-fn">constructor</span>(options?: { iOptions?: <span class="tok-typ">IOSOptions</span>; aOptions?: <span class="tok-typ">AndroidOptions</span>; lOptions?: <span class="tok-typ">LinuxOptions</span>; wOptions?: <span class="tok-typ">WindowsOptions</span>; webOptions?: <span class="tok-typ">WebOptions</span>; mOptions?: <span class="tok-typ">MacOsOptions</span> });
+    <span class="tok-fn">constructor</span>(options?: { iOptions?: <span class="tok-typ">IOSOptions</span> | <span class="tok-typ">IOSOptionsArgs</span>; aOptions?: <span class="tok-typ">AndroidOptions</span> | <span class="tok-typ">AndroidOptionsArgs</span>; lOptions?: <span class="tok-typ">LinuxOptions</span>; wOptions?: <span class="tok-typ">WindowsOptions</span> | <span class="tok-typ">WindowsOptionsArgs</span>; webOptions?: <span class="tok-typ">WebOptions</span> | <span class="tok-typ">WebOptionsArgs</span>; mOptions?: <span class="tok-typ">MacOsOptions</span> | <span class="tok-typ">MacOsOptionsArgs</span> });
     <span class="tok-kw">readonly</span> aOptions: <span class="tok-typ">AndroidOptions</span>;
     <span class="tok-kw">readonly</span> iOptions: <span class="tok-typ">IOSOptions</span>;
     <span class="tok-kw">readonly</span> lOptions: <span class="tok-typ">LinuxOptions</span>;
@@ -26558,18 +26566,18 @@ declare module <span class="tok-str">'plugin:flutter_secure_storage'</span> {
     <span class="tok-kw">readonly</span> onCupertinoProtectedDataAvailabilityChanged: <span class="tok-typ">AsyncIterable</span>&lt;boolean&gt; | <span class="tok-kw">null</span>;
     <span class="tok-kw">readonly</span> wOptions: <span class="tok-typ">WindowsOptions</span>;
     <span class="tok-kw">readonly</span> webOptions: <span class="tok-typ">WebOptions</span>;
-    <span class="tok-fn">containsKey</span>(options: { key: string; iOptions?: <span class="tok-typ">IOSOptions</span> | <span class="tok-kw">null</span>; aOptions?: <span class="tok-typ">AndroidOptions</span> | <span class="tok-kw">null</span>; lOptions?: <span class="tok-typ">LinuxOptions</span> | <span class="tok-kw">null</span>; webOptions?: <span class="tok-typ">WebOptions</span> | <span class="tok-kw">null</span>; mOptions?: <span class="tok-typ">MacOsOptions</span> | <span class="tok-kw">null</span>; wOptions?: <span class="tok-typ">WindowsOptions</span> | <span class="tok-kw">null</span> }): <span class="tok-typ">Promise</span>&lt;boolean&gt;;
-    <span class="tok-fn">delete</span>(options: { key: string; iOptions?: <span class="tok-typ">IOSOptions</span> | <span class="tok-kw">null</span>; aOptions?: <span class="tok-typ">AndroidOptions</span> | <span class="tok-kw">null</span>; lOptions?: <span class="tok-typ">LinuxOptions</span> | <span class="tok-kw">null</span>; webOptions?: <span class="tok-typ">WebOptions</span> | <span class="tok-kw">null</span>; mOptions?: <span class="tok-typ">MacOsOptions</span> | <span class="tok-kw">null</span>; wOptions?: <span class="tok-typ">WindowsOptions</span> | <span class="tok-kw">null</span> }): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
-    <span class="tok-fn">deleteAll</span>(options?: { iOptions?: <span class="tok-typ">IOSOptions</span> | <span class="tok-kw">null</span>; aOptions?: <span class="tok-typ">AndroidOptions</span> | <span class="tok-kw">null</span>; lOptions?: <span class="tok-typ">LinuxOptions</span> | <span class="tok-kw">null</span>; webOptions?: <span class="tok-typ">WebOptions</span> | <span class="tok-kw">null</span>; mOptions?: <span class="tok-typ">MacOsOptions</span> | <span class="tok-kw">null</span>; wOptions?: <span class="tok-typ">WindowsOptions</span> | <span class="tok-kw">null</span> }): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">containsKey</span>(options: { key: string; iOptions?: <span class="tok-typ">IOSOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">IOSOptionsArgs</span>; aOptions?: <span class="tok-typ">AndroidOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">AndroidOptionsArgs</span>; lOptions?: <span class="tok-typ">LinuxOptions</span> | <span class="tok-kw">null</span>; webOptions?: <span class="tok-typ">WebOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">WebOptionsArgs</span>; mOptions?: <span class="tok-typ">MacOsOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">MacOsOptionsArgs</span>; wOptions?: <span class="tok-typ">WindowsOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">WindowsOptionsArgs</span> }): <span class="tok-typ">Promise</span>&lt;boolean&gt;;
+    <span class="tok-fn">delete</span>(options: { key: string; iOptions?: <span class="tok-typ">IOSOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">IOSOptionsArgs</span>; aOptions?: <span class="tok-typ">AndroidOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">AndroidOptionsArgs</span>; lOptions?: <span class="tok-typ">LinuxOptions</span> | <span class="tok-kw">null</span>; webOptions?: <span class="tok-typ">WebOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">WebOptionsArgs</span>; mOptions?: <span class="tok-typ">MacOsOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">MacOsOptionsArgs</span>; wOptions?: <span class="tok-typ">WindowsOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">WindowsOptionsArgs</span> }): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">deleteAll</span>(options?: { iOptions?: <span class="tok-typ">IOSOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">IOSOptionsArgs</span>; aOptions?: <span class="tok-typ">AndroidOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">AndroidOptionsArgs</span>; lOptions?: <span class="tok-typ">LinuxOptions</span> | <span class="tok-kw">null</span>; webOptions?: <span class="tok-typ">WebOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">WebOptionsArgs</span>; mOptions?: <span class="tok-typ">MacOsOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">MacOsOptionsArgs</span>; wOptions?: <span class="tok-typ">WindowsOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">WindowsOptionsArgs</span> }): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
     <span class="tok-fn">isCupertinoProtectedDataAvailable</span>(): <span class="tok-typ">Promise</span>&lt;boolean | <span class="tok-kw">null</span>&gt;;
-    <span class="tok-fn">read</span>(options: { key: string; iOptions?: <span class="tok-typ">IOSOptions</span> | <span class="tok-kw">null</span>; aOptions?: <span class="tok-typ">AndroidOptions</span> | <span class="tok-kw">null</span>; lOptions?: <span class="tok-typ">LinuxOptions</span> | <span class="tok-kw">null</span>; webOptions?: <span class="tok-typ">WebOptions</span> | <span class="tok-kw">null</span>; mOptions?: <span class="tok-typ">MacOsOptions</span> | <span class="tok-kw">null</span>; wOptions?: <span class="tok-typ">WindowsOptions</span> | <span class="tok-kw">null</span> }): <span class="tok-typ">Promise</span>&lt;string | <span class="tok-kw">null</span>&gt;;
-    <span class="tok-fn">readAll</span>(options?: { iOptions?: <span class="tok-typ">IOSOptions</span> | <span class="tok-kw">null</span>; aOptions?: <span class="tok-typ">AndroidOptions</span> | <span class="tok-kw">null</span>; lOptions?: <span class="tok-typ">LinuxOptions</span> | <span class="tok-kw">null</span>; webOptions?: <span class="tok-typ">WebOptions</span> | <span class="tok-kw">null</span>; mOptions?: <span class="tok-typ">MacOsOptions</span> | <span class="tok-kw">null</span>; wOptions?: <span class="tok-typ">WindowsOptions</span> | <span class="tok-kw">null</span> }): <span class="tok-typ">Promise</span>&lt;<span class="tok-typ">Record</span>&lt;string, string&gt;&gt;;
+    <span class="tok-fn">read</span>(options: { key: string; iOptions?: <span class="tok-typ">IOSOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">IOSOptionsArgs</span>; aOptions?: <span class="tok-typ">AndroidOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">AndroidOptionsArgs</span>; lOptions?: <span class="tok-typ">LinuxOptions</span> | <span class="tok-kw">null</span>; webOptions?: <span class="tok-typ">WebOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">WebOptionsArgs</span>; mOptions?: <span class="tok-typ">MacOsOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">MacOsOptionsArgs</span>; wOptions?: <span class="tok-typ">WindowsOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">WindowsOptionsArgs</span> }): <span class="tok-typ">Promise</span>&lt;string | <span class="tok-kw">null</span>&gt;;
+    <span class="tok-fn">readAll</span>(options?: { iOptions?: <span class="tok-typ">IOSOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">IOSOptionsArgs</span>; aOptions?: <span class="tok-typ">AndroidOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">AndroidOptionsArgs</span>; lOptions?: <span class="tok-typ">LinuxOptions</span> | <span class="tok-kw">null</span>; webOptions?: <span class="tok-typ">WebOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">WebOptionsArgs</span>; mOptions?: <span class="tok-typ">MacOsOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">MacOsOptionsArgs</span>; wOptions?: <span class="tok-typ">WindowsOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">WindowsOptionsArgs</span> }): <span class="tok-typ">Promise</span>&lt;<span class="tok-typ">Record</span>&lt;string, string&gt;&gt;;
     <span class="tok-fn">registerListener</span>(options: { key: string; listener: (value: string | <span class="tok-kw">null</span>) =&gt; <span class="tok-kw">void</span> }): <span class="tok-kw">void</span>;
     <span class="tok-kw">static</span> <span class="tok-fn">setMockInitialValues</span>(values: <span class="tok-typ">Record</span>&lt;string, string&gt;): <span class="tok-kw">void</span>;
     <span class="tok-fn">unregisterAllListeners</span>(): <span class="tok-kw">void</span>;
     <span class="tok-fn">unregisterAllListenersForKey</span>(options: { key: string }): <span class="tok-kw">void</span>;
     <span class="tok-fn">unregisterListener</span>(options: { key: string; listener: (value: string | <span class="tok-kw">null</span>) =&gt; <span class="tok-kw">void</span> }): <span class="tok-kw">void</span>;
-    <span class="tok-fn">write</span>(options: { key: string; value: string | <span class="tok-kw">null</span>; iOptions?: <span class="tok-typ">IOSOptions</span> | <span class="tok-kw">null</span>; aOptions?: <span class="tok-typ">AndroidOptions</span> | <span class="tok-kw">null</span>; lOptions?: <span class="tok-typ">LinuxOptions</span> | <span class="tok-kw">null</span>; webOptions?: <span class="tok-typ">WebOptions</span> | <span class="tok-kw">null</span>; mOptions?: <span class="tok-typ">MacOsOptions</span> | <span class="tok-kw">null</span>; wOptions?: <span class="tok-typ">WindowsOptions</span> | <span class="tok-kw">null</span> }): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">write</span>(options: { key: string; value: string | <span class="tok-kw">null</span>; iOptions?: <span class="tok-typ">IOSOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">IOSOptionsArgs</span>; aOptions?: <span class="tok-typ">AndroidOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">AndroidOptionsArgs</span>; lOptions?: <span class="tok-typ">LinuxOptions</span> | <span class="tok-kw">null</span>; webOptions?: <span class="tok-typ">WebOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">WebOptionsArgs</span>; mOptions?: <span class="tok-typ">MacOsOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">MacOsOptionsArgs</span>; wOptions?: <span class="tok-typ">WindowsOptions</span> | <span class="tok-kw">null</span> | <span class="tok-typ">WindowsOptionsArgs</span> }): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
   }
 
   export class IOSOptions {
@@ -26616,8 +26624,13 @@ declare module <span class="tok-str">'plugin:flutter_secure_storage'</span> {
 </article>
 <article class="widget" id="plugin-http" data-name="http">
 <h3>http<span class="badge badge-lib">1.6.0</span><a class="badge badge-pkg" href="https://pub.dev/packages/http">pub.dev</a></h3>
-<pre><code class="language-typescript"><span class="tok-kw">import</span> { delete, <span class="tok-kw">get</span>, head, patch, post, put, read, readBytes, runWithClient } <span class="tok-kw">from</span> <span class="tok-str">'plugin:http'</span>;</code></pre>
-
+<pre><code class="language-typescript"><span class="tok-kw">import</span> { useClient, delete, <span class="tok-kw">get</span>, head, patch, post, put, read, readBytes, runWithClient } <span class="tok-kw">from</span> <span class="tok-str">'plugin:http'</span>;</code></pre>
+<table class="props">
+<thead><tr><th>Hook</th><th>Signature</th><th>Manages for you</th></tr></thead>
+<tbody>
+<tr><td><code>useClient</code></td><td><code>() =&gt; Client</code></td><td></td></tr>
+</tbody>
+</table>
 
 <table class="props">
 <thead><tr><th>Function</th><th>Signature</th><th>What it does</th></tr></thead>
@@ -26849,6 +26862,7 @@ declare module <span class="tok-str">'plugin:http'</span> {
   }
 
   export class Client {
+    <span class="tok-fn">constructor</span>();
     <span class="tok-fn">close</span>(): <span class="tok-kw">void</span>;
     <span class="tok-fn">delete</span>(url: string, options?: { headers?: <span class="tok-typ">Record</span>&lt;string, string&gt; | <span class="tok-kw">null</span>; body?: <span class="tok-typ">Object</span> | <span class="tok-kw">null</span>; encoding?: <span class="tok-typ">Encoding</span> | <span class="tok-kw">null</span> }): <span class="tok-typ">Promise</span>&lt;<span class="tok-typ">Response</span>&gt;;
     <span class="tok-kw">get</span>(url: string, options?: { headers?: <span class="tok-typ">Record</span>&lt;string, string&gt; | <span class="tok-kw">null</span> }): <span class="tok-typ">Promise</span>&lt;<span class="tok-typ">Response</span>&gt;;
@@ -26985,6 +26999,8 @@ declare module <span class="tok-str">'plugin:http'</span> {
   export const readBytes: (url: string, options?: { headers?: <span class="tok-typ">Record</span>&lt;string, string&gt; | <span class="tok-kw">null</span> }) =&gt; Promise&lt;<span class="tok-typ">Uint8List</span>&gt;;
 
   export const runWithClient: (body: () =&gt; unknown, clientFactory: () =&gt; Client, options?: { zoneSpecification?: <span class="tok-typ">ZoneSpecification</span> | <span class="tok-kw">null</span> }) =&gt; unknown;
+
+  export const useClient: () =&gt; Client;
 }</code></pre>
 </div>
 </div>
@@ -27079,32 +27095,22 @@ declare module <span class="tok-str">'plugin:package_info_plus'</span> {
     <span class="tok-kw">readonly</span> __external: <span class="tok-str">'PackageInfoData'</span>;
   }
 
-  <span class="tok-kw">export</span> <span class="tok-kw">class</span> <span class="tok-typ">PackageInfo</span> {
+  <span class="tok-kw">export</span> <span class="tok-kw">type</span> <span class="tok-typ">PackageInfoArgs</span> = <span class="tok-typ">ConstructorParameters</span>&lt;<span class="tok-kw">typeof</span> <span class="tok-typ">PackageInfo</span>&gt;[<span class="tok-num">0</span>];
+
+  export class PackageInfo {
     <span class="tok-fn">constructor</span>(options: { appName: string; packageName: string; version: string; buildNumber: string; buildSignature?: string; installerStore?: string | <span class="tok-kw">null</span>; installTime?: <span class="tok-typ">DateTime</span> | <span class="tok-kw">null</span>; updateTime?: <span class="tok-typ">DateTime</span> | <span class="tok-kw">null</span> });
     <span class="tok-kw">readonly</span> appName: string;
     <span class="tok-kw">readonly</span> buildNumber: string;
     <span class="tok-kw">readonly</span> buildSignature: string;
     <span class="tok-kw">readonly</span> data: <span class="tok-typ">Record</span>&lt;string, unknown&gt;;
-    readonly installTime: DateTime | null;
-    readonly installerStore: string | null;
-    readonly packageName: string;
-    readonly updateTime: DateTime | null;
-    readonly version: string;
-    static fromPlatform(options?: { baseUrl?: string | <span class="tok-kw">null</span> }): Promise&lt;<span class="tok-typ">PackageInfo</span>&gt;;
-    static setMockInitialValues(options: { appName: string; packageName: string; version: string; buildNumber: string; buildSignature: string; installerStore?: string | <span class="tok-kw">null</span>; installTime?: <span class="tok-typ">DateTime</span> | <span class="tok-kw">null</span>; updateTime?: <span class="tok-typ">DateTime</span> | <span class="tok-kw">null</span> }): void;
-    toString(): string;
-  }
-
-  export class PackageInfoPlusLinuxPlugin {
-    <span class="tok-fn">constructor</span>();
-    <span class="tok-fn">getAll</span>(options?: { baseUrl?: string | <span class="tok-kw">null</span> }): <span class="tok-typ">Promise</span>&lt;<span class="tok-typ">PackageInfoData</span>&gt;;
-    <span class="tok-kw">static</span> <span class="tok-fn">registerWith</span>(): <span class="tok-kw">void</span>;
-  }
-
-  export class PackageInfoPlusWindowsPlugin {
-    <span class="tok-fn">constructor</span>();
-    <span class="tok-fn">getAll</span>(options?: { baseUrl?: string | <span class="tok-kw">null</span> }): <span class="tok-typ">Promise</span>&lt;<span class="tok-typ">PackageInfoData</span>&gt;;
-    <span class="tok-kw">static</span> <span class="tok-fn">registerWith</span>(): <span class="tok-kw">void</span>;
+    <span class="tok-kw">readonly</span> installTime: <span class="tok-typ">DateTime</span> | <span class="tok-kw">null</span>;
+    <span class="tok-kw">readonly</span> installerStore: string | <span class="tok-kw">null</span>;
+    <span class="tok-kw">readonly</span> packageName: string;
+    <span class="tok-kw">readonly</span> updateTime: <span class="tok-typ">DateTime</span> | <span class="tok-kw">null</span>;
+    <span class="tok-kw">readonly</span> version: string;
+    <span class="tok-kw">static</span> <span class="tok-fn">fromPlatform</span>(options?: { baseUrl?: string | <span class="tok-kw">null</span> }): <span class="tok-typ">Promise</span>&lt;<span class="tok-typ">PackageInfo</span>&gt;;
+    <span class="tok-kw">static</span> <span class="tok-fn">setMockInitialValues</span>(options: { appName: string; packageName: string; version: string; buildNumber: string; buildSignature: string; installerStore?: string | <span class="tok-kw">null</span>; installTime?: <span class="tok-typ">DateTime</span> | <span class="tok-kw">null</span>; updateTime?: <span class="tok-typ">DateTime</span> | <span class="tok-kw">null</span> }): <span class="tok-kw">void</span>;
+    <span class="tok-fn">toString</span>(): string;
   }
 
   export const usePackageInfo: () =&gt; PackageInfo | null;
@@ -27115,11 +27121,12 @@ declare module <span class="tok-str">'plugin:package_info_plus'</span> {
 </article>
 <article class="widget" id="plugin-shared_preferences" data-name="shared_preferences">
 <h3>shared_preferences<span class="badge badge-lib">2.5.5</span><a class="badge badge-pkg" href="https://pub.dev/packages/shared_preferences">pub.dev</a></h3>
-<pre><code class="language-typescript"><span class="tok-kw">import</span> { useSharedPreferences } <span class="tok-kw">from</span> <span class="tok-str">'plugin:shared_preferences'</span>;</code></pre>
+<pre><code class="language-typescript"><span class="tok-kw">import</span> { useSharedPreferences, useSharedPreferencesAsync } <span class="tok-kw">from</span> <span class="tok-str">'plugin:shared_preferences'</span>;</code></pre>
 <table class="props">
 <thead><tr><th>Hook</th><th>Signature</th><th>Manages for you</th></tr></thead>
 <tbody>
 <tr><td><code>useSharedPreferences</code></td><td><code>() =&gt; SharedPreferences | null</code></td><td></td></tr>
+<tr><td><code>useSharedPreferencesAsync</code></td><td><code>() =&gt; SharedPreferencesAsync</code></td><td></td></tr>
 </tbody>
 </table>
 
@@ -27210,28 +27217,32 @@ declare module <span class="tok-str">'plugin:shared_preferences'</span> {
     <span class="tok-kw">readonly</span> __external: <span class="tok-str">'Object'</span>;
   }
 
-  <span class="tok-kw">export</span> <span class="tok-kw">class</span> <span class="tok-typ">SharedPreferences</span> {
+  <span class="tok-kw">export</span> <span class="tok-kw">type</span> <span class="tok-typ">SharedPreferencesAsyncArgs</span> = <span class="tok-typ">ConstructorParameters</span>&lt;<span class="tok-kw">typeof</span> <span class="tok-typ">SharedPreferencesAsync</span>&gt;[<span class="tok-num">0</span>];
+
+  export type SharedPreferencesWithCacheOptionsArgs = ConstructorParameters&lt;<span class="tok-kw">typeof</span> <span class="tok-typ">SharedPreferencesWithCacheOptions</span>&gt;[<span class="tok-num">0</span>];
+
+  export class SharedPreferences {
     <span class="tok-fn">clear</span>(): <span class="tok-typ">Promise</span>&lt;boolean&gt;;
-    commit(): Promise&lt;boolean&gt;;
-    containsKey(key: string): boolean;
-    get(key: string): Object | null;
-    getBool(key: string): boolean | null;
-    getDouble(key: string): number | null;
-    static getInstance(): Promise&lt;<span class="tok-typ">SharedPreferences</span>&gt;;
-    getInt(key: string): number | null;
-    getKeys(): string[];
-    getString(key: string): string | null;
-    getStringList(key: string): string[] | null;
-    reload(): Promise&lt;<span class="tok-kw">void</span>&gt;;
-    remove(key: string): Promise&lt;boolean&gt;;
-    static resetStatic(): void;
-    setBool(key: string, value: boolean): Promise&lt;boolean&gt;;
-    setDouble(key: string, value: number): Promise&lt;boolean&gt;;
-    setInt(key: string, value: number): Promise&lt;boolean&gt;;
-    static setMockInitialValues(values: Record&lt;string, <span class="tok-typ">Object</span>&gt;): void;
-    static setPrefix(prefix: string, options?: { allowList?: string[] | <span class="tok-kw">null</span> }): void;
-    setString(key: string, value: string): Promise&lt;boolean&gt;;
-    setStringList(key: string, value: string[]): Promise&lt;boolean&gt;;
+    <span class="tok-fn">commit</span>(): <span class="tok-typ">Promise</span>&lt;boolean&gt;;
+    <span class="tok-fn">containsKey</span>(key: string): boolean;
+    <span class="tok-kw">get</span>(key: string): <span class="tok-typ">Object</span> | <span class="tok-kw">null</span>;
+    <span class="tok-fn">getBool</span>(key: string): boolean | <span class="tok-kw">null</span>;
+    <span class="tok-fn">getDouble</span>(key: string): number | <span class="tok-kw">null</span>;
+    <span class="tok-kw">static</span> <span class="tok-fn">getInstance</span>(): <span class="tok-typ">Promise</span>&lt;<span class="tok-typ">SharedPreferences</span>&gt;;
+    <span class="tok-fn">getInt</span>(key: string): number | <span class="tok-kw">null</span>;
+    <span class="tok-fn">getKeys</span>(): string[];
+    <span class="tok-fn">getString</span>(key: string): string | <span class="tok-kw">null</span>;
+    <span class="tok-fn">getStringList</span>(key: string): string[] | <span class="tok-kw">null</span>;
+    <span class="tok-fn">reload</span>(): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">remove</span>(key: string): <span class="tok-typ">Promise</span>&lt;boolean&gt;;
+    <span class="tok-kw">static</span> <span class="tok-fn">resetStatic</span>(): <span class="tok-kw">void</span>;
+    <span class="tok-fn">setBool</span>(key: string, value: boolean): <span class="tok-typ">Promise</span>&lt;boolean&gt;;
+    <span class="tok-fn">setDouble</span>(key: string, value: number): <span class="tok-typ">Promise</span>&lt;boolean&gt;;
+    <span class="tok-fn">setInt</span>(key: string, value: number): <span class="tok-typ">Promise</span>&lt;boolean&gt;;
+    <span class="tok-kw">static</span> <span class="tok-fn">setMockInitialValues</span>(values: <span class="tok-typ">Record</span>&lt;string, <span class="tok-typ">Object</span>&gt;): <span class="tok-kw">void</span>;
+    <span class="tok-kw">static</span> <span class="tok-fn">setPrefix</span>(prefix: string, options?: { allowList?: string[] | <span class="tok-kw">null</span> }): <span class="tok-kw">void</span>;
+    <span class="tok-fn">setString</span>(key: string, value: string): <span class="tok-typ">Promise</span>&lt;boolean&gt;;
+    <span class="tok-fn">setStringList</span>(key: string, value: string[]): <span class="tok-typ">Promise</span>&lt;boolean&gt;;
   }
 
   export class SharedPreferencesAsync {
@@ -27261,7 +27272,7 @@ declare module <span class="tok-str">'plugin:shared_preferences'</span> {
     <span class="tok-kw">readonly</span> keys: string[];
     <span class="tok-fn">clear</span>(): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
     <span class="tok-fn">containsKey</span>(key: string): boolean;
-    <span class="tok-kw">static</span> <span class="tok-fn">create</span>(options: { sharedPreferencesOptions?: <span class="tok-typ">SharedPreferencesOptions</span>; cacheOptions: <span class="tok-typ">SharedPreferencesWithCacheOptions</span>; cache?: <span class="tok-typ">Record</span>&lt;string, <span class="tok-typ">Object</span> | <span class="tok-kw">null</span>&gt; | <span class="tok-kw">null</span> }): <span class="tok-typ">Promise</span>&lt;<span class="tok-typ">SharedPreferencesWithCache</span>&gt;;
+    <span class="tok-kw">static</span> <span class="tok-fn">create</span>(options: { sharedPreferencesOptions?: <span class="tok-typ">SharedPreferencesOptions</span>; cacheOptions: <span class="tok-typ">SharedPreferencesWithCacheOptions</span> | <span class="tok-typ">SharedPreferencesWithCacheOptionsArgs</span>; cache?: <span class="tok-typ">Record</span>&lt;string, <span class="tok-typ">Object</span> | <span class="tok-kw">null</span>&gt; | <span class="tok-kw">null</span> }): <span class="tok-typ">Promise</span>&lt;<span class="tok-typ">SharedPreferencesWithCache</span>&gt;;
     <span class="tok-kw">get</span>(key: string): <span class="tok-typ">Object</span> | <span class="tok-kw">null</span>;
     <span class="tok-fn">getBool</span>(key: string): boolean | <span class="tok-kw">null</span>;
     <span class="tok-fn">getDouble</span>(key: string): number | <span class="tok-kw">null</span>;
@@ -27283,6 +27294,8 @@ declare module <span class="tok-str">'plugin:shared_preferences'</span> {
   }
 
   export const useSharedPreferences: () =&gt; SharedPreferences | null;
+
+  export const useSharedPreferencesAsync: () =&gt; SharedPreferencesAsync;
 }</code></pre>
 </div>
 </div>
@@ -27376,7 +27389,11 @@ declare module <span class="tok-str">'plugin:tray_manager'</span> {
     <span class="tok-kw">readonly</span> __external: <span class="tok-str">'Rect'</span>;
   }
 
-  <span class="tok-kw">export</span> <span class="tok-kw">class</span> <span class="tok-typ">Menu</span> {
+  <span class="tok-kw">export</span> <span class="tok-kw">type</span> <span class="tok-typ">MenuArgs</span> = <span class="tok-typ">ConstructorParameters</span>&lt;<span class="tok-kw">typeof</span> <span class="tok-typ">Menu</span>&gt;[<span class="tok-num">0</span>];
+
+  export type MenuItemArgs = ConstructorParameters&lt;<span class="tok-kw">typeof</span> <span class="tok-typ">MenuItem</span>&gt;[<span class="tok-num">0</span>];
+
+  export class Menu {
     <span class="tok-fn">constructor</span>(options?: { items?: <span class="tok-typ">MenuItem</span>[] | <span class="tok-kw">null</span> });
     <span class="tok-kw">readonly</span> items: <span class="tok-typ">MenuItem</span>[] | <span class="tok-kw">null</span>;
     <span class="tok-fn">getMenuItem</span>(key: string): <span class="tok-typ">MenuItem</span> | <span class="tok-kw">null</span>;
@@ -27385,11 +27402,11 @@ declare module <span class="tok-str">'plugin:tray_manager'</span> {
   }
 
   export class MenuBehavior {
-    <span class="tok-fn">popUp</span>(menu: <span class="tok-typ">Menu</span>, options?: { position?: <span class="tok-typ">Offset</span> | <span class="tok-kw">null</span>; placement?: <span class="tok-typ">Placement</span> }): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">popUp</span>(menu: <span class="tok-typ">Menu</span> | <span class="tok-typ">MenuArgs</span>, options?: { position?: <span class="tok-typ">Offset</span> | <span class="tok-kw">null</span>; placement?: <span class="tok-typ">Placement</span> }): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
   }
 
   export class MenuItem {
-    <span class="tok-fn">constructor</span>(options?: { key?: string | <span class="tok-kw">null</span>; <span class="tok-kw">type</span>?: string; label?: string | <span class="tok-kw">null</span>; sublabel?: string | <span class="tok-kw">null</span>; toolTip?: string | <span class="tok-kw">null</span>; icon?: string | <span class="tok-kw">null</span>; checked?: boolean | <span class="tok-kw">null</span>; disabled?: boolean; submenu?: <span class="tok-typ">Menu</span> | <span class="tok-kw">null</span>; onClick?: ((menuItem: <span class="tok-typ">MenuItem</span>) =&gt; <span class="tok-kw">void</span>) | <span class="tok-kw">null</span>; onHighlight?: ((menuItem: <span class="tok-typ">MenuItem</span>) =&gt; <span class="tok-kw">void</span>) | <span class="tok-kw">null</span>; onLoseHighlight?: ((menuItem: <span class="tok-typ">MenuItem</span>) =&gt; <span class="tok-kw">void</span>) | <span class="tok-kw">null</span> });
+    <span class="tok-fn">constructor</span>(options?: { key?: string | <span class="tok-kw">null</span>; <span class="tok-kw">type</span>?: string; label?: string | <span class="tok-kw">null</span>; sublabel?: string | <span class="tok-kw">null</span>; toolTip?: string | <span class="tok-kw">null</span>; icon?: string | <span class="tok-kw">null</span>; checked?: boolean | <span class="tok-kw">null</span>; disabled?: boolean; submenu?: <span class="tok-typ">Menu</span> | <span class="tok-kw">null</span> | <span class="tok-typ">MenuArgs</span>; onClick?: ((menuItem: <span class="tok-typ">MenuItem</span>) =&gt; <span class="tok-kw">void</span>) | <span class="tok-kw">null</span>; onHighlight?: ((menuItem: <span class="tok-typ">MenuItem</span>) =&gt; <span class="tok-kw">void</span>) | <span class="tok-kw">null</span>; onLoseHighlight?: ((menuItem: <span class="tok-typ">MenuItem</span>) =&gt; <span class="tok-kw">void</span>) | <span class="tok-kw">null</span> });
     <span class="tok-kw">readonly</span> checked: boolean | <span class="tok-kw">null</span>;
     <span class="tok-kw">readonly</span> disabled: boolean;
     <span class="tok-kw">readonly</span> icon: string | <span class="tok-kw">null</span>;
@@ -27411,7 +27428,7 @@ declare module <span class="tok-str">'plugin:tray_manager'</span> {
     <span class="tok-fn">onTrayIconMouseUp</span>(): <span class="tok-kw">void</span>;
     <span class="tok-fn">onTrayIconRightMouseDown</span>(): <span class="tok-kw">void</span>;
     <span class="tok-fn">onTrayIconRightMouseUp</span>(): <span class="tok-kw">void</span>;
-    <span class="tok-fn">onTrayMenuItemClick</span>(menuItem: <span class="tok-typ">MenuItem</span>): <span class="tok-kw">void</span>;
+    <span class="tok-fn">onTrayMenuItemClick</span>(menuItem: <span class="tok-typ">MenuItem</span> | <span class="tok-typ">MenuItemArgs</span>): <span class="tok-kw">void</span>;
   }
 
   export class TrayManager {
@@ -27421,7 +27438,7 @@ declare module <span class="tok-str">'plugin:tray_manager'</span> {
     <span class="tok-fn">getBounds</span>(): <span class="tok-typ">Promise</span>&lt;<span class="tok-typ">Rect</span> | <span class="tok-kw">null</span>&gt;;
     <span class="tok-fn">popUpContextMenu</span>(options?: { bringAppToFront?: boolean }): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
     <span class="tok-fn">removeListener</span>(listener: <span class="tok-typ">TrayListener</span>): <span class="tok-kw">void</span>;
-    <span class="tok-fn">setContextMenu</span>(menu: <span class="tok-typ">Menu</span>): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
+    <span class="tok-fn">setContextMenu</span>(menu: <span class="tok-typ">Menu</span> | <span class="tok-typ">MenuArgs</span>): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
     <span class="tok-fn">setIcon</span>(iconPath: string, options?: { isTemplate?: boolean; iconPosition?: <span class="tok-typ">TrayIconPosition</span>; iconSize?: number }): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
     <span class="tok-fn">setIconPosition</span>(trayIconPosition: <span class="tok-typ">TrayIconPosition</span>): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
     <span class="tok-fn">setTitle</span>(title: string): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
@@ -27529,16 +27546,20 @@ declare module <span class="tok-str">'plugin:url_launcher'</span> {
 
   <span class="tok-kw">export</span> <span class="tok-kw">type</span> <span class="tok-typ">LaunchMode</span> = <span class="tok-str">'platformDefault'</span> | <span class="tok-str">'inAppWebView'</span> | <span class="tok-str">'inAppBrowserView'</span> | <span class="tok-str">'externalApplication'</span> | <span class="tok-str">'externalNonBrowserApplication'</span>;
 
-  <span class="tok-kw">export</span> <span class="tok-kw">class</span> <span class="tok-typ">BrowserConfiguration</span> {
+  <span class="tok-kw">export</span> <span class="tok-kw">type</span> <span class="tok-typ">BrowserConfigurationArgs</span> = <span class="tok-typ">ConstructorParameters</span>&lt;<span class="tok-kw">typeof</span> <span class="tok-typ">BrowserConfiguration</span>&gt;[<span class="tok-num">0</span>];
+
+  export type WebViewConfigurationArgs = ConstructorParameters&lt;<span class="tok-kw">typeof</span> <span class="tok-typ">WebViewConfiguration</span>&gt;[<span class="tok-num">0</span>];
+
+  export class BrowserConfiguration {
     <span class="tok-fn">constructor</span>(options?: { showTitle?: boolean });
     <span class="tok-kw">readonly</span> showTitle: boolean;
   }
 
-  <span class="tok-kw">export</span> <span class="tok-kw">class</span> <span class="tok-typ">WebViewConfiguration</span> {
+  export class WebViewConfiguration {
     <span class="tok-fn">constructor</span>(options?: { enableJavaScript?: boolean; enableDomStorage?: boolean; headers?: <span class="tok-typ">Record</span>&lt;string, string&gt; });
-    readonly enableDomStorage: boolean;
-    readonly enableJavaScript: boolean;
-    readonly headers: Record&lt;string, string&gt;;
+    <span class="tok-kw">readonly</span> enableDomStorage: boolean;
+    <span class="tok-kw">readonly</span> enableJavaScript: boolean;
+    <span class="tok-kw">readonly</span> headers: <span class="tok-typ">Record</span>&lt;string, string&gt;;
   }
 
   export const canLaunch: (urlString: string) =&gt; Promise&lt;boolean&gt;;
@@ -27551,7 +27572,7 @@ declare module <span class="tok-str">'plugin:url_launcher'</span> {
 
   export const launch: (urlString: string, options?: { forceSafariVC?: boolean | <span class="tok-kw">null</span>; forceWebView?: boolean; enableJavaScript?: boolean; enableDomStorage?: boolean; universalLinksOnly?: boolean; headers?: <span class="tok-typ">Record</span>&lt;string, string&gt;; statusBarBrightness?: <span class="tok-typ">Brightness</span> | <span class="tok-kw">null</span>; webOnlyWindowName?: string | <span class="tok-kw">null</span> }) =&gt; Promise&lt;boolean&gt;;
 
-  export const launchUrl: (url: string, options?: { mode?: <span class="tok-typ">LaunchMode</span>; webViewConfiguration?: <span class="tok-typ">WebViewConfiguration</span>; browserConfiguration?: <span class="tok-typ">BrowserConfiguration</span>; webOnlyWindowName?: string | <span class="tok-kw">null</span> }) =&gt; Promise&lt;boolean&gt;;
+  export const launchUrl: (url: string, options?: { mode?: <span class="tok-typ">LaunchMode</span>; webViewConfiguration?: <span class="tok-typ">WebViewConfiguration</span> | <span class="tok-typ">WebViewConfigurationArgs</span>; browserConfiguration?: <span class="tok-typ">BrowserConfiguration</span> | <span class="tok-typ">BrowserConfigurationArgs</span>; webOnlyWindowName?: string | <span class="tok-kw">null</span> }) =&gt; Promise&lt;boolean&gt;;
 
   export const supportsCloseForLaunchMode: (mode: LaunchMode) =&gt; Promise&lt;boolean&gt;;
 
@@ -27559,7 +27580,7 @@ declare module <span class="tok-str">'plugin:url_launcher'</span> {
 }</code></pre>
 </div>
 </div>
-<p class="note">Proven by <a href="./cookbook.html#13-open-link"><code>13-open-link</code></a>, <a href="./cookbook.html#27-inline-plugin-call"><code>27-inline-plugin-call</code></a>, <a href="./cookbook.html#38-effect-cleanup"><code>38-effect-cleanup</code></a></p>
+<p class="note">Proven by <a href="./cookbook.html#13-open-link"><code>13-open-link</code></a>, <a href="./cookbook.html#27-inline-plugin-call"><code>27-inline-plugin-call</code></a>, <a href="./cookbook.html#38-effect-cleanup"><code>38-effect-cleanup</code></a>, <a href="./cookbook.html#51-plugin-values"><code>51-plugin-values</code></a></p>
 </article>
 <h2 id="types">Types</h2>
 <article class="widget" id="type-ActionIconThemeDataValue" data-name="ActionIconThemeDataValue">

@@ -33,7 +33,7 @@ bun install
 You get `fsx.config.ts`, a `src/App.tsx` to start from, a `tsconfig.json` wired for TSX,
 and the host Flutter app.
 
-### Start from a complete app instead
+## 2. Start from a complete app
 
 `--template` scaffolds one of four finished apps rather than the starter — the
 same files, plus that app's own source and the pub packages it needs:
@@ -56,7 +56,7 @@ run of the end-to-end suite, and each one is committed under
 you can read it before you run anything. The [Examples](./examples.html) page
 lists what each app demonstrates, file by file.
 
-## 2. Install the SDK and your plugins
+## 3. Install the SDK and your plugins
 
 ```sh
 fsx install
@@ -66,7 +66,7 @@ One command does both: it downloads the pinned Flutter SDK into `~/.fsx` (shared
 project on the machine, so it happens once), then brings the project's plugins in line
 with what `package.json` declares.
 
-## 3. Develop
+## 4. Develop
 
 ```sh
 fsx dev
@@ -76,7 +76,7 @@ fsx dev
 device your target maps to, and watches for saves: each one recompiles and hot reloads. A
 compile error is reported and the app keeps running, so a typo never ends the session.
 
-## 4. Write components
+## 5. Write components
 
 A component is an exported arrow function returning JSX. State is `useState`, and a
 handler is a plain function:
@@ -123,7 +123,7 @@ Components in other files are imported the way you would expect, and the compile
 the Dart import for you — including hiding a Flutter widget of the same name, so a
 component called `Card` or `Banner` is yours, not the SDK's.
 
-## 5. Use a plugin
+## 6. Use a plugin
 
 Plugins are declared like npm dependencies, in `package.json`:
 
@@ -170,7 +170,7 @@ Plugins whose lifecycle needs owning get a hook: `useCamera()`, `useLocation()`,
 `useSecureStorage()` and the rest acquire on mount and dispose on unmount, so a controller
 is never left running.
 
-## 6. Configure
+## 7. Configure
 
 `fsx.config.ts` is typed TypeScript — `satisfies AppConfig`, so the IDE completes every
 field and a wrong value is a compile error:
@@ -194,7 +194,7 @@ export default {
 See [config mapping](./config-mapping.md) for what fsx writes into the native projects,
 and what it does not.
 
-## 7. Build
+## 8. Build
 
 ```sh
 fsx build                    # the target fsx.config.ts names
@@ -216,7 +216,7 @@ have.
 | `windows` | `build/windows/x64/runner/Release` |
 | `linux` | `build/linux/x64/release/bundle` |
 
-## 8. Check the project
+## 9. Check the project
 
 ```sh
 fsx doctor

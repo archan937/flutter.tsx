@@ -89,6 +89,18 @@ describe('deriveHooks — singleton services (shared_preferences)', () => {
         options: [],
         listener: null,
       },
+      // The async service beside it is a service too, and deriving only the
+      // one named after the package left this one unusable.
+      {
+        hookName: 'useSharedPreferencesAsync',
+        className: 'SharedPreferencesAsync',
+        dartImport: 'package:shared_preferences/shared_preferences.dart',
+        acquisition: { kind: 'constField', isConst: false },
+        construct: [],
+        managed: [],
+        options: [],
+        listener: null,
+      },
     ]);
   });
 });
@@ -242,6 +254,17 @@ describe('deriveHooks — underivable shapes', () => {
 // The pub "plus family" (connectivity_plus, battery_plus, sensors_plus) drops
 // the suffix in its class names, so the service match has to as well.
 describe('deriveHooks — plus-family services', () => {
+  test('an http client is a service the same way, factory and all', async () => {
+    // `Client` is abstract with a factory constructor: a real way to make one,
+    // and the only way to send a request with headers or reuse a connection.
+    const hooks = deriveHooks(
+      await loadPluginApi('http'),
+      PLUGIN_OVERRIDES.http,
+    );
+
+    expect(hooks.map((hook) => hook.hookName)).toEqual(['useClient']);
+  });
+
   test('connectivity_plus derives useConnectivity as a service', async () => {
     const api = await loadPluginApi('connectivity_plus');
 
@@ -346,6 +369,16 @@ describe('deriveHooks — a listener the package does not declare', () => {
     deprecated: false,
   };
 
+  // A service is recognised by shape: something you construct with nothing
+  // and then ask to do work, so the synthetic one has work to do.
+  const asyncWork: PluginApi['classes'][number]['methods'][number] = {
+    name: 'run',
+    doc: '',
+    isStatic: false,
+    returnType: { kind: 'future', item: { kind: 'void' } },
+    params: [],
+  };
+
   const service = (
     methods: PluginApi['classes'][number]['methods'],
   ): PluginApi => ({
@@ -367,7 +400,7 @@ describe('deriveHooks — a listener the package does not declare', () => {
           },
         ],
         fields: [],
-        methods,
+        methods: [...methods, asyncWork],
         constants: [],
       },
     ],

@@ -331,6 +331,12 @@ export const FIXTURE_APPS: FixtureApp[] = [
     deps: ['camera'],
   },
   {
+    id: '51-plugin-values',
+    component: 'OpenInApp',
+    dartFile: 'open_in_app.dart',
+    deps: ['url_launcher'],
+  },
+  {
     id: '50-module-data',
     component: 'NoteList',
     dartFile: 'note_list.dart',

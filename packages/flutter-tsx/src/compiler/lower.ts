@@ -34,6 +34,7 @@ import {
   listElementType,
   recordFieldType,
 } from './dart-names';
+import { printExpr } from './dart-print';
 import { tsxErrorAt } from './diagnostics';
 import { GO_ROUTER_IMPORT } from './emit-component';
 import type {
@@ -53,6 +54,7 @@ import type {
   IrValue,
   IrWidget,
 } from './ir';
+import { irValueToDart } from './ir-to-dart';
 import {
   handleNullCheck,
   type HelperSignature,
@@ -108,6 +110,12 @@ export interface CompileContext {
   userWidgets: Map<string, WidgetInfo>;
   /** Data this file or a sibling declares: name -> its Dart type. */
   constants: Map<string, string>;
+  /** Plugin classes an object literal can construct, by name. */
+  pluginConstructibles: Map<string, ParamModel[]>;
+  /** Every plugin class with a constructor, and what it takes. */
+  pluginConstructors: Map<string, ParamModel[]>;
+  /** The static methods each plugin class declares, by class then name. */
+  pluginStatics: Map<string, Map<string, PluginMethod>>;
   /// Helpers by name, with the signature each declares.
   helperReturns: Map<string, HelperSignature>;
   /// Enum name -> its members' TSX names mapped to their Dart names.
@@ -245,6 +253,9 @@ export const buildCompileContext = (
     widgets,
     gestures: gestureWrapOf(widgets.get(GESTURE_WIDGET)),
     constants: new Map(),
+    pluginConstructibles: new Map(),
+    pluginConstructors: new Map(),
+    pluginStatics: new Map(),
     stores: new Map(),
     pluginClassFields: new Map(),
     sdkClassFields,
@@ -423,6 +434,8 @@ const constantContext = (
     sourceFile,
     nullableHandles: new Map(),
     narrowed: new Set(),
+    pluginConstructibles: compile.pluginConstructibles,
+    pluginConstructors: compile.pluginConstructors,
     stateNames: new Set(),
     handlerNames: new Set(),
     widgetProps: new Set(),
@@ -454,6 +467,8 @@ export const lowerHelper = (
     sourceFile: helper.body.getSourceFile(),
     nullableHandles: new Map(),
     narrowed: new Set(),
+    pluginConstructibles: compile.pluginConstructibles,
+    pluginConstructors: compile.pluginConstructors,
     stateNames: new Set(),
     handlerNames: new Set(),
     widgetProps: new Set(),
@@ -911,6 +926,15 @@ const lowerObjectLiteral = (
     const model = context.compile.models.get(type.name);
     if (model !== undefined) {
       return lowerModelObject(literal, model, context);
+    }
+    // `{ enableJavaScript: true }` where a plugin's own class is expected:
+    // its constructor is the shape, the same as a widget's or a model's.
+    const pluginParams = context.compile.pluginConstructibles.get(type.name);
+    if (pluginParams !== undefined) {
+      return lowerConstructibleObject(literal, type.name, {
+        params: pluginParams,
+        context,
+      });
     }
   }
   throw tsxErrorAt(
@@ -2607,12 +2631,33 @@ const lowerLocalDeclaration = (
       : null;
 
   if (resolved === null) {
+    const line = `final ${name} = ${translateExpression(initializer, context.translate)};`;
+    // `const type = new MediaType(…)` — a value the developer made is as
+    // readable as one the plugin handed over.
+    const constructed =
+      ts.isNewExpression(call) && ts.isIdentifier(call.expression)
+        ? call.expression.text
+        : null;
+    if (
+      constructed === null ||
+      !context.compile.pluginClassFields.has(constructed)
+    ) {
+      return { statement: { kind: 'dart', line }, context };
+    }
     return {
-      statement: {
-        kind: 'dart',
-        line: `final ${name} = ${translateExpression(initializer, context.translate)};`,
-      },
-      context,
+      statement: { kind: 'dart', line },
+      context: withScopedParams(
+        [
+          {
+            name,
+            type: { kind: 'named', name: constructed },
+            nullable: false,
+            fieldsOf: (className: string): Map<string, TypeNode> | undefined =>
+              context.compile.pluginClassFields.get(className),
+          },
+        ],
+        context,
+      ),
     };
   }
 
@@ -2822,7 +2867,9 @@ const resolvePluginCall = (
   const binding = call.expression.expression.text;
   const info = context.pluginBindings.get(binding);
   if (info === undefined) {
-    return null;
+    // `MultipartFile.fromBytes(…)` — a static of a plugin's class, which is
+    // the only way some of its values are made.
+    return staticPluginCall(call.expression, call, context);
   }
   const methodName = call.expression.name.text;
   const method = info.methods.get(methodName);
@@ -2846,6 +2893,30 @@ const resolvePluginCall = (
     args: pluginCallArguments(call, method, context),
     returnType: method.returnType,
     nullableResult: accessor === '?.',
+  };
+};
+
+/** A call to a static a plugin class declares, or null when it is not one. */
+const staticPluginCall = (
+  callee: ts.PropertyAccessExpression,
+  call: ts.CallExpression,
+  context: LowerContext,
+): PluginCall | null => {
+  const className = ts.isIdentifier(callee.expression)
+    ? callee.expression.text
+    : '';
+  const method = context.compile.pluginStatics
+    .get(className)
+    ?.get(callee.name.text);
+  if (method === undefined) {
+    return null;
+  }
+  return {
+    invocation: `${className}.${method.name}`,
+    args: pluginCallArguments(call, method, context),
+    returnType: method.returnType,
+    // A static is called on the class itself: there is no handle to be null.
+    nullableResult: false,
   };
 };
 
@@ -2890,8 +2961,10 @@ const bareType = (type: TypeNode | undefined): TypeNode | undefined =>
 const pluginArgumentValue = (
   argument: ts.Expression,
   param: ParamModel | undefined,
-  context: LowerContext,
+  /** The characters already on the line before this value, e.g. `mode: `. */
+  site: { context: LowerContext; prefixWidth?: number },
 ): string => {
+  const { context, prefixWidth = 0 } = site;
   const paramType = bareType(param?.type);
   if (paramType?.kind === 'named' && paramType.name === 'Uri') {
     return `Uri.parse(${translateExpression(argument, context.translate)})`;
@@ -2906,6 +2979,22 @@ const pluginArgumentValue = (
       );
     }
     return `${paramType.name}.${argument.text}`;
+  }
+  // `{ enableJavaScript: true }` where the plugin declares one of its own
+  // classes: the literal builds that class, the way it builds a model.
+  if (
+    paramType?.kind === 'named' &&
+    ts.isObjectLiteralExpression(argument) &&
+    context.compile.pluginConstructibles.has(paramType.name)
+  ) {
+    // The value sits one level inside the call it is an argument of, which
+    // is where the formatter wraps it from.
+    return printExpr(
+      irValueToDart(lowerObjectLiteral(argument, paramType, context), {
+        privateMembers: true,
+      }),
+      { indent: 2, used: 2 + prefixWidth, trailing: 1 },
+    );
   }
   return translateExpression(argument, context.translate);
 };
@@ -2932,11 +3021,9 @@ const pluginCallArguments = (
       namedParams.size > 0;
     if (!isTrailingObject || !ts.isObjectLiteralExpression(argument)) {
       rendered.push(
-        pluginArgumentValue(
-          argument,
-          positionalParams[positionalIndex],
+        pluginArgumentValue(argument, positionalParams[positionalIndex], {
           context,
-        ),
+        }),
       );
       positionalIndex += 1;
       continue;
@@ -2951,8 +3038,12 @@ const pluginCallArguments = (
           { sourceFile: context.sourceFile, node: entry.node },
         );
       }
+      const prefix = `${entry.key}: `;
       rendered.push(
-        `${entry.key}: ${pluginArgumentValue(entry.initializer, param, context)}`,
+        `${prefix}${pluginArgumentValue(entry.initializer, param, {
+          context,
+          prefixWidth: prefix.length,
+        })}`,
       );
     }
   }
@@ -3760,6 +3851,8 @@ export const lowerComponent = (
       jsonModels: new Set(compile.models.keys()),
       nullableHandles,
       narrowed,
+      pluginConstructibles: compile.pluginConstructibles,
+      pluginConstructors: compile.pluginConstructors,
       useDartImport: (uri: string, prefix?: string): void => {
         if (prefix === undefined) {
           context.usedDartImports.add(uri);

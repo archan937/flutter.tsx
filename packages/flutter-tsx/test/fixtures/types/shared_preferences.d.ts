@@ -6,6 +6,10 @@ declare module 'plugin:shared_preferences' {
     readonly __external: 'Object';
   }
 
+  export type SharedPreferencesAsyncArgs = ConstructorParameters<typeof SharedPreferencesAsync>[0];
+
+  export type SharedPreferencesWithCacheOptionsArgs = ConstructorParameters<typeof SharedPreferencesWithCacheOptions>[0];
+
   export class SharedPreferences {
     clear(): Promise<boolean>;
     commit(): Promise<boolean>;
@@ -57,7 +61,7 @@ declare module 'plugin:shared_preferences' {
     readonly keys: string[];
     clear(): Promise<void>;
     containsKey(key: string): boolean;
-    static create(options: { sharedPreferencesOptions?: SharedPreferencesOptions; cacheOptions: SharedPreferencesWithCacheOptions; cache?: Record<string, Object | null> | null }): Promise<SharedPreferencesWithCache>;
+    static create(options: { sharedPreferencesOptions?: SharedPreferencesOptions; cacheOptions: SharedPreferencesWithCacheOptions | SharedPreferencesWithCacheOptionsArgs; cache?: Record<string, Object | null> | null }): Promise<SharedPreferencesWithCache>;
     get(key: string): Object | null;
     getBool(key: string): boolean | null;
     getDouble(key: string): number | null;
@@ -79,4 +83,6 @@ declare module 'plugin:shared_preferences' {
   }
 
   export const useSharedPreferences: () => SharedPreferences | null;
+
+  export const useSharedPreferencesAsync: () => SharedPreferencesAsync;
 }

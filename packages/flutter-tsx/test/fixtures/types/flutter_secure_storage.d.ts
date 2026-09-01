@@ -8,6 +8,18 @@ declare module 'plugin:flutter_secure_storage' {
 
   export type StorageCipherAlgorithm = 'AES_CBC_PKCS7Padding' | 'AES_GCM_NoPadding';
 
+  export type AndroidOptionsArgs = ConstructorParameters<typeof AndroidOptions>[0];
+
+  export type FlutterSecureStorageArgs = ConstructorParameters<typeof FlutterSecureStorage>[0];
+
+  export type IOSOptionsArgs = ConstructorParameters<typeof IOSOptions>[0];
+
+  export type MacOsOptionsArgs = ConstructorParameters<typeof MacOsOptions>[0];
+
+  export type WebOptionsArgs = ConstructorParameters<typeof WebOptions>[0];
+
+  export type WindowsOptionsArgs = ConstructorParameters<typeof WindowsOptions>[0];
+
   export class AndroidOptions {
     constructor(options?: { encryptedSharedPreferences?: boolean; resetOnError?: boolean; keyCipherAlgorithm?: KeyCipherAlgorithm; storageCipherAlgorithm?: StorageCipherAlgorithm; sharedPreferencesName?: string | null; preferencesKeyPrefix?: string | null });
     readonly params: Record<string, string>;
@@ -23,7 +35,7 @@ declare module 'plugin:flutter_secure_storage' {
   }
 
   export class FlutterSecureStorage {
-    constructor(options?: { iOptions?: IOSOptions; aOptions?: AndroidOptions; lOptions?: LinuxOptions; wOptions?: WindowsOptions; webOptions?: WebOptions; mOptions?: MacOsOptions });
+    constructor(options?: { iOptions?: IOSOptions | IOSOptionsArgs; aOptions?: AndroidOptions | AndroidOptionsArgs; lOptions?: LinuxOptions; wOptions?: WindowsOptions | WindowsOptionsArgs; webOptions?: WebOptions | WebOptionsArgs; mOptions?: MacOsOptions | MacOsOptionsArgs });
     readonly aOptions: AndroidOptions;
     readonly iOptions: IOSOptions;
     readonly lOptions: LinuxOptions;
@@ -31,18 +43,18 @@ declare module 'plugin:flutter_secure_storage' {
     readonly onCupertinoProtectedDataAvailabilityChanged: AsyncIterable<boolean> | null;
     readonly wOptions: WindowsOptions;
     readonly webOptions: WebOptions;
-    containsKey(options: { key: string; iOptions?: IOSOptions | null; aOptions?: AndroidOptions | null; lOptions?: LinuxOptions | null; webOptions?: WebOptions | null; mOptions?: MacOsOptions | null; wOptions?: WindowsOptions | null }): Promise<boolean>;
-    delete(options: { key: string; iOptions?: IOSOptions | null; aOptions?: AndroidOptions | null; lOptions?: LinuxOptions | null; webOptions?: WebOptions | null; mOptions?: MacOsOptions | null; wOptions?: WindowsOptions | null }): Promise<void>;
-    deleteAll(options?: { iOptions?: IOSOptions | null; aOptions?: AndroidOptions | null; lOptions?: LinuxOptions | null; webOptions?: WebOptions | null; mOptions?: MacOsOptions | null; wOptions?: WindowsOptions | null }): Promise<void>;
+    containsKey(options: { key: string; iOptions?: IOSOptions | null | IOSOptionsArgs; aOptions?: AndroidOptions | null | AndroidOptionsArgs; lOptions?: LinuxOptions | null; webOptions?: WebOptions | null | WebOptionsArgs; mOptions?: MacOsOptions | null | MacOsOptionsArgs; wOptions?: WindowsOptions | null | WindowsOptionsArgs }): Promise<boolean>;
+    delete(options: { key: string; iOptions?: IOSOptions | null | IOSOptionsArgs; aOptions?: AndroidOptions | null | AndroidOptionsArgs; lOptions?: LinuxOptions | null; webOptions?: WebOptions | null | WebOptionsArgs; mOptions?: MacOsOptions | null | MacOsOptionsArgs; wOptions?: WindowsOptions | null | WindowsOptionsArgs }): Promise<void>;
+    deleteAll(options?: { iOptions?: IOSOptions | null | IOSOptionsArgs; aOptions?: AndroidOptions | null | AndroidOptionsArgs; lOptions?: LinuxOptions | null; webOptions?: WebOptions | null | WebOptionsArgs; mOptions?: MacOsOptions | null | MacOsOptionsArgs; wOptions?: WindowsOptions | null | WindowsOptionsArgs }): Promise<void>;
     isCupertinoProtectedDataAvailable(): Promise<boolean | null>;
-    read(options: { key: string; iOptions?: IOSOptions | null; aOptions?: AndroidOptions | null; lOptions?: LinuxOptions | null; webOptions?: WebOptions | null; mOptions?: MacOsOptions | null; wOptions?: WindowsOptions | null }): Promise<string | null>;
-    readAll(options?: { iOptions?: IOSOptions | null; aOptions?: AndroidOptions | null; lOptions?: LinuxOptions | null; webOptions?: WebOptions | null; mOptions?: MacOsOptions | null; wOptions?: WindowsOptions | null }): Promise<Record<string, string>>;
+    read(options: { key: string; iOptions?: IOSOptions | null | IOSOptionsArgs; aOptions?: AndroidOptions | null | AndroidOptionsArgs; lOptions?: LinuxOptions | null; webOptions?: WebOptions | null | WebOptionsArgs; mOptions?: MacOsOptions | null | MacOsOptionsArgs; wOptions?: WindowsOptions | null | WindowsOptionsArgs }): Promise<string | null>;
+    readAll(options?: { iOptions?: IOSOptions | null | IOSOptionsArgs; aOptions?: AndroidOptions | null | AndroidOptionsArgs; lOptions?: LinuxOptions | null; webOptions?: WebOptions | null | WebOptionsArgs; mOptions?: MacOsOptions | null | MacOsOptionsArgs; wOptions?: WindowsOptions | null | WindowsOptionsArgs }): Promise<Record<string, string>>;
     registerListener(options: { key: string; listener: (value: string | null) => void }): void;
     static setMockInitialValues(values: Record<string, string>): void;
     unregisterAllListeners(): void;
     unregisterAllListenersForKey(options: { key: string }): void;
     unregisterListener(options: { key: string; listener: (value: string | null) => void }): void;
-    write(options: { key: string; value: string | null; iOptions?: IOSOptions | null; aOptions?: AndroidOptions | null; lOptions?: LinuxOptions | null; webOptions?: WebOptions | null; mOptions?: MacOsOptions | null; wOptions?: WindowsOptions | null }): Promise<void>;
+    write(options: { key: string; value: string | null; iOptions?: IOSOptions | null | IOSOptionsArgs; aOptions?: AndroidOptions | null | AndroidOptionsArgs; lOptions?: LinuxOptions | null; webOptions?: WebOptions | null | WebOptionsArgs; mOptions?: MacOsOptions | null | MacOsOptionsArgs; wOptions?: WindowsOptions | null | WindowsOptionsArgs }): Promise<void>;
   }
 
   export class IOSOptions {

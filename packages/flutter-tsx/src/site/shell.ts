@@ -36,8 +36,8 @@ interface SiteLink {
 const SITE_LINKS: readonly SiteLink[] = [
   { id: 'home', href: './index.html', label: 'Home' },
   { id: 'guide', href: './guide.html', label: 'Guide' },
-  { id: 'cookbook', href: './cookbook.html', label: 'Cookbook' },
   { id: 'examples', href: './examples.html', label: 'Examples' },
+  { id: 'cookbook', href: './cookbook.html', label: 'Cookbook' },
   { id: 'api', href: './api-reference.html', label: 'API reference' },
   { id: 'config', href: './config-mapping.html', label: 'Config mapping' },
 ];

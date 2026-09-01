@@ -14,6 +14,10 @@ declare module 'plugin:tray_manager' {
     readonly __external: 'Rect';
   }
 
+  export type MenuArgs = ConstructorParameters<typeof Menu>[0];
+
+  export type MenuItemArgs = ConstructorParameters<typeof MenuItem>[0];
+
   export class Menu {
     constructor(options?: { items?: MenuItem[] | null });
     readonly items: MenuItem[] | null;
@@ -23,11 +27,11 @@ declare module 'plugin:tray_manager' {
   }
 
   export class MenuBehavior {
-    popUp(menu: Menu, options?: { position?: Offset | null; placement?: Placement }): Promise<void>;
+    popUp(menu: Menu | MenuArgs, options?: { position?: Offset | null; placement?: Placement }): Promise<void>;
   }
 
   export class MenuItem {
-    constructor(options?: { key?: string | null; type?: string; label?: string | null; sublabel?: string | null; toolTip?: string | null; icon?: string | null; checked?: boolean | null; disabled?: boolean; submenu?: Menu | null; onClick?: ((menuItem: MenuItem) => void) | null; onHighlight?: ((menuItem: MenuItem) => void) | null; onLoseHighlight?: ((menuItem: MenuItem) => void) | null });
+    constructor(options?: { key?: string | null; type?: string; label?: string | null; sublabel?: string | null; toolTip?: string | null; icon?: string | null; checked?: boolean | null; disabled?: boolean; submenu?: Menu | null | MenuArgs; onClick?: ((menuItem: MenuItem) => void) | null; onHighlight?: ((menuItem: MenuItem) => void) | null; onLoseHighlight?: ((menuItem: MenuItem) => void) | null });
     readonly checked: boolean | null;
     readonly disabled: boolean;
     readonly icon: string | null;
@@ -49,7 +53,7 @@ declare module 'plugin:tray_manager' {
     onTrayIconMouseUp(): void;
     onTrayIconRightMouseDown(): void;
     onTrayIconRightMouseUp(): void;
-    onTrayMenuItemClick(menuItem: MenuItem): void;
+    onTrayMenuItemClick(menuItem: MenuItem | MenuItemArgs): void;
   }
 
   export class TrayManager {
@@ -59,7 +63,7 @@ declare module 'plugin:tray_manager' {
     getBounds(): Promise<Rect | null>;
     popUpContextMenu(options?: { bringAppToFront?: boolean }): Promise<void>;
     removeListener(listener: TrayListener): void;
-    setContextMenu(menu: Menu): Promise<void>;
+    setContextMenu(menu: Menu | MenuArgs): Promise<void>;
     setIcon(iconPath: string, options?: { isTemplate?: boolean; iconPosition?: TrayIconPosition; iconSize?: number }): Promise<void>;
     setIconPosition(trayIconPosition: TrayIconPosition): Promise<void>;
     setTitle(title: string): Promise<void>;

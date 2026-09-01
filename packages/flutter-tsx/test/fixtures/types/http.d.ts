@@ -142,6 +142,7 @@ declare module 'plugin:http' {
   }
 
   export class Client {
+    constructor();
     close(): void;
     delete(url: string, options?: { headers?: Record<string, string> | null; body?: Object | null; encoding?: Encoding | null }): Promise<Response>;
     get(url: string, options?: { headers?: Record<string, string> | null }): Promise<Response>;
@@ -278,4 +279,6 @@ declare module 'plugin:http' {
   export const readBytes: (url: string, options?: { headers?: Record<string, string> | null }) => Promise<Uint8List>;
 
   export const runWithClient: (body: () => unknown, clientFactory: () => Client, options?: { zoneSpecification?: ZoneSpecification | null }) => unknown;
+
+  export const useClient: () => Client;
 }

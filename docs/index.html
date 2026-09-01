@@ -336,6 +336,15 @@
           0 16px 44px rgba(84, 164, 255, 0.46),
           0 0 0 1px rgba(255, 255, 255, 0.18) inset;
       }
+      .cta.secondary {
+        background: rgba(255, 255, 255, 0.03);
+        border-color: var(--line);
+        color: var(--text);
+      }
+      .cta.secondary:hover {
+        transform: translateY(-2px);
+        border-color: rgba(97, 218, 251, 0.4);
+      }
       .cta.npm {
         background: rgba(255, 255, 255, 0.03);
         border-color: var(--line);
@@ -1041,8 +1050,8 @@
         <div class="nav-links">
           <a class="dim-mobile" href="#why">Why</a>
           <a href="./guide.html">Guide</a>
-          <a href="./cookbook.html">Cookbook</a>
           <a href="./examples.html">Examples</a>
+          <a href="./cookbook.html">Cookbook</a>
           <a href="./api-reference.html">API reference</a>
           <a class="dim-mobile" href="./config-mapping.html">Config mapping</a>
           <a
@@ -1097,7 +1106,10 @@
           idiomatic Dart. Ship everywhere — from one source.
         </p>
         <div class="cta-row reveal">
-          <a class="cta primary" href="./api-reference.html"
+          <a class="cta primary" href="./examples.html"
+            >Start from an example app →</a
+          >
+          <a class="cta secondary" href="./api-reference.html"
             >Browse the API Reference →</a
           >
           <button
@@ -1673,31 +1685,6 @@ export const Shell = () =&gt; (
         </div>
       </section>
 
-      <section class="stats reveal" aria-label="By the numbers">
-        <!-- showcase:stats -->
-        <div class="stat">
-          <div class="stat-value" data-count="539">0</div>
-          <div class="stat-label">Flutter Widgets</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value" data-count="8">0</div>
-          <div class="stat-label">Native Plugins</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value" data-count="23">0</div>
-          <div class="stat-label">Hooks &amp; Core APIs</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value" data-count="217">0</div>
-          <div class="stat-label">Enums</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value" data-count="129">0</div>
-          <div class="stat-label">Types</div>
-        </div>
-        <!-- /showcase:stats -->
-      </section>
-
       <section class="templates reveal" id="templates" aria-label="Example apps">
         <div class="section-head">
           <span class="section-kicker">Start from a real app</span>
@@ -1756,6 +1743,32 @@ export const Shell = () =&gt; (
         </div>
         <!-- /showcase:templates -->
       </section>
+
+      <section class="stats reveal" aria-label="By the numbers">
+        <!-- showcase:stats -->
+        <div class="stat">
+          <div class="stat-value" data-count="539">0</div>
+          <div class="stat-label">Flutter Widgets</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" data-count="8">0</div>
+          <div class="stat-label">Native Plugins</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" data-count="23">0</div>
+          <div class="stat-label">Hooks &amp; Core APIs</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" data-count="217">0</div>
+          <div class="stat-label">Enums</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" data-count="129">0</div>
+          <div class="stat-label">Types</div>
+        </div>
+        <!-- /showcase:stats -->
+      </section>
+
 
       <section class="why" id="why">
         <div class="section-head reveal">
@@ -1992,8 +2005,8 @@ export const Shell = () =&gt; (
         <div class="fbrand">flutter<b>.tsx</b></div>
         <p>
           <a href="./guide.html">Guide</a> ·
-            <a href="./cookbook.html">Cookbook</a> ·
             <a href="./examples.html">Examples</a> ·
+            <a href="./cookbook.html">Cookbook</a> ·
             <a href="./api-reference.html">API Reference</a> ·
           <a
             href="https://github.com/archan937/flutter.tsx"

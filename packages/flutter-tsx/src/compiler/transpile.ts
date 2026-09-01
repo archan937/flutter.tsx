@@ -1,10 +1,14 @@
 import ts from 'typescript';
 
 import { loadApiSnapshot } from '../api/load';
-import type { TypeNode } from '../api/model';
+import type { ParamModel, TypeNode } from '../api/model';
 import { deriveSlots } from '../derive/slots';
 import { jsxPropName } from '../generate/renames';
-import { loadPluginApi, type PluginApi } from '../plugins/api';
+import {
+  loadPluginApi,
+  type PluginApi,
+  type PluginMethod,
+} from '../plugins/api';
 import { deriveHooks } from '../plugins/hooks';
 import { PACKAGE_OVERRIDES, PLUGIN_OVERRIDES } from '../plugins/overrides';
 import {
@@ -60,6 +64,23 @@ interface LoadedPlugins {
   pluginEnums: Map<string, Set<string>>;
   pluginClassFields: Map<string, Map<string, TypeNode>>;
   prefixedTypes: Map<string, string>;
+  /**
+   * Plugin classes an object literal can construct: `{ enableJavaScript:
+   * true }` where a WebViewConfiguration is expected. A value the plugin
+   * hands you needs no constructor; one you pass to it does.
+   */
+  pluginConstructibles: Map<string, ParamModel[]>;
+  /**
+   * Every plugin class with a constructor, and the parameters it takes:
+   * `new MediaType('text', 'plain')` calls one directly.
+   */
+  pluginConstructors: Map<string, ParamModel[]>;
+  /**
+   * The static methods each plugin class declares: named constructors and
+   * factories — `MultipartFile.fromBytes(…)`, `SharedPreferencesWithCache
+   * .create(…)` — which are how some values are made at all.
+   */
+  pluginStatics: Map<string, Map<string, PluginMethod>>;
   /** Widgets a plugin ships, rendered in JSX like any other. */
   pluginWidgets: Map<string, WidgetInfo>;
   /** The Dart file each of those widgets is imported from. */
@@ -81,6 +102,9 @@ const loadPlugins = async (
     ]),
   ];
   const pluginHooks = new Map<string, PluginHookInfo>();
+  const pluginConstructibles = new Map<string, ParamModel[]>();
+  const pluginConstructors = new Map<string, ParamModel[]>();
+  const pluginStatics = new Map<string, Map<string, PluginMethod>>();
   const pluginWidgets = new Map<string, WidgetInfo>();
   const pluginWidgetImports = new Map<string, string>();
   const pluginEnums = new Map<string, Set<string>>();
@@ -101,6 +125,28 @@ const loadPlugins = async (
       );
       if (prefix !== undefined) {
         prefixedTypes.set(entity.name, `${prefix}.${entity.name}`);
+      }
+      const statics = entity.methods.filter((method) => method.isStatic);
+      if (statics.length > 0) {
+        pluginStatics.set(
+          entity.name,
+          new Map(statics.map((method) => [method.name, method])),
+        );
+      }
+      // The same rule the typings use, so what compiles is what the editor
+      // offered: an object literal builds a bag of named parameters.
+      const constructor = entity.constructors.find(
+        (candidate) => candidate.name === '',
+      );
+      if (constructor !== undefined) {
+        pluginConstructors.set(entity.name, constructor.params);
+      }
+      if (
+        constructor !== undefined &&
+        constructor.params.length > 0 &&
+        constructor.params.every((param) => param.named)
+      ) {
+        pluginConstructibles.set(entity.name, constructor.params);
       }
       // `<CameraPreview controller={cam} />` — a widget a package ships is
       // rendered, not called, and its constructor is its props.
@@ -149,6 +195,9 @@ const loadPlugins = async (
     pluginEnums,
     pluginClassFields,
     prefixedTypes,
+    pluginConstructibles,
+    pluginConstructors,
+    pluginStatics,
     pluginWidgets,
     pluginWidgetImports,
   };
