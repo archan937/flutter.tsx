@@ -257,6 +257,12 @@ export const CATALOGUE: Readonly<Record<string, CatalogueEntry>> = {
       '`new TextEditingController()` in a component body is a field of its State — made with the widget, disposed with it. The lifecycle a controller needs, without writing `initState` or `dispose`.',
     category: 'State and effects',
   },
+  '54-typed-error': {
+    title: 'Telling one failure from another',
+    blurb:
+      '`error instanceof CameraException` is Dart’s `is`, and the branch reads the exception’s own `code`. Error paths are typed the same way the happy path is.',
+    category: 'Native plugins',
+  },
   '10-camera-options': {
     title: 'Choosing a camera resolution',
     blurb:

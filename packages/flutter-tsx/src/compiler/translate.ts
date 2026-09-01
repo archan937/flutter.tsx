@@ -447,6 +447,58 @@ const constructorArguments = (
   return args.map((argument) => translateExpression(argument, context));
 };
 
+/**
+ * The named value and the known class an `instanceof` is testing, or null
+ * when it is testing something the compiler cannot resolve — an unknown
+ * class, or a value it has no name for and so cannot promote.
+ */
+export const instanceOfTest = (
+  expression: ts.Expression,
+  context: TranslateContext,
+): {
+  name: string;
+  className: string;
+  fields: Map<string, TypeNode>;
+} | null => {
+  if (
+    !ts.isBinaryExpression(expression) ||
+    expression.operatorToken.kind !== ts.SyntaxKind.InstanceOfKeyword ||
+    !ts.isIdentifier(expression.left) ||
+    !ts.isIdentifier(expression.right)
+  ) {
+    return null;
+  }
+  const fields = context.classFields.get(expression.right.text);
+  return fields === undefined
+    ? null
+    : { name: expression.left.text, className: expression.right.text, fields };
+};
+
+/** `String(value)` is `value.toString()`, which is what Dart calls it. */
+const stringConversion = (
+  expression: ts.Expression,
+  context: TranslateContext,
+): string | null => {
+  if (!ts.isCallExpression(expression)) {
+    return null;
+  }
+  const [only] = expression.arguments;
+  if (
+    !ts.isIdentifier(expression.expression) ||
+    expression.expression.text !== 'String'
+  ) {
+    return null;
+  }
+  if (only === undefined || expression.arguments.length !== 1) {
+    throw tsxErrorAt(
+      'TSX0353',
+      '`String(value)` converts one value: pass exactly one.',
+      { sourceFile: context.sourceFile, node: expression },
+    );
+  }
+  return `${translateExpression(only, context)}.toString()`;
+};
+
 const LOOSE_NULL_OPERATORS = new Map([
   [ts.SyntaxKind.EqualsEqualsToken, '=='],
   [ts.SyntaxKind.ExclamationEqualsToken, '!='],
@@ -733,6 +785,10 @@ export const translateExpression = (
   if (math !== null) {
     return math;
   }
+  const asString = stringConversion(expression, context);
+  if (asString !== null) {
+    return asString;
+  }
   if (expression.kind === ts.SyntaxKind.NullKeyword) {
     return 'null';
   }
@@ -942,6 +998,24 @@ export const translateExpression = (
     }
     const args = constructorArguments(expression, params, context);
     return `${className}(${args.join(', ')})`;
+  }
+  // `error instanceof CameraException` asks the same question Dart's `is`
+  // asks, and answers it the same way — including the promotion that lets
+  // the branch read the type's own members.
+  if (
+    ts.isBinaryExpression(expression) &&
+    expression.operatorToken.kind === ts.SyntaxKind.InstanceOfKeyword
+  ) {
+    const test = instanceOfTest(expression, context);
+    if (test === null) {
+      throw tsxErrorAt(
+        'TSX0352',
+        'test a value the compiler knows against a class it knows: ' +
+          '`if (error instanceof CameraException)`.',
+        { sourceFile: context.sourceFile, node: expression },
+      );
+    }
+    return `${translateIdentifier(test.name, context)} is ${test.className}`;
   }
   if (ts.isBinaryExpression(expression)) {
     // `x == null` is the one loose comparison TypeScript itself endorses, and

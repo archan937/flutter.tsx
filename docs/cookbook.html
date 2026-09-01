@@ -161,7 +161,7 @@ main p { margin-bottom: 12px; }
     <a href="https://github.com/archan937/flutter.tsx" target="_blank" rel="noopener">GitHub ↗</a>
   </nav>
   <input id="search" type="search" placeholder="Search recipes…" autocomplete="off" spellcheck="false">
-  <div class="meta-info">53 recipes · Flutter 3.47.1</div>
+  <div class="meta-info">54 recipes · Flutter 3.47.1</div>
   <nav id="sidebar-nav">
 <details open>
 <summary>Start here<span class="nav-count">7</span></summary>
@@ -216,7 +216,7 @@ main p { margin-bottom: 12px; }
 </ul>
 </details>
 <details>
-<summary>Native plugins<span class="nav-count">14</span></summary>
+<summary>Native plugins<span class="nav-count">15</span></summary>
 <ul>
 <li data-name="Taking a photo"><a href="#01-camera-screen">Taking a photo</a></li>
 <li data-name="Choosing a camera resolution"><a href="#10-camera-options">Choosing a camera resolution</a></li>
@@ -232,6 +232,7 @@ main p { margin-bottom: 12px; }
 <li data-name="Rendering a plugin’s own widget"><a href="#46-camera-preview">Rendering a plugin’s own widget</a></li>
 <li data-name="Guarding before you use a handle"><a href="#47-guarded-handler">Guarding before you use a handle</a></li>
 <li data-name="Building a value a plugin takes"><a href="#51-plugin-values">Building a value a plugin takes</a></li>
+<li data-name="Telling one failure from another"><a href="#54-typed-error">Telling one failure from another</a></li>
 </ul>
 </details>
 <details>
@@ -3234,6 +3235,111 @@ export const Span = ({
       children: [
         <span class="tok-typ">Text</span>(_opened),
         <span class="tok-typ">ElevatedButton</span>(onPressed: _open, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Open in app'</span>)),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section class="recipe" id="54-typed-error" data-name="Telling one failure from another">
+<h3>Telling one failure from another</h3>
+<p class="blurb"><code>error instanceof CameraException</code> is Dart’s <code>is</code>, and the branch reads the exception’s own <code>code</code>. Error paths are typed the same way the happy path is.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Shoot.tsx" role="tab" aria-selected="true">src/Shoot.tsx</button>
+<button class="tab-btn" data-tab="shoot.dart" role="tab" aria-selected="false">shoot.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Shoot.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<span class="tok-kw">import</span> { <span class="tok-typ">CameraException</span>, useCamera } <span class="tok-kw">from</span> <span class="tok-str">'plugin:camera'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Shoot</span> = () =&gt; {
+  <span class="tok-kw">const</span> cam = <span class="tok-fn">useCamera</span>();
+  <span class="tok-kw">const</span> [message, setMessage] = <span class="tok-fn">useState</span>(<span class="tok-str">'nothing yet'</span>);
+
+  <span class="tok-kw">const</span> shoot = <span class="tok-kw">async</span> () =&gt; {
+    <span class="tok-kw">try</span> {
+      <span class="tok-kw">const</span> photo = <span class="tok-kw">await</span> cam?.<span class="tok-fn">takePicture</span>();
+      <span class="tok-fn">setMessage</span>(photo?.path ?? <span class="tok-str">'cancelled'</span>);
+    } <span class="tok-kw">catch</span> (error) {
+      <span class="tok-kw">if</span> (error instanceof <span class="tok-typ">CameraException</span>) {
+        <span class="tok-fn">setMessage</span>(error.code);
+      } <span class="tok-kw">else</span> {
+        <span class="tok-fn">setMessage</span>(<span class="tok-typ">String</span>(error));
+      }
+    }
+  };
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;{message}&lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={shoot}&gt;Take photo&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
+  );
+};</code></pre></div>
+<div class="tab-panel" data-panel="shoot.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:camera/camera.dart'</span>;
+<span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">Shoot</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Shoot</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">Shoot</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_ShootState</span>();
+}
+
+<span class="tok-kw">class</span> _ShootState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">Shoot</span>&gt; {
+  <span class="tok-typ">CameraController</span>? _cam;
+  <span class="tok-typ">String</span> _message = <span class="tok-str">'nothing yet'</span>;
+
+  @override
+  <span class="tok-kw">void</span> <span class="tok-fn">initState</span>() {
+    <span class="tok-kw">super</span>.<span class="tok-fn">initState</span>();
+    <span class="tok-fn">_initCam</span>();
+  }
+
+  <span class="tok-typ">Future</span>&lt;<span class="tok-kw">void</span>&gt; <span class="tok-fn">_initCam</span>() <span class="tok-kw">async</span> {
+    <span class="tok-kw">final</span> cameras = <span class="tok-kw">await</span> <span class="tok-fn">availableCameras</span>();
+    <span class="tok-kw">final</span> controller = <span class="tok-typ">CameraController</span>(cameras.first, <span class="tok-typ">ResolutionPreset</span>.high);
+    <span class="tok-kw">await</span> controller.<span class="tok-fn">initialize</span>();
+    <span class="tok-kw">if</span> (!mounted) {
+      <span class="tok-kw">await</span> controller.<span class="tok-fn">dispose</span>();
+      <span class="tok-kw">return</span>;
+    }
+    <span class="tok-fn">setState</span>(() {
+      _cam = controller;
+    });
+  }
+
+  @override
+  <span class="tok-kw">void</span> <span class="tok-fn">dispose</span>() {
+    _cam?.<span class="tok-fn">dispose</span>();
+    <span class="tok-kw">super</span>.<span class="tok-fn">dispose</span>();
+  }
+
+  <span class="tok-typ">Future</span>&lt;<span class="tok-kw">void</span>&gt; <span class="tok-fn">_shoot</span>() <span class="tok-kw">async</span> {
+    <span class="tok-kw">try</span> {
+      <span class="tok-kw">final</span> photo = <span class="tok-kw">await</span> _cam?.<span class="tok-fn">takePicture</span>();
+      <span class="tok-fn">setState</span>(() {
+        _message = photo?.path ?? <span class="tok-str">'cancelled'</span>;
+      });
+    } <span class="tok-kw">catch</span> (error) {
+      <span class="tok-kw">if</span> (error <span class="tok-kw">is</span> <span class="tok-typ">CameraException</span>) {
+        <span class="tok-fn">setState</span>(() {
+          _message = error.code;
+        });
+      } <span class="tok-kw">else</span> {
+        <span class="tok-fn">setState</span>(() {
+          _message = error.<span class="tok-fn">toString</span>();
+        });
+      }
+    }
+  }
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+      children: [
+        <span class="tok-typ">Text</span>(_message),
+        <span class="tok-typ">ElevatedButton</span>(onPressed: _shoot, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Take photo'</span>)),
       ],
     );
   }

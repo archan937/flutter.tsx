@@ -331,6 +331,12 @@ export const FIXTURE_APPS: FixtureApp[] = [
     deps: ['camera'],
   },
   {
+    id: '54-typed-error',
+    component: 'Shoot',
+    dartFile: 'shoot.dart',
+    deps: ['camera'],
+  },
+  {
     id: '53-owned-controller',
     component: 'SearchBox',
     dartFile: 'search_box.dart',

@@ -1250,6 +1250,57 @@ describe('transpileComponent — controllers a component owns', () => {
   });
 });
 
+describe('transpileComponent — failures with a type', () => {
+  const probe = (body: string): Promise<string> =>
+    transpileComponent({
+      source:
+        "import { Text, useState } from 'flutter-tsx';\n" +
+        "import { CameraException, useCamera } from 'plugin:camera';\n" +
+        'export const Probe = () => {\n' +
+        '  const cam = useCamera();\n' +
+        "  const [message, setMessage] = useState('none');\n" +
+        '  const shoot = async () => {\n' +
+        '    try {\n' +
+        '      await cam?.takePicture();\n' +
+        '    } catch (error) {\n' +
+        body +
+        '    }\n' +
+        '  };\n' +
+        '  return <Text onClick={shoot}>{message}</Text>;\n' +
+        '};\n',
+      filePath: 'probe.tsx',
+      pluginApiDirs: ['ref/plugins'],
+    });
+
+  test('a class the compiler does not know is a numbered error', () => {
+    // `Error` is a JavaScript class; nothing thrown in Dart is one.
+    expect(
+      probe('      if (error instanceof Error) {\n' + '      }\n'),
+    ).rejects.toThrow(
+      /TSX0352 .* test a value the compiler knows against a class it knows/,
+    );
+  });
+
+  test('a test on something unnamed is a numbered error', () => {
+    // Only a named value can be promoted, so only a named value can be
+    // tested — the branch would otherwise read members off nothing.
+    expect(
+      probe(
+        '      if (error.cause instanceof CameraException) {\n' + '      }\n',
+      ),
+    ).rejects.toThrow(/TSX0352 /);
+  });
+
+  test('converting nothing, or more than one value, is a numbered error', () => {
+    expect(probe('      setMessage(String());\n')).rejects.toThrow(
+      /TSX0353 .* `String\(value\)` converts one value/,
+    );
+    expect(probe('      setMessage(String(error, error));\n')).rejects.toThrow(
+      /TSX0353 /,
+    );
+  });
+});
+
 describe('transpileComponent — values a plugin declares', () => {
   const probe = (body: string): Promise<string> =>
     transpileComponent({

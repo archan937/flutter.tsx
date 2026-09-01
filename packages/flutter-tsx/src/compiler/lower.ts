@@ -59,6 +59,7 @@ import { irValueToDart } from './ir-to-dart';
 import {
   handleNullCheck,
   type HelperSignature,
+  instanceOfTest,
   type MemberReadInfo,
   readFieldType,
   STRING_RETURNING_METHODS,
@@ -2628,7 +2629,7 @@ const lowerControlFlow = (
       condition: translateCondition(statement.expression, context.translate),
       then: branchStatements(
         statement.thenStatement,
-        context,
+        promotedBy(statement.expression, context),
         allowPluginCalls,
       ),
       otherwise:
@@ -2787,6 +2788,35 @@ const narrowedBy = (
     translate: {
       ...context.translate,
       narrowed: new Set([...context.translate.narrowed, proven]),
+    },
+  };
+};
+
+/**
+ * The scope inside `if (error instanceof CameraException) { … }`.
+ *
+ * Dart promotes the value the same way TypeScript does, so the branch reads
+ * the tested type's own members — `error.code` rather than a stringified
+ * error — and the compiler resolves those reads against that class.
+ */
+const promotedBy = (
+  condition: ts.Expression,
+  context: LowerContext,
+): LowerContext => {
+  const test = instanceOfTest(condition, context.translate);
+  if (test === null) {
+    return context;
+  }
+  return {
+    ...context,
+    translate: {
+      ...context.translate,
+      memberReads: new Map(context.translate.memberReads).set(test.name, {
+        className: test.className,
+        receiver: test.name,
+        nullable: false,
+        fields: test.fields,
+      }),
     },
   };
 };
