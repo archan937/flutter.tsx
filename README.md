@@ -197,14 +197,25 @@ Requires [Bun](https://bun.sh) (latest).
 
 ```bash
 bun install                   # once, at the repo root
-
-cd packages/flutter-tsx
-bun run quality               # typecheck + format + lint + tests with enforced 100% coverage
+bun run quality               # every gate CI runs, in the order CI runs them
 ```
 
-Every package exposes the same scripts: `typecheck`, `format`, `lint`, `test`,
-`test:coverage`, and `quality`. The discipline of this codebase: every documented
-snippet is a test fixture, and nothing is claimed that a test does not prove.
+`bun run quality` at the root is the whole thing: the engine's gate (typecheck,
+format, lint, tests with enforced 100% coverage, plus the Dart extractor's own
+analyze and tests), the scaffolder's gate, and the end-to-end suite — which
+scaffolds real projects, builds every fixture as a Flutter web app, and builds
+all four templates for the web *and* for the platform each one targets.
+
+Each package exposes the same scripts on its own — `typecheck`, `format`,
+`lint`, `test`, `test:coverage`, `quality` — for a faster loop while working
+in one of them:
+
+```bash
+cd packages/flutter-tsx && bun run quality
+```
+
+The discipline of this codebase: every documented snippet is a test fixture,
+and nothing is claimed that a test does not prove.
 
 ## Contact
 

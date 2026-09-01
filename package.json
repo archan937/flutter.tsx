@@ -1,5 +1,11 @@
 {
   "name": "flutter.tsx",
   "private": true,
-  "workspaces": ["packages/*", "e2e"]
+  "workspaces": [
+    "packages/*",
+    "e2e"
+  ],
+  "scripts": {
+    "quality": "bun run --filter flutter-tsx quality && bun run --filter create-flutter-tsx quality && bun run --filter flutter-tsx-e2e quality"
+  }
 }

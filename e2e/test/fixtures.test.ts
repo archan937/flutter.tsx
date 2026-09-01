@@ -129,7 +129,9 @@ describe('every fixture builds and behaves in a real Flutter app', () => {
 
     const behavior = await runFlutterTest(appDir);
     if (behavior.exitCode !== 0) {
-      throw new Error(`flutter test failed:\n${behavior.stdout}\n${behavior.stderr}`);
+      throw new Error(
+        `flutter test failed:\n${behavior.stdout}\n${behavior.stderr}`,
+      );
     }
     expect(behavior.exitCode).toBe(0);
 

@@ -119,10 +119,7 @@ export const buildNative = async (
     return run([flutterBin, 'build', 'macos', '--debug'], appDir);
   }
   if (target === 'ios') {
-    return run(
-      [flutterBin, 'build', 'ios', '--simulator', '--debug'],
-      appDir,
-    );
+    return run([flutterBin, 'build', 'ios', '--simulator', '--debug'], appDir);
   }
   return null;
 };
