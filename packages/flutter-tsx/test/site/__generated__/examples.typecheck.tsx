@@ -15,6 +15,7 @@ import {
   AnimatedCrossFade,
   AnimatedDefaultTextStyle,
   AnimatedFractionallySizedBox,
+  AnimatedList,
   AnimatedOpacity,
   AnimatedPadding,
   AnimatedPhysicalModel,
@@ -43,6 +44,8 @@ import {
   BottomAppBarTheme,
   BottomNavigationBar,
   BottomNavigationBarTheme,
+  BottomSheet,
+  Builder,
   ButtonBar,
   ButtonBarTheme,
   ButtonTheme,
@@ -131,6 +134,7 @@ import {
   DefaultTextStyle,
   DesktopTextSelectionToolbar,
   DesktopTextSelectionToolbarButton,
+  DeviceOrientationBuilder,
   Dialog,
   DialogTheme,
   Directionality,
@@ -139,8 +143,10 @@ import {
   Divider,
   DividerTheme,
   DragBoundary,
+  DragTarget,
   Draggable,
   DraggableScrollableActuator,
+  DraggableScrollableSheet,
   Drawer,
   DrawerButton,
   DrawerButtonIcon,
@@ -183,6 +189,7 @@ import {
   FocusTraversalGroup,
   FocusableActionDetector,
   Form,
+  FormField,
   FractionalTranslation,
   FractionallySizedBox,
   GestureDetector,
@@ -211,6 +218,7 @@ import {
   IntrinsicWidth,
   KeepAlive,
   KeyedSubtree,
+  LayoutBuilder,
   LicensePage,
   LimitedBox,
   LinearProgressIndicator,
@@ -256,6 +264,7 @@ import {
   NotificationListener,
   Offstage,
   Opacity,
+  OrientationBuilder,
   OutlinedButton,
   OutlinedButtonTheme,
   OverflowBar,
@@ -285,9 +294,11 @@ import {
   RawMagnifier,
   RawMaterialButton,
   RawScrollbar,
+  RawTooltip,
   RefreshProgressIndicator,
   ReorderableDelayedDragStartListener,
   ReorderableDragStartListener,
+  ReorderableList,
   ReorderableListView,
   RepaintBoundary,
   RestorationScope,
@@ -299,6 +310,7 @@ import {
   Scaffold,
   ScaffoldMessenger,
   ScrollNotificationObserver,
+  Scrollable,
   Scrollbar,
   ScrollbarTheme,
   SearchBar,
@@ -320,6 +332,7 @@ import {
   SizedOverflowBox,
   Slider,
   SliderTheme,
+  SliverAnimatedList,
   SliverAnimatedOpacity,
   SliverAppBar,
   SliverConstrainedCrossAxis,
@@ -329,10 +342,12 @@ import {
   SliverFillRemaining,
   SliverFloatingHeader,
   SliverIgnorePointer,
+  SliverLayoutBuilder,
   SliverMainAxisGroup,
   SliverOffstage,
   SliverOpacity,
   SliverPadding,
+  SliverReorderableList,
   SliverResizingHeader,
   SliverSafeArea,
   SliverSemantics,
@@ -344,6 +359,7 @@ import {
   Spacer,
   SpellCheckSuggestionsToolbar,
   Stack,
+  StatefulBuilder,
   Stepper,
   StretchEffect,
   StretchingOverscrollIndicator,
@@ -390,6 +406,7 @@ import {
   ViewAnchor,
   ViewCollection,
   Visibility,
+  WidgetsApp,
   Wrap,
 } from 'flutter-tsx';
 
@@ -434,6 +451,7 @@ export const examples = [
   <AnimatedFractionallySizedBox duration="defaultAnimationDuration">
     <Text>Content</Text>
   </AnimatedFractionallySizedBox>,
+  <AnimatedList itemBuilder={() => <Text>Content</Text>} />,
   <AnimatedOpacity opacity={1} duration="defaultAnimationDuration">
     <Text>Content</Text>
   </AnimatedOpacity>,
@@ -512,6 +530,8 @@ export const examples = [
   <BottomNavigationBarTheme data={{}}>
     <Text>Content</Text>
   </BottomNavigationBarTheme>,
+  <BottomSheet onClosing={() => {}} builder={() => <Text>Content</Text>} />,
+  <Builder builder={() => <Text>Content</Text>} />,
   <ButtonBar>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
@@ -719,6 +739,7 @@ export const examples = [
   <DesktopTextSelectionToolbarButton onClick={() => {}}>
     <Text>Content</Text>
   </DesktopTextSelectionToolbarButton>,
+  <DeviceOrientationBuilder builder={() => <Text>Content</Text>} />,
   <Dialog>
     <Text>Content</Text>
   </Dialog>,
@@ -741,12 +762,14 @@ export const examples = [
   <DragBoundary>
     <Text>Content</Text>
   </DragBoundary>,
+  <DragTarget builder={() => <Text>Content</Text>} />,
   <Draggable feedback={<Text>Content</Text>}>
     <Text>Content</Text>
   </Draggable>,
   <DraggableScrollableActuator>
     <Text>Content</Text>
   </DraggableScrollableActuator>,
+  <DraggableScrollableSheet builder={() => <Text>Content</Text>} />,
   <Drawer>
     <Text>Content</Text>
   </Drawer>,
@@ -854,6 +877,7 @@ export const examples = [
   <Form>
     <Text>Content</Text>
   </Form>,
+  <FormField builder={() => <Text>Content</Text>} />,
   <FractionalTranslation translation="infinite">
     <Text>Content</Text>
   </FractionalTranslation>,
@@ -929,6 +953,7 @@ export const examples = [
   <KeyedSubtree>
     <Text>Content</Text>
   </KeyedSubtree>,
+  <LayoutBuilder builder={() => <Text>Content</Text>} />,
   <LicensePage />,
   <LimitedBox>
     <Text>Content</Text>
@@ -1042,6 +1067,7 @@ export const examples = [
   <Opacity opacity={1}>
     <Text>Content</Text>
   </Opacity>,
+  <OrientationBuilder builder={() => <Text>Content</Text>} />,
   <OutlinedButton onClick={() => {}}>
     <Text>Content</Text>
   </OutlinedButton>,
@@ -1121,6 +1147,12 @@ export const examples = [
   <RawScrollbar>
     <Text>Content</Text>
   </RawScrollbar>,
+  <RawTooltip
+    semanticsTooltip="example"
+    tooltipBuilder={() => <Text>Content</Text>}
+  >
+    <Text>Content</Text>
+  </RawTooltip>,
   <RefreshProgressIndicator />,
   <ReorderableDelayedDragStartListener index={8}>
     <Text>Content</Text>
@@ -1128,6 +1160,7 @@ export const examples = [
   <ReorderableDragStartListener index={8}>
     <Text>Content</Text>
   </ReorderableDragStartListener>,
+  <ReorderableList itemBuilder={() => <Text>Content</Text>} itemCount={8} />,
   <ReorderableListView>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
@@ -1163,6 +1196,7 @@ export const examples = [
   <ScrollNotificationObserver>
     <Text>Content</Text>
   </ScrollNotificationObserver>,
+  <Scrollable viewportBuilder={() => <Text>Content</Text>} />,
   <Scrollbar>
     <Text>Content</Text>
   </Scrollbar>,
@@ -1221,6 +1255,7 @@ export const examples = [
   <SliderTheme data={{}}>
     <Text>Content</Text>
   </SliderTheme>,
+  <SliverAnimatedList itemBuilder={() => <Text>Content</Text>} />,
   <SliverAnimatedOpacity opacity={1} duration="defaultAnimationDuration" />,
   <SliverAppBar />,
   <SliverConstrainedCrossAxis maxExtent={1} sliver={<Text>Content</Text>} />,
@@ -1234,10 +1269,15 @@ export const examples = [
     <Text>Content</Text>
   </SliverFloatingHeader>,
   <SliverIgnorePointer />,
+  <SliverLayoutBuilder builder={() => <Text>Content</Text>} />,
   <SliverMainAxisGroup slivers={[]} />,
   <SliverOffstage />,
   <SliverOpacity opacity={1} />,
   <SliverPadding padding="infinity" />,
+  <SliverReorderableList
+    itemBuilder={() => <Text>Content</Text>}
+    itemCount={8}
+  />,
   <SliverResizingHeader>
     <Text>Content</Text>
   </SliverResizingHeader>,
@@ -1258,6 +1298,7 @@ export const examples = [
     <Text>Item 1</Text>
     <Text>Item 2</Text>
   </Stack>,
+  <StatefulBuilder builder={() => <Text>Content</Text>} />,
   <Stepper steps={[]} />,
   <StretchEffect axis="horizontal">
     <Text>Content</Text>
@@ -1374,6 +1415,7 @@ export const examples = [
   <Visibility>
     <Text>Content</Text>
   </Visibility>,
+  <WidgetsApp color="activeBlue" builder={() => <Text>Content</Text>} />,
   <Wrap>
     <Text>Item 1</Text>
     <Text>Item 2</Text>

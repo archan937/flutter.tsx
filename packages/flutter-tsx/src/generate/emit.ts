@@ -317,7 +317,46 @@ const brandInterface = (
     `  readonly __fsxBrand?: { ${brand} };`,
     ...fields,
     '}',
+    ...ownedConstructor(name, entity, snapshot),
   ].join('\n');
+};
+
+/**
+ * The constructor of a controller a component owns.
+ *
+ * A ChangeNotifier — a TextEditingController, a ScrollController, a FocusNode
+ * — is made once and disposed when the widget goes away, which is why the
+ * compiler turns `new TextEditingController()` into a field of the State
+ * rather than a value rebuilt every frame. Declaring the constructor is what
+ * lets it be written at all; every other class stays a shape you receive.
+ */
+const ownedConstructor = (
+  name: string,
+  entity: ApiSnapshot['entities'][number] | undefined,
+  snapshot: ApiSnapshot,
+): string[] => {
+  if (entity === undefined || !isOwnedController(name, entity, snapshot)) {
+    return [];
+  }
+  return ['', `export declare const ${name}: new () => ${name};`];
+};
+
+/** Controllers a component can own: notify listeners, and need no arguments. */
+export const isOwnedController = (
+  name: string,
+  entity: ApiSnapshot['entities'][number],
+  snapshot: ApiSnapshot,
+): boolean => {
+  if (
+    entity.kind === 'enum' ||
+    !(snapshot.hierarchy[name] ?? []).includes('ChangeNotifier')
+  ) {
+    return false;
+  }
+  const constructor = entity.constructors.find(
+    (candidate) => candidate.name === '',
+  );
+  return constructor?.params.every((param) => !param.required) === true;
 };
 
 const unwrapNullable = (node: TypeNode): TypeNode =>

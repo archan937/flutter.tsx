@@ -83,6 +83,19 @@ export interface HelperBinding {
   body: ts.ConciseBody;
 }
 
+/**
+ * `const query = new TextEditingController()` in a component body.
+ *
+ * The component owns it: made when the widget mounts, disposed when it goes.
+ * Which classes qualify is the compiler's to say — the analyzer records every
+ * `new` here and the lowering keeps the ones that are controllers.
+ */
+export interface ControllerBinding {
+  name: string;
+  className: string;
+  node: ts.NewExpression;
+}
+
 /// `const x = <expression>` in a component body, kept in source order.
 export interface LocalBinding {
   name: string;
@@ -131,6 +144,7 @@ export interface ComponentAnalysis {
   handlers: HandlerBinding[];
   helpers: HelperBinding[];
   effects: ts.CallExpression[];
+  controllers: ControllerBinding[];
   guards: GuardBinding[];
   returnJsx: ts.Expression;
   sourceFile: ts.SourceFile;
@@ -624,6 +638,19 @@ const analyzeBodyStatement = (
           ) ?? false,
         params: handlerParams(initializer, context.sourceFile),
         body: initializer,
+      });
+      continue;
+    }
+    // `const scroll = new ScrollController()` — a value the component owns
+    // rather than a local it rebuilds.
+    if (
+      ts.isNewExpression(initializer) &&
+      ts.isIdentifier(initializer.expression)
+    ) {
+      context.analysis.controllers.push({
+        name: declaration.name.getText(),
+        className: initializer.expression.text,
+        node: initializer,
       });
       continue;
     }
@@ -1410,6 +1437,7 @@ const analyzeComponent = (
     handlers: [],
     helpers: [],
     effects: [],
+    controllers: [],
     guards: [],
     returnJsx,
     sourceFile: context.sourceFile,

@@ -161,7 +161,7 @@ main p { margin-bottom: 12px; }
     <a href="https://github.com/archan937/flutter.tsx" target="_blank" rel="noopener">GitHub ↗</a>
   </nav>
   <input id="search" type="search" placeholder="Search recipes…" autocomplete="off" spellcheck="false">
-  <div class="meta-info">52 recipes · Flutter 3.47.1</div>
+  <div class="meta-info">53 recipes · Flutter 3.47.1</div>
   <nav id="sidebar-nav">
 <details open>
 <summary>Start here<span class="nav-count">7</span></summary>
@@ -176,7 +176,7 @@ main p { margin-bottom: 12px; }
 </ul>
 </details>
 <details>
-<summary>State and effects<span class="nav-count">8</span></summary>
+<summary>State and effects<span class="nav-count">9</span></summary>
 <ul>
 <li data-name="Running code on mount"><a href="#06-mount-effect">Running code on mount</a></li>
 <li data-name="State shared across screens"><a href="#19-store-counter">State shared across screens</a></li>
@@ -186,6 +186,7 @@ main p { margin-bottom: 12px; }
 <li data-name="A callback that returns a widget"><a href="#39-builder-callback">A callback that returns a widget</a></li>
 <li data-name="Reading what a callback is handed"><a href="#40-layout-builder">Reading what a callback is handed</a></li>
 <li data-name="A label made of text and a value"><a href="#52-mixed-label">A label made of text and a value</a></li>
+<li data-name="A controller the component owns"><a href="#53-owned-controller">A controller the component owns</a></li>
 </ul>
 </details>
 <details>
@@ -1129,6 +1130,94 @@ export const TaskBoard = () =&gt; {
       children: [
         <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Now playing'</span>),
         <span class="tok-typ">ElevatedButton</span>(onPressed: _play, child: <span class="tok-typ">Text</span>(<span class="tok-str">'Played $_plays times'</span>)),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section class="recipe" id="53-owned-controller" data-name="A controller the component owns">
+<h3>A controller the component owns</h3>
+<p class="blurb"><code>new TextEditingController()</code> in a component body is a field of its State — made with the widget, disposed with it. The lifecycle a controller needs, without writing <code>initState</code> or <code>dispose</code>.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/SearchBox.tsx" role="tab" aria-selected="true">src/SearchBox.tsx</button>
+<button class="tab-btn" data-tab="search_box.dart" role="tab" aria-selected="false">search_box.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/SearchBox.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> {
+  <span class="tok-typ">Column</span>,
+  <span class="tok-typ">ElevatedButton</span>,
+  <span class="tok-typ">Expanded</span>,
+  <span class="tok-typ">ListView</span>,
+  <span class="tok-typ">ScrollController</span>,
+  <span class="tok-typ">Text</span>,
+  <span class="tok-typ">TextEditingController</span>,
+  <span class="tok-typ">TextField</span>,
+  useState,
+} <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">SearchBox</span> = () =&gt; {
+  <span class="tok-kw">const</span> query = <span class="tok-kw">new</span> <span class="tok-typ">TextEditingController</span>();
+  <span class="tok-kw">const</span> scroll = <span class="tok-kw">new</span> <span class="tok-typ">ScrollController</span>();
+  <span class="tok-kw">const</span> [submitted, setSubmitted] = <span class="tok-fn">useState</span>(<span class="tok-str">'nothing yet'</span>);
+
+  <span class="tok-kw">const</span> submit = () =&gt; {
+    <span class="tok-fn">setSubmitted</span>(<span class="tok-str">'searched'</span>);
+  };
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">TextField</span> controller={query} /&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={submit}&gt;Search&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;{submitted}&lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;<span class="tok-typ">Expanded</span>&gt;
+        &lt;<span class="tok-typ">ListView</span> controller={scroll}&gt;
+          &lt;<span class="tok-typ">Text</span>&gt;Result&lt;/<span class="tok-typ">Text</span>&gt;
+        &lt;/<span class="tok-typ">ListView</span>&gt;
+      &lt;/<span class="tok-typ">Expanded</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
+  );
+};</code></pre></div>
+<div class="tab-panel" data-panel="search_box.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">SearchBox</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">SearchBox</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">SearchBox</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_SearchBoxState</span>();
+}
+
+<span class="tok-kw">class</span> _SearchBoxState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">SearchBox</span>&gt; {
+  <span class="tok-kw">final</span> <span class="tok-typ">TextEditingController</span> _query = <span class="tok-typ">TextEditingController</span>();
+  <span class="tok-kw">final</span> <span class="tok-typ">ScrollController</span> _scroll = <span class="tok-typ">ScrollController</span>();
+  <span class="tok-typ">String</span> _submitted = <span class="tok-str">'nothing yet'</span>;
+
+  @override
+  <span class="tok-kw">void</span> <span class="tok-fn">dispose</span>() {
+    _query.<span class="tok-fn">dispose</span>();
+    _scroll.<span class="tok-fn">dispose</span>();
+    <span class="tok-kw">super</span>.<span class="tok-fn">dispose</span>();
+  }
+
+  <span class="tok-kw">void</span> <span class="tok-fn">_submit</span>() {
+    <span class="tok-fn">setState</span>(() {
+      _submitted = <span class="tok-str">'searched'</span>;
+    });
+  }
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+      children: [
+        <span class="tok-typ">TextField</span>(controller: _query),
+        <span class="tok-typ">ElevatedButton</span>(onPressed: _submit, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Search'</span>)),
+        <span class="tok-typ">Text</span>(_submitted),
+        <span class="tok-typ">Expanded</span>(
+          child: <span class="tok-typ">ListView</span>(
+            controller: _scroll,
+            children: <span class="tok-kw">const</span> [<span class="tok-typ">Text</span>(<span class="tok-str">'Result'</span>)],
+          ),
+        ),
       ],
     );
   }

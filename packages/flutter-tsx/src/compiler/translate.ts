@@ -58,6 +58,8 @@ export interface TranslateContext {
    * a class the plugin really exports, never for an arbitrary name.
    */
   pluginConstructibles: ReadonlyMap<string, readonly ParamModel[]>;
+  /** Controllers the component owns, which are fields of its State. */
+  controllerNames: ReadonlySet<string>;
   /** Every plugin class `new` can call, and the parameters it declares. */
   pluginConstructors: ReadonlyMap<string, readonly ParamModel[]>;
   /**
@@ -646,7 +648,9 @@ export const translateIdentifier = (
     return constant;
   }
   const isMember =
-    context.stateNames.has(name) || context.handlerNames.has(name);
+    context.stateNames.has(name) ||
+    context.handlerNames.has(name) ||
+    context.controllerNames.has(name);
   if (isMember && context.privateMembers) {
     return `_${name}`;
   }

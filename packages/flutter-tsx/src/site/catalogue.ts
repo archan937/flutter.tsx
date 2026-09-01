@@ -251,6 +251,12 @@ export const CATALOGUE: Readonly<Record<string, CatalogueEntry>> = {
       '`Played {plays} times` is three children of one button, and it means one line — so it compiles to one interpolated `Text`, not to the first word with the rest dropped.',
     category: 'State and effects',
   },
+  '53-owned-controller': {
+    title: 'A controller the component owns',
+    blurb:
+      '`new TextEditingController()` in a component body is a field of its State — made with the widget, disposed with it. The lifecycle a controller needs, without writing `initState` or `dispose`.',
+    category: 'State and effects',
+  },
   '10-camera-options': {
     title: 'Choosing a camera resolution',
     blurb:

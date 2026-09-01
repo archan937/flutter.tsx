@@ -48,7 +48,17 @@ const attrValue = (
       return context.forms.constructibles.has(type.name) ? '{{}}' : null;
     }
     case 'function':
-      return type.returnType.kind === 'void' ? '{() => {}}' : null;
+      if (type.returnType.kind === 'void') {
+        return '{() => {}}';
+      }
+      // A builder is a callback that returns what to render, and TSX writes
+      // it the way it writes any other child. One whose typedef takes named
+      // parameters is not satisfied by a plain closure, so it keeps its
+      // placeholder rather than showing Dart that would not compile.
+      return type.returnType.kind === 'widget' &&
+        type.params.every((param) => !param.named)
+        ? '{() => <Text>Content</Text>}'
+        : null;
     case 'list':
       return '{[]}';
     case 'map':

@@ -15,6 +15,7 @@ import {
   HEX_COLOR_TYPE,
   type ValueForms,
 } from '../derive/value-forms';
+import { isOwnedController } from '../generate/emit';
 import { jsxPropName } from '../generate/renames';
 import type { PluginMethod } from '../plugins/api';
 import { type DerivedHook, isNullableHandle } from '../plugins/hooks';
@@ -110,6 +111,13 @@ export interface CompileContext {
   userWidgets: Map<string, WidgetInfo>;
   /** Data this file or a sibling declares: name -> its Dart type. */
   constants: Map<string, string>;
+  /**
+   * Controllers a component owns: a TextEditingController, a
+   * ScrollController, a FocusNode. Made once when the widget mounts and
+   * disposed when it goes, which is the whole reason they are not values
+   * rebuilt in `build`.
+   */
+  ownedControllers: Set<string>;
   /** Plugin classes an object literal can construct, by name. */
   pluginConstructibles: Map<string, ParamModel[]>;
   /** Every plugin class with a constructor, and what it takes. */
@@ -206,6 +214,7 @@ export const buildCompileContext = (
   // What a value of an SDK type can be read for, so a callback parameter —
   // `constraints.maxWidth` — resolves to the Dart member it names.
   const sdkClassFields = new Map<string, Map<string, TypeNode>>();
+  const ownedControllers = new Set<string>();
 
   for (const entity of snapshot.entities) {
     libraries.set(entity.name, entity.library);
@@ -226,6 +235,9 @@ export const buildCompileContext = (
       );
     }
     if (entity.kind !== 'widget') {
+      if (isOwnedController(entity.name, entity, snapshot)) {
+        ownedControllers.add(entity.name);
+      }
       continue;
     }
     const constructor = entity.constructors.find(
@@ -252,6 +264,7 @@ export const buildCompileContext = (
   return {
     widgets,
     gestures: gestureWrapOf(widgets.get(GESTURE_WIDGET)),
+    ownedControllers,
     constants: new Map(),
     pluginConstructibles: new Map(),
     pluginConstructors: new Map(),
@@ -336,6 +349,7 @@ const rendersTabView = (component: ComponentAnalysis): boolean => {
  */
 const statefulComponent = (component: ComponentAnalysis): boolean =>
   component.states.length > 0 ||
+  component.controllers.length > 0 ||
   component.plugins.length > 0 ||
   component.effects.length > 0 ||
   component.asyncBinding !== null ||
@@ -434,6 +448,7 @@ const constantContext = (
     sourceFile,
     nullableHandles: new Map(),
     narrowed: new Set(),
+    controllerNames: new Set<string>(),
     pluginConstructibles: compile.pluginConstructibles,
     pluginConstructors: compile.pluginConstructors,
     stateNames: new Set(),
@@ -467,6 +482,7 @@ export const lowerHelper = (
     sourceFile: helper.body.getSourceFile(),
     nullableHandles: new Map(),
     narrowed: new Set(),
+    controllerNames: new Set<string>(),
     pluginConstructibles: compile.pluginConstructibles,
     pluginConstructors: compile.pluginConstructors,
     stateNames: new Set(),
@@ -3888,6 +3904,9 @@ export const lowerComponent = (
       jsonModels: new Set(compile.models.keys()),
       nullableHandles,
       narrowed,
+      controllerNames: new Set(
+        component.controllers.map((controller) => controller.name),
+      ),
       pluginConstructibles: compile.pluginConstructibles,
       pluginConstructors: compile.pluginConstructors,
       useDartImport: (uri: string, prefix?: string): void => {
@@ -3980,6 +3999,30 @@ export const lowerComponent = (
     const lines = listenerLines(binding.binding, info);
     return lines === null ? [] : [lines];
   });
+
+  // A controller is made once, with the widget, and disposed with it — the
+  // lifecycle a `build` local could never have.
+  const controllers = component.controllers.map((controller) => {
+    if (!compile.ownedControllers.has(controller.className)) {
+      throw tsxErrorAt(
+        'TSX0351',
+        `\`${controller.className}\` is not a controller a component owns — ` +
+          'a ChangeNotifier the SDK builds with no arguments is.',
+        { sourceFile: context.sourceFile, node: controller.node },
+      );
+    }
+    return controller;
+  });
+  const controllerFields: IrField[] = controllers.map((controller) => ({
+    name: translateIdentifier(controller.name, context.translate),
+    dartType: controller.className,
+    mutable: false,
+    initializer: `${controller.className}()`,
+  }));
+  const controllerDisposals = controllers.map(
+    (controller) =>
+      `${translateIdentifier(controller.name, context.translate)}.dispose();`,
+  );
 
   const effects = lowerEffects(component.effects, context);
 
@@ -4114,6 +4157,7 @@ export const lowerComponent = (
     handlers: component.handlers,
     effects: component.effects,
     fields: [
+      ...controllerFields,
       ...loweredPlugins.flatMap(({ lowered: plugin }) =>
         plugin.field === null ? [] : [plugin.field],
       ),
@@ -4145,6 +4189,7 @@ export const lowerComponent = (
       ...effects.init,
     ],
     disposeLines: [
+      ...controllerDisposals,
       ...listenerRegistrations.map((lines) => lines.unregister),
       ...loweredPlugins.flatMap(({ lowered }) =>
         lowered.disposeLine === null ? [] : [lowered.disposeLine],

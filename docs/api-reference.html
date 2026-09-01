@@ -1858,7 +1858,7 @@ export const Shell = () =&gt; (
 }</code></pre>
 </div>
 </div>
-<p class="note">Used by <a href="./cookbook.html#01-camera-screen"><code>01-camera-screen</code></a>, <a href="./cookbook.html#05-counter"><code>05-counter</code></a>, <a href="./cookbook.html#06-mount-effect"><code>06-mount-effect</code></a>, <a href="./cookbook.html#07-list-rendering"><code>07-list-rendering</code></a>, <a href="./cookbook.html#09-typed-props"><code>09-typed-props</code></a>, <a href="./cookbook.html#10-camera-options"><code>10-camera-options</code></a>, <a href="./cookbook.html#11-preferences"><code>11-preferences</code></a>, <a href="./cookbook.html#12-secure-storage"><code>12-secure-storage</code></a>, <a href="./cookbook.html#13-open-link"><code>13-open-link</code></a>, <a href="./cookbook.html#15-front-camera"><code>15-front-camera</code></a>, <a href="./cookbook.html#16-tap-target"><code>16-tap-target</code></a>, <a href="./cookbook.html#21-modal"><code>21-modal</code></a>, <a href="./cookbook.html#22-mount-dialog"><code>22-mount-dialog</code></a>, <a href="./cookbook.html#24-animated"><code>24-animated</code></a>, <a href="./cookbook.html#29-branching-handler"><code>29-branching-handler</code></a>, <a href="./cookbook.html#33-control-flow"><code>33-control-flow</code></a>, <a href="./cookbook.html#38-effect-cleanup"><code>38-effect-cleanup</code></a>, <a href="./cookbook.html#39-builder-callback"><code>39-builder-callback</code></a>, <a href="./cookbook.html#43-tray-singleton"><code>43-tray-singleton</code></a>, <a href="./cookbook.html#44-tray-listener"><code>44-tray-listener</code></a>, <a href="./cookbook.html#45-camera-capture"><code>45-camera-capture</code></a>, <a href="./cookbook.html#47-guarded-handler"><code>47-guarded-handler</code></a>, <a href="./cookbook.html#48-number-types"><code>48-number-types</code></a>, <a href="./cookbook.html#51-plugin-values"><code>51-plugin-values</code></a>, <a href="./cookbook.html#52-mixed-label"><code>52-mixed-label</code></a></p>
+<p class="note">Used by <a href="./cookbook.html#01-camera-screen"><code>01-camera-screen</code></a>, <a href="./cookbook.html#05-counter"><code>05-counter</code></a>, <a href="./cookbook.html#06-mount-effect"><code>06-mount-effect</code></a>, <a href="./cookbook.html#07-list-rendering"><code>07-list-rendering</code></a>, <a href="./cookbook.html#09-typed-props"><code>09-typed-props</code></a>, <a href="./cookbook.html#10-camera-options"><code>10-camera-options</code></a>, <a href="./cookbook.html#11-preferences"><code>11-preferences</code></a>, <a href="./cookbook.html#12-secure-storage"><code>12-secure-storage</code></a>, <a href="./cookbook.html#13-open-link"><code>13-open-link</code></a>, <a href="./cookbook.html#15-front-camera"><code>15-front-camera</code></a>, <a href="./cookbook.html#16-tap-target"><code>16-tap-target</code></a>, <a href="./cookbook.html#21-modal"><code>21-modal</code></a>, <a href="./cookbook.html#22-mount-dialog"><code>22-mount-dialog</code></a>, <a href="./cookbook.html#24-animated"><code>24-animated</code></a>, <a href="./cookbook.html#29-branching-handler"><code>29-branching-handler</code></a>, <a href="./cookbook.html#33-control-flow"><code>33-control-flow</code></a>, <a href="./cookbook.html#38-effect-cleanup"><code>38-effect-cleanup</code></a>, <a href="./cookbook.html#39-builder-callback"><code>39-builder-callback</code></a>, <a href="./cookbook.html#43-tray-singleton"><code>43-tray-singleton</code></a>, <a href="./cookbook.html#44-tray-listener"><code>44-tray-listener</code></a>, <a href="./cookbook.html#45-camera-capture"><code>45-camera-capture</code></a>, <a href="./cookbook.html#47-guarded-handler"><code>47-guarded-handler</code></a>, <a href="./cookbook.html#48-number-types"><code>48-number-types</code></a>, <a href="./cookbook.html#51-plugin-values"><code>51-plugin-values</code></a>, <a href="./cookbook.html#52-mixed-label"><code>52-mixed-label</code></a>, <a href="./cookbook.html#53-owned-controller"><code>53-owned-controller</code></a></p>
 </article>
 <article class="widget" id="core-EffectCleanup" data-name="EffectCleanup">
 <h3>EffectCleanup<span class="badge badge-lib">type</span></h3>
@@ -3158,7 +3158,7 @@ position over a given duration whenever the given [alignment] changes.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">AnimatedBuilder</span> animation={…} builder={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">AnimatedBuilder</span> animation={…} builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">AnimatedBuilder</span>&gt;</code></pre>
 </div>
@@ -3397,7 +3397,7 @@ in a grid.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">AnimatedGrid</span> itemBuilder={…} gridDelegate={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">AnimatedGrid</span> itemBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} gridDelegate={…} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">AnimatedGrid</span>({
@@ -3418,7 +3418,7 @@ in a grid.</p>
 </div>
 </article>
 <article class="widget" id="AnimatedList" data-name="AnimatedList">
-<h3>AnimatedList<span class="badge badge-lib">widgets</span></h3>
+<h3>AnimatedList<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A scrolling container that animates items when they are inserted or removed.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -3442,7 +3442,7 @@ in a grid.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">AnimatedList</span> itemBuilder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">AnimatedList</span> itemBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">AnimatedList</span>({
@@ -4295,7 +4295,7 @@ in the same semantic container.</p>
 </div>
 </article>
 <article class="widget" id="Builder" data-name="Builder">
-<h3>Builder<span class="badge badge-lib">widgets</span></h3>
+<h3>Builder<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A stateless utility widget whose [build] method uses its
 [builder] callback to create the widget's child.</p>
 <table class="props">
@@ -4310,7 +4310,7 @@ in the same semantic container.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">Builder</span> builder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">Builder</span> builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">Builder</span>({
@@ -5309,7 +5309,7 @@ of its [TextStyle].</p>
 </div>
 </article>
 <article class="widget" id="DeviceOrientationBuilder" data-name="DeviceOrientationBuilder">
-<h3>DeviceOrientationBuilder<span class="badge badge-lib">widgets</span></h3>
+<h3>DeviceOrientationBuilder<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Builds a widget tree that can depend on the device's orientation.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -5323,7 +5323,7 @@ of its [TextStyle].</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">DeviceOrientationBuilder</span> builder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">DeviceOrientationBuilder</span> builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">DeviceOrientationBuilder</span>({
@@ -5501,7 +5501,7 @@ splits the screen into sub-screens.</p>
 </div>
 </article>
 <article class="widget" id="DragTarget" data-name="DragTarget">
-<h3>DragTarget<span class="badge badge-lib">widgets</span></h3>
+<h3>DragTarget<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that receives data when a [Draggable] widget is dropped.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -5522,7 +5522,7 @@ splits the screen into sub-screens.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">DragTarget</span> builder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">DragTarget</span> builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">DragTarget</span>({
@@ -5631,7 +5631,7 @@ should reset its position to the initial state.</p>
 </div>
 </article>
 <article class="widget" id="DraggableScrollableSheet" data-name="DraggableScrollableSheet">
-<h3>DraggableScrollableSheet<span class="badge badge-lib">widgets</span></h3>
+<h3>DraggableScrollableSheet<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A container for a [Scrollable] that responds to drag gestures by resizing
 the scrollable until a limit is reached, and then scrolling.</p>
 <table class="props">
@@ -5655,7 +5655,7 @@ the scrollable until a limit is reached, and then scrolling.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">DraggableScrollableSheet</span> builder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">DraggableScrollableSheet</span> builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">DraggableScrollableSheet</span>({
@@ -5693,7 +5693,7 @@ the scrollable until a limit is reached, and then scrolling.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">DualTransitionBuilder</span> animation={…} forwardBuilder={…} reverseBuilder={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">DualTransitionBuilder</span> animation={…} forwardBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} reverseBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;<span class="tok-typ">Content</span>&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">DualTransitionBuilder</span>&gt;</code></pre>
 </div>
@@ -6076,7 +6076,7 @@ so that the child fills the available space.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">Expansible</span> headerBuilder={…} bodyBuilder={…} controller={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">Expansible</span> headerBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} bodyBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;<span class="tok-typ">Content</span>&lt;/<span class="tok-typ">Text</span>&gt;} controller={…} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">Expansible</span>({
@@ -6639,7 +6639,7 @@ highlights.</p>
 </div>
 </article>
 <article class="widget" id="FormField" data-name="FormField">
-<h3>FormField<span class="badge badge-lib">widgets</span></h3>
+<h3>FormField<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A single form field.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -6662,7 +6662,7 @@ highlights.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">FormField</span> builder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">FormField</span> builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">FormField</span>({
@@ -6765,7 +6765,7 @@ a [Future].</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">FutureBuilder</span> future={…} builder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">FutureBuilder</span> future={…} builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">FutureBuilder</span>({
@@ -7742,7 +7742,7 @@ on a keyboard.</p>
 </div>
 </article>
 <article class="widget" id="LayoutBuilder" data-name="LayoutBuilder">
-<h3>LayoutBuilder<span class="badge badge-lib">widgets</span></h3>
+<h3>LayoutBuilder<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Builds a widget tree that can depend on the parent widget's size.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -7756,7 +7756,7 @@ on a keyboard.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">LayoutBuilder</span> builder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">LayoutBuilder</span> builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">LayoutBuilder</span>({
@@ -8058,7 +8058,7 @@ changes.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">ListenableBuilder</span> listenable={…} builder={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">ListenableBuilder</span> listenable={…} builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">ListenableBuilder</span>&gt;</code></pre>
 </div>
@@ -8746,7 +8746,7 @@ without taking any room in the parent.</p>
 </div>
 </article>
 <article class="widget" id="OrientationBuilder" data-name="OrientationBuilder">
-<h3>OrientationBuilder<span class="badge badge-lib">widgets</span></h3>
+<h3>OrientationBuilder<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Builds a widget tree that can depend on the parent widget's orientation
 (distinct from the device orientation).</p>
 <table class="props">
@@ -8761,7 +8761,7 @@ without taking any room in the parent.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">OrientationBuilder</span> builder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">OrientationBuilder</span> builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">OrientationBuilder</span>({
@@ -8900,7 +8900,7 @@ from its parent, possibly allowing the child to overflow the parent.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">OverlayPortal</span> controller={…} overlayChildBuilder={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">OverlayPortal</span> controller={…} overlayChildBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">OverlayPortal</span>&gt;</code></pre>
 </div>
@@ -9268,7 +9268,7 @@ menu described by a [PlatformMenu]/[PlatformMenuItem] hierarchy.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">PlatformViewLink</span> surfaceFactory={…} onCreatePlatformView={…} viewType=<span class="tok-str">&quot;example&quot;</span> /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">PlatformViewLink</span> surfaceFactory={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} onCreatePlatformView={…} viewType=<span class="tok-str">&quot;example&quot;</span> /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">PlatformViewLink</span>({
@@ -9570,7 +9570,7 @@ choosing from among a list of options.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">RawAutocomplete</span> optionsViewBuilder={…} optionsBuilder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">RawAutocomplete</span> optionsViewBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} optionsBuilder={…} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">RawAutocomplete</span>({
@@ -9777,7 +9777,7 @@ on a keyboard.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">RawMenuAnchor</span> controller={…} overlayBuilder={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">RawMenuAnchor</span> controller={…} overlayBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">RawMenuAnchor</span>&gt;</code></pre>
 </div>
@@ -9851,7 +9851,7 @@ on a keyboard.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">RawRadio</span> value={…} mouseCursor=<span class="tok-str">&quot;adaptiveClickable&quot;</span> toggleable={<span class="tok-kw">true</span>} focusNode={…} autofocus={<span class="tok-kw">true</span>} groupRegistry={…} enabled={<span class="tok-kw">true</span>} builder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">RawRadio</span> value={…} mouseCursor=<span class="tok-str">&quot;adaptiveClickable&quot;</span> toggleable={<span class="tok-kw">true</span>} focusNode={…} autofocus={<span class="tok-kw">true</span>} groupRegistry={…} enabled={<span class="tok-kw">true</span>} builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">RawRadio</span>({
@@ -9938,7 +9938,7 @@ on a keyboard.</p>
 </div>
 </article>
 <article class="widget" id="RawTooltip" data-name="RawTooltip">
-<h3>RawTooltip<span class="badge badge-lib">widgets</span></h3>
+<h3>RawTooltip<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that wraps a child to display an informative overlay in response to
 user interactions, such as hovering or long-pressing.</p>
 <table class="props">
@@ -9965,7 +9965,7 @@ user interactions, such as hovering or long-pressing.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">RawTooltip</span> semanticsTooltip=<span class="tok-str">&quot;example&quot;</span> tooltipBuilder={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">RawTooltip</span> semanticsTooltip=<span class="tok-str">&quot;example&quot;</span> tooltipBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">RawTooltip</span>&gt;</code></pre>
 </div>
@@ -10153,7 +10153,7 @@ wrapped item to a new location in a reorderable list.</p>
 </div>
 </article>
 <article class="widget" id="ReorderableList" data-name="ReorderableList">
-<h3>ReorderableList<span class="badge badge-lib">widgets</span></h3>
+<h3>ReorderableList<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A scrolling container that allows the user to interactively reorder the
 list items.</p>
 <table class="props">
@@ -10193,7 +10193,7 @@ list items.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">ReorderableList</span> itemBuilder={…} itemCount={<span class="tok-num">8</span>} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">ReorderableList</span> itemBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} itemCount={<span class="tok-num">8</span>} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">ReorderableList</span>({
@@ -10276,7 +10276,7 @@ list items.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">RepeatingAnimationBuilder</span> animatable={…} duration=<span class="tok-str">&quot;defaultAnimationDuration&quot;</span> builder={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">RepeatingAnimationBuilder</span> animatable={…} duration=<span class="tok-str">&quot;defaultAnimationDuration&quot;</span> builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">RepeatingAnimationBuilder</span>&gt;</code></pre>
 </div>
@@ -10701,7 +10701,7 @@ by the operating system.</p>
 </div>
 </article>
 <article class="widget" id="Scrollable" data-name="Scrollable">
-<h3>Scrollable<span class="badge badge-lib">widgets</span></h3>
+<h3>Scrollable<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that manages scrolling in one dimension and informs the [Viewport]
 through which the content is viewed.</p>
 <table class="props">
@@ -10727,7 +10727,7 @@ through which the content is viewed.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">Scrollable</span> viewportBuilder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">Scrollable</span> viewportBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">Scrollable</span>({
@@ -11519,7 +11519,7 @@ through to its child, which may then overflow.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">SliverAnimatedGrid</span> itemBuilder={…} gridDelegate={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">SliverAnimatedGrid</span> itemBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} gridDelegate={…} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">SliverAnimatedGrid</span>({
@@ -11533,7 +11533,7 @@ through to its child, which may then overflow.</p>
 </div>
 </article>
 <article class="widget" id="SliverAnimatedList" data-name="SliverAnimatedList">
-<h3>SliverAnimatedList<span class="badge badge-lib">widgets</span></h3>
+<h3>SliverAnimatedList<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A [SliverList] that animates items when they are inserted or removed.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -11549,7 +11549,7 @@ through to its child, which may then overflow.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">SliverAnimatedList</span> itemBuilder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">SliverAnimatedList</span> itemBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">SliverAnimatedList</span>({
@@ -11912,7 +11912,7 @@ when the user scrolls backwards.</p>
 </div>
 </article>
 <article class="widget" id="SliverLayoutBuilder" data-name="SliverLayoutBuilder">
-<h3>SliverLayoutBuilder<span class="badge badge-lib">widgets</span></h3>
+<h3>SliverLayoutBuilder<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Builds a sliver widget tree that can depend on its own [SliverConstraints].</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -11926,7 +11926,7 @@ when the user scrolls backwards.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">SliverLayoutBuilder</span> builder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">SliverLayoutBuilder</span> builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">SliverLayoutBuilder</span>({
@@ -12188,7 +12188,7 @@ to have the same extent as a prototype item along the main axis.</p>
 </div>
 </article>
 <article class="widget" id="SliverReorderableList" data-name="SliverReorderableList">
-<h3>SliverReorderableList<span class="badge badge-lib">widgets</span></h3>
+<h3>SliverReorderableList<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A sliver list that allows the user to interactively reorder the list items.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -12214,7 +12214,7 @@ to have the same extent as a prototype item along the main axis.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">SliverReorderableList</span> itemBuilder={…} itemCount={<span class="tok-num">8</span>} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">SliverReorderableList</span> itemBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} itemCount={<span class="tok-num">8</span>} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">SliverReorderableList</span>({
@@ -12687,7 +12687,7 @@ spacing between widgets in a [Flex] container, like [Row] or [Column].</p>
 </div>
 </article>
 <article class="widget" id="StatefulBuilder" data-name="StatefulBuilder">
-<h3>StatefulBuilder<span class="badge badge-lib">widgets</span></h3>
+<h3>StatefulBuilder<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A platonic widget that both has state and calls a closure to obtain its child widget.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -12701,7 +12701,7 @@ spacing between widgets in a [Flex] container, like [Row] or [Column].</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">StatefulBuilder</span> builder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">StatefulBuilder</span> builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">StatefulBuilder</span>({
@@ -12729,7 +12729,7 @@ a [Stream].</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">StreamBuilder</span> stream={…} builder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">StreamBuilder</span> stream={…} builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">StreamBuilder</span>({
@@ -13319,7 +13319,7 @@ whenever the target value changes.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">TweenAnimationBuilder</span> tween={…} duration=<span class="tok-str">&quot;defaultAnimationDuration&quot;</span> builder={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">TweenAnimationBuilder</span> tween={…} duration=<span class="tok-str">&quot;defaultAnimationDuration&quot;</span> builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">TweenAnimationBuilder</span>&gt;</code></pre>
 </div>
@@ -13361,7 +13361,7 @@ content is viewed.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">TwoDimensionalScrollable</span> horizontalDetails={…} verticalDetails={…} viewportBuilder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">TwoDimensionalScrollable</span> horizontalDetails={…} verticalDetails={…} viewportBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">TwoDimensionalScrollable</span>({
@@ -13540,7 +13540,7 @@ available to descendants via [RestorationScope.of].</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">ValueListenableBuilder</span> valueListenable={…} builder={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">ValueListenableBuilder</span> valueListenable={…} builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">ValueListenableBuilder</span>&gt;</code></pre>
 </div>
@@ -13792,7 +13792,7 @@ in combination with a [Scrollable].</p>
 </div>
 </article>
 <article class="widget" id="WidgetsApp" data-name="WidgetsApp">
-<h3>WidgetsApp<span class="badge badge-lib">widgets</span></h3>
+<h3>WidgetsApp<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A convenience widget that wraps a number of widgets that are commonly
 required for an application.</p>
 <table class="props">
@@ -13837,7 +13837,7 @@ required for an application.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">WidgetsApp</span> color=<span class="tok-str">&quot;activeBlue&quot;</span> builder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">WidgetsApp</span> color=<span class="tok-str">&quot;activeBlue&quot;</span> builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">WidgetsApp</span>({
@@ -14824,7 +14824,7 @@ widgets.</p>
 </div>
 </article>
 <article class="widget" id="BottomSheet" data-name="BottomSheet">
-<h3>BottomSheet<span class="badge badge-lib">material</span></h3>
+<h3>BottomSheet<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A Material Design bottom sheet.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -14852,7 +14852,7 @@ widgets.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">BottomSheet</span> onClosing={() =&gt; {}} builder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">BottomSheet</span> onClosing={() =&gt; {}} builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;<span class="tok-typ">Content</span>&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">BottomSheet</span>({
@@ -20996,7 +20996,7 @@ suggested completions for a search query.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">SearchAnchor</span> builder={…} suggestionsBuilder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">SearchAnchor</span> builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} suggestionsBuilder={…} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">SearchAnchor</span>({
@@ -25441,7 +25441,7 @@ sheets.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">CupertinoTabScaffold</span> tabBar={…} tabBuilder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">CupertinoTabScaffold</span> tabBar={…} tabBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">CupertinoTabScaffold</span>({

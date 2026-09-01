@@ -331,6 +331,12 @@ export const FIXTURE_APPS: FixtureApp[] = [
     deps: ['camera'],
   },
   {
+    id: '53-owned-controller',
+    component: 'SearchBox',
+    dartFile: 'search_box.dart',
+    deps: [],
+  },
+  {
     id: '52-mixed-label',
     component: 'PlayCount',
     dartFile: 'play_count.dart',

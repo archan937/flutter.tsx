@@ -1210,6 +1210,46 @@ export const Meter = ({ level }: { level: Level }) => (
   });
 });
 
+describe('transpileComponent — controllers a component owns', () => {
+  test('a controller becomes a field of the State, disposed with it', async () => {
+    const dart = await transpileComponent({
+      source:
+        "import { TextField, TextEditingController } from 'flutter-tsx';\n" +
+        'export const Probe = () => {\n' +
+        '  const query = new TextEditingController();\n' +
+        '  return <TextField controller={query} />;\n' +
+        '};\n',
+      filePath: 'probe.tsx',
+    });
+
+    // Made with the widget and disposed with it — the lifecycle a local
+    // rebuilt every frame could never have.
+    expect(dart).toContain(
+      '  final TextEditingController _query = TextEditingController();',
+    );
+    expect(dart).toContain(
+      '  @override\n  void dispose() {\n    _query.dispose();\n' +
+        '    super.dispose();\n  }',
+    );
+    expect(dart).toContain('TextField(controller: _query)');
+  });
+
+  test('a class that is not a controller is a numbered error', () => {
+    // `Text` is a widget, not something with a lifecycle to own.
+    expect(
+      transpileComponent({
+        source:
+          "import { Column, Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => {\n' +
+          '  const thing = new Text();\n' +
+          '  return <Column>{thing}</Column>;\n' +
+          '};\n',
+        filePath: 'probe.tsx',
+      }),
+    ).rejects.toThrow(/TSX0351 .* `Text` is not a controller a component owns/);
+  });
+});
+
 describe('transpileComponent — values a plugin declares', () => {
   const probe = (body: string): Promise<string> =>
     transpileComponent({

@@ -3188,6 +3188,8 @@ export interface CarouselController {
   readonly offset: number;
 }
 
+export declare const CarouselController: new () => CarouselController;
+
 export interface CarouselViewThemeData {
   readonly __fsxBrand?: {
     readonly CarouselViewThemeData: true;
@@ -3699,6 +3701,8 @@ export interface FixedExtentScrollController {
   readonly selectedItem: number;
 }
 
+export declare const FixedExtentScrollController: new () => FixedExtentScrollController;
+
 export interface FloatingActionButtonAnimator {
   readonly __fsxBrand?: { readonly FloatingActionButtonAnimator: true };
 }
@@ -3757,6 +3761,8 @@ export interface FocusNode {
   readonly traversalDescendants: FocusNode[];
 }
 
+export declare const FocusNode: new () => FocusNode;
+
 export interface FocusOrder {
   readonly __fsxBrand?: {
     readonly Comparable: true;
@@ -3800,6 +3806,8 @@ export interface FocusScopeNode {
   readonly traversalDescendants: FocusNode[];
   readonly traversalEdgeBehavior: TraversalEdgeBehavior;
 }
+
+export declare const FocusScopeNode: new () => FocusScopeNode;
 
 export interface FocusTraversalPolicy {
   readonly __fsxBrand?: {
@@ -4338,6 +4346,8 @@ export interface PageController {
   readonly page: number;
   readonly viewportFraction: number;
 }
+
+export declare const PageController: new () => PageController;
 
 export interface PageRoute {
   readonly __fsxBrand?: {
@@ -5043,6 +5053,8 @@ export interface ScrollController {
   readonly offset: number;
 }
 
+export declare const ScrollController: new () => ScrollController;
+
 export interface ScrollIncrementDetails {
   readonly __fsxBrand?: { readonly ScrollIncrementDetails: true };
 }
@@ -5093,6 +5105,8 @@ export interface SearchController {
   readonly selection: TextSelection;
   readonly text: string;
 }
+
+export declare const SearchController: new () => SearchController;
 
 export interface SearchViewThemeData {
   readonly __fsxBrand?: {
@@ -5390,6 +5404,8 @@ export interface TabBarScrollController {
   readonly offset: number;
 }
 
+export declare const TabBarScrollController: new () => TabBarScrollController;
+
 export interface TabBarThemeData {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -5541,6 +5557,8 @@ export interface TextEditingController {
   readonly selection: TextSelection;
   readonly text: string;
 }
+
+export declare const TextEditingController: new () => TextEditingController;
 
 export interface TextEditingValue {
   readonly __fsxBrand?: { readonly TextEditingValue: true };
