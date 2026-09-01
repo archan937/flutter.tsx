@@ -25,6 +25,17 @@ export const jsxs = jsx;
 // declaration is the only syntax TypeScript accepts for it.
 export namespace JSX {
   export type Element = FlutterElement;
+  /**
+   * What may be written as a tag.
+   *
+   * A component that awaits — `const Page = async () => { const data = await
+   * useAsync(…) }` — is a component like any other: the compiler turns it
+   * into a FutureBuilder, so the tag `<Page />` is as valid as any other and
+   * the types say so.
+   */
+  export type ElementType =
+    | ((props: never) => FlutterElement)
+    | ((props: never) => Promise<FlutterElement>);
   export interface ElementChildrenAttribute {
     children: unknown;
   }

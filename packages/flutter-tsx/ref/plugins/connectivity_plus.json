@@ -5,6 +5,7 @@
     {
       "name": "Connectivity",
       "doc": "/// Discover network connectivity configurations: Distinguish between WI-FI and cellular, check WI-FI status and more.",
+      "supertypes": [],
       "constructors": [
         {
           "name": "",
@@ -54,6 +55,10 @@
     {
       "name": "ConnectivityPlusLinuxPlugin",
       "doc": "/// The Linux implementation of ConnectivityPlatform.",
+      "supertypes": [
+        "ConnectivityPlatform",
+        "PlatformInterface"
+      ],
       "constructors": [
         {
           "name": "",

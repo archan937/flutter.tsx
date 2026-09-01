@@ -25,6 +25,12 @@
     "jsx": "react-jsx",
     "jsxImportSource": "flutter-tsx"
   },
-  "include": ["bin/**/*", "scripts/**/*", "src/**/*", "test/**/*"],
+  "include": [
+    "bin/**/*",
+    "scripts/**/*",
+    "src/**/*",
+    "templates/**/*",
+    "test/**/*"
+  ],
   "exclude": ["node_modules", "dist"]
 }

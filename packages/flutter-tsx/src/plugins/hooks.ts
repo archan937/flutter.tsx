@@ -39,6 +39,16 @@ export type HookAcquisition =
   // the instance, so the hook hands back that one rather than making another.
   | { kind: 'topLevelInstance'; instanceName: string };
 
+/**
+ * Whether the handle is null until the hook has built it.
+ *
+ * A constructed or factory-opened handle only exists once `initState` has run,
+ * so the first `build` sees null. The typings say so and the compiler guards
+ * on it, both from here, so the two can never drift apart.
+ */
+export const isNullableHandle = (acquisition: HookAcquisition): boolean =>
+  acquisition.kind === 'constructor' || acquisition.kind === 'staticFactory';
+
 /** One value an event hands over, named on both sides of the compiler. */
 export interface HookEventParam {
   name: string;

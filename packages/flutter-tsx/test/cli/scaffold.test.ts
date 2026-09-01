@@ -12,6 +12,7 @@ const options: ScaffoldOptions = {
   name: 'my_app',
   bundleId: 'dev.fluttertsx.myapp',
   version: FLUTTER_TSX_VERSION,
+  target: 'web',
 };
 
 const fileNamed = (name: string): string => {

@@ -155,6 +155,7 @@ main pre { border: 1px solid var(--line); border-radius: 10px; background: rgba(
     <a href="./index.html">Home</a>
     <span class="here" aria-current="page">Guide</span>
     <a href="./cookbook.html">Cookbook</a>
+    <a href="./examples.html">Examples</a>
     <a href="./api-reference.html">API reference</a>
     <a href="./config-mapping.html">Config mapping</a>
     <a class="ghstars" href="https://github.com/archan937/flutter.tsx/stargazers" target="_blank" rel="noopener" aria-label="Star flutter.tsx on GitHub"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M8 .25l2.06 4.17 4.6.67-3.33 3.24.79 4.59L8 11.42l-4.12 2.16.79-4.59L1.34 5.09l4.6-.67z" /></svg><span id="gh-stars">Star</span></a>
@@ -195,6 +196,14 @@ cd ~/my-app &amp;&amp; bun install</code></pre>
 cd my-app
 bun install</code></pre>
 <p>You get <code>fsx.config.ts</code>, a <code>src/App.tsx</code> to start from, a <code>tsconfig.json</code> wired for TSX, and the host Flutter app.</p>
+<h3 id="start-from-a-complete-app-instead">Start from a complete app instead</h3>
+<p><code>--template</code> scaffolds one of four finished apps rather than the starter — the same files, plus that app's own source and the pub packages it needs:</p>
+<pre><code class="language-sh">fsx init my-app --template=web       # album browser: routes, a store, models
+fsx init my-app --template=mobile    # field notes: tabs, camera preview, keychain
+fsx init my-app --template=desktop   # service console: master–detail, live build info
+fsx init my-app --template=tray      # menu-bar companion: tray events, a live stream</code></pre>
+<p>Add <code>--target=&lt;platform&gt;</code> to build the same app for somewhere else — <code>fsx init my-app --template=mobile --target=web</code> scaffolds the field-notes app as a web project. The platforms are <code>android</code>, <code>ios</code>, <code>linux</code>, <code>macos</code>, <code>web</code> and <code>windows</code>.</p>
+<p>Every template is transpiled, analysed and built for its own platform on every run of the end-to-end suite, and each one is committed under <a href="https://github.com/archan937/flutter.tsx/tree/master/examples"><code>examples/</code></a> so you can read it before you run anything. The <a href="./examples.html">Examples</a> page lists what each app demonstrates, file by file.</p>
 <h2 id="2-install-the-sdk-and-your-plugins">2. Install the SDK and your plugins</h2>
 <pre><code class="language-sh">fsx install</code></pre>
 <p>One command does both: it downloads the pinned Flutter SDK into <code>~/.fsx</code> (shared by every project on the machine, so it happens once), then brings the project's plugins in line with what <code>package.json</code> declares.</p>

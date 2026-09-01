@@ -29,8 +29,9 @@ class _AppInfoState extends State<AppInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [Text(_info?.appName ?? ''), Text('v${_info?.version ?? ''}')],
-    );
+    if (_info == null) {
+      return const Text('Loading…');
+    }
+    return Column(children: [Text(_info!.appName), Text('v${_info!.version}')]);
   }
 }

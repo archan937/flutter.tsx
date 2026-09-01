@@ -1,0 +1,16 @@
+{
+  "name": "mobile",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "fsx dev",
+    "build": "fsx build"
+  },
+  "dependencies": {
+    "flutter-tsx": "^1.0.0-alpha.0"
+  },
+  "plugins": {
+    "camera": "^0.12.0",
+    "flutter_secure_storage": "^9.2.4"
+  }
+}

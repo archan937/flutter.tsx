@@ -5,6 +5,7 @@
     {
       "name": "BrowserConfiguration",
       "doc": "/// Additional configuration options for [LaunchMode.inAppBrowserView]",
+      "supertypes": [],
       "constructors": [
         {
           "name": "",
@@ -45,6 +46,7 @@
     {
       "name": "WebViewConfiguration",
       "doc": "/// Additional configuration options for [LaunchMode.inAppWebView].",
+      "supertypes": [],
       "constructors": [
         {
           "name": "",

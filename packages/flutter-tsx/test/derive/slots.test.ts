@@ -94,6 +94,42 @@ describe('deriveSlots (synthetic snapshots)', () => {
     });
   });
 
+  // Scaffold and NestedScrollView name their content `body`. It is the one
+  // child a developer writes between the tags, so it is the child slot.
+  test('a widget whose content parameter is named body gets a child slot', () => {
+    const slots = deriveSlots(
+      snapshotWith([
+        widget('ScaffoldLike', [
+          param('body', NULLABLE_WIDGET),
+          param('appBar', NULLABLE_WIDGET),
+        ]),
+      ]),
+    );
+
+    expect(slots).toEqual({
+      ScaffoldLike: {
+        children: { param: 'body', kind: 'widget' },
+        slots: [{ param: 'appBar', accepts: 'Widget', mode: 'single' }],
+      },
+    });
+  });
+
+  test('a child parameter still wins over a body parameter', () => {
+    const slots = deriveSlots(
+      snapshotWith([
+        widget('BothLike', [
+          param('body', NULLABLE_WIDGET),
+          param('child', NULLABLE_WIDGET),
+        ]),
+      ]),
+    );
+
+    expect(slots.BothLike?.children).toEqual({
+      param: 'child',
+      kind: 'widget',
+    });
+  });
+
   test('a positional string content parameter becomes a text slot', () => {
     const slots = deriveSlots(
       snapshotWith([
@@ -148,10 +184,9 @@ describe('deriveSlots (synthetic snapshots)', () => {
 
     expect(slots).toEqual({
       ScaffoldLike: {
-        children: null,
+        children: { param: 'body', kind: 'widget' },
         slots: [
           { param: 'appBar', accepts: 'PreferredSizeWidget', mode: 'single' },
-          { param: 'body', accepts: 'Widget', mode: 'single' },
           {
             param: 'persistentFooterButtons',
             accepts: 'Widget',
@@ -233,10 +268,9 @@ describe('deriveSlots (real SDK snapshot, end to end)', () => {
 
   test('Scaffold exposes its complete named-slot surface', async () => {
     expect((await realSlots()).Scaffold).toEqual({
-      children: null,
+      children: { param: 'body', kind: 'widget' },
       slots: [
         { param: 'appBar', accepts: 'PreferredSizeWidget', mode: 'single' },
-        { param: 'body', accepts: 'Widget', mode: 'single' },
         { param: 'bottomNavigationBar', accepts: 'Widget', mode: 'single' },
         { param: 'bottomSheet', accepts: 'Widget', mode: 'single' },
         { param: 'drawer', accepts: 'Widget', mode: 'single' },

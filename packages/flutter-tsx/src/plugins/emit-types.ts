@@ -1,7 +1,8 @@
 import type { ParamModel, TypeNode } from '../api/model';
+import { jsxPropName } from '../generate/renames';
 import { tsTypeOf } from '../generate/ts-types';
 import type { PluginApi, PluginMethod } from './api';
-import type { DerivedHook, HookEvent } from './hooks';
+import { type DerivedHook, type HookEvent, isNullableHandle } from './hooks';
 
 interface TypeRefs {
   named: Set<string>;
@@ -177,8 +178,9 @@ const methodLine = (method: PluginMethod): string => {
 /**
  * The type a hook is declared with — the one the IDE shows and the one the
  * API reference documents, so the two can never disagree. Options are named
- * after the plugin's own fields; the managed lifecycle calls are `Omit`ted
- * because the generated widget makes them, not the developer.
+ * after the plugin's own fields. The lifecycle calls the generated widget
+ * makes are absent from the class itself, so the handle is the plain type and
+ * stays assignable everywhere the plugin asks for it.
  */
 /** An event's values, as the callback that receives them declares them. */
 const eventParams = (event: HookEvent): string =>
@@ -198,12 +200,41 @@ export const hookSignature = (hook: DerivedHook): string => {
   const optionMembers = members.join('; ');
   const parameters =
     members.length === 0 ? '' : `options?: { ${optionMembers} }`;
-  const managed = hook.managed.map((name) => `'${name}'`).join(' | ');
-  const handle =
-    hook.managed.length === 0
-      ? hook.className
-      : `Omit<${hook.className}, ${managed}>`;
-  return `(${parameters}) => ${handle}`;
+  const nullable = isNullableHandle(hook.acquisition) ? ' | null' : '';
+  return `(${parameters}) => ${hook.className}${nullable}`;
+};
+
+/** The lifecycle members the generated widget owns, by class. */
+const managedByClass = (hooks: DerivedHook[]): Map<string, Set<string>> =>
+  new Map(hooks.map((hook) => [hook.className, new Set(hook.managed)]));
+
+/**
+ * A widget a plugin ships, declared the way the SDK's widgets are.
+ *
+ * `<CameraPreview controller={cam} />` is how a developer uses it, so it is
+ * emitted as a component over its constructor's parameters rather than as a
+ * class nobody can instantiate from TSX.
+ */
+const widgetComponent = (
+  entity: PluginApi['classes'][number],
+): string | null => {
+  const constructor = entity.constructors.find(
+    (candidate) => candidate.name === '',
+  );
+  if (!entity.supertypes.includes('Widget') || constructor === undefined) {
+    return null;
+  }
+  const takenNames = new Set(constructor.params.map((param) => param.name));
+  const members = constructor.params.map((param) => {
+    const optional = param.required ? '' : '?';
+    const name = jsxPropName(param.name, takenNames);
+    return `    ${name}${optional}: ${tsTypeOf(withCoreStrings(param.type))};`;
+  });
+  const props = `${entity.name}Props`;
+  return (
+    `  export interface ${props} {\n${members.join('\n')}\n  }\n\n` +
+    `  export const ${entity.name}: FlutterComponent<${props}>;`
+  );
 };
 
 export const emitPluginDeclaration = (
@@ -250,6 +281,9 @@ export const emitPluginDeclaration = (
   const sdkImports = [
     ...[...refs.enums].filter((name) => !declaredNames.has(name)),
     ...(refs.usesWidget ? ['FlutterElement'] : []),
+    ...(api.classes.some((entity) => widgetComponent(entity) !== null)
+      ? ['FlutterComponent']
+      : []),
   ].sort((first, second) => first.localeCompare(second));
 
   const blocks: string[] = [];
@@ -270,7 +304,14 @@ export const emitPluginDeclaration = (
     );
   }
 
+  const managedMembers = managedByClass(hooks);
   for (const entity of api.classes) {
+    const widget = widgetComponent(entity);
+    if (widget !== null) {
+      blocks.push(widget);
+      continue;
+    }
+    const hidden = managedMembers.get(entity.name) ?? new Set<string>();
     const lines: string[] = [];
     const constructor = entity.constructors.find(
       (candidate) => candidate.name === '',
@@ -286,7 +327,11 @@ export const emitPluginDeclaration = (
             `    readonly ${field.name}: ${tsTypeOf(withCoreStrings(field.type))};`,
         ),
     );
-    lines.push(...tsMethods(entity).map(methodLine));
+    lines.push(
+      ...tsMethods(entity)
+        .filter((method) => !hidden.has(method.name))
+        .map(methodLine),
+    );
     blocks.push(
       lines.length === 0
         ? `  export class ${entity.name} {}`

@@ -1,0 +1,16 @@
+{
+  "name": "desktop",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "fsx dev",
+    "build": "fsx build"
+  },
+  "dependencies": {
+    "flutter-tsx": "^1.0.0-alpha.0"
+  },
+  "plugins": {
+    "package_info_plus": "^8.3.1",
+    "url_launcher": "^6.3.2"
+  }
+}

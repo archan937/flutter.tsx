@@ -2748,14 +2748,11 @@
       "slots": []
     },
     "NestedScrollView": {
-      "children": null,
-      "slots": [
-        {
-          "param": "body",
-          "accepts": "Widget",
-          "mode": "single"
-        }
-      ]
+      "children": {
+        "param": "body",
+        "kind": "widget"
+      },
+      "slots": []
     },
     "NestedScrollViewViewport": {
       "children": null,
@@ -3301,16 +3298,14 @@
       "slots": []
     },
     "Scaffold": {
-      "children": null,
+      "children": {
+        "param": "body",
+        "kind": "widget"
+      },
       "slots": [
         {
           "param": "appBar",
           "accepts": "PreferredSizeWidget",
-          "mode": "single"
-        },
-        {
-          "param": "body",
-          "accepts": "Widget",
           "mode": "single"
         },
         {

@@ -78,5 +78,5 @@ declare module 'plugin:shared_preferences' {
     readonly allowList: string[] | null;
   }
 
-  export const useSharedPreferences: () => SharedPreferences;
+  export const useSharedPreferences: () => SharedPreferences | null;
 }

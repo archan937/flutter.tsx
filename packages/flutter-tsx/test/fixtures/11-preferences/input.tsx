@@ -6,7 +6,7 @@ export const Profile = () => {
   const [saved, setSaved] = useState(false);
 
   const save = async () => {
-    await prefs.setString('name', 'Paul');
+    await prefs?.setString('name', 'Paul');
     setSaved(true);
   };
 

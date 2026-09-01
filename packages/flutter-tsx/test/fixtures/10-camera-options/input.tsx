@@ -6,7 +6,7 @@ export const HiResCamera = () => {
   const [taken, setTaken] = useState(false);
 
   const takePhoto = async () => {
-    await cam.takePicture();
+    await cam?.takePicture();
     setTaken(true);
   };
 

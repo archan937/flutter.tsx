@@ -5,6 +5,7 @@
     {
       "name": "Menu",
       "doc": "",
+      "supertypes": [],
       "constructors": [
         {
           "name": "",
@@ -128,6 +129,7 @@
     {
       "name": "MenuBehavior",
       "doc": "",
+      "supertypes": [],
       "constructors": [],
       "fields": [],
       "methods": [
@@ -192,6 +194,7 @@
     {
       "name": "MenuItem",
       "doc": "",
+      "supertypes": [],
       "constructors": [
         {
           "name": "",
@@ -1044,6 +1047,7 @@
     {
       "name": "TrayListener",
       "doc": "",
+      "supertypes": [],
       "constructors": [],
       "fields": [],
       "methods": [
@@ -1112,6 +1116,7 @@
     {
       "name": "TrayManager",
       "doc": "",
+      "supertypes": [],
       "constructors": [],
       "fields": [
         {

@@ -47,6 +47,7 @@
     "generate:plugin": "bun scripts/generate-plugin-types.ts",
     "derive": "bun scripts/derive-slots.ts",
     "generate": "bun scripts/generate-types.ts",
+    "examples": "bun scripts/write-examples.ts",
     "docs": "bun scripts/generate-docs.ts",
     "verify:api": "bun scripts/verify-api.ts",
     "lint:extractor": "bun scripts/extractor-quality.ts lint",

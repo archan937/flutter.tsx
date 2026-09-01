@@ -2,7 +2,7 @@
 // camera 0.12.0+2
 
 declare module 'plugin:camera' {
-  import type { DeviceOrientation, FlutterElement } from 'flutter-tsx';
+  import type { DeviceOrientation, FlutterComponent, FlutterElement } from 'flutter-tsx';
 
   export type CameraLensDirection = 'front' | 'back' | 'external';
 
@@ -72,14 +72,12 @@ declare module 'plugin:camera' {
     readonly value: unknown;
     buildPreview(): FlutterElement;
     debugCheckIsDisposed(): void;
-    dispose(): Promise<void>;
     getExposureOffsetStepSize(): Promise<number>;
     getMaxExposureOffset(): Promise<number>;
     getMaxZoomLevel(): Promise<number>;
     getMinExposureOffset(): Promise<number>;
     getMinZoomLevel(): Promise<number>;
     getSupportedVideoStabilizationModes(): Promise<VideoStabilizationMode[]>;
-    initialize(): Promise<void>;
     lockCaptureOrientation(orientation?: DeviceOrientation | null): Promise<void>;
     pausePreview(): Promise<void>;
     pauseVideoRecording(): Promise<void>;
@@ -131,13 +129,13 @@ declare module 'plugin:camera' {
     readonly width: number;
   }
 
-  export class CameraPreview {
-    constructor(controller: CameraController, options?: { key?: Key | null; child?: FlutterElement | null });
-    readonly child: FlutterElement | null;
-    readonly controller: CameraController;
-    readonly key: Key | null;
-    build(context: BuildContext): FlutterElement;
+  export interface CameraPreviewProps {
+    controller: CameraController;
+    key?: Key | null;
+    child?: FlutterElement | null;
   }
+
+  export const CameraPreview: FlutterComponent<CameraPreviewProps>;
 
   export class CameraValue {
     constructor(options: { isInitialized: boolean; errorDescription?: string | null; previewSize?: Size | null; isRecordingVideo: boolean; isTakingPicture: boolean; isStreamingImages: boolean; isRecordingPaused: boolean; flashMode: FlashMode; exposureMode: ExposureMode; focusMode: FocusMode; exposurePointSupported: boolean; focusPointSupported: boolean; deviceOrientation: DeviceOrientation; description: CameraDescription; lockedCaptureOrientation?: DeviceOrientation | null; recordingOrientation?: DeviceOrientation | null; isPreviewPaused?: boolean; previewPauseOrientation?: DeviceOrientation | null; videoStabilizationMode?: VideoStabilizationMode });
@@ -209,5 +207,5 @@ declare module 'plugin:camera' {
 
   export const availableCameras: () => Promise<CameraDescription[]>;
 
-  export const useCamera: (options?: { lens?: CameraLensDirection; lensType?: CameraLensType; resolution?: ResolutionPreset }) => Omit<CameraController, 'initialize' | 'dispose'>;
+  export const useCamera: (options?: { lens?: CameraLensDirection; lensType?: CameraLensType; resolution?: ResolutionPreset }) => CameraController | null;
 }

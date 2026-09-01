@@ -77,7 +77,7 @@ describe('loadAppConfig', () => {
       `export default { name: 'a', bundleId: 'b', target: 'toaster' };\n`,
       (dir) => {
         expect(loadAppConfig(dir)).rejects.toThrow(
-          `${dir}/fsx.config.ts: target must be one of web, ios, android, macos, windows, linux.`,
+          `${dir}/fsx.config.ts: target must be one of android, ios, linux, macos, web, windows.`,
         );
       },
     );

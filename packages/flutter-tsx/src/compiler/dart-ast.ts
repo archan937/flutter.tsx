@@ -5,7 +5,13 @@ export type DartExpr =
   | { kind: 'identifier'; name: string }
   | { kind: 'enumMember'; enumName: string; member: string }
   | { kind: 'call'; target: string; isConst: boolean; args: DartArgument[] }
-  | { kind: 'closure'; params: string[]; body: ClosureBody }
+  | {
+      kind: 'closure';
+      params: string[];
+      /** `async` when the body awaits, exactly as Dart declares it. */
+      isAsync?: boolean;
+      body: ClosureBody;
+    }
   | {
       kind: 'conditional';
       condition: DartExpr;

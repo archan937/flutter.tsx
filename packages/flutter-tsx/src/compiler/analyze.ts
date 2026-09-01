@@ -79,7 +79,8 @@ export interface HelperBinding {
   typeParams: string[];
   params: HelperParam[];
   returnDartType: string;
-  body: ts.Expression;
+  /** One expression, or a block with its own locals and returns. */
+  body: ts.ConciseBody;
 }
 
 /// `const x = <expression>` in a component body, kept in source order.
@@ -93,6 +94,8 @@ export interface LocalBinding {
 export interface HandlerBinding {
   name: string;
   isAsync: boolean;
+  /** The values the callback is handed, with the Dart type each declares. */
+  params: { name: string; dartType: string }[];
   body: ts.ArrowFunction;
 }
 
@@ -100,6 +103,17 @@ export interface PropBinding {
   name: string;
   dartType: string;
   required: boolean;
+}
+
+/**
+ * An early return: `if (!info) return <Text>Loading…</Text>;`.
+ *
+ * A component guards before it renders — the React shape newcomers already
+ * write, and the only honest way to read a value the hook has not built yet.
+ */
+export interface GuardBinding {
+  condition: ts.Expression;
+  jsx: ts.Expression;
 }
 
 export interface ComponentAnalysis {
@@ -117,6 +131,7 @@ export interface ComponentAnalysis {
   handlers: HandlerBinding[];
   helpers: HelperBinding[];
   effects: ts.CallExpression[];
+  guards: GuardBinding[];
   returnJsx: ts.Expression;
   sourceFile: ts.SourceFile;
 }
@@ -135,8 +150,22 @@ export interface ComponentSummary {
   returnTag: string;
 }
 
+/**
+ * `export const ALBUMS: Album[] = [ … ]` — data the module declares.
+ *
+ * An app has lookup tables, seed data and settings before it has a server,
+ * and they belong beside the code that reads them. A typed const with a
+ * literal for a value becomes a top-level Dart constant.
+ */
+export interface ConstantBinding {
+  name: string;
+  dartType: string;
+  expression: ts.Expression;
+}
+
 export interface SourceAnalysis {
   components: ComponentAnalysis[];
+  constants: ConstantBinding[];
   stores: StoreBinding[];
   router: RouterBinding | null;
   models: ModelBinding[];
@@ -160,15 +189,23 @@ const COMPILER_OPTIONS: ts.CompilerOptions = {
 
 const PLUGIN_MODULE_PREFIX = 'plugin:';
 
+/**
+ * TypeScript's `number` is Dart's `num`.
+ *
+ * It is the type that holds either of Dart's, which is what a TypeScript
+ * number is: `1994` stays `1994` when it is printed, where a `double` would
+ * print `1994.0`. Where a Flutter API asks for a `double` specifically, the
+ * value is widened at that boundary — see `widenedNumberDart`.
+ */
 const SCALAR_DART_TYPES: Record<string, string> = {
   boolean: 'bool',
   string: 'String',
-  number: 'double',
+  number: 'num',
 };
 
 const PROP_DART_TYPES = new Map<ts.SyntaxKind, string>([
   [ts.SyntaxKind.StringKeyword, 'String'],
-  [ts.SyntaxKind.NumberKeyword, 'double'],
+  [ts.SyntaxKind.NumberKeyword, 'num'],
   [ts.SyntaxKind.BooleanKeyword, 'bool'],
 ]);
 
@@ -514,19 +551,26 @@ const analyzeStateDeclaration = (
   });
 };
 
+/** Claims a statement of a component's body, or reports it unclaimed. */
 const analyzeBodyStatement = (
   statement: ts.Statement,
   context: BodyContext,
-): void => {
+): boolean => {
+  if (ts.isReturnStatement(statement)) {
+    return true;
+  }
+  if (ts.isIfStatement(statement)) {
+    return analyzeGuard(statement, context);
+  }
   if (ts.isExpressionStatement(statement)) {
     const call = statement.expression;
     if (!ts.isCallExpression(call) || !ts.isIdentifier(call.expression)) {
-      return;
+      return false;
     }
     const callee = call.expression.text;
     if (callee === 'useEffect') {
       context.analysis.effects.push(call);
-      return;
+      return true;
     }
     // `useTrayManager({ onTrayIconMouseDown: … })` — a component that only
     // wants the events has nothing to bind, and the callbacks it wrote must
@@ -542,12 +586,13 @@ const analyzeBodyStatement = (
         package: module.slice(PLUGIN_MODULE_PREFIX.length),
         call,
       });
+      return true;
     }
-    return;
+    return false;
   }
 
   if (!ts.isVariableStatement(statement)) {
-    return;
+    return false;
   }
   for (const declaration of statement.declarationList.declarations) {
     const { initializer } = declaration;
@@ -577,6 +622,7 @@ const analyzeBodyStatement = (
           initializer.modifiers?.some(
             (modifier) => modifier.kind === ts.SyntaxKind.AsyncKeyword,
           ) ?? false,
+        params: handlerParams(initializer, context.sourceFile),
         body: initializer,
       });
       continue;
@@ -626,6 +672,33 @@ const analyzeBodyStatement = (
       }
     }
   }
+  return true;
+};
+
+/** `if (cond) return <jsx>;` — anything else in an `if` is not a guard. */
+const analyzeGuard = (
+  statement: ts.IfStatement,
+  context: BodyContext,
+): boolean => {
+  if (statement.elseStatement !== undefined) {
+    return false;
+  }
+  const returned = ts.isBlock(statement.thenStatement)
+    ? statement.thenStatement.statements.at(0)
+    : statement.thenStatement;
+  if (
+    returned === undefined ||
+    !ts.isReturnStatement(returned) ||
+    returned.expression === undefined
+  ) {
+    return false;
+  }
+  const jsx = unwrapParentheses(returned.expression);
+  if (jsxRootTag(jsx) === null) {
+    return false;
+  }
+  context.analysis.guards.push({ condition: statement.expression, jsx });
+  return true;
 };
 
 // `const data = await useAsync(load, { loading, error })`
@@ -718,16 +791,20 @@ const analyzeStoreUse = (
 ): void => {
   const { name } = declaration;
   const [store] = call.arguments;
+  // A component that only reads the store writes `const [state] = …`, which
+  // is as ordinary as reading state without setting it.
   if (
     !ts.isArrayBindingPattern(name) ||
-    name.elements.length !== 2 ||
+    name.elements.length < 1 ||
+    name.elements.length > 2 ||
     store === undefined ||
     !ts.isIdentifier(store)
   ) {
     throw tsxErrorAt(
       'TSX0324',
       '`useStore` must be destructured as ' +
-        '`const [state, setState] = useStore(someStore)`.',
+        '`const [state, setState] = useStore(someStore)`, or ' +
+        '`const [state]` to read it.',
       { sourceFile: context.sourceFile, node: declaration.name },
     );
   }
@@ -739,24 +816,30 @@ const analyzeStoreUse = (
       { sourceFile: context.sourceFile, node: store },
     );
   }
+  // `const [state, setState]`, `const [state]` to read, `const [, setState]`
+  // to write: whichever halves the component actually uses.
   const [stateElement, setterElement] = name.elements;
-  if (
-    stateElement === undefined ||
-    !ts.isBindingElement(stateElement) ||
-    setterElement === undefined ||
-    !ts.isBindingElement(setterElement)
-  ) {
+  const named = (element: ts.ArrayBindingElement | undefined): boolean =>
+    element !== undefined && ts.isBindingElement(element);
+  if (!named(stateElement) && !named(setterElement)) {
     throw tsxErrorAt(
       'TSX0324',
       '`useStore` must be destructured as ' +
-        '`const [state, setState] = useStore(someStore)`.',
+        '`const [state, setState] = useStore(someStore)`, or ' +
+        '`const [state]` to read it.',
       { sourceFile: context.sourceFile, node: declaration.name },
     );
   }
   context.analysis.storeUse = {
     storeName: store.text,
-    stateName: stateElement.name.getText(),
-    setterName: setterElement.name.getText(),
+    stateName:
+      stateElement !== undefined && ts.isBindingElement(stateElement)
+        ? stateElement.name.getText()
+        : '',
+    setterName:
+      setterElement !== undefined && ts.isBindingElement(setterElement)
+        ? setterElement.name.getText()
+        : '',
   };
 };
 
@@ -831,10 +914,13 @@ const analyzeRouter = (
             );
           }
           const target = property.initializer;
+          // A page usually lives in its own file, so a route points at a
+          // component declared here or imported from next door.
           if (!ts.isIdentifier(target) || !componentNames.has(target.text)) {
             throw tsxErrorAt(
               'TSX0328',
-              'a route must point at a component declared in this file.',
+              'a route must point at a component: one declared in this file, ' +
+                'or one imported from a sibling file.',
               { sourceFile, node: target },
             );
           }
@@ -1102,16 +1188,6 @@ const helperBinding = (
       sourceFile,
     );
   }
-  if (ts.isBlock(arrow.body)) {
-    return helperTypeError(
-      {
-        helper: name,
-        detail: 'is one expression: `(value: string): string => value.trim()`.',
-        node: arrow.body,
-      },
-      sourceFile,
-    );
-  }
   return {
     name,
     typeParams,
@@ -1334,12 +1410,23 @@ const analyzeComponent = (
     handlers: [],
     helpers: [],
     effects: [],
+    guards: [],
     returnJsx,
     sourceFile: context.sourceFile,
   };
   if (ts.isBlock(arrow.body)) {
     for (const statement of arrow.body.statements) {
-      analyzeBodyStatement(statement, { ...context, analysis });
+      // Every statement is claimed by exactly one analyzer. A statement no
+      // analyzer claims would compile to nothing — the developer's code
+      // silently dropped — so it is an error, never a no-op.
+      if (!analyzeBodyStatement(statement, { ...context, analysis })) {
+        throw tsxErrorAt(
+          'TSX0346',
+          `\`${statement.getText(context.sourceFile).split('\n')[0]}\` is a ` +
+            'statement the compiler does not translate to Dart.',
+          { sourceFile: context.sourceFile, node: statement },
+        );
+      }
     }
   }
   for (const state of analysis.states) {
@@ -1469,10 +1556,13 @@ export const analyzeSource = (
   const declarationsOnly = components.length === 0;
   // A helper's return type is a model too: `lookup().title` reads it, so the
   // shape has to exist in Dart the same as a prop's or a decoded body's does.
+  const constants = analyzeConstants(sourceFile);
   const models = analyzeModels(
     sourceFile,
     new Set([
       ...propModelNames(components),
+      // Data declares its own shapes: `const ALBUMS: Album[]` needs Album.
+      ...constants.map((constant) => namedDartType(constant.dartType)),
       ...helpers.map((helper) => namedDartType(helper.returnDartType)),
       ...helpers.flatMap((helper) =>
         helper.params.map((param) => namedDartType(param.dartType)),
@@ -1486,10 +1576,16 @@ export const analyzeSource = (
   );
   const router = analyzeRouter(
     sourceFile,
-    new Set(components.map((component) => component.name)),
+    new Set([
+      ...components.map((component) => component.name),
+      // A page imported from a sibling file is as routable as one declared
+      // here; the import is resolved when the file is compiled.
+      ...componentImports.keys(),
+    ]),
   );
   return {
     components,
+    constants,
     stores,
     router,
     models,
@@ -1500,6 +1596,92 @@ export const analyzeSource = (
     pluginImports,
     componentImports,
   };
+};
+
+/**
+ * What a callback is handed: `onChanged={(value: string) => …}` takes a
+ * String, and the type has to be written because Dart declares it.
+ */
+const handlerParams = (
+  arrow: ts.ArrowFunction,
+  sourceFile: ts.SourceFile,
+): { name: string; dartType: string }[] =>
+  arrow.parameters.map((parameter) => {
+    const dartType =
+      parameter.type === undefined
+        ? null
+        : dartPropType(parameter.type, sourceFile);
+    if (dartType === null || !ts.isIdentifier(parameter.name)) {
+      throw tsxErrorAt(
+        'TSX0347',
+        'a callback parameter needs a type the compiler knows: ' +
+          '`(value: string) => …`.',
+        { sourceFile, node: parameter },
+      );
+    }
+    return { name: parameter.name.text, dartType };
+  });
+
+/** The Dart type a literal value has on its own, with no annotation. */
+const literalDartType = (initializer: ts.Expression): string | null => {
+  if (ts.isStringLiteral(initializer)) {
+    return 'String';
+  }
+  if (ts.isNumericLiteral(initializer)) {
+    return 'num';
+  }
+  if (
+    initializer.kind === ts.SyntaxKind.TrueKeyword ||
+    initializer.kind === ts.SyntaxKind.FalseKeyword
+  ) {
+    return 'bool';
+  }
+  return null;
+};
+
+/**
+ * Data the module declares: an exported const with a literal for a value.
+ *
+ * A store, a router and a component are consts too, so this claims only what
+ * they are not — a value with a Dart type and no function in it.
+ */
+const analyzeConstants = (sourceFile: ts.SourceFile): ConstantBinding[] => {
+  const constants: ConstantBinding[] = [];
+  for (const statement of sourceFile.statements) {
+    if (
+      !ts.isVariableStatement(statement) ||
+      statement.modifiers?.some(
+        (modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword,
+      ) !== true
+    ) {
+      continue;
+    }
+    for (const declaration of statement.declarationList.declarations) {
+      const { initializer, type } = declaration;
+      if (
+        initializer === undefined ||
+        ts.isArrowFunction(initializer) ||
+        !ts.isIdentifier(declaration.name)
+      ) {
+        continue;
+      }
+      // A literal says what it is; anything else needs the annotation that
+      // names its shape.
+      const dartType =
+        type === undefined
+          ? literalDartType(initializer)
+          : dartPropType(type, sourceFile);
+      if (dartType === null) {
+        continue;
+      }
+      constants.push({
+        name: declaration.name.text,
+        dartType,
+        expression: initializer,
+      });
+    }
+  }
+  return constants;
 };
 
 export const summarize = (component: ComponentAnalysis): ComponentSummary => ({

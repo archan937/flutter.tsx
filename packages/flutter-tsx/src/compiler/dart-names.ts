@@ -17,6 +17,26 @@ export const dartFileFor = (componentFile: string): string => {
 const LIST_OF = /^List<(.+)>$/;
 
 /** What a `List<T>` holds; null when the type is not a list. */
+/**
+ * `ALBUMS` → `albums`: the Dart name of a module constant.
+ *
+ * Dart names constants in lowerCamelCase and the analyzer says so
+ * (`constant_identifier_names`), while TypeScript often shouts them. The
+ * shape is unmistakable — no other binding in TSX is all capitals — so the
+ * rename needs no bookkeeping: the declaration and every read of it derive
+ * the same name from the same rule.
+ */
+export const dartConstantName = (tsxName: string): string => {
+  if (!/^[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*$/.test(tsxName)) {
+    return tsxName;
+  }
+  const [first = '', ...rest] = tsxName.toLowerCase().split('_');
+  return [
+    first,
+    ...rest.map((part) => part.charAt(0).toUpperCase() + part.slice(1)),
+  ].join('');
+};
+
 export const listElementType = (dartType: string | undefined): string | null =>
   dartType === undefined ? null : (LIST_OF.exec(dartType)?.[1] ?? null);
 

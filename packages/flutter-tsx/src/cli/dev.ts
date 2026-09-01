@@ -1,8 +1,13 @@
 import { watch } from 'node:fs';
 
 import { buildProject } from '../build/project';
-import { transpileComponent } from '../compiler/transpile';
-import type { AppConfig, AppTarget } from '../runtime/config';
+import { transpileFile } from '../compiler/transpile';
+import {
+  APP_TARGETS,
+  type AppConfig,
+  type AppTarget,
+  isAppTarget,
+} from '../runtime/config';
 import { pathExists, readTextFile, runProcess, writeTextFile } from '../sdk/io';
 
 const CONFIG_FILE = 'fsx.config.ts';
@@ -18,13 +23,8 @@ const DEVICES: Record<AppTarget, string> = {
   linux: 'linux',
 };
 
-const TARGETS = Object.keys(DEVICES) as AppTarget[];
-
 /** The device `flutter run` targets for an app's configured platform. */
 export const deviceFor = (target: AppTarget): string => DEVICES[target];
-
-const isTarget = (value: unknown): value is AppTarget =>
-  typeof value === 'string' && TARGETS.includes(value as AppTarget);
 
 /** Reads and validates a project's `fsx.config.ts`. */
 export const loadAppConfig = async (projectDir: string): Promise<AppConfig> => {
@@ -48,9 +48,9 @@ export const loadAppConfig = async (projectDir: string): Promise<AppConfig> => {
   if (typeof bundleId !== 'string') {
     throw new Error(`${configPath}: bundleId must be a string.`);
   }
-  if (!isTarget(target)) {
+  if (!isAppTarget(target)) {
     throw new Error(
-      `${configPath}: target must be one of ${TARGETS.join(', ')}.`,
+      `${configPath}: target must be one of ${APP_TARGETS.join(', ')}.`,
     );
   }
   return { name, bundleId, target };
@@ -138,7 +138,7 @@ export const defaultDevDeps = ({
       readFile: async (path) => (await readTextFile(path)) ?? '',
       writeFile: writeTextFile,
       pathExists,
-      transpile: transpileComponent,
+      transpile: transpileFile,
       // `flutter format` was removed from the SDK; `dart format` is the tool.
       format: (outputDir) =>
         runProcess([dartBin, 'format', outputDir], projectDir),

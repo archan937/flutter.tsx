@@ -252,13 +252,28 @@ describe('lowerComponent — attribute values', () => {
 });
 
 describe('lowerComponent — value edge cases', () => {
-  test('strings, false, quoted expressions, bare attrs, raw values', async () => {
+  test('a prop with no value at all is a numbered error', () => {
+    expect(
+      lowerFirst(
+        "import { Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => <Text maxLines={}>hi</Text>;\n',
+        'probe.tsx',
+      ),
+    ).rejects.toThrow(
+      new Error(
+        'TSX0345 probe.tsx:2:34 — `maxLines={}` has no value — give it one ' +
+          'or leave the prop out.',
+      ),
+    );
+  });
+
+  test('strings, false, quoted expressions, bare attrs, translated values', async () => {
     const ir = await lowerFirst(
       "import { Text } from 'flutter-tsx';\n" +
         'export const Probe = () => {\n' +
         '  const factor = 3;\n' +
         '  return (\n' +
-        '    <Text semanticsLabel="spoken" softWrap={false} textScaleFactor={factor} maxLines={}>\n' +
+        '    <Text semanticsLabel="spoken" softWrap={false} textScaleFactor={factor}>\n' +
         '      hi\n' +
         '    </Text>\n' +
         '  );\n' +
@@ -274,8 +289,7 @@ describe('lowerComponent — value edge cases', () => {
       { param: 'data', kind: 'string' },
       { param: 'semanticsLabel', kind: 'string' },
       { param: 'softWrap', kind: 'boolean' },
-      { param: 'textScaleFactor', kind: 'raw' },
-      { param: 'maxLines', kind: 'raw' },
+      { param: 'textScaleFactor', kind: 'dartExpr' },
     ]);
     expect(ir.body.args[2]?.value).toEqual({ kind: 'boolean', value: false });
   });
@@ -306,7 +320,7 @@ describe('lowerComponent — value edge cases', () => {
     ]);
   });
 
-  test('plain text and raw expressions inside a children list', async () => {
+  test('plain text and translated expressions inside a children list', async () => {
     const ir = await lowerFirst(
       "import { Column, useState } from 'flutter-tsx';\n" +
         'export const Probe = () => {\n' +
@@ -368,7 +382,7 @@ describe('lowerComponent — value edge cases', () => {
     ]);
   });
 
-  test('non-literal expressions stay raw; empty single slots vanish', async () => {
+  test('a non-literal expression is translated; empty single slots vanish', async () => {
     const ir = await lowerFirst(
       "import { Center, Column, Text } from 'flutter-tsx';\n" +
         'export const Probe = () => (\n' +
@@ -402,7 +416,7 @@ describe('lowerComponent — value edge cases', () => {
     }
     expect(
       textItem.value.widget.args.map((argument) => argument.value.kind),
-    ).toEqual(['string', 'raw']);
+    ).toEqual(['string', 'dartExpr']);
     expect(centerItem.value.widget.args).toEqual([]);
   });
 
@@ -514,7 +528,9 @@ describe('lowerComponent — value forms', () => {
     if (style?.kind !== 'construct') {
       throw new Error('expected a construct');
     }
-    expect(style.args.map((argument) => argument.value.kind)).toEqual(['raw']);
+    expect(style.args.map((argument) => argument.value.kind)).toEqual([
+      'dartExpr',
+    ]);
   });
 
   // An object literal has no Dart equivalent, so the local cannot be bound.
@@ -689,6 +705,7 @@ describe('lowerComponent — value forms', () => {
     ).toEqual({
       kind: 'closure',
       params: [],
+      isAsync: false,
       statements: [{ kind: 'setState', assignments: ['_count++'] }],
     });
   });
@@ -778,6 +795,7 @@ describe('lowerComponent — stateful pieces', () => {
       {
         name: 'bump',
         isAsync: false,
+        params: [],
         statements: [
           {
             kind: 'setState',
@@ -788,26 +806,31 @@ describe('lowerComponent — stateful pieces', () => {
       {
         name: 'reset',
         isAsync: false,
+        params: [],
         statements: [{ kind: 'setState', assignments: ['_count = 0'] }],
       },
       {
         name: 'grow',
         isAsync: false,
+        params: [],
         statements: [{ kind: 'setState', assignments: ['_count += 5'] }],
       },
       {
         name: 'drop',
         isAsync: false,
+        params: [],
         statements: [{ kind: 'setState', assignments: ['_count--'] }],
       },
       {
         name: 'shrink',
         isAsync: false,
+        params: [],
         statements: [{ kind: 'setState', assignments: ['_count -= 5'] }],
       },
       {
         name: 'twice',
         isAsync: false,
+        params: [],
         statements: [
           { kind: 'setState', assignments: ['_count = _count * 2'] },
         ],
@@ -1109,9 +1132,8 @@ describe('lowerComponent — list rendering', () => {
       ),
     ).rejects.toThrow(
       new Error(
-        'TSX0305 probe.tsx:4:19 — `items.map((item) => { return ' +
-          '<Text>{item}</Text>; })` is an expression form the compiler does ' +
-          'not translate to Dart.',
+        'TSX0338 probe.tsx:4:39 — a callback here is one expression: ' +
+          '`(item) => item.trim()`.',
       ),
     );
   });
@@ -1128,8 +1150,9 @@ describe('lowerComponent — list rendering', () => {
       ),
     ).rejects.toThrow(
       new Error(
-        'TSX0305 probe.tsx:4:19 — `items.slice(1)` is an expression form the ' +
-          'compiler does not translate to Dart.',
+        'TSX0341 probe.tsx:4:25 — `slice` has no Dart counterpart that ' +
+          'behaves the same way — use `substring(start, end)`, with indices ' +
+          'inside the value.',
       ),
     );
   });
@@ -1146,9 +1169,8 @@ describe('lowerComponent — list rendering', () => {
       ),
     ).rejects.toThrow(
       new Error(
-        'TSX0305 probe.tsx:4:19 — `items.map((item, index) => ' +
-          '<Text>{item}</Text>)` is an expression form the compiler does not ' +
-          'translate to Dart.',
+        'TSX0343 probe.tsx:4:36 — `map` hands the callback one value in ' +
+          'Dart: drop the index, or build the list with a `for … of` loop.',
       ),
     );
   });
@@ -1303,6 +1325,7 @@ describe('lowerComponent — plugin hooks', () => {
       {
         name: 'takePhoto',
         isAsync: true,
+        params: [],
         statements: [
           { kind: 'dart', line: 'await _cam?.takePicture();' },
           { kind: 'setState', assignments: ['_taken = true'] },
@@ -1381,6 +1404,7 @@ describe('lowerComponent — plugin hooks', () => {
       {
         name: 'rev',
         isAsync: false,
+        params: [],
         statements: [{ kind: 'dart', line: '_engine?.start(3);' }],
       },
     ]);
@@ -1730,17 +1754,17 @@ describe('lowerComponent — diagnostics', () => {
   test('children on a widget without a children slot are a numbered error', () => {
     expect(
       lowerFirst(
-        "import { Scaffold, Text } from 'flutter-tsx';\n" +
+        "import { AppBar, Text } from 'flutter-tsx';\n" +
           'export const Probe = () => (\n' +
-          '  <Scaffold>\n' +
+          '  <AppBar>\n' +
           '    <Text>lost</Text>\n' +
-          '  </Scaffold>\n' +
+          '  </AppBar>\n' +
           ');\n',
         'probe.tsx',
       ),
     ).rejects.toThrow(
       new Error(
-        'TSX0208 probe.tsx:4:5 — <Scaffold> takes no children — check its ' +
+        'TSX0208 probe.tsx:4:5 — <AppBar> takes no children — check its ' +
           'named slots in the API reference.',
       ),
     );

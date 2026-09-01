@@ -608,6 +608,86 @@
           border-color 0.18s,
           box-shadow 0.18s;
       }
+      .templates {
+        margin: 96px auto 0;
+      }
+      .tpl-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-top: 32px;
+      }
+      @media (max-width: 980px) {
+        .tpl-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 560px) {
+        .tpl-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .tpl {
+        display: block;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 22px 20px;
+        text-decoration: none;
+        color: inherit;
+        transition:
+          transform 0.18s var(--ease),
+          border-color 0.18s,
+          box-shadow 0.18s;
+      }
+      .tpl:hover {
+        transform: translateY(-4px);
+        border-color: rgba(97, 218, 251, 0.4);
+        box-shadow: 0 14px 36px rgba(84, 164, 255, 0.14);
+      }
+      .tpl-name {
+        font-family: var(--display);
+        font-size: 1.2rem;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        background: var(--grad);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .tpl-target {
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+      .tpl-blurb {
+        margin: 12px 0 0;
+        font-size: 0.92rem;
+        line-height: 1.5;
+      }
+      .tpl-list {
+        margin: 14px 0 0;
+        padding-left: 18px;
+        font-size: 0.86rem;
+        line-height: 1.55;
+        color: var(--muted);
+      }
+      .tpl-list li {
+        margin-bottom: 4px;
+      }
+      .tpl-cmd {
+        display: block;
+        margin-top: 16px;
+        font-size: 0.78rem;
+        padding: 8px 10px;
+        border-radius: 8px;
+        background: rgba(10, 16, 28, 0.6);
+        border: 1px solid var(--line);
+        overflow-x: auto;
+        white-space: nowrap;
+      }
       .stat:hover {
         transform: translateY(-4px);
         border-color: rgba(97, 218, 251, 0.4);
@@ -962,6 +1042,7 @@
           <a class="dim-mobile" href="#why">Why</a>
           <a href="./guide.html">Guide</a>
           <a href="./cookbook.html">Cookbook</a>
+          <a href="./examples.html">Examples</a>
           <a href="./api-reference.html">API reference</a>
           <a class="dim-mobile" href="./config-mapping.html">Config mapping</a>
           <a
@@ -1128,7 +1209,7 @@
   <span class="tok-kw">const</span> [taken, setTaken] = <span class="tok-fn">useState</span>(<span class="tok-kw">false</span>);
 
   <span class="tok-kw">const</span> takePhoto = <span class="tok-kw">async</span> () =&gt; {
-    <span class="tok-kw">await</span> cam.<span class="tok-fn">takePicture</span>();
+    <span class="tok-kw">await</span> cam?.<span class="tok-fn">takePicture</span>();
     <span class="tok-fn">setTaken</span>(<span class="tok-kw">true</span>);
   };
 
@@ -1617,6 +1698,65 @@ export const Shell = () =&gt; (
         <!-- /showcase:stats -->
       </section>
 
+      <section class="templates reveal" id="templates" aria-label="Example apps">
+        <div class="section-head">
+          <span class="section-kicker">Start from a real app</span>
+        </div>
+        <h2>Four apps, one command</h2>
+        <p class="why-lead">
+          Each one is transpiled, analysed and built for its own platform on
+          every run of the test suite — so what you read is what compiles.
+        </p>
+        <!-- showcase:templates -->
+        <div class="tpl-grid">
+          <a class="tpl" href="./examples.html#desktop">
+            <div class="tpl-name">desktop</div>
+            <div class="tpl-target">macos</div>
+            <p class="tpl-blurb">A service console: a filtered sidebar, a details pane, and live build info.</p>
+            <ul class="tpl-list">
+              <li>A master–detail window: a filtered sidebar and a details pane</li>
+              <li>A store the two panes share</li>
+              <li>Live build information from <code>usePackageInfo</code></li>
+            </ul>
+            <code class="tpl-cmd">fsx init my-app --template=desktop</code>
+          </a>
+          <a class="tpl" href="./examples.html#mobile">
+            <div class="tpl-name">mobile</div>
+            <div class="tpl-target">ios</div>
+            <p class="tpl-blurb">A field-notes app: tabs, a live camera preview, a sheet, and the keychain.</p>
+            <ul class="tpl-list">
+              <li>Tabs — <code>&lt;TabView&gt;</code> becomes a Scaffold with an IndexedStack</li>
+              <li>A live camera preview: the plugin’s own widget, rendered in TSX</li>
+              <li>A bottom sheet from a handler</li>
+            </ul>
+            <code class="tpl-cmd">fsx init my-app --template=mobile</code>
+          </a>
+          <a class="tpl" href="./examples.html#tray">
+            <div class="tpl-name">tray</div>
+            <div class="tpl-target">macos</div>
+            <p class="tpl-blurb">A menu-bar companion: tray events, a live connectivity stream, and a status window.</p>
+            <ul class="tpl-list">
+              <li>Tray events: writing a callback registers the listener for you</li>
+              <li>A live connectivity stream with <code>useStream</code></li>
+              <li>A mount effect that talks to the plugin</li>
+            </ul>
+            <code class="tpl-cmd">fsx init my-app --template=tray</code>
+          </a>
+          <a class="tpl" href="./examples.html#web">
+            <div class="tpl-name">web</div>
+            <div class="tpl-target">web</div>
+            <p class="tpl-blurb">An album browser: routes, a store every page reads, models and helpers.</p>
+            <ul class="tpl-list">
+              <li>Routes — <code>createRouter</code> and <code>useNavigation().push(…)</code>, wired into the app for you</li>
+              <li>A store every page reads, with <code>useStore</code></li>
+              <li>Models generated from TypeScript interfaces</li>
+            </ul>
+            <code class="tpl-cmd">fsx init my-app --template=web</code>
+          </a>
+        </div>
+        <!-- /showcase:templates -->
+      </section>
+
       <section class="why" id="why">
         <div class="section-head reveal">
           <span class="section-kicker">The pitch</span>
@@ -1853,6 +1993,7 @@ export const Shell = () =&gt; (
         <p>
           <a href="./guide.html">Guide</a> ·
             <a href="./cookbook.html">Cookbook</a> ·
+            <a href="./examples.html">Examples</a> ·
             <a href="./api-reference.html">API Reference</a> ·
           <a
             href="https://github.com/archan937/flutter.tsx"

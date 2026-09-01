@@ -8,62 +8,14 @@ import { listFixtures } from '@test/support/golden';
 // expected-dart.test.ts, so matching it transitively proves both. No
 // canonicalization pass — the emitter must produce formatted Dart as-is.
 //
-// Fixtures outside GREEN_FIXTURES run as `test.failing`: the suite stays
-// green while their compiler support does not exist yet and fails loudly the
-// moment one unexpectedly passes — forcing the flip into GREEN_FIXTURES.
-const GREEN_FIXTURES = new Set([
-  '01-camera-screen',
-  '02-hello-column',
-  '03-styled-container',
-  '04-inline-handler',
-  '05-counter',
-  '06-mount-effect',
-  '07-list-rendering',
-  '08-composition',
-  '09-typed-props',
-  '10-camera-options',
-  '11-preferences',
-  '12-secure-storage',
-  '13-open-link',
-  '14-app-info',
-  '15-front-camera',
-  '16-tap-target',
-  '17-async-token',
-  '18-connectivity-stream',
-  '19-store-counter',
-  '20-router',
-  '21-modal',
-  '22-mount-dialog',
-  '23-tabs',
-  '24-animated',
-  '25-http-get',
-  '26-json-model',
-  '27-inline-plugin-call',
-  '28-multi-file',
-  '29-branching-handler',
-  '30-list-prop',
-  '31-model-list',
-  '32-value-methods',
-  '33-control-flow',
-  '34-list-pipeline',
-  '35-helpers',
-  '36-enums',
-  '37-tuples-generics',
-  '38-effect-cleanup',
-  '39-builder-callback',
-  '40-layout-builder',
-  '41-model-helper',
-  '42-project-layout',
-  '43-tray-singleton',
-  '44-tray-listener',
-]);
-
+// Every committed fixture compiles: a fixture whose support does not exist is
+// not committed, so there is no list here to fall out of date, and nothing
+// can sit in the repo looking supported while failing.
 const fixtures = await listFixtures();
 
 describe('golden fixtures', () => {
   for (const fixture of fixtures) {
-    const runner = GREEN_FIXTURES.has(fixture.id) ? test : test.failing;
-    runner(`${fixture.id} transpiles to its golden Dart`, async () => {
+    test(`${fixture.id} transpiles to its golden Dart`, async () => {
       const source = await Bun.file(fixture.inputPath).text();
       const expected = await Bun.file(fixture.expectedPath).text();
 

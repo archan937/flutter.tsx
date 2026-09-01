@@ -19,7 +19,13 @@ export type IrValue =
       constructorName: string;
       args: IrArgument[];
     }
-  | { kind: 'closure'; params: string[]; statements: IrStatement[] }
+  | {
+      kind: 'closure';
+      params: string[];
+      /** `async` when the body awaits: Dart declares it the same way. */
+      isAsync: boolean;
+      statements: IrStatement[];
+    }
   // A closure whose body is one expression, kept as a value so the printer
   // can wrap it: `(context) => showDialog(…)`.
   | { kind: 'closureValue'; params: string[]; value: IrValue }
@@ -36,9 +42,10 @@ export type IrValue =
   | { kind: 'dartExpr'; dart: string }
   | { kind: 'handlerRef'; name: string }
   | { kind: 'stateRef'; name: string }
-  | { kind: 'raw'; node: ts.Expression }
   | { kind: 'widget'; widget: IrWidget }
   | { kind: 'widgetList'; items: IrChild[] }
+  /// `[a, b, c]` of ordinary values — a list of models, strings or numbers.
+  | { kind: 'listValue'; items: IrValue[] }
   | {
       kind: 'builder';
       params: string[];
@@ -118,6 +125,19 @@ export interface IrHelper {
   typeParams: string[];
   params: { name: string; dartType: string; defaultValue: string | null }[];
   returnDartType: string;
+  /**
+   * A one-expression helper is a Dart arrow function; one written with a body
+   * keeps its body, so locals and early returns work as they read.
+   */
+  body:
+    | { kind: 'expression'; value: IrValue }
+    | { kind: 'block'; statements: IrStatement[] };
+}
+
+/** A top-level Dart constant generated from an exported module const. */
+export interface IrConstant {
+  name: string;
+  dartType: string;
   value: IrValue;
 }
 
@@ -171,6 +191,8 @@ export type IrStatement =
 export interface IrMethod {
   name: string;
   isAsync: boolean;
+  /** What the callback is handed: `onChanged={(value) => …}` takes one. */
+  params: { name: string; dartType: string }[];
   statements: IrStatement[];
 }
 
@@ -204,5 +226,7 @@ export interface IrComponent {
   pluginImports: IrImport[];
   /// `const x = …` from the component body, bound at the top of build().
   buildLocals: IrBuilderBind[];
+  /// Early returns, in the order written, before the component's own tree.
+  guards: { condition: string; value: IrValue }[];
   body: IrWidget;
 }

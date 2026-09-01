@@ -203,6 +203,42 @@ export const CATALOGUE: Readonly<Record<string, CatalogueEntry>> = {
       '`useCamera` emits the whole controller lifecycle: `availableCameras`, `initialize`, a `mounted` check before setState, and `dispose` — the part that is easy to get wrong by hand.',
     category: 'Native plugins',
   },
+  '45-camera-capture': {
+    title: 'Using what a plugin hands back',
+    blurb:
+      'A call’s result is a value your code names and reads — `const photo = await cam.takePicture()` — and a read of something that may be null says so in the Dart.',
+    category: 'Native plugins',
+  },
+  '46-camera-preview': {
+    title: 'Rendering a plugin’s own widget',
+    blurb:
+      'A widget a package ships is a component like any other — `<CameraPreview controller={cam} />` — and because the handle is null until the hook has built it, TypeScript makes you guard, which is exactly the Dart that comes out.',
+    category: 'Native plugins',
+  },
+  '47-guarded-handler': {
+    title: 'Guarding before you use a handle',
+    blurb:
+      'The React shape — leave early when you are not ready yet — is the shape the Dart takes: `if (_cam == null) return;`, and every read after it drops the null checks it no longer needs.',
+    category: 'Native plugins',
+  },
+  '48-number-types': {
+    title: 'One number type, three Dart ones',
+    blurb:
+      'TypeScript has `number`; Dart has `int`, `double` and `num`, and will not pass one for another. The compiler widens at the boundary — `_width.toDouble()` — so ordinary arithmetic stays ordinary.',
+    category: 'Lists and data',
+  },
+  '49-helper-body': {
+    title: 'A helper with a body',
+    blurb:
+      'A function you write the ordinary way — locals, an early return, `Math.floor` — becomes the Dart function you would have written by hand, with `dart:math` imported for you.',
+    category: 'Lists and data',
+  },
+  '50-module-data': {
+    title: 'Data the module declares',
+    blurb:
+      'Seed data, lookup tables and labels live beside the code that reads them: an exported const becomes a top-level Dart constant, and `{ … }` where a model is expected constructs one.',
+    category: 'Lists and data',
+  },
   '10-camera-options': {
     title: 'Choosing a camera resolution',
     blurb:

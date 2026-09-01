@@ -1,6 +1,21 @@
-/** Platforms a project can build for. */
-export type AppTarget =
-  'web' | 'ios' | 'android' | 'macos' | 'windows' | 'linux';
+/**
+ * Platforms a project can build for, sorted so every list of them reads the
+ * same. The type is derived from this, so there is one place to add one.
+ */
+export const APP_TARGETS = [
+  'android',
+  'ios',
+  'linux',
+  'macos',
+  'web',
+  'windows',
+] as const;
+
+export type AppTarget = (typeof APP_TARGETS)[number];
+
+export const isAppTarget = (value: unknown): value is AppTarget =>
+  typeof value === 'string' &&
+  APP_TARGETS.includes(value as (typeof APP_TARGETS)[number]);
 
 /**
  * A project's `fsx.config.ts`. Written with `satisfies AppConfig` so the

@@ -6,7 +6,7 @@ export const CameraScreen = () => {
   const [taken, setTaken] = useState(false);
 
   const takePhoto = async () => {
-    await cam.takePicture();
+    await cam?.takePicture();
     setTaken(true);
   };
 

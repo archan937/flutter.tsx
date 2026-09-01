@@ -1,0 +1,50 @@
+import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
+
+class Viewfinder extends StatefulWidget {
+  const Viewfinder({super.key});
+
+  @override
+  State<Viewfinder> createState() => _ViewfinderState();
+}
+
+class _ViewfinderState extends State<Viewfinder> {
+  CameraController? _cam;
+
+  @override
+  void initState() {
+    super.initState();
+    _initCam();
+  }
+
+  Future<void> _initCam() async {
+    final cameras = await availableCameras();
+    final controller = CameraController(cameras.first, ResolutionPreset.high);
+    await controller.initialize();
+    if (!mounted) {
+      await controller.dispose();
+      return;
+    }
+    setState(() {
+      _cam = controller;
+    });
+  }
+
+  @override
+  void dispose() {
+    _cam?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Text('Viewfinder'),
+        Center(
+          child: _cam != null ? CameraPreview(_cam!) : const SizedBox.shrink(),
+        ),
+      ],
+    );
+  }
+}

@@ -7,6 +7,7 @@ import {
   GENERATED_ENTRY,
   mainDart,
 } from '@src/build/project';
+import type { TranspileResult } from '@src/compiler/transpile';
 
 describe('dartFileFor', () => {
   test('converts a component file name to its Dart file name', () => {
@@ -30,6 +31,9 @@ describe('dartFileFor', () => {
 });
 
 describe('mainDart', () => {
+  // The root component owns its own chrome — an app with an AppBar, a drawer
+  // or tabs renders one Scaffold of its own rather than nesting inside one
+  // the entry point imposed.
   test('hosts the root component in a titled MaterialApp', () => {
     expect(mainDart({ name: 'Demo App', rootImport: 'app.dart' })).toBe(
       `${GENERATED_ENTRY}
@@ -38,12 +42,29 @@ import 'package:flutter/material.dart';
 import 'app.dart';
 
 void main() {
-  runApp(
-    const MaterialApp(
-      title: 'Demo App',
-      home: Scaffold(body: SafeArea(child: App())),
-    ),
-  );
+  runApp(const MaterialApp(title: 'Demo App', home: App()));
+}
+`,
+    );
+  });
+
+  // A router that nothing is wired to cannot route: `context.push('/detail')`
+  // needs the GoRouter the app declared to be the one MaterialApp runs.
+  test('runs the router the app declares', () => {
+    expect(
+      mainDart({
+        name: 'Demo App',
+        rootImport: 'app.dart',
+        router: { import: 'routes.dart', name: 'router' },
+      }),
+    ).toBe(
+      `${GENERATED_ENTRY}
+import 'package:flutter/material.dart';
+
+import 'routes.dart';
+
+void main() {
+  runApp(MaterialApp.router(title: 'Demo App', routerConfig: router));
 }
 `,
     );
@@ -82,8 +103,11 @@ const harness = (
         written.set(path, contents);
         return Promise.resolve();
       },
-      transpile: (input): Promise<string> =>
-        Promise.resolve(`// dart for ${input.filePath}\n`),
+      transpile: (input): Promise<TranspileResult> =>
+        Promise.resolve({
+          dart: `// dart for ${input.filePath}\n`,
+          router: input.filePath.endsWith('routes.tsx') ? 'router' : null,
+        }),
       pathExists: (): Promise<boolean> => Promise.resolve(false),
       format: (): Promise<number> => Promise.resolve(0),
       ...overrides,
@@ -92,6 +116,66 @@ const harness = (
 };
 
 describe('buildProject', () => {
+  test('the entry point runs the router a file in the project declares', async () => {
+    const { deps, written } = harness({
+      'App.tsx': 'export const App = () => <Text>hi</Text>;',
+      'routes.tsx': 'export const router = createRouter({});',
+    });
+
+    await buildProject('/app', { name: 'Demo' }, deps);
+
+    expect(written.get('/app/lib/main.dart')).toBe(
+      mainDart({
+        name: 'Demo',
+        rootImport: 'app.dart',
+        router: { import: 'routes.dart', name: 'router' },
+      }),
+    );
+  });
+
+  test('a routed app needs no root component: the router is the root', async () => {
+    const { deps, written } = harness({
+      'routes.tsx': 'export const router = createRouter({});',
+    });
+
+    await buildProject('/app', { name: 'Demo' }, deps);
+
+    expect(written.get('/app/lib/main.dart')).toBe(
+      mainDart({
+        name: 'Demo',
+        rootImport: 'app.dart',
+        router: { import: 'routes.dart', name: 'router' },
+      }),
+    );
+  });
+
+  test('an app with neither a root component nor a router is reported', () => {
+    const { deps } = harness({
+      'components/Card.tsx': 'export const Card = () => <Text>c</Text>;',
+    });
+
+    expect(buildProject('/app', { name: 'Demo' }, deps)).rejects.toThrow(
+      new Error(
+        '/app/src has neither App.tsx nor a router — an app needs one of ' +
+          'them to start from.',
+      ),
+    );
+  });
+
+  test('two routers are reported rather than one of them silently winning', () => {
+    const { deps } = harness({
+      'App.tsx': 'export const App = () => <Text>hi</Text>;',
+      'routes.tsx': 'export const router = createRouter({});',
+      'more/routes.tsx': 'export const router = createRouter({});',
+    });
+
+    expect(buildProject('/app', { name: 'Demo' }, deps)).rejects.toThrow(
+      new Error(
+        'more/routes.tsx and routes.tsx both declare a router — an app runs one.',
+      ),
+    );
+  });
+
   test('writes one Dart file per component plus the entry point', async () => {
     const { deps, written } = harness({
       'App.tsx': 'export const App = () => <Text>hi</Text>;',
@@ -119,9 +203,9 @@ describe('buildProject', () => {
     const { deps } = harness(
       { 'App.tsx': 'export const App = () => <Text>hi</Text>;' },
       {
-        transpile: (input): Promise<string> => {
+        transpile: (input): Promise<TranspileResult> => {
           dirs.push(input.pluginApiDirs);
-          return Promise.resolve('// dart\n');
+          return Promise.resolve({ dart: '// dart\n', router: null });
         },
       },
     );
@@ -137,7 +221,7 @@ describe('buildProject', () => {
     });
 
     expect(buildProject('/app', { name: 'Demo' }, deps)).rejects.toThrow(
-      '/app/src/App.tsx does not exist — the app needs a root component.',
+      '/app/src has neither App.tsx nor a router — an app needs one of them to start from.',
     );
   });
 
@@ -145,7 +229,7 @@ describe('buildProject', () => {
     const { deps } = harness({});
 
     expect(buildProject('/app', { name: 'Demo' }, deps)).rejects.toThrow(
-      '/app/src/App.tsx does not exist — the app needs a root component.',
+      '/app/src has neither App.tsx nor a router — an app needs one of them to start from.',
     );
   });
 });

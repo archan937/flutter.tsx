@@ -10,7 +10,7 @@ export interface DartNaming {
 const memberName = (name: string, naming: DartNaming): string =>
   naming.privateMembers ? `_${name}` : name;
 
-const isConstable = (value: IrValue): boolean => {
+export const isConstable = (value: IrValue): boolean => {
   switch (value.kind) {
     case 'string':
     case 'number':
@@ -29,6 +29,8 @@ const isConstable = (value: IrValue): boolean => {
       return value.items.every(
         (item) => item.kind === 'value' && isConstable(item.value),
       );
+    case 'listValue':
+      return value.items.every(isConstable);
     default:
       return false;
   }
@@ -115,6 +117,7 @@ const valueToDart = (
       return {
         kind: 'closure',
         params: value.params,
+        isAsync: value.isAsync,
         body: closureBodyOf(value.statements, naming),
       };
     case 'closureValue':
@@ -140,8 +143,6 @@ const valueToDart = (
     case 'handlerRef':
     case 'stateRef':
       return { kind: 'identifier', name: memberName(value.name, naming) };
-    case 'raw':
-      return { kind: 'identifier', name: value.node.getText() };
     case 'widget':
       return callToDart(
         {
@@ -154,6 +155,17 @@ const valueToDart = (
       );
     case 'widgetList':
       return listToDart(value, naming, insideConst);
+    case 'listValue': {
+      const isConst = !insideConst && isConstable(value);
+      return {
+        kind: 'list',
+        isConst,
+        items: value.items.map((item) => ({
+          kind: 'element' as const,
+          value: valueToDart(item, naming, insideConst || isConst),
+        })),
+      };
+    }
     case 'builder':
       return {
         kind: 'builder',

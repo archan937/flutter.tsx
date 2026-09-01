@@ -4,10 +4,15 @@ import { join } from 'node:path';
 
 import { describe, expect, test } from 'bun:test';
 
-import { defaultInitDeps } from '@src/cli/init';
+import {
+  defaultInitDeps,
+  type InitDeps,
+  type InitOptions,
+} from '@src/cli/init';
 import {
   buildCommands,
   type CliIo,
+  type CommandRunners,
   defaultCliIo,
   formatError,
   runCli,
@@ -40,6 +45,9 @@ const EXPECTED_USAGE = [
   'Commands:',
   '  install        Download the pinned Flutter SDK to ~/.fsx/flutter',
   '  init <dir>     Scaffold a new Flutter.tsx project',
+  '                 --template=<name>  start from an example app',
+  '                 (desktop, mobile, tray, web)',
+  '                 --target=<platform>  the platform to build for',
   '  dev            Compile, run and hot reload the app here',
   '  build          Compile and build the app for release',
   '  doctor         Check that this project is ready to build',
@@ -118,6 +126,105 @@ describe('runCli — command arguments', () => {
 
     expect(code).toBe(0);
     expect(seen).toEqual([['demo-app', '--flag']]);
+  });
+});
+
+describe('runCli — init flags', () => {
+  const capture = (): {
+    io: CapturedIo;
+    seen: { directory: string; options: InitOptions }[];
+    commands: CommandRunners;
+  } => {
+    const seen: { directory: string; options: InitOptions }[] = [];
+    return {
+      io: captureIo(),
+      seen,
+      commands: {
+        init: (directory, _deps, options): Promise<void> => {
+          seen.push({ directory, options: options ?? {} });
+          return Promise.resolve();
+        },
+        initDeps: () => ({}) as unknown as InitDeps,
+      },
+    };
+  };
+
+  test('--template and --target reach the command', async () => {
+    const { io, seen, commands } = capture();
+
+    const code = await runCli(
+      ['init', 'demo-app', '--template=tray', '--target=linux'],
+      io,
+      buildCommands(commands),
+    );
+
+    expect(code).toBe(0);
+    expect(seen).toEqual([
+      { directory: 'demo-app', options: { template: 'tray', target: 'linux' } },
+    ]);
+  });
+
+  test('a flag may be written with a space', async () => {
+    const { io, seen, commands } = capture();
+
+    await runCli(
+      ['init', 'demo-app', '--template', 'web'],
+      io,
+      buildCommands(commands),
+    );
+
+    expect(seen).toEqual([
+      { directory: 'demo-app', options: { template: 'web' } },
+    ]);
+  });
+
+  test('a flag with no value at all is reported', async () => {
+    for (const args of [
+      ['init', 'demo-app', '--template'],
+      ['init', 'demo-app', '--target='],
+    ]) {
+      const io = captureIo();
+
+      expect(await runCli(args, io)).toBe(1);
+      expect(io.errLines).toEqual([
+        `${args[2]?.split('=')[0] ?? ''} needs a value: ` +
+          `\`${args[2]?.split('=')[0] ?? ''}=web\`.`,
+      ]);
+    }
+  });
+
+  test('an unknown template is reported with the ones that exist', async () => {
+    const io = captureIo();
+
+    const code = await runCli(['init', 'demo-app', '--template=phone'], io);
+
+    expect(code).toBe(1);
+    expect(io.errLines).toEqual([
+      'unknown template `phone` — available: desktop, mobile, tray, web.',
+    ]);
+  });
+
+  test('an unknown target is reported with the ones that exist', async () => {
+    const io = captureIo();
+
+    const code = await runCli(['init', 'demo-app', '--target=toaster'], io);
+
+    expect(code).toBe(1);
+    expect(io.errLines).toEqual([
+      'unknown target `toaster` — available: android, ios, linux, macos, ' +
+        'web, windows.',
+    ]);
+  });
+
+  test('an unknown flag is reported rather than ignored', async () => {
+    const io = captureIo();
+
+    const code = await runCli(['init', 'demo-app', '--fast'], io);
+
+    expect(code).toBe(1);
+    expect(io.errLines).toEqual([
+      'unknown option `--fast` for fsx init: use --template or --target.',
+    ]);
   });
 });
 

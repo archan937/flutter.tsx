@@ -96,5 +96,36 @@ export const addPubDependencies = async (
 export const buildWeb = (appDir: string): Promise<CommandResult> =>
   run([flutterBin, 'build', 'web'], appDir);
 
+/**
+ * Builds an app for a platform this host can actually build for.
+ *
+ * Debug builds, because the point is that the Dart compiles and links into a
+ * real bundle — a release build would only add signing and optimisation. iOS
+ * builds for the simulator, which needs no signing identity. Returns null
+ * when the host cannot build that platform at all, so the caller says so out
+ * loud rather than passing quietly.
+ */
+export const buildNative = async (
+  appDir: string,
+  target: string,
+): Promise<CommandResult | null> => {
+  if (target === 'web') {
+    return buildWeb(appDir);
+  }
+  if (process.platform !== 'darwin') {
+    return null;
+  }
+  if (target === 'macos') {
+    return run([flutterBin, 'build', 'macos', '--debug'], appDir);
+  }
+  if (target === 'ios') {
+    return run(
+      [flutterBin, 'build', 'ios', '--simulator', '--debug'],
+      appDir,
+    );
+  }
+  return null;
+};
+
 export const runFlutterTest = (appDir: string): Promise<CommandResult> =>
   run([flutterBin, 'test'], appDir);

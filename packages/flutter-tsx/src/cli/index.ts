@@ -17,7 +17,12 @@ export {
 export { defaultDev } from './dev-command';
 export { type Check, type DoctorDeps, runDoctorCommand } from './doctor';
 export { defaultDoctor } from './doctor-command';
-export { defaultInitDeps, type InitDeps, runInitCommand } from './init';
+export {
+  defaultInitDeps,
+  type InitDeps,
+  type InitOptions,
+  runInitCommand,
+} from './init';
 export {
   defaultPluginPhase,
   type PluginPhase,
@@ -25,3 +30,9 @@ export {
 } from './install';
 export { buildCommands, type CommandRunner, runCli } from './run';
 export { type ScaffoldFile, scaffoldFiles } from './scaffold';
+export {
+  loadTemplate,
+  type Template,
+  TEMPLATE_NAMES,
+  TEMPLATES,
+} from './templates';

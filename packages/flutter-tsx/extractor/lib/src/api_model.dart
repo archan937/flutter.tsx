@@ -165,6 +165,7 @@ class PluginClass {
   const PluginClass({
     required this.name,
     required this.doc,
+    required this.supertypes,
     required this.constructors,
     required this.fields,
     required this.methods,
@@ -173,6 +174,10 @@ class PluginClass {
 
   final String name;
   final String doc;
+
+  /// What it extends and implements, so a class that is a Widget is known to
+  /// be one — `CameraPreview` is rendered, not called.
+  final List<String> supertypes;
   final List<ConstructorModel> constructors;
   final List<FieldModel> fields;
   final List<MethodModel> methods;
@@ -181,6 +186,7 @@ class PluginClass {
   Map<String, Object?> toJson() => {
     'name': name,
     'doc': doc,
+    'supertypes': supertypes,
     'constructors': constructors
         .map((constructor) => constructor.toJson())
         .toList(),

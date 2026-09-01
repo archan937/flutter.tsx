@@ -1,9 +1,12 @@
+import type { DartExpr } from './dart-ast';
 import { MAX_WIDTH, printExpr } from './dart-print';
 import { importsForComponents } from './imports';
 import type {
   IrComponent,
+  IrConstant,
   IrEnum,
   IrHelper,
+  IrImport,
   IrMethod,
   IrModel,
   IrModelField,
@@ -11,16 +14,19 @@ import type {
   IrRouter,
   IrStore,
 } from './ir';
-import { irValueToDart, irWidgetToDart } from './ir-to-dart';
+import { irValueToDart, irWidgetToDart, isConstable } from './ir-to-dart';
 import type { CompileContext } from './lower';
 import { initStateLines, methodStatementLines } from './statements';
 
 const RETURN_SITE = { indent: 4, used: 11, trailing: 1 };
 
 const emitMethod = (method: IrMethod): string => {
+  const params = method.params
+    .map((param) => `${param.dartType} ${param.name}`)
+    .join(', ');
   const signature = method.isAsync
-    ? `Future<void> _${method.name}() async`
-    : `void _${method.name}()`;
+    ? `Future<void> _${method.name}(${params}) async`
+    : `void _${method.name}(${params})`;
   const lines = methodStatementLines(method.statements).map(
     (line) => `    ${line}`,
   );
@@ -75,9 +81,17 @@ const buildMethod = (component: IrComponent): string => {
     });
     return `    ${prefix}${printed};`;
   });
+  const guards = component.guards.map((guard) => {
+    const printed = printExpr(irValueToDart(guard.value, naming), {
+      indent: 6,
+      used: 13,
+      trailing: 1,
+    });
+    return `    if (${guard.condition}) {\n      return ${printed};\n    }`;
+  });
   return `  @override
   Widget build(BuildContext context) {
-${[...locals, `    return ${body};`].join('\n')}
+${[...locals, ...guards, `    return ${body};`].join('\n')}
   }`;
 };
 
@@ -352,14 +366,42 @@ const emitRouter = (router: IrRouter): string => {
 };
 
 export interface DartFileParts {
+  constants?: IrConstant[];
   stores?: IrStore[];
   router?: IrRouter | null;
   models?: IrModel[];
   helpers?: IrHelper[];
   enums?: IrEnum[];
-  /** Dart libraries a helper's body needs, e.g. `dart:convert` to decode. */
-  dartImports?: string[];
+  /**
+   * Dart libraries a helper's body needs — `dart:convert` to decode, or
+   * `dart:math` under the prefix its members are reached through.
+   */
+  dartImports?: IrImport[];
 }
+
+/**
+ * `const List<Album> albums = [ … ];`
+ *
+ * `const` when every value in it is one — which is what a literal is — and
+ * `final` when something in it is computed, exactly as Dart requires.
+ */
+const emitConstant = (constant: IrConstant): string => {
+  const printed = irValueToDart(constant.value, { privateMembers: false });
+  // `const List<Album> albums = [ … ]` says const once: the declaration
+  // carries it, so the value inside drops its own.
+  const isConst = isConstable(constant.value);
+  const value: DartExpr =
+    isConst && (printed.kind === 'list' || printed.kind === 'call')
+      ? { ...printed, isConst: false }
+      : printed;
+  const head = `${isConst ? 'const' : 'final'} ${constant.dartType} ${constant.name} =`;
+  const body = printExpr(value, {
+    indent: 0,
+    used: head.length + 1,
+    trailing: 1,
+  });
+  return `${head} ${body};`;
+};
 
 /** A helper the component owns: a private method, indented into the class. */
 const emitComponentHelper = (helper: IrHelper): string =>
@@ -401,9 +443,16 @@ const emitHelper = (helper: IrHelper): string => {
   ].join(', ');
   const generics =
     helper.typeParams.length === 0 ? '' : `<${helper.typeParams.join(', ')}>`;
-  const head = `${helper.returnDartType} ${helper.name}${generics}(${params}) =>`;
+  const signature = `${helper.returnDartType} ${helper.name}${generics}(${params})`;
+  if (helper.body.kind === 'block') {
+    const lines = methodStatementLines(helper.body.statements, {
+      privateMembers: false,
+    }).map((line) => `  ${line}`);
+    return `${signature} {\n${lines.join('\n')}\n}`;
+  }
+  const head = `${signature} =>`;
   const body = printExpr(
-    irValueToDart(helper.value, { privateMembers: false }),
+    irValueToDart(helper.body.value, { privateMembers: false }),
     {
       indent: HELPER_BODY_INDENT,
       used: head.length + 1,
@@ -422,6 +471,7 @@ export const emitDartFile = (
   parts: DartFileParts = {},
 ): string => {
   const {
+    constants = [],
     stores = [],
     router = null,
     models = [],
@@ -433,6 +483,9 @@ export const emitDartFile = (
     ...enums.map(emitEnum),
     ...helpers.map(emitHelper),
     ...models.map(emitModel),
+    // Data comes after the models it is written with, so the file reads in
+    // the order it is understood.
+    ...constants.map(emitConstant),
     ...stores.map(emitStore),
     ...components.map(emitComponentClass),
     ...(router === null ? [] : [emitRouter(router)]),
@@ -447,13 +500,17 @@ export const emitDartFile = (
     ...new Set([
       // A store extends ChangeNotifier and a component extends
       // StatelessWidget; a file of only helpers or models extends nothing.
-      ...importsForComponents(
-        components,
-        context,
-        components.length > 0 || stores.length > 0 || router !== null,
-      ),
+      ...importsForComponents(components, context, {
+        // A store extends ChangeNotifier and a component extends
+        // StatelessWidget. A file holding only a route table names neither:
+        // GoRouter comes from go_router and each page from its own file.
+        needsFlutter: components.length > 0 || stores.length > 0,
+        alsoNamed: router?.routes.map((route) => route.component) ?? [],
+      }),
       ...pluginImports,
-      ...dartImports.map((uri) => `import '${uri}';`),
+      ...dartImports.map(({ uri, prefix }) =>
+        prefix === null ? `import '${uri}';` : `import '${uri}' as ${prefix};`,
+      ),
       // GoRouter and GoRoute themselves need the import, even in a file whose
       // components never navigate.
       ...(router === null ? [] : [`import '${GO_ROUTER_IMPORT}';`]),

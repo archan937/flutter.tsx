@@ -72,7 +72,10 @@ const memberReads = (): Map<string, MemberReadInfo> =>
     ],
   ]);
 
-const translate = (source: string): string => {
+const translate = (
+  source: string,
+  useDartImport: (uri: string, prefix?: string) => void = (): void => undefined,
+): string => {
   const { expression, sourceFile } = parseExpression(source);
   const context: TranslateContext = {
     sourceFile,
@@ -87,7 +90,9 @@ const translate = (source: string): string => {
     memberReads: memberReads(),
     classFields: new Map(),
     jsonModels: new Set(),
-    useDartImport: (): void => undefined,
+    nullableHandles: new Map(),
+    narrowed: new Set<string>(),
+    useDartImport,
   };
   return translateExpression(expression, context);
 };
@@ -121,6 +126,48 @@ describe('translateExpression', () => {
     expect(translate('`Count: ${count}`')).toBe("'Count: $_count'");
     expect(translate('`Sum: ${count + 1}!`')).toBe("'Sum: ${_count + 1}!'");
     expect(translate('`plain`')).toBe("'plain'");
+  });
+
+  // `'$counts'` reads as the name `counts`, which is a different thing —
+  // Dart needs the braces as soon as a name could keep going.
+  test('a name followed by more of a name keeps its braces', () => {
+    expect(translate('`${count}s`')).toBe("'${_count}s'");
+    expect(translate('`${count}_1`')).toBe("'${_count}_1'");
+    expect(translate('`${count}9`')).toBe("'${_count}9'");
+    expect(translate('`${count} s`')).toBe("'$_count s'");
+    expect(translate('`${count}.`')).toBe("'$_count.'");
+  });
+
+  // Dart puts rounding on the number itself and the rest in `dart:math`.
+  test('Math becomes the Dart the same arithmetic is written with', () => {
+    expect(translate('Math.floor(count / 2)')).toBe('(_count / 2).floor()');
+    expect(translate('Math.ceil(count)')).toBe('_count.ceil()');
+    expect(translate('Math.round(count)')).toBe('_count.round()');
+    expect(translate('Math.abs(count)')).toBe('_count.abs()');
+    expect(translate('Math.trunc(count)')).toBe('_count.truncate()');
+    expect(translate('Math.max(count, 2)')).toBe('math.max(_count, 2)');
+    expect(translate('Math.min(count, 2)')).toBe('math.min(_count, 2)');
+    expect(translate('Math.sqrt(count)')).toBe('math.sqrt(_count)');
+    expect(translate('Math.pow(count, 2)')).toBe('math.pow(_count, 2)');
+    expect(translate('Math.PI')).toBe('math.pi');
+  });
+
+  test('a Math call that needs dart:math records the prefixed import', () => {
+    const imports: { uri: string; prefix?: string }[] = [];
+    translate('Math.sqrt(count)', (uri, prefix) => {
+      imports.push(prefix === undefined ? { uri } : { uri, prefix });
+    });
+
+    expect(imports).toEqual([{ uri: 'dart:math', prefix: 'math' }]);
+  });
+
+  test('rounding needs no import: Dart puts it on the number', () => {
+    const imports: string[] = [];
+    translate('Math.round(count)', (uri) => {
+      imports.push(uri);
+    });
+
+    expect(imports).toEqual([]);
   });
 
   test('conditional and null-coalescing expressions translate', () => {
@@ -163,12 +210,20 @@ describe('translateExpression', () => {
   });
 
   test('unsupported expressions are a numbered error', () => {
-    // `slice` is deliberately unmapped: Dart's sublist/substring differ in
-    // how they clamp, so it raises rather than compiling to something else.
+    expect(() => translate('count as unknown as string')).toThrow(
+      /TSX0305 .* is an expression form the compiler does not translate/,
+    );
+  });
+
+  // `slice` is deliberately unmapped: Dart's sublist and substring differ in
+  // how they clamp, so it names the way that does work rather than compiling
+  // to something that behaves differently.
+  test('a method with no faithful Dart counterpart names the alternative', () => {
     expect(() => translate('count.slice(0)')).toThrow(
       new Error(
-        'TSX0305 probe.tsx:6:17 — `count.slice(0)` is an expression form the ' +
-          'compiler does not translate to Dart.',
+        'TSX0341 probe.tsx:6:23 — `slice` has no Dart counterpart that ' +
+          'behaves the same way — use `substring(start, end)`, with indices ' +
+          'inside the value.',
       ),
     );
   });
@@ -194,12 +249,12 @@ describe('translateExpression — plugin property reads', () => {
     );
   });
 
-  test('a property without a zero value is a numbered error', () => {
+  test('a property that needs a guard says so, and how', () => {
     expect(() => translate('info.stamp')).toThrow(
       new Error(
-        'TSX0316 probe.tsx:6:22 — reading `stamp` needs a DateTime ' +
-          'fallback, which is not compiled yet. Read it inside a handler ' +
-          'and store the result in state.',
+        'TSX0316 probe.tsx:6:22 — reading `stamp` on a value that may be ' +
+          'null needs a guard: `if (!info) return …;` above it, or `?.` ' +
+          'with a DateTime fallback of your own.',
       ),
     );
   });

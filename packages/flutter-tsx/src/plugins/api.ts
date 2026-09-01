@@ -31,6 +31,8 @@ export interface PluginField {
 
 export interface PluginClass {
   name: string;
+  /** What it extends and implements: a Widget is rendered, not called. */
+  supertypes: string[];
   doc: string;
   constructors: ConstructorModel[];
   fields: PluginField[];
@@ -103,6 +105,7 @@ const parseClass = (value: unknown, path: string): PluginClass => {
   const record = asObject(value, path);
   return {
     name: asString(record.name, `${path}.name`),
+    supertypes: asStringList(record.supertypes, `${path}.supertypes`),
     doc: asString(record.doc, `${path}.doc`),
     constructors: asArray(record.constructors, `${path}.constructors`).map(
       (constructor, index) =>

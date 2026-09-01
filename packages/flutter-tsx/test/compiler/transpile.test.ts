@@ -689,13 +689,16 @@ describe('transpileComponent — json models', () => {
         "import { usePackageInfo } from 'plugin:package_info_plus';\n" +
         'export const Probe = () => {\n' +
         '  const info = usePackageInfo();\n' +
+        '  if (!info) {\n' +
+        '    return <Text>loading</Text>;\n' +
+        '  }\n' +
         '  return <Text semanticsLabel={info.appName}>hi</Text>;\n' +
         '};\n',
       filePath: 'probe.tsx',
     });
 
     expect(dart).toContain(
-      "    return Text('hi', semanticsLabel: _info?.appName ?? '');",
+      "    return Text('hi', semanticsLabel: _info!.appName);",
     );
   });
 
@@ -900,7 +903,7 @@ export const Board = ({ jobs }: { jobs: Job[] }) => (
           '<Text>{name.slice(0, 2)}</Text>;\n',
         filePath: '/tmp/Odd.tsx',
       }),
-    ).rejects.toThrow(/TSX0305/);
+    ).rejects.toThrow(/TSX0341 .* `slice` has no Dart counterpart/);
   });
 
   test('a list of lists', async () => {
@@ -935,7 +938,7 @@ describe('transpileComponent — tuples and generics', () => {
       filePath: '/tmp/Pair.tsx',
     });
 
-    expect(dart).toContain('final (String, double) span;');
+    expect(dart).toContain('final (String, num) span;');
     expect(dart).toContain('Text(span.$1)');
   });
 
@@ -1094,7 +1097,7 @@ export const Ticker = ({ unit }: { unit: string }) => {
     });
 
     expect(dart).toContain(
-      "String _label(double value) => '$value ${widget.unit}';",
+      "String _label(num value) => '$value ${widget.unit}';",
     );
     expect(dart).toContain('Text(_label(_count))');
   });
@@ -1207,6 +1210,328 @@ export const Meter = ({ level }: { level: Level }) => (
   });
 });
 
+describe('transpileComponent — model literals', () => {
+  const probe = (value: string): Promise<string> =>
+    transpileComponent({
+      source:
+        "import { Column, Text } from 'flutter-tsx';\n" +
+        'interface Artist { name: string }\n' +
+        'const Card = ({ artist }: { artist: Artist }) => ' +
+        '<Text>{artist.name}</Text>;\n' +
+        'export const Probe = () => (\n' +
+        '  <Column>\n' +
+        `    <Card artist={${value}} />\n` +
+        '  </Column>\n' +
+        ');\n',
+      filePath: 'probe.tsx',
+    });
+
+  test('an object literal where a model is expected constructs one', async () => {
+    expect(await probe("{ name: 'Ada' }")).toContain(
+      "Card(artist: Artist(name: 'Ada'))",
+    );
+  });
+
+  test('a field the model does not have is a numbered error', () => {
+    expect(probe("{ nam: 'Ada' }")).rejects.toThrow(
+      /TSX0344 .* `Artist` has no field `nam`\./,
+    );
+  });
+
+  test('a shape that is not `{ field: value }` is a numbered error', () => {
+    expect(probe("{ ...{ name: 'Ada' } }")).rejects.toThrow(
+      /TSX0344 .* `Artist` is written as/,
+    );
+  });
+});
+
+describe('transpileComponent — guards that prove nothing', () => {
+  test('`x == null` in a handler leaves early, and narrows what follows', async () => {
+    const dart = await transpileComponent({
+      source:
+        "import { Text, useState } from 'flutter-tsx';\n" +
+        'export const Probe = () => {\n' +
+        "  const [label, setLabel] = useState('a');\n" +
+        '  const run = () => {\n' +
+        '    if (label == null) {\n' +
+        '      return;\n' +
+        '    }\n' +
+        "    setLabel('b');\n" +
+        '  };\n' +
+        '  return <Text onClick={run}>{label}</Text>;\n' +
+        '};\n',
+      filePath: 'probe.tsx',
+    });
+
+    expect(dart).toContain('    if (_label == null) {\n      return;\n    }');
+  });
+});
+
+describe('transpileComponent — the edges of what is expressible', () => {
+  test('a component-level helper with a body reads the component around it', async () => {
+    const dart = await transpileComponent({
+      source:
+        "import { Text, useState } from 'flutter-tsx';\n" +
+        'export const Probe = () => {\n' +
+        '  const [count, setCount] = useState(2);\n' +
+        '  const label = (prefix: string): string => {\n' +
+        '    const shown = prefix.trim();\n' +
+        '    return `${shown}: ${count}`;\n' +
+        '  };\n' +
+        "  return <Text onClick={() => setCount(count + 1)}>{label('n')}</Text>;\n" +
+        '};\n',
+      filePath: 'probe.tsx',
+    });
+
+    expect(dart).toContain(
+      '  String _label(String prefix) {\n' +
+        '    final shown = prefix.trim();\n' +
+        "    return '$shown: $_count';\n" +
+        '  }',
+    );
+  });
+
+  test('a helper that needs dart:math imports it under its prefix', async () => {
+    const dart = await transpileComponent({
+      source:
+        "import { Text } from 'flutter-tsx';\n" +
+        'export const spread = (a: number, b: number): number =>\n' +
+        '  Math.max(a, b) - Math.min(a, b);\n' +
+        'export const Probe = () => <Text>{spread(1, 2)}</Text>;\n',
+      filePath: 'probe.tsx',
+    });
+
+    expect(dart).toContain("import 'dart:math' as math;");
+    expect(dart).toContain(
+      'num spread(num a, num b) => math.max(a, b) - math.min(a, b);',
+    );
+  });
+
+  test('a component that needs dart:math imports it under its prefix', async () => {
+    const dart = await transpileComponent({
+      source:
+        "import { Text, useState } from 'flutter-tsx';\n" +
+        'export const Probe = () => {\n' +
+        '  const [count] = useState(9);\n' +
+        '  return <Text>{Math.sqrt(count)}</Text>;\n' +
+        '};\n',
+      filePath: 'probe.tsx',
+    });
+
+    expect(dart).toContain("import 'dart:math' as math;");
+    expect(dart).toContain("Text('${math.sqrt(_count)}')");
+  });
+
+  test('data that needs a library imports it too', async () => {
+    const dart = await transpileComponent({
+      source:
+        "import { Text } from 'flutter-tsx';\n" +
+        'export const HALF: number = Math.sqrt(4);\n' +
+        'export const Probe = () => <Text>{HALF}</Text>;\n',
+      filePath: 'probe.tsx',
+    });
+
+    // Computed data is `final`, not `const`, and the library it needs is
+    // imported — a `math.` with no import would not compile.
+    expect(dart).toContain("import 'dart:math' as math;");
+    expect(dart).toContain('final num half = math.sqrt(4);');
+  });
+
+  test('a Math member with no Dart counterpart is refused, not guessed', () => {
+    expect(
+      transpileComponent({
+        source:
+          "import { Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => <Text>{Math.cbrt(8)}</Text>;\n',
+        filePath: 'probe.tsx',
+      }),
+    ).rejects.toThrow(/TSX0305/);
+
+    expect(
+      transpileComponent({
+        source:
+          "import { Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => <Text>{Math.LN2}</Text>;\n',
+        filePath: 'probe.tsx',
+      }),
+    ).rejects.toThrow(/TSX0305/);
+  });
+
+  test('an element written as an attribute value needs no braces', async () => {
+    const dart = await transpileComponent({
+      source:
+        "import { AppBar, Scaffold, Text } from 'flutter-tsx';\n" +
+        'export const Probe = () => (\n' +
+        '  <Scaffold appBar=<AppBar title=<Text>Hi</Text> />>\n' +
+        '    <Text>body</Text>\n' +
+        '  </Scaffold>\n' +
+        ');\n',
+      filePath: 'probe.tsx',
+    });
+
+    expect(dart).toContain("appBar: AppBar(title: const Text('Hi'))");
+  });
+
+  test('a call statement that claims nothing is a numbered error', () => {
+    expect(
+      transpileComponent({
+        source:
+          "import { Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => {\n' +
+          '  doSomething();\n' +
+          '  return <Text>hi</Text>;\n' +
+          '};\n',
+        filePath: 'probe.tsx',
+      }),
+    ).rejects.toThrow(/TSX0346 .* `doSomething\(\);` is a statement/);
+  });
+
+  test('a list of lists binds no element the compiler can read', () => {
+    expect(
+      transpileComponent({
+        source:
+          "import { Column, Text } from 'flutter-tsx';\n" +
+          'interface Grid { rows: string[][] }\n' +
+          'export const Probe = ({ grid }: { grid: Grid }) => (\n' +
+          '  <Column>\n' +
+          '    {grid.rows.map((row) => (\n' +
+          '      <Text>{row.missing}</Text>\n' +
+          '    ))}\n' +
+          '  </Column>\n' +
+          ');\n',
+        filePath: 'probe.tsx',
+      }),
+    ).rejects.toThrow(/TSX0305/);
+  });
+
+  test('a list of models written inline is constructed, and its class imported', async () => {
+    const dart = await transpileComponent({
+      source:
+        "import { Column, Text } from 'flutter-tsx';\n" +
+        'interface Tag { name: string }\n' +
+        'const Row = ({ tags }: { tags: Tag[] }) => (\n' +
+        '  <Column>\n' +
+        '    {tags.map((tag) => (\n' +
+        '      <Text>{tag.name}</Text>\n' +
+        '    ))}\n' +
+        '  </Column>\n' +
+        ');\n' +
+        'export const Probe = () => (\n' +
+        "  <Row tags={[{ name: 'a' }, { name: 'b' }]} />\n" +
+        ');\n',
+      filePath: 'probe.tsx',
+    });
+
+    expect(dart).toContain("Row(tags: [Tag(name: 'a'), Tag(name: 'b')])");
+  });
+
+  test('a widget with no children slot may still be written with tags', async () => {
+    const dart = await transpileComponent({
+      source:
+        "import { AppBar, Scaffold, Text } from 'flutter-tsx';\n" +
+        'export const Probe = () => (\n' +
+        '  <Scaffold appBar={<AppBar title={<Text>Hi</Text>}></AppBar>}>\n' +
+        '    <Text>body</Text>\n' +
+        '  </Scaffold>\n' +
+        ');\n',
+      filePath: 'probe.tsx',
+    });
+
+    expect(dart).toContain("appBar: AppBar(title: const Text('Hi'))");
+  });
+
+  test('iterating something that is not a list is refused', () => {
+    expect(
+      transpileComponent({
+        source:
+          "import { Column, Text } from 'flutter-tsx';\n" +
+          'interface Note { title: string }\n' +
+          'export const Probe = ({ note }: { note: Note }) => (\n' +
+          '  <Column>\n' +
+          '    {note.title.map((letter) => (\n' +
+          '      <Text>{letter}</Text>\n' +
+          '    ))}\n' +
+          '  </Column>\n' +
+          ');\n',
+        filePath: 'probe.tsx',
+      }),
+    ).rejects.toThrow(
+      /TSX0348 .* `note.title` is a String, not a list — only a list renders/,
+    );
+  });
+
+  test('a chain of list methods keeps the element type through it', async () => {
+    const dart = await transpileComponent({
+      source:
+        "import { Text } from 'flutter-tsx';\n" +
+        'interface Tag { name: string }\n' +
+        "export const TAGS: Tag[] = [{ name: 'a' }];\n" +
+        'export const Probe = () => (\n' +
+        '  <Text>\n' +
+        "    {TAGS.filter((tag) => tag.name.startsWith('a'))\n" +
+        '      .map((tag) => tag.name)\n' +
+        "      .join(', ')}\n" +
+        '  </Text>\n' +
+        ');\n',
+      filePath: 'probe.tsx',
+    });
+
+    expect(dart).toContain(
+      "tags.where((tag) => tag.name.startsWith('a')).map((tag) => tag.name)",
+    );
+  });
+
+  test('a prop written as a quoted expression is translated', async () => {
+    const dart = await transpileComponent({
+      source:
+        "import { Text } from 'flutter-tsx';\n" +
+        'export const Probe = () => <Text maxLines={1 + 1}>hi</Text>;\n',
+      filePath: 'probe.tsx',
+    });
+
+    expect(dart).toContain("Text('hi', maxLines: 1 + 1)");
+  });
+
+  test('a `return <value>;` in a handler is a numbered error', () => {
+    expect(
+      transpileComponent({
+        source:
+          "import { Text, useState } from 'flutter-tsx';\n" +
+          'export const Probe = () => {\n' +
+          '  const [count, setCount] = useState(0);\n' +
+          '  const run = () => {\n' +
+          '    return count;\n' +
+          '  };\n' +
+          '  return <Text onClick={run}>{count}</Text>;\n' +
+          '};\n',
+        filePath: 'probe.tsx',
+      }),
+    ).rejects.toThrow(
+      /TSX0342 .* a handler returns nothing: use `return;` to leave it early\./,
+    );
+  });
+
+  test('iterating a list of something the model does not name yields nothing', () => {
+    // A list of lists has no element type the compiler can bind a name to, so
+    // the read inside is reported rather than compiled against a guess.
+    expect(
+      transpileComponent({
+        source:
+          "import { Column, Text } from 'flutter-tsx';\n" +
+          'interface Grid { rows: string[][] }\n' +
+          'export const Probe = ({ grid }: { grid: Grid }) => (\n' +
+          '  <Column>\n' +
+          '    {grid.rows.map((row) => (\n' +
+          '      <Text>{row.missing}</Text>\n' +
+          '    ))}\n' +
+          '  </Column>\n' +
+          ');\n',
+        filePath: 'probe.tsx',
+      }),
+    ).rejects.toThrow(/TSX0305/);
+  });
+});
+
 describe('transpileComponent — helper functions', () => {
   test('a module-level helper becomes a top-level Dart function', async () => {
     const dart = await transpileComponent({
@@ -1288,17 +1613,23 @@ export const Kept = ({ names }: { names: string[] }) => (
     ).rejects.toThrow(/TSX0339 .* `label` takes plain named parameters/);
   });
 
-  test('a helper with a block body is refused', () => {
-    expect(
-      transpileComponent({
-        source:
-          'const shout = (value: string): string => {\n' +
-          '  return value.toUpperCase();\n' +
-          '};\n' +
-          "export const At = () => <Text>{shout('a')}</Text>;\n",
-        filePath: '/tmp/At.tsx',
-      }),
-    ).rejects.toThrow(/TSX0339 .* `shout` is one expression/);
+  test('a helper with a block body keeps its body', async () => {
+    const dart = await transpileComponent({
+      source:
+        'const shout = (value: string): string => {\n' +
+        '  const trimmed = value.trim();\n' +
+        '  return trimmed.toUpperCase();\n' +
+        '};\n' +
+        "export const At = () => <Text>{shout('a')}</Text>;\n",
+      filePath: '/tmp/At.tsx',
+    });
+
+    expect(dart).toContain(
+      'String shout(String value) {\n' +
+        '  final trimmed = value.trim();\n' +
+        '  return trimmed.toUpperCase();\n' +
+        '}',
+    );
   });
 
   test('a helper parameter without a type is refused', () => {
@@ -1490,6 +1821,43 @@ describe('transpileComponent — files beside each other', () => {
     };
   };
 
+  test('data imported from a sibling brings the shape it holds', async () => {
+    const { dartFor } = await project({
+      'data/albums.tsx':
+        'interface Album { id: number; title: string }\n' +
+        "export const ALBUMS: Album[] = [{ id: 1, title: 'Kind of Blue' }];\n",
+      'App.tsx':
+        "import { Column, Text } from 'flutter-tsx';\n" +
+        "import { ALBUMS } from './data/albums';\n" +
+        'export const App = () => (\n' +
+        '  <Column>\n' +
+        '    {ALBUMS.map((album) => (\n' +
+        '      <Text>{album.title}</Text>\n' +
+        '    ))}\n' +
+        '  </Column>\n' +
+        ');\n',
+    });
+
+    const dart = await dartFor('App.tsx');
+
+    // The data's file is imported, its Dart name is used, and the shape it
+    // holds is known well enough to read a field off an element.
+    expect(dart).toContain("import 'data/albums.dart';");
+    expect(dart).toContain('for (final album in albums) Text(album.title)');
+  });
+
+  test('a component may render nothing but data from next door', async () => {
+    const { dartFor } = await project({
+      'data/labels.tsx': "export const TITLE = 'Library';\n",
+      'App.tsx':
+        "import { Text } from 'flutter-tsx';\n" +
+        "import { TITLE } from './data/labels';\n" +
+        'export const App = () => <Text>{TITLE}</Text>;\n',
+    });
+
+    expect(await dartFor('App.tsx')).toContain('Text(title)');
+  });
+
   test('a helper in another directory is called, and its file imported', async () => {
     const { root, dartFor } = await project({
       'helpers/format.tsx':
@@ -1594,7 +1962,7 @@ describe('transpileComponent — files beside each other', () => {
         'TSX0103 ' +
           join(root, 'empty.tsx') +
           ':1:1 — this file declares nothing: export a component, a helper, ' +
-          'a model, an enum or a store.',
+          'a model, an enum, a store, a router or a constant.',
       ),
     );
 
@@ -1708,5 +2076,89 @@ describe('transpileComponent — a plugin that reports through a listener', () =
           'a function, `onTrayIconMouseDown: () => { … }`.',
       ),
     );
+  });
+});
+
+/**
+ * What a plugin hands back is a value the code names and uses. Extracting a
+ * type nothing can reach is the state this suite exists to prevent.
+ */
+describe('transpileComponent — values a plugin hands back', () => {
+  const cameraComponent = (body: string): string =>
+    "import { Text, useState } from 'flutter-tsx';\n" +
+    "import { useCamera } from 'plugin:camera';\n" +
+    'export const Probe = () => {\n' +
+    '  const cam = useCamera();\n' +
+    "  const [label, setLabel] = useState('none');\n" +
+    body +
+    '  return <Text onClick={run}>{label}</Text>;\n' +
+    '};\n';
+
+  test('a call through a handle that may be null reads null-safely', async () => {
+    const dart = await transpileComponent({
+      source: cameraComponent(
+        '  const run = async () => {\n' +
+          '    const photo = await cam?.takePicture();\n' +
+          "    setLabel(photo?.path ?? 'cancelled');\n" +
+          '  };\n',
+      ),
+      filePath: 'probe.tsx',
+    });
+
+    // `await _cam?.takePicture()` is an `XFile?`, and Dart refuses `.path`
+    // on it — so the read carries the same nullability the call has.
+    expect(dart).toContain('final photo = await _cam?.takePicture();');
+    expect(dart).toContain("_label = photo?.path ?? 'cancelled';");
+  });
+
+  test('a guard inside a handler narrows the reads after it', async () => {
+    const dart = await transpileComponent({
+      source: cameraComponent(
+        '  const run = async () => {\n' +
+          '    if (!cam) {\n' +
+          '      return;\n' +
+          '    }\n' +
+          '    const photo = await cam.takePicture();\n' +
+          '    setLabel(photo.path);\n' +
+          '  };\n',
+      ),
+      filePath: 'probe.tsx',
+    });
+
+    // The guard returns, so both the call and the read below it are made on
+    // values Dart no longer has to treat as null.
+    expect(dart).toContain('    if (_cam == null) {\n      return;\n    }');
+    expect(dart).toContain('final photo = await _cam!.takePicture();');
+    expect(dart).toContain('_label = photo.path;');
+  });
+
+  test('a local declared beside others is in scope for what follows', async () => {
+    const dart = await transpileComponent({
+      source: cameraComponent(
+        '  const run = async () => {\n' +
+          '    const photo = await cam?.takePicture();\n' +
+          "    const name = photo?.name ?? 'cancelled';\n" +
+          '    setLabel(name);\n' +
+          '  };\n',
+      ),
+      filePath: 'probe.tsx',
+    });
+
+    expect(dart).toContain("final name = photo?.name ?? 'cancelled';");
+    expect(dart).toContain('_label = name;');
+  });
+
+  test('declaring several values at once is a numbered error', () => {
+    expect(
+      transpileComponent({
+        source: cameraComponent(
+          '  const run = async () => {\n' +
+            '    const a = 1, b = 2;\n' +
+            '    setLabel(`${a}${b}`);\n' +
+            '  };\n',
+        ),
+        filePath: 'probe.tsx',
+      }),
+    ).rejects.toThrow(/TSX0305[\s\S]*declare one value at a time/);
   });
 });

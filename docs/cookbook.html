@@ -154,13 +154,14 @@ main p { margin-bottom: 12px; }
     <a href="./index.html">Home</a>
     <a href="./guide.html">Guide</a>
     <span class="here" aria-current="page">Cookbook</span>
+    <a href="./examples.html">Examples</a>
     <a href="./api-reference.html">API reference</a>
     <a href="./config-mapping.html">Config mapping</a>
     <a class="ghstars" href="https://github.com/archan937/flutter.tsx/stargazers" target="_blank" rel="noopener" aria-label="Star flutter.tsx on GitHub"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M8 .25l2.06 4.17 4.6.67-3.33 3.24.79 4.59L8 11.42l-4.12 2.16.79-4.59L1.34 5.09l4.6-.67z" /></svg><span id="gh-stars">Star</span></a>
     <a href="https://github.com/archan937/flutter.tsx" target="_blank" rel="noopener">GitHub ↗</a>
   </nav>
   <input id="search" type="search" placeholder="Search recipes…" autocomplete="off" spellcheck="false">
-  <div class="meta-info">44 recipes · Flutter 3.47.1</div>
+  <div class="meta-info">50 recipes · Flutter 3.47.1</div>
   <nav id="sidebar-nav">
 <details open>
 <summary>Start here<span class="nav-count">7</span></summary>
@@ -187,7 +188,7 @@ main p { margin-bottom: 12px; }
 </ul>
 </details>
 <details>
-<summary>Lists and data<span class="nav-count">9</span></summary>
+<summary>Lists and data<span class="nav-count">12</span></summary>
 <ul>
 <li data-name="Rendering a list"><a href="#07-list-rendering">Rendering a list</a></li>
 <li data-name="Taking a list as a prop"><a href="#30-list-prop">Taking a list as a prop</a></li>
@@ -198,6 +199,9 @@ main p { margin-bottom: 12px; }
 <li data-name="Enums and string unions"><a href="#36-enums">Enums and string unions</a></li>
 <li data-name="Tuples and a generic helper"><a href="#37-tuples-generics">Tuples and a generic helper</a></li>
 <li data-name="A helper that returns a model"><a href="#41-model-helper">A helper that returns a model</a></li>
+<li data-name="One number type, three Dart ones"><a href="#48-number-types">One number type, three Dart ones</a></li>
+<li data-name="A helper with a body"><a href="#49-helper-body">A helper with a body</a></li>
+<li data-name="Data the module declares"><a href="#50-module-data">Data the module declares</a></li>
 </ul>
 </details>
 <details>
@@ -210,7 +214,7 @@ main p { margin-bottom: 12px; }
 </ul>
 </details>
 <details>
-<summary>Native plugins<span class="nav-count">10</span></summary>
+<summary>Native plugins<span class="nav-count">13</span></summary>
 <ul>
 <li data-name="Taking a photo"><a href="#01-camera-screen">Taking a photo</a></li>
 <li data-name="Choosing a camera resolution"><a href="#10-camera-options">Choosing a camera resolution</a></li>
@@ -222,6 +226,9 @@ main p { margin-bottom: 12px; }
 <li data-name="Calling a plugin from a tap"><a href="#27-inline-plugin-call">Calling a plugin from a tap</a></li>
 <li data-name="A plugin that hands you its own instance"><a href="#43-tray-singleton">A plugin that hands you its own instance</a></li>
 <li data-name="Answering a plugin’s events"><a href="#44-tray-listener">Answering a plugin’s events</a></li>
+<li data-name="Using what a plugin hands back"><a href="#45-camera-capture">Using what a plugin hands back</a></li>
+<li data-name="Rendering a plugin’s own widget"><a href="#46-camera-preview">Rendering a plugin’s own widget</a></li>
+<li data-name="Guarding before you use a handle"><a href="#47-guarded-handler">Guarding before you use a handle</a></li>
 </ul>
 </details>
 <details>
@@ -1244,7 +1251,7 @@ export const TaskBoard = () =&gt; {
 
   <span class="tok-kw">final</span> <span class="tok-typ">String</span> name;
   <span class="tok-kw">final</span> <span class="tok-typ">List</span>&lt;<span class="tok-typ">String</span>&gt; tags;
-  <span class="tok-kw">final</span> double score;
+  <span class="tok-kw">final</span> num score;
 
   @override
   <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
@@ -1293,13 +1300,13 @@ export const TaskBoard = () =&gt; {
   <span class="tok-kw">const</span> <span class="tok-typ">Totals</span>({<span class="tok-kw">super</span>.key, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.names, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.scores});
 
   <span class="tok-kw">final</span> <span class="tok-typ">List</span>&lt;<span class="tok-typ">String</span>&gt; names;
-  <span class="tok-kw">final</span> <span class="tok-typ">List</span>&lt;double&gt; scores;
+  <span class="tok-kw">final</span> <span class="tok-typ">List</span>&lt;num&gt; scores;
 
   @override
   <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
     <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
       children: [
-        <span class="tok-typ">Text</span>(<span class="tok-str">'${scores.fold&lt;double&gt;(0, (sum, score) =&gt; sum + score)}'</span>),
+        <span class="tok-typ">Text</span>(<span class="tok-str">'${scores.fold&lt;num&gt;(0, (sum, score) =&gt; sum + score)}'</span>),
         <span class="tok-typ">Text</span>(names.<span class="tok-fn">elementAtOrNull</span>(<span class="tok-num">0</span>) ?? <span class="tok-str">'-'</span>),
         <span class="tok-kw">for</span> (<span class="tok-kw">final</span> name <span class="tok-kw">in</span> names.<span class="tok-fn">where</span>((name) =&gt; name != <span class="tok-str">''</span>)) <span class="tok-typ">Text</span>(name),
       ],
@@ -1436,7 +1443,7 @@ export const Span = ({
 <span class="tok-kw">class</span> <span class="tok-typ">Span</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
   <span class="tok-kw">const</span> <span class="tok-typ">Span</span>({<span class="tok-kw">super</span>.key, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.range, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.names});
 
-  <span class="tok-kw">final</span> (<span class="tok-typ">String</span>, double) range;
+  <span class="tok-kw">final</span> (<span class="tok-typ">String</span>, num) range;
   <span class="tok-kw">final</span> <span class="tok-typ">List</span>&lt;<span class="tok-typ">String</span>&gt; names;
 
   @override
@@ -1511,6 +1518,248 @@ export const Span = ({
         <span class="tok-typ">Text</span>(
           (<span class="tok-typ">Track</span>.<span class="tok-fn">fromJson</span>(<span class="tok-fn">jsonDecode</span>(payload) <span class="tok-kw">as</span> <span class="tok-typ">Map</span>&lt;<span class="tok-typ">String</span>, dynamic&gt;)).title,
         ),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section class="recipe" id="48-number-types" data-name="One number type, three Dart ones">
+<h3>One number type, three Dart ones</h3>
+<p class="blurb">TypeScript has <code>number</code>; Dart has <code>int</code>, <code>double</code> and <code>num</code>, and will not pass one for another. The compiler widens at the boundary — <code>_width.toDouble()</code> — so ordinary arithmetic stays ordinary.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/SegmentRow.tsx" role="tab" aria-selected="true">src/SegmentRow.tsx</button>
+<button class="tab-btn" data-tab="segment_row.dart" role="tab" aria-selected="false">segment_row.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/SegmentRow.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">SizedBox</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-kw">interface</span> <span class="tok-typ">Segment</span> {
+  id: number;
+  seconds: number;
+}
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> label = (seconds: number): string =&gt; <span class="tok-str">`${seconds}s`</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">SegmentRow</span> = ({ segment }: { segment: <span class="tok-typ">Segment</span> }) =&gt; {
+  <span class="tok-kw">const</span> [width] = <span class="tok-fn">useState</span>(<span class="tok-num">120</span>);
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Segment {segment.id}&lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;<span class="tok-typ">SizedBox</span> width={width} height={segment.seconds}&gt;
+        &lt;<span class="tok-typ">Text</span>&gt;{<span class="tok-fn">label</span>(segment.seconds)}&lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;/<span class="tok-typ">SizedBox</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
+  );
+};</code></pre></div>
+<div class="tab-panel" data-panel="segment_row.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-typ">String</span> <span class="tok-fn">label</span>(num seconds) =&gt; <span class="tok-str">'${seconds}s'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">Segment</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Segment</span>({<span class="tok-kw">required</span> <span class="tok-kw">this</span>.id, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.seconds});
+
+  <span class="tok-kw">factory</span> <span class="tok-typ">Segment</span>.<span class="tok-fn">fromJson</span>(<span class="tok-typ">Map</span>&lt;<span class="tok-typ">String</span>, dynamic&gt; json) =&gt;
+      <span class="tok-typ">Segment</span>(id: json[<span class="tok-str">'id'</span>] <span class="tok-kw">as</span> num, seconds: json[<span class="tok-str">'seconds'</span>] <span class="tok-kw">as</span> num);
+
+  <span class="tok-kw">final</span> num id;
+  <span class="tok-kw">final</span> num seconds;
+}
+
+<span class="tok-kw">class</span> <span class="tok-typ">SegmentRow</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">SegmentRow</span>({<span class="tok-kw">super</span>.key, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.segment});
+
+  <span class="tok-kw">final</span> <span class="tok-typ">Segment</span> segment;
+
+  @override
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">SegmentRow</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_SegmentRowState</span>();
+}
+
+<span class="tok-kw">class</span> _SegmentRowState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">SegmentRow</span>&gt; {
+  <span class="tok-kw">final</span> int _width = <span class="tok-num">120</span>;
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+      children: [
+        <span class="tok-typ">Text</span>(<span class="tok-str">'Segment ${widget.segment.id}'</span>),
+        <span class="tok-typ">SizedBox</span>(
+          width: _width.<span class="tok-fn">toDouble</span>(),
+          height: widget.segment.seconds.<span class="tok-fn">toDouble</span>(),
+          child: <span class="tok-typ">Text</span>(<span class="tok-fn">label</span>(widget.segment.seconds)),
+        ),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section class="recipe" id="49-helper-body" data-name="A helper with a body">
+<h3>A helper with a body</h3>
+<p class="blurb">A function you write the ordinary way — locals, an early return, <code>Math.floor</code> — becomes the Dart function you would have written by hand, with <code>dart:math</code> imported for you.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Meter.tsx" role="tab" aria-selected="true">src/Meter.tsx</button>
+<button class="tab-btn" data-tab="meter.dart" role="tab" aria-selected="false">meter.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Meter.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-com">/** `3:07` — a duration a listener recognises, from a count of seconds. */</span>
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> duration = (seconds: number): string =&gt; {
+  <span class="tok-kw">const</span> minutes = <span class="tok-typ">Math</span>.<span class="tok-fn">floor</span>(seconds / <span class="tok-num">60</span>);
+  <span class="tok-kw">const</span> rest = <span class="tok-typ">Math</span>.<span class="tok-fn">round</span>(seconds % <span class="tok-num">60</span>);
+
+  <span class="tok-kw">if</span> (rest &lt; <span class="tok-num">10</span>) {
+    <span class="tok-kw">return</span> <span class="tok-str">`${minutes}:0${rest}`</span>;
+  }
+
+  <span class="tok-kw">return</span> <span class="tok-str">`${minutes}:${rest}`</span>;
+};
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> loudness = (peak: number): string =&gt;
+  <span class="tok-str">`${Math.round(Math.min(peak, 1) * 100)}%`</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Meter</span> = ({ seconds, peak }: { seconds: number; peak: number }) =&gt; (
+  &lt;<span class="tok-typ">Column</span>&gt;
+    &lt;<span class="tok-typ">Text</span>&gt;{<span class="tok-fn">duration</span>(seconds)}&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;<span class="tok-typ">Text</span>&gt;{<span class="tok-fn">loudness</span>(peak)}&lt;/<span class="tok-typ">Text</span>&gt;
+  &lt;/<span class="tok-typ">Column</span>&gt;
+);</code></pre></div>
+<div class="tab-panel" data-panel="meter.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'dart:math'</span> <span class="tok-kw">as</span> math;
+
+<span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-typ">String</span> <span class="tok-fn">duration</span>(num seconds) {
+  <span class="tok-kw">final</span> minutes = (seconds / <span class="tok-num">60</span>).<span class="tok-fn">floor</span>();
+  <span class="tok-kw">final</span> rest = (seconds % <span class="tok-num">60</span>).<span class="tok-fn">round</span>();
+  <span class="tok-kw">if</span> (rest &lt; <span class="tok-num">10</span>) {
+    <span class="tok-kw">return</span> <span class="tok-str">'$minutes:0$rest'</span>;
+  }
+  <span class="tok-kw">return</span> <span class="tok-str">'$minutes:$rest'</span>;
+}
+
+<span class="tok-typ">String</span> <span class="tok-fn">loudness</span>(num peak) =&gt; <span class="tok-str">'${(math.min(peak, 1) * 100).round()}%'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">Meter</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Meter</span>({<span class="tok-kw">super</span>.key, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.seconds, <span class="tok-kw">required</span> <span class="tok-kw">this</span>.peak});
+
+  <span class="tok-kw">final</span> num seconds;
+  <span class="tok-kw">final</span> num peak;
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(children: [<span class="tok-typ">Text</span>(<span class="tok-fn">duration</span>(seconds)), <span class="tok-typ">Text</span>(<span class="tok-fn">loudness</span>(peak))]);
+  }
+}</code></pre></div>
+</div>
+</section>
+<section class="recipe" id="50-module-data" data-name="Data the module declares">
+<h3>Data the module declares</h3>
+<p class="blurb">Seed data, lookup tables and labels live beside the code that reads them: an exported const becomes a top-level Dart constant, and <code>{ … }</code> where a model is expected constructs one.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/NoteList.tsx" role="tab" aria-selected="true">src/NoteList.tsx</button>
+<button class="tab-btn" data-tab="note_list.dart" role="tab" aria-selected="false">note_list.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/NoteList.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-kw">interface</span> <span class="tok-typ">Keeper</span> {
+  name: string;
+}
+
+<span class="tok-kw">interface</span> <span class="tok-typ">Note</span> {
+  id: number;
+  title: string;
+  tags: string[];
+  keeper: <span class="tok-typ">Keeper</span>;
+}
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">NOTES</span>: <span class="tok-typ">Note</span>[] = [
+  {
+    id: <span class="tok-num">1</span>,
+    title: <span class="tok-str">'Pinned'</span>,
+    tags: [<span class="tok-str">'inbox'</span>],
+    keeper: { name: <span class="tok-str">'Ada'</span> },
+  },
+  {
+    id: <span class="tok-num">2</span>,
+    title: <span class="tok-str">'Later'</span>,
+    tags: [<span class="tok-str">'someday'</span>, <span class="tok-str">'maybe'</span>],
+    keeper: { name: <span class="tok-str">'Grace'</span> },
+  },
+];
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">EMPTY_LABEL</span> = <span class="tok-str">'Nothing here yet'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">NoteList</span> = () =&gt; (
+  &lt;<span class="tok-typ">Column</span>&gt;
+    &lt;<span class="tok-typ">Text</span>&gt;{<span class="tok-typ">EMPTY_LABEL</span>}&lt;/<span class="tok-typ">Text</span>&gt;
+    {<span class="tok-typ">NOTES</span>.<span class="tok-fn">map</span>((note) =&gt; (
+      &lt;<span class="tok-typ">Text</span>&gt;
+        {note.title} by {note.keeper.name}
+      &lt;/<span class="tok-typ">Text</span>&gt;
+    ))}
+  &lt;/<span class="tok-typ">Column</span>&gt;
+);</code></pre></div>
+<div class="tab-panel" data-panel="note_list.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">Keeper</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Keeper</span>({<span class="tok-kw">required</span> <span class="tok-kw">this</span>.name});
+
+  <span class="tok-kw">factory</span> <span class="tok-typ">Keeper</span>.<span class="tok-fn">fromJson</span>(<span class="tok-typ">Map</span>&lt;<span class="tok-typ">String</span>, dynamic&gt; json) =&gt;
+      <span class="tok-typ">Keeper</span>(name: json[<span class="tok-str">'name'</span>] <span class="tok-kw">as</span> <span class="tok-typ">String</span>);
+
+  <span class="tok-kw">final</span> <span class="tok-typ">String</span> name;
+}
+
+<span class="tok-kw">class</span> <span class="tok-typ">Note</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Note</span>({
+    <span class="tok-kw">required</span> <span class="tok-kw">this</span>.id,
+    <span class="tok-kw">required</span> <span class="tok-kw">this</span>.title,
+    <span class="tok-kw">required</span> <span class="tok-kw">this</span>.tags,
+    <span class="tok-kw">required</span> <span class="tok-kw">this</span>.keeper,
+  });
+
+  <span class="tok-kw">factory</span> <span class="tok-typ">Note</span>.<span class="tok-fn">fromJson</span>(<span class="tok-typ">Map</span>&lt;<span class="tok-typ">String</span>, dynamic&gt; json) =&gt; <span class="tok-typ">Note</span>(
+    id: json[<span class="tok-str">'id'</span>] <span class="tok-kw">as</span> num,
+    title: json[<span class="tok-str">'title'</span>] <span class="tok-kw">as</span> <span class="tok-typ">String</span>,
+    tags: (json[<span class="tok-str">'tags'</span>] <span class="tok-kw">as</span> <span class="tok-typ">List</span>&lt;dynamic&gt;).cast&lt;<span class="tok-typ">String</span>&gt;(),
+    keeper: <span class="tok-typ">Keeper</span>.<span class="tok-fn">fromJson</span>(json[<span class="tok-str">'keeper'</span>] <span class="tok-kw">as</span> <span class="tok-typ">Map</span>&lt;<span class="tok-typ">String</span>, dynamic&gt;),
+  );
+
+  <span class="tok-kw">final</span> num id;
+  <span class="tok-kw">final</span> <span class="tok-typ">String</span> title;
+  <span class="tok-kw">final</span> <span class="tok-typ">List</span>&lt;<span class="tok-typ">String</span>&gt; tags;
+  <span class="tok-kw">final</span> <span class="tok-typ">Keeper</span> keeper;
+}
+
+<span class="tok-kw">const</span> <span class="tok-typ">List</span>&lt;<span class="tok-typ">Note</span>&gt; notes = [
+  <span class="tok-typ">Note</span>(
+    id: <span class="tok-num">1</span>,
+    title: <span class="tok-str">'Pinned'</span>,
+    tags: [<span class="tok-str">'inbox'</span>],
+    keeper: <span class="tok-typ">Keeper</span>(name: <span class="tok-str">'Ada'</span>),
+  ),
+  <span class="tok-typ">Note</span>(
+    id: <span class="tok-num">2</span>,
+    title: <span class="tok-str">'Later'</span>,
+    tags: [<span class="tok-str">'someday'</span>, <span class="tok-str">'maybe'</span>],
+    keeper: <span class="tok-typ">Keeper</span>(name: <span class="tok-str">'Grace'</span>),
+  ),
+];
+
+<span class="tok-kw">const</span> <span class="tok-typ">String</span> emptyLabel = <span class="tok-str">'Nothing here yet'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">NoteList</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">NoteList</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+      children: [
+        <span class="tok-typ">Text</span>(emptyLabel),
+        <span class="tok-kw">for</span> (<span class="tok-kw">final</span> note <span class="tok-kw">in</span> notes) <span class="tok-typ">Text</span>(<span class="tok-str">'${note.title} by ${note.keeper.name}'</span>),
       ],
     );
   }
@@ -1840,7 +2089,7 @@ export const Span = ({
   <span class="tok-kw">const</span> [taken, setTaken] = <span class="tok-fn">useState</span>(<span class="tok-kw">false</span>);
 
   <span class="tok-kw">const</span> takePhoto = <span class="tok-kw">async</span> () =&gt; {
-    <span class="tok-kw">await</span> cam.<span class="tok-fn">takePicture</span>();
+    <span class="tok-kw">await</span> cam?.<span class="tok-fn">takePicture</span>();
     <span class="tok-fn">setTaken</span>(<span class="tok-kw">true</span>);
   };
 
@@ -1925,7 +2174,7 @@ export const Span = ({
   <span class="tok-kw">const</span> [taken, setTaken] = <span class="tok-fn">useState</span>(<span class="tok-kw">false</span>);
 
   <span class="tok-kw">const</span> takePhoto = <span class="tok-kw">async</span> () =&gt; {
-    <span class="tok-kw">await</span> cam.<span class="tok-fn">takePicture</span>();
+    <span class="tok-kw">await</span> cam?.<span class="tok-fn">takePicture</span>();
     <span class="tok-fn">setTaken</span>(<span class="tok-kw">true</span>);
   };
 
@@ -2013,7 +2262,7 @@ export const Span = ({
   <span class="tok-kw">const</span> [saved, setSaved] = <span class="tok-fn">useState</span>(<span class="tok-kw">false</span>);
 
   <span class="tok-kw">const</span> save = <span class="tok-kw">async</span> () =&gt; {
-    <span class="tok-kw">await</span> prefs.<span class="tok-fn">setString</span>(<span class="tok-str">'name'</span>, <span class="tok-str">'Paul'</span>);
+    <span class="tok-kw">await</span> prefs?.<span class="tok-fn">setString</span>(<span class="tok-str">'name'</span>, <span class="tok-str">'Paul'</span>);
     <span class="tok-fn">setSaved</span>(<span class="tok-kw">true</span>);
   };
 
@@ -2208,7 +2457,11 @@ export const Span = ({
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">AppInfo</span> = () =&gt; {
   <span class="tok-kw">const</span> info = <span class="tok-fn">usePackageInfo</span>();
 
-  <span class="tok-kw">return</span> (
+  <span class="tok-kw">if</span> (!info) {
+    <span class="tok-kw">return</span> &lt;<span class="tok-typ">Text</span>&gt;Loading…&lt;/<span class="tok-typ">Text</span>&gt;;
+  }
+
+  return (
     &lt;<span class="tok-typ">Column</span>&gt;
       &lt;<span class="tok-typ">Text</span>&gt;{info.appName}&lt;/<span class="tok-typ">Text</span>&gt;
       &lt;<span class="tok-typ">Text</span>&gt;v{info.version}&lt;/<span class="tok-typ">Text</span>&gt;
@@ -2246,9 +2499,10 @@ export const Span = ({
 
   @override
   <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
-    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
-      children: [<span class="tok-typ">Text</span>(_info?.appName ?? <span class="tok-str">''</span>), <span class="tok-typ">Text</span>(<span class="tok-str">'v${_info?.version ?? ''}'</span>)],
-    );
+    <span class="tok-kw">if</span> (_info == <span class="tok-kw">null</span>) {
+      <span class="tok-kw">return</span> <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Loading…'</span>);
+    }
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(children: [<span class="tok-typ">Text</span>(_info!.appName), <span class="tok-typ">Text</span>(<span class="tok-str">'v${_info!.version}'</span>)]);
   }
 }</code></pre></div>
 </div>
@@ -2269,7 +2523,7 @@ export const Span = ({
   <span class="tok-kw">const</span> [taken, setTaken] = <span class="tok-fn">useState</span>(<span class="tok-kw">false</span>);
 
   <span class="tok-kw">const</span> takePhoto = <span class="tok-kw">async</span> () =&gt; {
-    <span class="tok-kw">await</span> cam.<span class="tok-fn">takePicture</span>();
+    <span class="tok-kw">await</span> cam?.<span class="tok-fn">takePicture</span>();
     <span class="tok-fn">setTaken</span>(<span class="tok-kw">true</span>);
   };
 
@@ -2518,6 +2772,255 @@ export const Span = ({
       children: [
         <span class="tok-typ">Text</span>(_label),
         <span class="tok-typ">ElevatedButton</span>(onPressed: _setup, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Set tooltip'</span>)),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section class="recipe" id="45-camera-capture" data-name="Using what a plugin hands back">
+<h3>Using what a plugin hands back</h3>
+<p class="blurb">A call’s result is a value your code names and reads — <code>const photo = await cam.takePicture()</code> — and a read of something that may be null says so in the Dart.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Capture.tsx" role="tab" aria-selected="true">src/Capture.tsx</button>
+<button class="tab-btn" data-tab="capture.dart" role="tab" aria-selected="false">capture.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Capture.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<span class="tok-kw">import</span> { useCamera } <span class="tok-kw">from</span> <span class="tok-str">'plugin:camera'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Capture</span> = () =&gt; {
+  <span class="tok-kw">const</span> cam = <span class="tok-fn">useCamera</span>();
+  <span class="tok-kw">const</span> [savedTo, setSavedTo] = <span class="tok-fn">useState</span>(<span class="tok-str">'nothing yet'</span>);
+
+  <span class="tok-kw">const</span> take = <span class="tok-kw">async</span> () =&gt; {
+    <span class="tok-kw">const</span> photo = <span class="tok-kw">await</span> cam?.<span class="tok-fn">takePicture</span>();
+    <span class="tok-fn">setSavedTo</span>(photo?.path ?? <span class="tok-str">'cancelled'</span>);
+  };
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;{savedTo}&lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={take}&gt;Take photo&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
+  );
+};</code></pre></div>
+<div class="tab-panel" data-panel="capture.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:camera/camera.dart'</span>;
+<span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">Capture</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Capture</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">Capture</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_CaptureState</span>();
+}
+
+<span class="tok-kw">class</span> _CaptureState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">Capture</span>&gt; {
+  <span class="tok-typ">CameraController</span>? _cam;
+  <span class="tok-typ">String</span> _savedTo = <span class="tok-str">'nothing yet'</span>;
+
+  @override
+  <span class="tok-kw">void</span> <span class="tok-fn">initState</span>() {
+    <span class="tok-kw">super</span>.<span class="tok-fn">initState</span>();
+    <span class="tok-fn">_initCam</span>();
+  }
+
+  <span class="tok-typ">Future</span>&lt;<span class="tok-kw">void</span>&gt; <span class="tok-fn">_initCam</span>() <span class="tok-kw">async</span> {
+    <span class="tok-kw">final</span> cameras = <span class="tok-kw">await</span> <span class="tok-fn">availableCameras</span>();
+    <span class="tok-kw">final</span> controller = <span class="tok-typ">CameraController</span>(cameras.first, <span class="tok-typ">ResolutionPreset</span>.high);
+    <span class="tok-kw">await</span> controller.<span class="tok-fn">initialize</span>();
+    <span class="tok-kw">if</span> (!mounted) {
+      <span class="tok-kw">await</span> controller.<span class="tok-fn">dispose</span>();
+      <span class="tok-kw">return</span>;
+    }
+    <span class="tok-fn">setState</span>(() {
+      _cam = controller;
+    });
+  }
+
+  @override
+  <span class="tok-kw">void</span> <span class="tok-fn">dispose</span>() {
+    _cam?.<span class="tok-fn">dispose</span>();
+    <span class="tok-kw">super</span>.<span class="tok-fn">dispose</span>();
+  }
+
+  <span class="tok-typ">Future</span>&lt;<span class="tok-kw">void</span>&gt; <span class="tok-fn">_take</span>() <span class="tok-kw">async</span> {
+    <span class="tok-kw">final</span> photo = <span class="tok-kw">await</span> _cam?.<span class="tok-fn">takePicture</span>();
+    <span class="tok-fn">setState</span>(() {
+      _savedTo = photo?.path ?? <span class="tok-str">'cancelled'</span>;
+    });
+  }
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+      children: [
+        <span class="tok-typ">Text</span>(_savedTo),
+        <span class="tok-typ">ElevatedButton</span>(onPressed: _take, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Take photo'</span>)),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section class="recipe" id="46-camera-preview" data-name="Rendering a plugin’s own widget">
+<h3>Rendering a plugin’s own widget</h3>
+<p class="blurb">A widget a package ships is a component like any other — <code>&lt;CameraPreview controller={cam} /&gt;</code> — and because the handle is null until the hook has built it, TypeScript makes you guard, which is exactly the Dart that comes out.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Viewfinder.tsx" role="tab" aria-selected="true">src/Viewfinder.tsx</button>
+<button class="tab-btn" data-tab="viewfinder.dart" role="tab" aria-selected="false">viewfinder.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Viewfinder.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Center</span>, <span class="tok-typ">Column</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<span class="tok-kw">import</span> { <span class="tok-typ">CameraPreview</span>, useCamera } <span class="tok-kw">from</span> <span class="tok-str">'plugin:camera'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Viewfinder</span> = () =&gt; {
+  <span class="tok-kw">const</span> cam = <span class="tok-fn">useCamera</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Viewfinder&lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;<span class="tok-typ">Center</span>&gt;{cam &amp;&amp; &lt;<span class="tok-typ">CameraPreview</span> controller={cam} /&gt;}&lt;/<span class="tok-typ">Center</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
+  );
+};</code></pre></div>
+<div class="tab-panel" data-panel="viewfinder.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:camera/camera.dart'</span>;
+<span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">Viewfinder</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Viewfinder</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">Viewfinder</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_ViewfinderState</span>();
+}
+
+<span class="tok-kw">class</span> _ViewfinderState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">Viewfinder</span>&gt; {
+  <span class="tok-typ">CameraController</span>? _cam;
+
+  @override
+  <span class="tok-kw">void</span> <span class="tok-fn">initState</span>() {
+    <span class="tok-kw">super</span>.<span class="tok-fn">initState</span>();
+    <span class="tok-fn">_initCam</span>();
+  }
+
+  <span class="tok-typ">Future</span>&lt;<span class="tok-kw">void</span>&gt; <span class="tok-fn">_initCam</span>() <span class="tok-kw">async</span> {
+    <span class="tok-kw">final</span> cameras = <span class="tok-kw">await</span> <span class="tok-fn">availableCameras</span>();
+    <span class="tok-kw">final</span> controller = <span class="tok-typ">CameraController</span>(cameras.first, <span class="tok-typ">ResolutionPreset</span>.high);
+    <span class="tok-kw">await</span> controller.<span class="tok-fn">initialize</span>();
+    <span class="tok-kw">if</span> (!mounted) {
+      <span class="tok-kw">await</span> controller.<span class="tok-fn">dispose</span>();
+      <span class="tok-kw">return</span>;
+    }
+    <span class="tok-fn">setState</span>(() {
+      _cam = controller;
+    });
+  }
+
+  @override
+  <span class="tok-kw">void</span> <span class="tok-fn">dispose</span>() {
+    _cam?.<span class="tok-fn">dispose</span>();
+    <span class="tok-kw">super</span>.<span class="tok-fn">dispose</span>();
+  }
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+      children: [
+        <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Viewfinder'</span>),
+        <span class="tok-typ">Center</span>(
+          child: _cam != <span class="tok-kw">null</span> ? <span class="tok-typ">CameraPreview</span>(_cam!) : <span class="tok-kw">const</span> <span class="tok-typ">SizedBox</span>.<span class="tok-fn">shrink</span>(),
+        ),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section class="recipe" id="47-guarded-handler" data-name="Guarding before you use a handle">
+<h3>Guarding before you use a handle</h3>
+<p class="blurb">The React shape — leave early when you are not ready yet — is the shape the Dart takes: <code>if (_cam == null) return;</code>, and every read after it drops the null checks it no longer needs.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/GuardedCapture.tsx" role="tab" aria-selected="true">src/GuardedCapture.tsx</button>
+<button class="tab-btn" data-tab="guarded_capture.dart" role="tab" aria-selected="false">guarded_capture.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/GuardedCapture.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<span class="tok-kw">import</span> { useCamera } <span class="tok-kw">from</span> <span class="tok-str">'plugin:camera'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">GuardedCapture</span> = () =&gt; {
+  <span class="tok-kw">const</span> cam = <span class="tok-fn">useCamera</span>();
+  <span class="tok-kw">const</span> [savedTo, setSavedTo] = <span class="tok-fn">useState</span>(<span class="tok-str">'nothing yet'</span>);
+
+  <span class="tok-kw">const</span> take = <span class="tok-kw">async</span> () =&gt; {
+    <span class="tok-kw">if</span> (!cam) {
+      <span class="tok-kw">return</span>;
+    }
+    <span class="tok-kw">const</span> photo = <span class="tok-kw">await</span> cam.<span class="tok-fn">takePicture</span>();
+    <span class="tok-fn">setSavedTo</span>(photo.path);
+  };
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;{savedTo}&lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={take}&gt;Take photo&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
+  );
+};</code></pre></div>
+<div class="tab-panel" data-panel="guarded_capture.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:camera/camera.dart'</span>;
+<span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">GuardedCapture</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">GuardedCapture</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">GuardedCapture</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_GuardedCaptureState</span>();
+}
+
+<span class="tok-kw">class</span> _GuardedCaptureState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">GuardedCapture</span>&gt; {
+  <span class="tok-typ">CameraController</span>? _cam;
+  <span class="tok-typ">String</span> _savedTo = <span class="tok-str">'nothing yet'</span>;
+
+  @override
+  <span class="tok-kw">void</span> <span class="tok-fn">initState</span>() {
+    <span class="tok-kw">super</span>.<span class="tok-fn">initState</span>();
+    <span class="tok-fn">_initCam</span>();
+  }
+
+  <span class="tok-typ">Future</span>&lt;<span class="tok-kw">void</span>&gt; <span class="tok-fn">_initCam</span>() <span class="tok-kw">async</span> {
+    <span class="tok-kw">final</span> cameras = <span class="tok-kw">await</span> <span class="tok-fn">availableCameras</span>();
+    <span class="tok-kw">final</span> controller = <span class="tok-typ">CameraController</span>(cameras.first, <span class="tok-typ">ResolutionPreset</span>.high);
+    <span class="tok-kw">await</span> controller.<span class="tok-fn">initialize</span>();
+    <span class="tok-kw">if</span> (!mounted) {
+      <span class="tok-kw">await</span> controller.<span class="tok-fn">dispose</span>();
+      <span class="tok-kw">return</span>;
+    }
+    <span class="tok-fn">setState</span>(() {
+      _cam = controller;
+    });
+  }
+
+  @override
+  <span class="tok-kw">void</span> <span class="tok-fn">dispose</span>() {
+    _cam?.<span class="tok-fn">dispose</span>();
+    <span class="tok-kw">super</span>.<span class="tok-fn">dispose</span>();
+  }
+
+  <span class="tok-typ">Future</span>&lt;<span class="tok-kw">void</span>&gt; <span class="tok-fn">_take</span>() <span class="tok-kw">async</span> {
+    <span class="tok-kw">if</span> (_cam == <span class="tok-kw">null</span>) {
+      <span class="tok-kw">return</span>;
+    }
+    <span class="tok-kw">final</span> photo = <span class="tok-kw">await</span> _cam!.<span class="tok-fn">takePicture</span>();
+    <span class="tok-fn">setState</span>(() {
+      _savedTo = photo.path;
+    });
+  }
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+      children: [
+        <span class="tok-typ">Text</span>(_savedTo),
+        <span class="tok-typ">ElevatedButton</span>(onPressed: _take, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Take photo'</span>)),
       ],
     );
   }

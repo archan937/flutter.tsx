@@ -1154,7 +1154,9 @@ export const examples = [
   <SafeArea>
     <Text>Content</Text>
   </SafeArea>,
-  <Scaffold />,
+  <Scaffold>
+    <Text>Content</Text>
+  </Scaffold>,
   <ScaffoldMessenger>
     <Text>Content</Text>
   </ScaffoldMessenger>,

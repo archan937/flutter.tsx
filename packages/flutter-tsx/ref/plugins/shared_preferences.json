@@ -5,6 +5,7 @@
     {
       "name": "SharedPreferences",
       "doc": "/// Wraps NSUserDefaults (on iOS) and SharedPreferences (on Android), providing\n/// a persistent store for simple data.\n///\n/// Data is persisted to disk asynchronously.\n///\n/// This is a legacy API. For new code, consider [SharedPreferencesAsync] or [SharedPreferencesWithCache].",
+      "supertypes": [],
       "constructors": [],
       "fields": [],
       "methods": [
@@ -578,6 +579,7 @@
     {
       "name": "SharedPreferencesAsync",
       "doc": "/// Provides a persistent store for simple data.\n///\n/// Data is persisted to and fetched from the disk asynchronously.\n/// If synchronous access to preferences in a locally cached version of preferences\n/// is preferred, consider using [SharedPreferencesWithCache] instead.",
+      "supertypes": [],
       "constructors": [
         {
           "name": "",
@@ -1125,6 +1127,7 @@
     {
       "name": "SharedPreferencesOptions",
       "doc": "/// Basic options for creating SharedPreferencesAsync classes.\n///\n/// This class exists to provide extension to platform specific options as\n/// there are currently no general options that are not platform specific.",
+      "supertypes": [],
       "constructors": [
         {
           "name": "",
@@ -1142,6 +1145,7 @@
     {
       "name": "SharedPreferencesWithCache",
       "doc": "/// Provides a persistent store for simple data.\n///\n/// Cache provided to allow for synchronous gets.\n///\n/// If preferences on the platform may be altered by other means than through\n/// this instance, consider using [SharedPreferencesAsync] instead. You may also\n/// refresh the cached data using [reloadCache] prior to a get request to prevent\n/// missed changes that may have occurred since the cache was last updated.",
+      "supertypes": [],
       "constructors": [],
       "fields": [
         {
@@ -1666,6 +1670,7 @@
     {
       "name": "SharedPreferencesWithCacheOptions",
       "doc": "/// Options necessary to create a [SharedPreferencesWithCache].",
+      "supertypes": [],
       "constructors": [
         {
           "name": "",

@@ -293,6 +293,13 @@ export const FIXTURE_APPS: FixtureApp[] = [
     deps: [],
   },
   {
+    id: '28-multi-file',
+    component: 'Directory',
+    dartFile: 'directory.dart',
+    deps: [],
+    siblings: ['user_card.dart'],
+  },
+  {
     id: '42-project-layout',
     component: 'NowPlaying',
     dartFile: 'now_playing.dart',
@@ -310,5 +317,41 @@ export const FIXTURE_APPS: FixtureApp[] = [
     component: 'TrayMenu',
     dartFile: 'tray_menu.dart',
     deps: ['tray_manager'],
+  },
+  {
+    id: '45-camera-capture',
+    component: 'Capture',
+    dartFile: 'capture.dart',
+    deps: ['camera'],
+  },
+  {
+    id: '46-camera-preview',
+    component: 'Viewfinder',
+    dartFile: 'viewfinder.dart',
+    deps: ['camera'],
+  },
+  {
+    id: '50-module-data',
+    component: 'NoteList',
+    dartFile: 'note_list.dart',
+    deps: [],
+  },
+  {
+    id: '49-helper-body',
+    component: 'Meter',
+    dartFile: 'meter.dart',
+    deps: [],
+  },
+  {
+    id: '48-number-types',
+    component: 'SegmentRow',
+    dartFile: 'segment_row.dart',
+    deps: [],
+  },
+  {
+    id: '47-guarded-handler',
+    component: 'GuardedCapture',
+    dartFile: 'guarded_capture.dart',
+    deps: ['camera'],
   },
 ];

@@ -11,6 +11,7 @@ import {
   packageNameFrom,
   runInitCommand,
 } from '@src/cli/init';
+import type { Template } from '@src/cli/templates';
 
 const deps = (
   overrides: Partial<InitDeps> = {},
@@ -19,20 +20,35 @@ const deps = (
   written: Map<string, string>;
   ran: string[][];
   removed: string[];
+  synced: string[];
 } => {
   const written = new Map<string, string>();
   const ran: string[][] = [];
   const removed: string[] = [];
+  const synced: string[] = [];
   return {
     written,
     ran,
     removed,
+    synced,
     deps: {
       removeFile: (path): Promise<void> => {
         removed.push(path);
         return Promise.resolve();
       },
       sdkInstalled: () => Promise.resolve(true),
+      syncPlugins: (projectDir): Promise<void> => {
+        synced.push(projectDir);
+        return Promise.resolve();
+      },
+      loadTemplate: (name): Promise<Template> =>
+        Promise.resolve({
+          name,
+          target: 'macos',
+          blurb: 'a probe',
+          plugins: { tray_manager: '^0.5.3' },
+          sources: [{ path: 'src/App.tsx', contents: '// the template app\n' }],
+        }),
       pathExists: () => Promise.resolve(false),
       writeFile: (path, contents): Promise<void> => {
         written.set(path, contents);
@@ -171,6 +187,14 @@ describe('defaultInitDeps', () => {
 
       expect(await wired.runFlutter(['--version'], home)).toBe(7);
 
+      // The wired-up template loader and plugin sync are the real ones: the
+      // loader reads this package's templates, and the sync refuses a
+      // directory that is not a project.
+      expect((await wired.loadTemplate('tray')).target).toBe('macos');
+      expect(wired.syncPlugins(join(home, 'not-a-project'))).rejects.toThrow(
+        /package.json does not exist/,
+      );
+
       const lines: string[] = [];
       const write = process.stdout.write.bind(process.stdout);
       process.stdout.write = (chunk: string): boolean => {
@@ -199,5 +223,63 @@ describe('runInitCommand — the entry point', () => {
       mainDart({ name: 'app', rootImport: 'app.dart' }),
     );
     expect(removed).toEqual(['/app/test/widget_test.dart']);
+  });
+});
+
+describe('runInitCommand — a template that brings plugins', () => {
+  test('installs what the template declares, so the project builds as it is', async () => {
+    const context = deps();
+
+    await runInitCommand('/app', context.deps, { template: 'tray' });
+
+    // The manifest declares them and the sync installs them; a project that
+    // scaffolded without them would not resolve its own imports.
+    expect(context.written.get('/app/package.json')).toContain(
+      '"tray_manager": "^0.5.3"',
+    );
+    expect(context.synced).toEqual(['/app']);
+  });
+
+  test('the starter needs no plugins, so nothing is installed', async () => {
+    const context = deps();
+
+    await runInitCommand('/app', context.deps);
+
+    expect(context.synced).toEqual([]);
+  });
+});
+
+describe('runInitCommand — a project that is not for the web', () => {
+  test('scaffolds for the target it was asked for', async () => {
+    const context = deps();
+
+    await runInitCommand('/app', context.deps, { target: 'macos' });
+
+    // The config says what the project is, and `flutter create` is asked for
+    // that platform rather than web.
+    expect(context.written.get('/app/fsx.config.ts')).toContain(
+      "target: 'macos',",
+    );
+    expect(context.ran).toContainEqual([
+      'create',
+      '--platforms',
+      'macos',
+      '--project-name',
+      'app',
+      '--org',
+      'dev.fluttertsx',
+      '.',
+      '(in /app)',
+    ]);
+  });
+
+  test('is a web project when no target is given', async () => {
+    const context = deps();
+
+    await runInitCommand('/app', context.deps);
+
+    expect(context.written.get('/app/fsx.config.ts')).toContain(
+      "target: 'web',",
+    );
   });
 });

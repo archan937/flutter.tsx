@@ -1,5 +1,5 @@
 import { dartFileFor } from '../compiler/dart-names';
-import type { TranspileInput } from '../compiler/transpile';
+import type { TranspileInput, TranspileResult } from '../compiler/transpile';
 
 /** The root component every app is built around. */
 export const ROOT_COMPONENT = 'App.tsx';
@@ -24,7 +24,7 @@ export interface BuildDeps {
   readFile: (path: string) => Promise<string>;
   writeFile: (path: string, contents: string) => Promise<void>;
   pathExists: (path: string) => Promise<boolean>;
-  transpile: (input: TranspileInput) => Promise<string>;
+  transpile: (input: TranspileInput) => Promise<TranspileResult>;
   /** Runs `dart format` over the generated output; resolves its exit code. */
   format: (outputDir: string) => Promise<number>;
 }
@@ -38,25 +38,39 @@ export { dartFileFor } from '../compiler/dart-names';
 export interface EntryPoint {
   name: string;
   rootImport: string;
+  /** The router the app declares, when it declares one. */
+  router?: { import: string; name: string };
 }
 
 const dartString = (value: string): string =>
   `'${value.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`;
 
-/** The generated `lib/main.dart` that hosts the root component. */
-export const mainDart = ({ name, rootImport }: EntryPoint): string =>
-  `${GENERATED_ENTRY}
+/**
+ * The generated `lib/main.dart` that runs the app.
+ *
+ * The root component owns its own chrome, so nothing is wrapped around it: an
+ * app with an AppBar, a drawer or tabs renders the one Scaffold it needs. A
+ * project that declares a router runs that router, because a GoRouter nothing
+ * is wired to cannot answer `context.push`.
+ */
+export const mainDart = ({ name, rootImport, router }: EntryPoint): string =>
+  router === undefined
+    ? `${GENERATED_ENTRY}
 import 'package:flutter/material.dart';
 
 import '${rootImport}';
 
 void main() {
-  runApp(
-    const MaterialApp(
-      title: ${dartString(name)},
-      home: Scaffold(body: SafeArea(child: App())),
-    ),
-  );
+  runApp(const MaterialApp(title: ${dartString(name)}, home: App()));
+}
+`
+    : `${GENERATED_ENTRY}
+import 'package:flutter/material.dart';
+
+import '${router.import}';
+
+void main() {
+  runApp(MaterialApp.router(title: ${dartString(name)}, routerConfig: ${router.name}));
 }
 `;
 
@@ -83,30 +97,55 @@ export const buildProject = async (
   const sourceDir = `${projectDir}/${SOURCE_DIR}`;
   const components = await deps.findComponents(sourceDir);
 
-  if (!components.includes(ROOT_COMPONENT)) {
-    throw new Error(
-      `${sourceDir}/${ROOT_COMPONENT} does not exist — the app needs a root component.`,
-    );
-  }
-
   const written: string[] = [];
+  const routers: { component: string; import: string; name: string }[] = [];
   for (const component of components) {
     const filePath = `${sourceDir}/${component}`;
-    const dart = await deps.transpile({
+    const result = await deps.transpile({
       source: await deps.readFile(filePath),
       filePath,
       pluginApiDirs: [`${projectDir}/${PLUGIN_API_DIR}`],
     });
     const dartFile = dartFileFor(component);
-    await deps.writeFile(`${projectDir}/${OUTPUT_DIR}/${dartFile}`, dart);
+    await deps.writeFile(
+      `${projectDir}/${OUTPUT_DIR}/${dartFile}`,
+      result.dart,
+    );
     written.push(dartFile);
+    if (result.router !== null) {
+      routers.push({ component, import: dartFile, name: result.router });
+    }
+  }
+  // An app runs one router. Two would mean picking one and dropping the
+  // other's routes, which is worse than saying so.
+  if (routers.length > 1) {
+    const names = routers.map((each) => each.component).sort();
+    throw new Error(
+      `${names.join(' and ')} both declare a router — an app runs one.`,
+    );
+  }
+  const [router] = routers;
+  // An app starts either from its root component or from its router. A
+  // routed app has no use for an App.tsx, and requiring one would mean
+  // scaffolding a file nothing runs.
+  if (router === undefined && !components.includes(ROOT_COMPONENT)) {
+    throw new Error(
+      `${sourceDir} has neither ${ROOT_COMPONENT} nor a router — an app ` +
+        'needs one of them to start from.',
+    );
   }
 
   const entryPath = `${projectDir}/${OUTPUT_DIR}/${ENTRY_FILE}`;
   if (await ownsEntryPoint(entryPath, deps)) {
     await deps.writeFile(
       entryPath,
-      mainDart({ name: config.name, rootImport: dartFileFor(ROOT_COMPONENT) }),
+      mainDart({
+        name: config.name,
+        rootImport: dartFileFor(ROOT_COMPONENT),
+        ...(router === undefined
+          ? {}
+          : { router: { import: router.import, name: router.name } }),
+      }),
     );
   }
 

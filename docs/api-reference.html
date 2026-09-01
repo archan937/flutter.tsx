@@ -200,6 +200,7 @@ details details > ul { padding-left: 24px; }
     <a href="./index.html">Home</a>
     <a href="./guide.html">Guide</a>
     <a href="./cookbook.html">Cookbook</a>
+    <a href="./examples.html">Examples</a>
     <span class="here" aria-current="page">API reference</span>
     <a href="./config-mapping.html">Config mapping</a>
     <a class="ghstars" href="https://github.com/archan937/flutter.tsx/stargazers" target="_blank" rel="noopener" aria-label="Star flutter.tsx on GitHub"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M8 .25l2.06 4.17 4.6.67-3.33 3.24.79 4.59L8 11.42l-4.12 2.16.79-4.59L1.34 5.09l4.6-.67z" /></svg><span id="gh-stars">Star</span></a>
@@ -1262,7 +1263,7 @@ details details > ul { padding-left: 24px; }
   <span class="tok-kw">const</span> [taken, setTaken] = <span class="tok-fn">useState</span>(<span class="tok-kw">false</span>);
 
   <span class="tok-kw">const</span> takePhoto = <span class="tok-kw">async</span> () =&gt; {
-    <span class="tok-kw">await</span> cam.<span class="tok-fn">takePicture</span>();
+    <span class="tok-kw">await</span> cam?.<span class="tok-fn">takePicture</span>();
     <span class="tok-fn">setTaken</span>(<span class="tok-kw">true</span>);
   };
 
@@ -1854,7 +1855,7 @@ export const Shell = () =&gt; (
 }</code></pre>
 </div>
 </div>
-<p class="note">Used by <a href="./cookbook.html#01-camera-screen"><code>01-camera-screen</code></a>, <a href="./cookbook.html#05-counter"><code>05-counter</code></a>, <a href="./cookbook.html#06-mount-effect"><code>06-mount-effect</code></a>, <a href="./cookbook.html#07-list-rendering"><code>07-list-rendering</code></a>, <a href="./cookbook.html#09-typed-props"><code>09-typed-props</code></a>, <a href="./cookbook.html#10-camera-options"><code>10-camera-options</code></a>, <a href="./cookbook.html#11-preferences"><code>11-preferences</code></a>, <a href="./cookbook.html#12-secure-storage"><code>12-secure-storage</code></a>, <a href="./cookbook.html#13-open-link"><code>13-open-link</code></a>, <a href="./cookbook.html#15-front-camera"><code>15-front-camera</code></a>, <a href="./cookbook.html#16-tap-target"><code>16-tap-target</code></a>, <a href="./cookbook.html#21-modal"><code>21-modal</code></a>, <a href="./cookbook.html#22-mount-dialog"><code>22-mount-dialog</code></a>, <a href="./cookbook.html#24-animated"><code>24-animated</code></a>, <a href="./cookbook.html#29-branching-handler"><code>29-branching-handler</code></a>, <a href="./cookbook.html#33-control-flow"><code>33-control-flow</code></a>, <a href="./cookbook.html#38-effect-cleanup"><code>38-effect-cleanup</code></a>, <a href="./cookbook.html#39-builder-callback"><code>39-builder-callback</code></a>, <a href="./cookbook.html#43-tray-singleton"><code>43-tray-singleton</code></a>, <a href="./cookbook.html#44-tray-listener"><code>44-tray-listener</code></a></p>
+<p class="note">Used by <a href="./cookbook.html#01-camera-screen"><code>01-camera-screen</code></a>, <a href="./cookbook.html#05-counter"><code>05-counter</code></a>, <a href="./cookbook.html#06-mount-effect"><code>06-mount-effect</code></a>, <a href="./cookbook.html#07-list-rendering"><code>07-list-rendering</code></a>, <a href="./cookbook.html#09-typed-props"><code>09-typed-props</code></a>, <a href="./cookbook.html#10-camera-options"><code>10-camera-options</code></a>, <a href="./cookbook.html#11-preferences"><code>11-preferences</code></a>, <a href="./cookbook.html#12-secure-storage"><code>12-secure-storage</code></a>, <a href="./cookbook.html#13-open-link"><code>13-open-link</code></a>, <a href="./cookbook.html#15-front-camera"><code>15-front-camera</code></a>, <a href="./cookbook.html#16-tap-target"><code>16-tap-target</code></a>, <a href="./cookbook.html#21-modal"><code>21-modal</code></a>, <a href="./cookbook.html#22-mount-dialog"><code>22-mount-dialog</code></a>, <a href="./cookbook.html#24-animated"><code>24-animated</code></a>, <a href="./cookbook.html#29-branching-handler"><code>29-branching-handler</code></a>, <a href="./cookbook.html#33-control-flow"><code>33-control-flow</code></a>, <a href="./cookbook.html#38-effect-cleanup"><code>38-effect-cleanup</code></a>, <a href="./cookbook.html#39-builder-callback"><code>39-builder-callback</code></a>, <a href="./cookbook.html#43-tray-singleton"><code>43-tray-singleton</code></a>, <a href="./cookbook.html#44-tray-listener"><code>44-tray-listener</code></a>, <a href="./cookbook.html#45-camera-capture"><code>45-camera-capture</code></a>, <a href="./cookbook.html#47-guarded-handler"><code>47-guarded-handler</code></a>, <a href="./cookbook.html#48-number-types"><code>48-number-types</code></a></p>
 </article>
 <article class="widget" id="core-EffectCleanup" data-name="EffectCleanup">
 <h3>EffectCleanup<span class="badge badge-lib">type</span></h3>
@@ -8568,12 +8569,12 @@ their scroll positions being intrinsically linked.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
 <tbody>
+<tr><td>children</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
 <tr><td>controller</td><td>ScrollController</td><td>ScrollController?</td><td class="req"></td></tr>
 <tr><td>scrollDirection</td><td>Axis</td><td>Axis</td><td class="req"></td></tr>
 <tr><td>reverse</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 <tr><td>physics</td><td>ScrollPhysicsValue</td><td>ScrollPhysics?</td><td class="req"></td></tr>
 <tr><td>headerSliverBuilder</td><td>(context: BuildContext, innerBoxIsScrolled: boolean) =&gt; FlutterElement[]</td><td>List&lt;Widget&gt; Function(BuildContext, bool)</td><td class="req">✓</td></tr>
-<tr><td>body</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
 <tr><td>dragStartBehavior</td><td>DragStartBehavior</td><td>DragStartBehavior</td><td class="req"></td></tr>
 <tr><td>floatHeaderSlivers</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 <tr><td>clipBehavior</td><td>Clip</td><td>Clip</td><td class="req"></td></tr>
@@ -8588,7 +8589,9 @@ their scroll positions being intrinsically linked.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">NestedScrollView</span> headerSliverBuilder={…} body={&lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">NestedScrollView</span> headerSliverBuilder={…}&gt;
+  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+&lt;/<span class="tok-typ">NestedScrollView</span>&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">NestedScrollView</span>({
@@ -20772,8 +20775,8 @@ widgets.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
 <tbody>
+<tr><td>children</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 <tr><td>appBar</td><td>FlutterChild</td><td>PreferredSizeWidget?</td><td class="req"></td></tr>
-<tr><td>body</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 <tr><td>floatingActionButton</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 <tr><td>floatingActionButtonLocation</td><td>FloatingActionButtonLocationValue</td><td>FloatingActionButtonLocation?</td><td class="req"></td></tr>
 <tr><td>floatingActionButtonAnimator</td><td>FloatingActionButtonAnimatorValue</td><td>FloatingActionButtonAnimator?</td><td class="req"></td></tr>
@@ -20807,7 +20810,9 @@ widgets.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">Scaffold</span> /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">Scaffold</span>&gt;
+  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+&lt;/<span class="tok-typ">Scaffold</span>&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">Scaffold</span>({
@@ -26022,7 +26027,7 @@ can be used to apply style differences based on a widget's elevation.</p>
 <table class="props">
 <thead><tr><th>Hook</th><th>Signature</th><th>Manages for you</th></tr></thead>
 <tbody>
-<tr><td><code>useCamera</code></td><td><code>(options?: { lens?: CameraLensDirection; lensType?: CameraLensType; resolution?: ResolutionPreset }) =&gt; Omit&lt;CameraController, 'initialize' | 'dispose'&gt;</code></td><td><code>initialize</code>, <code>dispose</code></td></tr>
+<tr><td><code>useCamera</code></td><td><code>(options?: { lens?: CameraLensDirection; lensType?: CameraLensType; resolution?: ResolutionPreset }) =&gt; CameraController | null</code></td><td><code>initialize</code>, <code>dispose</code></td></tr>
 </tbody>
 </table>
 <table class="props">
@@ -26057,7 +26062,7 @@ can be used to apply style differences based on a widget's elevation.</p>
   <span class="tok-kw">const</span> [taken, setTaken] = <span class="tok-fn">useState</span>(<span class="tok-kw">false</span>);
 
   <span class="tok-kw">const</span> takePhoto = <span class="tok-kw">async</span> () =&gt; {
-    <span class="tok-kw">await</span> cam.<span class="tok-fn">takePicture</span>();
+    <span class="tok-kw">await</span> cam?.<span class="tok-fn">takePicture</span>();
     <span class="tok-fn">setTaken</span>(<span class="tok-kw">true</span>);
   };
 
@@ -26132,7 +26137,7 @@ can be used to apply style differences based on a widget's elevation.</p>
 <span class="tok-com">// camera 0.12.0+2</span>
 
 declare module <span class="tok-str">'plugin:camera'</span> {
-  <span class="tok-kw">import</span> <span class="tok-kw">type</span> { <span class="tok-typ">DeviceOrientation</span>, <span class="tok-typ">FlutterElement</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+  <span class="tok-kw">import</span> <span class="tok-kw">type</span> { <span class="tok-typ">DeviceOrientation</span>, <span class="tok-typ">FlutterComponent</span>, <span class="tok-typ">FlutterElement</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
   <span class="tok-kw">export</span> <span class="tok-kw">type</span> <span class="tok-typ">CameraLensDirection</span> = <span class="tok-str">'front'</span> | <span class="tok-str">'back'</span> | <span class="tok-str">'external'</span>;
 
@@ -26202,14 +26207,12 @@ declare module <span class="tok-str">'plugin:camera'</span> {
     <span class="tok-kw">readonly</span> value: unknown;
     <span class="tok-fn">buildPreview</span>(): <span class="tok-typ">FlutterElement</span>;
     <span class="tok-fn">debugCheckIsDisposed</span>(): <span class="tok-kw">void</span>;
-    <span class="tok-fn">dispose</span>(): <span class="tok-typ">Promise</span>&lt;<span class="tok-kw">void</span>&gt;;
-    getExposureOffsetStepSize(): Promise&lt;number&gt;;
+    <span class="tok-fn">getExposureOffsetStepSize</span>(): <span class="tok-typ">Promise</span>&lt;number&gt;;
     getMaxExposureOffset(): Promise&lt;number&gt;;
     getMaxZoomLevel(): Promise&lt;number&gt;;
     getMinExposureOffset(): Promise&lt;number&gt;;
     getMinZoomLevel(): Promise&lt;number&gt;;
     getSupportedVideoStabilizationModes(): Promise&lt;<span class="tok-typ">VideoStabilizationMode</span>[]&gt;;
-    initialize(): Promise&lt;<span class="tok-kw">void</span>&gt;;
     lockCaptureOrientation(orientation?: DeviceOrientation | null): Promise&lt;<span class="tok-kw">void</span>&gt;;
     pausePreview(): Promise&lt;<span class="tok-kw">void</span>&gt;;
     pauseVideoRecording(): Promise&lt;<span class="tok-kw">void</span>&gt;;
@@ -26261,13 +26264,13 @@ declare module <span class="tok-str">'plugin:camera'</span> {
     <span class="tok-kw">readonly</span> width: number;
   }
 
-  export class CameraPreview {
-    <span class="tok-fn">constructor</span>(controller: <span class="tok-typ">CameraController</span>, options?: { key?: <span class="tok-typ">Key</span> | <span class="tok-kw">null</span>; child?: <span class="tok-typ">FlutterElement</span> | <span class="tok-kw">null</span> });
-    <span class="tok-kw">readonly</span> child: <span class="tok-typ">FlutterElement</span> | <span class="tok-kw">null</span>;
-    <span class="tok-kw">readonly</span> controller: <span class="tok-typ">CameraController</span>;
-    <span class="tok-kw">readonly</span> key: <span class="tok-typ">Key</span> | <span class="tok-kw">null</span>;
-    <span class="tok-fn">build</span>(context: <span class="tok-typ">BuildContext</span>): <span class="tok-typ">FlutterElement</span>;
+  export interface CameraPreviewProps {
+    controller: <span class="tok-typ">CameraController</span>;
+    key?: <span class="tok-typ">Key</span> | <span class="tok-kw">null</span>;
+    child?: <span class="tok-typ">FlutterElement</span> | <span class="tok-kw">null</span>;
   }
+
+  export const CameraPreview: FlutterComponent&lt;<span class="tok-typ">CameraPreviewProps</span>&gt;;
 
   export class CameraValue {
     <span class="tok-fn">constructor</span>(options: { isInitialized: boolean; errorDescription?: string | <span class="tok-kw">null</span>; previewSize?: <span class="tok-typ">Size</span> | <span class="tok-kw">null</span>; isRecordingVideo: boolean; isTakingPicture: boolean; isStreamingImages: boolean; isRecordingPaused: boolean; flashMode: <span class="tok-typ">FlashMode</span>; exposureMode: <span class="tok-typ">ExposureMode</span>; focusMode: <span class="tok-typ">FocusMode</span>; exposurePointSupported: boolean; focusPointSupported: boolean; deviceOrientation: <span class="tok-typ">DeviceOrientation</span>; description: <span class="tok-typ">CameraDescription</span>; lockedCaptureOrientation?: <span class="tok-typ">DeviceOrientation</span> | <span class="tok-kw">null</span>; recordingOrientation?: <span class="tok-typ">DeviceOrientation</span> | <span class="tok-kw">null</span>; isPreviewPaused?: boolean; previewPauseOrientation?: <span class="tok-typ">DeviceOrientation</span> | <span class="tok-kw">null</span>; videoStabilizationMode?: <span class="tok-typ">VideoStabilizationMode</span> });
@@ -26339,11 +26342,11 @@ declare module <span class="tok-str">'plugin:camera'</span> {
 
   export const availableCameras: () =&gt; Promise&lt;<span class="tok-typ">CameraDescription</span>[]&gt;;
 
-  export const useCamera: (options?: { lens?: <span class="tok-typ">CameraLensDirection</span>; lensType?: <span class="tok-typ">CameraLensType</span>; resolution?: <span class="tok-typ">ResolutionPreset</span> }) =&gt; Omit&lt;<span class="tok-typ">CameraController</span>, <span class="tok-str">'initialize'</span> | <span class="tok-str">'dispose'</span>&gt;;
+  export const useCamera: (options?: { lens?: <span class="tok-typ">CameraLensDirection</span>; lensType?: <span class="tok-typ">CameraLensType</span>; resolution?: <span class="tok-typ">ResolutionPreset</span> }) =&gt; CameraController | null;
 }</code></pre>
 </div>
 </div>
-<p class="note">Proven by <a href="./cookbook.html#01-camera-screen"><code>01-camera-screen</code></a>, <a href="./cookbook.html#10-camera-options"><code>10-camera-options</code></a>, <a href="./cookbook.html#15-front-camera"><code>15-front-camera</code></a></p>
+<p class="note">Proven by <a href="./cookbook.html#01-camera-screen"><code>01-camera-screen</code></a>, <a href="./cookbook.html#10-camera-options"><code>10-camera-options</code></a>, <a href="./cookbook.html#15-front-camera"><code>15-front-camera</code></a>, <a href="./cookbook.html#45-camera-capture"><code>45-camera-capture</code></a>, <a href="./cookbook.html#46-camera-preview"><code>46-camera-preview</code></a>, <a href="./cookbook.html#47-guarded-handler"><code>47-guarded-handler</code></a></p>
 </article>
 <article class="widget" id="plugin-connectivity_plus" data-name="connectivity_plus">
 <h3>connectivity_plus<span class="badge badge-lib">7.3.1</span><a class="badge badge-pkg" href="https://pub.dev/packages/connectivity_plus">pub.dev</a></h3>
@@ -26993,7 +26996,7 @@ declare module <span class="tok-str">'plugin:http'</span> {
 <table class="props">
 <thead><tr><th>Hook</th><th>Signature</th><th>Manages for you</th></tr></thead>
 <tbody>
-<tr><td><code>usePackageInfo</code></td><td><code>() =&gt; PackageInfo</code></td><td></td></tr>
+<tr><td><code>usePackageInfo</code></td><td><code>() =&gt; PackageInfo | null</code></td><td></td></tr>
 </tbody>
 </table>
 
@@ -27012,7 +27015,11 @@ declare module <span class="tok-str">'plugin:http'</span> {
 <span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">AppInfo</span> = () =&gt; {
   <span class="tok-kw">const</span> info = <span class="tok-fn">usePackageInfo</span>();
 
-  <span class="tok-kw">return</span> (
+  <span class="tok-kw">if</span> (!info) {
+    <span class="tok-kw">return</span> &lt;<span class="tok-typ">Text</span>&gt;Loading…&lt;/<span class="tok-typ">Text</span>&gt;;
+  }
+
+  return (
     &lt;<span class="tok-typ">Column</span>&gt;
       &lt;<span class="tok-typ">Text</span>&gt;{info.appName}&lt;/<span class="tok-typ">Text</span>&gt;
       &lt;<span class="tok-typ">Text</span>&gt;v{info.version}&lt;/<span class="tok-typ">Text</span>&gt;
@@ -27052,9 +27059,10 @@ declare module <span class="tok-str">'plugin:http'</span> {
 
   @override
   <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
-    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
-      children: [<span class="tok-typ">Text</span>(_info?.appName ?? <span class="tok-str">''</span>), <span class="tok-typ">Text</span>(<span class="tok-str">'v${_info?.version ?? ''}'</span>)],
-    );
+    <span class="tok-kw">if</span> (_info == <span class="tok-kw">null</span>) {
+      <span class="tok-kw">return</span> <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Loading…'</span>);
+    }
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(children: [<span class="tok-typ">Text</span>(_info!.appName), <span class="tok-typ">Text</span>(<span class="tok-str">'v${_info!.version}'</span>)]);
   }
 }</code></pre>
 </div>
@@ -27099,7 +27107,7 @@ declare module <span class="tok-str">'plugin:package_info_plus'</span> {
     <span class="tok-kw">static</span> <span class="tok-fn">registerWith</span>(): <span class="tok-kw">void</span>;
   }
 
-  export const usePackageInfo: () =&gt; PackageInfo;
+  export const usePackageInfo: () =&gt; PackageInfo | null;
 }</code></pre>
 </div>
 </div>
@@ -27111,7 +27119,7 @@ declare module <span class="tok-str">'plugin:package_info_plus'</span> {
 <table class="props">
 <thead><tr><th>Hook</th><th>Signature</th><th>Manages for you</th></tr></thead>
 <tbody>
-<tr><td><code>useSharedPreferences</code></td><td><code>() =&gt; SharedPreferences</code></td><td></td></tr>
+<tr><td><code>useSharedPreferences</code></td><td><code>() =&gt; SharedPreferences | null</code></td><td></td></tr>
 </tbody>
 </table>
 
@@ -27132,7 +27140,7 @@ declare module <span class="tok-str">'plugin:package_info_plus'</span> {
   <span class="tok-kw">const</span> [saved, setSaved] = <span class="tok-fn">useState</span>(<span class="tok-kw">false</span>);
 
   <span class="tok-kw">const</span> save = <span class="tok-kw">async</span> () =&gt; {
-    <span class="tok-kw">await</span> prefs.<span class="tok-fn">setString</span>(<span class="tok-str">'name'</span>, <span class="tok-str">'Paul'</span>);
+    <span class="tok-kw">await</span> prefs?.<span class="tok-fn">setString</span>(<span class="tok-str">'name'</span>, <span class="tok-str">'Paul'</span>);
     <span class="tok-fn">setSaved</span>(<span class="tok-kw">true</span>);
   };
 
@@ -27274,7 +27282,7 @@ declare module <span class="tok-str">'plugin:shared_preferences'</span> {
     <span class="tok-kw">readonly</span> allowList: string[] | <span class="tok-kw">null</span>;
   }
 
-  export const useSharedPreferences: () =&gt; SharedPreferences;
+  export const useSharedPreferences: () =&gt; SharedPreferences | null;
 }</code></pre>
 </div>
 </div>

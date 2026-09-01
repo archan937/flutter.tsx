@@ -17,9 +17,10 @@ void main() {
 
     await tester.pumpWidget(const MaterialApp(home: AppInfo()));
 
-    // Before the singleton resolves, the zero-value fallbacks render.
+    // The guard renders until the singleton resolves, so nothing reads a
+    // handle that is not there yet.
     expect(find.text('Flutter.tsx Demo'), findsNothing);
-    expect(find.text('v'), findsOneWidget);
+    expect(find.text('Loading…'), findsOneWidget);
 
     await tester.pumpAndSettle();
     expect(find.text('Flutter.tsx Demo'), findsOneWidget);

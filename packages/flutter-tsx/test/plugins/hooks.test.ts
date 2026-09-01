@@ -179,6 +179,7 @@ describe('deriveHooks — underivable shapes', () => {
       {
         name: 'DemoController',
         doc: '',
+        supertypes: [],
         constructors: constructors
           ? [
               {
@@ -354,6 +355,7 @@ describe('deriveHooks — a listener the package does not declare', () => {
       {
         name: 'Demo',
         doc: '',
+        supertypes: [],
         constructors: [
           {
             name: '',

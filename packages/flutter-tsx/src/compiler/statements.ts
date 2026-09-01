@@ -11,8 +11,11 @@ const exprLines = (
   value: IrStatement & { kind: 'expr' },
   naming: DartNaming,
 ): string[] => {
+  // The lines are indented by whoever emits the body, so they are printed
+  // relative to the statement itself: a continuation sits two spaces in, and
+  // the width is measured from where the statement actually starts.
   const printed = printExpr(irValueToDart(value.value, naming), {
-    indent: METHOD_BODY_INDENT,
+    indent: 0,
     used: METHOD_BODY_INDENT,
     trailing: 1,
   });

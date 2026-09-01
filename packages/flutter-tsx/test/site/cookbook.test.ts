@@ -12,6 +12,7 @@ import {
   showcaseFiles,
   SHOWCASES,
   withShowcase,
+  withTemplates,
 } from '@src/site/cookbook';
 import type { SitePage } from '@src/site/model';
 import { page as samplePage } from '@test/support/sample-page';
@@ -247,5 +248,41 @@ describe('showcaseFiles', () => {
     expect(() => showcaseFiles({ ...counter, tsx: 'const x = 1;\n' })).toThrow(
       'the showcase fixture 05-counter exports no component.',
     );
+  });
+});
+
+describe('withTemplates', () => {
+  const example = {
+    name: 'tray',
+    target: 'macos',
+    blurb: 'A menu-bar companion with `useStream`.',
+    features: [
+      'Tray events',
+      'A live stream with `useStream`',
+      'A store',
+      'A fourth',
+    ],
+    plugins: ['tray_manager'],
+    files: ['src/App.tsx'],
+  };
+
+  test('writes one card per example, into the marked region', () => {
+    const html = withTemplates(
+      '<p>before</p>\n<!-- showcase:templates -->\nstale\n<!-- /showcase:templates -->\n<p>after</p>',
+      [example],
+    );
+
+    expect(html).toContain('<p>before</p>');
+    expect(html).toContain('<p>after</p>');
+    expect(html).not.toContain('stale');
+    expect(html).toContain('href="./examples.html#tray"');
+    expect(html).toContain('<div class="tpl-target">macos</div>');
+    // Backticks in the registry read as code on the page.
+    expect(html).toContain('A live stream with <code>useStream</code>');
+    expect(html).toContain(
+      '<code class="tpl-cmd">fsx init my-app --template=tray</code>',
+    );
+    // A card shows the first three features, not every one of them.
+    expect(html).not.toContain('A fourth');
   });
 });

@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flutter.tsx — examples</title>
+<link rel="icon" type="image/png" href="./icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --react:#61dafb; --flutter:#54a4ff; --violet:#a78bfa;
+  --bg:#07090f; --panel:rgba(20,26,38,.62);
+  --line:rgba(120,150,200,.16); --line-soft:rgba(120,150,200,.09);
+  --text:#e8eef7; --muted:#9aa6bb; --dim:#6f7c93;
+  --grad:linear-gradient(115deg,#61dafb 0%,#54a4ff 48%,#a78bfa 100%);
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Hanken Grotesk",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { display: flex; font-family: var(--body); color: var(--text); line-height: 1.6;
+  background: var(--bg); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+/* ── Atmosphere ─── */
+.bg-layer { position: fixed; inset: 0; z-index: -2; pointer-events: none; }
+.bg-grid { background-image:
+    linear-gradient(var(--line-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(120% 90% at 50% 0%, #000 35%, transparent 78%);
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 0%, #000 35%, transparent 78%); }
+.bg-glow { background:
+    radial-gradient(900px 520px at 50% -160px, rgba(97,218,251,.16), transparent 70%),
+    radial-gradient(820px 520px at 95% 4%, rgba(167,139,250,.12), transparent 66%); }
+
+/* ── Sidebar ─── */
+#sidebar { position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  width: 250px; min-width: 250px; flex-shrink: 0; padding: 18px 12px 24px; font-size: 13px;
+  background: linear-gradient(180deg, rgba(17,21,31,.92), rgba(11,14,20,.84));
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-right: 1px solid var(--line); }
+.sb-brand { display: flex; align-items: center; gap: 10px; text-decoration: none;
+  color: var(--text); font-family: var(--mono); font-weight: 700; font-size: .95rem;
+  letter-spacing: -.02em; padding: 4px 6px 16px; }
+.sb-brand .mark { width: 28px; height: 28px; border-radius: 7px; object-fit: cover; display: block;
+  border: 1px solid rgba(97,218,251,.4); box-shadow: 0 0 9px rgba(167,139,250,.3), 0 3px 12px rgba(167,139,250,.16); }
+.sb-brand b { background: var(--grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+#search { width: 100%; padding: 9px 11px; border: 1px solid var(--line); border-radius: 9px;
+  font-family: var(--body); font-size: 13px; margin-bottom: 10px; outline: none;
+  background: rgba(7,9,15,.6); color: var(--text); }
+#search::placeholder { color: var(--dim); }
+#search:focus { border-color: var(--flutter); box-shadow: 0 0 0 2px rgba(84,164,255,.18); }
+.meta-info { font-family: var(--mono); font-size: 10.5px; color: var(--dim); margin-bottom: 12px; padding: 0 2px; }
+.sb-gh { display: flex; gap: 8px; margin-bottom: 14px; }
+.sb-gh a { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; border: 1px solid var(--line);
+  border-radius: 8px; font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--text);
+  text-decoration: none; background: rgba(7,9,15,.5); transition: border-color .15s; }
+.sb-gh a:hover { border-color: rgba(245,215,97,.45); }
+.sb-gh a.ghstars svg { color: var(--amber); }
+
+/* ── Sidebar accordion ─── */
+details { margin-bottom: 2px; }
+details > summary {
+  cursor: pointer; list-style: none; display: flex; align-items: center;
+  padding: 6px 8px; border-radius: 7px; font-weight: 600; color: var(--muted);
+  user-select: none; gap: 6px; }
+details > summary:hover { background: rgba(255,255,255,.04); color: var(--text); }
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before {
+  content: '▶'; font-size: 8px; color: var(--dim); flex-shrink: 0;
+  transition: transform .18s; display: inline-block; width: 10px; }
+details[open] > summary::before { transform: rotate(90deg); }
+.nav-count { font-weight: 400; color: var(--dim); font-size: 11px; margin-left: auto; font-family: var(--mono); }
+details > ul { list-style: none; padding: 2px 0 4px 18px; }
+details > ul li { margin: 1px 0; }
+details > ul li a {
+  display: block; padding: 3px 8px; border-radius: 6px; color: var(--muted);
+  text-decoration: none; font-size: 12px; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; transition: background .12s, color .12s; }
+details > ul li a:hover { background: rgba(255,255,255,.04); color: var(--text); }
+details > ul li a.active { background: rgba(97,218,251,.12); color: var(--react); font-weight: 600; }
+
+/* ── Main content ─── */
+main { flex: 1; max-width: 920px; padding: 48px 56px; min-width: 0; }
+h1 {
+  font-family: var(--display); font-size: 36px; font-weight: 800; letter-spacing: -.03em; margin-bottom: 8px;
+  background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.subtitle { color: var(--muted); margin-bottom: 40px; font-size: 15px; }
+.subtitle code { font-family: var(--mono); font-size: .9em; background: rgba(255,255,255,.06); padding: .1em .4em; border-radius: 5px; color: var(--react); }
+h2 { font-family: var(--display); font-size: 22px; font-weight: 700; letter-spacing: -.02em;
+  margin: 56px 0 22px; padding-bottom: 10px; border-bottom: 1px solid var(--line); color: var(--text); }
+h2:first-of-type { margin-top: 0; }
+
+
+.site-nav { display: flex; flex-direction: column; gap: 1px; margin: 0 0 14px; }
+.site-nav a, .site-nav .here {
+  display: flex; align-items: center; gap: 6px; padding: 5px 8px; border-radius: 7px;
+  font-size: 12.5px; font-weight: 600; text-decoration: none; color: var(--muted);
+  transition: background .12s, color .12s; }
+.site-nav a:hover { background: rgba(255,255,255,.04); color: var(--text); }
+.site-nav .here { color: var(--react); background: rgba(97,218,251,.12); }
+.site-nav .ghstars { margin-top: 6px; border-top: 1px solid var(--line-soft); padding-top: 9px; }
+.site-nav .ghstars svg { color: var(--amber, #f5d761); }
+
+
+.tabs { margin-top: 14px; border: 1px solid var(--line); border-radius: 11px; overflow: hidden; background: rgba(7,9,15,.5); }
+.tab-btns { display: flex; flex-wrap: wrap; background: rgba(255,255,255,.02); border-bottom: 1px solid var(--line); }
+.tab-btn { background: none; border: none; border-bottom: 2px solid transparent;
+  margin-bottom: -1px; padding: 9px 18px; cursor: pointer; font-family: var(--mono); font-size: 12px; font-weight: 600;
+  color: var(--muted); transition: color .15s; letter-spacing: .04em; }
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--react); border-bottom-color: var(--react); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+main { padding-top: 40px; }
+.lede, .note { color: var(--muted); max-width: 68ch; }
+.note { font-size: 14px; }
+.recipe { border: 1px solid var(--line); border-radius: 14px; padding: 22px 24px;
+  margin-bottom: 22px; scroll-margin-top: 20px; background: var(--panel); }
+.recipe[hidden] { display: none; }
+.recipe h3 { font-family: var(--display); font-size: 18px; font-weight: 700;
+  letter-spacing: -.01em; margin-bottom: 8px; color: var(--text); }
+.recipe .blurb { color: var(--muted); font-size: 14px; margin-bottom: 16px; max-width: 68ch; }
+pre { margin: 0; padding: 14px; overflow-x: auto; }
+code { font-family: var(--mono); font-size: 12.5px; line-height: 1.6; }
+main table { border-collapse: collapse; margin: 16px 0; width: 100%; font-size: 14px; }
+main th, main td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; vertical-align: top; }
+main th { color: var(--dim); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+main p code, main li code, main td code { font-family: var(--mono); font-size: .9em;
+  background: rgba(255,255,255,.06); padding: .1em .4em; border-radius: 5px; color: var(--react); }
+main ul { margin: 12px 0 12px 20px; }
+main h3 { font-family: var(--display); font-size: 17px; margin: 28px 0 8px; }
+main p { margin-bottom: 12px; }
+
+  .tok-com { color: #6b7a90; font-style: italic; }
+  .tok-str { color: #a5d6a7; }
+  .tok-num { color: #ffcc80; }
+  .tok-kw  { color: #c792ea; }
+  .tok-typ { color: #82aaff; }
+  .tok-fn  { color: #64d8cb; }
+
+main pre { border: 1px solid var(--line); border-radius: 10px; background: rgba(7,9,15,.5); margin: 14px 0; }
+</style>
+</head>
+<body>
+<div class="bg-layer bg-grid"></div>
+<div class="bg-layer bg-glow"></div>
+<aside id="sidebar">
+  <a class="sb-brand" href="./index.html"><img class="mark" src="./icon.png" alt="flutter.tsx logo" width="28" height="28"><span>flutter<b>.tsx</b></span></a>
+  <nav class="site-nav" aria-label="Site">
+    <a href="./index.html">Home</a>
+    <a href="./guide.html">Guide</a>
+    <a href="./cookbook.html">Cookbook</a>
+    <span class="here" aria-current="page">Examples</span>
+    <a href="./api-reference.html">API reference</a>
+    <a href="./config-mapping.html">Config mapping</a>
+    <a class="ghstars" href="https://github.com/archan937/flutter.tsx/stargazers" target="_blank" rel="noopener" aria-label="Star flutter.tsx on GitHub"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M8 .25l2.06 4.17 4.6.67-3.33 3.24.79 4.59L8 11.42l-4.12 2.16.79-4.59L1.34 5.09l4.6-.67z" /></svg><span id="gh-stars">Star</span></a>
+    <a href="https://github.com/archan937/flutter.tsx" target="_blank" rel="noopener">GitHub ↗</a>
+  </nav>
+  <input id="search" type="search" placeholder="Search sections…" autocomplete="off" spellcheck="false">
+  <div class="meta-info">Examples · Flutter.tsx</div>
+  <nav id="sidebar-nav">
+<details open>
+<summary>Examples<span class="nav-count">4</span></summary>
+<ul>
+<li data-name="desktop"><a href="#desktop">desktop</a></li>
+<li data-name="mobile"><a href="#mobile">mobile</a></li>
+<li data-name="tray"><a href="#tray">tray</a></li>
+<li data-name="web"><a href="#web">web</a></li>
+</ul>
+</details>
+  </nav>
+</aside>
+<main>
+<h1 id="examples">Examples</h1>
+<p>Four complete apps, one per kind of target. Each is a starting point <code>fsx init</code> writes for you, and each is transpiled, analysed and built by the end-to-end suite on every run — so what you read here is what compiles.</p>
+<pre><code class="language-bash">fsx init my-app --template=&lt;desktop|mobile|tray|web&gt;</code></pre>
+<h2 id="desktop">desktop</h2>
+<p>A service console: a filtered sidebar, a details pane, and live build info.</p>
+<pre><code class="language-bash">fsx init my-app --template=desktop
+cd my-app &amp;&amp; bun install &amp;&amp; bun run dev</code></pre>
+<h3 id="what-it-shows">What it shows</h3>
+<ul>
+<li>A master–detail window: a filtered sidebar and a details pane</li>
+<li>A store the two panes share</li>
+<li>Live build information from <code>usePackageInfo</code></li>
+<li>Opening links with <code>launchUrl</code></li>
+<li>An <code>&lt;Animated&gt;</code> panel and colours written as <code>#rrggbb</code></li>
+</ul>
+<p>Pub packages: <code>package_info_plus</code>, <code>url_launcher</code> — <code>fsx init</code> adds and installs them.</p>
+<h3 id="the-files-it-writes">The files it writes</h3>
+<ul>
+<li><code>src/App.tsx</code></li>
+<li><code>src/components/AboutBar.tsx</code></li>
+<li><code>src/components/ServiceDetail.tsx</code></li>
+<li><code>src/components/ServiceRow.tsx</code></li>
+<li><code>src/components/Sidebar.tsx</code></li>
+<li><code>src/components/StatusChip.tsx</code></li>
+<li><code>src/data/services.tsx</code></li>
+<li><code>src/helpers/format.tsx</code></li>
+<li><code>src/models/service.tsx</code></li>
+<li><code>src/stores/console.tsx</code></li>
+</ul>
+<p>Built for <code>macos</code> on every run of the end-to-end suite, and committed under <a href="https://github.com/archan937/flutter.tsx/tree/master/examples/desktop"><code>examples/desktop</code></a>.</p>
+<h2 id="mobile">mobile</h2>
+<p>A field-notes app: tabs, a live camera preview, a sheet, and the keychain.</p>
+<pre><code class="language-bash">fsx init my-app --template=mobile
+cd my-app &amp;&amp; bun install &amp;&amp; bun run dev</code></pre>
+<h3 id="what-it-shows">What it shows</h3>
+<ul>
+<li>Tabs — <code>&lt;TabView&gt;</code> becomes a Scaffold with an IndexedStack</li>
+<li>A live camera preview: the plugin’s own widget, rendered in TSX</li>
+<li>A bottom sheet from a handler</li>
+<li>The keychain, read with <code>useAsync</code> and written from a handler</li>
+<li>A store shared by all three tabs</li>
+</ul>
+<p>Pub packages: <code>camera</code>, <code>flutter_secure_storage</code> — <code>fsx init</code> adds and installs them.</p>
+<h3 id="the-files-it-writes">The files it writes</h3>
+<ul>
+<li><code>src/App.tsx</code></li>
+<li><code>src/components/NoteCard.tsx</code></li>
+<li><code>src/data/notes.tsx</code></li>
+<li><code>src/helpers/format.tsx</code></li>
+<li><code>src/models/note.tsx</code></li>
+<li><code>src/stores/notebook.tsx</code></li>
+<li><code>src/tabs/CaptureTab.tsx</code></li>
+<li><code>src/tabs/NotesTab.tsx</code></li>
+<li><code>src/tabs/VaultTab.tsx</code></li>
+</ul>
+<p>Built for <code>ios</code> on every run of the end-to-end suite, and committed under <a href="https://github.com/archan937/flutter.tsx/tree/master/examples/mobile"><code>examples/mobile</code></a>.</p>
+<h2 id="tray">tray</h2>
+<p>A menu-bar companion: tray events, a live connectivity stream, and a status window.</p>
+<pre><code class="language-bash">fsx init my-app --template=tray
+cd my-app &amp;&amp; bun install &amp;&amp; bun run dev</code></pre>
+<h3 id="what-it-shows">What it shows</h3>
+<ul>
+<li>Tray events: writing a callback registers the listener for you</li>
+<li>A live connectivity stream with <code>useStream</code></li>
+<li>A mount effect that talks to the plugin</li>
+<li>A store the tray and the window share</li>
+<li>Opening links with <code>launchUrl</code></li>
+</ul>
+<p>Pub packages: <code>connectivity_plus</code>, <code>tray_manager</code>, <code>url_launcher</code> — <code>fsx init</code> adds and installs them.</p>
+<h3 id="the-files-it-writes">The files it writes</h3>
+<ul>
+<li><code>src/App.tsx</code></li>
+<li><code>src/components/CheckRow.tsx</code></li>
+<li><code>src/components/ConnectionBadge.tsx</code></li>
+<li><code>src/data/checks.tsx</code></li>
+<li><code>src/helpers/format.tsx</code></li>
+<li><code>src/models/check.tsx</code></li>
+<li><code>src/stores/status.tsx</code></li>
+</ul>
+<p>Built for <code>macos</code> on every run of the end-to-end suite, and committed under <a href="https://github.com/archan937/flutter.tsx/tree/master/examples/tray"><code>examples/tray</code></a>.</p>
+<h2 id="web">web</h2>
+<p>An album browser: routes, a store every page reads, models and helpers.</p>
+<pre><code class="language-bash">fsx init my-app --template=web
+cd my-app &amp;&amp; bun install &amp;&amp; bun run dev</code></pre>
+<h3 id="what-it-shows">What it shows</h3>
+<ul>
+<li>Routes — <code>createRouter</code> and <code>useNavigation().push(…)</code>, wired into the app for you</li>
+<li>A store every page reads, with <code>useStore</code></li>
+<li>Models generated from TypeScript interfaces</li>
+<li>Module data: <code>export const ALBUMS: Album[]</code></li>
+<li>Helpers with real bodies, called from the tree</li>
+</ul>
+<p>Pub packages: <code>go_router</code> — <code>fsx init</code> adds and installs them.</p>
+<h3 id="the-files-it-writes">The files it writes</h3>
+<ul>
+<li><code>src/components/AlbumCard.tsx</code></li>
+<li><code>src/components/SearchField.tsx</code></li>
+<li><code>src/data/albums.tsx</code></li>
+<li><code>src/helpers/format.tsx</code></li>
+<li><code>src/models/album.tsx</code></li>
+<li><code>src/pages/AlbumPage.tsx</code></li>
+<li><code>src/pages/LibraryPage.tsx</code></li>
+<li><code>src/routes.tsx</code></li>
+<li><code>src/stores/library.tsx</code></li>
+</ul>
+<p>Built for <code>web</code> on every run of the end-to-end suite, and committed under <a href="https://github.com/archan937/flutter.tsx/tree/master/examples/web"><code>examples/web</code></a>.</p>
+</main>
+<script>
+(function () {
+  'use strict';
+  // ── Search / filter ───────────────────────────────────────────────────────
+  const searchEl = document.getElementById('search');
+  const noResults = document.getElementById('no-results');
+  const navDetails = Array.from(document.querySelectorAll('#sidebar-nav details'));
+  const initialOpen = new Map(navDetails.map(function (d) { return [d, d.open]; }));
+
+  searchEl.addEventListener('input', function () {
+    const q = this.value.trim().toLowerCase();
+    let visible = 0;
+    document.querySelectorAll('.widget').forEach(function (el) {
+      const name = (el.dataset.name || '').toLowerCase();
+      const show = !q || name.includes(q);
+      el.hidden = !show;
+      if (show) visible++;
+    });
+    if (noResults) noResults.style.display = (!q || visible > 0) ? 'none' : 'block';
+    document.querySelectorAll('#sidebar-nav li[data-name]').forEach(function (li) {
+      const name = (li.dataset.name || '').toLowerCase();
+      li.hidden = q ? !name.includes(q) : false;
+    });
+    navDetails.forEach(function (d) {
+      if (!q) {
+        d.hidden = false;
+        d.open = initialOpen.get(d) || false;
+      } else {
+        const hasVisible = Array.from(
+          d.querySelectorAll('li[data-name]'),
+        ).some(function (li) { return !li.hidden; });
+        d.hidden = !hasVisible;
+        if (hasVisible) d.open = true;
+      }
+    });
+  });
+
+  // ── Scrollspy — highlight the active sidebar link ─────────────────────────
+  const anchors = Array.from(
+    document.querySelectorAll('main .widget[id], main section[id]'),
+  );
+  const sideLinks = Array.from(document.querySelectorAll('#sidebar-nav a'));
+
+  const onScroll = function () {
+    const scrollY = window.scrollY + 100;
+    let activeId = null;
+    for (const el of anchors) {
+      if (el.offsetTop <= scrollY) activeId = el.id;
+    }
+    sideLinks.forEach(function (a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + activeId);
+    });
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+
+  document.addEventListener('click', function (e) {
+    const btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+    const tabs = btn.closest('.tabs');
+    if (!tabs) return;
+    const tab = btn.dataset.tab;
+    tabs.querySelectorAll('.tab-btn').forEach(function (b) {
+      const active = b.dataset.tab === tab;
+      b.classList.toggle('active', active);
+      b.setAttribute('aria-selected', String(active));
+    });
+    tabs.querySelectorAll('.tab-panel').forEach(function (p) {
+      p.classList.toggle('active', p.dataset.panel === tab);
+    });
+  });
+
+})();
+</script>
+</body>
+</html>

@@ -5,6 +5,12 @@
     {
       "name": "CameraController",
       "doc": "/// Controls a device camera.\n///\n/// Use [availableCameras] to get a list of available cameras.\n///\n/// Before using a [CameraController] a call to [initialize] must complete.\n///\n/// To show the camera preview on the screen use a [CameraPreview] widget.",
+      "supertypes": [
+        "ValueNotifier",
+        "ChangeNotifier",
+        "Listenable",
+        "ValueListenable"
+      ],
       "constructors": [
         {
           "name": "",
@@ -850,6 +856,7 @@
     {
       "name": "CameraDescription",
       "doc": "/// Properties of a camera device.",
+      "supertypes": [],
       "constructors": [
         {
           "name": "",
@@ -988,6 +995,9 @@
     {
       "name": "CameraException",
       "doc": "/// This is thrown when the plugin reports an error.",
+      "supertypes": [
+        "Exception"
+      ],
       "constructors": [
         {
           "name": "",
@@ -1066,6 +1076,7 @@
     {
       "name": "CameraImage",
       "doc": "/// A single complete image buffer from the platform camera.\n///\n/// This class allows for direct application access to the pixel data of an\n/// Image through one or more [Uint8List]. Each buffer is encapsulated in a\n/// [Plane] that describes the layout of the pixel data in that plane. The\n/// [CameraImage] is not directly usable as a UI resource.\n///\n/// Although not all image formats are planar on iOS, we treat 1-dimensional\n/// images as single planar images.",
+      "supertypes": [],
       "constructors": [
         {
           "name": "fromPlatformData",
@@ -1193,6 +1204,12 @@
     {
       "name": "CameraPreview",
       "doc": "/// A widget showing a live camera preview.",
+      "supertypes": [
+        "StatelessWidget",
+        "Widget",
+        "DiagnosticableTree",
+        "Diagnosticable"
+      ],
       "constructors": [
         {
           "name": "",
@@ -1309,6 +1326,7 @@
     {
       "name": "CameraValue",
       "doc": "/// The state of a [CameraController].",
+      "supertypes": [],
       "constructors": [
         {
           "name": "",
@@ -2129,6 +2147,7 @@
     {
       "name": "ImageFormat",
       "doc": "/// Describes how pixels are represented in an image.",
+      "supertypes": [],
       "constructors": [],
       "fields": [
         {
@@ -2153,6 +2172,9 @@
     {
       "name": "Optional",
       "doc": "/// A value that might be absent.\n///\n/// Used to represent [DeviceOrientation]s that are optional but also able\n/// to be cleared.",
+      "supertypes": [
+        "Iterable"
+      ],
       "constructors": [
         {
           "name": "absent",
@@ -2495,6 +2517,7 @@
     {
       "name": "Plane",
       "doc": "/// A single color plane of image data.\n///\n/// The number and meaning of the planes in an image are determined by the\n/// format of the Image.",
+      "supertypes": [],
       "constructors": [],
       "fields": [
         {
@@ -2553,6 +2576,9 @@
     {
       "name": "XFile",
       "doc": "/// A CrossFile is a cross-platform, simplified File abstraction.\n///\n/// It wraps the bytes of a selected file, and its (platform-dependant) path.",
+      "supertypes": [
+        "XFileBase"
+      ],
       "constructors": [
         {
           "name": "",

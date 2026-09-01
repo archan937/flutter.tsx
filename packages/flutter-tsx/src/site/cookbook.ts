@@ -1,5 +1,6 @@
 import { dartFileFor } from '../compiler/dart-names';
 import { CATALOGUE, CATEGORIES } from './catalogue';
+import type { ExampleSummary } from './examples';
 import { codeBlock, HIGHLIGHT_CSS } from './highlight';
 import type { SitePage } from './model';
 import { escapeHtml, inlineDoc } from './render';
@@ -308,6 +309,8 @@ const WINDOW_NAME = /(<span class="fname" id="fname">)[^<]*(<\/span>)/;
 const COMPILE_NAME = /(<span id="compile-name">)[^<]*(<\/span>)/;
 const EXAMPLE_MAP = /const EXAMPLES = \{[\s\S]*?\};/;
 const STATS = /<!-- showcase:stats -->[\s\S]*?<!-- \/showcase:stats -->/;
+const TEMPLATES_REGION =
+  /<!-- showcase:templates -->[\s\S]*?<!-- \/showcase:templates -->/;
 const WIDGET_COUNT = /every one of the [\d,]+\n?\s*widgets/;
 const FLUTTER_VERSION = /Flutter \d+\.\d+\.\d+/g;
 
@@ -347,6 +350,45 @@ const codePanel = (
  * version; every name, panel and number here comes from a certified fixture
  * and the snapshot, so none of it can drift again.
  */
+/** `useStore` in prose becomes code on the page, as it reads in the source. */
+const withInlineCode = (text: string): string =>
+  escapeHtml(text).replace(/`([^`]+)`/g, '<code>$1</code>');
+
+/** One example app on the landing page, as a card that links to the docs. */
+const templateCard = (example: ExampleSummary): string =>
+  [
+    '          <a class="tpl" href="./examples.html#' + example.name + '">',
+    `            <div class="tpl-name">${escapeHtml(example.name)}</div>`,
+    `            <div class="tpl-target">${escapeHtml(example.target)}</div>`,
+    `            <p class="tpl-blurb">${withInlineCode(example.blurb)}</p>`,
+    '            <ul class="tpl-list">',
+    ...example.features
+      .slice(0, 3)
+      .map((feature) => `              <li>${withInlineCode(feature)}</li>`),
+    '            </ul>',
+    `            <code class="tpl-cmd">fsx init my-app --template=${example.name}</code>`,
+    '          </a>',
+  ].join('\n');
+
+/**
+ * The landing page's example apps, written from the template registry so the
+ * page cannot advertise an app that is not there.
+ */
+export const withTemplates = (
+  html: string,
+  examples: readonly ExampleSummary[],
+): string =>
+  html.replace(
+    TEMPLATES_REGION,
+    [
+      '<!-- showcase:templates -->',
+      '        <div class="tpl-grid">',
+      ...examples.map(templateCard),
+      '        </div>',
+      '        <!-- /showcase:templates -->',
+    ].join('\n'),
+  );
+
 export const withShowcase = (
   html: string,
   recipes: Recipe[],
@@ -405,6 +447,7 @@ export interface DocPage {
 /** The prose pages, rendered from the markdown that is their source. */
 export const DOC_PAGES: DocPage[] = [
   { source: 'guide.md', title: 'Guide', current: 'guide' },
+  { source: 'examples.md', title: 'Examples', current: 'examples' },
   {
     source: 'config-mapping.md',
     title: 'Config mapping',

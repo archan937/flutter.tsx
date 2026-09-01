@@ -97,6 +97,7 @@ const PAGES = [
   'index.html',
   'guide.html',
   'cookbook.html',
+  'examples.html',
   'api-reference.html',
   'config-mapping.html',
 ];

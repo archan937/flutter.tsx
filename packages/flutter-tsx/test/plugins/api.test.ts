@@ -138,6 +138,7 @@ describe('parsePluginApi — malformed documents', () => {
             {
               name: 'Demo',
               doc: '',
+              supertypes: [],
               constructors: [],
               fields: [],
               methods: [{ name: 'run', doc: '', static: false, params: [] }],

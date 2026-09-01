@@ -344,6 +344,7 @@ void main() {
           PluginClass(
             name: 'DemoController',
             doc: '/// Controls demos.',
+            supertypes: [],
             constructors: [],
             fields: [
               FieldModel(
@@ -390,6 +391,7 @@ void main() {
     {
       "name": "DemoController",
       "doc": "/// Controls demos.",
+      "supertypes": [],
       "constructors": [],
       "fields": [
         {

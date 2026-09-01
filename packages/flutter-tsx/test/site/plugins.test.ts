@@ -39,7 +39,7 @@ describe('buildSitePlugins', () => {
     const hook = plugin?.hooks.find((each) => each.name === 'useCamera');
     expect(hook?.signature).toBe(
       '(options?: { lens?: CameraLensDirection; lensType?: CameraLensType; ' +
-        "resolution?: ResolutionPreset }) => Omit<CameraController, 'initialize' | 'dispose'>",
+        'resolution?: ResolutionPreset }) => CameraController | null',
     );
     expect(hook?.manages).toEqual(['initialize', 'dispose']);
   });

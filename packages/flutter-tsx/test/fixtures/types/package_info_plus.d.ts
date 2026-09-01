@@ -38,5 +38,5 @@ declare module 'plugin:package_info_plus' {
     static registerWith(): void;
   }
 
-  export const usePackageInfo: () => PackageInfo;
+  export const usePackageInfo: () => PackageInfo | null;
 }

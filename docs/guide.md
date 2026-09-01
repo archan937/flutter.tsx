@@ -33,6 +33,29 @@ bun install
 You get `fsx.config.ts`, a `src/App.tsx` to start from, a `tsconfig.json` wired for TSX,
 and the host Flutter app.
 
+### Start from a complete app instead
+
+`--template` scaffolds one of four finished apps rather than the starter — the
+same files, plus that app's own source and the pub packages it needs:
+
+```sh
+fsx init my-app --template=web       # album browser: routes, a store, models
+fsx init my-app --template=mobile    # field notes: tabs, camera preview, keychain
+fsx init my-app --template=desktop   # service console: master–detail, live build info
+fsx init my-app --template=tray      # menu-bar companion: tray events, a live stream
+```
+
+Add `--target=<platform>` to build the same app for somewhere else —
+`fsx init my-app --template=mobile --target=web` scaffolds the field-notes app
+as a web project. The platforms are `android`, `ios`, `linux`, `macos`, `web`
+and `windows`.
+
+Every template is transpiled, analysed and built for its own platform on every
+run of the end-to-end suite, and each one is committed under
+[`examples/`](https://github.com/archan937/flutter.tsx/tree/master/examples) so
+you can read it before you run anything. The [Examples](./examples.html) page
+lists what each app demonstrates, file by file.
+
 ## 2. Install the SDK and your plugins
 
 ```sh

@@ -1,41 +1,78 @@
 import type { IrComponent, IrValue, IrWidget } from './ir';
 import type { CompileContext } from './lower';
 
+/**
+ * Every name a value mentions, so nothing it needs goes unimported.
+ *
+ * The switch is exhaustive on purpose: a value kind that walked no further
+ * would silently drop the imports of everything inside it — a store-wrapped
+ * tree hides its whole subtree behind one builder — and the Dart would name
+ * classes it never imported. A new kind fails to typecheck here instead.
+ */
 const collectValue = (
   value: IrValue,
   context: CompileContext,
   names: Set<string>,
 ): void => {
-  if (value.kind === 'widget') {
-    collectWidget(value.widget, context, names);
-    return;
-  }
-  if (value.kind === 'enumValue') {
-    names.add(value.enumName);
-    return;
-  }
-  if (value.kind === 'constantRef') {
-    names.add(value.owner);
-    return;
-  }
-  if (value.kind === 'construct') {
-    names.add(value.className);
-    for (const argument of value.args) {
-      collectValue(argument.value, context, names);
-    }
-    return;
-  }
-  if (value.kind === 'widgetList') {
-    for (const item of value.items) {
-      if (item.kind === 'for') {
-        collectValue(item.iterable, context, names);
+  switch (value.kind) {
+    case 'widget':
+      collectWidget(value.widget, context, names);
+      return;
+    case 'enumValue':
+      names.add(value.enumName);
+      return;
+    case 'constantRef':
+      names.add(value.owner);
+      return;
+    case 'construct':
+      names.add(value.className);
+      for (const argument of value.args) {
+        collectValue(argument.value, context, names);
       }
-      collectValue(
-        item.kind === 'value' ? item.value : item.child.value,
-        context,
-        names,
-      );
-    }
+      return;
+    case 'widgetList':
+      for (const item of value.items) {
+        if (item.kind === 'for') {
+          collectValue(item.iterable, context, names);
+        }
+        collectValue(
+          item.kind === 'value' ? item.value : item.child.value,
+          context,
+          names,
+        );
+      }
+      return;
+    case 'listValue':
+      for (const item of value.items) {
+        collectValue(item, context, names);
+      }
+      return;
+    case 'conditional':
+      collectValue(value.condition, context, names);
+      collectValue(value.whenTrue, context, names);
+      collectValue(value.whenFalse, context, names);
+      return;
+    case 'closureValue':
+      collectValue(value.value, context, names);
+      return;
+    case 'builder':
+      for (const guard of value.guards) {
+        collectValue(guard.value, context, names);
+      }
+      collectValue(value.value, context, names);
+      break;
+    // Nothing inside these names a class: they are text, numbers and
+    // references to members this file already declares. Listing them keeps
+    // the switch exhaustive, so a new kind has to say what it needs.
+    case 'closure':
+    case 'string':
+    case 'number':
+    case 'boolean':
+    case 'interpolation':
+    case 'dartExpr':
+    case 'handlerRef':
+    case 'stateRef':
+      break;
   }
 };
 
@@ -115,10 +152,18 @@ const importsFor = (
 export const importsForComponents = (
   components: IrComponent[],
   context: CompileContext,
-  /** Whether the file declares something that needs the Flutter barrel. */
-  needsFlutter = true,
+  options: {
+    /** Whether the file declares something that needs the Flutter barrel. */
+    needsFlutter?: boolean;
+    /**
+     * Components the file names outside a widget tree — a route table points
+     * at pages it never renders here, and each still needs its file imported.
+     */
+    alsoNamed?: readonly string[];
+  } = {},
 ): string[] => {
-  const names = new Set<string>();
+  const { needsFlutter = true, alsoNamed = [] } = options;
+  const names = new Set<string>(alsoNamed);
   for (const component of components) {
     collectWidget(component.body, context, names);
   }

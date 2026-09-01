@@ -3,6 +3,7 @@ import { basename, join, resolve } from 'node:path';
 
 import { mainDart, ROOT_COMPONENT } from '../build/project';
 import { dartFileFor } from '../compiler/dart-names';
+import type { AppTarget } from '../runtime/config';
 import {
   commandRunner,
   pathExists as fileExists,
@@ -10,10 +11,26 @@ import {
   writeTextFile,
 } from '../sdk/io';
 import { resolveFsxPaths } from '../sdk/manifest';
+import { defaultPluginPhase } from './install';
 import { DEFAULT_SCAFFOLD_VERSION, scaffoldFiles } from './scaffold';
+import { loadTemplate, type Template } from './templates';
+
+export interface InitOptions {
+  /** The platform the project is for; the template's own, or web. */
+  target?: AppTarget;
+  /** A starting point to copy instead of the default starter app. */
+  template?: string;
+}
 
 export interface InitDeps {
   sdkInstalled: () => Promise<boolean>;
+  loadTemplate: (name: string) => Promise<Template>;
+  /**
+   * Brings the project's pub dependencies in line with the plugins it
+   * declares. A template that imports a package needs it installed, or the
+   * project it scaffolded would not build.
+   */
+  syncPlugins: (projectDir: string) => Promise<void>;
   pathExists: (path: string) => Promise<boolean>;
   writeFile: (path: string, contents: string) => Promise<void>;
   removeFile: (path: string) => Promise<void>;
@@ -22,6 +39,9 @@ export interface InitDeps {
 }
 
 const DEFAULT_ORG = 'dev.fluttertsx';
+
+/** A project is for the web unless it says otherwise: nothing else to install. */
+const DEFAULT_TARGET: AppTarget = 'web';
 
 const FALLBACK_PACKAGE_NAME = 'app';
 
@@ -42,6 +62,7 @@ export const packageNameFrom = (directory: string): string => {
 export const runInitCommand = async (
   directory: string,
   deps: InitDeps,
+  options: InitOptions = {},
 ): Promise<void> => {
   if (!(await deps.sdkInstalled())) {
     throw new Error(
@@ -55,12 +76,23 @@ export const runInitCommand = async (
     );
   }
 
+  const template =
+    options.template === undefined
+      ? null
+      : await deps.loadTemplate(options.template);
+  const target = options.target ?? template?.target ?? DEFAULT_TARGET;
   const name = packageNameFrom(directory);
-  for (const file of scaffoldFiles({
-    name,
-    bundleId: `${DEFAULT_ORG}.${name.replace(/_/g, '')}`,
-    version: DEFAULT_SCAFFOLD_VERSION,
-  })) {
+  const files = scaffoldFiles(
+    {
+      name,
+      bundleId: `${DEFAULT_ORG}.${name.replace(/_/g, '')}`,
+      version: DEFAULT_SCAFFOLD_VERSION,
+      target,
+      ...(template === null ? {} : { plugins: template.plugins }),
+    },
+    template?.sources,
+  );
+  for (const file of files) {
     await deps.writeFile(`${directory}/${file.path}`, file.contents);
   }
 
@@ -70,7 +102,12 @@ export const runInitCommand = async (
     [
       'create',
       '--platforms',
-      'web',
+      // A template says which platforms it is for; asking for a target says
+      // it plainer, so that is the one the project is created for.
+      (options.target === undefined
+        ? (template?.platforms ?? [target])
+        : [options.target]
+      ).join(','),
       '--project-name',
       name,
       '--org',
@@ -92,6 +129,12 @@ export const runInitCommand = async (
   );
   await deps.removeFile(`${directory}/test/widget_test.dart`);
 
+  // A template that imports a plugin declared it in the manifest just now;
+  // installing it here is what makes the scaffolded project build as it is.
+  if (Object.keys(template?.plugins ?? {}).length > 0) {
+    await deps.syncPlugins(directory);
+  }
+
   deps.out(`Created ${directory}. Next: cd ${directory} && bun install`);
 };
 
@@ -103,6 +146,8 @@ export const defaultInitDeps = (): InitDeps => {
   );
   return {
     sdkInstalled: () => fileExists(flutterBin),
+    loadTemplate,
+    syncPlugins: (projectDir) => defaultPluginPhase().sync(projectDir),
     pathExists: fileExists,
     writeFile: writeTextFile,
     removeFile: remove,

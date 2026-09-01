@@ -96,6 +96,7 @@ PluginClass mapPluginClass(ClassElement classElement, AssertInspector asserts) {
   return PluginClass(
     name: classElement.name ?? '',
     doc: classElement.documentationComment ?? '',
+    supertypes: publicSupertypeNames(classElement),
     constructors: classElement.isAbstract
         ? const <ConstructorModel>[]
         : _mapConstructors(classElement, asserts),

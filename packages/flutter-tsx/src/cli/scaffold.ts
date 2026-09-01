@@ -1,4 +1,5 @@
 import { FLUTTER_TSX_VERSION } from '../index';
+import type { AppTarget } from '../runtime/config';
 
 export interface ScaffoldOptions {
   /** Dart package name for the app: lower_snake_case. */
@@ -7,6 +8,10 @@ export interface ScaffoldOptions {
   bundleId: string;
   /** flutter-tsx version the project depends on. */
   version: string;
+  /** The platform the project is for: what `fsx dev` runs and builds. */
+  target: AppTarget;
+  /** Pub packages the project's own sources import, by pub name. */
+  plugins?: Readonly<Record<string, string>>;
 }
 
 export interface ScaffoldFile {
@@ -25,9 +30,22 @@ const packageJson = (options: ScaffoldOptions): string => `{
   "dependencies": {
     "flutter-tsx": "^${options.version}"
   },
-  "plugins": {}
+  "plugins": ${pluginsJson(options.plugins ?? {})}
 }
 `;
+
+// The plugins map is part of the manifest `fsx` syncs into pubspec.yaml, so a
+// template that imports a plugin ships the version it was proven against.
+const pluginsJson = (plugins: Readonly<Record<string, string>>): string => {
+  const entries = Object.entries(plugins).sort(([first], [second]) =>
+    first.localeCompare(second),
+  );
+  if (entries.length === 0) {
+    return '{}';
+  }
+  const lines = entries.map(([name, version]) => `    "${name}": "${version}"`);
+  return `{\n${lines.join(',\n')}\n  }`;
+};
 
 // `jsxImportSource` is what lets a component be written as plain TSX, and the
 // strict flags are the guardrails the compiler relies on being true.
@@ -57,7 +75,7 @@ const configFile = (options: ScaffoldOptions): string =>
 export default {
   name: '${options.name}',
   bundleId: '${options.bundleId}',
-  target: 'web',
+  target: '${options.target}',
 } satisfies AppConfig;
 `;
 
@@ -70,7 +88,15 @@ export default {
  * directory the guide recommends is already there and already compiling.
  */
 const starterComponent = (): string =>
-  `import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
+  `import {
+  AppBar,
+  Center,
+  Column,
+  ElevatedButton,
+  Scaffold,
+  Text,
+  useState,
+} from 'flutter-tsx';
 
 import { Greeting } from './components/Greeting';
 
@@ -82,11 +108,15 @@ export const App = () => {
   };
 
   return (
-    <Column mainAxisAlignment="center">
-      <Greeting name="world" />
-      <Text>Count: {count}</Text>
-      <ElevatedButton onClick={increment}>Increment</ElevatedButton>
-    </Column>
+    <Scaffold appBar={<AppBar title={<Text>My app</Text>} />}>
+      <Center>
+        <Column mainAxisAlignment="center">
+          <Greeting name="world" />
+          <Text>Count: {count}</Text>
+          <ElevatedButton onClick={increment}>Increment</ElevatedButton>
+        </Column>
+      </Center>
+    </Scaffold>
   );
 };
 `;
@@ -117,15 +147,23 @@ node_modules/
  * Every file a new project starts with, sorted by path so the scaffold is
  * deterministic. Pure: the command writes what this returns.
  */
-export const scaffoldFiles = (options: ScaffoldOptions): ScaffoldFile[] =>
+export const scaffoldFiles = (
+  options: ScaffoldOptions,
+  sources: readonly ScaffoldFile[] = STARTER_SOURCES,
+): ScaffoldFile[] =>
   [
     { path: '.gitignore', contents: gitignore() },
     { path: 'fsx.config.ts', contents: configFile(options) },
     { path: 'package.json', contents: packageJson(options) },
-    { path: 'src/App.tsx', contents: starterComponent() },
-    { path: 'src/components/Greeting.tsx', contents: starterGreeting() },
-    { path: 'src/helpers/format.tsx', contents: starterHelper() },
     { path: 'tsconfig.json', contents: tsconfigJson() },
+    ...sources,
   ].sort((first, second) => first.path.localeCompare(second.path));
+
+/** The default project's own sources, when no template was asked for. */
+const STARTER_SOURCES: readonly ScaffoldFile[] = [
+  { path: 'src/App.tsx', contents: starterComponent() },
+  { path: 'src/components/Greeting.tsx', contents: starterGreeting() },
+  { path: 'src/helpers/format.tsx', contents: starterHelper() },
+];
 
 export const DEFAULT_SCAFFOLD_VERSION = FLUTTER_TSX_VERSION;

@@ -75849,6 +75849,19 @@ export const NavigatorPopHandler: FlutterComponent<NavigatorPopHandlerProps> =
  */
 export interface NestedScrollViewProps extends GestureProps {
   /**
+   * The widget to show inside the [NestedScrollView].
+   *
+   * Typically this will be [TabBarView].
+   *
+   * The [body] is built in a context that provides a [PrimaryScrollController]
+   * that interacts with the [NestedScrollView]'s scroll controller. Any
+   * [ListView] or other [Scrollable]-based widget inside the [body] that is
+   * intended to scroll with the [NestedScrollView] should therefore not be
+   * given an explicit [ScrollController], instead allowing it to default to
+   * the [PrimaryScrollController] provided by the [NestedScrollView].
+   */
+  children: FlutterChild;
+  /**
    * An object that can be used to control the position to which the outer
    * scroll view is scrolled.
    */
@@ -75932,19 +75945,6 @@ export interface NestedScrollViewProps extends GestureProps {
     context: BuildContext,
     innerBoxIsScrolled: boolean,
   ) => FlutterElement[];
-  /**
-   * The widget to show inside the [NestedScrollView].
-   *
-   * Typically this will be [TabBarView].
-   *
-   * The [body] is built in a context that provides a [PrimaryScrollController]
-   * that interacts with the [NestedScrollView]'s scroll controller. Any
-   * [ListView] or other [Scrollable]-based widget inside the [body] that is
-   * intended to scroll with the [NestedScrollView] should therefore not be
-   * given an explicit [ScrollController], instead allowing it to default to
-   * the [PrimaryScrollController] provided by the [NestedScrollView].
-   */
-  body: FlutterChild;
   dragStartBehavior?: DragStartBehavior;
   /**
    * Whether or not the [NestedScrollView]'s coordinator should prioritize the
@@ -87446,10 +87446,6 @@ export const SafeArea: FlutterComponent<SafeAreaProps> =
  */
 export interface ScaffoldProps extends GestureProps {
   /**
-   * An app bar to display at the top of the scaffold.
-   */
-  appBar?: FlutterChild;
-  /**
    * The primary content of the scaffold.
    *
    * Displayed below the [appBar], above the bottom of the ambient
@@ -87469,7 +87465,11 @@ export interface ScaffoldProps extends GestureProps {
    * [ListView] as the body of the scaffold. This is also a good choice for
    * the case where your body is a scrollable list.
    */
-  body?: FlutterChild;
+  children?: FlutterChild;
+  /**
+   * An app bar to display at the top of the scaffold.
+   */
+  appBar?: FlutterChild;
   /**
    * A button displayed floating above [body], in the bottom right corner.
    *

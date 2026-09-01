@@ -3,8 +3,8 @@ import { readdir } from 'node:fs/promises';
 import { describe, expect, test } from 'bun:test';
 
 import { loadPluginApi, type PluginApi } from '@src/plugins/api';
-import { emitPluginDeclaration } from '@src/plugins/emit-types';
-import { deriveHooks } from '@src/plugins/hooks';
+import { emitPluginDeclaration, hookSignature } from '@src/plugins/emit-types';
+import { type DerivedHook, deriveHooks } from '@src/plugins/hooks';
 import { PLUGIN_OVERRIDES } from '@src/plugins/overrides';
 
 const extractedPlugins = (
@@ -24,6 +24,7 @@ describe('emitPluginDeclaration', () => {
         {
           name: 'DemoController',
           doc: '/// Controls demos.',
+          supertypes: [],
           constructors: [
             {
               name: '',
@@ -176,14 +177,12 @@ declare module 'plugin:demo' {
     constructor(mode: DemoMode, options?: { loud?: boolean });
     readonly frameRate: number;
     readonly manual: string;
-    dispose(): Promise<void>;
-    initialize(): Promise<void>;
     run(): Promise<Report>;
   }
 
   export const availableDemoControllers: (region: Region) => Promise<DemoController[]>;
 
-  export const useDemo: (options?: { mode?: DemoMode }) => Omit<DemoController, 'initialize' | 'dispose'>;
+  export const useDemo: (options?: { mode?: DemoMode }) => DemoController | null;
 }
 `,
     );
@@ -256,4 +255,37 @@ declare module 'plugin:linker' {
       expect(committed).toBe(emitPluginDeclaration(api, hooks));
     });
   }
+});
+
+describe('hookSignature', () => {
+  const hook = (acquisition: DerivedHook['acquisition']): DerivedHook => ({
+    hookName: 'useDemo',
+    className: 'Demo',
+    dartImport: 'package:demo/demo.dart',
+    acquisition,
+    construct: [],
+    managed: [],
+    options: [],
+    listener: null,
+  });
+
+  test('a handle built after mount is null until it is ready', () => {
+    expect(hookSignature(hook({ kind: 'constructor' }))).toBe(
+      '() => Demo | null',
+    );
+    expect(hookSignature(hook({ kind: 'staticFactory', method: 'open' }))).toBe(
+      '() => Demo | null',
+    );
+  });
+
+  test('a handle that always exists is not null', () => {
+    expect(hookSignature(hook({ kind: 'constField', isConst: true }))).toBe(
+      '() => Demo',
+    );
+    expect(
+      hookSignature(
+        hook({ kind: 'topLevelInstance', instanceName: 'demoManager' }),
+      ),
+    ).toBe('() => Demo');
+  });
 });

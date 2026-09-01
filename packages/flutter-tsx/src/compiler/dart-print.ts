@@ -56,7 +56,7 @@ const inlineExpr = (expr: DartExpr): string => {
       return `${constPrefix}${expr.target}(${args})`;
     }
     case 'closure': {
-      const params = `(${expr.params.join(', ')})`;
+      const params = `(${expr.params.join(', ')})${expr.isAsync === true ? ' async' : ''}`;
       if (expr.body.kind === 'expression') {
         return `${params} => ${expr.body.code}`;
       }
@@ -128,6 +128,25 @@ const printCallTall = (
   );
 };
 
+/** Arguments a call may carry beside a nested call and still stay on a line. */
+const HUGGABLE_ARGUMENTS = 2;
+
+/**
+ * Whether an element of a split collection has to split as well.
+ *
+ * Inside a collection that is already tall, dart format keeps a short element
+ * on its line — unless it is a call with more than two arguments one of which
+ * is itself a call, which it splits however short the whole would be. Both
+ * halves of that rule are verified against `dart format` on these shapes.
+ */
+const splitsInsideTallList = (item: DartListItem): boolean =>
+  item.value.kind === 'call' &&
+  item.value.args.length > HUGGABLE_ARGUMENTS &&
+  item.value.args.some(
+    (argument) =>
+      argument.value.kind === 'call' && argument.value.args.length > 0,
+  );
+
 const printListTall = (
   expr: Extract<DartExpr, { kind: 'list' }>,
   site: PrintSite,
@@ -135,11 +154,17 @@ const printListTall = (
   const childIndent = site.indent + 2;
   const lines = expr.items.map((item) => {
     const prefix = listItemPrefix(item);
-    const value = printExpr(item.value, {
-      indent: childIndent,
-      used: childIndent + prefix.length,
-      trailing: 1,
-    });
+    const value = splitsInsideTallList(item)
+      ? printCallTall(item.value as Extract<DartExpr, { kind: 'call' }>, {
+          indent: childIndent,
+          used: childIndent + prefix.length,
+          trailing: 1,
+        })
+      : printExpr(item.value, {
+          indent: childIndent,
+          used: childIndent + prefix.length,
+          trailing: 1,
+        });
     return `${pad(childIndent)}${prefix}${value},`;
   });
   const constPrefix = expr.isConst ? 'const ' : '';
@@ -190,12 +215,15 @@ const printBuilder = (
 };
 
 const printClosureBlock = (
-  params: string[],
+  closure: { params: string[]; isAsync?: boolean },
   body: { lines: string[] },
   site: PrintSite,
 ): string => {
   const lines = body.lines.map((line) => `${pad(site.indent + 2)}${line}`);
-  return `(${params.join(', ')}) {\n${lines.join('\n')}\n${pad(site.indent)}}`;
+  const head = `(${closure.params.join(', ')})${
+    closure.isAsync === true ? ' async' : ''
+  }`;
+  return `${head} {\n${lines.join('\n')}\n${pad(site.indent)}}`;
 };
 
 const printConditionalTall = (
@@ -215,10 +243,12 @@ export const printExpr = (
   site: PrintSite = ROOT_SITE,
 ): string => {
   if (expr.kind === 'closure' && expr.body.kind === 'block') {
-    return printClosureBlock(expr.params, expr.body, site);
+    return printClosureBlock(expr, expr.body, site);
   }
   if (expr.kind === 'closure' && expr.body.kind === 'value') {
-    const params = `(${expr.params.join(', ')}) => `;
+    const params = `(${expr.params.join(', ')})${
+      expr.isAsync === true ? ' async' : ''
+    } => `;
     return (
       params +
       printExpr(expr.body.value, {

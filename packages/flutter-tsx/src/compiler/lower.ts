@@ -17,10 +17,11 @@ import {
 } from '../derive/value-forms';
 import { jsxPropName } from '../generate/renames';
 import type { PluginMethod } from '../plugins/api';
-import type { DerivedHook } from '../plugins/hooks';
+import { type DerivedHook, isNullableHandle } from '../plugins/hooks';
 import type {
   AsyncBinding,
   ComponentAnalysis,
+  ConstantBinding,
   HelperBinding,
   LocalBinding,
   ModelBinding,
@@ -28,7 +29,11 @@ import type {
   RouterBinding,
   StoreBinding,
 } from './analyze';
-import { listElementType, recordFieldType } from './dart-names';
+import {
+  dartConstantName,
+  listElementType,
+  recordFieldType,
+} from './dart-names';
 import { tsxErrorAt } from './diagnostics';
 import { GO_ROUTER_IMPORT } from './emit-component';
 import type {
@@ -36,6 +41,7 @@ import type {
   IrBuilderBind,
   IrChild,
   IrComponent,
+  IrConstant,
   IrField,
   IrHelper,
   IrMethod,
@@ -48,13 +54,16 @@ import type {
   IrWidget,
 } from './ir';
 import {
+  handleNullCheck,
   type HelperSignature,
   type MemberReadInfo,
   readFieldType,
   STRING_RETURNING_METHODS,
+  translateCondition,
   type TranslateContext,
   translateExpression,
   translateIdentifier,
+  widenedNumberDart,
 } from './translate';
 
 export interface WidgetInfo {
@@ -97,6 +106,8 @@ export interface CompileContext {
   // Dart type name -> prefixed name, for plugins imported with a prefix.
   prefixedTypes: Map<string, string>;
   userWidgets: Map<string, WidgetInfo>;
+  /** Data this file or a sibling declares: name -> its Dart type. */
+  constants: Map<string, string>;
   /// Helpers by name, with the signature each declares.
   helperReturns: Map<string, HelperSignature>;
   /// Enum name -> its members' TSX names mapped to their Dart names.
@@ -112,6 +123,34 @@ export interface CompileContext {
   libraries: Map<string, string>;
   exports: Map<string, string[]>;
 }
+
+/**
+ * The name `if (…) return …;` proves non-null for the statements after it.
+ *
+ * Only `!x` and `x == null` prove anything: any other condition may be false
+ * for reasons that say nothing about null.
+ */
+const provenNonNull = (condition: ts.Expression): string | null => {
+  if (
+    ts.isPrefixUnaryExpression(condition) &&
+    condition.operator === ts.SyntaxKind.ExclamationToken &&
+    ts.isIdentifier(condition.operand)
+  ) {
+    return condition.operand.text;
+  }
+  if (
+    ts.isBinaryExpression(condition) &&
+    ts.isIdentifier(condition.left) &&
+    (condition.operatorToken.kind === ts.SyntaxKind.EqualsEqualsEqualsToken ||
+      condition.operatorToken.kind === ts.SyntaxKind.EqualsEqualsToken) &&
+    (condition.right.kind === ts.SyntaxKind.NullKeyword ||
+      (ts.isIdentifier(condition.right) &&
+        condition.right.text === 'undefined'))
+  ) {
+    return condition.left.text;
+  }
+  return null;
+};
 
 const EMPTY_SLOTS: WidgetSlots = { children: null, slots: [] };
 
@@ -205,6 +244,7 @@ export const buildCompileContext = (
   return {
     widgets,
     gestures: gestureWrapOf(widgets.get(GESTURE_WIDGET)),
+    constants: new Map(),
     stores: new Map(),
     pluginClassFields: new Map(),
     sdkClassFields,
@@ -225,10 +265,33 @@ export const buildCompileContext = (
   };
 };
 
-const PROP_TYPE_NODES: Record<string, TypeNode> = {
-  String: { kind: 'scalar', name: 'String' },
-  double: { kind: 'scalar', name: 'double' },
-  bool: { kind: 'scalar', name: 'bool' },
+const PROP_SCALARS = new Set<ScalarName>([
+  'String',
+  'num',
+  'int',
+  'double',
+  'bool',
+]);
+
+/**
+ * The type node a prop's Dart type stands for.
+ *
+ * A component's props are declared in TypeScript, so their Dart types are
+ * known exactly: a scalar, a list of something, or a model this project
+ * declares. Naming the model is what lets `album={{…}}` construct one.
+ */
+const propTypeNode = (dartType: string): TypeNode => {
+  const scalar = [...PROP_SCALARS].find((name) => name === dartType);
+  if (scalar !== undefined) {
+    return { kind: 'scalar', name: scalar };
+  }
+  const element = listElementType(dartType);
+  if (element !== null) {
+    return { kind: 'list', item: propTypeNode(element) };
+  }
+  return /^[A-Za-z_][A-Za-z0-9_]*$/.test(dartType)
+    ? { kind: 'named', name: dartType }
+    : { kind: 'unknown' };
 };
 
 /** Whether the JSX renders a `<TabView>`, which owns a selected index. */
@@ -253,12 +316,42 @@ const rendersTabView = (component: ComponentAnalysis): boolean => {
  * Known before lowering, because how a prop is read depends on it: a State
  * reaches its props through `widget`.
  */
+/**
+ * Whether the component needs a State of its own.
+ *
+ * State, plugins, effects and tabs each need one. So does navigating from a
+ * handler: `context.push('/album')` is written against the `context` a State
+ * has and a StatelessWidget's methods do not.
+ */
 const statefulComponent = (component: ComponentAnalysis): boolean =>
   component.states.length > 0 ||
   component.plugins.length > 0 ||
   component.effects.length > 0 ||
   component.asyncBinding !== null ||
+  navigatesFromHandler(component) ||
   rendersTabView(component);
+
+const navigatesFromHandler = (component: ComponentAnalysis): boolean => {
+  if (component.navigators.length === 0) {
+    return false;
+  }
+  const navigators = new Set(component.navigators);
+  let found = false;
+  const visit = (node: ts.Node): void => {
+    if (
+      ts.isPropertyAccessExpression(node) &&
+      ts.isIdentifier(node.expression) &&
+      navigators.has(node.expression.text)
+    ) {
+      found = true;
+    }
+    ts.forEachChild(node, visit);
+  };
+  for (const handler of component.handlers) {
+    visit(handler.body.body);
+  }
+  return found;
+};
 
 // Dart's where/map are lazy: a helper that says it returns a List has to
 // materialise one.
@@ -301,10 +394,55 @@ const modelClassFields = (
  * Lowers a module-level helper to its Dart function. A helper reads only its
  * own parameters, so it needs nothing from a component's context.
  */
+/** Data a module declares, as the Dart constant it becomes. */
+export const lowerConstant = (
+  constant: ConstantBinding,
+  compile: CompileContext,
+  useDartImport: (uri: string, prefix?: string) => void,
+): IrConstant => ({
+  name: dartConstantName(constant.name),
+  dartType: constant.dartType,
+  value: lowerExpression(
+    constant.expression,
+    propTypeNode(constant.dartType),
+    constantContext(
+      compile,
+      constant.expression.getSourceFile(),
+      useDartImport,
+    ),
+  ),
+});
+
+/** Module data reads nothing around it: no state, no props, no plugins. */
+const constantContext = (
+  compile: CompileContext,
+  sourceFile: ts.SourceFile,
+  useDartImport: (uri: string, prefix?: string) => void,
+): LowerContext => {
+  const translate: TranslateContext = {
+    sourceFile,
+    nullableHandles: new Map(),
+    narrowed: new Set(),
+    stateNames: new Set(),
+    handlerNames: new Set(),
+    widgetProps: new Set(),
+    localDartTypes: new Map(),
+    helperReturns: new Map(),
+    privateHelpers: new Set(),
+    enumMembers: compile.enumMembers,
+    privateMembers: false,
+    memberReads: new Map(),
+    classFields: modelClassFields(compile),
+    jsonModels: new Set(compile.models.keys()),
+    useDartImport,
+  };
+  return helperContext(compile, translate);
+};
+
 export const lowerHelper = (
   helper: HelperBinding,
   compile: CompileContext,
-  useDartImport: (uri: string) => void,
+  useDartImport: (uri: string, prefix?: string) => void,
 ): IrHelper => {
   const localDartTypes = new Map(
     helper.params.map((param): [string, string] => [
@@ -312,8 +450,10 @@ export const lowerHelper = (
       param.dartType,
     ]),
   );
-  const dart = translateExpression(helper.body, {
+  const translate: TranslateContext = {
     sourceFile: helper.body.getSourceFile(),
+    nullableHandles: new Map(),
+    narrowed: new Set(),
     stateNames: new Set(),
     handlerNames: new Set(),
     widgetProps: new Set(),
@@ -335,12 +475,38 @@ export const lowerHelper = (
     classFields: modelClassFields(compile),
     jsonModels: new Set(compile.models.keys()),
     useDartImport,
-  });
+  };
   return {
     name: helper.name,
     typeParams: helper.typeParams,
     params: helper.params,
     returnDartType: helper.returnDartType,
+    body: helperBody(helper, compile, translate),
+  };
+};
+
+/**
+ * A helper's body: the one expression it is, or the statements it is written
+ * with. A block keeps its locals and its early returns, which is how the same
+ * function reads in TypeScript and in Dart.
+ */
+const helperBody = (
+  helper: HelperBinding,
+  compile: CompileContext,
+  translate: TranslateContext,
+): IrHelper['body'] => {
+  if (ts.isBlock(helper.body)) {
+    return {
+      kind: 'block',
+      statements: lowerBodyStatements(
+        helper.body,
+        helperContext(compile, translate),
+      ),
+    };
+  }
+  const dart = translateExpression(helper.body, translate);
+  return {
+    kind: 'expression',
     value: {
       kind: 'dartExpr',
       dart: materialisesList(helper.body, helper.returnDartType)
@@ -349,6 +515,29 @@ export const lowerHelper = (
     },
   };
 };
+
+/** A helper has no state, no plugins and no widget around it — only itself. */
+const helperContext = (
+  compile: CompileContext,
+  translate: TranslateContext,
+): LowerContext => ({
+  compile,
+  sourceFile: translate.sourceFile,
+  stateNames: new Set(),
+  handlerNames: new Set(),
+  stringStates: new Set(),
+  stringLocals: new Set(),
+  pluginBindings: new Map(),
+  usedPluginImports: new Map(),
+  usedDartImports: new Set(),
+  storeSetters: new Map(),
+  navigators: new Set(),
+  tabState: null,
+  settersToStates: new Map(),
+  localDartTypes: translate.localDartTypes,
+  returnsValue: true,
+  translate,
+});
 
 export const buildUserWidgets = (
   components: ComponentAnalysis[],
@@ -366,7 +555,7 @@ export const buildUserWidgets = (
             prop.name,
             {
               name: prop.name,
-              type: PROP_TYPE_NODES[prop.dartType] ?? { kind: 'unknown' },
+              type: propTypeNode(prop.dartType),
               display: prop.dartType,
               named: true,
               required: prop.required,
@@ -398,6 +587,8 @@ interface LowerContext {
   // even though the author declared no state.
   tabState: { fieldName: string } | null;
   settersToStates: Map<string, string>;
+  /** Whether `return <value>;` belongs here: a helper's body, not a handler. */
+  returnsValue: boolean;
   /// Dart types of this component's props and state, by name.
   localDartTypes: Map<string, string>;
   translate: TranslateContext;
@@ -456,8 +647,34 @@ const lowerIdentifier = (
   if (context.stateNames.has(identifier.text)) {
     return { kind: 'stateRef', name: identifier.text };
   }
-  return { kind: 'raw', node: identifier };
+  const plugin = context.pluginBindings.get(identifier.text);
+  if (plugin !== undefined) {
+    return pluginHandleValue(identifier.text, plugin);
+  }
+  // Module data took a Dart name of its own, and a read of it uses that name.
+  const constant = dartConstantName(identifier.text);
+  if (constant !== identifier.text) {
+    return { kind: 'dartExpr', dart: constant };
+  }
+  return {
+    kind: 'dartExpr',
+    dart: translateExpression(identifier, context.translate),
+  };
 };
+
+/**
+ * The handle a plugin hook hands back, as a value.
+ *
+ * TSX sees `cam`; Dart sees the field holding it. A handle that is null until
+ * the hook has built it is only ever read here inside a `cam && ...` guard —
+ * the typings force that guard — so asserting is what the guard already proved.
+ */
+const pluginHandleValue = (binding: string, info: PluginHookInfo): IrValue => ({
+  kind: 'dartExpr',
+  dart: `${pluginReceiver(binding, info)}${
+    isNullableHandle(info.hook.acquisition) ? '!' : ''
+  }`,
+});
 
 const hexColorValue = (text: string): IrValue => {
   const hex = text.slice(1);
@@ -691,12 +908,65 @@ const lowerObjectLiteral = (
     if (params !== undefined) {
       return lowerConstructibleObject(literal, type.name, { params, context });
     }
+    const model = context.compile.models.get(type.name);
+    if (model !== undefined) {
+      return lowerModelObject(literal, model, context);
+    }
   }
   throw tsxErrorAt(
     'TSX0205',
     `an object literal cannot express ${typeLabel(type)} value.`,
     { sourceFile: context.sourceFile, node: literal },
   );
+};
+
+/**
+ * `{ name: 'Ada' }` where an `Artist` is expected: the model's constructor.
+ *
+ * The model is generated from the same interface, so its fields are known —
+ * a missing one is the interface's own required/optional distinction, which
+ * TypeScript has already checked by the time this runs.
+ */
+const lowerModelObject = (
+  literal: ts.ObjectLiteralExpression,
+  model: IrModel,
+  context: LowerContext,
+): IrValue => {
+  const byName = new Map(model.fields.map((field) => [field.name, field]));
+  const args = literal.properties.map((property): IrArgument => {
+    if (!ts.isPropertyAssignment(property) || !ts.isIdentifier(property.name)) {
+      throw tsxErrorAt(
+        'TSX0344',
+        `\`${model.name}\` is written as \`{ field: value }\`, one field per key.`,
+        { sourceFile: context.sourceFile, node: property },
+      );
+    }
+    const field = byName.get(property.name.text);
+    if (field === undefined) {
+      throw tsxErrorAt(
+        'TSX0344',
+        `\`${model.name}\` has no field \`${property.name.text}\`.`,
+        { sourceFile: context.sourceFile, node: property.name },
+      );
+    }
+    return {
+      param: field.name,
+      positional: false,
+      value: lowerExpression(
+        property.initializer,
+        field.isModel
+          ? { kind: 'named', name: field.dartType }
+          : propTypeNode(field.dartType),
+        context,
+      ),
+    };
+  });
+  return {
+    kind: 'construct',
+    className: model.name,
+    constructorName: '',
+    args,
+  };
 };
 
 const lowerPropertyAccess = (
@@ -745,6 +1015,7 @@ const lowerPropertyAccess = (
 interface ScopedParam {
   name: string;
   type: TypeNode;
+  nullable?: boolean;
   fieldsOf: (className: string) => Map<string, TypeNode> | undefined;
 }
 
@@ -772,7 +1043,14 @@ const withScopedParams = (
       : [
           [
             param.name,
-            { className, receiver: param.name, nullable: false, fields },
+            {
+              className,
+              receiver: param.name,
+              // A value handed back through `?.` may be null, and a read of
+              // it has to say so or the Dart will not analyze.
+              nullable: param.nullable === true,
+              fields,
+            },
           ],
         ];
   });
@@ -850,22 +1128,41 @@ const lowerArrowFunction = (
   return {
     kind: 'closure',
     params,
+    isAsync:
+      arrow.modifiers?.some(
+        (modifier) => modifier.kind === ts.SyntaxKind.AsyncKeyword,
+      ) ?? false,
     statements: lowerBodyStatements(body, scoped, true),
   };
 };
 
 const lowerExpression = (
-  expression: ts.Expression,
+  parenthesized: ts.Expression,
   paramType: TypeNode,
   context: LowerContext,
 ): IrValue => {
+  const expression = unwrapParenthesized(parenthesized);
   const type = unwrapType(paramType);
   const site: ValueSite = { type, node: expression, context };
+  const widened = widenedNumber(expression, type, context);
+  if (widened !== null) {
+    return widened;
+  }
   if (ts.isJsxElement(expression) || ts.isJsxSelfClosingElement(expression)) {
     return { kind: 'widget', widget: lowerJsxElement(expression, context) };
   }
   if (ts.isArrowFunction(expression)) {
     return lowerArrowFunction(expression, site);
+  }
+  // `color={ok ? '#e3f2e6' : '#fde2e1'}` — each branch is a value of the type
+  // the prop declares, so each is lowered as one.
+  if (ts.isConditionalExpression(expression)) {
+    return {
+      kind: 'conditional',
+      condition: lowerChildCondition(expression.condition, context),
+      whenTrue: lowerExpression(expression.whenTrue, paramType, context),
+      whenFalse: lowerExpression(expression.whenFalse, paramType, context),
+    };
   }
   if (ts.isNumericLiteral(expression)) {
     return lowerNumber(expression.getText(), site);
@@ -882,13 +1179,46 @@ const lowerExpression = (
   if (ts.isObjectLiteralExpression(expression)) {
     return lowerObjectLiteral(expression, type, context);
   }
+  if (ts.isArrayLiteralExpression(expression) && type.kind === 'list') {
+    return {
+      kind: 'listValue',
+      items: expression.elements.map((element) =>
+        lowerExpression(element, type.item, context),
+      ),
+    };
+  }
   if (ts.isPropertyAccessExpression(expression)) {
     return lowerPropertyAccess(expression, context);
   }
   if (ts.isIdentifier(expression)) {
     return lowerIdentifier(expression, context);
   }
-  return { kind: 'raw', node: expression };
+  // Anything else is translated, never copied: TypeScript source text is
+  // not Dart, and emitting it would compile to something else or not at all.
+  return {
+    kind: 'dartExpr',
+    dart: translateExpression(expression, context.translate),
+  };
+};
+
+/**
+ * `.toDouble()` where a whole number meets a parameter that wants a fraction.
+ *
+ * TypeScript has one number type; Dart has three, and an `int` variable is
+ * not assignable to a `double` parameter — only an int *literal* is. So a
+ * value the compiler knows to be `int` or `num` is widened at the boundary,
+ * which is exactly what a Dart developer writes by hand.
+ */
+const widenedNumber = (
+  expression: ts.Expression,
+  type: TypeNode,
+  context: LowerContext,
+): IrValue | null => {
+  if (type.kind !== 'scalar') {
+    return null;
+  }
+  const dart = widenedNumberDart(expression, type.name, context.translate);
+  return dart === null ? null : { kind: 'dartExpr', dart };
 };
 
 const lowerAttribute = (
@@ -934,10 +1264,19 @@ const lowerAttributeValue = (
       context,
     });
   }
-  if (ts.isJsxExpression(initializer) && initializer.expression !== undefined) {
+  if (ts.isJsxExpression(initializer)) {
+    if (initializer.expression === undefined) {
+      throw tsxErrorAt(
+        'TSX0345',
+        `\`${param.name}={}\` has no value — give it one or leave the prop out.`,
+        { sourceFile: context.sourceFile, node: attribute },
+      );
+    }
     return lowerExpression(initializer.expression, param.type, context);
   }
-  return { kind: 'raw', node: initializer };
+  // `appBar=<AppBar />` — JSX allows an element as an attribute value with no
+  // braces around it, and it means what the braced form means.
+  return lowerExpression(initializer, param.type, context);
 };
 
 const meaningfulText = (child: ts.JsxChild): string | null => {
@@ -953,9 +1292,7 @@ const lowerConditionChild = (
   context: LowerContext,
 ): IrChild => ({
   kind: 'if',
-  condition: ts.isIdentifier(expression.left)
-    ? lowerIdentifier(expression.left, context)
-    : { kind: 'raw', node: expression.left },
+  condition: lowerChildCondition(expression.left, context),
   child: { kind: 'value', value: lowerChildValue(expression.right, context) },
 });
 
@@ -990,26 +1327,71 @@ const lowerScalarChild = (
 };
 
 const lowerChildValue = (
-  expression: ts.Expression,
+  parenthesized: ts.Expression,
   context: LowerContext,
 ): IrValue => {
+  // Wrapping JSX in parentheses is how it is written over several lines, and
+  // says nothing about the value inside.
+  const expression = unwrapParenthesized(parenthesized);
   if (ts.isJsxElement(expression) || ts.isJsxSelfClosingElement(expression)) {
     return { kind: 'widget', widget: lowerJsxElement(expression, context) };
   }
   if (ts.isConditionalExpression(expression)) {
     return {
       kind: 'conditional',
-      condition: ts.isIdentifier(expression.condition)
-        ? lowerIdentifier(expression.condition, context)
-        : {
-            kind: 'dartExpr',
-            dart: translateExpression(expression.condition, context.translate),
-          },
+      condition: lowerChildCondition(expression.condition, context),
       whenTrue: lowerChildValue(expression.whenTrue, context),
       whenFalse: lowerChildValue(expression.whenFalse, context),
     };
   }
+  // `{ready && <Preview/>}` in a slot that holds exactly one child: there is
+  // no list to leave an entry out of, so the empty case is an empty box.
+  const guarded = guardedChildValue(expression, context);
+  if (guarded !== null) {
+    return guarded;
+  }
   return lowerScalarChild(expression, context);
+};
+
+/** What a slot holds when its guard is false: the box that takes no space. */
+const EMPTY_CHILD: IrValue = {
+  kind: 'widget',
+  widget: { name: 'SizedBox.shrink', constConstructor: true, args: [] },
+};
+
+const guardedChildValue = (
+  expression: ts.Expression,
+  context: LowerContext,
+): IrValue | null => {
+  if (
+    !ts.isBinaryExpression(expression) ||
+    expression.operatorToken.kind !== ts.SyntaxKind.AmpersandAmpersandToken
+  ) {
+    return null;
+  }
+  return {
+    kind: 'conditional',
+    condition: lowerChildCondition(expression.left, context),
+    whenTrue: lowerChildValue(expression.right, context),
+    whenFalse: EMPTY_CHILD,
+  };
+};
+
+/** The `cond` of a conditional child, as Dart sees it. */
+const lowerChildCondition = (
+  expression: ts.Expression,
+  context: LowerContext,
+): IrValue => {
+  const nullCheck = handleNullCheck(expression, context.translate);
+  if (nullCheck !== null) {
+    return { kind: 'dartExpr', dart: nullCheck };
+  }
+  return ts.isIdentifier(expression)
+    ? lowerIdentifier(expression, context)
+    : {
+        kind: 'dartExpr',
+        dart: translateExpression(expression, context.translate),
+      };
 };
 
 const unwrapVoid = (expression: ts.Expression): ts.Expression =>
@@ -1052,6 +1434,7 @@ const lowerMapChild = (
         kind: 'dartExpr' as const,
         dart: translateExpression(callee.expression, context.translate),
       };
+  requireIterable(callee.expression, context);
   const itemType = iterableElementType(callee.expression, context);
   const bodyContext: LowerContext = {
     ...context,
@@ -1152,16 +1535,12 @@ const singleChildValue = (
 const jsxTextValue = (child: ts.JsxText): string =>
   child.text.replace(/\s*\n\s*/g, '');
 
-const SCALAR_DART_NAMES = new Set(['String', 'int', 'double', 'bool', 'num']);
-
 /** A model's fields as the type nodes member reads are resolved against. */
 const modelFieldTypes = (model: IrModel): Map<string, TypeNode> =>
   new Map(
     model.fields.map((field): [string, TypeNode] => [
       field.name,
-      SCALAR_DART_NAMES.has(field.dartType)
-        ? { kind: 'scalar', name: field.dartType as ScalarName }
-        : { kind: 'named', name: field.dartType },
+      propTypeNode(field.dartType),
     ]),
   );
 
@@ -1173,12 +1552,48 @@ const ELEMENT_PRESERVING = new Set(['filter', 'where', 'reversed', 'toList']);
  * What a list expression yields per item: `jobs` and
  * `jobs.filter(f)` both yield a Job.
  */
+/**
+ * Refuses `note.title.map(…)` where `title` is a String.
+ *
+ * Dart iterates lists, not strings, so a `for … in` over one would not
+ * compile. The compiler knows the type of a field it declared, so it says
+ * which type it found rather than emitting Dart that cannot build.
+ */
+const requireIterable = (
+  expression: ts.Expression,
+  context: LowerContext,
+): void => {
+  if (!ts.isPropertyAccessExpression(expression)) {
+    return;
+  }
+  const field = readFieldType(expression, context.translate);
+  if (field === null || field.kind === 'list') {
+    return;
+  }
+  throw tsxErrorAt(
+    'TSX0348',
+    `\`${expression.getText()}\` is ${typeLabel(field)}, not a list — ` +
+      'only a list renders as children.',
+    { sourceFile: context.sourceFile, node: expression },
+  );
+};
+
 const iterableElementType = (
   expression: ts.Expression,
   context: LowerContext,
 ): string | null => {
   if (ts.isIdentifier(expression)) {
     return listElementType(context.localDartTypes.get(expression.text));
+  }
+  // `album.tags` is a List<String> and `service.deployments` a list of
+  // another model: iterating either binds an element of that type, the same
+  // as iterating a list held in a local.
+  if (ts.isPropertyAccessExpression(expression)) {
+    const field = readFieldType(expression, context.translate);
+    return field?.kind === 'list' &&
+      (field.item.kind === 'scalar' || field.item.kind === 'named')
+      ? field.item.name
+      : null;
   }
   if (
     ts.isCallExpression(expression) &&
@@ -1240,7 +1655,8 @@ const isStringExpression = (
   if (ts.isIdentifier(expression)) {
     return (
       context.stringStates.has(expression.text) ||
-      context.stringLocals.has(expression.text)
+      context.stringLocals.has(expression.text) ||
+      context.localDartTypes.get(expression.text) === 'String'
     );
   }
   if (ts.isConditionalExpression(expression)) {
@@ -1923,7 +2339,15 @@ const storeUpdateLine = (
         node: entry.node,
       });
     }
-    return `${entry.key}: ${translateExpression(entry.initializer, context.translate)}`;
+    // The field's declared type is what the value has to be: a `num` read off
+    // a model lands in an `int` field as `.toInt()`, which is the conversion
+    // Dart requires and a developer would write.
+    const declared =
+      store.fields.find((field) => field.name === entry.key)?.dartType ?? '';
+    const value =
+      widenedNumberDart(entry.initializer, declared, context.translate) ??
+      translateExpression(entry.initializer, context.translate);
+    return `${entry.key}: ${value}`;
   });
   return statementCall(`${store.instanceName}.update`, args);
 };
@@ -2088,11 +2512,31 @@ const lowerControlFlow = (
       },
     ];
   }
+  // `if (!cam) return;` — leaving early is how a guard is written, and it
+  // maps onto Dart's own return. A helper returns a value; a handler has
+  // nothing to return, so saying otherwise there is an error.
+  if (ts.isReturnStatement(statement)) {
+    if (statement.expression === undefined) {
+      return [{ kind: 'dart', line: 'return;' }];
+    }
+    if (!context.returnsValue) {
+      throw tsxErrorAt(
+        'TSX0342',
+        'a handler returns nothing: use `return;` to leave it early.',
+        { sourceFile: context.sourceFile, node: statement },
+      );
+    }
+    const returned = translateExpression(
+      statement.expression,
+      context.translate,
+    );
+    return [{ kind: 'dart', line: `return ${returned};` }];
+  }
   if (ts.isWhileStatement(statement)) {
     return [
       {
         kind: 'while',
-        condition: translateExpression(statement.expression, context.translate),
+        condition: translateCondition(statement.expression, context.translate),
         body: branchStatements(statement.statement, context, allowPluginCalls),
       },
     ];
@@ -2104,7 +2548,7 @@ const lowerControlFlow = (
   return [
     {
       kind: 'if',
-      condition: translateExpression(statement.expression, context.translate),
+      condition: translateCondition(statement.expression, context.translate),
       then: branchStatements(
         statement.thenStatement,
         context,
@@ -2120,6 +2564,82 @@ const lowerControlFlow = (
             ),
     },
   ];
+};
+
+/** What an `await` hands over: the value a Future carries. */
+const awaitedType = (type: TypeNode): TypeNode =>
+  type.kind === 'future' ? type.item : type;
+
+/**
+ * `const file = await cam.takePicture();` — a value a body names and then
+ * uses. Null when the statement is not a declaration, which is every other
+ * statement form.
+ */
+const lowerLocalDeclaration = (
+  statement: ts.Statement,
+  context: LowerContext,
+  allowPluginCalls: boolean,
+): { statement: IrStatement; context: LowerContext } | null => {
+  if (!ts.isVariableStatement(statement)) {
+    return null;
+  }
+  const [declaration] = statement.declarationList.declarations;
+  if (
+    declaration === undefined ||
+    statement.declarationList.declarations.length !== 1 ||
+    !ts.isIdentifier(declaration.name) ||
+    declaration.initializer === undefined
+  ) {
+    throw tsxErrorAt(
+      'TSX0305',
+      'declare one value at a time: `const file = await cam.takePicture();`.',
+      { sourceFile: context.sourceFile, node: statement },
+    );
+  }
+
+  const name = declaration.name.text;
+  const { initializer } = declaration;
+  const awaited = ts.isAwaitExpression(initializer);
+  const call = awaited ? initializer.expression : initializer;
+  const resolved =
+    allowPluginCalls && ts.isCallExpression(call)
+      ? resolvePluginCall(call, context, declaration)
+      : null;
+
+  if (resolved === null) {
+    return {
+      statement: {
+        kind: 'dart',
+        line: `final ${name} = ${translateExpression(initializer, context.translate)};`,
+      },
+      context,
+    };
+  }
+
+  const value = statementCall(
+    `${awaited ? 'await ' : ''}${resolved.invocation}`,
+    resolved.args,
+  ).replace(/;$/, '');
+  const returned = awaited
+    ? awaitedType(resolved.returnType)
+    : resolved.returnType;
+  return {
+    statement: { kind: 'dart', line: `final ${name} = ${value};` },
+    // What the call handed back is readable, the same as anything else the
+    // plugin hands over.
+    context: withScopedParams(
+      [
+        {
+          name,
+          type: returned,
+          nullable: resolved.nullableResult,
+          fieldsOf: (className: string): Map<string, TypeNode> | undefined =>
+            context.compile.pluginClassFields.get(className),
+        },
+      ],
+      context,
+    ),
+  };
 };
 
 const lowerStatement = (
@@ -2144,17 +2664,56 @@ const lowerStatement = (
   );
 };
 
+/**
+ * The scope after a statement, given what a guard that leaves has proven.
+ *
+ * `if (!cam) return;` excludes null for the rest of the body, so the reads
+ * below it are made on a value Dart no longer treats as null either.
+ */
+const narrowedBy = (
+  statement: ts.Statement,
+  context: LowerContext,
+): LowerContext => {
+  if (!ts.isIfStatement(statement) || statement.elseStatement !== undefined) {
+    return context;
+  }
+  const leaves = ts.isBlock(statement.thenStatement)
+    ? statement.thenStatement.statements.every(ts.isReturnStatement)
+    : ts.isReturnStatement(statement.thenStatement);
+  const proven = provenNonNull(statement.expression);
+  if (!leaves || proven === null) {
+    return context;
+  }
+  return {
+    ...context,
+    translate: {
+      ...context.translate,
+      narrowed: new Set([...context.translate.narrowed, proven]),
+    },
+  };
+};
+
 const lowerBodyStatements = (
   body: ts.ConciseBody,
   context: LowerContext,
   allowPluginCalls = false,
 ): IrStatement[] => {
   if (ts.isBlock(body)) {
-    return mergeSetState(
-      body.statements.flatMap((statement) =>
-        lowerStatement(statement, context, allowPluginCalls),
-      ),
-    );
+    // A local is in scope for the statements after it, so the context each
+    // statement is lowered in grows as the body goes on.
+    const lowered: IrStatement[] = [];
+    let scope = context;
+    for (const statement of body.statements) {
+      const local = lowerLocalDeclaration(statement, scope, allowPluginCalls);
+      if (local !== null) {
+        lowered.push(local.statement);
+        scope = local.context;
+        continue;
+      }
+      lowered.push(...lowerStatement(statement, scope, allowPluginCalls));
+      scope = narrowedBy(statement, scope);
+    }
+    return mergeSetState(lowered);
   }
   return lowerExpressionStatement(
     { expression: body, errorNode: body },
@@ -2225,6 +2784,8 @@ interface PluginCall {
   invocation: string;
   args: string[];
   returnType: TypeNode;
+  /** True when the call goes through `?.`, so its result may be null. */
+  nullableResult: boolean;
 }
 
 // Resolves a plugin call to its Dart invocation and return type; null when the
@@ -2248,6 +2809,8 @@ const resolvePluginCall = (
       invocation,
       args: pluginCallArguments(call, fnInfo.fn, context),
       returnType: fnInfo.fn.returnType,
+      // A top-level function is called directly: there is no handle to be null.
+      nullableResult: false,
     };
   }
   if (
@@ -2271,10 +2834,18 @@ const resolvePluginCall = (
       { sourceFile: context.sourceFile, node: errorNode },
     );
   }
+  // A guard above the call has already excluded null, and the source wrote a
+  // plain `.` — so the call is made on the value, not around it.
+  const accessor =
+    context.translate.narrowed.has(binding) &&
+    call.expression.questionDotToken === undefined
+      ? '!.'
+      : pluginAccessor(info);
   return {
-    invocation: `${pluginReceiver(binding, info)}${pluginAccessor(info)}${methodName}`,
+    invocation: `${pluginReceiver(binding, info)}${accessor}${methodName}`,
     args: pluginCallArguments(call, method, context),
     returnType: method.returnType,
+    nullableResult: accessor === '?.',
   };
 };
 
@@ -2780,7 +3351,9 @@ const lowerEffects = (
         );
       }
     }
-    const statements = lowerBodyStatements(mountBody, context);
+    // A mount effect calls plugins as freely as its cleanup does: setting a
+    // tooltip or starting a listener is exactly what one is for.
+    const statements = lowerBodyStatements(mountBody, context, true);
     init.push(
       ...(needsPostFrame(statements)
         ? [{ kind: 'postFrame' as const, statements }]
@@ -3020,10 +3593,7 @@ const pluginReceiver = (binding: string, info: PluginHookInfo): string =>
 
 /** A nullable handle needs `?.`; one that always exists does not. */
 const pluginAccessor = (info: PluginHookInfo): string =>
-  info.hook.acquisition.kind === 'constField' ||
-  info.hook.acquisition.kind === 'topLevelInstance'
-    ? '.'
-    : '?.';
+  isNullableHandle(info.hook.acquisition) ? '?.' : '.';
 
 /** `trayManager.addListener(this)` while the widget is mounted, and off again. */
 const listenerLines = (
@@ -3103,6 +3673,9 @@ export const lowerComponent = (
   compile: CompileContext,
 ): IrComponent => {
   const localDartTypes = new Map<string, string>([
+    // Module data is in scope for every component in the file, and for the
+    // ones that import it.
+    ...compile.constants,
     ...component.props.map((prop): [string, string] => [
       prop.name,
       prop.dartType,
@@ -3131,6 +3704,10 @@ export const lowerComponent = (
   const handlerNames = new Set(
     component.handlers.map((handler) => handler.name),
   );
+  const nullableHandles = new Map<string, string>();
+  // Grows as the component's guards are lowered, so every read after a guard
+  // sees what that guard proved.
+  const narrowed = new Set<string>();
   const context: LowerContext = {
     compile,
     navigators: new Set(component.navigators),
@@ -3153,6 +3730,7 @@ export const lowerComponent = (
     usedDartImports: new Set(),
     storeSetters: new Map(),
     localDartTypes,
+    returnsValue: false,
     settersToStates: new Map(
       component.states.map((state) => [state.setterName, state.name]),
     ),
@@ -3180,8 +3758,14 @@ export const lowerComponent = (
       privateMembers: true,
       memberReads,
       jsonModels: new Set(compile.models.keys()),
-      useDartImport: (uri: string): void => {
-        context.usedDartImports.add(uri);
+      nullableHandles,
+      narrowed,
+      useDartImport: (uri: string, prefix?: string): void => {
+        if (prefix === undefined) {
+          context.usedDartImports.add(uri);
+          return;
+        }
+        context.usedPluginImports.set(uri, prefix);
       },
       classFields: new Map<string, Map<string, TypeNode>>([
         ...compile.sdkClassFields,
@@ -3215,6 +3799,12 @@ export const lowerComponent = (
       );
     }
     context.pluginBindings.set(binding.binding, info);
+    if (isNullableHandle(info.hook.acquisition)) {
+      nullableHandles.set(
+        binding.binding,
+        pluginReceiver(binding.binding, info),
+      );
+    }
     memberReads.set(binding.binding, {
       className: info.hook.className,
       receiver: pluginReceiver(binding.binding, info),
@@ -3263,14 +3853,12 @@ export const lowerComponent = (
 
   const effects = lowerEffects(component.effects, context);
 
-  const componentHelpers: IrHelper[] = component.helpers.map((helper) => ({
-    name: helper.name,
-    typeParams: helper.typeParams,
-    params: helper.params,
-    returnDartType: helper.returnDartType,
-    value: {
-      kind: 'dartExpr' as const,
-      dart: translateExpression(helper.body, {
+  // A helper declared inside the component reads its state and props, so it
+  // is lowered in the component's own context with its parameters added.
+  const componentHelpers: IrHelper[] = component.helpers.map((helper) => {
+    const scoped: LowerContext = {
+      ...context,
+      translate: {
         ...context.translate,
         localDartTypes: new Map([
           ...context.localDartTypes,
@@ -3279,13 +3867,54 @@ export const lowerComponent = (
             param.dartType,
           ]),
         ]),
-      }),
-    },
-  }));
+      },
+      returnsValue: true,
+    };
+    return {
+      name: helper.name,
+      typeParams: helper.typeParams,
+      params: helper.params,
+      returnDartType: helper.returnDartType,
+      body: ts.isBlock(helper.body)
+        ? {
+            kind: 'block' as const,
+            statements: lowerBodyStatements(helper.body, scoped),
+          }
+        : {
+            kind: 'expression' as const,
+            value: {
+              kind: 'dartExpr' as const,
+              dart: translateExpression(helper.body, scoped.translate),
+            },
+          },
+    };
+  });
   const methods: IrMethod[] = component.handlers.map((handler) => ({
     name: handler.name,
     isAsync: handler.isAsync,
-    statements: lowerBodyStatements(handler.body.body, context, true),
+    params: handler.params,
+    // What the callback is handed is in scope for its body, so a read of it
+    // resolves the way a prop's or a local's does.
+    statements: lowerBodyStatements(
+      handler.body.body,
+      {
+        ...context,
+        localDartTypes: new Map([
+          ...context.localDartTypes,
+          ...handler.params.map((param): [string, string] => [
+            param.name,
+            param.dartType,
+          ]),
+        ]),
+        stringLocals: new Set([
+          ...context.stringLocals,
+          ...handler.params
+            .filter((param) => param.dartType === 'String')
+            .map((param) => param.name),
+        ]),
+      },
+      true,
+    ),
   }));
 
   const lowered =
@@ -3303,6 +3932,21 @@ export const lowerComponent = (
     component.asyncBinding === null
       ? component.locals.map((local) => localBind(local, context))
       : [];
+
+  // Guards are lowered before the body so a read they narrow is already
+  // registered when the tree below them is lowered.
+  const guards = component.guards.map((guard) => {
+    const lowered = {
+      condition: translateCondition(guard.condition, context.translate),
+      value: lowerChildValue(guard.jsx, context),
+    };
+    // The guard returns, so everything below it has this name non-null.
+    const proven = provenNonNull(guard.condition);
+    if (proven !== null) {
+      narrowed.add(proven);
+    }
+    return lowered;
+  });
 
   // The body must be lowered before the literal below reads
   // usedPluginImports or context.tabState: an import discovered while
@@ -3378,6 +4022,7 @@ export const lowerComponent = (
     ],
     disposeStatements: effects.dispose,
     buildLocals,
+    guards,
     pluginImports: [
       ...new Map<string, string | null>([
         ...loweredPlugins.map(
@@ -3425,10 +4070,8 @@ const storeFor = (
 
 // The store's Dart type is already resolved; reads only need to know whether
 // a field is a String, so the node carries just enough to answer that.
-const dartFieldType = (dartType: string): TypeNode =>
-  dartType === 'String'
-    ? { kind: 'scalar', name: 'String' }
-    : { kind: 'named', name: dartType };
+/** A model field's Dart type, as the type node reads of it resolve against. */
+const dartFieldType = (dartType: string): TypeNode => propTypeNode(dartType);
 
 // A store-driven component stays stateless: the ChangeNotifier drives the
 // rebuild through ListenableBuilder.

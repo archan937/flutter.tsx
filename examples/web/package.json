@@ -1,0 +1,15 @@
+{
+  "name": "web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "fsx dev",
+    "build": "fsx build"
+  },
+  "dependencies": {
+    "flutter-tsx": "^1.0.0-alpha.0"
+  },
+  "plugins": {
+    "go_router": "^18.0.0"
+  }
+}

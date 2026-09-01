@@ -10,7 +10,7 @@ class ValueMethods extends StatelessWidget {
 
   final String name;
   final List<String> tags;
-  final double score;
+  final num score;
 
   @override
   Widget build(BuildContext context) {

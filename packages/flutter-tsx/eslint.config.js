@@ -108,9 +108,10 @@ export default defineConfig(
     },
   },
   {
-    // Fixtures are user-style code: the DX contract must hold without
-    // annotations, so they are linted like an app, not like the library.
-    files: ['test/fixtures/**'],
+    // Fixtures and templates are user-style code: the DX contract must hold
+    // without annotations, so they are linted like an app, not like the
+    // library. Everything that catches a real mistake stays on.
+    files: ['templates/**', 'test/fixtures/**'],
     rules: {
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-empty-function': 'off',

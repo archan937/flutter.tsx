@@ -5,6 +5,7 @@
     {
       "name": "PackageInfo",
       "doc": "/// Application metadata. Provides application bundle information on iOS and\n/// application package information on Android.",
+      "supertypes": [],
       "constructors": [
         {
           "name": "",
@@ -412,6 +413,10 @@
     {
       "name": "PackageInfoPlusLinuxPlugin",
       "doc": "/// The Linux implementation of [PackageInfoPlatform].",
+      "supertypes": [
+        "PackageInfoPlatform",
+        "PlatformInterface"
+      ],
       "constructors": [
         {
           "name": "",
@@ -469,6 +474,10 @@
     {
       "name": "PackageInfoPlusWindowsPlugin",
       "doc": "/// The Windows implementation of [PackageInfoPlatform].",
+      "supertypes": [
+        "PackageInfoPlatform",
+        "PlatformInterface"
+      ],
       "constructors": [
         {
           "name": "",

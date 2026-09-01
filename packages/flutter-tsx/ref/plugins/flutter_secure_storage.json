@@ -5,6 +5,9 @@
     {
       "name": "AndroidOptions",
       "doc": "",
+      "supertypes": [
+        "Options"
+      ],
       "constructors": [
         {
           "name": "",
@@ -280,6 +283,9 @@
     {
       "name": "AppleOptions",
       "doc": "",
+      "supertypes": [
+        "Options"
+      ],
       "constructors": [],
       "fields": [
         {
@@ -332,6 +338,7 @@
     {
       "name": "FlutterSecureStorage",
       "doc": "",
+      "supertypes": [],
       "constructors": [
         {
           "name": "",
@@ -1419,6 +1426,10 @@
     {
       "name": "IOSOptions",
       "doc": "/// Specific options for iOS platform.",
+      "supertypes": [
+        "AppleOptions",
+        "Options"
+      ],
       "constructors": [
         {
           "name": "",
@@ -1600,6 +1611,9 @@
     {
       "name": "LinuxOptions",
       "doc": "/// Specific options for Linux platform.\n/// Currently there are no specific linux options available.",
+      "supertypes": [
+        "Options"
+      ],
       "constructors": [
         {
           "name": "",
@@ -1661,6 +1675,10 @@
     {
       "name": "MacOsOptions",
       "doc": "/// Specific options for macOS platform.",
+      "supertypes": [
+        "AppleOptions",
+        "Options"
+      ],
       "constructors": [
         {
           "name": "",
@@ -1888,6 +1906,9 @@
     {
       "name": "WebOptions",
       "doc": "/// Specific options for web platform.",
+      "supertypes": [
+        "Options"
+      ],
       "constructors": [
         {
           "name": "",
@@ -2034,6 +2055,9 @@
     {
       "name": "WindowsOptions",
       "doc": "/// Specific options for Windows platform.\n///\n/// * If `useBackwardCompatibility` is set to `true`, trying to read from values\n///   which were written by previous versions. In addition, when reading or\n///   writing from previpus version's storage, read values will be migrated to\n///   new storage automatically. This may introduces some performance hit and\n///   might cause error for some kinds of keys.\n///   Default is `false`.\n///   You must set this value to `false` if you could use:\n///   * Keys containing `\"`, `<`, `>`, `|`, `:`, `*`, `?`, `/`, `\\`,\n///     or any of ASCII control charactors.\n///   * Keys containing `/../`, `\\..\\`, or their combinations.\n///   * Long key string (precise size is depends on your app's product name,\n///     company name, and account name who executes your app).\n///\n/// You can migrate all old data with this options as following:\n/// ```dart\n/// await FlutterSecureStorage().readAll(\n///     const WindowsOptions(useBackwardCompatibility: true),\n/// );\n/// ```",
+      "supertypes": [
+        "Options"
+      ],
       "constructors": [
         {
           "name": "",

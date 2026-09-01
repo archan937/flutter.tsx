@@ -6,7 +6,7 @@ T firstOr<T>(List<T> values, T fallback) =>
 class Span extends StatelessWidget {
   const Span({super.key, required this.range, required this.names});
 
-  final (String, double) range;
+  final (String, num) range;
   final List<String> names;
 
   @override

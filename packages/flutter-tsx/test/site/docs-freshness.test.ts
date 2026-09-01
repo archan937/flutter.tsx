@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'bun:test';
 
 import { loadApiSnapshot } from '@src/api/load';
+import { loadTemplate, TEMPLATE_NAMES } from '@src/cli/templates';
 import { deriveSlots } from '@src/derive/slots';
 import { formatTs } from '@src/generate/format';
 import {
@@ -10,6 +11,7 @@ import {
   loadRecipes,
   withShowcase,
 } from '@src/site/cookbook';
+import { examplesMarkdown } from '@src/site/examples';
 import { buildSitePage } from '@src/site/from-snapshot';
 import { renderMarkdown } from '@src/site/markdown';
 import { emitExampleProbe } from '@src/site/probe';
@@ -86,6 +88,20 @@ describe('committed generated docs', () => {
     // The table was hand-written and listed capabilities nothing extracts.
     expect(committed).toBe(withRequirementsTable(committed, page.plugins));
     expect(committed).toContain('`NSCameraUsageDescription`');
+  }, 60000);
+
+  // The examples page is written from the template registry, so it lists the
+  // apps `fsx init --template` actually writes. Editing it by hand would let
+  // the page describe something that is not there.
+  test('docs/examples.md is written from the templates themselves', async () => {
+    const templates = await Promise.all(
+      TEMPLATE_NAMES.map((name) => loadTemplate(name)),
+    );
+    const committed = await Bun.file(
+      new URL('../../../../docs/examples.md', import.meta.url),
+    ).text();
+
+    expect(committed).toBe(examplesMarkdown(templates));
   }, 60000);
 
   test('each prose page is a fresh render of its markdown source', async () => {

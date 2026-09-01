@@ -59,6 +59,9 @@ const acceptanceOf = (
   return null;
 };
 
+/** Names a widget gives the single child it wraps, in the order they win. */
+const CONTENT_PARAMS = ['child', 'body'] as const;
+
 const childrenSlotOf = (
   params: ParamModel[],
   widgetTypes: Set<string>,
@@ -72,11 +75,16 @@ const childrenSlotOf = (
     return { param: childrenParam.name, kind: 'widgetList' };
   }
 
-  const childParam = params.find(
-    (candidate) =>
-      candidate.name === 'child' &&
-      acceptanceOf(candidate.type, widgetTypes)?.mode === 'single',
-  );
+  // `child` is the usual name for the one widget a widget wraps; `body` is
+  // what Scaffold and NestedScrollView call theirs. Either way it is the
+  // child written between the tags, so both are the child slot.
+  const childParam = CONTENT_PARAMS.flatMap((name) =>
+    params.filter(
+      (candidate) =>
+        candidate.name === name &&
+        acceptanceOf(candidate.type, widgetTypes)?.mode === 'single',
+    ),
+  ).at(0);
   if (childParam !== undefined) {
     return { param: childParam.name, kind: 'widget' };
   }

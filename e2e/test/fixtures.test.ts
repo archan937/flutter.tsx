@@ -1,3 +1,4 @@
+import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import { describe, expect, test } from 'bun:test';
@@ -68,6 +69,17 @@ describe('the fixture manifest', () => {
     expect(components).toEqual([...new Set(components)]);
     expect(dartFiles).toEqual([...new Set(dartFiles)]);
   });
+
+  test('the manifest covers every committed fixture', async () => {
+    // A fixture missing here compiles in the unit gate and is never built by
+    // Flutter, which is the one gate that proves the Dart actually runs.
+    const committed = (await readdir(fixturesDir, { withFileTypes: true }))
+      .filter((entry) => entry.isDirectory() && /^\d\d-/.test(entry.name))
+      .map((entry) => entry.name)
+      .sort();
+
+    expect(FIXTURE_APPS.map((fixture) => fixture.id).sort()).toEqual(committed);
+  });
 });
 
 describe('every fixture builds and behaves in a real Flutter app', () => {
@@ -116,6 +128,9 @@ describe('every fixture builds and behaves in a real Flutter app', () => {
     await Bun.write(join(appDir, 'lib', 'main.dart'), mainDart());
 
     const behavior = await runFlutterTest(appDir);
+    if (behavior.exitCode !== 0) {
+      throw new Error(`flutter test failed:\n${behavior.stdout}\n${behavior.stderr}`);
+    }
     expect(behavior.exitCode).toBe(0);
 
     const build = await buildWeb(appDir);

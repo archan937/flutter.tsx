@@ -170,7 +170,7 @@ describe('analyzeSource — component shapes', () => {
     );
     expect(greeting?.props).toEqual([
       { name: 'name', dartType: 'String', required: true },
-      { name: 'size', dartType: 'double', required: false },
+      { name: 'size', dartType: 'num', required: false },
       { name: 'bold', dartType: 'bool', required: false },
     ]);
     expect(analysis.components.map((component) => component.name)).toEqual([
@@ -194,7 +194,7 @@ describe('analyzeSource — component shapes', () => {
 
     expect(analysis.components.map((component) => component.props)).toEqual([
       [{ name: 'title', dartType: 'String', required: true }],
-      [{ name: 'count', dartType: 'double', required: true }],
+      [{ name: 'count', dartType: 'num', required: true }],
       [],
     ]);
   });
@@ -614,12 +614,39 @@ describe('analyzeSource — createStore / useStore', () => {
     (): SourceAnalysis =>
       analyzeSource(source, 'probe.tsx');
 
+  test('a component may read or write the store, or both', () => {
+    const shapes: [string, string, string][] = [
+      [
+        '  const [state, setState] = useStore(counterStore);\n',
+        'state',
+        'setState',
+      ],
+      ['  const [state] = useStore(counterStore);\n', 'state', ''],
+      ['  const [, setState] = useStore(counterStore);\n', '', 'setState'],
+    ];
+    for (const [shape, stateName, setterName] of shapes) {
+      const analysis = storeProbe(
+        "import { Text, createStore, useStore } from 'flutter-tsx';\n" +
+          'const counterStore = createStore({ count: 0 });\n' +
+          'export const Probe = () => {\n' +
+          shape +
+          '  return <Text>x</Text>;\n' +
+          '};\n',
+      )();
+
+      expect(analysis.components[0]?.storeUse).toEqual({
+        storeName: 'counterStore',
+        stateName,
+        setterName,
+      });
+    }
+  });
+
   test('a malformed useStore destructuring is a numbered error', () => {
     const shapes = [
       '  const state = useStore(counterStore);\n',
-      '  const [state] = useStore(counterStore);\n',
       '  const [state, setState] = useStore({ count: 0 });\n',
-      '  const [, setState] = useStore(counterStore);\n',
+      '  const [,] = useStore(counterStore);\n',
     ];
     for (const shape of shapes) {
       expect(
@@ -634,7 +661,8 @@ describe('analyzeSource — createStore / useStore', () => {
       ).toThrow(
         new Error(
           'TSX0324 probe.tsx:4:9 — `useStore` must be destructured as ' +
-            '`const [state, setState] = useStore(someStore)`.',
+            '`const [state, setState] = useStore(someStore)`, or ' +
+            '`const [state]` to read it.',
         ),
       );
     }
@@ -759,8 +787,8 @@ describe('analyzeSource — createRouter / useNavigation', () => {
       analyzeSource(routerSource("{ '/': 'HomePage' }"), 'probe.tsx'),
     ).toThrow(
       new Error(
-        'TSX0328 probe.tsx:7:43 — a route must point at a component ' +
-          'declared in this file.',
+        'TSX0328 probe.tsx:7:43 — a route must point at a component: one ' +
+          'declared in this file, or one imported from a sibling file.',
       ),
     );
   });
@@ -770,8 +798,8 @@ describe('analyzeSource — createRouter / useNavigation', () => {
       analyzeSource(routerSource("{ '/': GhostPage }"), 'probe.tsx'),
     ).toThrow(
       new Error(
-        'TSX0328 probe.tsx:7:43 — a route must point at a component ' +
-          'declared in this file.',
+        'TSX0328 probe.tsx:7:43 — a route must point at a component: one ' +
+          'declared in this file, or one imported from a sibling file.',
       ),
     );
   });
@@ -857,21 +885,159 @@ describe('analyzeSource — JSON models', () => {
   });
 });
 
+describe('analyzeSource — callbacks and module data', () => {
+  test('a callback parameter without a type the compiler knows is refused', () => {
+    for (const parameter of ['value', 'value: Date', '{ value }: never']) {
+      expect(() =>
+        analyzeSource(
+          "import { TextField } from 'flutter-tsx';\n" +
+            'export const Probe = () => {\n' +
+            `  const change = (${parameter}) => {\n` +
+            '    setSaved(true);\n' +
+            '  };\n' +
+            '  return <TextField onChanged={change} />;\n' +
+            '};\n',
+          'probe.tsx',
+        ),
+      ).toThrow(/TSX0347/);
+    }
+  });
+
+  test('a literal constant needs no annotation to have a Dart type', () => {
+    const analysis = analyzeSource(
+      "import { Text } from 'flutter-tsx';\n" +
+        "export const LABEL = 'hi';\n" +
+        'export const SIZE = 12;\n' +
+        'export const LIVE = true;\n' +
+        'export const OFF = false;\n' +
+        'export const MADE = new Date();\n' +
+        'export const Probe = () => <Text>{LABEL}</Text>;\n',
+      'probe.tsx',
+    );
+
+    // `new Date()` has no Dart type without an annotation, so it is not data
+    // the compiler claims — the file reads as if it were not there.
+    expect(
+      analysis.constants.map((constant) => [constant.name, constant.dartType]),
+    ).toEqual([
+      ['LABEL', 'String'],
+      ['SIZE', 'num'],
+      ['LIVE', 'bool'],
+      ['OFF', 'bool'],
+    ]);
+  });
+
+  test('only exported, initialised, non-arrow declarations are data', () => {
+    const analysis = analyzeSource(
+      "import { Text } from 'flutter-tsx';\n" +
+        "const PRIVATE = 'not exported';\n" +
+        'export let COUNT: number;\n' +
+        'export const shout = (value: string): string => value + PRIVATE;\n' +
+        "export const Probe = () => <Text>{shout('a')}</Text>;\n",
+      'probe.tsx',
+    );
+
+    expect(analysis.constants.map((constant) => constant.name)).toEqual([]);
+  });
+});
+
 describe('analyzeSource — statements that declare nothing', () => {
-  test('an expression statement that is not a call is ignored', () => {
-    // `widget.doSomething();` is a call on a member, not a hook, and a bare
-    // expression is neither: a component may contain them and still compile.
+  test('a loop in a component body is a numbered error, not a no-op', () => {
+    expect(() =>
+      analyzeSource(
+        "import { Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => {\n' +
+          '  for (const item of []) {\n' +
+          '    void item;\n' +
+          '  }\n' +
+          '  return <Text>hi</Text>;\n' +
+          '};\n',
+        'probe.tsx',
+      ),
+    ).toThrow(/TSX0346 .* is a statement the compiler does not translate/);
+  });
+
+  test('a statement nothing claims is a numbered error, not a no-op', () => {
+    // A statement no analyzer claims would compile to nothing at all: the
+    // developer's line silently dropped from the Dart. It is reported.
+    expect(() =>
+      analyzeSource(
+        "import { Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => {\n' +
+          '  const label = "hi";\n' +
+          '  label;\n' +
+          '  return <Text>{label}</Text>;\n' +
+          '};\n',
+        'probe.tsx',
+      ),
+    ).toThrow(
+      new Error(
+        'TSX0346 probe.tsx:4:3 — `label;` is a statement the compiler does ' +
+          'not translate to Dart.',
+      ),
+    );
+  });
+
+  test('an `if` that does not return JSX is not a guard, and is reported', () => {
+    const probe =
+      (body: string): (() => SourceAnalysis) =>
+      (): SourceAnalysis =>
+        analyzeSource(
+          "import { Text } from 'flutter-tsx';\n" +
+            'export const Probe = () => {\n' +
+            '  const label = "hi";\n' +
+            body +
+            '  return <Text>{label}</Text>;\n' +
+            '};\n',
+          'probe.tsx',
+        );
+
+    // Each shape looks like a guard and is not one: an else, a body that does
+    // not leave, a return with nothing, and a return of something else.
+    for (const body of [
+      '  if (!label) {\n    return <Text>a</Text>;\n  } else {\n    label;\n  }\n',
+      '  if (!label) {\n    label;\n  }\n',
+      '  if (!label) {\n    return;\n  }\n',
+      '  if (!label) {\n    return label;\n  }\n',
+    ]) {
+      expect(probe(body)).toThrow(/TSX0346/);
+    }
+  });
+
+  test('a guard written without braces is a guard too', () => {
     const analysis = analyzeSource(
       "import { Text } from 'flutter-tsx';\n" +
         'export const Probe = () => {\n' +
         '  const label = "hi";\n' +
-        '  label;\n' +
+        '  if (!label) return <Text>empty</Text>;\n' +
         '  return <Text>{label}</Text>;\n' +
         '};\n',
       'probe.tsx',
     );
 
-    expect(analysis.components[0]?.plugins).toEqual([]);
-    expect(analysis.components[0]?.effects).toEqual([]);
+    expect(
+      analysis.components[0]?.guards.map((guard) => guard.jsx.getText()),
+    ).toEqual(['<Text>empty</Text>']);
+  });
+
+  test('an early return is a guard the component renders', () => {
+    const analysis = analyzeSource(
+      "import { Text } from 'flutter-tsx';\n" +
+        'export const Probe = () => {\n' +
+        '  const label = "hi";\n' +
+        '  if (!label) {\n' +
+        '    return <Text>empty</Text>;\n' +
+        '  }\n' +
+        '  return <Text>{label}</Text>;\n' +
+        '};\n',
+      'probe.tsx',
+    );
+
+    expect(
+      analysis.components[0]?.guards.map((guard) => [
+        guard.condition.getText(),
+        guard.jsx.getText(),
+      ]),
+    ).toEqual([['!label', '<Text>empty</Text>']]);
   });
 });

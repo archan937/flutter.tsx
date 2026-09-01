@@ -1,7 +1,7 @@
 import ts from 'typescript';
 
 import type { TypeNode } from '../api/model';
-import { listElementType } from './dart-names';
+import { dartConstantName, listElementType } from './dart-names';
 import { escapeDartString } from './dart-print';
 import { tsxErrorAt } from './diagnostics';
 
@@ -41,8 +41,27 @@ export interface TranslateContext {
   classFields: Map<string, Map<string, TypeNode>>;
   /** Models declared in this file, so `json(body) as Album` can be decoded. */
   jsonModels: ReadonlySet<string>;
-  /** Records a Dart import the translation needs, e.g. `dart:convert`. */
-  useDartImport: (uri: string) => void;
+  /**
+   * Records a Dart import the translation needs, e.g. `dart:convert`, or
+   * `dart:math` under the prefix its members are reached through.
+   */
+  useDartImport: (uri: string, prefix?: string) => void;
+  /**
+   * Plugin handles that are null until their hook has built them, mapped to
+   * the Dart expression holding each. TSX tests them for truth (`if (!cam)`,
+   * `{cam && …}`); Dart has no truthiness, so they become null checks.
+   */
+  nullableHandles: ReadonlyMap<string, string>;
+  /**
+   * Names an early return has proven non-null at this point.
+   *
+   * `if (!info) return …;` excludes null for everything after it. Dart cannot
+   * promote a field, so the same read becomes `_info!.appName`. This is read
+   * from the guards themselves rather than from the type checker, which
+   * cannot help here: the program is built with `noResolve`, so an imported
+   * type is `any` and would claim every value is non-null.
+   */
+  narrowed: ReadonlySet<string>;
 }
 
 const BINARY_OPERATORS = new Map<ts.SyntaxKind, string>([
@@ -61,6 +80,38 @@ const BINARY_OPERATORS = new Map<ts.SyntaxKind, string>([
   [ts.SyntaxKind.BarBarToken, '||'],
   [ts.SyntaxKind.QuestionQuestionToken, '??'],
 ]);
+
+/** `cam` / `!cam` as Dart, when `cam` is a handle that may not be ready. */
+export const handleNullCheck = (
+  expression: ts.Expression,
+  context: TranslateContext,
+): string | null => {
+  if (
+    ts.isPrefixUnaryExpression(expression) &&
+    expression.operator === ts.SyntaxKind.ExclamationToken
+  ) {
+    const receiver = handleReceiver(expression.operand, context);
+    return receiver === null ? null : `${receiver} == null`;
+  }
+  const receiver = handleReceiver(expression, context);
+  return receiver === null ? null : `${receiver} != null`;
+};
+
+const handleReceiver = (
+  expression: ts.Expression,
+  context: TranslateContext,
+): string | null =>
+  ts.isIdentifier(expression)
+    ? (context.nullableHandles.get(expression.text) ?? null)
+    : null;
+
+/** A boolean expression, with plugin handles read as null checks. */
+export const translateCondition = (
+  expression: ts.Expression,
+  context: TranslateContext,
+): string =>
+  handleNullCheck(expression, context) ??
+  translateExpression(expression, context);
 
 const DART_IDENTIFIER = /^[a-zA-Z_][a-zA-Z0-9_]*$/;
 
@@ -88,6 +139,27 @@ const DART_METHODS = new Map([
   ['every', 'every'],
   ['toFixed', 'toStringAsFixed'],
   ['filter', 'where'],
+  ['substring', 'substring'],
+  // Dart's `map` is lazy, so a helper that returns a List materialises it —
+  // see `materialisesList`. Everything downstream of it takes an Iterable.
+  ['map', 'map'],
+]);
+
+/**
+ * Methods with no faithful Dart counterpart, and what to write instead.
+ *
+ * `slice` clamps out-of-range indices and counts from the end for negatives;
+ * Dart's `substring` does neither, so renaming it would compile to something
+ * that behaves differently. The diagnostic names the way that does work.
+ */
+const METHOD_ALTERNATIVES = new Map([
+  ['slice', '`substring(start, end)`, with indices inside the value'],
+  ['find', '`filter(…)[0]`, or a `for … of` loop over the list'],
+  ['sort', 'a list built in the order you want it'],
+  ['padStart', 'the branches spelled out, or `toStringAsFixed`'],
+  ['padEnd', 'the branches spelled out, or `toStringAsFixed`'],
+  ['at', 'an index, as `values[0]`'],
+  ['flatMap', '`map(…)` and then a spread'],
 ]);
 
 // `reduce` and `fold` mean the same thing with the arguments the other way
@@ -96,6 +168,7 @@ const REDUCE = 'reduce';
 
 /** Of those, the ones that produce a String whatever the receiver is. */
 export const STRING_RETURNING_METHODS = new Set([
+  'substring',
   'toUpperCase',
   'toLowerCase',
   'trim',
@@ -171,6 +244,264 @@ export const readFieldType = (
 ): TypeNode | null =>
   fieldsOf(expression.expression, context)?.get(expression.name.text) ?? null;
 
+/**
+ * The Dart numeric type of an expression, when the compiler knows it.
+ *
+ * TypeScript has one number type and Dart has three: `int` and `num` are not
+ * assignable to `double`, so the compiler has to know which it is holding.
+ */
+export const numericDartTypeOf = (
+  expression: ts.Expression,
+  context: TranslateContext,
+): 'int' | 'double' | 'num' | null => {
+  if (ts.isIdentifier(expression)) {
+    return numericName(context.localDartTypes.get(expression.text));
+  }
+  if (ts.isPropertyAccessExpression(expression)) {
+    const field = readFieldType(expression, context);
+    return field?.kind === 'scalar' ? numericName(field.name) : null;
+  }
+  if (
+    ts.isCallExpression(expression) &&
+    ts.isIdentifier(expression.expression)
+  ) {
+    const signature = context.helperReturns.get(expression.expression.text);
+    return signature === undefined
+      ? null
+      : numericName(signature.returnDartType);
+  }
+  return null;
+};
+
+const numericName = (
+  dartType: string | undefined | null,
+): 'int' | 'double' | 'num' | null =>
+  dartType === 'int' || dartType === 'double' || dartType === 'num'
+    ? dartType
+    : null;
+
+/** How Dart converts to each numeric type it will not accept implicitly. */
+const NUMERIC_CONVERSIONS: Record<string, string> = {
+  double: 'toDouble',
+  int: 'toInt',
+};
+
+/**
+ * The conversion where one numeric type meets a declaration of another.
+ *
+ * Dart accepts an int *literal* where a double is wanted and nothing else: an
+ * `int` or `num` value needs `.toDouble()`, and a `num` needs `.toInt()` to
+ * land in an `int`. Both are what a Dart developer writes by hand, and both
+ * are only applied when the compiler knows the value's own type.
+ */
+export const widenedNumberDart = (
+  expression: ts.Expression,
+  targetDartType: string,
+  context: TranslateContext,
+): string | null => {
+  const conversion = NUMERIC_CONVERSIONS[targetDartType];
+  const actual = numericDartTypeOf(expression, context);
+  if (
+    conversion === undefined ||
+    actual === null ||
+    actual === targetDartType
+  ) {
+    return null;
+  }
+  return `${translateExpression(expression, context)}.${conversion}()`;
+};
+
+/**
+ * Dart hands `map` one value, so a second parameter has nothing to be.
+ *
+ * `items.map((item, index) => …)` is ordinary JavaScript and would compile to
+ * a callback Dart never calls that way, so it is reported here.
+ */
+const requireSingleParameterCallback = (
+  call: ts.CallExpression,
+  context: TranslateContext,
+): void => {
+  const [callback] = call.arguments;
+  if (
+    callback !== undefined &&
+    (ts.isArrowFunction(callback) || ts.isFunctionExpression(callback)) &&
+    callback.parameters.length > 1
+  ) {
+    throw tsxErrorAt(
+      'TSX0343',
+      '`map` hands the callback one value in Dart: drop the index, or ' +
+        'build the list with a `for … of` loop.',
+      {
+        sourceFile: context.sourceFile,
+        node: callback.parameters[1] as ts.Node,
+      },
+    );
+  }
+};
+
+// Methods that hand their callback one element of the receiver, so the
+// callback's parameter is a value of the element's type.
+const ELEMENT_CALLBACKS = new Set(['map', 'filter', 'some', 'every']);
+
+// Methods that yield the same element type they were given, so an element
+// type survives a chain of them.
+const ELEMENT_PRESERVING_METHODS = new Set(['filter', 'where']);
+
+/** The element type of a list expression, when the compiler knows it. */
+const elementTypeOf = (
+  expression: ts.Expression,
+  context: TranslateContext,
+): string | null => {
+  if (ts.isIdentifier(expression)) {
+    return listElementType(context.localDartTypes.get(expression.text));
+  }
+  if (
+    ts.isCallExpression(expression) &&
+    ts.isPropertyAccessExpression(expression.expression) &&
+    ELEMENT_PRESERVING_METHODS.has(expression.expression.name.text)
+  ) {
+    return elementTypeOf(expression.expression.expression, context);
+  }
+  return null;
+};
+
+/**
+ * The context a callback's body is translated in.
+ *
+ * `albums.filter((album) => album.title.includes(query))` binds `album` to an
+ * element of the list, so its fields read the same way a prop's do.
+ */
+const withCallbackItem = (
+  context: TranslateContext,
+  callback: ts.Expression,
+  elementType: string | null,
+): TranslateContext => {
+  if (
+    elementType === null ||
+    !ts.isArrowFunction(callback) ||
+    callback.parameters.length !== 1
+  ) {
+    return context;
+  }
+  const [parameter] = callback.parameters;
+  const name = parameter?.name.getText() ?? '';
+  const fields = context.classFields.get(elementType);
+  return {
+    ...context,
+    localDartTypes: new Map([...context.localDartTypes, [name, elementType]]),
+    memberReads:
+      fields === undefined
+        ? context.memberReads
+        : new Map([
+            ...context.memberReads,
+            [
+              name,
+              {
+                className: elementType,
+                receiver: name,
+                nullable: false,
+                fields,
+              },
+            ],
+          ]),
+  };
+};
+
+const LOOSE_NULL_OPERATORS = new Map([
+  [ts.SyntaxKind.EqualsEqualsToken, '=='],
+  [ts.SyntaxKind.ExclamationEqualsToken, '!='],
+]);
+
+/** `value == null` / `value != null`, and nothing else loose. */
+const nullComparisonDart = (
+  expression: ts.BinaryExpression,
+  context: TranslateContext,
+): string | null => {
+  const operator = LOOSE_NULL_OPERATORS.get(expression.operatorToken.kind);
+  if (
+    operator === undefined ||
+    expression.right.kind !== ts.SyntaxKind.NullKeyword
+  ) {
+    return null;
+  }
+  return `${translateExpression(expression.left, context)} ${operator} null`;
+};
+
+const DART_MATH = 'dart:math';
+const MATH_PREFIX = 'math';
+
+// Dart puts rounding and absolute value on the number itself, which needs no
+// import and reads the way Dart is written.
+const NUMBER_METHODS = new Map([
+  ['floor', 'floor'],
+  ['ceil', 'ceil'],
+  ['round', 'round'],
+  ['abs', 'abs'],
+  ['trunc', 'truncate'],
+]);
+
+// The rest are top-level functions in `dart:math`.
+const MATH_FUNCTIONS = new Map([
+  ['max', 'max'],
+  ['min', 'min'],
+  ['sqrt', 'sqrt'],
+  ['pow', 'pow'],
+  ['log', 'log'],
+  ['sin', 'sin'],
+  ['cos', 'cos'],
+  ['tan', 'tan'],
+]);
+
+const MATH_CONSTANTS = new Map([
+  ['PI', 'pi'],
+  ['E', 'e'],
+]);
+
+/** `Math.floor(x)`, `Math.max(a, b)`, `Math.PI` — as Dart writes them. */
+const translateMath = (
+  expression: ts.Expression,
+  context: TranslateContext,
+): string | null => {
+  if (
+    ts.isPropertyAccessExpression(expression) &&
+    ts.isIdentifier(expression.expression) &&
+    expression.expression.text === 'Math'
+  ) {
+    const constant = MATH_CONSTANTS.get(expression.name.text);
+    if (constant === undefined) {
+      return null;
+    }
+    context.useDartImport(DART_MATH, MATH_PREFIX);
+    return `${MATH_PREFIX}.${constant}`;
+  }
+  if (
+    !ts.isCallExpression(expression) ||
+    !ts.isPropertyAccessExpression(expression.expression) ||
+    !ts.isIdentifier(expression.expression.expression) ||
+    expression.expression.expression.text !== 'Math'
+  ) {
+    return null;
+  }
+  const method = expression.expression.name.text;
+  const args = expression.arguments.map((argument) =>
+    translateExpression(argument, context),
+  );
+  const onNumber = NUMBER_METHODS.get(method);
+  const [receiver] = args;
+  if (onNumber !== undefined && args.length === 1 && receiver !== undefined) {
+    const target = ts.isIdentifier(expression.arguments[0] as ts.Node)
+      ? receiver
+      : `(${receiver})`;
+    return `${target}.${onNumber}()`;
+  }
+  const fn = MATH_FUNCTIONS.get(method);
+  if (fn === undefined) {
+    return null;
+  }
+  context.useDartImport(DART_MATH, MATH_PREFIX);
+  return `${MATH_PREFIX}.${fn}(${args.join(', ')})`;
+};
+
 /** `json(body) as Album` — null when this is some other cast. */
 const jsonDecodeDart = (
   expression: ts.AsExpression,
@@ -233,13 +564,25 @@ const memberReadDart = (
   if (!info.nullable) {
     return `${info.receiver}.${member}`;
   }
+  // An access the source wrote as `?.` says the author handles null, so it
+  // maps straight across and nothing is invented around it. Inside one the
+  // checker reports the receiver as narrowed, which is true of the access and
+  // not of the value, so narrowing is not consulted here either.
+  if (expression.questionDotToken !== undefined) {
+    return `${info.receiver}?.${member}`;
+  }
+  // A guard above this read has already excluded null.
+  if (context.narrowed.has(expression.expression.getText())) {
+    return `${info.receiver}!.${member}`;
+  }
   const zero = zeroValueOf(field);
   if (zero === null) {
     throw tsxErrorAt(
       'TSX0316',
-      `reading \`${member}\` needs a ${typeLabel(field)} fallback, which ` +
-        'is not compiled yet. Read it inside a handler and store the result ' +
-        'in state.',
+      `reading \`${member}\` on a value that may be null needs a guard: ` +
+        `\`if (!${expression.expression.getText()}) return …;\` above it, ` +
+        'or ' +
+        `\`?.\` with a ${typeLabel(field)} fallback of your own.`,
       { sourceFile: context.sourceFile, node: expression.name },
     );
   }
@@ -259,6 +602,11 @@ export const translateIdentifier = (
   name: string,
   context: TranslateContext,
 ): string => {
+  // A read of a module constant uses the Dart name that declaration took.
+  const constant = dartConstantName(name);
+  if (constant !== name) {
+    return constant;
+  }
   const isMember =
     context.stateNames.has(name) || context.handlerNames.has(name);
   if (isMember && context.privateMembers) {
@@ -294,15 +642,20 @@ const translateArrow = (
   return `(${params.join(', ')}) => ${translateExpression(body, context)}`;
 };
 
+/** Whether `$name` would run into what comes next: `'$counts'` is one name. */
+const NAME_CONTINUES = /^[A-Za-z0-9_]/;
+
 export const interpolate = (
   parts: { kind: 'text' | 'expr'; value: string }[],
 ): string => {
   const body = parts
-    .map((part) => {
+    .map((part, index) => {
       if (part.kind === 'text') {
         return escapeDartString(part.value);
       }
-      return DART_IDENTIFIER.test(part.value)
+      const next = parts[index + 1];
+      const runsOn = next?.kind === 'text' && NAME_CONTINUES.test(next.value);
+      return DART_IDENTIFIER.test(part.value) && !runsOn
         ? `$${part.value}`
         : `\${${part.value}}`;
     })
@@ -333,6 +686,10 @@ export const translateExpression = (
 ): string => {
   if (ts.isNumericLiteral(expression)) {
     return expression.getText();
+  }
+  const math = translateMath(expression, context);
+  if (math !== null) {
+    return math;
   }
   if (expression.kind === ts.SyntaxKind.TrueKeyword) {
     return 'true';
@@ -473,15 +830,34 @@ export const translateExpression = (
     ts.isPropertyAccessExpression(expression.expression)
   ) {
     const dartName = DART_METHODS.get(expression.expression.name.text);
+    if (dartName === 'map') {
+      requireSingleParameterCallback(expression, context);
+    }
     if (dartName !== undefined) {
-      const target = translateExpression(
-        expression.expression.expression,
-        context,
-      );
+      const receiver = expression.expression.expression;
+      const target = translateExpression(receiver, context);
+      const itemContext = ELEMENT_CALLBACKS.has(expression.expression.name.text)
+        ? withCallbackItem(
+            context,
+            expression.arguments[0] ?? expression,
+            elementTypeOf(receiver, context),
+          )
+        : context;
       const args = expression.arguments.map((argument) =>
-        translateExpression(argument, context),
+        translateExpression(argument, itemContext),
       );
       return `${target}.${dartName}(${args.join(', ')})`;
+    }
+    const alternative = METHOD_ALTERNATIVES.get(
+      expression.expression.name.text,
+    );
+    if (alternative !== undefined) {
+      throw tsxErrorAt(
+        'TSX0341',
+        `\`${expression.expression.name.text}\` has no Dart counterpart that ` +
+          `behaves the same way — use ${alternative}.`,
+        { sourceFile: context.sourceFile, node: expression.expression.name },
+      );
     }
   }
   if (
@@ -489,15 +865,27 @@ export const translateExpression = (
     ts.isIdentifier(expression.expression) &&
     context.helperReturns.has(expression.expression.text)
   ) {
-    const args = expression.arguments.map((argument) =>
-      translateExpression(argument, context),
-    );
+    const signature = context.helperReturns.get(expression.expression.text);
+    const args = expression.arguments.map((argument, index) => {
+      const declared = signature?.params[index]?.dartType ?? '';
+      return (
+        widenedNumberDart(argument, declared, context) ??
+        translateExpression(argument, context)
+      );
+    });
     const name = context.privateHelpers.has(expression.expression.text)
       ? `_${expression.expression.text}`
       : expression.expression.text;
     return `${name}(${args.join(', ')})`;
   }
   if (ts.isBinaryExpression(expression)) {
+    // `x == null` is the one loose comparison TypeScript itself endorses, and
+    // it means in Dart exactly what it means in TypeScript. Every other `==`
+    // coerces, so it stays refused rather than compiling to something else.
+    const nullComparison = nullComparisonDart(expression, context);
+    if (nullComparison !== null) {
+      return nullComparison;
+    }
     const operator = BINARY_OPERATORS.get(expression.operatorToken.kind);
     if (operator === undefined) {
       return notYetCompiled(expression.operatorToken, context);

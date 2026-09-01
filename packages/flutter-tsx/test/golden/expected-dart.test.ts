@@ -1,5 +1,6 @@
 import { beforeAll, describe, expect, test } from 'bun:test';
 
+import { CATALOGUE } from '@src/site/catalogue';
 import {
   dartFormatCheck,
   ensurePackageResolved,
@@ -61,7 +62,28 @@ describe('committed golden expected.dart files', () => {
       '42-project-layout',
       '43-tray-singleton',
       '44-tray-listener',
+      '45-camera-capture',
+      '46-camera-preview',
+      '47-guarded-handler',
+      '48-number-types',
+      '49-helper-body',
+      '50-module-data',
     ]);
+  });
+
+  // A fixture is registered in more than one place, and a half-registered one
+  // would quietly skip a gate. Each registry is checked against the roster
+  // above, so forgetting one fails here instead of going unnoticed.
+  test('every fixture is described in the docs catalogue', () => {
+    const described = new Set(Object.keys(CATALOGUE));
+    expect(fixtures.filter((fixture) => !described.has(fixture.id))).toEqual(
+      [],
+    );
+    expect(
+      [...described].filter(
+        (id) => !fixtures.some((fixture) => fixture.id === id),
+      ),
+    ).toEqual([]);
   });
 
   for (const fixture of fixtures) {

@@ -5,6 +5,9 @@
     {
       "name": "Abortable",
       "doc": "/// An HTTP request that can be aborted before it completes.",
+      "supertypes": [
+        "BaseRequest"
+      ],
       "constructors": [],
       "fields": [
         {
@@ -101,6 +104,11 @@
     {
       "name": "AbortableMultipartRequest",
       "doc": "/// A [MultipartRequest] which supports abortion using [abortTrigger].\n///\n/// A future breaking version of 'package:http' will merge this into\n/// [MultipartRequest], making it a requirement.",
+      "supertypes": [
+        "MultipartRequest",
+        "BaseRequest",
+        "Abortable"
+      ],
       "constructors": [
         {
           "name": "",
@@ -274,6 +282,11 @@
     {
       "name": "AbortableRequest",
       "doc": "/// A [Request] which supports abortion using [abortTrigger].\n///\n/// A future breaking version of 'package:http' will merge this into [Request],\n/// making it a requirement.",
+      "supertypes": [
+        "Request",
+        "BaseRequest",
+        "Abortable"
+      ],
       "constructors": [
         {
           "name": "",
@@ -460,6 +473,11 @@
     {
       "name": "AbortableStreamedRequest",
       "doc": "/// A [StreamedRequest] which supports abortion using [abortTrigger].\n///\n/// A future breaking version of 'package:http' will merge this into\n/// [StreamedRequest], making it a requirement.",
+      "supertypes": [
+        "StreamedRequest",
+        "BaseRequest",
+        "Abortable"
+      ],
       "constructors": [
         {
           "name": "",
@@ -618,6 +636,9 @@
     {
       "name": "BaseClient",
       "doc": "/// The abstract base class for an HTTP client.\n///\n/// This is a mixin-style class; subclasses only need to implement [send] and\n/// maybe [close], and then they get various convenience methods for free.",
+      "supertypes": [
+        "Client"
+      ],
       "constructors": [],
       "fields": [],
       "methods": [
@@ -1191,6 +1212,7 @@
     {
       "name": "BaseRequest",
       "doc": "/// The base class for HTTP requests.\n///\n/// Subclasses of [BaseRequest] can be constructed manually and passed to\n/// [BaseClient.send], which allows the user to provide fine-grained control\n/// over the request properties. However, usually it's easier to use convenience\n/// methods like [get] or [BaseClient.get].\n///\n/// Subclasses/implementers should mixin/implement [Abortable] to support\n/// request cancellation. A future breaking version of 'package:http' will\n/// merge [Abortable] into [BaseRequest], making it a requirement.",
+      "supertypes": [],
       "constructors": [],
       "fields": [
         {
@@ -1308,6 +1330,7 @@
     {
       "name": "BaseResponse",
       "doc": "/// The base class for HTTP responses.\n///\n/// Subclasses of [BaseResponse] are usually not constructed manually; instead,\n/// they're returned by [BaseClient.send] or other HTTP client methods.",
+      "supertypes": [],
       "constructors": [],
       "fields": [
         {
@@ -1389,6 +1412,9 @@
     {
       "name": "BaseResponseWithUrl",
       "doc": "/// A [BaseResponse] with a [url] field.\n///\n/// [Client] methods that return a [BaseResponse] subclass, such as [Response]\n/// or [StreamedResponse], **may** return a [BaseResponseWithUrl].\n///\n/// For example:\n///\n/// ```dart\n/// final client = Client();\n/// final response = client.get(Uri.https('example.com', '/'));\n/// Uri? finalUri;\n/// if (response case BaseResponseWithUrl(:final url)) {\n///   finalUri = url;\n/// }\n/// // Do something with `finalUri`.\n/// client.close();\n/// ```\n///\n/// [url] will be added to [BaseResponse] when `package:http` version 2 is\n/// released and this mixin will be deprecated.",
+      "supertypes": [
+        "BaseResponse"
+      ],
       "constructors": [],
       "fields": [
         {
@@ -1478,6 +1504,10 @@
     {
       "name": "ByteStream",
       "doc": "/// A stream of chunks of bytes representing a single piece of data.",
+      "supertypes": [
+        "StreamView",
+        "Stream"
+      ],
       "constructors": [
         {
           "name": "",
@@ -1669,6 +1699,7 @@
     {
       "name": "Client",
       "doc": "/// The interface for HTTP clients that take care of maintaining persistent\n/// connections across multiple requests to the same server.\n///\n/// If you only need to send a single request, it's usually easier to use\n/// [http.head], [http.get], [http.post], [http.put], [http.patch], or\n/// [http.delete] instead.\n///\n/// All methods will emit a [ClientException] if there is a transport-level\n/// failure when communication with the server. For example, if the server could\n/// not be reached.\n///\n/// When creating an HTTP client class with additional functionality, you must\n/// extend [BaseClient] rather than [Client]. In most cases, you can wrap\n/// another instance of [Client] and add functionality on top of that. This\n/// allows all classes implementing [Client] to be mutually composable.",
+      "supertypes": [],
       "constructors": [],
       "fields": [],
       "methods": [
@@ -2242,6 +2273,9 @@
     {
       "name": "ClientException",
       "doc": "/// An exception caused by an error in a pkg/http client.",
+      "supertypes": [
+        "Exception"
+      ],
       "constructors": [
         {
           "name": "",
@@ -2320,6 +2354,7 @@
     {
       "name": "MediaType",
       "doc": "/// A class representing an HTTP media type, as used in Accept and Content-Type\n/// headers.\n///\n/// This is immutable; new instances can be created based on an old instance by\n/// calling [change].",
+      "supertypes": [],
       "constructors": [
         {
           "name": "",
@@ -2555,6 +2590,7 @@
     {
       "name": "MultipartFile",
       "doc": "/// A file to be uploaded as part of a [MultipartRequest].\n///\n/// This doesn't need to correspond to a physical file.",
+      "supertypes": [],
       "constructors": [
         {
           "name": "",
@@ -2914,6 +2950,9 @@
     {
       "name": "MultipartRequest",
       "doc": "/// A `multipart/form-data` request.\n///\n/// Such a request has both string [fields], which function as normal form\n/// fields, and (potentially streamed) binary [files].\n///\n/// This request automatically sets the Content-Type header to\n/// `multipart/form-data`. This value will override any value set by the user.\n///\n///     var uri = Uri.https('example.com', 'create');\n///     var request = http.MultipartRequest('POST', uri)\n///       ..fields['user'] = 'nweiz@google.com'\n///       ..files.add(await http.MultipartFile.fromPath(\n///           'package', 'build/package.tar.gz',\n///           contentType: MediaType('application', 'x-tar')));\n///     var response = await request.send();\n///     if (response.statusCode == 200) print('Uploaded!');",
+      "supertypes": [
+        "BaseRequest"
+      ],
       "constructors": [
         {
           "name": "",
@@ -3067,6 +3106,9 @@
     {
       "name": "Request",
       "doc": "/// An HTTP request where the entire request body is known in advance.",
+      "supertypes": [
+        "BaseRequest"
+      ],
       "constructors": [
         {
           "name": "",
@@ -3233,6 +3275,10 @@
     {
       "name": "RequestAbortedException",
       "doc": "/// Thrown when an HTTP request is aborted.\n///\n/// This exception is triggered when [Abortable.abortTrigger] completes.",
+      "supertypes": [
+        "ClientException",
+        "Exception"
+      ],
       "constructors": [
         {
           "name": "",
@@ -3287,6 +3333,9 @@
     {
       "name": "Response",
       "doc": "/// An HTTP response where the entire response body is known in advance.",
+      "supertypes": [
+        "BaseResponse"
+      ],
       "constructors": [
         {
           "name": "",
@@ -3642,6 +3691,9 @@
     {
       "name": "StreamedRequest",
       "doc": "/// An HTTP request where the request body is sent asynchronously after the\n/// connection has been established and the headers have been sent.\n///\n/// When the request is sent via [BaseClient.send], only the headers and\n/// whatever data has already been written to [StreamedRequest.sink] will be\n/// sent immediately. More data will be sent as soon as it's written to\n/// [StreamedRequest.sink], and when the sink is closed the request will end.\n///\n/// For example:\n/// ```dart\n/// final request = http.StreamedRequest('POST', Uri.http('example.com', ''))\n///     ..contentLength = 10\n///     ..sink.add([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);\n///\n/// // The sink must be closed to end the request.\n/// // The Future returned from `close()` may not complete until after the\n/// // request is sent, and it should not be awaited.\n/// unawaited(request.sink.close());\n/// final response = await request.send();\n/// ```",
+      "supertypes": [
+        "BaseRequest"
+      ],
       "constructors": [
         {
           "name": "",
@@ -3780,6 +3832,9 @@
     {
       "name": "StreamedResponse",
       "doc": "/// An HTTP response where the response body is received asynchronously after\n/// the headers have been received.",
+      "supertypes": [
+        "BaseResponse"
+      ],
       "constructors": [
         {
           "name": "",
