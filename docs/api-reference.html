@@ -1810,17 +1810,19 @@ export const Shell = () =&gt; (
 <pre><code class="language-typescript">&lt;<span class="tok-typ">TValue</span>&gt;(initial: TValue) =&gt; [TValue, StateSetter&lt;<span class="tok-typ">TValue</span>&gt;]</code></pre>
 </div>
 <div class="tab-panel" data-panel="TSX" role="tabpanel">
-<pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Builder</span>, <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
 
-<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Panel</span> = () =&gt; {
-  <span class="tok-kw">const</span> [open, setOpen] = <span class="tok-fn">useState</span>(<span class="tok-kw">false</span>);
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">PlayCount</span> = () =&gt; {
+  <span class="tok-kw">const</span> [plays, setPlays] = <span class="tok-fn">useState</span>(<span class="tok-num">0</span>);
+
+  <span class="tok-kw">const</span> play = () =&gt; {
+    <span class="tok-fn">setPlays</span>(plays + <span class="tok-num">1</span>);
+  };
 
   <span class="tok-kw">return</span> (
     &lt;<span class="tok-typ">Column</span>&gt;
-      &lt;<span class="tok-typ">Builder</span>
-        builder={() =&gt; (open ? &lt;<span class="tok-typ">Text</span>&gt;Open&lt;/<span class="tok-typ">Text</span>&gt; : &lt;<span class="tok-typ">Text</span>&gt;Closed&lt;/<span class="tok-typ">Text</span>&gt;)}
-      /&gt;
-      &lt;<span class="tok-typ">ElevatedButton</span> onClick={() =&gt; setOpen(!open)}&gt;Toggle&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Now playing&lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={play}&gt;Played {plays} times&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
     &lt;/<span class="tok-typ">Column</span>&gt;
   );
 };</code></pre>
@@ -1828,34 +1830,35 @@ export const Shell = () =&gt; (
 <div class="tab-panel" data-panel="Dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
 
-<span class="tok-kw">class</span> <span class="tok-typ">Panel</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
-  <span class="tok-kw">const</span> <span class="tok-typ">Panel</span>({<span class="tok-kw">super</span>.key});
+<span class="tok-kw">class</span> <span class="tok-typ">PlayCount</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">PlayCount</span>({<span class="tok-kw">super</span>.key});
 
   @override
-  <span class="tok-typ">State</span>&lt;<span class="tok-typ">Panel</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_PanelState</span>();
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">PlayCount</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_PlayCountState</span>();
 }
 
-<span class="tok-kw">class</span> _PanelState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">Panel</span>&gt; {
-  bool _open = <span class="tok-kw">false</span>;
+<span class="tok-kw">class</span> _PlayCountState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">PlayCount</span>&gt; {
+  int _plays = <span class="tok-num">0</span>;
+
+  <span class="tok-kw">void</span> <span class="tok-fn">_play</span>() {
+    <span class="tok-fn">setState</span>(() {
+      _plays++;
+    });
+  }
 
   @override
   <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
     <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
       children: [
-        <span class="tok-typ">Builder</span>(
-          builder: (_) =&gt; _open ? <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Open'</span>) : <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Closed'</span>),
-        ),
-        <span class="tok-typ">ElevatedButton</span>(
-          onPressed: () =&gt; <span class="tok-fn">setState</span>(() =&gt; _open = !_open),
-          child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Toggle'</span>),
-        ),
+        <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Now playing'</span>),
+        <span class="tok-typ">ElevatedButton</span>(onPressed: _play, child: <span class="tok-typ">Text</span>(<span class="tok-str">'Played $_plays times'</span>)),
       ],
     );
   }
 }</code></pre>
 </div>
 </div>
-<p class="note">Used by <a href="./cookbook.html#01-camera-screen"><code>01-camera-screen</code></a>, <a href="./cookbook.html#05-counter"><code>05-counter</code></a>, <a href="./cookbook.html#06-mount-effect"><code>06-mount-effect</code></a>, <a href="./cookbook.html#07-list-rendering"><code>07-list-rendering</code></a>, <a href="./cookbook.html#09-typed-props"><code>09-typed-props</code></a>, <a href="./cookbook.html#10-camera-options"><code>10-camera-options</code></a>, <a href="./cookbook.html#11-preferences"><code>11-preferences</code></a>, <a href="./cookbook.html#12-secure-storage"><code>12-secure-storage</code></a>, <a href="./cookbook.html#13-open-link"><code>13-open-link</code></a>, <a href="./cookbook.html#15-front-camera"><code>15-front-camera</code></a>, <a href="./cookbook.html#16-tap-target"><code>16-tap-target</code></a>, <a href="./cookbook.html#21-modal"><code>21-modal</code></a>, <a href="./cookbook.html#22-mount-dialog"><code>22-mount-dialog</code></a>, <a href="./cookbook.html#24-animated"><code>24-animated</code></a>, <a href="./cookbook.html#29-branching-handler"><code>29-branching-handler</code></a>, <a href="./cookbook.html#33-control-flow"><code>33-control-flow</code></a>, <a href="./cookbook.html#38-effect-cleanup"><code>38-effect-cleanup</code></a>, <a href="./cookbook.html#39-builder-callback"><code>39-builder-callback</code></a>, <a href="./cookbook.html#43-tray-singleton"><code>43-tray-singleton</code></a>, <a href="./cookbook.html#44-tray-listener"><code>44-tray-listener</code></a>, <a href="./cookbook.html#45-camera-capture"><code>45-camera-capture</code></a>, <a href="./cookbook.html#47-guarded-handler"><code>47-guarded-handler</code></a>, <a href="./cookbook.html#48-number-types"><code>48-number-types</code></a>, <a href="./cookbook.html#51-plugin-values"><code>51-plugin-values</code></a></p>
+<p class="note">Used by <a href="./cookbook.html#01-camera-screen"><code>01-camera-screen</code></a>, <a href="./cookbook.html#05-counter"><code>05-counter</code></a>, <a href="./cookbook.html#06-mount-effect"><code>06-mount-effect</code></a>, <a href="./cookbook.html#07-list-rendering"><code>07-list-rendering</code></a>, <a href="./cookbook.html#09-typed-props"><code>09-typed-props</code></a>, <a href="./cookbook.html#10-camera-options"><code>10-camera-options</code></a>, <a href="./cookbook.html#11-preferences"><code>11-preferences</code></a>, <a href="./cookbook.html#12-secure-storage"><code>12-secure-storage</code></a>, <a href="./cookbook.html#13-open-link"><code>13-open-link</code></a>, <a href="./cookbook.html#15-front-camera"><code>15-front-camera</code></a>, <a href="./cookbook.html#16-tap-target"><code>16-tap-target</code></a>, <a href="./cookbook.html#21-modal"><code>21-modal</code></a>, <a href="./cookbook.html#22-mount-dialog"><code>22-mount-dialog</code></a>, <a href="./cookbook.html#24-animated"><code>24-animated</code></a>, <a href="./cookbook.html#29-branching-handler"><code>29-branching-handler</code></a>, <a href="./cookbook.html#33-control-flow"><code>33-control-flow</code></a>, <a href="./cookbook.html#38-effect-cleanup"><code>38-effect-cleanup</code></a>, <a href="./cookbook.html#39-builder-callback"><code>39-builder-callback</code></a>, <a href="./cookbook.html#43-tray-singleton"><code>43-tray-singleton</code></a>, <a href="./cookbook.html#44-tray-listener"><code>44-tray-listener</code></a>, <a href="./cookbook.html#45-camera-capture"><code>45-camera-capture</code></a>, <a href="./cookbook.html#47-guarded-handler"><code>47-guarded-handler</code></a>, <a href="./cookbook.html#48-number-types"><code>48-number-types</code></a>, <a href="./cookbook.html#51-plugin-values"><code>51-plugin-values</code></a>, <a href="./cookbook.html#52-mixed-label"><code>52-mixed-label</code></a></p>
 </article>
 <article class="widget" id="core-EffectCleanup" data-name="EffectCleanup">
 <h3>EffectCleanup<span class="badge badge-lib">type</span></h3>

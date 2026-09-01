@@ -1537,23 +1537,60 @@ const lowerListChildren = (
   return items;
 };
 
+/**
+ * What a slot holding exactly one child is given.
+ *
+ * `Played {plays} times` is three children of one label, and the reader means
+ * one line of text — so text and expressions side by side become a single
+ * interpolated Text, exactly as they do in a Text's own slot. Two widgets
+ * cannot both be the one child, and saying so beats rendering the first and
+ * dropping the rest.
+ */
 const singleChildValue = (
   children: readonly ts.JsxChild[],
   context: LowerContext,
 ): IrValue | null => {
-  for (const child of children) {
-    const text = meaningfulText(child);
-    if (text !== null) {
-      return textWidget(text, context);
-    }
-    if (ts.isJsxElement(child) || ts.isJsxSelfClosingElement(child)) {
-      return { kind: 'widget', widget: lowerJsxElement(child, context) };
-    }
-    if (ts.isJsxExpression(child) && child.expression !== undefined) {
-      return lowerChildValue(child.expression, context);
-    }
+  const meaningful = children.filter(
+    (child) =>
+      meaningfulText(child) !== null ||
+      ts.isJsxElement(child) ||
+      ts.isJsxSelfClosingElement(child) ||
+      (ts.isJsxExpression(child) && child.expression !== undefined),
+  );
+  const [first] = meaningful;
+  if (first === undefined) {
+    return null;
   }
-  return null;
+  if (meaningful.length === 1) {
+    return lowerOneChild(first, context);
+  }
+  const widget = meaningful.find(
+    (child) => ts.isJsxElement(child) || ts.isJsxSelfClosingElement(child),
+  );
+  if (widget !== undefined) {
+    throw tsxErrorAt(
+      'TSX0350',
+      'this slot holds one child: wrap them in a <Column> or a <Row>.',
+      { sourceFile: context.sourceFile, node: widget },
+    );
+  }
+  return textValueWidget(textSlotValue(meaningful, context), context);
+};
+
+const lowerOneChild = (
+  child: ts.JsxChild,
+  context: LowerContext,
+): IrValue | null => {
+  const text = meaningfulText(child);
+  if (text !== null) {
+    return textWidget(text, context);
+  }
+  if (ts.isJsxElement(child) || ts.isJsxSelfClosingElement(child)) {
+    return { kind: 'widget', widget: lowerJsxElement(child, context) };
+  }
+  return ts.isJsxExpression(child) && child.expression !== undefined
+    ? lowerChildValue(child.expression, context)
+    : null;
 };
 
 const jsxTextValue = (child: ts.JsxText): string =>

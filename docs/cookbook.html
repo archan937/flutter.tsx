@@ -161,7 +161,7 @@ main p { margin-bottom: 12px; }
     <a href="https://github.com/archan937/flutter.tsx" target="_blank" rel="noopener">GitHub ↗</a>
   </nav>
   <input id="search" type="search" placeholder="Search recipes…" autocomplete="off" spellcheck="false">
-  <div class="meta-info">51 recipes · Flutter 3.47.1</div>
+  <div class="meta-info">52 recipes · Flutter 3.47.1</div>
   <nav id="sidebar-nav">
 <details open>
 <summary>Start here<span class="nav-count">7</span></summary>
@@ -176,7 +176,7 @@ main p { margin-bottom: 12px; }
 </ul>
 </details>
 <details>
-<summary>State and effects<span class="nav-count">7</span></summary>
+<summary>State and effects<span class="nav-count">8</span></summary>
 <ul>
 <li data-name="Running code on mount"><a href="#06-mount-effect">Running code on mount</a></li>
 <li data-name="State shared across screens"><a href="#19-store-counter">State shared across screens</a></li>
@@ -185,6 +185,7 @@ main p { margin-bottom: 12px; }
 <li data-name="Cleaning up when a screen goes away"><a href="#38-effect-cleanup">Cleaning up when a screen goes away</a></li>
 <li data-name="A callback that returns a widget"><a href="#39-builder-callback">A callback that returns a widget</a></li>
 <li data-name="Reading what a callback is handed"><a href="#40-layout-builder">Reading what a callback is handed</a></li>
+<li data-name="A label made of text and a value"><a href="#52-mixed-label">A label made of text and a value</a></li>
 </ul>
 </details>
 <details>
@@ -1074,6 +1075,60 @@ export const TaskBoard = () =&gt; {
               ? <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Wide'</span>)
               : <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Narrow'</span>),
         ),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section class="recipe" id="52-mixed-label" data-name="A label made of text and a value">
+<h3>A label made of text and a value</h3>
+<p class="blurb"><code>Played {plays} times</code> is three children of one button, and it means one line — so it compiles to one interpolated <code>Text</code>, not to the first word with the rest dropped.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/PlayCount.tsx" role="tab" aria-selected="true">src/PlayCount.tsx</button>
+<button class="tab-btn" data-tab="play_count.dart" role="tab" aria-selected="false">play_count.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/PlayCount.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">PlayCount</span> = () =&gt; {
+  <span class="tok-kw">const</span> [plays, setPlays] = <span class="tok-fn">useState</span>(<span class="tok-num">0</span>);
+
+  <span class="tok-kw">const</span> play = () =&gt; {
+    <span class="tok-fn">setPlays</span>(plays + <span class="tok-num">1</span>);
+  };
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Now playing&lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={play}&gt;Played {plays} times&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
+  );
+};</code></pre></div>
+<div class="tab-panel" data-panel="play_count.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">PlayCount</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">PlayCount</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">PlayCount</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_PlayCountState</span>();
+}
+
+<span class="tok-kw">class</span> _PlayCountState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">PlayCount</span>&gt; {
+  int _plays = <span class="tok-num">0</span>;
+
+  <span class="tok-kw">void</span> <span class="tok-fn">_play</span>() {
+    <span class="tok-fn">setState</span>(() {
+      _plays++;
+    });
+  }
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+      children: [
+        <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Now playing'</span>),
+        <span class="tok-typ">ElevatedButton</span>(onPressed: _play, child: <span class="tok-typ">Text</span>(<span class="tok-str">'Played $_plays times'</span>)),
       ],
     );
   }

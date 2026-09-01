@@ -245,6 +245,12 @@ export const CATALOGUE: Readonly<Record<string, CatalogueEntry>> = {
       'Where a package asks for one of its own classes, an object literal builds it — `webViewConfiguration: { enableJavaScript: true }` — and `new MediaType(…)` builds one by name.',
     category: 'Native plugins',
   },
+  '52-mixed-label': {
+    title: 'A label made of text and a value',
+    blurb:
+      '`Played {plays} times` is three children of one button, and it means one line — so it compiles to one interpolated `Text`, not to the first word with the rest dropped.',
+    category: 'State and effects',
+  },
   '10-camera-options': {
     title: 'Choosing a camera resolution',
     blurb:

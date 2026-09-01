@@ -69,6 +69,7 @@ describe('committed golden expected.dart files', () => {
       '49-helper-body',
       '50-module-data',
       '51-plugin-values',
+      '52-mixed-label',
     ]);
   });
 

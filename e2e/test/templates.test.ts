@@ -13,12 +13,29 @@ import {
 } from 'flutter-tsx/cli';
 
 import {
+  addPubDependencies,
   buildNative,
   buildWeb,
   dartBin,
   flutterBin,
   run,
+  runFlutterTest,
 } from './support/flutter-app';
+
+const behaviorDir = join(
+  import.meta.dir,
+  '..',
+  'fixtures',
+  'template-behavior',
+);
+
+/**
+ * Packages a template's widget test needs and the app itself does not: the
+ * platform interfaces its fakes implement.
+ */
+const TEST_DEPENDENCIES: Readonly<Record<string, string[]>> = {
+  tray: ['connectivity_plus_platform_interface', 'plugin_platform_interface'],
+};
 
 /**
  * The templates' guarantee: `fsx init --template=<name>` produces an app that
@@ -58,6 +75,22 @@ describe('every template scaffolds into an app that builds', () => {
         throw new Error(
           `flutter analyze failed for the ${name} template:\n` +
             `${analyzed.stdout}\n${analyzed.stderr}`,
+        );
+      }
+
+      // Building proves it compiles; running it proves it works. Each app is
+      // driven the way a person drives it — tapping, typing, and receiving
+      // the events its plugins would deliver.
+      await addPubDependencies(appDir, TEST_DEPENDENCIES[name] ?? []);
+      await Bun.write(
+        join(appDir, 'test', 'template_test.dart'),
+        await Bun.file(join(behaviorDir, `${name}.dart`)).text(),
+      );
+      const behaviour = await runFlutterTest(appDir);
+      if (behaviour.exitCode !== 0) {
+        throw new Error(
+          `the ${name} template does not behave:\n` +
+            `${behaviour.stdout}\n${behaviour.stderr}`,
         );
       }
 

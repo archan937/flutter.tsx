@@ -331,6 +331,12 @@ export const FIXTURE_APPS: FixtureApp[] = [
     deps: ['camera'],
   },
   {
+    id: '52-mixed-label',
+    component: 'PlayCount',
+    dartFile: 'play_count.dart',
+    deps: [],
+  },
+  {
     id: '51-plugin-values',
     component: 'OpenInApp',
     dartFile: 'open_in_app.dart',

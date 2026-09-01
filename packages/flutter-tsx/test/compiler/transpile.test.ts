@@ -1458,6 +1458,26 @@ describe('transpileComponent — the edges of what is expressible', () => {
     expect(dart).toContain("appBar: AppBar(title: const Text('Hi'))");
   });
 
+  test('two widgets in a slot that holds one is a numbered error', () => {
+    // Rendering the first and dropping the second is the silent kind of
+    // wrong; saying which two, and what to do, is the loud kind.
+    expect(
+      transpileComponent({
+        source:
+          "import { ElevatedButton, Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => (\n' +
+          '  <ElevatedButton>\n' +
+          '    <Text>one</Text>\n' +
+          '    <Text>two</Text>\n' +
+          '  </ElevatedButton>\n' +
+          ');\n',
+        filePath: 'probe.tsx',
+      }),
+    ).rejects.toThrow(
+      /TSX0350 .* this slot holds one child: wrap them in a <Column> or a <Row>\./,
+    );
+  });
+
   test('a call statement that claims nothing is a numbered error', () => {
     expect(
       transpileComponent({
