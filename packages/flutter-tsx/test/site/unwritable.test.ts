@@ -26,15 +26,7 @@ const page = buildSitePage(
 );
 
 /** Widgets whose examples wait on a shape the compiler does not write yet. */
-const NOT_YET_EXPRESSIBLE: readonly string[] = [
-  'Actions',
-  'PlatformViewLink',
-  'RenderObjectToWidgetAdapter',
-  'RepeatingAnimationBuilder',
-  'ShaderMask',
-  'Shortcuts',
-  'UndoHistory',
-];
+const NOT_YET_EXPRESSIBLE: readonly string[] = ['ShaderMask'];
 
 /** Widgets a hook writes: `useAsync` and `useStream` generate these. */
 const WRITTEN_BY_A_HOOK: readonly string[] = ['FutureBuilder', 'StreamBuilder'];

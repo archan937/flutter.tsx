@@ -331,6 +331,12 @@ export const FIXTURE_APPS: FixtureApp[] = [
     deps: ['camera'],
   },
   {
+    id: '62-controller-methods',
+    component: 'Scroller',
+    dartFile: 'scroller.dart',
+    deps: [],
+  },
+  {
     id: '61-static-in-handler',
     component: 'Measure',
     dartFile: 'measure.dart',

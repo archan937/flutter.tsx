@@ -28,6 +28,8 @@ EntityModel? mapClass(
   // How the framework hands over values nothing constructs.
   final statics = _mapStaticMethods(classElement);
   final staticGetters = _mapStaticGetters(classElement);
+  // What a value answers to, which is the reason to hold one.
+  final methods = _mapInstanceMethods(classElement);
 
   // An abstract class is part of the surface as a type — `Action`, a sliver
   // delegate, `Shader` — but never as a component: nothing can build one, so
@@ -43,6 +45,7 @@ EntityModel? mapClass(
       fields: fields,
       statics: statics,
       staticGetters: staticGetters,
+      methods: methods,
     );
   }
   return ClassEntity(
@@ -56,6 +59,7 @@ EntityModel? mapClass(
     fields: fields,
     statics: statics,
     staticGetters: staticGetters,
+    methods: methods,
     disposable: _hasPublicDispose(classElement),
     isAbstract: classElement.isAbstract,
     typeParams: classElement.typeParameters
@@ -92,6 +96,57 @@ List<MethodModel> _mapStaticMethods(ClassElement classElement) =>
         )
         .toList()
       ..sort((first, second) => first.name.compareTo(second.name));
+
+/// The methods a value of this class answers to.
+///
+/// `dispose` is the lifecycle the compiler already writes, and an operator
+/// or a private member is not something TSX can call, so neither is offered.
+List<MethodModel> _mapInstanceMethods(ClassElement classElement) {
+  // Inherited methods are part of the surface: a `MaterialColor` answers to
+  // everything a `Color` does, and a subtype that dropped them would stop
+  // being usable where its supertype is.
+  final owners = <InterfaceElement>[
+    classElement,
+    ...classElement.allSupertypes
+        .map((supertype) => supertype.element)
+        .where((element) => (element.name ?? 'Object') != 'Object'),
+  ];
+  final seen = <String>{};
+  return owners
+      .expand((owner) => owner.methods)
+      .where(
+        (method) =>
+            !method.isStatic &&
+            method.isPublic &&
+            _callableName(method.name) &&
+            method.name != 'dispose' &&
+            // Diagnostics belong to the framework's own tooling, not to
+            // an app: `debugFillProperties` guides nobody.
+            !(method.name ?? '').startsWith('debug') &&
+            !_objectMemberNames.contains(method.name) &&
+            !method.metadata.hasVisibleForTesting &&
+            !method.metadata.hasProtected &&
+            // The nearest declaration wins, as Dart's own lookup does.
+            seen.add(method.name ?? ''),
+      )
+      .map(
+        (method) => MethodModel(
+          name: method.name ?? '',
+          doc: method.documentationComment ?? '',
+          isStatic: false,
+          returnType: encodeType(method.returnType),
+          params: method.formalParameters
+              .map((param) => _mapParam(classElement, param))
+              .toList(),
+        ),
+      )
+      .toList()
+    ..sort((first, second) => first.name.compareTo(second.name));
+}
+
+/// Whether a name is one a TSX call can write: an operator is not.
+bool _callableName(String? name) =>
+    name != null && RegExp(r'^[a-zA-Z_$][a-zA-Z0-9_$]*$').hasMatch(name);
 
 /// Static getters, which hand over a value without being asked anything.
 List<FieldModel> _mapStaticGetters(ClassElement classElement) =>

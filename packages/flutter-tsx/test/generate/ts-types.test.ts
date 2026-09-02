@@ -67,7 +67,9 @@ describe('tsTypeOf', () => {
         key: { kind: 'named', name: 'ShortcutActivator' },
         value: { kind: 'named', name: 'Intent' },
       }),
-    ).toBe('Map<ShortcutActivator, Intent>');
+      // A widget reads the map it is handed, and a read-only one accepts
+      // narrower keys and values — so the entries need no type arguments.
+    ).toBe('ReadonlyMap<ShortcutActivator, Intent>');
     // A map keyed by anything else that a record can hold is a record of it.
     expect(
       tsTypeOf({ kind: 'map', key: scalar('int'), value: scalar('String') }),

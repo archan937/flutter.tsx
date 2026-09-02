@@ -59,18 +59,11 @@ export const useBuildContext: () => BuildContext = () => {
  * the handle is the `Animation` a transition takes, and its methods are the
  * controls Flutter's own controller has.
  */
-export interface AnimationHandle extends AnimationController {
-  /** Runs from where it is to the end. */
-  readonly forward: () => void;
-  /** Runs back to the start. */
-  readonly reverse: () => void;
-  /** Stops where it is. */
-  readonly stop: () => void;
-  /** Runs from the start, over and over. */
-  readonly repeat: () => void;
-  /** Jumps back to the start. */
-  readonly reset: () => void;
-}
+/**
+ * The controller the animation is: `forward`, `reverse`, `stop`, `repeat`
+ * and `reset` are Flutter's own, declared by the SDK itself.
+ */
+export type AnimationHandle = AnimationController;
 
 export interface AnimationOptions {
   /** How long one run takes, in milliseconds. */

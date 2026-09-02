@@ -15,8 +15,18 @@ export const dartTypeOf = (type: TypeNode): string | null => {
     case 'scalar':
       return DART_SCALARS[type.name] ?? null;
     case 'enum':
-    case 'named':
       return type.name;
+    // What a type is written with is part of it: a
+    // `Factory<OneSequenceGestureRecognizer>` is not a `Factory`.
+    case 'named': {
+      const args = (type.args ?? []).map(dartTypeOf);
+      if (args.length === 0) {
+        return type.name;
+      }
+      return args.some((arg) => arg === null)
+        ? type.name
+        : `${type.name}<${args.join(', ')}>`;
+    }
     case 'widget':
       return 'Widget';
     case 'nullable': {

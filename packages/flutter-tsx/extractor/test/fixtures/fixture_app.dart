@@ -102,8 +102,13 @@ class TestController {
   /// The current tick.
   final int tick;
 
+  /// Moves the controller to a position.
+  void jumpTo(double offset, {bool animated = false}) {}
+
   /// Releases what the controller holds.
   void dispose() {}
+
+  void _hidden() {}
 }
 
 /// A value with nothing to release, so nothing to dispose.

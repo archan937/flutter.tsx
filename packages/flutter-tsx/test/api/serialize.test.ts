@@ -27,6 +27,7 @@ const snapshot: ApiSnapshot = {
       fields: [],
       statics: [],
       staticGetters: [],
+      methods: [],
     },
     {
       kind: 'enum',

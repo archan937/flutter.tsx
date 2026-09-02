@@ -8915,7 +8915,16 @@ export const Alignment = declareConstants<
      * The top right corner.
      */
     readonly topRight: widgetTypes.Alignment;
-  } & (new (x: number, y: number) => widgetTypes.Alignment)
+  } & (new (
+    x: number,
+    y: number,
+  ) => widgetTypes.Alignment & {
+    readonly lerp: (
+      a: widgetTypes.Alignment,
+      b: widgetTypes.Alignment,
+      t: number,
+    ) => widgetTypes.Alignment | null;
+  })
 >('Alignment');
 
 /**
@@ -8978,7 +8987,16 @@ export const AlignmentDirectional = declareConstants<
      * The top corner on the "start" side.
      */
     readonly topStart: widgetTypes.AlignmentDirectional;
-  } & (new (start: number, y: number) => widgetTypes.AlignmentDirectional)
+  } & (new (
+    start: number,
+    y: number,
+  ) => widgetTypes.AlignmentDirectional & {
+    readonly lerp: (
+      a: widgetTypes.AlignmentDirectional,
+      b: widgetTypes.AlignmentDirectional,
+      t: number,
+    ) => widgetTypes.AlignmentDirectional | null;
+  })
 >('AlignmentDirectional');
 
 /**
@@ -9125,13 +9143,19 @@ export const AlignmentGeometry = declareConstants<
      * * [AlignmentDirectional.topStart], which is the same thing.
      */
     readonly topStart: widgetTypes.AlignmentGeometry;
-  } & {
+  } & ({
     readonly directional: (
       start: number,
       y: number,
     ) => widgetTypes.AlignmentGeometry;
     readonly xy: (x: number, y: number) => widgetTypes.AlignmentGeometry;
-  }
+  } & {
+    readonly lerp: (
+      a: widgetTypes.AlignmentGeometry,
+      b: widgetTypes.AlignmentGeometry,
+      t: number,
+    ) => widgetTypes.AlignmentGeometry | null;
+  })
 >('AlignmentGeometry');
 
 /**
@@ -9172,72 +9196,76 @@ export const AndroidPointerProperties = declareConstants<
  *
  * Typically created with [PlatformViewsService.initAndroidView].
  */
-export const AndroidViewController = declareConstants<{
-  /**
-   * Action code for when a motion event has been canceled.
-   *
-   * Android's [MotionEvent.ACTION_CANCEL](https://developer.android.com/reference/android/view/MotionEvent#ACTION_CANCEL)
-   */
-  readonly kActionCancel: number;
-  /**
-   * Action code for when a primary pointer touched the screen.
-   *
-   * Android's [MotionEvent.ACTION_DOWN](https://developer.android.com/reference/android/view/MotionEvent#ACTION_DOWN)
-   */
-  readonly kActionDown: number;
-  /**
-   * Action code for when the event only includes information about pointer movement.
-   *
-   * Android's [MotionEvent.ACTION_MOVE](https://developer.android.com/reference/android/view/MotionEvent#ACTION_MOVE)
-   */
-  readonly kActionMove: number;
-  /**
-   * Action code for when a secondary pointer touched the screen.
-   *
-   * Android's [MotionEvent.ACTION_POINTER_DOWN](https://developer.android.com/reference/android/view/MotionEvent#ACTION_POINTER_DOWN)
-   */
-  readonly kActionPointerDown: number;
-  /**
-   * Action code for when a secondary pointer stopped touching the screen.
-   *
-   * Android's [MotionEvent.ACTION_POINTER_UP](https://developer.android.com/reference/android/view/MotionEvent#ACTION_POINTER_UP)
-   */
-  readonly kActionPointerUp: number;
-  /**
-   * Action code for when a primary pointer stopped touching the screen.
-   *
-   * Android's [MotionEvent.ACTION_UP](https://developer.android.com/reference/android/view/MotionEvent#ACTION_UP)
-   */
-  readonly kActionUp: number;
-  /**
-   * Android's [View.LAYOUT_DIRECTION_LTR](https://developer.android.com/reference/android/view/View.html#LAYOUT_DIRECTION_LTR) value.
-   */
-  readonly kAndroidLayoutDirectionLtr: number;
-  /**
-   * Android's [View.LAYOUT_DIRECTION_RTL](https://developer.android.com/reference/android/view/View.html#LAYOUT_DIRECTION_RTL) value.
-   */
-  readonly kAndroidLayoutDirectionRtl: number;
-  /**
-   * Android's [InputDevice.SOURCE_MOUSE](https://developer.android.com/reference/android/view/InputDevice#SOURCE_MOUSE)
-   */
-  readonly kInputDeviceSourceMouse: number;
-  /**
-   * Android's [InputDevice.SOURCE_STYLUS](https://developer.android.com/reference/android/view/InputDevice#SOURCE_STYLUS)
-   */
-  readonly kInputDeviceSourceStylus: number;
-  /**
-   * Android's [InputDevice.SOURCE_TOUCHPAD](https://developer.android.com/reference/android/view/InputDevice#SOURCE_TOUCHPAD)
-   */
-  readonly kInputDeviceSourceTouchPad: number;
-  /**
-   * Android's [InputDevice.SOURCE_TOUCHSCREEN](https://developer.android.com/reference/android/view/InputDevice#SOURCE_TOUCHSCREEN)
-   */
-  readonly kInputDeviceSourceTouchScreen: number;
-  /**
-   * Android's [InputDevice.SOURCE_UNKNOWN](https://developer.android.com/reference/android/view/InputDevice#SOURCE_UNKNOWN)
-   */
-  readonly kInputDeviceSourceUnknown: number;
-}>('AndroidViewController');
+export const AndroidViewController = declareConstants<
+  {
+    /**
+     * Action code for when a motion event has been canceled.
+     *
+     * Android's [MotionEvent.ACTION_CANCEL](https://developer.android.com/reference/android/view/MotionEvent#ACTION_CANCEL)
+     */
+    readonly kActionCancel: number;
+    /**
+     * Action code for when a primary pointer touched the screen.
+     *
+     * Android's [MotionEvent.ACTION_DOWN](https://developer.android.com/reference/android/view/MotionEvent#ACTION_DOWN)
+     */
+    readonly kActionDown: number;
+    /**
+     * Action code for when the event only includes information about pointer movement.
+     *
+     * Android's [MotionEvent.ACTION_MOVE](https://developer.android.com/reference/android/view/MotionEvent#ACTION_MOVE)
+     */
+    readonly kActionMove: number;
+    /**
+     * Action code for when a secondary pointer touched the screen.
+     *
+     * Android's [MotionEvent.ACTION_POINTER_DOWN](https://developer.android.com/reference/android/view/MotionEvent#ACTION_POINTER_DOWN)
+     */
+    readonly kActionPointerDown: number;
+    /**
+     * Action code for when a secondary pointer stopped touching the screen.
+     *
+     * Android's [MotionEvent.ACTION_POINTER_UP](https://developer.android.com/reference/android/view/MotionEvent#ACTION_POINTER_UP)
+     */
+    readonly kActionPointerUp: number;
+    /**
+     * Action code for when a primary pointer stopped touching the screen.
+     *
+     * Android's [MotionEvent.ACTION_UP](https://developer.android.com/reference/android/view/MotionEvent#ACTION_UP)
+     */
+    readonly kActionUp: number;
+    /**
+     * Android's [View.LAYOUT_DIRECTION_LTR](https://developer.android.com/reference/android/view/View.html#LAYOUT_DIRECTION_LTR) value.
+     */
+    readonly kAndroidLayoutDirectionLtr: number;
+    /**
+     * Android's [View.LAYOUT_DIRECTION_RTL](https://developer.android.com/reference/android/view/View.html#LAYOUT_DIRECTION_RTL) value.
+     */
+    readonly kAndroidLayoutDirectionRtl: number;
+    /**
+     * Android's [InputDevice.SOURCE_MOUSE](https://developer.android.com/reference/android/view/InputDevice#SOURCE_MOUSE)
+     */
+    readonly kInputDeviceSourceMouse: number;
+    /**
+     * Android's [InputDevice.SOURCE_STYLUS](https://developer.android.com/reference/android/view/InputDevice#SOURCE_STYLUS)
+     */
+    readonly kInputDeviceSourceStylus: number;
+    /**
+     * Android's [InputDevice.SOURCE_TOUCHPAD](https://developer.android.com/reference/android/view/InputDevice#SOURCE_TOUCHPAD)
+     */
+    readonly kInputDeviceSourceTouchPad: number;
+    /**
+     * Android's [InputDevice.SOURCE_TOUCHSCREEN](https://developer.android.com/reference/android/view/InputDevice#SOURCE_TOUCHSCREEN)
+     */
+    readonly kInputDeviceSourceTouchScreen: number;
+    /**
+     * Android's [InputDevice.SOURCE_UNKNOWN](https://developer.android.com/reference/android/view/InputDevice#SOURCE_UNKNOWN)
+     */
+    readonly kInputDeviceSourceUnknown: number;
+  } & {
+    readonly pointerAction: (pointerId: number, action: number) => number;
+  }
+>('AndroidViewController');
 
 /**
  * Identifier for the supported Material Design animated icons.
@@ -9341,7 +9369,13 @@ export const AnimationStyle = declareConstants<
     duration?: widgetTypes.Duration;
     reverseCurve?: widgetTypes.Curve;
     reverseDuration?: widgetTypes.Duration;
-  }) => widgetTypes.AnimationStyle)
+  }) => widgetTypes.AnimationStyle & {
+    readonly lerp: (
+      a: widgetTypes.AnimationStyle,
+      b: widgetTypes.AnimationStyle,
+      t: number,
+    ) => widgetTypes.AnimationStyle | null;
+  })
 >('AnimationStyle');
 
 /**
@@ -10063,7 +10097,7 @@ export const BorderRadius = declareConstants<
      * A border radius with all zero radii.
      */
     readonly zero: widgetTypes.BorderRadius;
-  } & {
+  } & ({
     readonly all: (radius: widgetTypes.Radius) => widgetTypes.BorderRadius;
     readonly circular: (radius: number) => widgetTypes.BorderRadius;
     readonly horizontal: (options?: {
@@ -10080,7 +10114,13 @@ export const BorderRadius = declareConstants<
       top?: widgetTypes.Radius;
       bottom?: widgetTypes.Radius;
     }) => widgetTypes.BorderRadius;
-  }
+  } & {
+    readonly lerp: (
+      a: widgetTypes.BorderRadius,
+      b: widgetTypes.BorderRadius,
+      t: number,
+    ) => widgetTypes.BorderRadius | null;
+  })
 >('BorderRadius');
 
 /**
@@ -10106,7 +10146,7 @@ export const BorderRadiusDirectional = declareConstants<
      * effect, but will be cheaper to [resolve].
      */
     readonly zero: widgetTypes.BorderRadiusDirectional;
-  } & {
+  } & ({
     readonly all: (
       radius: widgetTypes.Radius,
     ) => widgetTypes.BorderRadiusDirectional;
@@ -10125,7 +10165,13 @@ export const BorderRadiusDirectional = declareConstants<
       top?: widgetTypes.Radius;
       bottom?: widgetTypes.Radius;
     }) => widgetTypes.BorderRadiusDirectional;
-  }
+  } & {
+    readonly lerp: (
+      a: widgetTypes.BorderRadiusDirectional,
+      b: widgetTypes.BorderRadiusDirectional,
+      t: number,
+    ) => widgetTypes.BorderRadiusDirectional | null;
+  })
 >('BorderRadiusDirectional');
 
 /**
@@ -10144,7 +10190,7 @@ export const BorderRadiusGeometry = declareConstants<
      * A [BorderRadius] with all zero radii.
      */
     readonly zero: widgetTypes.BorderRadiusGeometry;
-  } & {
+  } & ({
     readonly all: (
       radius: widgetTypes.Radius,
     ) => widgetTypes.BorderRadiusGeometry;
@@ -10171,7 +10217,13 @@ export const BorderRadiusGeometry = declareConstants<
       top?: widgetTypes.Radius;
       bottom?: widgetTypes.Radius;
     }) => widgetTypes.BorderRadiusGeometry;
-  }
+  } & {
+    readonly lerp: (
+      a: widgetTypes.BorderRadiusGeometry,
+      b: widgetTypes.BorderRadiusGeometry,
+      t: number,
+    ) => widgetTypes.BorderRadiusGeometry | null;
+  })
 >('BorderRadiusGeometry');
 
 /**
@@ -10242,7 +10294,21 @@ export const BorderSide = declareConstants<
     width?: number;
     style?: widgetTypes.BorderStyle;
     strokeAlign?: number;
-  }) => widgetTypes.BorderSide)
+  }) => widgetTypes.BorderSide & {
+    readonly canMerge: (
+      a: widgetTypes.BorderSide,
+      b: widgetTypes.BorderSide,
+    ) => boolean;
+    readonly lerp: (
+      a: widgetTypes.BorderSide,
+      b: widgetTypes.BorderSide,
+      t: number,
+    ) => widgetTypes.BorderSide;
+    readonly merge: (
+      a: widgetTypes.BorderSide,
+      b: widgetTypes.BorderSide,
+    ) => widgetTypes.BorderSide;
+  })
 >('BorderSide');
 
 /**
@@ -10379,14 +10445,12 @@ export const ChannelBuffers = declareConstants<
  * but which also provides ways to select other ranges of characters
  * in different ways.
  */
-export const Characters = declareConstants<
-  {
-    /**
-     * An empty [Characters] containing no characters.
-     */
-    readonly empty: widgetTypes.Characters;
-  } & (new (string: string) => widgetTypes.Characters)
->('Characters');
+export const Characters = declareConstants<{
+  /**
+   * An empty [Characters] containing no characters.
+   */
+  readonly empty: widgetTypes.Characters;
+}>('Characters');
 
 /**
  * The relative position of a child in a [TwoDimensionalViewport] in relation
@@ -10415,14 +10479,18 @@ export const ChildVicinity = declareConstants<
 /**
  * Utility methods for interacting with the system's clipboard.
  */
-export const Clipboard = declareConstants<{
-  /**
-   * Plain text data format string.
-   *
-   * Used with [getData].
-   */
-  readonly kTextPlain: string;
-}>('Clipboard');
+export const Clipboard = declareConstants<
+  {
+    /**
+     * Plain text data format string.
+     *
+     * Used with [getData].
+     */
+    readonly kTextPlain: string;
+  } & {
+    readonly hasStrings: () => Promise<boolean>;
+  }
+>('Clipboard');
 
 /**
  * [Color] and [ColorSwatch] constants which represent Material design's
@@ -19039,7 +19107,7 @@ export const EdgeInsets = declareConstants<
      * An [EdgeInsets] with zero offsets in each direction.
      */
     readonly zero: widgetTypes.EdgeInsets;
-  } & {
+  } & ({
     readonly all: (value: number) => widgetTypes.EdgeInsets;
     readonly fromLTRB: (
       left: number,
@@ -19065,7 +19133,13 @@ export const EdgeInsets = declareConstants<
       vertical?: number;
       horizontal?: number;
     }) => widgetTypes.EdgeInsets;
-  }
+  } & {
+    readonly lerp: (
+      a: widgetTypes.EdgeInsets,
+      b: widgetTypes.EdgeInsets,
+      t: number,
+    ) => widgetTypes.EdgeInsets | null;
+  })
 >('EdgeInsets');
 
 /**
@@ -19090,7 +19164,7 @@ export const EdgeInsetsDirectional = declareConstants<
      * effect, but will be cheaper to [resolve].
      */
     readonly zero: widgetTypes.EdgeInsetsDirectional;
-  } & {
+  } & ({
     readonly all: (value: number) => widgetTypes.EdgeInsetsDirectional;
     readonly fromSTEB: (
       start: number,
@@ -19108,7 +19182,13 @@ export const EdgeInsetsDirectional = declareConstants<
       horizontal?: number;
       vertical?: number;
     }) => widgetTypes.EdgeInsetsDirectional;
-  }
+  } & {
+    readonly lerp: (
+      a: widgetTypes.EdgeInsetsDirectional,
+      b: widgetTypes.EdgeInsetsDirectional,
+      t: number,
+    ) => widgetTypes.EdgeInsetsDirectional | null;
+  })
 >('EdgeInsetsDirectional');
 
 /**
@@ -19138,7 +19218,7 @@ export const EdgeInsetsGeometry = declareConstants<
      * An [EdgeInsets] with zero offsets in each direction.
      */
     readonly zero: widgetTypes.EdgeInsetsGeometry;
-  } & {
+  } & ({
     readonly all: (value: number) => widgetTypes.EdgeInsetsGeometry;
     readonly directional: (options?: {
       start?: number;
@@ -19172,7 +19252,13 @@ export const EdgeInsetsGeometry = declareConstants<
       vertical?: number;
       horizontal?: number;
     }) => widgetTypes.EdgeInsetsGeometry;
-  }
+  } & {
+    readonly lerp: (
+      a: widgetTypes.EdgeInsetsGeometry,
+      b: widgetTypes.EdgeInsetsGeometry,
+      t: number,
+    ) => widgetTypes.EdgeInsetsGeometry | null;
+  })
 >('EdgeInsetsGeometry');
 
 /**
@@ -19194,10 +19280,14 @@ export const EdgeInsetsGeometry = declareConstants<
  * It is a compile-time error for a class to attempt to extend or implement
  * `Endian`.
  */
-export const Endian = declareConstants<{
-  readonly big: widgetTypes.Endian;
-  readonly little: widgetTypes.Endian;
-}>('Endian');
+export const Endian = declareConstants<
+  {
+    readonly big: widgetTypes.Endian;
+    readonly little: widgetTypes.Endian;
+  } & {
+    readonly host: widgetTypes.Endian;
+  }
+>('Endian');
 
 /**
  * Used by [PageTransitionsTheme] to define a horizontal [MaterialPageRoute] page
@@ -19257,9 +19347,9 @@ export const FadeForwardsPageTransitionsBuilder = declareConstants<
 export const Float32List = declareConstants<
   {
     readonly bytesPerElement: number;
-  } & (new (length: number) => widgetTypes.Float32List & {
+  } & {
     readonly fromList: (elements: number[]) => widgetTypes.Float32List;
-  })
+  }
 >('Float32List');
 
 /**
@@ -19276,9 +19366,9 @@ export const Float32List = declareConstants<
 export const Float64List = declareConstants<
   {
     readonly bytesPerElement: number;
-  } & (new (length: number) => widgetTypes.Float64List & {
+  } & {
     readonly fromList: (elements: number[]) => widgetTypes.Float64List;
-  })
+  }
 >('Float64List');
 
 /**
@@ -19764,7 +19854,10 @@ export const FlutterError = declareConstants<
      * they will wrap, e.g. when placing ASCII art diagrams in messages.
      */
     readonly wrapWidth: number;
-  } & (new (message: string) => widgetTypes.FlutterError)
+  } & (new (message: string) => widgetTypes.FlutterError & {
+    readonly defaultStackFilter: (frames: string[]) => string[];
+    readonly resetErrorCount: () => void;
+  })
 >('FlutterError');
 
 /**
@@ -19890,7 +19983,13 @@ export const FontWeight = declareConstants<
      * Black, the most thick.
      */
     readonly w900: widgetTypes.FontWeight;
-  } & (new (value: number) => widgetTypes.FontWeight)
+  } & (new (value: number) => widgetTypes.FontWeight & {
+    readonly lerp: (
+      a: widgetTypes.FontWeight,
+      b: widgetTypes.FontWeight,
+      t: number,
+    ) => widgetTypes.FontWeight | null;
+  })
 >('FontWeight');
 
 /**
@@ -19986,6 +20085,12 @@ export const FractionalOffset = declareConstants<
       offset: widgetTypes.Offset,
       size: widgetTypes.Size,
     ) => widgetTypes.FractionalOffset;
+  } & {
+    readonly lerp: (
+      a: widgetTypes.FractionalOffset,
+      b: widgetTypes.FractionalOffset,
+      t: number,
+    ) => widgetTypes.FractionalOffset | null;
   })
 >('FractionalOffset');
 
@@ -55748,9 +55853,9 @@ export const InspectorButton = declareConstants<{
 export const Int32List = declareConstants<
   {
     readonly bytesPerElement: number;
-  } & (new (length: number) => widgetTypes.Int32List & {
+  } & {
     readonly fromList: (elements: number[]) => widgetTypes.Int32List;
-  })
+  }
 >('Int32List');
 
 /**
@@ -55770,9 +55875,9 @@ export const Int32List = declareConstants<
 export const Int64List = declareConstants<
   {
     readonly bytesPerElement: number;
-  } & (new (length: number) => widgetTypes.Int64List & {
+  } & {
     readonly fromList: (elements: number[]) => widgetTypes.Int64List;
-  })
+  }
 >('Int64List');
 
 /**
@@ -58682,7 +58787,19 @@ export const LogicalKeyboardKey = declareConstants<
      * See the function [RawKeyEvent.logicalKey] for more information.
      */
     readonly zoomToggle: widgetTypes.LogicalKeyboardKey;
-  } & (new (keyId: number) => widgetTypes.LogicalKeyboardKey)
+  } & (new (keyId: number) => widgetTypes.LogicalKeyboardKey & {
+    readonly collapseSynonyms: (
+      input: widgetTypes.LogicalKeyboardKey[],
+    ) => widgetTypes.LogicalKeyboardKey[];
+    readonly expandSynonyms: (
+      input: widgetTypes.LogicalKeyboardKey[],
+    ) => widgetTypes.LogicalKeyboardKey[];
+    readonly findKeyByKeyId: (
+      keyId: number,
+    ) => widgetTypes.LogicalKeyboardKey | null;
+    readonly isControlCharacter: (label: string) => boolean;
+    readonly knownLogicalKeys: widgetTypes.LogicalKeyboardKey[];
+  })
 >('LogicalKeyboardKey');
 
 /**
@@ -58862,6 +58979,12 @@ export const Offset = declareConstants<
       direction: number,
       distance?: number,
     ) => widgetTypes.Offset;
+  } & {
+    readonly lerp: (
+      a: widgetTypes.Offset,
+      b: widgetTypes.Offset,
+      t: number,
+    ) => widgetTypes.Offset | null;
   })
 >('Offset');
 
@@ -60673,7 +60796,12 @@ export const PhysicalKeyboardKey = declareConstants<
      * See the function [RawKeyEvent.physicalKey] for more information.
      */
     readonly zoomToggle: widgetTypes.PhysicalKeyboardKey;
-  } & (new (usbHidUsage: number) => widgetTypes.PhysicalKeyboardKey)
+  } & (new (usbHidUsage: number) => widgetTypes.PhysicalKeyboardKey & {
+    readonly findKeyByCode: (
+      usageCode: number,
+    ) => widgetTypes.PhysicalKeyboardKey | null;
+    readonly knownPhysicalKeys: widgetTypes.PhysicalKeyboardKey[];
+  })
 >('PhysicalKeyboardKey');
 
 /**
@@ -60769,7 +60897,7 @@ export const RRect = declareConstants<
      * A rounded rectangle with all the values set to zero.
      */
     readonly zero: widgetTypes.RRect;
-  } & {
+  } & ({
     readonly fromLTRBAndCorners: (
       left: number,
       top: number,
@@ -60815,7 +60943,13 @@ export const RRect = declareConstants<
       radiusX: number,
       radiusY: number,
     ) => widgetTypes.RRect;
-  }
+  } & {
+    readonly lerp: (
+      a: widgetTypes.RRect,
+      b: widgetTypes.RRect,
+      t: number,
+    ) => widgetTypes.RRect | null;
+  })
 >('RRect');
 
 /**
@@ -60839,7 +60973,7 @@ export const RSuperellipse = declareConstants<
      * A rounded rectangle with all the values set to zero.
      */
     readonly zero: widgetTypes.RSuperellipse;
-  } & {
+  } & ({
     readonly fromLTRBAndCorners: (
       left: number,
       top: number,
@@ -60885,7 +61019,13 @@ export const RSuperellipse = declareConstants<
       radiusX: number,
       radiusY: number,
     ) => widgetTypes.RSuperellipse;
-  }
+  } & {
+    readonly lerp: (
+      a: widgetTypes.RSuperellipse,
+      b: widgetTypes.RSuperellipse,
+      t: number,
+    ) => widgetTypes.RSuperellipse | null;
+  })
 >('RSuperellipse');
 
 /**
@@ -60900,10 +61040,16 @@ export const Radius = declareConstants<
      * right-angle corners.
      */
     readonly zero: widgetTypes.Radius;
-  } & {
+  } & ({
     readonly circular: (radius: number) => widgetTypes.Radius;
     readonly elliptical: (x: number, y: number) => widgetTypes.Radius;
-  }
+  } & {
+    readonly lerp: (
+      a: widgetTypes.Radius,
+      b: widgetTypes.Radius,
+      t: number,
+    ) => widgetTypes.Radius | null;
+  })
 >('Radius');
 
 /**
@@ -61685,7 +61831,7 @@ export const Rect = declareConstants<
      * A rectangle with left, top, right, and bottom edges all at zero.
      */
     readonly zero: widgetTypes.Rect;
-  } & {
+  } & ({
     readonly fromCenter: (options: {
       center: widgetTypes.Offset;
       width: number;
@@ -61711,7 +61857,13 @@ export const Rect = declareConstants<
       a: widgetTypes.Offset,
       b: widgetTypes.Offset,
     ) => widgetTypes.Rect;
-  }
+  } & {
+    readonly lerp: (
+      a: widgetTypes.Rect,
+      b: widgetTypes.Rect,
+      t: number,
+    ) => widgetTypes.Rect | null;
+  })
 >('Rect');
 
 /**
@@ -61728,7 +61880,7 @@ export const RelativeRect = declareConstants<
      * A rect that covers the entire container.
      */
     readonly fill: widgetTypes.RelativeRect;
-  } & {
+  } & ({
     readonly fromDirectional: (options: {
       textDirection: widgetTypes.TextDirection;
       start: number;
@@ -61750,7 +61902,13 @@ export const RelativeRect = declareConstants<
       rect: widgetTypes.Rect,
       container: widgetTypes.Size,
     ) => widgetTypes.RelativeRect;
-  }
+  } & {
+    readonly lerp: (
+      a: widgetTypes.RelativeRect,
+      b: widgetTypes.RelativeRect,
+      t: number,
+    ) => widgetTypes.RelativeRect | null;
+  })
 >('RelativeRect');
 
 /**
@@ -62062,582 +62220,592 @@ export const SelectionOverlay = declareConstants<
  * The possible actions that can be conveyed from the operating system
  * accessibility APIs to a semantics node.
  */
-export const SemanticsAction = declareConstants<{
-  /**
-   * A request that the node should be collapsed.
-   *
-   * For example, this action might be recognized by a dropdown.
-   */
-  readonly collapse: widgetTypes.SemanticsAction;
-  /**
-   * Copy the current selection to the clipboard.
-   */
-  readonly copy: widgetTypes.SemanticsAction;
-  /**
-   * Indicates that the user has invoked a custom accessibility action.
-   *
-   * This handler is added automatically whenever a custom accessibility
-   * action is added to a semantics node.
-   */
-  readonly customAction: widgetTypes.SemanticsAction;
-  /**
-   * Cut the current selection and place it in the clipboard.
-   */
-  readonly cut: widgetTypes.SemanticsAction;
-  /**
-   * A request to decrease the value represented by the semantics node.
-   *
-   * For example, this action might be recognized by a slider control.
-   */
-  readonly decrease: widgetTypes.SemanticsAction;
-  /**
-   * Indicates that the node has gained accessibility focus.
-   *
-   * This handler is invoked when the node annotated with this handler gains
-   * the accessibility focus. The accessibility focus is the
-   * green (on Android with TalkBack) or black (on iOS with VoiceOver)
-   * rectangle shown on screen to indicate what element an accessibility
-   * user is currently interacting with.
-   *
-   * The accessibility focus is different from the input focus. The input focus
-   * is usually held by the element that currently responds to keyboard inputs.
-   * Accessibility focus and input focus can be held by two different nodes!
-   *
-   * See also:
-   *
-   *    * [focus], which controls the input focus.
-   */
-  readonly didGainAccessibilityFocus: widgetTypes.SemanticsAction;
-  /**
-   * Indicates that the node has lost accessibility focus.
-   *
-   * This handler is invoked when the node annotated with this handler
-   * loses the accessibility focus. The accessibility focus is
-   * the green (on Android with TalkBack) or black (on iOS with VoiceOver)
-   * rectangle shown on screen to indicate what element an accessibility
-   * user is currently interacting with.
-   *
-   * The accessibility focus is different from the input focus. The input focus
-   * is usually held by the element that currently responds to keyboard inputs.
-   * Accessibility focus and input focus can be held by two different nodes!
-   */
-  readonly didLoseAccessibilityFocus: widgetTypes.SemanticsAction;
-  /**
-   * A request that the node should be dismissed.
-   *
-   * A [SnackBar], for example, may have a dismiss action to indicate to the
-   * user that it can be removed after it is no longer relevant. On Android,
-   * (with TalkBack) special hint text is spoken when focusing the node and
-   * a custom action is available in the local context menu. On iOS,
-   * (with VoiceOver) users can perform a standard gesture to dismiss it.
-   */
-  readonly dismiss: widgetTypes.SemanticsAction;
-  /**
-   * A request that the node should be expanded.
-   *
-   * For example, this action might be recognized by a dropdown.
-   */
-  readonly expand: widgetTypes.SemanticsAction;
-  /**
-   * Move the input focus to the respective widget.
-   *
-   * Most commonly, the input focus determines which widget will receive
-   * keyboard input. Semantics nodes that can receive this action are expected
-   * to have [SemanticsFlag.isFocusable] set. Examples of such focusable
-   * widgets include buttons, checkboxes, switches, and text fields.
-   *
-   * Upon receiving this action, the corresponding widget must move input focus
-   * to itself. Doing otherwise is likely to lead to a poor user experience,
-   * such as user input routed to a wrong widget. Text fields in particular,
-   * must immediately become editable, opening a virtual keyboard, if needed.
-   * Buttons must respond to tap/click events from the keyboard.
-   *
-   * Widget reaction to this action must be idempotent. It is possible to
-   * receive this action more than once, or when the widget is already focused.
-   *
-   * Focus behavior is specific to the platform and to the assistive technology
-   * used. Typically on desktop operating systems, such as Windows, macOS, and
-   * Linux, moving accessibility focus will also move the input focus. On
-   * mobile it is more common for the accessibility focus to be detached from
-   * the input focus. In order to synchronize the two, a user takes an explicit
-   * action (e.g. double-tap to activate). Sometimes this behavior is
-   * configurable. For example, VoiceOver on macOS can be configured in the
-   * global OS user settings to either move the input focus together with the
-   * VoiceOver focus, or to keep the two detached. For this reason, widgets
-   * should not expect to receive [didGainAccessibilityFocus] and [focus]
-   * actions to be reported in any particular combination or order.
-   *
-   * On the web, the DOM "focus" event is equivalent to
-   * [SemanticsAction.focus]. Accessibility focus is not observable from within
-   * the browser. Instead, the browser, based on the platform features and user
-   * preferences, makes the determination on whether input focus should be
-   * moved to an element and, if so, fires a DOM "focus" event. This event is
-   * forwarded to the framework as [SemanticsAction.focus]. For this reason, on
-   * the web, the engine never sends [didGainAccessibilityFocus].
-   *
-   * On Android input focus is observable as `AccessibilityAction#ACTION_FOCUS`
-   * and is separate from accessibility focus, which is observed as
-   * `AccessibilityAction#ACTION_ACCESSIBILITY_FOCUS`.
-   *
-   * See also:
-   *
-   *    * [didGainAccessibilityFocus], which informs the framework about
-   *      accessibility focus ring, such as the TalkBack (Android) and
-   *      VoiceOver (iOS), moving which does not move the input focus.
-   */
-  readonly focus: widgetTypes.SemanticsAction;
-  /**
-   * A request to increase the value represented by the semantics node.
-   *
-   * For example, this action might be recognized by a slider control.
-   */
-  readonly increase: widgetTypes.SemanticsAction;
-  /**
-   * The equivalent of a user pressing and holding the screen with the finger
-   * for a few seconds without moving it.
-   */
-  readonly longPress: widgetTypes.SemanticsAction;
-  /**
-   * Move the cursor backward by one character.
-   *
-   * This is for example used by the cursor control in text fields.
-   *
-   * The action includes a boolean argument, which indicates whether the cursor
-   * movement should extend (or start) a selection.
-   */
-  readonly moveCursorBackwardByCharacter: widgetTypes.SemanticsAction;
-  /**
-   * Move the cursor backward by one word.
-   *
-   * This is for example used by the cursor control in text fields.
-   *
-   * The action includes a boolean argument, which indicates whether the cursor
-   * movement should extend (or start) a selection.
-   */
-  readonly moveCursorBackwardByWord: widgetTypes.SemanticsAction;
-  /**
-   * Move the cursor forward by one character.
-   *
-   * This is for example used by the cursor control in text fields.
-   *
-   * The action includes a boolean argument, which indicates whether the cursor
-   * movement should extend (or start) a selection.
-   */
-  readonly moveCursorForwardByCharacter: widgetTypes.SemanticsAction;
-  /**
-   * Move the cursor forward by one word.
-   *
-   * This is for example used by the cursor control in text fields.
-   *
-   * The action includes a boolean argument, which indicates whether the cursor
-   * movement should extend (or start) a selection.
-   */
-  readonly moveCursorForwardByWord: widgetTypes.SemanticsAction;
-  /**
-   * Paste the current content of the clipboard.
-   */
-  readonly paste: widgetTypes.SemanticsAction;
-  /**
-   * The equivalent of a user moving their finger across the screen from top
-   * to bottom.
-   *
-   * This action should be recognized by controls that are vertically
-   * scrollable.
-   */
-  readonly scrollDown: widgetTypes.SemanticsAction;
-  /**
-   * The equivalent of a user moving their finger across the screen from right
-   * to left.
-   *
-   * This action should be recognized by controls that are horizontally
-   * scrollable.
-   */
-  readonly scrollLeft: widgetTypes.SemanticsAction;
-  /**
-   * The equivalent of a user moving their finger across the screen from left
-   * to right.
-   *
-   * This action should be recognized by controls that are horizontally
-   * scrollable.
-   */
-  readonly scrollRight: widgetTypes.SemanticsAction;
-  /**
-   * A request to scroll the scrollable container to a given scroll offset.
-   *
-   * The payload of this [SemanticsAction] is a flutter-standard-encoded
-   * [Float64List] of length 2 containing the target horizontal and vertical
-   * offsets (in logical pixels) the receiving scrollable container should
-   * scroll to.
-   *
-   * This action is used by iOS Full Keyboard Access to reveal contents that
-   * are currently not visible in the viewport.
-   */
-  readonly scrollToOffset: widgetTypes.SemanticsAction;
-  /**
-   * The equivalent of a user moving their finger across the screen from
-   * bottom to top.
-   *
-   * This action should be recognized by controls that are vertically
-   * scrollable.
-   */
-  readonly scrollUp: widgetTypes.SemanticsAction;
-  /**
-   * Set the text selection to the given range.
-   *
-   * The provided argument is a Map<String, int> which includes the keys `base`
-   * and `extent` indicating where the selection within the `value` of the
-   * semantics node should start and where it should end. Values for both
-   * keys can range from 0 to length of `value` (inclusive).
-   *
-   * Setting `base` and `extent` to the same value will move the cursor to
-   * that position (without selecting anything).
-   */
-  readonly setSelection: widgetTypes.SemanticsAction;
-  /**
-   * Replaces the current text in the text field.
-   *
-   * This is for example used by the text editing in voice access.
-   *
-   * The action includes a string argument, which is the new text to
-   * replace.
-   */
-  readonly setText: widgetTypes.SemanticsAction;
-  /**
-   * A request to fully show the semantics node on screen.
-   *
-   * For example, this action might be send to a node in a scrollable list that
-   * is partially off screen to bring it on screen.
-   */
-  readonly showOnScreen: widgetTypes.SemanticsAction;
-  /**
-   * The equivalent of a user briefly tapping the screen with the finger
-   * without moving it.
-   */
-  readonly tap: widgetTypes.SemanticsAction;
-}>('SemanticsAction');
+export const SemanticsAction = declareConstants<
+  {
+    /**
+     * A request that the node should be collapsed.
+     *
+     * For example, this action might be recognized by a dropdown.
+     */
+    readonly collapse: widgetTypes.SemanticsAction;
+    /**
+     * Copy the current selection to the clipboard.
+     */
+    readonly copy: widgetTypes.SemanticsAction;
+    /**
+     * Indicates that the user has invoked a custom accessibility action.
+     *
+     * This handler is added automatically whenever a custom accessibility
+     * action is added to a semantics node.
+     */
+    readonly customAction: widgetTypes.SemanticsAction;
+    /**
+     * Cut the current selection and place it in the clipboard.
+     */
+    readonly cut: widgetTypes.SemanticsAction;
+    /**
+     * A request to decrease the value represented by the semantics node.
+     *
+     * For example, this action might be recognized by a slider control.
+     */
+    readonly decrease: widgetTypes.SemanticsAction;
+    /**
+     * Indicates that the node has gained accessibility focus.
+     *
+     * This handler is invoked when the node annotated with this handler gains
+     * the accessibility focus. The accessibility focus is the
+     * green (on Android with TalkBack) or black (on iOS with VoiceOver)
+     * rectangle shown on screen to indicate what element an accessibility
+     * user is currently interacting with.
+     *
+     * The accessibility focus is different from the input focus. The input focus
+     * is usually held by the element that currently responds to keyboard inputs.
+     * Accessibility focus and input focus can be held by two different nodes!
+     *
+     * See also:
+     *
+     *    * [focus], which controls the input focus.
+     */
+    readonly didGainAccessibilityFocus: widgetTypes.SemanticsAction;
+    /**
+     * Indicates that the node has lost accessibility focus.
+     *
+     * This handler is invoked when the node annotated with this handler
+     * loses the accessibility focus. The accessibility focus is
+     * the green (on Android with TalkBack) or black (on iOS with VoiceOver)
+     * rectangle shown on screen to indicate what element an accessibility
+     * user is currently interacting with.
+     *
+     * The accessibility focus is different from the input focus. The input focus
+     * is usually held by the element that currently responds to keyboard inputs.
+     * Accessibility focus and input focus can be held by two different nodes!
+     */
+    readonly didLoseAccessibilityFocus: widgetTypes.SemanticsAction;
+    /**
+     * A request that the node should be dismissed.
+     *
+     * A [SnackBar], for example, may have a dismiss action to indicate to the
+     * user that it can be removed after it is no longer relevant. On Android,
+     * (with TalkBack) special hint text is spoken when focusing the node and
+     * a custom action is available in the local context menu. On iOS,
+     * (with VoiceOver) users can perform a standard gesture to dismiss it.
+     */
+    readonly dismiss: widgetTypes.SemanticsAction;
+    /**
+     * A request that the node should be expanded.
+     *
+     * For example, this action might be recognized by a dropdown.
+     */
+    readonly expand: widgetTypes.SemanticsAction;
+    /**
+     * Move the input focus to the respective widget.
+     *
+     * Most commonly, the input focus determines which widget will receive
+     * keyboard input. Semantics nodes that can receive this action are expected
+     * to have [SemanticsFlag.isFocusable] set. Examples of such focusable
+     * widgets include buttons, checkboxes, switches, and text fields.
+     *
+     * Upon receiving this action, the corresponding widget must move input focus
+     * to itself. Doing otherwise is likely to lead to a poor user experience,
+     * such as user input routed to a wrong widget. Text fields in particular,
+     * must immediately become editable, opening a virtual keyboard, if needed.
+     * Buttons must respond to tap/click events from the keyboard.
+     *
+     * Widget reaction to this action must be idempotent. It is possible to
+     * receive this action more than once, or when the widget is already focused.
+     *
+     * Focus behavior is specific to the platform and to the assistive technology
+     * used. Typically on desktop operating systems, such as Windows, macOS, and
+     * Linux, moving accessibility focus will also move the input focus. On
+     * mobile it is more common for the accessibility focus to be detached from
+     * the input focus. In order to synchronize the two, a user takes an explicit
+     * action (e.g. double-tap to activate). Sometimes this behavior is
+     * configurable. For example, VoiceOver on macOS can be configured in the
+     * global OS user settings to either move the input focus together with the
+     * VoiceOver focus, or to keep the two detached. For this reason, widgets
+     * should not expect to receive [didGainAccessibilityFocus] and [focus]
+     * actions to be reported in any particular combination or order.
+     *
+     * On the web, the DOM "focus" event is equivalent to
+     * [SemanticsAction.focus]. Accessibility focus is not observable from within
+     * the browser. Instead, the browser, based on the platform features and user
+     * preferences, makes the determination on whether input focus should be
+     * moved to an element and, if so, fires a DOM "focus" event. This event is
+     * forwarded to the framework as [SemanticsAction.focus]. For this reason, on
+     * the web, the engine never sends [didGainAccessibilityFocus].
+     *
+     * On Android input focus is observable as `AccessibilityAction#ACTION_FOCUS`
+     * and is separate from accessibility focus, which is observed as
+     * `AccessibilityAction#ACTION_ACCESSIBILITY_FOCUS`.
+     *
+     * See also:
+     *
+     *    * [didGainAccessibilityFocus], which informs the framework about
+     *      accessibility focus ring, such as the TalkBack (Android) and
+     *      VoiceOver (iOS), moving which does not move the input focus.
+     */
+    readonly focus: widgetTypes.SemanticsAction;
+    /**
+     * A request to increase the value represented by the semantics node.
+     *
+     * For example, this action might be recognized by a slider control.
+     */
+    readonly increase: widgetTypes.SemanticsAction;
+    /**
+     * The equivalent of a user pressing and holding the screen with the finger
+     * for a few seconds without moving it.
+     */
+    readonly longPress: widgetTypes.SemanticsAction;
+    /**
+     * Move the cursor backward by one character.
+     *
+     * This is for example used by the cursor control in text fields.
+     *
+     * The action includes a boolean argument, which indicates whether the cursor
+     * movement should extend (or start) a selection.
+     */
+    readonly moveCursorBackwardByCharacter: widgetTypes.SemanticsAction;
+    /**
+     * Move the cursor backward by one word.
+     *
+     * This is for example used by the cursor control in text fields.
+     *
+     * The action includes a boolean argument, which indicates whether the cursor
+     * movement should extend (or start) a selection.
+     */
+    readonly moveCursorBackwardByWord: widgetTypes.SemanticsAction;
+    /**
+     * Move the cursor forward by one character.
+     *
+     * This is for example used by the cursor control in text fields.
+     *
+     * The action includes a boolean argument, which indicates whether the cursor
+     * movement should extend (or start) a selection.
+     */
+    readonly moveCursorForwardByCharacter: widgetTypes.SemanticsAction;
+    /**
+     * Move the cursor forward by one word.
+     *
+     * This is for example used by the cursor control in text fields.
+     *
+     * The action includes a boolean argument, which indicates whether the cursor
+     * movement should extend (or start) a selection.
+     */
+    readonly moveCursorForwardByWord: widgetTypes.SemanticsAction;
+    /**
+     * Paste the current content of the clipboard.
+     */
+    readonly paste: widgetTypes.SemanticsAction;
+    /**
+     * The equivalent of a user moving their finger across the screen from top
+     * to bottom.
+     *
+     * This action should be recognized by controls that are vertically
+     * scrollable.
+     */
+    readonly scrollDown: widgetTypes.SemanticsAction;
+    /**
+     * The equivalent of a user moving their finger across the screen from right
+     * to left.
+     *
+     * This action should be recognized by controls that are horizontally
+     * scrollable.
+     */
+    readonly scrollLeft: widgetTypes.SemanticsAction;
+    /**
+     * The equivalent of a user moving their finger across the screen from left
+     * to right.
+     *
+     * This action should be recognized by controls that are horizontally
+     * scrollable.
+     */
+    readonly scrollRight: widgetTypes.SemanticsAction;
+    /**
+     * A request to scroll the scrollable container to a given scroll offset.
+     *
+     * The payload of this [SemanticsAction] is a flutter-standard-encoded
+     * [Float64List] of length 2 containing the target horizontal and vertical
+     * offsets (in logical pixels) the receiving scrollable container should
+     * scroll to.
+     *
+     * This action is used by iOS Full Keyboard Access to reveal contents that
+     * are currently not visible in the viewport.
+     */
+    readonly scrollToOffset: widgetTypes.SemanticsAction;
+    /**
+     * The equivalent of a user moving their finger across the screen from
+     * bottom to top.
+     *
+     * This action should be recognized by controls that are vertically
+     * scrollable.
+     */
+    readonly scrollUp: widgetTypes.SemanticsAction;
+    /**
+     * Set the text selection to the given range.
+     *
+     * The provided argument is a Map<String, int> which includes the keys `base`
+     * and `extent` indicating where the selection within the `value` of the
+     * semantics node should start and where it should end. Values for both
+     * keys can range from 0 to length of `value` (inclusive).
+     *
+     * Setting `base` and `extent` to the same value will move the cursor to
+     * that position (without selecting anything).
+     */
+    readonly setSelection: widgetTypes.SemanticsAction;
+    /**
+     * Replaces the current text in the text field.
+     *
+     * This is for example used by the text editing in voice access.
+     *
+     * The action includes a string argument, which is the new text to
+     * replace.
+     */
+    readonly setText: widgetTypes.SemanticsAction;
+    /**
+     * A request to fully show the semantics node on screen.
+     *
+     * For example, this action might be send to a node in a scrollable list that
+     * is partially off screen to bring it on screen.
+     */
+    readonly showOnScreen: widgetTypes.SemanticsAction;
+    /**
+     * The equivalent of a user briefly tapping the screen with the finger
+     * without moving it.
+     */
+    readonly tap: widgetTypes.SemanticsAction;
+  } & {
+    readonly fromIndex: (index: number) => widgetTypes.SemanticsAction | null;
+    readonly values: widgetTypes.SemanticsAction[];
+  }
+>('SemanticsAction');
 
 /**
  * A Boolean value that can be associated with a semantics node.
  */
-export const SemanticsFlag = declareConstants<{
-  /**
-   * The semantics node has the quality of either being "checked" or "unchecked".
-   *
-   * This flag is mutually exclusive with [hasToggledState].
-   *
-   * For example, a checkbox or a radio button widget has checked state.
-   *
-   * See also:
-   *
-   *   * [SemanticsFlag.isChecked], which controls whether the node is "checked" or "unchecked".
-   */
-  readonly hasCheckedState: widgetTypes.SemanticsFlag;
-  /**
-   * The semantics node has the quality of either being "enabled" or
-   * "disabled".
-   *
-   * For example, a button can be enabled or disabled and therefore has an
-   * "enabled" state. Static text is usually neither enabled nor disabled and
-   * therefore does not have an "enabled" state.
-   */
-  readonly hasEnabledState: widgetTypes.SemanticsFlag;
-  /**
-   * The semantics node has the quality of either being "expanded" or "collapsed".
-   *
-   * For example, a [SubmenuButton] widget has expanded state.
-   *
-   * See also:
-   *
-   *   * [SemanticsFlag.isExpanded], which controls whether the node is "expanded" or "collapsed".
-   */
-  readonly hasExpandedState: widgetTypes.SemanticsFlag;
-  /**
-   * Whether the platform can scroll the semantics node when the user attempts
-   * to move focus to an offscreen child.
-   *
-   * For example, a [ListView] widget has implicit scrolling so that users can
-   * easily move the accessibility focus to the next set of children. A
-   * [PageView] widget does not have implicit scrolling, so that users don't
-   * navigate to the next page when reaching the end of the current one.
-   */
-  readonly hasImplicitScrolling: widgetTypes.SemanticsFlag;
-  /**
-   * The semantics node has the quality of either being required or not.
-   *
-   * See also:
-   *
-   *   * [SemanticsFlag.isRequired], which controls whether the node is required.
-   */
-  readonly hasRequiredState: widgetTypes.SemanticsFlag;
-  /**
-   * The semantics node has the quality of either being "selected" or "unselected".
-   *
-   * Whether the widget corresponding to this node is currently selected or not
-   * is determined by the [isSelected] flag.
-   *
-   * When this flag is not set, the corresponding widget cannot be selected by
-   * the user, and the presence or the lack of [isSelected] does not carry any
-   * meaning.
-   */
-  readonly hasSelectedState: widgetTypes.SemanticsFlag;
-  /**
-   * The semantics node has the quality of either being "on" or "off".
-   *
-   * This flag is mutually exclusive with [hasCheckedState].
-   *
-   * For example, a switch has toggled state.
-   *
-   * See also:
-   *
-   *    * [SemanticsFlag.isToggled], which controls whether the node is "on" or "off".
-   */
-  readonly hasToggledState: widgetTypes.SemanticsFlag;
-  /**
-   * Whether the semantic node represents a button.
-   *
-   * Platforms have special handling for buttons, for example Android's TalkBack
-   * and iOS's VoiceOver provides an additional hint when the focused object is
-   * a button.
-   */
-  readonly isButton: widgetTypes.SemanticsFlag;
-  /**
-   * Whether a tristate checkbox is in its mixed state.
-   *
-   * If this is true, the check box this semantics node represents
-   * is in a mixed state.
-   *
-   * For example, a [Checkbox] with [Checkbox.tristate] set to true
-   * can have checked,  unchecked, or mixed state.
-   *
-   * Must be false when the checkbox is either checked or unchecked.
-   */
-  readonly isCheckStateMixed: widgetTypes.SemanticsFlag;
-  /**
-   * Whether a semantics node that [hasCheckedState] is checked.
-   *
-   * If true, the semantics node is "checked". If false, the semantics node is
-   * "unchecked".
-   *
-   * For example, if a checkbox has a visible checkmark, [isChecked] is true.
-   *
-   * See also:
-   *
-   *   * [SemanticsFlag.hasCheckedState], which enables a checked state.
-   */
-  readonly isChecked: widgetTypes.SemanticsFlag;
-  /**
-   * Whether a semantic node that [hasEnabledState] is currently enabled.
-   *
-   * A disabled element does not respond to user interaction. For example, a
-   * button that currently does not respond to user interaction should be
-   * marked as disabled.
-   */
-  readonly isEnabled: widgetTypes.SemanticsFlag;
-  /**
-   * Whether a semantics node is expanded.
-   *
-   * If true, the semantics node is "expanded". If false, the semantics node is
-   * "collapsed".
-   *
-   * For example, if a [SubmenuButton] shows its children, [isExpanded] is true.
-   *
-   * See also:
-   *
-   *   * [SemanticsFlag.hasExpandedState], which enables an expanded/collapsed state.
-   */
-  readonly isExpanded: widgetTypes.SemanticsFlag;
-  /**
-   * Whether the semantic node is able to hold the user's focus.
-   *
-   * The focused element is usually the current receiver of keyboard inputs.
-   */
-  readonly isFocusable: widgetTypes.SemanticsFlag;
-  /**
-   * Whether the semantic node currently holds the user's focus.
-   *
-   * The focused element is usually the current receiver of keyboard inputs.
-   */
-  readonly isFocused: widgetTypes.SemanticsFlag;
-  /**
-   * Whether a semantic node is a header that divides content into sections.
-   *
-   * For example, headers can be used to divide a list of alphabetically
-   * sorted words into the sections A, B, C, etc. as can be found in many
-   * address book applications.
-   */
-  readonly isHeader: widgetTypes.SemanticsFlag;
-  /**
-   * Whether the semantics node is considered hidden.
-   *
-   * Hidden elements are currently not visible on screen. They may be covered
-   * by other elements or positioned outside of the visible area of a viewport.
-   *
-   * Hidden elements cannot gain accessibility focus though regular touch. The
-   * only way they can be focused is by moving the focus to them via linear
-   * navigation.
-   *
-   * Platforms are free to completely ignore hidden elements and new platforms
-   * are encouraged to do so.
-   *
-   * Instead of marking an element as hidden it should usually be excluded from
-   * the semantics tree altogether. Hidden elements are only included in the
-   * semantics tree to work around platform limitations and they are mainly
-   * used to implement accessibility scrolling on iOS.
-   *
-   * See also:
-   *
-   * * [RenderObject.describeSemanticsClip]
-   */
-  readonly isHidden: widgetTypes.SemanticsFlag;
-  /**
-   * Whether the semantics node represents an image.
-   *
-   * Both TalkBack and VoiceOver will inform the user the semantics node
-   * represents an image.
-   */
-  readonly isImage: widgetTypes.SemanticsFlag;
-  /**
-   * Whether a semantic node is in a mutually exclusive group.
-   *
-   * For example, a radio button is in a mutually exclusive group because
-   * only one radio button in that group can be marked as [isChecked].
-   */
-  readonly isInMutuallyExclusiveGroup: widgetTypes.SemanticsFlag;
-  /**
-   * Whether the semantic node represents a keyboard key.
-   */
-  readonly isKeyboardKey: widgetTypes.SemanticsFlag;
-  /**
-   * Whether the semantic node is an interactive link.
-   *
-   * Platforms have special handling for links, for example iOS's VoiceOver
-   * provides an additional hint when the focused object is a link, as well as
-   * the ability to parse the links through another navigation menu.
-   */
-  readonly isLink: widgetTypes.SemanticsFlag;
-  /**
-   * Whether the semantics node is a live region.
-   *
-   * A live region indicates that updates to semantics node are important.
-   * Platforms may use this information to make polite announcements to the
-   * user to inform them of updates to this node.
-   *
-   * An example of a live region is a [SnackBar] widget. On Android and iOS,
-   * live region causes a polite announcement to be generated automatically,
-   * even if the widget does not have accessibility focus. This announcement
-   * may not be spoken if the OS accessibility services are already
-   * announcing something else, such as reading the label of a focused
-   * widget or providing a system announcement.
-   */
-  readonly isLiveRegion: widgetTypes.SemanticsFlag;
-  /**
-   * Whether the value of the semantics node is coming from a multi-line text
-   * field.
-   *
-   * This is used for text fields to distinguish single-line text fields from
-   * multi-line ones.
-   */
-  readonly isMultiline: widgetTypes.SemanticsFlag;
-  /**
-   * Whether the value of the semantics node is obscured.
-   *
-   * This is usually used for text fields to indicate that its content
-   * is a password or contains other sensitive information.
-   */
-  readonly isObscured: widgetTypes.SemanticsFlag;
-  /**
-   * Whether the semantic node is read only.
-   *
-   * Only applicable when [isTextField] is true.
-   */
-  readonly isReadOnly: widgetTypes.SemanticsFlag;
-  /**
-   * Whether a semantics node is required.
-   *
-   * If true, user input is required on the semantics node before a form can
-   * be submitted.
-   *
-   * For example, a login form requires its email text field to be non-empty.
-   *
-   * See also:
-   *
-   *   * [SemanticsFlag.hasRequiredState], which enables a required state state.
-   */
-  readonly isRequired: widgetTypes.SemanticsFlag;
-  /**
-   * Whether a semantics node is selected.
-   *
-   * This flag only has meaning in nodes that have [hasSelectedState] flag set.
-   *
-   * If true, the semantics node is "selected". If false, the semantics node is
-   * "unselected".
-   *
-   * For example, the active tab in a tab bar has [isSelected] set to true.
-   */
-  readonly isSelected: widgetTypes.SemanticsFlag;
-  /**
-   * Whether the semantic node represents a slider.
-   */
-  readonly isSlider: widgetTypes.SemanticsFlag;
-  /**
-   * Whether the semantic node represents a text field.
-   *
-   * Text fields are announced as such and allow text input via accessibility
-   * affordances.
-   */
-  readonly isTextField: widgetTypes.SemanticsFlag;
-  /**
-   * If true, the semantics node is "on". If false, the semantics node is
-   * "off".
-   *
-   * For example, if a switch is in the on position, [isToggled] is true.
-   *
-   * See also:
-   *
-   *   * [SemanticsFlag.hasToggledState], which enables a toggled state.
-   */
-  readonly isToggled: widgetTypes.SemanticsFlag;
-  /**
-   * Whether the semantics node label is the name of a visually distinct
-   * route.
-   *
-   * This is used by certain widgets like Drawers and Dialogs, to indicate
-   * that the node's semantic label can be used to announce an edge triggered
-   * semantics update.
-   *
-   * Semantic nodes annotated with this flag will still receive a11y focus.
-   *
-   * Updating this label within the same active route subtree will not cause
-   * additional announcements.
-   */
-  readonly namesRoute: widgetTypes.SemanticsFlag;
-  /**
-   * Whether the semantics node is the root of a subtree for which a route name
-   * should be announced.
-   *
-   * When a node with this flag is removed from the semantics tree, the
-   * framework will select the last in depth-first, paint order node with this
-   * flag.  When a node with this flag is added to the semantics tree, it is
-   * selected automatically, unless there were multiple nodes with this flag
-   * added.  In this case, the last added node in depth-first, paint order
-   * will be selected.
-   *
-   * From this selected node, the framework will search in depth-first, paint
-   * order for the first node with a [namesRoute] flag and a non-null,
-   * non-empty label. The [namesRoute] and [scopesRoute] flags may be on the
-   * same node. The label of the found node will be announced as an edge
-   * transition. If no non-empty, non-null label is found then:
-   *
-   *   * VoiceOver will make a chime announcement.
-   *   * TalkBack will make no announcement
-   *
-   * Semantic nodes annotated with this flag are generally not a11y focusable.
-   *
-   * This is used in widgets such as Routes, Drawers, and Dialogs to
-   * communicate significant changes in the visible screen.
-   */
-  readonly scopesRoute: widgetTypes.SemanticsFlag;
-}>('SemanticsFlag');
+export const SemanticsFlag = declareConstants<
+  {
+    /**
+     * The semantics node has the quality of either being "checked" or "unchecked".
+     *
+     * This flag is mutually exclusive with [hasToggledState].
+     *
+     * For example, a checkbox or a radio button widget has checked state.
+     *
+     * See also:
+     *
+     *   * [SemanticsFlag.isChecked], which controls whether the node is "checked" or "unchecked".
+     */
+    readonly hasCheckedState: widgetTypes.SemanticsFlag;
+    /**
+     * The semantics node has the quality of either being "enabled" or
+     * "disabled".
+     *
+     * For example, a button can be enabled or disabled and therefore has an
+     * "enabled" state. Static text is usually neither enabled nor disabled and
+     * therefore does not have an "enabled" state.
+     */
+    readonly hasEnabledState: widgetTypes.SemanticsFlag;
+    /**
+     * The semantics node has the quality of either being "expanded" or "collapsed".
+     *
+     * For example, a [SubmenuButton] widget has expanded state.
+     *
+     * See also:
+     *
+     *   * [SemanticsFlag.isExpanded], which controls whether the node is "expanded" or "collapsed".
+     */
+    readonly hasExpandedState: widgetTypes.SemanticsFlag;
+    /**
+     * Whether the platform can scroll the semantics node when the user attempts
+     * to move focus to an offscreen child.
+     *
+     * For example, a [ListView] widget has implicit scrolling so that users can
+     * easily move the accessibility focus to the next set of children. A
+     * [PageView] widget does not have implicit scrolling, so that users don't
+     * navigate to the next page when reaching the end of the current one.
+     */
+    readonly hasImplicitScrolling: widgetTypes.SemanticsFlag;
+    /**
+     * The semantics node has the quality of either being required or not.
+     *
+     * See also:
+     *
+     *   * [SemanticsFlag.isRequired], which controls whether the node is required.
+     */
+    readonly hasRequiredState: widgetTypes.SemanticsFlag;
+    /**
+     * The semantics node has the quality of either being "selected" or "unselected".
+     *
+     * Whether the widget corresponding to this node is currently selected or not
+     * is determined by the [isSelected] flag.
+     *
+     * When this flag is not set, the corresponding widget cannot be selected by
+     * the user, and the presence or the lack of [isSelected] does not carry any
+     * meaning.
+     */
+    readonly hasSelectedState: widgetTypes.SemanticsFlag;
+    /**
+     * The semantics node has the quality of either being "on" or "off".
+     *
+     * This flag is mutually exclusive with [hasCheckedState].
+     *
+     * For example, a switch has toggled state.
+     *
+     * See also:
+     *
+     *    * [SemanticsFlag.isToggled], which controls whether the node is "on" or "off".
+     */
+    readonly hasToggledState: widgetTypes.SemanticsFlag;
+    /**
+     * Whether the semantic node represents a button.
+     *
+     * Platforms have special handling for buttons, for example Android's TalkBack
+     * and iOS's VoiceOver provides an additional hint when the focused object is
+     * a button.
+     */
+    readonly isButton: widgetTypes.SemanticsFlag;
+    /**
+     * Whether a tristate checkbox is in its mixed state.
+     *
+     * If this is true, the check box this semantics node represents
+     * is in a mixed state.
+     *
+     * For example, a [Checkbox] with [Checkbox.tristate] set to true
+     * can have checked,  unchecked, or mixed state.
+     *
+     * Must be false when the checkbox is either checked or unchecked.
+     */
+    readonly isCheckStateMixed: widgetTypes.SemanticsFlag;
+    /**
+     * Whether a semantics node that [hasCheckedState] is checked.
+     *
+     * If true, the semantics node is "checked". If false, the semantics node is
+     * "unchecked".
+     *
+     * For example, if a checkbox has a visible checkmark, [isChecked] is true.
+     *
+     * See also:
+     *
+     *   * [SemanticsFlag.hasCheckedState], which enables a checked state.
+     */
+    readonly isChecked: widgetTypes.SemanticsFlag;
+    /**
+     * Whether a semantic node that [hasEnabledState] is currently enabled.
+     *
+     * A disabled element does not respond to user interaction. For example, a
+     * button that currently does not respond to user interaction should be
+     * marked as disabled.
+     */
+    readonly isEnabled: widgetTypes.SemanticsFlag;
+    /**
+     * Whether a semantics node is expanded.
+     *
+     * If true, the semantics node is "expanded". If false, the semantics node is
+     * "collapsed".
+     *
+     * For example, if a [SubmenuButton] shows its children, [isExpanded] is true.
+     *
+     * See also:
+     *
+     *   * [SemanticsFlag.hasExpandedState], which enables an expanded/collapsed state.
+     */
+    readonly isExpanded: widgetTypes.SemanticsFlag;
+    /**
+     * Whether the semantic node is able to hold the user's focus.
+     *
+     * The focused element is usually the current receiver of keyboard inputs.
+     */
+    readonly isFocusable: widgetTypes.SemanticsFlag;
+    /**
+     * Whether the semantic node currently holds the user's focus.
+     *
+     * The focused element is usually the current receiver of keyboard inputs.
+     */
+    readonly isFocused: widgetTypes.SemanticsFlag;
+    /**
+     * Whether a semantic node is a header that divides content into sections.
+     *
+     * For example, headers can be used to divide a list of alphabetically
+     * sorted words into the sections A, B, C, etc. as can be found in many
+     * address book applications.
+     */
+    readonly isHeader: widgetTypes.SemanticsFlag;
+    /**
+     * Whether the semantics node is considered hidden.
+     *
+     * Hidden elements are currently not visible on screen. They may be covered
+     * by other elements or positioned outside of the visible area of a viewport.
+     *
+     * Hidden elements cannot gain accessibility focus though regular touch. The
+     * only way they can be focused is by moving the focus to them via linear
+     * navigation.
+     *
+     * Platforms are free to completely ignore hidden elements and new platforms
+     * are encouraged to do so.
+     *
+     * Instead of marking an element as hidden it should usually be excluded from
+     * the semantics tree altogether. Hidden elements are only included in the
+     * semantics tree to work around platform limitations and they are mainly
+     * used to implement accessibility scrolling on iOS.
+     *
+     * See also:
+     *
+     * * [RenderObject.describeSemanticsClip]
+     */
+    readonly isHidden: widgetTypes.SemanticsFlag;
+    /**
+     * Whether the semantics node represents an image.
+     *
+     * Both TalkBack and VoiceOver will inform the user the semantics node
+     * represents an image.
+     */
+    readonly isImage: widgetTypes.SemanticsFlag;
+    /**
+     * Whether a semantic node is in a mutually exclusive group.
+     *
+     * For example, a radio button is in a mutually exclusive group because
+     * only one radio button in that group can be marked as [isChecked].
+     */
+    readonly isInMutuallyExclusiveGroup: widgetTypes.SemanticsFlag;
+    /**
+     * Whether the semantic node represents a keyboard key.
+     */
+    readonly isKeyboardKey: widgetTypes.SemanticsFlag;
+    /**
+     * Whether the semantic node is an interactive link.
+     *
+     * Platforms have special handling for links, for example iOS's VoiceOver
+     * provides an additional hint when the focused object is a link, as well as
+     * the ability to parse the links through another navigation menu.
+     */
+    readonly isLink: widgetTypes.SemanticsFlag;
+    /**
+     * Whether the semantics node is a live region.
+     *
+     * A live region indicates that updates to semantics node are important.
+     * Platforms may use this information to make polite announcements to the
+     * user to inform them of updates to this node.
+     *
+     * An example of a live region is a [SnackBar] widget. On Android and iOS,
+     * live region causes a polite announcement to be generated automatically,
+     * even if the widget does not have accessibility focus. This announcement
+     * may not be spoken if the OS accessibility services are already
+     * announcing something else, such as reading the label of a focused
+     * widget or providing a system announcement.
+     */
+    readonly isLiveRegion: widgetTypes.SemanticsFlag;
+    /**
+     * Whether the value of the semantics node is coming from a multi-line text
+     * field.
+     *
+     * This is used for text fields to distinguish single-line text fields from
+     * multi-line ones.
+     */
+    readonly isMultiline: widgetTypes.SemanticsFlag;
+    /**
+     * Whether the value of the semantics node is obscured.
+     *
+     * This is usually used for text fields to indicate that its content
+     * is a password or contains other sensitive information.
+     */
+    readonly isObscured: widgetTypes.SemanticsFlag;
+    /**
+     * Whether the semantic node is read only.
+     *
+     * Only applicable when [isTextField] is true.
+     */
+    readonly isReadOnly: widgetTypes.SemanticsFlag;
+    /**
+     * Whether a semantics node is required.
+     *
+     * If true, user input is required on the semantics node before a form can
+     * be submitted.
+     *
+     * For example, a login form requires its email text field to be non-empty.
+     *
+     * See also:
+     *
+     *   * [SemanticsFlag.hasRequiredState], which enables a required state state.
+     */
+    readonly isRequired: widgetTypes.SemanticsFlag;
+    /**
+     * Whether a semantics node is selected.
+     *
+     * This flag only has meaning in nodes that have [hasSelectedState] flag set.
+     *
+     * If true, the semantics node is "selected". If false, the semantics node is
+     * "unselected".
+     *
+     * For example, the active tab in a tab bar has [isSelected] set to true.
+     */
+    readonly isSelected: widgetTypes.SemanticsFlag;
+    /**
+     * Whether the semantic node represents a slider.
+     */
+    readonly isSlider: widgetTypes.SemanticsFlag;
+    /**
+     * Whether the semantic node represents a text field.
+     *
+     * Text fields are announced as such and allow text input via accessibility
+     * affordances.
+     */
+    readonly isTextField: widgetTypes.SemanticsFlag;
+    /**
+     * If true, the semantics node is "on". If false, the semantics node is
+     * "off".
+     *
+     * For example, if a switch is in the on position, [isToggled] is true.
+     *
+     * See also:
+     *
+     *   * [SemanticsFlag.hasToggledState], which enables a toggled state.
+     */
+    readonly isToggled: widgetTypes.SemanticsFlag;
+    /**
+     * Whether the semantics node label is the name of a visually distinct
+     * route.
+     *
+     * This is used by certain widgets like Drawers and Dialogs, to indicate
+     * that the node's semantic label can be used to announce an edge triggered
+     * semantics update.
+     *
+     * Semantic nodes annotated with this flag will still receive a11y focus.
+     *
+     * Updating this label within the same active route subtree will not cause
+     * additional announcements.
+     */
+    readonly namesRoute: widgetTypes.SemanticsFlag;
+    /**
+     * Whether the semantics node is the root of a subtree for which a route name
+     * should be announced.
+     *
+     * When a node with this flag is removed from the semantics tree, the
+     * framework will select the last in depth-first, paint order node with this
+     * flag.  When a node with this flag is added to the semantics tree, it is
+     * selected automatically, unless there were multiple nodes with this flag
+     * added.  In this case, the last added node in depth-first, paint order
+     * will be selected.
+     *
+     * From this selected node, the framework will search in depth-first, paint
+     * order for the first node with a [namesRoute] flag and a non-null,
+     * non-empty label. The [namesRoute] and [scopesRoute] flags may be on the
+     * same node. The label of the found node will be announced as an edge
+     * transition. If no non-empty, non-null label is found then:
+     *
+     *   * VoiceOver will make a chime announcement.
+     *   * TalkBack will make no announcement
+     *
+     * Semantic nodes annotated with this flag are generally not a11y focusable.
+     *
+     * This is used in widgets such as Routes, Drawers, and Dialogs to
+     * communicate significant changes in the visible screen.
+     */
+    readonly scopesRoute: widgetTypes.SemanticsFlag;
+  } & {
+    readonly fromIndex: (index: number) => widgetTypes.SemanticsFlag | null;
+    readonly values: widgetTypes.SemanticsFlag[];
+  }
+>('SemanticsFlag');
 
 /**
  * Holds a 2D floating-point size.
@@ -62668,6 +62836,12 @@ export const Size = declareConstants<
     readonly fromRadius: (radius: number) => widgetTypes.Size;
     readonly fromWidth: (width: number) => widgetTypes.Size;
     readonly square: (dimension: number) => widgetTypes.Size;
+  } & {
+    readonly lerp: (
+      a: widgetTypes.Size,
+      b: widgetTypes.Size,
+      t: number,
+    ) => widgetTypes.Size | null;
   })
 >('Size');
 
@@ -62731,7 +62905,12 @@ export const StackFrame = declareConstants<
     method: string;
     isConstructor?: boolean;
     source: string;
-  }) => widgetTypes.StackFrame)
+  }) => widgetTypes.StackFrame & {
+    readonly fromStackString: (stack: string) => widgetTypes.StackFrame[];
+    readonly fromStackTraceLine: (
+      line: string,
+    ) => widgetTypes.StackFrame | null;
+  })
 >('StackFrame');
 
 /**
@@ -64608,23 +64787,27 @@ export const ToolbarOptions = declareConstants<
  *
  * ** See code in examples/api/lib/widgets/sliver/sliver_tree.1.dart **
  */
-export const TreeSliverIndentationType = declareConstants<{
-  /**
-   * Configures no offsetting of child nodes in a [TreeSliver].
-   *
-   * Useful if the indentation is implemented in the
-   * [TreeSliver.treeNodeBuilder] instead for more customization options.
-   *
-   * Child nodes will not be offset in the tree.
-   */
-  readonly none: widgetTypes.TreeSliverIndentationType;
-  /**
-   * The default indentation of child [TreeSliverNode]s in a [TreeSliver].
-   *
-   * Child nodes will be offset by 10 pixels for each level in the tree.
-   */
-  readonly standard: widgetTypes.TreeSliverIndentationType;
-}>('TreeSliverIndentationType');
+export const TreeSliverIndentationType = declareConstants<
+  {
+    /**
+     * Configures no offsetting of child nodes in a [TreeSliver].
+     *
+     * Useful if the indentation is implemented in the
+     * [TreeSliver.treeNodeBuilder] instead for more customization options.
+     *
+     * Child nodes will not be offset in the tree.
+     */
+    readonly none: widgetTypes.TreeSliverIndentationType;
+    /**
+     * The default indentation of child [TreeSliverNode]s in a [TreeSliver].
+     *
+     * Child nodes will be offset by 10 pixels for each level in the tree.
+     */
+    readonly standard: widgetTypes.TreeSliverIndentationType;
+  } & {
+    readonly custom: (value: number) => widgetTypes.TreeSliverIndentationType;
+  }
+>('TreeSliverIndentationType');
 
 /**
  * The color and geometry [TextTheme]s for Material apps.
@@ -64823,6 +65006,12 @@ export const Typography = declareConstants<
       dense?: widgetTypes.TextTheme;
       tall?: widgetTypes.TextTheme;
     }) => widgetTypes.Typography;
+  } & {
+    readonly lerp: (
+      a: widgetTypes.Typography,
+      b: widgetTypes.Typography,
+      t: number,
+    ) => widgetTypes.Typography;
   })
 >('Typography');
 
@@ -64842,9 +65031,9 @@ export const Typography = declareConstants<
 export const Uint8List = declareConstants<
   {
     readonly bytesPerElement: number;
-  } & (new (length: number) => widgetTypes.Uint8List & {
+  } & {
     readonly fromList: (elements: number[]) => widgetTypes.Uint8List;
-  })
+  }
 >('Uint8List');
 
 /**
@@ -65095,7 +65284,17 @@ export const VisualDensity = declareConstants<
   } & (new (options?: {
     horizontal?: number;
     vertical?: number;
-  }) => widgetTypes.VisualDensity)
+  }) => widgetTypes.VisualDensity & {
+    readonly defaultDensityForPlatform: (
+      platform: widgetTypes.TargetPlatform,
+    ) => widgetTypes.VisualDensity;
+    readonly lerp: (
+      a: widgetTypes.VisualDensity,
+      b: widgetTypes.VisualDensity,
+      t: number,
+    ) => widgetTypes.VisualDensity;
+    readonly adaptivePlatformDensity: widgetTypes.VisualDensity;
+  })
 >('VisualDensity');
 
 /**

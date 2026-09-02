@@ -30,7 +30,7 @@ export const valueFormTsType = (
         ? `Record<string, ${held}>`
         : unwrapped.key.kind === 'scalar' && unwrapped.key.name !== 'bool'
           ? `Record<number, ${held}>`
-          : `Map<${key}, ${held}>`;
+          : `ReadonlyMap<${key}, ${held}>`;
     return node.kind === 'nullable' ? `${map} | null` : map;
   }
   if (unwrapped.kind === 'list' || unwrapped.kind === 'set') {

@@ -71,42 +71,6 @@ export const lowerAnimations = (
   });
 };
 
-/**
- * The controls the handle offers, which are Flutter's own.
- *
- * A method outside this set is not silently printed as Dart: the handle is
- * typed, so TypeScript refuses it, and the compiler refuses it too.
- */
-const ANIMATION_METHODS: ReadonlySet<string> = new Set([
-  'forward',
-  'reverse',
-  'stop',
-  'repeat',
-  'reset',
-]);
-
-/** `fade.forward()` as its Dart statement, or null when it is not one. */
-export const animationCallLine = (
-  expression: ts.Expression,
-  isAnimation: (name: string) => boolean,
-  dartName: (name: string) => string,
-): string | null => {
-  if (
-    !ts.isCallExpression(expression) ||
-    !ts.isPropertyAccessExpression(expression.expression) ||
-    !ts.isIdentifier(expression.expression.expression) ||
-    expression.arguments.length > 0
-  ) {
-    return null;
-  }
-  const receiver = expression.expression.expression.text;
-  const method = expression.expression.name.text;
-  if (!isAnimation(receiver) || !ANIMATION_METHODS.has(method)) {
-    return null;
-  }
-  return `${dartName(receiver)}.${method}();`;
-};
-
 const TWEEN_HELPER = 'tween';
 const RANGE_START = 'from';
 const RANGE_END = 'to';

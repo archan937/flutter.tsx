@@ -27,7 +27,18 @@ const context: SynthesisContext = {
   valueOnlyNames: new Set(['Icons']),
   formNames: new Set(['IconData', 'Ornament']),
   declaredTypes: new Set(['IconData', 'Ornament', 'Intent']),
-  suppliers: new Map([['TestScope', { owner: 'TestScope', method: 'of' }]]),
+  suppliers: new Map([
+    [
+      'TestScope',
+      [
+        {
+          owner: 'TestScope',
+          method: 'of',
+          params: [param('context', { kind: 'named', name: 'BuildContext' })],
+        },
+      ],
+    ],
+  ]),
   construction: new Map([
     [
       'Ink',
@@ -260,6 +271,62 @@ describe('synthesizeTsx', () => {
       // `Ink` is a class the SDK builds; what it asks for is what is not
       // yet written, so the work is ours rather than Flutter's.
       unwritable: [{ prop: 'ink', type: 'x', reason: 'not-yet-expressible' }],
+    });
+  });
+
+  test('the first static whose arguments can be written wins', () => {
+    // A supplier asking for something nothing can write is passed over for
+    // one that only asks for the build context.
+    const supplied: SynthesisContext = {
+      ...context,
+      suppliers: new Map([
+        [
+          'TestScope',
+          [
+            {
+              owner: 'TestScope',
+              method: 'forHandle',
+              params: [
+                param(
+                  'handle',
+                  { kind: 'named', name: 'Unwritable' },
+                  { named: false },
+                ),
+              ],
+            },
+            {
+              owner: 'TestScope',
+              method: 'of',
+              params: [
+                param(
+                  'context',
+                  { kind: 'named', name: 'BuildContext' },
+                  { named: false },
+                ),
+              ],
+            },
+          ],
+        ],
+      ]),
+    };
+
+    expect(
+      synthesizeTsx({
+        widgetName: 'Scoped',
+        params: [param('scope', { kind: 'named', name: 'TestScope' })],
+        slots: noSlots,
+        context: supplied,
+      }),
+    ).toEqual({
+      tsx: '<Scoped scope={TestScope.of(ctx)} />',
+      bindings: [
+        {
+          line: 'const ctx = useBuildContext();',
+          imports: ['useBuildContext', 'TestScope'],
+        },
+      ],
+      unwritable: [],
+      complete: true,
     });
   });
 

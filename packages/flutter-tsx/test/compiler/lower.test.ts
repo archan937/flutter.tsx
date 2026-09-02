@@ -2163,6 +2163,7 @@ describe('buildCompileContext — gesture derivation rules', () => {
         fields: [],
         statics: [],
         staticGetters: [],
+        methods: [],
       },
     ],
     hierarchy: { GestureDetector: ['StatelessWidget', 'Widget'] },

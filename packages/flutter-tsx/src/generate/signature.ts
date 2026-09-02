@@ -15,7 +15,42 @@ import type { ParamModel } from '../api/model';
  * always strict, TypeScript refuses those as parameter names. They are the
  * declaration's own names, so renaming one changes nothing about the call.
  */
-const TS_RESERVED_PARAMS: ReadonlySet<string> = new Set(['arguments', 'eval']);
+const TS_RESERVED_PARAMS: ReadonlySet<string> = new Set([
+  'arguments',
+  'eval',
+  'function',
+  'class',
+  'default',
+  'new',
+  'this',
+  'typeof',
+  'void',
+  'in',
+  'of',
+  'for',
+  'if',
+  'else',
+  'return',
+  'switch',
+  'case',
+  'catch',
+  'try',
+  'throw',
+  'while',
+  'do',
+  'delete',
+  'var',
+  'let',
+  'const',
+  'null',
+  'true',
+  'false',
+  'super',
+  'extends',
+  'import',
+  'export',
+  'enum',
+]);
 
 /** The name a parameter takes in TypeScript, which may not be Dart's. */
 export const writtenParamName = (name: string): string =>

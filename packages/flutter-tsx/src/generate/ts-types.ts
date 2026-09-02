@@ -30,7 +30,10 @@ const mapType = (key: TypeNode, value: TypeNode): string => {
   if (key.kind === 'scalar' && key.name !== 'bool') {
     return `Record<number, ${tsTypeOf(value)}>`;
   }
-  return `Map<${tsTypeOf(key)}, ${tsTypeOf(value)}>`;
+  // A widget reads the map it is handed; `ReadonlyMap` says so, and unlike
+  // `Map` it accepts a map of narrower keys and values — so the entries need
+  // no type arguments spelled out at the call site.
+  return `ReadonlyMap<${tsTypeOf(key)}, ${tsTypeOf(value)}>`;
 };
 
 /** `FutureOr<T>` — Dart accepts either, and so does the declaration. */

@@ -102,6 +102,23 @@ void main() {
       expect(concrete.toJson().containsKey('abstract'), isFalse);
     });
 
+    test('records the methods a value answers to', () {
+      // Owning a controller is pointless without calling it: `jumpTo`,
+      // `requestFocus`, `animateTo` are the whole reason to hold one.
+      final controller = entities.whereType<ClassEntity>().singleWhere(
+        (entity) => entity.name == 'TestController',
+      );
+      final jumpTo = controller.methods.singleWhere(
+        (method) => method.name == 'jumpTo',
+      );
+
+      // A private method is not part of the surface, and `dispose` is the
+      // lifecycle the compiler already writes.
+      expect(controller.methods.map((method) => method.name), ['jumpTo']);
+      expect(jumpTo.params.map((param) => param.name), ['offset', 'animated']);
+      expect(jumpTo.returnType.toJson(), {'kind': 'void'});
+    });
+
     test('records whether a value has to be disposed', () {
       // A component owning one of these has to release it; the compiler
       // cannot know which from the name, so the extractor says so.

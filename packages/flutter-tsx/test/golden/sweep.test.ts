@@ -40,13 +40,9 @@ describe('every-widget analyze sweep', () => {
     await rm(probesDir, { recursive: true, force: true });
     await mkdir(probesDir, { recursive: true });
     for (const widget of complete) {
-      const imports = exampleImports(widget.name, widget.example);
-      const typeImport =
-        imports.types.length === 0
-          ? ''
-          : `import type { ${imports.types.join(', ')} } from 'flutter-tsx';\n`;
+      const imports = exampleImports(widget.name, widget.example).join(', ');
       const source =
-        `${typeImport}import { ${imports.values.join(', ')} } from 'flutter-tsx';\n\n` +
+        `import { ${imports} } from 'flutter-tsx';\n\n` +
         `${exampleSource(widget.name, widget.example, { component: true })}\n`;
       const generated = await transpileComponent({
         source,

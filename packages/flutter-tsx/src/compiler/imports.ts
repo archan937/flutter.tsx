@@ -17,6 +17,9 @@ import type { CompileContext } from './lower';
  * not compile — the mistake that once let a value inside a builder, and later
  * one inside a method call, go uncollected.
  */
+/** A class name inside a written Dart type: the `Factory` of `Factory<T>`. */
+const TYPE_NAME = /[A-Z][A-Za-z0-9_]*/g;
+
 const NAMES_A_CLASS: Record<IrValue['kind'], boolean> = {
   widget: true,
   enumValue: true,
@@ -79,6 +82,11 @@ const collectValue = (
       }
       return;
     case 'listValue':
+      // An empty collection names what it holds — `<Factory<…>>{}` — and
+      // those names need importing as much as any other.
+      for (const named of (value.set?.itemType ?? '').matchAll(TYPE_NAME)) {
+        names.add(named[0]);
+      }
       for (const item of value.items) {
         collectValue(item, context, names);
       }

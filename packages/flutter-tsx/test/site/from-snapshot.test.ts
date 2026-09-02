@@ -144,6 +144,7 @@ describe('buildSitePage', () => {
         fields: [],
         statics: [],
         staticGetters: [],
+        methods: [],
       },
       {
         kind: 'widget',
@@ -182,6 +183,7 @@ describe('buildSitePage', () => {
         fields: [],
         statics: [],
         staticGetters: [],
+        methods: [],
       },
     ],
   };

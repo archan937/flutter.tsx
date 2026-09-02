@@ -2,9 +2,19 @@ import type { ParamModel, TypeNode } from '../api/model';
 import { DATE_FORMS } from '../derive/date-forms';
 import type { NamedSlot, WidgetSlots } from '../derive/slots';
 import { EDGE_INSETS_TYPES, type ValueForms } from '../derive/value-forms';
-import { valueFormTsType } from '../generate/prop-type';
 import { jsxPropName } from '../generate/renames';
 import { type UnwritableProp, unwritableReason } from './unwritable';
+
+/** A static that hands over a value nothing constructs. */
+export interface Supplier {
+  owner: string;
+  method: string;
+  params: readonly ParamModel[];
+}
+
+/** The context Flutter hands values over through, and its name in TSX. */
+const BUILD_CONTEXT_TYPE = 'BuildContext';
+const BUILD_CONTEXT_NAME = 'ctx';
 
 /** A class the SDK builds, and what its constructor asks for. */
 export interface Constructible {
@@ -45,10 +55,11 @@ export interface SynthesisContext {
   /** Types the surface declares, and so can be written as a type. */
   declaredTypes: ReadonlySet<string>;
   /**
-   * Types the framework hands over, and the static that hands each one over:
-   * `FlutterView` by `View.of(context)`.
+   * Types the framework hands over, and the statics that hand each one
+   * over: a `FlutterView` by `View.of(context)`, an `AndroidViewController`
+   * by `PlatformViewsService.initAndroidView(…)`.
    */
-  suppliers: ReadonlyMap<string, { owner: string; method: string }>;
+  suppliers: ReadonlyMap<string, readonly Supplier[]>;
 }
 
 /**
@@ -84,9 +95,6 @@ const INCOMPLETE_VALUE = '{…}';
 // each is a name the example has to import.
 const NAMESPACE_REFERENCE = /\b([A-Z][A-Za-z0-9_]*)\./g;
 // `new Map<ShortcutActivator, Intent>(…)` names the types it holds.
-// A callback type inside the arguments carries a `>` of its own, so the
-// list runs to the `>(` that closes it.
-const TYPE_ARGUMENT = /new Map<([\s\S]+?)>\(/g;
 const CONSTRUCTED_CLASS = /\bnew ([A-Z][A-Za-z0-9_]*)\(/g;
 // A Map is JavaScript's own; the package exports nothing by that name.
 const BUILT_IN_CLASSES: ReadonlySet<string> = new Set(['Map']);
@@ -153,11 +161,19 @@ const builtValue = (
   }
   // `ValueNotifier<int>` builds with an int: what the class is generic over
   // is bound to what the prop asked for.
+  // `ValueNotifier<int>` builds with an int. Where the type asked for the
+  // widget's own parameter, the example picks a type and Dart infers the
+  // widget's from it — which is how a Dart developer writes it too.
   const bound = new Map(
-    built.typeParams.map((name, index): [string, TypeNode] => [
-      name,
-      type.args?.[index] ?? { kind: 'unknown' },
-    ]),
+    built.typeParams.map((name, index): [string, TypeNode] => {
+      const wanted = type.args?.[index];
+      return [
+        name,
+        wanted === undefined || wanted.kind === 'typeVar'
+          ? STAND_IN_TYPE
+          : wanted,
+      ];
+    }),
   );
   const substituted = (node: TypeNode): TypeNode =>
     node.kind === 'typeVar' ? (bound.get(node.name) ?? node) : node;
@@ -215,44 +231,90 @@ const satisfies = (
   type: TypeNode & { kind: 'named' },
 ): boolean => {
   const wanted = type.args ?? [];
-  // What the type asked for is the widget's own type parameter, and TSX has
-  // no way to name it: `Animatable<T>` cannot be written until it can.
-  if (wanted.some((arg) => arg.kind === 'typeVar')) {
-    return false;
-  }
+  // A class generic over as much as the type asked for can be built for
+  // whatever it asked for — including the widget's own type parameter, which
+  // Dart infers from the value it is given.
   if (built.typeParams.length >= wanted.length) {
     return true;
   }
-  // A type variable is the widget's own, and only a class generic over it
-  // can carry it — which the arity above already decides.
-  return wanted.every(
-    (arg, index) =>
+  return wanted.every((arg, index) => {
+    // The widget's own type parameter is inferred from what it is given, so
+    // a class carrying a concrete type satisfies it — but not a nullable
+    // one: `Animatable<Color?>` cannot stand where a non-null T is wanted.
+    if (arg.kind === 'typeVar') {
+      const binding = built.binds?.[index];
+      return (
+        binding !== undefined &&
+        binding.kind !== 'nullable' &&
+        binding.kind !== 'typeVar'
+      );
+    }
+    return (
       (arg.kind === 'named' && arg.name === ANY_VALUE) ||
-      shapeOf(built.binds?.[index] ?? { kind: 'unknown' }) === shapeOf(arg),
-  );
+      shapeOf(built.binds?.[index] ?? { kind: 'unknown' }) === shapeOf(arg)
+    );
+  });
 };
 
 /**
  * `MediaQuery.of(context)` — a value the framework hands over.
  *
- * Nothing constructs a `FlutterView` or an `AssetBundle`: Flutter gives them
- * to a widget through a static, so that call is how an example writes one.
+ * Nothing constructs a `FlutterView`, an `AssetBundle` or an
+ * `AndroidViewController`: Flutter makes them and hands them over through a
+ * static, so calling that static is how an example writes one. The simplest
+ * static whose arguments are themselves writable wins.
  */
 const suppliedValue = (
   typeName: string,
   context: SynthesisContext,
 ): SynthesizedValue | null => {
-  const supplier = context.suppliers.get(typeName);
-  if (supplier === undefined) {
-    return null;
+  for (const supplier of context.suppliers.get(typeName) ?? []) {
+    // Only what the static insists on: an optional argument left out is the
+    // shortest true way to call it.
+    const required = supplier.params.filter((param) => param.required);
+    const written = required.map((param) =>
+      param.type.kind === 'named' && param.type.name === BUILD_CONTEXT_TYPE
+        ? { value: BUILD_CONTEXT_NAME }
+        : attrValue(param.type, context, 'argument'),
+    );
+    if (written.some((value) => value === null)) {
+      continue;
+    }
+    const positional = required
+      .map((param, index) => ({ param, value: written[index] }))
+      .filter((entry) => !entry.param.named);
+    const named = required
+      .map((param, index) => ({ param, value: written[index] }))
+      .filter((entry) => entry.param.named);
+    const args = [
+      ...positional.map((entry) => braced(entry.value?.value ?? '')),
+      ...(named.length === 0
+        ? []
+        : [
+            `{ ${named
+              .map(
+                (entry) =>
+                  `${entry.param.name}: ${braced(entry.value?.value ?? '')}`,
+              )
+              .join(', ')} }`,
+          ]),
+    ];
+    const needsContext = written.some(
+      (value) => value?.value === BUILD_CONTEXT_NAME,
+    );
+    return {
+      value: `{${supplier.owner}.${supplier.method}(${args.join(', ')})}`,
+      ...(needsContext
+        ? {
+            binding: {
+              line: `const ${BUILD_CONTEXT_NAME} = useBuildContext();`,
+              imports: ['useBuildContext', supplier.owner],
+            },
+          }
+        : {}),
+    };
   }
-  return {
-    value: `{${supplier.owner}.${supplier.method}(ctx)}`,
-    binding: {
-      line: 'const ctx = useBuildContext();',
-      imports: ['useBuildContext', supplier.owner],
-    },
-  };
+  return null;
 };
 
 /** `const focusNode = new FocusNode();` — a value the component makes. */
@@ -302,6 +364,15 @@ const EITHER_TYPE = 'FutureOr';
 // Dart's top type: a prop asking for one takes whatever it is given.
 const ANY_VALUE = 'Object';
 const DART_TYPE = 'Type';
+
+/**
+ * The type an example picks when the widget leaves it open.
+ *
+ * `UndoHistory<T>` takes a `ValueNotifier<T>`, and what T is comes from the
+ * value: a text one makes it a `UndoHistory<String>`, which is what a Dart
+ * developer would write.
+ */
+const STAND_IN_TYPE: TypeNode = { kind: 'scalar', name: 'String' };
 
 // A key is written as the text or number that tells one item from another;
 // the compiler makes the Key itself.
@@ -474,26 +545,11 @@ const attrValue = (
       if (type.key.kind === 'scalar' && type.key.name !== 'bool') {
         return literal('{{}}');
       }
-      // TypeScript's Map is invariant, so the entries have to name the key
-      // and value types — and a name the package exports only as a value
-      // cannot be named as a type, so such a map is not writable yet.
-      const names = [type.key, type.value].flatMap((held) =>
-        held.kind === 'named' ? [held.name] : [],
-      );
-      const nameable = (name: string): boolean =>
-        context.declaredTypes.has(name) && !context.valueOnlyNames.has(name);
-      if (key === null || value === null || !names.every(nameable)) {
+      if (key === null || value === null) {
         return null;
       }
-      // TypeScript's Map is invariant in its key and value, so the entries
-      // alone would infer a narrower map than the prop declares: the types
-      // are written out, exactly as a developer would have to.
-      const entries = `[[${braced(key.value)}, ${braced(value.value)}]]`;
       return {
-        value:
-          `{new Map<${valueFormTsType(type.key, context.formNames)}, ` +
-          `${valueFormTsType(type.value, context.formNames)}>` +
-          `(${entries})}`,
+        value: `{new Map([[${braced(key.value)}, ${braced(value.value)}]])}`,
         ...(value.binding === undefined ? {} : { binding: value.binding }),
       };
     }
@@ -690,7 +746,7 @@ export const exampleSource = (
 export const exampleImports = (
   widgetName: string,
   example: SynthesizedExample,
-): { values: string[]; types: string[] } => {
+): string[] => {
   const named = (pattern: RegExp): string[] =>
     [...example.tsx.matchAll(pattern)].map((match) => match[1] ?? '');
   const values = new Set([
@@ -700,17 +756,5 @@ export const exampleImports = (
     ...named(NAMESPACE_REFERENCE),
     ...named(CONSTRUCTED_CLASS).filter((name) => !BUILT_IN_CLASSES.has(name)),
   ]);
-  const types = new Set(
-    [...example.tsx.matchAll(TYPE_ARGUMENT)]
-      .flatMap((match) =>
-        (match[1] ?? '')
-          .split(',')
-          .map((name) => name.trim())
-          .filter((name) => /^[A-Z]/.test(name)),
-      )
-      .filter((name) => !values.has(name)),
-  );
-  const listed = (names: Set<string>): string[] =>
-    [...names].filter((name) => name !== '').sort();
-  return { values: listed(values), types: listed(types) };
+  return [...values].filter((name) => name !== '').sort();
 };

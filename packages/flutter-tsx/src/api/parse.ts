@@ -232,6 +232,7 @@ const parseEntity = (value: unknown, path: string): Entity => {
     fields: FieldModel[];
     statics: StaticMethod[];
     staticGetters: FieldModel[];
+    methods: StaticMethod[];
   } => ({
     supertypes: asArray(record.supertypes, `${path}.supertypes`).map(
       (supertype, index) => asString(supertype, `${path}.supertypes[${index}]`),
@@ -259,6 +260,12 @@ const parseEntity = (value: unknown, path: string): Entity => {
         : asArray(record.staticGetters, `${path}.staticGetters`).map(
             (getter, index) =>
               parseField(getter, `${path}.staticGetters[${index}]`),
+          ),
+    methods:
+      record.methods === undefined
+        ? []
+        : asArray(record.methods, `${path}.methods`).map((method, index) =>
+            parseStatic(method, `${path}.methods[${index}]`),
           ),
   });
 

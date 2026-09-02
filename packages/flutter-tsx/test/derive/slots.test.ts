@@ -47,6 +47,7 @@ const widget = (name: string, params: ParamModel[]): WidgetEntity => ({
   fields: [],
   statics: [],
   staticGetters: [],
+  methods: [],
 });
 
 const snapshotWith = (

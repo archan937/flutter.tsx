@@ -4,6 +4,7 @@ import type {
   ConstructorModel,
   Entity,
   ParamModel,
+  StaticMethod,
   TypeNode,
 } from './model';
 
@@ -91,6 +92,17 @@ const fieldToJson = (field: {
   type: typeNodeToJson(field.type),
 });
 
+const methodToJson = (
+  method: StaticMethod,
+  isStatic: boolean,
+): Record<string, unknown> => ({
+  name: method.name,
+  doc: method.doc,
+  static: isStatic,
+  returnType: typeNodeToJson(method.returnType),
+  params: method.params.map(paramToJson),
+});
+
 const entityToJson = (entity: Entity): Record<string, unknown> => {
   if (entity.kind === 'enum') {
     return {
@@ -114,18 +126,13 @@ const entityToJson = (entity: Entity): Record<string, unknown> => {
     constants: entity.constants.map(constantToJson),
     fields: entity.fields.map(fieldToJson),
     ...(entity.statics.length > 0
-      ? {
-          statics: entity.statics.map((method) => ({
-            name: method.name,
-            doc: method.doc,
-            static: true,
-            returnType: typeNodeToJson(method.returnType),
-            params: method.params.map(paramToJson),
-          })),
-        }
+      ? { statics: entity.statics.map((method) => methodToJson(method, true)) }
       : {}),
     ...(entity.staticGetters.length > 0
       ? { staticGetters: entity.staticGetters.map(fieldToJson) }
+      : {}),
+    ...(entity.methods.length > 0
+      ? { methods: entity.methods.map((method) => methodToJson(method, false)) }
       : {}),
     ...(entity.kind === 'class'
       ? {

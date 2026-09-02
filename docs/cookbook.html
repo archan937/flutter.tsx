@@ -161,7 +161,7 @@ main p { margin-bottom: 12px; }
     <a href="https://github.com/archan937/flutter.tsx" target="_blank" rel="noopener">GitHub ↗</a>
   </nav>
   <input id="search" type="search" placeholder="Search recipes…" autocomplete="off" spellcheck="false">
-  <div class="meta-info">61 recipes · Flutter 3.47.1</div>
+  <div class="meta-info">62 recipes · Flutter 3.47.1</div>
   <nav id="sidebar-nav">
 <details open>
 <summary>Start here<span class="nav-count">7</span></summary>
@@ -176,7 +176,7 @@ main p { margin-bottom: 12px; }
 </ul>
 </details>
 <details>
-<summary>State and effects<span class="nav-count">15</span></summary>
+<summary>State and effects<span class="nav-count">16</span></summary>
 <ul>
 <li data-name="Running code on mount"><a href="#06-mount-effect">Running code on mount</a></li>
 <li data-name="State shared across screens"><a href="#19-store-counter">State shared across screens</a></li>
@@ -193,6 +193,7 @@ main p { margin-bottom: 12px; }
 <li data-name="Reading what the framework knows"><a href="#58-build-context">Reading what the framework knows</a></li>
 <li data-name="A widget held by a name"><a href="#59-widget-local">A widget held by a name</a></li>
 <li data-name="Measuring the screen when a button is pressed"><a href="#61-static-in-handler">Measuring the screen when a button is pressed</a></li>
+<li data-name="Calling what you hold"><a href="#62-controller-methods">Calling what you hold</a></li>
 </ul>
 </details>
 <details>
@@ -1635,6 +1636,89 @@ export const TaskBoard = () =&gt; {
       children: [
         <span class="tok-typ">Text</span>(<span class="tok-str">'$_label at $_width'</span>),
         <span class="tok-typ">ElevatedButton</span>(onPressed: _measure, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Measure'</span>)),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section class="recipe" id="62-controller-methods" data-name="Calling what you hold">
+<h3>Calling what you hold</h3>
+<p class="blurb"><code>scroll.jumpTo(0)</code> — a controller a component owns answers to everything the SDK says it does, so holding one is worth something.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Scroller.tsx" role="tab" aria-selected="true">src/Scroller.tsx</button>
+<button class="tab-btn" data-tab="scroller.dart" role="tab" aria-selected="false">scroller.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Scroller.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> {
+  <span class="tok-typ">Column</span>,
+  <span class="tok-typ">ElevatedButton</span>,
+  <span class="tok-typ">ListView</span>,
+  <span class="tok-typ">RichText</span>,
+  <span class="tok-typ">ScrollController</span>,
+  <span class="tok-typ">Text</span>,
+  <span class="tok-typ">TextEditingController</span>,
+  useBuildContext,
+} <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Scroller</span> = () =&gt; {
+  <span class="tok-kw">const</span> ctx = <span class="tok-fn">useBuildContext</span>();
+  <span class="tok-kw">const</span> scroll = <span class="tok-kw">new</span> <span class="tok-typ">ScrollController</span>();
+  <span class="tok-kw">const</span> query = <span class="tok-kw">new</span> <span class="tok-typ">TextEditingController</span>();
+
+  <span class="tok-kw">const</span> top = () =&gt; {
+    scroll.<span class="tok-fn">jumpTo</span>(<span class="tok-num">0</span>);
+  };
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={top}&gt;Back to top&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+      &lt;<span class="tok-typ">RichText</span>
+        text={query.<span class="tok-fn">buildTextSpan</span>({ context: ctx, withComposing: <span class="tok-kw">false</span> })}
+      /&gt;
+      &lt;<span class="tok-typ">ListView</span> controller={scroll}&gt;
+        &lt;<span class="tok-typ">Text</span>&gt;One&lt;/<span class="tok-typ">Text</span>&gt;
+        &lt;<span class="tok-typ">Text</span>&gt;Two&lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;/<span class="tok-typ">ListView</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
+  );
+};</code></pre></div>
+<div class="tab-panel" data-panel="scroller.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">Scroller</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Scroller</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">Scroller</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_ScrollerState</span>();
+}
+
+<span class="tok-kw">class</span> _ScrollerState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">Scroller</span>&gt; {
+  <span class="tok-kw">final</span> <span class="tok-typ">ScrollController</span> _scroll = <span class="tok-typ">ScrollController</span>();
+  <span class="tok-kw">final</span> <span class="tok-typ">TextEditingController</span> _query = <span class="tok-typ">TextEditingController</span>();
+
+  @override
+  <span class="tok-kw">void</span> <span class="tok-fn">dispose</span>() {
+    _scroll.<span class="tok-fn">dispose</span>();
+    _query.<span class="tok-fn">dispose</span>();
+    <span class="tok-kw">super</span>.<span class="tok-fn">dispose</span>();
+  }
+
+  <span class="tok-kw">void</span> <span class="tok-fn">_top</span>() {
+    _scroll.<span class="tok-fn">jumpTo</span>(<span class="tok-num">0</span>);
+  }
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+      children: [
+        <span class="tok-typ">ElevatedButton</span>(onPressed: _top, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Back to top'</span>)),
+        <span class="tok-typ">RichText</span>(
+          text: _query.<span class="tok-fn">buildTextSpan</span>(context: context, withComposing: <span class="tok-kw">false</span>),
+        ),
+        <span class="tok-typ">ListView</span>(
+          controller: _scroll,
+          children: <span class="tok-kw">const</span> [<span class="tok-typ">Text</span>(<span class="tok-str">'One'</span>), <span class="tok-typ">Text</span>(<span class="tok-str">'Two'</span>)],
+        ),
       ],
     );
   }

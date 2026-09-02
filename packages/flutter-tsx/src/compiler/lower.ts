@@ -35,12 +35,7 @@ import type {
   RouterBinding,
   StoreBinding,
 } from './analyze';
-import {
-  animationCallLine,
-  lowerAnimations,
-  tickerMixin,
-  tweenCall,
-} from './animation';
+import { lowerAnimations, tickerMixin, tweenCall } from './animation';
 import {
   dartConstantName,
   listElementType,
@@ -140,6 +135,8 @@ export interface CompileContext {
   sdkNamedConstructors: Map<string, Map<string, ConstructorModel>>;
   /** `MediaQuery.of(context)` — every static a class or widget declares. */
   sdkStatics: Map<string, Map<string, StaticMethod>>;
+  /** `scroll.jumpTo(0)` — every method a value of a class answers to. */
+  sdkMethods: Map<string, Map<string, StaticMethod>>;
   /** `Foo.bar` — every static getter one declares. */
   sdkStaticGetters: Map<string, Set<string>>;
   /** Plugin classes an object literal can construct, by name. */
@@ -245,6 +242,7 @@ export const buildCompileContext = (
   >();
   const sdkNamedConstructors = new Map<string, Map<string, ConstructorModel>>();
   const sdkStatics = new Map<string, Map<string, StaticMethod>>();
+  const sdkMethods = new Map<string, Map<string, StaticMethod>>();
   const sdkStaticGetters = new Map<string, Set<string>>();
 
   for (const entity of snapshot.entities) {
@@ -260,6 +258,12 @@ export const buildCompileContext = (
         sdkStaticGetters.set(
           entity.name,
           new Set(entity.staticGetters.map((getter) => getter.name)),
+        );
+      }
+      if (entity.methods.length > 0) {
+        sdkMethods.set(
+          entity.name,
+          new Map(entity.methods.map((method) => [method.name, method])),
         );
       }
     }
@@ -336,6 +340,7 @@ export const buildCompileContext = (
     sdkNamedConstructors,
     sdkStatics,
     sdkStaticGetters,
+    sdkMethods,
     constants: new Map(),
     pluginConstructibles: new Map(),
     pluginConstructors: new Map(),
@@ -726,6 +731,9 @@ const CORE_CLASSES: ReadonlySet<string> = new Set([
 
 /** `FutureOr<T>` — a value or a Future of one, which Dart accepts either of. */
 const EITHER_TYPE = 'FutureOr';
+
+/** What `useAnimation` hands over, which is Flutter's own controller. */
+const ANIMATION_CONTROLLER = 'AnimationController';
 
 const SYMMETRIC_INSETS_KEYS = new Set(['horizontal', 'vertical']);
 const SIDE_INSETS_KEYS = new Set(['left', 'top', 'right', 'bottom']);
@@ -1503,6 +1511,49 @@ const irArgumentText = (value: IrValue): string =>
   });
 
 /**
+ * `scroll.jumpTo(0)` — a method on a value the component holds.
+ *
+ * Owning a controller is pointless without calling it, and what it answers
+ * to is what the SDK says it answers to.
+ */
+const lowerMethodCall = (
+  expression: ts.Expression,
+  context: LowerContext,
+): { value: IrValue; returns: TypeNode } | null => {
+  if (
+    !ts.isCallExpression(expression) ||
+    !ts.isPropertyAccessExpression(expression.expression) ||
+    !ts.isIdentifier(expression.expression.expression)
+  ) {
+    return null;
+  }
+  const receiver = expression.expression.expression.text;
+  const held = context.translate.memberReads.get(receiver);
+  const method = context.compile.sdkMethods
+    .get(held?.className ?? '')
+    ?.get(expression.expression.name.text);
+  if (held === undefined || method === undefined) {
+    return null;
+  }
+  const positional = method.params.filter((param) => !param.named);
+  const named = method.params.filter((param) => param.named);
+  const args = [...expression.arguments];
+  const options = named.length > 0 ? args[positional.length] : undefined;
+  const written = constructionValue(
+    {
+      className: held.receiver,
+      constructorName: method.name,
+      constructor: { params: method.params },
+    },
+    args,
+    context,
+  );
+  return options !== undefined && !ts.isObjectLiteralExpression(options)
+    ? null
+    : { value: written, returns: method.returnType };
+};
+
+/**
  * `MediaQuery.of(context)` — a static the SDK declares.
  *
  * This is how Flutter hands over what nothing constructs: the view a widget
@@ -1760,6 +1811,10 @@ const lowerExpression = (
   const fromStatic = lowerStaticCall(expression, context);
   if (fromStatic !== null) {
     return fromStatic.value;
+  }
+  const fromMethod = lowerMethodCall(expression, context);
+  if (fromMethod !== null) {
+    return fromMethod.value;
   }
   const constructed = lowerSdkConstruction(expression, type, context);
   if (constructed !== null) {
@@ -3544,16 +3599,10 @@ const lowerExpressionStatement = (
   if (storeLine !== null) {
     return [{ kind: 'dart', line: storeLine }];
   }
-  const animationLine =
-    expression === undefined
-      ? null
-      : animationCallLine(
-          expression,
-          (name) => context.animationNames.has(name),
-          (name) => translateIdentifier(name, context.translate),
-        );
-  if (animationLine !== null) {
-    return [{ kind: 'dart', line: animationLine }];
+  const methodStatement =
+    expression === undefined ? null : lowerMethodCall(expression, context);
+  if (methodStatement !== null) {
+    return [{ kind: 'expr', value: methodStatement.value }];
   }
   const stateName =
     expression !== undefined &&
@@ -4549,6 +4598,27 @@ export const lowerComponent = (
     ]),
   ]);
   const memberReads = new Map<string, MemberReadInfo>();
+  // A value the component owns is read and called through its field:
+  // `_scroll.jumpTo(0)`, `_fade.forward()`.
+  for (const owned of [
+    ...component.controllers.map((controller) => ({
+      name: controller.name,
+      className: controller.className,
+    })),
+    ...component.animations.map((animation) => ({
+      name: animation.name,
+      className: ANIMATION_CONTROLLER,
+    })),
+  ]) {
+    memberReads.set(owned.name, {
+      className: owned.className,
+      receiver: `_${owned.name}`,
+      nullable: false,
+      fields:
+        compile.sdkClassFields.get(owned.className) ??
+        new Map<string, TypeNode>(),
+    });
+  }
   // A prop or state holding a model has readable fields: `p.x` where p is a
   // Point. A State reaches its props through `widget`.
   const readsThroughWidget = statefulComponent(component);

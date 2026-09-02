@@ -65,6 +65,7 @@ const classEntity = (
   fields: [],
   statics: [],
   staticGetters: [],
+  methods: [],
   ...overrides,
 });
 
@@ -97,6 +98,7 @@ describe('deriveValueForms — constant unions', () => {
             fields: [],
             statics: [],
             staticGetters: [],
+            methods: [],
           }),
         ],
         { Swatch: ['Ink'] },
@@ -131,6 +133,7 @@ describe('deriveValueForms — constant unions', () => {
           fields: [],
           statics: [],
           staticGetters: [],
+          methods: [],
         }),
         classEntity('Offsets', {
           constants: [
@@ -140,6 +143,7 @@ describe('deriveValueForms — constant unions', () => {
           fields: [],
           statics: [],
           staticGetters: [],
+          methods: [],
         }),
       ]),
     );
@@ -164,6 +168,7 @@ describe('deriveValueForms — constant unions', () => {
           fields: [],
           statics: [],
           staticGetters: [],
+          methods: [],
         }),
         classEntity('Small', { constants: [namedConstant('loud', 'Tone')] }),
         classEntity('Aside', { constants: [namedConstant('quiet', 'Tone')] }),
@@ -227,6 +232,7 @@ describe('deriveValueForms — constructible value classes', () => {
         fields: [],
         statics: [],
         staticGetters: [],
+        methods: [],
       },
       classEntity('Style', {
         constructors: [defaultConstructor([param('tint', 'Swatch')])],
@@ -238,6 +244,7 @@ describe('deriveValueForms — constructible value classes', () => {
         fields: [],
         statics: [],
         staticGetters: [],
+        methods: [],
       }),
       classEntity('Orphan', {
         constructors: [defaultConstructor([param('tint', 'Swatch')])],
@@ -268,6 +275,7 @@ describe('deriveValueForms — constructible value classes', () => {
         fields: [],
         statics: [],
         staticGetters: [],
+        methods: [],
       },
     ]);
     const forms = deriveValueForms(snapshot);
@@ -291,6 +299,7 @@ describe('deriveValueForms — constructible value classes', () => {
           fields: [],
           statics: [],
           staticGetters: [],
+          methods: [],
         },
       ]),
     );

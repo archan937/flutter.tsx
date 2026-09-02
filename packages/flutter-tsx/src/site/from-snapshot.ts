@@ -24,15 +24,13 @@ import type {
 } from './model';
 import {
   type Constructible,
+  type Supplier,
   type SynthesisContext,
   synthesizeTsx,
 } from './synthesize';
 import { buildSiteTypes } from './types';
 
 const EMPTY_SLOTS: WidgetSlots = { children: null, slots: [] };
-
-/** The context Flutter hands values over through. */
-const BUILD_CONTEXT = 'BuildContext';
 
 const dartParamLine = (param: ParamModel): string => {
   const requiredPrefix = param.named && param.required ? 'required ' : '';
@@ -162,36 +160,44 @@ const constructionMap = (
  * an `AssetBundle`. Only a static taking exactly the build context counts:
  * anything else needs values of its own, which is a different question.
  */
-const supplierMap = (
-  snapshot: ApiSnapshot,
-): Map<string, { owner: string; method: string }> => {
-  const suppliers = new Map<string, { owner: string; method: string }>();
+const supplierMap = (snapshot: ApiSnapshot): Map<string, Supplier[]> => {
+  const suppliers = new Map<string, Supplier[]>();
   for (const entity of snapshot.entities) {
     if (entity.kind === 'enum') {
       continue;
     }
     for (const method of entity.statics) {
-      const [only] = method.params;
       const returned =
         method.returnType.kind === 'nullable'
           ? method.returnType.inner
           : method.returnType;
-      if (
-        method.params.length !== 1 ||
-        only?.type.kind !== 'named' ||
-        only.type.name !== BUILD_CONTEXT ||
-        returned.kind !== 'named' ||
-        // A shorter name is the plainer accessor: `of` over `maybeOf`.
-        (suppliers.get(returned.name)?.method.length ?? Infinity) <=
-          method.name.length
-      ) {
+      if (returned.kind !== 'named') {
         continue;
       }
-      suppliers.set(returned.name, {
-        owner: entity.name,
-        method: method.name,
-      });
+      // A static handing back a subclass supplies the base too:
+      // `initSurfaceAndroidView` gives a `PlatformViewController`.
+      const supplied = [
+        returned.name,
+        ...(snapshot.hierarchy[returned.name] ?? []),
+      ];
+      for (const name of supplied) {
+        suppliers.set(name, [
+          ...(suppliers.get(name) ?? []),
+          { owner: entity.name, method: method.name, params: method.params },
+        ]);
+      }
     }
+  }
+  // The plainest accessor first: fewest arguments, then the shorter name —
+  // `View.of(context)` before `View.maybeOf(context)`.
+  for (const candidates of suppliers.values()) {
+    candidates.sort(
+      (first, second) =>
+        first.params.filter((param) => param.required).length -
+          second.params.filter((param) => param.required).length ||
+        first.method.length - second.method.length ||
+        first.method.localeCompare(second.method),
+    );
   }
   return suppliers;
 };

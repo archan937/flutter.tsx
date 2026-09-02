@@ -221,7 +221,7 @@ const widgetBlocks = (widget: WidgetEntity, scope: WidgetScope): string[] => {
             )
             .join('\n')}\n  }>('${widget.name}')`,
         ]),
-    ...staticSurface(widget, readable),
+    ...staticSurface(widget, readable).map((type) => `{} as ${type}`),
   ];
   const component =
     carried.length === 0
@@ -248,6 +248,9 @@ const staticSurface = (
   entity: WidgetEntity | ClassEntity,
   readable: ReadableTypes,
 ): string[] => {
+  if (entity.statics.length === 0 && entity.staticGetters.length === 0) {
+    return [];
+  }
   const nameable = (node: TypeNode): boolean =>
     isDeclaredType(node, readable.declared, readable.enums);
   const methods = entity.statics.filter(
@@ -276,7 +279,7 @@ const staticSurface = (
       (getter) => `    readonly ${getter.name}: ${tsTypeOf(getter.type)};`,
     ),
   ];
-  return [`{} as {\n${members.join('\n')}\n  }`];
+  return [`{\n${members.join('\n')}\n  }`];
 };
 
 const isDeclaredType = (
@@ -417,10 +420,38 @@ const brandInterface = (
                 formNames,
               )};`,
           );
+  // What a value answers to: `scroll.jumpTo(0)`, `node.requestFocus()`.
+  // Only a method whose whole signature the surface can name is offered.
+  const methods =
+    entity === undefined || entity.kind === 'enum'
+      ? []
+      : entity.methods
+          .filter(
+            (method) =>
+              TS_IDENTIFIER.test(method.name) &&
+              isDeclaredType(method.returnType, declared, enumRefs) &&
+              method.params.every((param) =>
+                isDeclaredType(param.type, declared, enumRefs),
+              ),
+          )
+          .map((method) => {
+            const params = signatureParams(method.params, (param) =>
+              valueFormTsType(unwrapNullable(param.type), formNames),
+            );
+            // Written as a method, not as a property holding a function:
+            // TypeScript compares method signatures bivariantly, which is
+            // what lets a subclass narrow a parameter — `DoNothingAction`
+            // takes an `Intent` where `Action` takes whatever it is built
+            // for — and still be usable as its supertype.
+            return `  ${method.name}(${params}): ${tsTypeOf(
+              method.returnType,
+            )};`;
+          });
   return [
     `export interface ${name} {`,
     `  readonly __fsxBrand?: { ${brand} };`,
     ...fields,
+    ...methods,
     '}',
     ...ownedConstructor(name, entity, readable),
   ].join('\n');
@@ -470,7 +501,7 @@ export const constructorSurface = (
     signatureParams(constructor.params, (param) =>
       valueFormTsType(unwrapNullable(param.type), readable.forms),
     );
-  const unnamed = defaultConstructorOf(entity);
+  const unnamed = entity.isAbstract ? undefined : defaultConstructorOf(entity);
   const newable =
     unnamed === undefined || !writable(unnamed)
       ? null
@@ -486,11 +517,14 @@ export const constructorSurface = (
       (constructor) =>
         `  readonly ${constructor.name}: (${params(constructor)}) => ${name};`,
     );
-  if (newable === null && named.length === 0) {
+  // `PlatformViewsService` builds nothing and is never built: it is the name
+  // its statics hang off, and it still has to exist as a value.
+  const statics = staticSurface(entity, readable);
+  if (newable === null && named.length === 0 && statics.length === 0) {
     return null;
   }
   const members = named.length === 0 ? '' : `{\n${named.join('\n')}\n}`;
-  return [newable, members]
+  return [newable, members, ...statics]
     .filter((part) => part !== null && part !== '')
     .join(' & ');
 };
@@ -655,6 +689,11 @@ export const emitWidgetsFile = (
     if (entity.kind === 'enum') {
       continue;
     }
+    // A class that only carries statics — `PlatformViewsService` — is still
+    // a name a developer writes, so the surface declares it.
+    if (entity.statics.length > 0 || entity.staticGetters.length > 0) {
+      namedRefs.add(entity.name);
+    }
     for (const method of entity.statics) {
       collectRefs(method.returnType, namedRefs, enumRefs);
       handedValue(method.returnType, handed);
@@ -665,6 +704,15 @@ export const emitWidgetsFile = (
     for (const getter of entity.staticGetters) {
       collectRefs(getter.type, namedRefs, enumRefs);
       handedValue(getter.type, handed);
+    }
+    // A method's own signature is part of the surface: a subtype that could
+    // not declare one would stop being usable where its supertype is.
+    for (const method of entity.methods) {
+      collectRefs(method.returnType, namedRefs, enumRefs);
+      handedValue(method.returnType, handed);
+      for (const param of method.params) {
+        collectRefs(param.type, namedRefs, enumRefs);
+      }
     }
   }
   for (const name of formNames) {

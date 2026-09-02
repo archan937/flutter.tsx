@@ -3,7 +3,6 @@ import ts from 'typescript';
 
 import type { AnimationBinding } from '@src/compiler/analyze';
 import {
-  animationCallLine,
   lowerAnimations,
   tickerMixin,
   tweenCall,
@@ -80,40 +79,6 @@ describe('lowerAnimations', () => {
     // Repeating is what it does from the start, so it wins over playing once.
     expect(repeat?.startCall).toBe('repeat');
     expect(repeat?.field.initializer?.endsWith('..repeat()')).toBe(true);
-  });
-});
-
-describe('animationCallLine', () => {
-  const isAnimation = (name: string): boolean => name === 'fade';
-
-  test('a control the handle offers is the Dart call it is', () => {
-    expect(
-      animationCallLine(expressionOf('fade.reverse()'), isAnimation, asMember),
-    ).toBe('_fade.reverse();');
-  });
-
-  test('anything else is not one', () => {
-    // Not a call, not on an animation, not a control, and not argument-free:
-    // each is someone else's statement to lower.
-    expect(
-      animationCallLine(expressionOf('fade'), isAnimation, asMember),
-    ).toBeNull();
-    expect(
-      animationCallLine(expressionOf('other.forward()'), isAnimation, asMember),
-    ).toBeNull();
-    expect(
-      animationCallLine(expressionOf('fade.wobble()'), isAnimation, asMember),
-    ).toBeNull();
-    expect(
-      animationCallLine(expressionOf('fade.forward(1)'), isAnimation, asMember),
-    ).toBeNull();
-    expect(
-      animationCallLine(
-        expressionOf('fade.a.forward()'),
-        isAnimation,
-        asMember,
-      ),
-    ).toBeNull();
   });
 });
 

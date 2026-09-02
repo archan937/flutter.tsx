@@ -313,6 +313,7 @@ abstract class ConstructedEntity extends EntityModel {
     required this.fields,
     required this.statics,
     required this.staticGetters,
+    required this.methods,
   });
 
   final List<String> supertypes;
@@ -328,6 +329,10 @@ abstract class ConstructedEntity extends EntityModel {
 
   /// Static getters, which are the same thing without arguments.
   final List<FieldModel> staticGetters;
+
+  /// What a value of this type answers to: `scroll.jumpTo(0)`. Owning a
+  /// controller is pointless without them.
+  final List<MethodModel> methods;
 
   @override
   Map<String, Object?> toJson() => {
@@ -345,6 +350,8 @@ abstract class ConstructedEntity extends EntityModel {
       'statics': statics.map((method) => method.toJson()).toList(),
     if (staticGetters.isNotEmpty)
       'staticGetters': staticGetters.map((getter) => getter.toJson()).toList(),
+    if (methods.isNotEmpty)
+      'methods': methods.map((method) => method.toJson()).toList(),
   };
 }
 
@@ -359,6 +366,7 @@ class WidgetEntity extends ConstructedEntity {
     required super.fields,
     required super.statics,
     required super.staticGetters,
+    required super.methods,
   });
 
   @override
@@ -376,6 +384,7 @@ class ClassEntity extends ConstructedEntity {
     required super.fields,
     required super.statics,
     required super.staticGetters,
+    required super.methods,
     required this.disposable,
     required this.typeParams,
     required this.supertypeBindings,

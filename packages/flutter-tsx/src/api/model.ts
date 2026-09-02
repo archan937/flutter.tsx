@@ -94,6 +94,8 @@ export interface WidgetEntity extends EntityBase {
   statics: StaticMethod[];
   /** The same, without arguments: `SystemMouseCursors.basic`-style getters. */
   staticGetters: FieldModel[];
+  /** What a value of this type answers to: `scroll.jumpTo(0)`. */
+  methods: StaticMethod[];
 }
 
 export interface ClassEntity extends EntityBase {
@@ -104,6 +106,7 @@ export interface ClassEntity extends EntityBase {
   fields: FieldModel[];
   statics: StaticMethod[];
   staticGetters: FieldModel[];
+  methods: StaticMethod[];
   /** Whether a component owning one of these has to release it. */
   disposable: boolean;
   /** Whether nothing can build one: only a concrete subclass can be. */

@@ -158,6 +158,7 @@ const snapshot: ApiSnapshot = {
       fields: [],
       statics: [],
       staticGetters: [],
+      methods: [],
     },
     {
       kind: 'widget',
@@ -210,6 +211,7 @@ const snapshot: ApiSnapshot = {
       fields: [],
       statics: [],
       staticGetters: [],
+      methods: [],
     },
     {
       kind: 'class',
@@ -262,6 +264,7 @@ const snapshot: ApiSnapshot = {
       fields: [],
       statics: [],
       staticGetters: [],
+      methods: [],
     },
     {
       kind: 'class',
@@ -285,6 +288,7 @@ const snapshot: ApiSnapshot = {
       fields: [],
       statics: [],
       staticGetters: [],
+      methods: [],
     },
     {
       kind: 'enum',
@@ -522,6 +526,7 @@ describe('emitWidgetsFile value-form guards', () => {
           fields: [],
           statics: [],
           staticGetters: [],
+          methods: [],
         },
         {
           kind: 'widget',
@@ -557,6 +562,7 @@ describe('emitWidgetsFile value-form guards', () => {
           fields: [],
           statics: [],
           staticGetters: [],
+          methods: [],
         },
       ],
     };
@@ -685,6 +691,7 @@ describe('emitWidgetsFile — gesture props', () => {
     fields: [],
     statics: [],
     staticGetters: [],
+    methods: [],
   };
 
   const withDetector: ApiSnapshot = {
@@ -750,6 +757,7 @@ describe('emitWidgetsFile — gesture props', () => {
       fields: [],
       statics: [],
       staticGetters: [],
+      methods: [],
     };
     const emitted = emitWidgetsFile(
       {
@@ -836,6 +844,7 @@ describe('emitConstantsFile — IconName', () => {
         fields: [],
         statics: [],
         staticGetters: [],
+        methods: [],
       },
     ],
   };

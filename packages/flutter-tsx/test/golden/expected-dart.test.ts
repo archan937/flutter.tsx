@@ -79,6 +79,7 @@ describe('committed golden expected.dart files', () => {
       '59-widget-local',
       '60-button-style',
       '61-static-in-handler',
+      '62-controller-methods',
     ]);
   });
 

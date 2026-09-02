@@ -42,6 +42,7 @@ void main() {
           supertypeBindings: const {},
           statics: const [],
           staticGetters: const [],
+          methods: const [],
           isAbstract: false,
           fields: const [
             FieldModel(

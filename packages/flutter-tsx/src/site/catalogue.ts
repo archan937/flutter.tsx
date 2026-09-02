@@ -306,6 +306,12 @@ export const CATALOGUE: Readonly<Record<string, CatalogueEntry>> = {
       '`MediaQuery.of(useBuildContext())` inside a handler reads what the tree knows, and what it hands back is readable — `data.accessibleNavigation` and all.',
     category: 'State and effects',
   },
+  '62-controller-methods': {
+    title: 'Calling what you hold',
+    blurb:
+      '`scroll.jumpTo(0)` — a controller a component owns answers to everything the SDK says it does, so holding one is worth something.',
+    category: 'State and effects',
+  },
   '10-camera-options': {
     title: 'Choosing a camera resolution',
     blurb:
