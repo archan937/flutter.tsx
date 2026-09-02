@@ -76,6 +76,7 @@ describe('synthesizeTsx', () => {
         },
       ],
       complete: true,
+      unwritable: [],
     });
   });
 
@@ -98,6 +99,7 @@ describe('synthesizeTsx', () => {
         },
       ],
       complete: true,
+      unwritable: [],
     });
   });
 
@@ -117,6 +119,7 @@ describe('synthesizeTsx', () => {
       tsx: '<Splash ink={new InkSplash("example", { shade: "example" })} />',
       bindings: [],
       complete: true,
+      unwritable: [],
     });
   });
 
@@ -154,6 +157,7 @@ describe('synthesizeTsx', () => {
       tsx: '<Counter holder={new Holder(8)} />',
       bindings: [],
       complete: true,
+      unwritable: [],
     });
   });
 
@@ -171,6 +175,7 @@ describe('synthesizeTsx', () => {
       tsx: '<Radio value="example" />',
       bindings: [],
       complete: true,
+      unwritable: [],
     });
   });
 
@@ -186,6 +191,7 @@ describe('synthesizeTsx', () => {
       tsx: '<Shell badge={<Badge label="example" />} />',
       bindings: [],
       complete: true,
+      unwritable: [],
     });
   });
 
@@ -207,6 +213,9 @@ describe('synthesizeTsx', () => {
       tsx: '<Drift alignment={…} />',
       bindings: [],
       complete: false,
+      unwritable: [
+        { prop: 'alignment', type: 'x', reason: 'supplied-by-flutter' },
+      ],
     });
 
     expect(
@@ -232,6 +241,9 @@ describe('synthesizeTsx', () => {
       tsx: '<Splash ink={…} />',
       bindings: [],
       complete: false,
+      // `Ink` is a class the SDK builds; what it asks for is what is not
+      // yet written, so the work is ours rather than Flutter's.
+      unwritable: [{ prop: 'ink', type: 'x', reason: 'not-yet-expressible' }],
     });
   });
 
@@ -247,6 +259,7 @@ describe('synthesizeTsx', () => {
       tsx: '<Spacer />',
       bindings: [],
       complete: true,
+      unwritable: [],
     });
   });
 
@@ -270,6 +283,7 @@ describe('synthesizeTsx', () => {
       tsx: '<Probe label="example" count={8} scale={1} enabled={true} align="start" />',
       bindings: [],
       complete: true,
+      unwritable: [],
     });
   });
 
@@ -291,6 +305,7 @@ describe('synthesizeTsx', () => {
       tsx: '<Icon icon="add" padding={8} ornament={{}} />',
       bindings: [],
       complete: true,
+      unwritable: [],
     });
   });
 
@@ -313,6 +328,7 @@ describe('synthesizeTsx', () => {
       tsx: '<Pressable onClick={() => {}} />',
       bindings: [],
       complete: true,
+      unwritable: [],
     });
   });
 
@@ -332,6 +348,7 @@ describe('synthesizeTsx', () => {
       tsx: '<Quiet />',
       bindings: [],
       complete: true,
+      unwritable: [],
     });
   });
 
@@ -350,6 +367,9 @@ describe('synthesizeTsx', () => {
       tsx: '<Keys shortcuts={…} />',
       bindings: [],
       complete: false,
+      unwritable: [
+        { prop: 'shortcuts', type: 'x', reason: 'not-yet-expressible' },
+      ],
     });
   });
 
@@ -368,6 +388,7 @@ describe('synthesizeTsx', () => {
       tsx: '<Tags labels={{}} />',
       bindings: [],
       complete: true,
+      unwritable: [],
     });
   });
 
@@ -385,6 +406,11 @@ describe('synthesizeTsx', () => {
       tsx: '<Canvas painter={…} />',
       bindings: [],
       complete: false,
+      // Nothing here builds a CustomPainter, so it is a value Flutter
+      // supplies rather than one still to be written.
+      unwritable: [
+        { prop: 'painter', type: 'x', reason: 'supplied-by-flutter' },
+      ],
     });
   });
 
@@ -404,6 +430,7 @@ describe('synthesizeTsx', () => {
       tsx: '<Column>\n  <Text>Item 1</Text>\n  <Text>Item 2</Text>\n</Column>',
       bindings: [],
       complete: true,
+      unwritable: [],
     });
 
     const singleSlots: WidgetSlots = {
@@ -421,6 +448,7 @@ describe('synthesizeTsx', () => {
       tsx: '<Center>\n  <Text>Content</Text>\n</Center>',
       bindings: [],
       complete: true,
+      unwritable: [],
     });
 
     const textSlots: WidgetSlots = {
@@ -438,6 +466,7 @@ describe('synthesizeTsx', () => {
       tsx: '<Text>Hello world</Text>',
       bindings: [],
       complete: true,
+      unwritable: [],
     });
   });
 
@@ -471,6 +500,7 @@ describe('synthesizeTsx', () => {
       tsx: '<Frame title="example">\n  <Text>Content</Text>\n</Frame>',
       bindings: [],
       complete: true,
+      unwritable: [],
     });
   });
 
@@ -498,6 +528,7 @@ describe('synthesizeTsx', () => {
       tsx: '<Sheet header={<Text>Content</Text>} rows={[]} />',
       bindings: [],
       complete: true,
+      unwritable: [],
     });
   });
 });
@@ -536,6 +567,7 @@ describe('synthesizeTsx — assert-implied requirements', () => {
       tsx: '<Tooltip message="example">\n  <Text>Content</Text>\n</Tooltip>',
       bindings: [],
       complete: true,
+      unwritable: [],
     });
   });
 
@@ -573,6 +605,9 @@ describe('synthesizeTsx — assert-implied requirements', () => {
         '</BackdropFilter>',
       bindings: [],
       complete: false,
+      unwritable: [
+        { prop: 'filter', type: 'x', reason: 'supplied-by-flutter' },
+      ],
     });
   });
 
@@ -601,6 +636,7 @@ describe('synthesizeTsx — assert-implied requirements', () => {
       tsx: '<Sheet title="example" />',
       bindings: [],
       complete: true,
+      unwritable: [],
     });
   });
 });

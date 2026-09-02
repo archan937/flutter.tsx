@@ -237,6 +237,7 @@ describe('buildSitePage', () => {
           example: {
             tsx: '<Frame paint="main">\n  <Text>Content</Text>\n</Frame>',
             bindings: [],
+            unwritable: [],
             complete: true,
           },
           dartSignature: [

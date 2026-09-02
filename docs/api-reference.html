@@ -1795,7 +1795,7 @@ export const Shell = () =&gt; (
 <h2 id="about-verification">Verification</h2>
 <article class="widget" id="verification" data-name="verification">
 <h3>✓ typechecked — what the badge means</h3>
-<p class="doc">Every example carrying the badge is generated into a probe module and compiled by the TypeScript compiler against the published <code>flutter-tsx</code> package surface on every CI run. Examples showing a <code>{…}</code> placeholder need a value kind a later compiler step makes expressible (callbacks with bodies, controllers, animations); they are excluded from the probe and carry no badge until then.</p>
+<p class="doc">Every example carrying the badge is generated into a probe module, compiled by the TypeScript compiler against the published <code>flutter-tsx</code> package surface, transpiled to Dart and run through <code>flutter analyze</code> — on every CI run. An example without the badge says, under its prop table, exactly which values it could not write and why: either a value Flutter supplies to the widget, which nothing in the SDK builds, or a shape the compiler does not write yet. There is no third case, and a placeholder without a reason fails the build.</p>
 </article>
 <h2 id="core">Hooks &amp; core APIs</h2>
 <article class="widget" id="core-StateSetter" data-name="StateSetter">
@@ -3105,6 +3105,7 @@ animates.</p>
 <tr><td>ignoringSemantics</td><td>boolean</td><td>bool?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -3136,6 +3137,7 @@ animates.</p>
 <tr><td>action</td><td>Action</td><td>Action&lt;Intent&gt;</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+<p class="note"><code>action</code> (Action&lt;Intent&gt;) — a shape the compiler does not write yet.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -3168,6 +3170,7 @@ when invoking an [Action].</p>
 <tr><td>actions</td><td>Map&lt;Type, Action&gt;</td><td>Map&lt;Type, Action&lt;Intent&gt;&gt;</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+<p class="note"><code>actions</code> (Map&lt;Type, Action&lt;Intent&gt;&gt;) — a shape the compiler does not write yet.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -3201,6 +3204,7 @@ based on the child's size.</p>
 <tr><td>heightFactor</td><td>number</td><td>double?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -3234,6 +3238,7 @@ based on the child's size.</p>
 <tr><td>heightFactor</td><td>number</td><td>double?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -3277,6 +3282,7 @@ based on the child's size.</p>
 <tr><td>clipBehavior</td><td>Clip</td><td>Clip</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -3311,6 +3317,7 @@ based on the child's size.</p>
 <tr><td>gestureRecognizers</td><td>Factory[]</td><td>Set&lt;Factory&lt;OneSequenceGestureRecognizer&gt;&gt;</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+<p class="note"><code>controller</code> (AndroidViewController) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -3345,6 +3352,7 @@ position over a given duration whenever the given [alignment] changes.</p>
 <tr><td>onEnd</td><td>() =&gt; void</td><td>void Function()?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -3380,6 +3388,7 @@ position over a given duration whenever the given [alignment] changes.</p>
 <tr><td>builder</td><td>(context: BuildContext, child: FlutterElement | null) =&gt; FlutterElement</td><td>Widget Function(BuildContext, Widget?)</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -3430,6 +3439,7 @@ position over a given duration whenever the given [alignment] changes.</p>
 <tr><td>onEnd</td><td>() =&gt; void</td><td>void Function()?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -3485,6 +3495,7 @@ between their sizes.</p>
 <tr><td>onEnd</td><td>() =&gt; void</td><td>void Function()?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -3535,6 +3546,7 @@ changes.</p>
 <tr><td>onEnd</td><td>() =&gt; void</td><td>void Function()?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -3581,6 +3593,7 @@ changes.</p>
 <tr><td>onEnd</td><td>() =&gt; void</td><td>void Function()?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -3625,6 +3638,7 @@ in a grid.</p>
 <tr><td>scrollCacheExtent</td><td>ScrollCacheExtent</td><td>ScrollCacheExtent?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -3670,6 +3684,7 @@ in a grid.</p>
 <tr><td>scrollCacheExtent</td><td>ScrollCacheExtent</td><td>ScrollCacheExtent?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -3712,6 +3727,7 @@ and can be configured with an animated color value.</p>
 <tr><td>semanticsOnTapHint</td><td>string</td><td>String?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -3755,6 +3771,7 @@ opacity over a given duration whenever the given opacity changes.</p>
 <tr><td>alwaysIncludeSemantics</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -3792,6 +3809,7 @@ indentation over a given duration whenever the given inset changes.</p>
 <tr><td>onEnd</td><td>() =&gt; void</td><td>void Function()?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -3834,6 +3852,7 @@ indentation over a given duration whenever the given inset changes.</p>
 <tr><td>onEnd</td><td>() =&gt; void</td><td>void Function()?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -3882,6 +3901,7 @@ position over a given duration whenever the given position changes.</p>
 <tr><td>onEnd</td><td>() =&gt; void</td><td>void Function()?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -3929,6 +3949,7 @@ changes.</p>
 <tr><td>onEnd</td><td>() =&gt; void</td><td>void Function()?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -3972,6 +3993,7 @@ rotation over a given duration whenever the given rotation changes.</p>
 <tr><td>onEnd</td><td>() =&gt; void</td><td>void Function()?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4012,6 +4034,7 @@ scale over a given duration whenever the given scale changes.</p>
 <tr><td>onEnd</td><td>() =&gt; void</td><td>void Function()?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4052,6 +4075,7 @@ duration whenever the given child's size changes.</p>
 <tr><td>onEnd</td><td>() =&gt; void</td><td>void Function()?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4090,6 +4114,7 @@ offset relative to its normal position whenever the given offset changes.</p>
 <tr><td>onEnd</td><td>() =&gt; void</td><td>void Function()?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4128,6 +4153,7 @@ widget previously set on the [AnimatedSwitcher] as a child.</p>
 <tr><td>layoutBuilder</td><td>(currentChild: FlutterElement | null, previousChildren: FlutterElement[]) =&gt; FlutterElement</td><td>Widget Function(Widget?, List&lt;Widget&gt;)</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4163,6 +4189,7 @@ widget previously set on the [AnimatedSwitcher] as a child.</p>
 <tr><td>sized</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4198,6 +4225,7 @@ widget previously set on the [AnimatedSwitcher] as a child.</p>
 <tr><td>gestureRecognizers</td><td>Factory[]</td><td>Set&lt;Factory&lt;OneSequenceGestureRecognizer&gt;&gt;?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4230,6 +4258,7 @@ widget previously set on the [AnimatedSwitcher] as a child.</p>
 <tr><td>aspectRatio</td><td>number</td><td>double</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4260,6 +4289,7 @@ highlighted for keyboard navigation.</p>
 <tr><td>highlightIndexNotifier</td><td>ValueNotifier</td><td>ValueNotifier&lt;int&gt;</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4289,6 +4319,7 @@ highlighted for keyboard navigation.</p>
 <tr><td>onDisposeAction</td><td>AutofillContextAction</td><td>AutofillContextAction</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4317,6 +4348,7 @@ highlighted for keyboard navigation.</p>
 <tr><td>children</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4345,6 +4377,7 @@ highlighted for keyboard navigation.</p>
 <tr><td>onBackButtonPressed</td><td>() =&gt; Promise&lt;boolean&gt;</td><td>Future&lt;bool&gt; Function()</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4379,6 +4412,7 @@ paints [child].</p>
 <tr><td>backdropGroupKey</td><td>BackdropKey</td><td>BackdropKey?</td><td class="req"></td></tr>
 </tbody>
 </table>
+<p class="note"><code>filter</code> (ImageFilter?) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4413,6 +4447,7 @@ widgets that opt into using it.</p>
 <tr><td>backdropKey</td><td>BackdropKey</td><td>BackdropKey?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4448,6 +4483,7 @@ widgets that opt into using it.</p>
 <tr><td>shadow</td><td>BoxShadowValue</td><td>BoxShadow</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4484,6 +4520,7 @@ widgets that opt into using it.</p>
 <tr><td>baselineType</td><td>TextBaseline</td><td>TextBaseline</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4515,6 +4552,7 @@ in the same semantic container.</p>
 <tr><td>blocking</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4544,6 +4582,7 @@ in the same semantic container.</p>
 <tr><td>builder</td><td>(context: BuildContext) =&gt; FlutterElement</td><td>Widget Function(BuildContext)</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4570,6 +4609,7 @@ in the same semantic container.</p>
 <tr><td>bindings</td><td>Map&lt;ShortcutActivator, () =&gt; void&gt;</td><td>Map&lt;ShortcutActivator, void Function()&gt;</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+<p class="note"><code>bindings</code> (Map&lt;ShortcutActivator, void Function()&gt;) — a shape the compiler does not write yet.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4600,6 +4640,7 @@ in the same semantic container.</p>
 <tr><td>heightFactor</td><td>number</td><td>double?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4630,6 +4671,7 @@ in the same semantic container.</p>
 <tr><td>children</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4659,6 +4701,7 @@ in the same semantic container.</p>
 <tr><td>clipBehavior</td><td>Clip</td><td>Clip</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4690,6 +4733,7 @@ in the same semantic container.</p>
 <tr><td>clipBehavior</td><td>Clip</td><td>Clip</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4722,6 +4766,7 @@ in the same semantic container.</p>
 <tr><td>clipBehavior</td><td>Clip</td><td>Clip</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4755,6 +4800,7 @@ in the same semantic container.</p>
 <tr><td>clipBehavior</td><td>Clip</td><td>Clip</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4787,6 +4833,7 @@ in the same semantic container.</p>
 <tr><td>clipBehavior</td><td>Clip</td><td>Clip</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4817,6 +4864,7 @@ in the same semantic container.</p>
 <tr><td>colorFilter</td><td>ColorFilter</td><td>ColorFilter</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+<p class="note"><code>colorFilter</code> (ColorFilter) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4848,6 +4896,7 @@ child on top of that color.</p>
 <tr><td>isAntiAlias</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4884,6 +4933,7 @@ child on top of that color.</p>
 <tr><td>spacing</td><td>number</td><td>double</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4924,6 +4974,7 @@ child on top of that color.</p>
 <tr><td>followerAnchor</td><td>AlignmentValue</td><td>Alignment</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4963,6 +5014,7 @@ child on top of that color.</p>
 <tr><td>link</td><td>LayerLink</td><td>LayerLink</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -4998,6 +5050,7 @@ child on top of that color.</p>
 <tr><td>constraints</td><td>BoxConstraintsValue</td><td>BoxConstraints</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5033,6 +5086,7 @@ clipping, or treating the overflow as an error.</p>
 <tr><td>debugTransformType</td><td>string</td><td>String</td><td class="req"></td></tr>
 </tbody>
 </table>
+<p class="note"><code>constraintsTransform</code> (BoxConstraints Function(BoxConstraints)) — a shape the compiler does not write yet.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5079,6 +5133,7 @@ widgets.</p>
 <tr><td>clipBehavior</td><td>Clip</td><td>Clip</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5120,6 +5175,7 @@ widgets.</p>
 <tr><td>delegate</td><td>MultiChildLayoutDelegate</td><td>MultiChildLayoutDelegate</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+<p class="note"><code>delegate</code> (MultiChildLayoutDelegate) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5154,6 +5210,7 @@ widgets.</p>
 <tr><td>willChange</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5204,6 +5261,7 @@ widgets.</p>
 <tr><td>hitTestBehavior</td><td>HitTestBehavior</td><td>HitTestBehavior</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5248,6 +5306,7 @@ widgets.</p>
 <tr><td>delegate</td><td>SingleChildLayoutDelegate</td><td>SingleChildLayoutDelegate</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5278,6 +5337,7 @@ widgets.</p>
 <tr><td>position</td><td>DecorationPosition</td><td>DecorationPosition</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5310,6 +5370,7 @@ of its [Decoration].</p>
 <tr><td>position</td><td>DecorationPosition</td><td>DecorationPosition</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5348,6 +5409,7 @@ paints.</p>
 <tr><td>sliver</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5376,6 +5438,7 @@ paints.</p>
 <tr><td>bundle</td><td>AssetBundle</td><td>AssetBundle</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5408,6 +5471,7 @@ don't have an explicit style.</p>
 <tr><td>mouseCursor</td><td>MouseCursorValue</td><td>MouseCursor?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5438,6 +5502,7 @@ don't have an explicit style.</p>
 <tr><td>children</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5467,6 +5532,7 @@ widgets which have not explicitly set [Text.textHeightBehavior].</p>
 <tr><td>textHeightBehavior</td><td>TextHeightBehaviorValue</td><td>TextHeightBehavior</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5503,6 +5569,7 @@ explicit style.</p>
 <tr><td>textHeightBehavior</td><td>TextHeightBehaviorValue</td><td>TextHeightBehavior?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5543,6 +5610,7 @@ of its [TextStyle].</p>
 <tr><td>maxLines</td><td>number</td><td>int?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5581,6 +5649,7 @@ of its [TextStyle].</p>
 <tr><td>builder</td><td>(context: BuildContext, orientation: Orientation) =&gt; FlutterElement</td><td>Widget Function(BuildContext, Orientation)</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5608,6 +5677,7 @@ text-direction-sensitive render objects.</p>
 <tr><td>textDirection</td><td>TextDirection</td><td>TextDirection</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5636,6 +5706,7 @@ text-direction-sensitive render objects.</p>
 <tr><td>children</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5676,6 +5747,7 @@ text-direction-sensitive render objects.</p>
 <tr><td>behavior</td><td>HitTestBehavior</td><td>HitTestBehavior</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5718,6 +5790,7 @@ splits the screen into sub-screens.</p>
 <tr><td>anchorPoint</td><td>OffsetValue</td><td>Offset?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5746,6 +5819,7 @@ splits the screen into sub-screens.</p>
 <tr><td>children</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5780,6 +5854,7 @@ splits the screen into sub-screens.</p>
 <tr><td>hitTestBehavior</td><td>HitTestBehavior</td><td>HitTestBehavior</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5830,6 +5905,7 @@ splits the screen into sub-screens.</p>
 <tr><td>allowedButtonsFilter</td><td>(buttons: number) =&gt; boolean</td><td>bool Function(int)?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5876,6 +5952,7 @@ should reset its position to the initial state.</p>
 <tr><td>children</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5913,6 +5990,7 @@ the scrollable until a limit is reached, and then scrolling.</p>
 <tr><td>builder</td><td>(context: BuildContext, scrollController: ScrollController) =&gt; FlutterElement</td><td>Widget Function(BuildContext, ScrollController)</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -5951,6 +6029,7 @@ the scrollable until a limit is reached, and then scrolling.</p>
 <tr><td>reverseBuilder</td><td>(context: BuildContext, animation: Animation, child: FlutterElement | null) =&gt; FlutterElement</td><td>Widget Function(BuildContext, Animation&lt;double&gt;, Widget?)</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -6062,6 +6141,7 @@ the scrollable until a limit is reached, and then scrolling.</p>
 <tr><td>enableInlinePrediction</td><td>boolean</td><td>bool?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -6169,6 +6249,7 @@ the scrollable until a limit is reached, and then scrolling.</p>
 <tr><td>children</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -6196,6 +6277,7 @@ the scrollable until a limit is reached, and then scrolling.</p>
 <tr><td>exception</td><td>ObjectValue</td><td>Object</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -6222,6 +6304,7 @@ focusable.</p>
 <tr><td>excluding</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -6252,6 +6335,7 @@ traversable.</p>
 <tr><td>excluding</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -6281,6 +6365,7 @@ traversable.</p>
 <tr><td>excluding</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -6311,6 +6396,7 @@ so that the child fills the available space.</p>
 <tr><td>flex</td><td>number</td><td>int</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -6347,6 +6433,7 @@ so that the child fills the available space.</p>
 <tr><td>maintainState</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -6409,6 +6496,7 @@ loading, then fades in the new image when it loads.</p>
 <tr><td>matchTextDirection</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -6458,6 +6546,7 @@ loading, then fades in the new image when it loads.</p>
 <tr><td>alwaysIncludeSemantics</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -6496,6 +6585,7 @@ loading, then fades in the new image when it loads.</p>
 <tr><td>clipBehavior</td><td>Clip</td><td>Clip</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -6535,6 +6625,7 @@ loading, then fades in the new image when it loads.</p>
 <tr><td>spacing</td><td>number</td><td>double</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -6574,6 +6665,7 @@ loading, then fades in the new image when it loads.</p>
 <tr><td>fit</td><td>FlexFit</td><td>FlexFit</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -6606,6 +6698,7 @@ logic in a [FlowDelegate].</p>
 <tr><td>clipBehavior</td><td>Clip</td><td>Clip</td><td class="req"></td></tr>
 </tbody>
 </table>
+<p class="note"><code>delegate</code> (FlowDelegate) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -6641,6 +6734,7 @@ For guidelines on using the Flutter logo, visit https://flutter.dev/brand.</p>
 <tr><td>curve</td><td>CurveValue</td><td>Curve</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -6683,6 +6777,7 @@ to this widget and its descendants.</p>
 <tr><td>debugLabel</td><td>string</td><td>String?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -6735,6 +6830,7 @@ descendants, restricting focus traversal to the scoped controls.</p>
 <tr><td>descendantsAreTraversable</td><td>boolean</td><td>bool?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -6780,6 +6876,7 @@ its descendants, grouping them into a separate traversal group.</p>
 <tr><td>parentNode</td><td>FocusNode</td><td>FocusNode?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -6814,6 +6911,7 @@ should be traversed.</p>
 <tr><td>order</td><td>FocusOrder</td><td>FocusOrder</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -6857,6 +6955,7 @@ highlights.</p>
 <tr><td>includeFocusSemantics</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -6903,6 +7002,7 @@ highlights.</p>
 <tr><td>autovalidateMode</td><td>AutovalidateMode</td><td>AutovalidateMode?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -6945,6 +7045,7 @@ highlights.</p>
 <tr><td>restorationId</td><td>string</td><td>String?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -6981,6 +7082,7 @@ highlights.</p>
 <tr><td>transformHitTests</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -7015,6 +7117,7 @@ For more details about the layout algorithm, see
 <tr><td>heightFactor</td><td>number</td><td>double?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -7048,6 +7151,7 @@ a [Future].</p>
 <tr><td>builder</td><td>(context: BuildContext, snapshot: AsyncSnapshot) =&gt; FlutterElement</td><td>Widget Function(BuildContext, AsyncSnapshot&lt;T&gt;)</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+<p class="note"><code>future</code> (Future&lt;T&gt;?) — a shape the compiler does not write yet.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -7139,6 +7243,7 @@ a [Future].</p>
 <tr><td>supportedDevices</td><td>PointerDeviceKind[]</td><td>Set&lt;PointerDeviceKind&gt;?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -7235,6 +7340,7 @@ a [Future].</p>
 <tr><td>notificationPredicate</td><td>(notification: ScrollNotification) =&gt; boolean</td><td>bool Function(ScrollNotification)</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -7271,6 +7377,7 @@ a [Future].</p>
 <tr><td>subdivisions</td><td>number</td><td>int</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -7321,6 +7428,7 @@ a [Future].</p>
 <tr><td>hitTestBehavior</td><td>HitTestBehavior</td><td>HitTestBehavior</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -7376,6 +7484,7 @@ a [Future].</p>
 <tr><td>reverseCurve</td><td>CurveValue</td><td>Curve?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -7411,6 +7520,7 @@ a [Future].</p>
 <tr><td>controller</td><td>HeroController</td><td>HeroController</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -7446,6 +7556,7 @@ a [Future].</p>
 <tr><td>enabled</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -7477,6 +7588,7 @@ a [Future].</p>
 <tr><td>hitTestBehavior</td><td>PlatformViewHitTestBehavior</td><td>PlatformViewHitTestBehavior</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -7518,6 +7630,7 @@ an [IconData] such as material's predefined [IconData]s in [Icons].</p>
 <tr><td>fontWeight</td><td>FontWeightValue</td><td>FontWeight?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -7556,6 +7669,7 @@ an [IconData] such as material's predefined [IconData]s in [Icons].</p>
 <tr><td>data</td><td>IconThemeDataValue</td><td>IconThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -7585,6 +7699,7 @@ of baseline alignment.</p>
 <tr><td>children</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -7614,6 +7729,7 @@ of baseline alignment.</p>
 <tr><td>ignoringSemantics</td><td>boolean</td><td>bool?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -7661,6 +7777,7 @@ of baseline alignment.</p>
 <tr><td>filterQuality</td><td>FilterQuality</td><td>FilterQuality</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -7706,6 +7823,7 @@ of baseline alignment.</p>
 <tr><td>enabled</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+<p class="note"><code>imageFilter</code> (ImageFilter) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -7739,6 +7857,7 @@ of baseline alignment.</p>
 <tr><td>useOriginalColors</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -7769,6 +7888,7 @@ of baseline alignment.</p>
 <tr><td>index</td><td>number</td><td>int</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -7802,6 +7922,7 @@ of baseline alignment.</p>
 <tr><td>index</td><td>number</td><td>int?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -7851,6 +7972,7 @@ of baseline alignment.</p>
 <tr><td>trackpadScrollCausesScale</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -7894,6 +8016,7 @@ of baseline alignment.</p>
 <tr><td>children</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -7923,6 +8046,7 @@ of baseline alignment.</p>
 <tr><td>stepHeight</td><td>number</td><td>double?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -7954,6 +8078,7 @@ would otherwise remove it.</p>
 <tr><td>keepAlive</td><td>boolean</td><td>bool</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -7987,6 +8112,7 @@ on a keyboard.</p>
 <tr><td>onKeyEvent</td><td>(value: KeyEvent) =&gt; void</td><td>void Function(KeyEvent)?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8024,6 +8150,7 @@ on a keyboard.</p>
 <tr><td>children</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8051,6 +8178,7 @@ on a keyboard.</p>
 <tr><td>builder</td><td>(context: BuildContext, constraints: BoxConstraints) =&gt; FlutterElement</td><td>Widget Function(BuildContext, BoxConstraints)</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8077,6 +8205,7 @@ on a keyboard.</p>
 <tr><td>id</td><td>ObjectValue</td><td>Object</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8107,6 +8236,7 @@ on a keyboard.</p>
 <tr><td>maxHeight</td><td>number</td><td>double</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8139,6 +8269,7 @@ them to the dimension of the parent in the other axis.</p>
 <tr><td>reverse</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8190,6 +8321,7 @@ them to the dimension of the parent in the other axis.</p>
 <tr><td>hitTestBehavior</td><td>HitTestBehavior</td><td>HitTestBehavior</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8257,6 +8389,7 @@ them to the dimension of the parent in the other axis.</p>
 <tr><td>changeReportingBehavior</td><td>ChangeReportingBehavior</td><td>ChangeReportingBehavior</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8314,6 +8447,7 @@ them to the dimension of the parent in the other axis.</p>
 <tr><td>clipBehavior</td><td>Clip</td><td>Clip</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8353,6 +8487,7 @@ changes.</p>
 <tr><td>builder</td><td>(context: BuildContext, child: FlutterElement | null) =&gt; FlutterElement</td><td>Widget Function(BuildContext, Widget?)</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8398,6 +8533,7 @@ changes.</p>
 <tr><td>behavior</td><td>HitTestBehavior</td><td>HitTestBehavior</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8439,6 +8575,7 @@ child depends on.</p>
 <tr><td>isApplicationLevel</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8488,6 +8625,7 @@ child depends on.</p>
 <tr><td>rootOverlay</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8535,6 +8673,7 @@ boundary via the static lookup methods provided by the boundary.</p>
 <tr><td>children</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8566,6 +8705,7 @@ boundary via the static lookup methods provided by the boundary.</p>
 <tr><td>filterQuality</td><td>FilterQuality</td><td>FilterQuality?</td><td class="req"></td></tr>
 </tbody>
 </table>
+<p class="note"><code>onTransform</code> (Matrix4 Function(double)) — a shape the compiler does not write yet.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8604,6 +8744,7 @@ boundary via the static lookup methods provided by the boundary.</p>
 <tr><td>data</td><td>MediaQueryDataValue</td><td>MediaQueryData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8632,6 +8773,7 @@ boundary via the static lookup methods provided by the boundary.</p>
 <tr><td>children</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8661,6 +8803,7 @@ boundary via the static lookup methods provided by the boundary.</p>
 <tr><td>behavior</td><td>HitTestBehavior</td><td>HitTestBehavior</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8696,6 +8839,7 @@ boundary via the static lookup methods provided by the boundary.</p>
 <tr><td>semanticsOnTapHint</td><td>string</td><td>String?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8733,6 +8877,7 @@ boundary via the static lookup methods provided by the boundary.</p>
 <tr><td>hitTestBehavior</td><td>HitTestBehavior</td><td>HitTestBehavior?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8772,6 +8917,7 @@ navigation bar such as in Material Design and in iOS.</p>
 <tr><td>middleSpacing</td><td>number</td><td>double</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8815,6 +8961,7 @@ navigation bar such as in Material Design and in iOS.</p>
 <tr><td>onDidRemovePage</td><td>(page: Page) =&gt; void</td><td>void Function(Page&lt;Object?&gt;)?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8857,6 +9004,7 @@ navigation bar such as in Material Design and in iOS.</p>
 <tr><td>enabled</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8899,6 +9047,7 @@ their scroll positions being intrinsically linked.</p>
 <tr><td>scrollBehavior</td><td>ScrollBehavior</td><td>ScrollBehavior?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8944,6 +9093,7 @@ their scroll positions being intrinsically linked.</p>
 <tr><td>clipBehavior</td><td>Clip</td><td>Clip</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8983,6 +9133,7 @@ their scroll positions being intrinsically linked.</p>
 <tr><td>onNotification</td><td>(notification: unknown) =&gt; boolean</td><td>bool Function(T)?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9014,6 +9165,7 @@ without taking any room in the parent.</p>
 <tr><td>offstage</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9044,6 +9196,7 @@ without taking any room in the parent.</p>
 <tr><td>alwaysIncludeSemantics</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9074,6 +9227,7 @@ without taking any room in the parent.</p>
 <tr><td>builder</td><td>(context: BuildContext, orientation: Orientation) =&gt; FlutterElement</td><td>Widget Function(BuildContext, Orientation)</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9107,6 +9261,7 @@ them out in a column instead.</p>
 <tr><td>textDirection</td><td>TextDirection</td><td>TextDirection?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9148,6 +9303,7 @@ from its parent, possibly allowing the child to overflow the parent.</p>
 <tr><td>fit</td><td>OverflowBoxFit</td><td>OverflowBoxFit</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9183,6 +9339,7 @@ from its parent, possibly allowing the child to overflow the parent.</p>
 <tr><td>alwaysSizeToContent</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9213,6 +9370,7 @@ from its parent, possibly allowing the child to overflow the parent.</p>
 <tr><td>overlayLocation</td><td>OverlayChildLocation</td><td>OverlayChildLocation</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9250,6 +9408,7 @@ from its parent, possibly allowing the child to overflow the parent.</p>
 <tr><td>padding</td><td>EdgeInsetsGeometryValue</td><td>EdgeInsetsGeometry</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9280,6 +9439,7 @@ being destroyed.</p>
 <tr><td>bucket</td><td>PageStorageBucket</td><td>PageStorageBucket</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9328,6 +9488,7 @@ being destroyed.</p>
 <tr><td>padEnds</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9370,6 +9531,7 @@ being destroyed.</p>
 <tr><td>optionsMask</td><td>number</td><td>int</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9401,6 +9563,7 @@ being destroyed.</p>
 <tr><td>shadowColor</td><td>ColorValue</td><td>Color</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9439,6 +9602,7 @@ being destroyed.</p>
 <tr><td>shadowColor</td><td>ColorValue</td><td>Color</td><td class="req"></td></tr>
 </tbody>
 </table>
+<p class="note"><code>clipper</code> (CustomClipper&lt;Path&gt;) — a shape the compiler does not write yet.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9471,6 +9635,7 @@ being destroyed.</p>
 <tr><td>children</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9503,6 +9668,7 @@ be added.</p>
 <tr><td>fallbackHeight</td><td>number</td><td>double</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9536,6 +9702,7 @@ menu described by a [PlatformMenu]/[PlatformMenuItem] hierarchy.</p>
 <tr><td>menus</td><td>PlatformMenuItem[]</td><td>List&lt;PlatformMenuItem&gt;</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9564,6 +9731,7 @@ menu described by a [PlatformMenu]/[PlatformMenuItem] hierarchy.</p>
 <tr><td>children</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9593,6 +9761,7 @@ menu described by a [PlatformMenu]/[PlatformMenuItem] hierarchy.</p>
 <tr><td>viewType</td><td>string</td><td>String</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+<p class="note"><code>onCreatePlatformView</code> (PlatformViewController Function(PlatformViewCreationParams)) — a shape the compiler does not write yet.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9622,6 +9791,7 @@ menu described by a [PlatformMenu]/[PlatformMenuItem] hierarchy.</p>
 <tr><td>gestureRecognizers</td><td>Factory[]</td><td>Set&lt;Factory&lt;OneSequenceGestureRecognizer&gt;&gt;</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+<p class="note"><code>controller</code> (PlatformViewController) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9652,6 +9822,7 @@ menu described by a [PlatformMenu]/[PlatformMenuItem] hierarchy.</p>
 <tr><td>onPopInvoked</td><td>(didPop: boolean) =&gt; void</td><td>void Function(bool)?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9688,6 +9859,7 @@ menu described by a [PlatformMenu]/[PlatformMenuItem] hierarchy.</p>
 <tr><td>height</td><td>number</td><td>double?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9728,6 +9900,7 @@ committing to a specific [TextDirection].</p>
 <tr><td>height</td><td>number</td><td>double?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9764,6 +9937,7 @@ position to an end position over the lifetime of the animation.</p>
 <tr><td>rect</td><td>Animation</td><td>Animation&lt;RelativeRect&gt;</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9799,6 +9973,7 @@ position to an end position over the lifetime of the animation.</p>
 <tr><td>preferredSize</td><td>SizeValue</td><td>Size</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9830,6 +10005,7 @@ position to an end position over the lifetime of the animation.</p>
 <tr><td>scrollDirection</td><td>Axis</td><td>Axis?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9868,6 +10044,7 @@ position to an end position over the lifetime of the animation.</p>
 <tr><td>onChanged</td><td>(value: unknown | null) =&gt; void</td><td>void Function(T?)</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9907,6 +10084,7 @@ choosing from among a list of options.</p>
 <tr><td>initialValue</td><td>TextEditingValueValue</td><td>TextEditingValue?</td><td class="req"></td></tr>
 </tbody>
 </table>
+<p class="note"><code>optionsBuilder</code> (FutureOr&lt;Iterable&lt;T&gt;&gt; Function(TextEditingValue)) — a shape the compiler does not write yet.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9945,6 +10123,7 @@ factories.</p>
 <tr><td>semantics</td><td>SemanticsGestureDelegate</td><td>SemanticsGestureDelegate?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -9991,6 +10170,7 @@ factories.</p>
 <tr><td>isAntiAlias</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -10036,6 +10216,7 @@ on a keyboard.</p>
 <tr><td>onKey</td><td>(value: RawKeyEvent) =&gt; void</td><td>void Function(RawKeyEvent)?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -10078,6 +10259,7 @@ on a keyboard.</p>
 <tr><td>size</td><td>SizeValue</td><td>Size</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -10120,6 +10302,7 @@ on a keyboard.</p>
 <tr><td>overlayBuilder</td><td>(context: BuildContext, info: RawMenuOverlayInfo) =&gt; FlutterElement</td><td>Widget Function(BuildContext, RawMenuOverlayInfo)</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -10165,6 +10348,7 @@ on a keyboard.</p>
 <tr><td>controller</td><td>MenuController</td><td>MenuController</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -10206,6 +10390,7 @@ on a keyboard.</p>
 <tr><td>builder</td><td>(context: BuildContext, state: ToggleableStateMixin) =&gt; FlutterElement</td><td>Widget Function(BuildContext, ToggleableStateMixin&lt;StatefulWidget&gt;)</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+<p class="note"><code>groupRegistry</code> (RadioGroupRegistry&lt;T&gt;?) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -10265,6 +10450,7 @@ on a keyboard.</p>
 <tr><td>padding</td><td>EdgeInsetsGeometryValue</td><td>EdgeInsetsGeometry?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -10326,6 +10512,7 @@ user interactions, such as hovering or long-pressing.</p>
 <tr><td>ignorePointer</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -10369,6 +10556,7 @@ for a view.</p>
 <tr><td>deprecatedDoNotUseWillBeRemovedWithoutNoticeRenderView</td><td>RenderView</td><td>RenderView?</td><td class="req"></td></tr>
 </tbody>
 </table>
+<p class="note"><code>view</code> (FlutterView) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -10403,6 +10591,7 @@ specified [size].</p>
 <tr><td>size</td><td>SizeValue</td><td>Size</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -10440,6 +10629,7 @@ specified [size].</p>
 <tr><td>debugShortDescription</td><td>string</td><td>String?</td><td class="req"></td></tr>
 </tbody>
 </table>
+<p class="note"><code>container</code> (RenderObjectWithChildMixin&lt;T&gt;) — a shape the compiler does not write yet.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -10472,6 +10662,7 @@ a drag operation on the wrapped item in the reorderable list.</p>
 <tr><td>enabled</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -10505,6 +10696,7 @@ wrapped item to a new location in a reorderable list.</p>
 <tr><td>enabled</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -10560,6 +10752,7 @@ list items.</p>
 <tr><td>dragBoundaryProvider</td><td>(context: BuildContext) =&gt; DragBoundaryDelegate | null</td><td>DragBoundaryDelegate&lt;Rect&gt;? Function(BuildContext)?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -10610,6 +10803,7 @@ list items.</p>
 <tr><td>children</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -10643,6 +10837,7 @@ list items.</p>
 <tr><td>builder</td><td>(context: BuildContext, value: unknown, child: FlutterElement | null) =&gt; FlutterElement</td><td>Widget Function(BuildContext, T, Widget?)</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+<p class="note"><code>animatable</code> (Animatable&lt;T&gt;) — a shape the compiler does not write yet.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -10678,6 +10873,7 @@ list items.</p>
 <tr><td>restorationId</td><td>string | null</td><td>String?</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -10719,6 +10915,7 @@ list items.</p>
 <tr><td>selectionColor</td><td>ColorValue</td><td>Color?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -10759,6 +10956,7 @@ tree and makes it available to descendants via [RestorationScope.of].</p>
 <tr><td>restorationId</td><td>string | null</td><td>String?</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -10788,6 +10986,7 @@ tree and makes it available to descendants via [RestorationScope.of].</p>
 <tr><td>debugShortDescription</td><td>string</td><td>String?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -10817,6 +11016,7 @@ tree and makes it available to descendants via [RestorationScope.of].</p>
 <tr><td>quarterTurns</td><td>number</td><td>int</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -10848,6 +11048,7 @@ tree and makes it available to descendants via [RestorationScope.of].</p>
 <tr><td>filterQuality</td><td>FilterQuality</td><td>FilterQuality?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -10888,6 +11089,7 @@ tree and makes it available to descendants via [RestorationScope.of].</p>
 <tr><td>restorationScopeId</td><td>string</td><td>String?</td><td class="req"></td></tr>
 </tbody>
 </table>
+<p class="note"><code>routerDelegate</code> (RouterDelegate&lt;T&gt;) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -10924,6 +11126,7 @@ tree and makes it available to descendants via [RestorationScope.of].</p>
 <tr><td>spacing</td><td>number</td><td>double</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -10966,6 +11169,7 @@ by the operating system.</p>
 <tr><td>maintainBottomViewPadding</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -11002,6 +11206,7 @@ by the operating system.</p>
 <tr><td>filterQuality</td><td>FilterQuality</td><td>FilterQuality?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -11039,6 +11244,7 @@ by the operating system.</p>
 <tr><td>behavior</td><td>ScrollBehavior</td><td>ScrollBehavior</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -11067,6 +11273,7 @@ by the operating system.</p>
 <tr><td>children</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -11106,6 +11313,7 @@ through which the content is viewed.</p>
 <tr><td>hitTestBehavior</td><td>HitTestBehavior</td><td>HitTestBehavior</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -11147,6 +11355,7 @@ through which the content is viewed.</p>
 <tr><td>selectionControls</td><td>TextSelectionControls</td><td>TextSelectionControls</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -11182,6 +11391,7 @@ the subtree.</p>
 <tr><td>delegate</td><td>SelectionContainerDelegate</td><td>SelectionContainerDelegate</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -11214,6 +11424,7 @@ or [SelectableRegion].</p>
 <tr><td>selectionNotifier</td><td>SelectionListenerNotifier</td><td>SelectionListenerNotifier</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -11249,6 +11460,7 @@ or [SelectableRegion].</p>
 <tr><td>registrar</td><td>SelectionRegistrar</td><td>SelectionRegistrar</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -11360,6 +11572,7 @@ the widgets.</p>
 <tr><td>maxValue</td><td>string</td><td>String?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -11470,6 +11683,7 @@ the widgets.</p>
 <tr><td>labelStyle</td><td>TextStyleValue</td><td>TextStyle</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -11500,6 +11714,7 @@ tree.</p>
 <tr><td>sensitivity</td><td>ContentSensitivity</td><td>ContentSensitivity</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -11530,6 +11745,7 @@ tree.</p>
 <tr><td>blendMode</td><td>BlendMode</td><td>BlendMode</td><td class="req"></td></tr>
 </tbody>
 </table>
+<p class="note"><code>shaderCallback</code> (Shader Function(Rect)) — a shape the compiler does not write yet.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -11560,6 +11776,7 @@ child's descendants.</p>
 <tr><td>children</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -11588,6 +11805,7 @@ remove, or replace shortcuts.</p>
 <tr><td>children</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -11619,6 +11837,7 @@ descendants.</p>
 <tr><td>includeSemantics</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+<p class="note"><code>shortcuts</code> (Map&lt;ShortcutActivator, Intent&gt;) — a shape the compiler does not write yet.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -11658,6 +11877,7 @@ main axis.</p>
 <tr><td>slivers</td><td>FlutterChild[]</td><td>List&lt;Widget&gt;</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -11702,6 +11922,7 @@ main axis.</p>
 <tr><td>keyboardDismissBehavior</td><td>ScrollViewKeyboardDismissBehavior</td><td>ScrollViewKeyboardDismissBehavior?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -11741,6 +11962,7 @@ when the layout dimensions of its child change.</p>
 <tr><td>children</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -11773,6 +11995,7 @@ when the layout dimensions of its child change.</p>
 <tr><td>fixedCrossAxisSizeFactor</td><td>number</td><td>double?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -11813,6 +12036,7 @@ when the layout dimensions of its child change.</p>
 <tr><td>height</td><td>number</td><td>double?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -11845,6 +12069,7 @@ through to its child, which may then overflow.</p>
 <tr><td>alignment</td><td>AlignmentGeometryValue</td><td>AlignmentGeometry</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -11877,6 +12102,7 @@ through to its child, which may then overflow.</p>
 <tr><td>textDirection</td><td>TextDirection</td><td>TextDirection?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -11916,6 +12142,7 @@ through to its child, which may then overflow.</p>
 <tr><td>initialItemCount</td><td>number</td><td>int</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -11946,6 +12173,7 @@ through to its child, which may then overflow.</p>
 <tr><td>initialItemCount</td><td>number</td><td>int</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -11980,6 +12208,7 @@ changes.</p>
 <tr><td>alwaysIncludeSemantics</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12011,6 +12240,7 @@ changes.</p>
 <tr><td>sliver</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12038,6 +12268,7 @@ changes.</p>
 <tr><td>sliver</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12065,6 +12296,7 @@ the cross axis.</p>
 <tr><td>slivers</td><td>FlutterChild[]</td><td>List&lt;Widget&gt;</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12090,6 +12322,7 @@ the cross axis.</p>
 <tr><td>sliver</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12117,6 +12350,7 @@ the cross axis.</p>
 <tr><td>sliver</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12153,6 +12387,7 @@ the viewport.</p>
 <tr><td>fillOverscroll</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12185,6 +12420,7 @@ the viewport.</p>
 <tr><td>allowImplicitScrolling</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12215,6 +12451,7 @@ a linear array.</p>
 <tr><td>itemExtent</td><td>number</td><td>double</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12244,6 +12481,7 @@ when the user scrolls backwards.</p>
 <tr><td>snapMode</td><td>FloatingHeaderSnapMode</td><td>FloatingHeaderSnapMode?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12274,6 +12512,7 @@ when the user scrolls backwards.</p>
 <tr><td>gridDelegate</td><td>SliverGridDelegate</td><td>SliverGridDelegate</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12302,6 +12541,7 @@ when the user scrolls backwards.</p>
 <tr><td>sliver</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12329,6 +12569,7 @@ when the user scrolls backwards.</p>
 <tr><td>builder</td><td>(context: BuildContext, constraints: SliverConstraints) =&gt; FlutterElement</td><td>Widget Function(BuildContext, SliverConstraints)</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12355,6 +12596,7 @@ axis.</p>
 <tr><td>delegate</td><td>SliverChildDelegate</td><td>SliverChildDelegate</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12381,6 +12623,7 @@ the main axis, one after another.</p>
 <tr><td>slivers</td><td>FlutterChild[]</td><td>List&lt;Widget&gt;</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12409,6 +12652,7 @@ testing, and without taking any room in the parent.</p>
 <tr><td>sliver</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12437,6 +12681,7 @@ testing, and without taking any room in the parent.</p>
 <tr><td>sliver</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12466,6 +12711,7 @@ overlap.</p>
 <tr><td>sliver</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12500,6 +12746,7 @@ overlap.</p>
 <tr><td>sliver</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12533,6 +12780,7 @@ overlap.</p>
 <tr><td>sliver</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12562,6 +12810,7 @@ of the viewport opposite the sliver's [GrowthDirection].</p>
 <tr><td>floating</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+<p class="note"><code>delegate</code> (SliverPersistentHeaderDelegate) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12591,6 +12840,7 @@ to have the same extent as a prototype item along the main axis.</p>
 <tr><td>prototypeItem</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12629,6 +12879,7 @@ to have the same extent as a prototype item along the main axis.</p>
 <tr><td>autoScrollerVelocityScalar</td><td>number</td><td>double?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12670,6 +12921,7 @@ min and max extent prototypes.</p>
 <tr><td>maxExtentPrototype</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12705,6 +12957,7 @@ intrusions by the operating system.</p>
 <tr><td>sliver</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12818,6 +13071,7 @@ the slivers.</p>
 <tr><td>maxValue</td><td>string</td><td>String?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12925,6 +13179,7 @@ the slivers.</p>
 <tr><td>children</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12954,6 +13209,7 @@ to have the corresponding extent returned by [itemExtentBuilder].</p>
 <tr><td>itemExtentBuilder</td><td>(index: number, dimensions: SliverLayoutDimensions) =&gt; number | null</td><td>double? Function(int, SliverLayoutDimensions)</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -12987,6 +13243,7 @@ to have the corresponding extent returned by [itemExtentBuilder].</p>
 <tr><td>maintainInteractivity</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13023,6 +13280,7 @@ to have the corresponding extent returned by [itemExtentBuilder].</p>
 <tr><td>controller</td><td>SnapshotController</td><td>SnapshotController</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13061,6 +13319,7 @@ spacing between widgets in a [Flex] container, like [Row] or [Column].</p>
 <tr><td>flex</td><td>number</td><td>int</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13090,6 +13349,7 @@ spacing between widgets in a [Flex] container, like [Row] or [Column].</p>
 <tr><td>clipBehavior</td><td>Clip</td><td>Clip</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13122,6 +13382,7 @@ spacing between widgets in a [Flex] container, like [Row] or [Column].</p>
 <tr><td>builder</td><td>(context: BuildContext, setState: (fn: () =&gt; void) =&gt; void) =&gt; FlutterElement</td><td>Widget Function(BuildContext, void Function(void Function()))</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13150,6 +13411,7 @@ a [Stream].</p>
 <tr><td>builder</td><td>(context: BuildContext, snapshot: AsyncSnapshot) =&gt; FlutterElement</td><td>Widget Function(BuildContext, AsyncSnapshot&lt;T&gt;)</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+<p class="note"><code>stream</code> (Stream&lt;T&gt;?) — a shape the compiler does not write yet.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13179,6 +13441,7 @@ a [Stream].</p>
 <tr><td>axis</td><td>Axis</td><td>Axis</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13211,6 +13474,7 @@ a [Stream].</p>
 <tr><td>clipBehavior</td><td>Clip</td><td>Clip</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13247,6 +13511,7 @@ a [Stream].</p>
 <tr><td>textBaseline</td><td>TextBaseline</td><td>TextBaseline?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13279,6 +13544,7 @@ a [Stream].</p>
 <tr><td>verticalAlignment</td><td>TableCellVerticalAlignment</td><td>TableCellVerticalAlignment?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13320,6 +13586,7 @@ disambiguation](https://flutter.dev/to/gesture-disambiguation) system
 <tr><td>debugLabel</td><td>string</td><td>String?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13359,6 +13626,7 @@ system.</p>
 <tr><td>children</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13401,6 +13669,7 @@ system.</p>
 <tr><td>selectionColor</td><td>ColorValue</td><td>Color?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13451,6 +13720,7 @@ based on the [EditableText] text editing widget, such as [TextField] and
 <tr><td>groupId</td><td>ObjectValue</td><td>Object?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13507,6 +13777,7 @@ based on the [EditableText] text editing widget, such as [TextField] and
 <tr><td>behavior</td><td>HitTestBehavior</td><td>HitTestBehavior?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13557,6 +13828,7 @@ based on the [EditableText] text editing widget, such as [TextField] and
 <tr><td>filterQuality</td><td>FilterQuality</td><td>FilterQuality</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13587,6 +13859,7 @@ subtree.</p>
 <tr><td>forceFrames</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13618,6 +13891,7 @@ subtree.</p>
 <tr><td>color</td><td>ColorValue</td><td>Color</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13652,6 +13926,7 @@ subtree.</p>
 <tr><td>filterQuality</td><td>FilterQuality</td><td>FilterQuality?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13697,6 +13972,7 @@ vertically and horizontally scrolling [Viewport].</p>
 <tr><td>findChildIndexCallback</td><td>(arg0: Key) =&gt; number | null</td><td>int? Function(Key)?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13740,6 +14016,7 @@ whenever the target value changes.</p>
 <tr><td>onEnd</td><td>() =&gt; void</td><td>void Function()?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13788,6 +14065,7 @@ content is viewed.</p>
 <tr><td>hitTestBehavior</td><td>HitTestBehavior</td><td>HitTestBehavior</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13828,6 +14106,7 @@ content is viewed.</p>
 <tr><td>gestureRecognizers</td><td>Factory[]</td><td>Set&lt;Factory&lt;OneSequenceGestureRecognizer&gt;&gt;?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13865,6 +14144,7 @@ at its &quot;natural&quot; size.</p>
 <tr><td>clipBehavior</td><td>Clip</td><td>Clip</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13902,6 +14182,7 @@ at its &quot;natural&quot; size.</p>
 <tr><td>controller</td><td>UndoHistoryController</td><td>UndoHistoryController?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13943,6 +14224,7 @@ available to descendants via [RestorationScope.of].</p>
 <tr><td>bucket</td><td>RestorationBucket</td><td>RestorationBucket?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13973,6 +14255,7 @@ available to descendants via [RestorationScope.of].</p>
 <tr><td>builder</td><td>(context: BuildContext, value: unknown, child: FlutterElement | null) =&gt; FlutterElement</td><td>Widget Function(BuildContext, T, Widget?)</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -14011,6 +14294,7 @@ available to descendants via [RestorationScope.of].</p>
 <tr><td>deprecatedDoNotUseWillBeRemovedWithoutNoticeRenderView</td><td>RenderView</td><td>RenderView?</td><td class="req"></td></tr>
 </tbody>
 </table>
+<p class="note"><code>view</code> (FlutterView) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -14042,6 +14326,7 @@ available to descendants via [RestorationScope.of].</p>
 <tr><td>view</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -14070,6 +14355,7 @@ available to descendants via [RestorationScope.of].</p>
 <tr><td>views</td><td>FlutterChild[]</td><td>List&lt;Widget&gt;</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -14106,6 +14392,7 @@ in combination with a [Scrollable].</p>
 <tr><td>slivers</td><td>FlutterChild[]</td><td>List&lt;Widget&gt;</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -14149,6 +14436,7 @@ in combination with a [Scrollable].</p>
 <tr><td>maintainFocusability</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -14187,6 +14475,7 @@ in combination with a [Scrollable].</p>
 <tr><td>moveExitWidgetSelectionButtonBuilder</td><td>((context: BuildContext, onPressed: () =&gt; void, semanticsLabel: string, usesDefaultAlignment?: boolean) =&gt; FlutterElement) | null</td><td>Widget Function(BuildContext, {required void Function() onPressed, required String semanticsLabel, bool usesDefaultAlignment})?</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+<p class="note"><code>tapBehaviorButtonBuilder</code> (Widget Function(BuildContext, {required void Function() onPressed, required bool selectionOnTapEnabled, required String semanticsLabel})?) — a shape the compiler does not write yet.<br><code>exitWidgetSelectionButtonBuilder</code> (Widget Function(BuildContext, {required GlobalKey&lt;State&lt;StatefulWidget&gt;&gt; key, required void Function() onPressed, required String semanticsLabel})?) — a shape the compiler does not write yet.<br><code>moveExitWidgetSelectionButtonBuilder</code> (Widget Function(BuildContext, {required void Function() onPressed, required String semanticsLabel, bool usesDefaultAlignment})?) — a shape the compiler does not write yet.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -14219,6 +14508,7 @@ in combination with a [Scrollable].</p>
 <tr><td>onUnmount</td><td>() =&gt; void</td><td>void Function()?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -14276,6 +14566,7 @@ required for an application.</p>
 <tr><td>useInheritedMediaQuery</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -14333,6 +14624,7 @@ required for an application.</p>
 <tr><td>onWillPop</td><td>(() =&gt; Promise&lt;boolean&gt;) | null</td><td>Future&lt;bool&gt; Function()?</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -14370,6 +14662,7 @@ required for an application.</p>
 <tr><td>clipBehavior</td><td>Clip</td><td>Clip</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -14414,6 +14707,7 @@ used by the application.</p>
 <tr><td>applicationLegalese</td><td>string</td><td>String?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -14453,6 +14747,7 @@ used by the application.</p>
 <tr><td>dense</td><td>boolean</td><td>bool?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -14511,6 +14806,7 @@ used by the application.</p>
 <tr><td>mouseCursor</td><td>MouseCursorValue</td><td>MouseCursor?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -14563,6 +14859,7 @@ widget's subtree.</p>
 <tr><td>data</td><td>ActionIconThemeDataValue</td><td>ActionIconThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -14592,6 +14889,7 @@ widget's subtree.</p>
 <tr><td>anchors</td><td>TextSelectionToolbarAnchors</td><td>TextSelectionToolbarAnchors</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -14647,6 +14945,7 @@ widget's subtree.</p>
 <tr><td>scrollable</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -14703,6 +15002,7 @@ widget's subtree.</p>
 <tr><td>textDirection</td><td>TextDirection</td><td>TextDirection?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -14744,6 +15044,7 @@ etc, over a given duration whenever the given theme changes.</p>
 <tr><td>onEnd</td><td>() =&gt; void</td><td>void Function()?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -14813,6 +15114,7 @@ etc, over a given duration whenever the given theme changes.</p>
 <tr><td>animateColor</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -14889,6 +15191,7 @@ etc, over a given duration whenever the given theme changes.</p>
 <tr><td>data</td><td>AppBarThemeDataValue</td><td>AppBarThemeData?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -14944,6 +15247,7 @@ etc, over a given duration whenever the given theme changes.</p>
 <tr><td>initialValue</td><td>TextEditingValueValue</td><td>TextEditingValue?</td><td class="req"></td></tr>
 </tbody>
 </table>
+<p class="note"><code>optionsBuilder</code> (FutureOr&lt;Iterable&lt;T&gt;&gt; Function(TextEditingValue)) — a shape the compiler does not write yet.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -14980,6 +15284,7 @@ etc, over a given duration whenever the given theme changes.</p>
 <tr><td>onClick</td><td>() =&gt; void</td><td>void Function()?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -15001,6 +15306,7 @@ etc, over a given duration whenever the given theme changes.</p>
 <article class="widget" id="BackButtonIcon" data-name="BackButtonIcon">
 <h3>BackButtonIcon<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A &quot;back&quot; icon that's appropriate for the current [TargetPlatform].</p>
+
 
 <div class="tabs">
 <div class="tab-btns" role="tablist">
@@ -15036,6 +15342,7 @@ etc, over a given duration whenever the given theme changes.</p>
 <tr><td>isLabelVisible</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -15075,6 +15382,7 @@ parameters for [Badge]s in this widget's subtree.</p>
 <tr><td>data</td><td>BadgeThemeDataValue</td><td>BadgeThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -15112,6 +15420,7 @@ parameters for [Badge]s in this widget's subtree.</p>
 <tr><td>height</td><td>number</td><td>double?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -15156,6 +15465,7 @@ parameters for [Badge]s in this widget's subtree.</p>
 <tr><td>data</td><td>BottomAppBarThemeDataValue</td><td>BottomAppBarThemeData?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -15213,6 +15523,7 @@ among a small number of views, typically between three and five.</p>
 <tr><td>useLegacyColorScheme</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -15261,6 +15572,7 @@ widgets.</p>
 <tr><td>data</td><td>BottomNavigationBarThemeDataValue</td><td>BottomNavigationBarThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -15303,6 +15615,7 @@ widgets.</p>
 <tr><td>builder</td><td>(context: BuildContext) =&gt; FlutterElement</td><td>Widget Function(BuildContext)</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -15353,6 +15666,7 @@ enough horizontal space.</p>
 <tr><td>overflowButtonSpacing</td><td>number</td><td>double?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -15392,6 +15706,7 @@ enough horizontal space.</p>
 <tr><td>data</td><td>ButtonBarThemeDataValue</td><td>ButtonBarThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -15435,6 +15750,7 @@ enough horizontal space.</p>
 <tr><td>materialTapTargetSize</td><td>MaterialTapTargetSize</td><td>MaterialTapTargetSize?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -15486,6 +15802,7 @@ date.</p>
 <tr><td>calendarDelegate</td><td>CalendarDelegate</td><td>CalendarDelegate&lt;DateTime&gt;</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -15529,6 +15846,7 @@ elevation shadow.</p>
 <tr><td>semanticContainer</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -15573,6 +15891,7 @@ elevation shadow.</p>
 <tr><td>data</td><td>CardThemeDataValue</td><td>CardThemeData?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -15624,6 +15943,7 @@ elevation shadow.</p>
 <tr><td>onIndexChanged</td><td>(value: number) =&gt; void</td><td>void Function(int)?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -15669,6 +15989,7 @@ elevation shadow.</p>
 <tr><td>data</td><td>CarouselViewThemeDataValue</td><td>CarouselViewThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -15715,6 +16036,7 @@ elevation shadow.</p>
 <tr><td>semanticLabel</td><td>string</td><td>String?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -15797,6 +16119,7 @@ elevation shadow.</p>
 <tr><td>internalAddSemanticForOnTap</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -15874,6 +16197,7 @@ elevation shadow.</p>
 <tr><td>closeOnActivate</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -15915,6 +16239,7 @@ elevation shadow.</p>
 <tr><td>data</td><td>CheckboxThemeDataValue</td><td>CheckboxThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -15951,6 +16276,7 @@ elevation shadow.</p>
 <tr><td>onClick</td><td>() =&gt; void</td><td>void Function()?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -16011,6 +16337,7 @@ elevation shadow.</p>
 <tr><td>mouseCursor</td><td>MouseCursorValue</td><td>MouseCursor?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -16063,6 +16390,7 @@ elevation shadow.</p>
 <tr><td>data</td><td>ChipThemeDataValue</td><td>ChipThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -16121,6 +16449,7 @@ elevation shadow.</p>
 <tr><td>mouseCursor</td><td>MouseCursorValue</td><td>MouseCursor?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -16185,6 +16514,7 @@ elevation shadow.</p>
 <tr><td>maxRadius</td><td>number</td><td>double?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -16235,6 +16565,7 @@ the application is busy.</p>
 <tr><td>controller</td><td>AnimationController</td><td>AnimationController?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -16275,6 +16606,7 @@ the application is busy.</p>
 <tr><td>style</td><td>ButtonStyleValue</td><td>ButtonStyle?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -16296,6 +16628,7 @@ the application is busy.</p>
 <article class="widget" id="CloseButtonIcon" data-name="CloseButtonIcon">
 <h3>CloseButtonIcon<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A &quot;close&quot; icon that's appropriate for the current [TargetPlatform].</p>
+
 
 <div class="tabs">
 <div class="tab-btns" role="tablist">
@@ -16344,6 +16677,7 @@ design specification.</p>
 <tr><td>clipBehavior</td><td>Clip</td><td>Clip</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -16391,6 +16725,7 @@ design specification.</p>
 <tr><td>data</td><td>DataTableThemeDataValue</td><td>DataTableThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -16439,6 +16774,7 @@ design specification.</p>
 <tr><td>calendarDelegate</td><td>CalendarDelegate</td><td>CalendarDelegate&lt;DateTime&gt;</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -16486,6 +16822,7 @@ design specification.</p>
 <tr><td>data</td><td>DatePickerThemeDataValue</td><td>DatePickerThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -16535,6 +16872,7 @@ design specification.</p>
 <tr><td>calendarDelegate</td><td>CalendarDelegate</td><td>CalendarDelegate&lt;DateTime&gt;</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -16585,6 +16923,7 @@ explicitly.</p>
 <tr><td>animationDuration</td><td>DurationValue</td><td>Duration?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -16616,6 +16955,7 @@ explicitly.</p>
 <tr><td>anchor</td><td>OffsetValue</td><td>Offset</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -16646,6 +16986,7 @@ explicitly.</p>
 <tr><td>onClick</td><td>(() =&gt; void) | null</td><td>void Function()?</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -16686,6 +17027,7 @@ explicitly.</p>
 <tr><td>constraints</td><td>BoxConstraintsValue</td><td>BoxConstraints?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -16739,6 +17081,7 @@ explicitly.</p>
 <tr><td>data</td><td>DialogThemeDataValue</td><td>DialogThemeData?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -16785,6 +17128,7 @@ explicitly.</p>
 <tr><td>radius</td><td>BorderRadiusGeometryValue</td><td>BorderRadiusGeometry?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -16818,6 +17162,7 @@ between rows in [DataTable]s in this widget's subtree.</p>
 <tr><td>data</td><td>DividerThemeDataValue</td><td>DividerThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -16855,6 +17200,7 @@ between rows in [DataTable]s in this widget's subtree.</p>
 <tr><td>clipBehavior</td><td>Clip</td><td>Clip?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -16892,6 +17238,7 @@ between rows in [DataTable]s in this widget's subtree.</p>
 <tr><td>onClick</td><td>() =&gt; void</td><td>void Function()?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -16913,6 +17260,7 @@ between rows in [DataTable]s in this widget's subtree.</p>
 <article class="widget" id="DrawerButtonIcon" data-name="DrawerButtonIcon">
 <h3>DrawerButtonIcon<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A &quot;drawer&quot; icon that's appropriate for the current [TargetPlatform].</p>
+
 
 <div class="tabs">
 <div class="tab-btns" role="tablist">
@@ -16946,6 +17294,7 @@ between rows in [DataTable]s in this widget's subtree.</p>
 <tr><td>drawerBarrierDismissible</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -16988,6 +17337,7 @@ passed as an argument, inset by the given [padding].</p>
 <tr><td>curve</td><td>CurveValue</td><td>Curve</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -17022,6 +17372,7 @@ widget's subtree.</p>
 <tr><td>data</td><td>DrawerThemeDataValue</td><td>DrawerThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -17079,6 +17430,7 @@ widget's subtree.</p>
 <tr><td>dropdownMenuItemMouseCursor</td><td>MouseCursorValue</td><td>MouseCursor?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -17167,6 +17519,7 @@ widget's subtree.</p>
 <tr><td>dropdownMenuItemMouseCursor</td><td>MouseCursorValue</td><td>MouseCursor?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -17227,6 +17580,7 @@ widgets to not include their regular underline.</p>
 <tr><td>children</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -17293,6 +17647,7 @@ menu item is displayed in that field.</p>
 <tr><td>scrollPadding</td><td>EdgeInsetsValue</td><td>EdgeInsets</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -17397,6 +17752,7 @@ menu item is displayed in that field.</p>
 <tr><td>errorBuilder</td><td>(context: BuildContext, errorText: string) =&gt; FlutterElement</td><td>Widget Function(BuildContext, String)?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -17467,6 +17823,7 @@ menu item is displayed in that field.</p>
 <tr><td>alignment</td><td>AlignmentGeometryValue</td><td>AlignmentGeometry</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -17499,6 +17856,7 @@ menu item is displayed in that field.</p>
 <tr><td>data</td><td>DropdownMenuThemeDataValue</td><td>DropdownMenuThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -17536,6 +17894,7 @@ menu item is displayed in that field.</p>
 <tr><td>statesController</td><td>WidgetStatesController</td><td>WidgetStatesController?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -17573,6 +17932,7 @@ menu item is displayed in that field.</p>
 <tr><td>data</td><td>ElevatedButtonThemeDataValue</td><td>ElevatedButtonThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -17603,6 +17963,7 @@ menu item is displayed in that field.</p>
 <tr><td>onClick</td><td>() =&gt; void</td><td>void Function()?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -17624,6 +17985,7 @@ menu item is displayed in that field.</p>
 <article class="widget" id="EndDrawerButtonIcon" data-name="EndDrawerButtonIcon">
 <h3>EndDrawerButtonIcon<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A &quot;end drawer&quot; icon that's appropriate for the current [TargetPlatform].</p>
+
 
 <div class="tabs">
 <div class="tab-btns" role="tablist">
@@ -17659,6 +18021,7 @@ The underlying icon is [Icons.expand_more].</p>
 <tr><td>highlightColor</td><td>ColorValue</td><td>Color?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -17700,6 +18063,7 @@ expansions.</p>
 <tr><td>materialGapSize</td><td>number</td><td>double</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -17765,6 +18129,7 @@ the tile to reveal or hide the [children].</p>
 <tr><td>statesController</td><td>WidgetStatesController</td><td>WidgetStatesController?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -17826,6 +18191,7 @@ the tile to reveal or hide the [children].</p>
 <tr><td>data</td><td>ExpansionTileThemeDataValue</td><td>ExpansionTileThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -17863,6 +18229,7 @@ the tile to reveal or hide the [children].</p>
 <tr><td>statesController</td><td>WidgetStatesController</td><td>WidgetStatesController?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -17900,6 +18267,7 @@ the tile to reveal or hide the [children].</p>
 <tr><td>data</td><td>FilledButtonThemeDataValue</td><td>FilledButtonThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -17963,6 +18331,7 @@ the tile to reveal or hide the [children].</p>
 <tr><td>mouseCursor</td><td>MouseCursorValue</td><td>MouseCursor?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -18030,6 +18399,7 @@ stretches.</p>
 <tr><td>expandedTitleScale</td><td>number</td><td>double</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -18067,6 +18437,7 @@ stretches.</p>
 <tr><td>hasLeading</td><td>boolean</td><td>bool?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -18122,6 +18493,7 @@ stretches.</p>
 <tr><td>enableFeedback</td><td>boolean</td><td>bool?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -18173,6 +18545,7 @@ stretches.</p>
 <tr><td>data</td><td>FloatingActionButtonThemeDataValue</td><td>FloatingActionButtonThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -18203,6 +18576,7 @@ stretches.</p>
 <tr><td>footer</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -18236,6 +18610,7 @@ stretches.</p>
 <tr><td>trailing</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -18289,6 +18664,7 @@ stretches.</p>
 <tr><td>icon</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -18339,6 +18715,7 @@ stretches.</p>
 <tr><td>data</td><td>IconButtonThemeDataValue</td><td>IconButtonThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -18373,6 +18750,7 @@ widgets, so that [InkWell] and [InkResponse] splashes will render over them.</p>
 <tr><td>height</td><td>number</td><td>double?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -18439,6 +18817,7 @@ can be configured to clip splashes that extend outside its bounds or not.</p>
 <tr><td>hoverDuration</td><td>DurationValue</td><td>Duration?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -18530,6 +18909,7 @@ can be configured to clip splashes that extend outside its bounds or not.</p>
 <tr><td>hoverDuration</td><td>DurationValue</td><td>Duration?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -18625,6 +19005,7 @@ can be configured to clip splashes that extend outside its bounds or not.</p>
 <tr><td>mouseCursor</td><td>MouseCursorValue</td><td>MouseCursor?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -18701,6 +19082,7 @@ can be configured to clip splashes that extend outside its bounds or not.</p>
 <tr><td>calendarDelegate</td><td>CalendarDelegate</td><td>CalendarDelegate&lt;DateTime&gt;</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -18778,6 +19160,7 @@ can be configured to clip splashes that extend outside its bounds or not.</p>
 <tr><td>data</td><td>InputDecorationThemeDataValue</td><td>InputDecorationThemeData?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -18851,6 +19234,7 @@ can be configured to clip splashes that extend outside its bounds or not.</p>
 <tr><td>isEmpty</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -18889,6 +19273,7 @@ can be configured to clip splashes that extend outside its bounds or not.</p>
 <tr><td>applicationLegalese</td><td>string</td><td>String?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -18929,6 +19314,7 @@ can be configured to clip splashes that extend outside its bounds or not.</p>
 <tr><td>controller</td><td>AnimationController</td><td>AnimationController?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -19003,6 +19389,7 @@ a leading or trailing icon.</p>
 <tr><td>statesController</td><td>WidgetStatesController</td><td>WidgetStatesController?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -19081,6 +19468,7 @@ in this widget's subtree.</p>
 <tr><td>controlAffinity</td><td>ListTileControlAffinity</td><td>ListTileControlAffinity?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -19129,6 +19517,7 @@ in this widget's subtree.</p>
 <tr><td>size</td><td>SizeValue</td><td>Size</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -19171,6 +19560,7 @@ in this widget's subtree.</p>
 <tr><td>animateColor</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -19247,6 +19637,7 @@ in this widget's subtree.</p>
 <tr><td>themeAnimationStyle</td><td>AnimationStyleValue</td><td>AnimationStyle?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -19325,6 +19716,7 @@ in this widget's subtree.</p>
 <tr><td>minActionBarHeight</td><td>number</td><td>double</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -19368,6 +19760,7 @@ in this widget's subtree.</p>
 <tr><td>data</td><td>MaterialBannerThemeDataValue</td><td>MaterialBannerThemeData?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -19427,6 +19820,7 @@ ambient [ButtonTheme] and [Theme].</p>
 <tr><td>enableFeedback</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -19487,6 +19881,7 @@ the function to invoke when the accelerator is pressed.</p>
 <tr><td>hasSubmenu</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -19519,6 +19914,7 @@ about the currently active keyboard accelerator.</p>
 <tr><td>builder</td><td>(context: BuildContext, label: string, index: number) =&gt; FlutterElement</td><td>Widget Function(BuildContext, String, int)</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -19564,6 +19960,7 @@ explicit location, or with an alignment.</p>
 <tr><td>builder</td><td>(context: BuildContext, controller: MenuController, child: FlutterElement | null) =&gt; FlutterElement</td><td>Widget Function(BuildContext, MenuController, Widget?)?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -19611,6 +20008,7 @@ explicit location, or with an alignment.</p>
 <tr><td>controller</td><td>MenuController</td><td>MenuController?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -19644,6 +20042,7 @@ in this widget's descendants.</p>
 <tr><td>data</td><td>MenuBarThemeDataValue</td><td>MenuBarThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -19674,6 +20073,7 @@ in this widget's descendants.</p>
 <tr><td>data</td><td>MenuButtonThemeDataValue</td><td>MenuButtonThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -19718,6 +20118,7 @@ its own, that can be activated by click or keyboard navigation.</p>
 <tr><td>overflowAxis</td><td>Axis</td><td>Axis</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -19763,6 +20164,7 @@ descendants for menus created by the [SubmenuButton], [MenuBar], or
 <tr><td>data</td><td>MenuThemeDataValue</td><td>MenuThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -19800,6 +20202,7 @@ as needed.</p>
 <tr><td>dividerColor</td><td>ColorValue</td><td>Color?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -19844,6 +20247,7 @@ as needed.</p>
 <tr><td>maintainBottomViewPadding</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -19886,6 +20290,7 @@ as needed.</p>
 <tr><td>data</td><td>NavigationBarThemeDataValue</td><td>NavigationBarThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -19918,6 +20323,7 @@ as needed.</p>
 <tr><td>enabled</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -19958,6 +20364,7 @@ as needed.</p>
 <tr><td>tilePadding</td><td>EdgeInsetsGeometryValue</td><td>EdgeInsetsGeometry</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -20001,6 +20408,7 @@ as needed.</p>
 <tr><td>enabled</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -20032,6 +20440,7 @@ as needed.</p>
 <tr><td>data</td><td>NavigationDrawerThemeDataValue</td><td>NavigationDrawerThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -20066,6 +20475,7 @@ components.</p>
 <tr><td>shape</td><td>ShapeBorderValue</td><td>ShapeBorder?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -20126,6 +20536,7 @@ five.</p>
 <tr><td>mainAxisAlignment</td><td>MainAxisAlignment</td><td>MainAxisAlignment?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -20175,6 +20586,7 @@ five.</p>
 <tr><td>data</td><td>NavigationRailThemeDataValue</td><td>NavigationRailThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -20213,6 +20625,7 @@ with an outlined border.</p>
 <tr><td>statesController</td><td>WidgetStatesController</td><td>WidgetStatesController?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -20250,6 +20663,7 @@ with an outlined border.</p>
 <tr><td>data</td><td>OutlinedButtonThemeDataValue</td><td>OutlinedButtonThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -20307,6 +20721,7 @@ design specification, using multiple pages to display data.</p>
 <tr><td>showEmptyRows</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+<p class="note"><code>source</code> (DataTableSource) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -20390,6 +20805,7 @@ the selected menu item.</p>
 <tr><td>requestFocus</td><td>boolean</td><td>bool?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -20451,6 +20867,7 @@ the selected menu item.</p>
 <tr><td>color</td><td>ColorValue</td><td>Color?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -20489,6 +20906,7 @@ the selected menu item.</p>
 <tr><td>mouseCursor</td><td>MouseCursorValue</td><td>MouseCursor?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -20526,6 +20944,7 @@ popup menus in this widget's subtree.</p>
 <tr><td>data</td><td>PopupMenuThemeDataValue</td><td>PopupMenuThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -20556,6 +20975,7 @@ popup menus in this widget's subtree.</p>
 <tr><td>data</td><td>ProgressIndicatorThemeDataValue</td><td>ProgressIndicatorThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -20603,6 +21023,7 @@ popup menus in this widget's subtree.</p>
 <tr><td>innerRadius</td><td>WidgetStatePropertyValue</td><td>WidgetStateProperty&lt;double?&gt;?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -20685,6 +21106,7 @@ popup menus in this widget's subtree.</p>
 <tr><td>radioInnerRadius</td><td>WidgetStatePropertyValue</td><td>WidgetStateProperty&lt;double?&gt;?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -20761,6 +21183,7 @@ popup menus in this widget's subtree.</p>
 <tr><td>closeOnActivate</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -20802,6 +21225,7 @@ popup menus in this widget's subtree.</p>
 <tr><td>data</td><td>RadioThemeDataValue</td><td>RadioThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -20844,6 +21268,7 @@ popup menus in this widget's subtree.</p>
 <tr><td>year2023</td><td>boolean</td><td>bool?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -20922,6 +21347,7 @@ popup menus in this widget's subtree.</p>
 <tr><td>mouseCursor</td><td>MouseCursorValue</td><td>MouseCursor?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -21012,6 +21438,7 @@ widgets.</p>
 <tr><td>enableFeedback</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -21075,6 +21502,7 @@ widgets.</p>
 <tr><td>elevation</td><td>number</td><td>double</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -21124,6 +21552,7 @@ widgets.</p>
 <tr><td>indicatorPadding</td><td>EdgeInsetsGeometryValue</td><td>EdgeInsetsGeometry</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -21188,6 +21617,7 @@ widgets.</p>
 <tr><td>mouseCursor</td><td>MouseCursorValue</td><td>MouseCursor?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -21270,6 +21700,7 @@ widgets.</p>
 <tr><td>restorationId</td><td>string</td><td>String?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -21323,6 +21754,7 @@ widgets.</p>
 <tr><td>children</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -21358,6 +21790,7 @@ widgets.</p>
 <tr><td>scrollbarOrientation</td><td>ScrollbarOrientation</td><td>ScrollbarOrientation?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -21394,6 +21827,7 @@ widgets.</p>
 <tr><td>data</td><td>ScrollbarThemeDataValue</td><td>ScrollbarThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -21453,6 +21887,7 @@ suggested completions for a search query.</p>
 <tr><td>smartQuotesType</td><td>SmartQuotesType</td><td>SmartQuotesType?</td><td class="req"></td></tr>
 </tbody>
 </table>
+<p class="note"><code>suggestionsBuilder</code> (FutureOr&lt;Iterable&lt;Widget&gt;&gt; Function(BuildContext, SearchController)) — a shape the compiler does not write yet.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -21537,6 +21972,7 @@ suggested completions for a search query.</p>
 <tr><td>smartQuotesType</td><td>SmartQuotesType</td><td>SmartQuotesType?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -21592,6 +22028,7 @@ suggested completions for a search query.</p>
 <tr><td>data</td><td>SearchBarThemeDataValue</td><td>SearchBarThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -21622,6 +22059,7 @@ descendants for search view created by the [SearchAnchor] widget.</p>
 <tr><td>data</td><td>SearchViewThemeDataValue</td><td>SearchViewThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -21659,6 +22097,7 @@ descendants for search view created by the [SearchAnchor] widget.</p>
 <tr><td>direction</td><td>Axis</td><td>Axis</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -21695,6 +22134,7 @@ descendants for search view created by the [SearchAnchor] widget.</p>
 <tr><td>data</td><td>SegmentedButtonThemeDataValue</td><td>SegmentedButtonThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -21754,6 +22194,7 @@ descendants for search view created by the [SearchAnchor] widget.</p>
 <tr><td>magnifierConfiguration</td><td>TextMagnifierConfigurationValue</td><td>TextMagnifierConfiguration?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -21816,6 +22257,7 @@ controls.</p>
 <tr><td>onSelectionChanged</td><td>(value: SelectedContent | null) =&gt; void</td><td>void Function(SelectedContent?)?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -21863,6 +22305,7 @@ controls.</p>
 <tr><td>constraints</td><td>BoxConstraintsValue</td><td>BoxConstraints?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -21908,6 +22351,7 @@ controls.</p>
 <tr><td>padding</td><td>EdgeInsetsValue</td><td>EdgeInsets?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -21958,6 +22402,7 @@ controls.</p>
 <tr><td>year2023</td><td>boolean</td><td>bool?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -22005,6 +22450,7 @@ controls.</p>
 <tr><td>data</td><td>SliderThemeDataValue</td><td>SliderThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -22070,6 +22516,7 @@ controls.</p>
 <tr><td>actionsPadding</td><td>EdgeInsetsGeometryValue</td><td>EdgeInsetsGeometry?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -22151,6 +22598,7 @@ bottom of the screen.</p>
 <tr><td>clipBehavior</td><td>Clip</td><td>Clip</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -22199,6 +22647,7 @@ bottom of the screen.</p>
 <tr><td>onClick</td><td>() =&gt; void</td><td>void Function()</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -22231,6 +22680,7 @@ bottom of the screen.</p>
 <tr><td>data</td><td>SnackBarThemeDataValue</td><td>SnackBarThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -22260,6 +22710,7 @@ bottom of the screen.</p>
 <tr><td>buttonItems</td><td>ContextMenuButtonItem[]</td><td>List&lt;ContextMenuButtonItem&gt;</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -22308,6 +22759,7 @@ completed in order to submit the whole form.</p>
 <tr><td>contentPadding</td><td>EdgeInsetsGeometryValue</td><td>EdgeInsetsGeometry?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -22371,6 +22823,7 @@ completed in order to submit the whole form.</p>
 <tr><td>menuChildren</td><td>FlutterChild[]</td><td>List&lt;Widget&gt;</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -22443,6 +22896,7 @@ completed in order to submit the whole form.</p>
 <tr><td>padding</td><td>EdgeInsetsGeometryValue</td><td>EdgeInsetsGeometry?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -22536,6 +22990,7 @@ completed in order to submit the whole form.</p>
 <tr><td>internalAddSemanticForOnTap</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -22604,6 +23059,7 @@ completed in order to submit the whole form.</p>
 <tr><td>data</td><td>SwitchThemeDataValue</td><td>SwitchThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -22636,6 +23092,7 @@ completed in order to submit the whole form.</p>
 <tr><td>height</td><td>number</td><td>double?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -22697,6 +23154,7 @@ completed in order to submit the whole form.</p>
 <tr><td>indicatorAnimation</td><td>TabIndicatorAnimation</td><td>TabIndicatorAnimation?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -22769,6 +23227,7 @@ completed in order to submit the whole form.</p>
 <tr><td>data</td><td>TabBarThemeDataValue</td><td>TabBarThemeData?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -22819,6 +23278,7 @@ selected tab.</p>
 <tr><td>clipBehavior</td><td>Clip</td><td>Clip</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -22857,6 +23317,7 @@ indicators, one per tab.</p>
 <tr><td>borderStyle</td><td>BorderStyle</td><td>BorderStyle?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -22890,6 +23351,7 @@ and background colors.</p>
 <tr><td>borderStyle</td><td>BorderStyle</td><td>BorderStyle</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -22928,6 +23390,7 @@ its ink splashes to the current table row of the nearest table.</p>
 <tr><td>mouseCursor</td><td>MouseCursorValue</td><td>MouseCursor?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -22974,6 +23437,7 @@ its ink splashes to the current table row of the nearest table.</p>
 <tr><td>isSemanticButton</td><td>boolean</td><td>bool?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -23012,6 +23476,7 @@ its ink splashes to the current table row of the nearest table.</p>
 <tr><td>data</td><td>TextButtonThemeDataValue</td><td>TextButtonThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -23110,6 +23575,7 @@ its ink splashes to the current table row of the nearest table.</p>
 <tr><td>hintLocales</td><td>Locale[]</td><td>List&lt;Locale&gt;?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -23280,6 +23746,7 @@ its ink splashes to the current table row of the nearest table.</p>
 <tr><td>hintLocales</td><td>Locale[]</td><td>List&lt;Locale&gt;?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -23380,6 +23847,7 @@ its ink splashes to the current table row of the nearest table.</p>
 <tr><td>magnifierInfo</td><td>ValueNotifier</td><td>ValueNotifier&lt;MagnifierInfo&gt;</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -23407,6 +23875,7 @@ this widget's subtree.</p>
 <tr><td>data</td><td>TextSelectionThemeDataValue</td><td>TextSelectionThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -23438,6 +23907,7 @@ this widget's subtree.</p>
 <tr><td>toolbarBuilder</td><td>(context: BuildContext, child: FlutterElement) =&gt; FlutterElement</td><td>Widget Function(BuildContext, Widget)</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -23472,6 +23942,7 @@ this widget's subtree.</p>
 <tr><td>alignment</td><td>AlignmentGeometryValue</td><td>AlignmentGeometry?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -23503,6 +23974,7 @@ this widget's subtree.</p>
 <tr><td>data</td><td>ThemeData</td><td>ThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -23550,6 +24022,7 @@ this widget's subtree.</p>
 <tr><td>emptyInitialInput</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -23590,6 +24063,7 @@ displayed using [showTimePicker] in this widget's subtree.</p>
 <tr><td>data</td><td>TimePickerThemeDataValue</td><td>TimePickerThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -23641,6 +24115,7 @@ displayed using [showTimePicker] in this widget's subtree.</p>
 <tr><td>verticalDirection</td><td>VerticalDirection</td><td>VerticalDirection</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -23694,6 +24169,7 @@ displayed using [showTimePicker] in this widget's subtree.</p>
 <tr><td>data</td><td>ToggleButtonsThemeDataValue</td><td>ToggleButtonsThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -23744,6 +24220,7 @@ displayed using [showTimePicker] in this widget's subtree.</p>
 <tr><td>positionDelegate</td><td>(context: TooltipPositionContext) =&gt; Offset</td><td>Offset Function(TooltipPositionContext)?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -23794,6 +24271,7 @@ displayed using [showTimePicker] in this widget's subtree.</p>
 <tr><td>data</td><td>TooltipThemeDataValue</td><td>TooltipThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -23823,6 +24301,7 @@ displayed using [showTimePicker] in this widget's subtree.</p>
 <tr><td>visible</td><td>boolean</td><td>bool</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -23860,6 +24339,7 @@ displayed using [showTimePicker] in this widget's subtree.</p>
 <tr><td>arrowColor</td><td>ColorValue</td><td>Color</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -23899,6 +24379,7 @@ displayed using [showTimePicker] in this widget's subtree.</p>
 <tr><td>radius</td><td>BorderRadiusGeometryValue</td><td>BorderRadiusGeometry?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -23936,6 +24417,7 @@ displayed using [showTimePicker] in this widget's subtree.</p>
 <tr><td>calendarDelegate</td><td>CalendarDelegate</td><td>CalendarDelegate&lt;DateTime&gt;</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -23974,6 +24456,7 @@ displayed using [showTimePicker] in this widget's subtree.</p>
 <tr><td>cancelButton</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -24010,6 +24493,7 @@ displayed using [showTimePicker] in this widget's subtree.</p>
 <tr><td>focusColor</td><td>ColorValue</td><td>Color?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -24045,6 +24529,7 @@ displayed using [showTimePicker] in this widget's subtree.</p>
 <tr><td>radius</td><td>number</td><td>double</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -24074,6 +24559,7 @@ platform with the given children.</p>
 <tr><td>anchors</td><td>TextSelectionToolbarAnchors</td><td>TextSelectionToolbarAnchors</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -24109,6 +24595,7 @@ platform with the given children.</p>
 <tr><td>insetAnimationCurve</td><td>CurveValue</td><td>Curve</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -24168,6 +24655,7 @@ platform with the given children.</p>
 <tr><td>useInheritedMediaQuery</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -24238,6 +24726,7 @@ platform with the given children.</p>
 <tr><td>onClick</td><td>(() =&gt; void) | null</td><td>void Function()?</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -24296,6 +24785,7 @@ platform with the given children.</p>
 <tr><td>semanticLabel</td><td>string</td><td>String?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -24337,6 +24827,7 @@ platform with the given children.</p>
 <tr><td>enableHapticFeedback</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -24370,6 +24861,7 @@ platform with the given children.</p>
 <tr><td>trailingIcon</td><td>IconDataValue</td><td>IconData?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -24417,6 +24909,7 @@ platform with the given children.</p>
 <tr><td>changeReportingBehavior</td><td>ChangeReportingBehavior</td><td>ChangeReportingBehavior</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -24459,6 +24952,7 @@ platform with the given children.</p>
 <tr><td>anchor</td><td>OffsetValue</td><td>Offset</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -24489,6 +24983,7 @@ platform with the given children.</p>
 <tr><td>onClick</td><td>(() =&gt; void) | null</td><td>void Function()?</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -24522,6 +25017,7 @@ platform with the given children.</p>
 <tr><td>mouseCursor</td><td>MouseCursorValue</td><td>MouseCursor?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -24558,6 +25054,7 @@ or collapses the tile to reveal or hide the [child].</p>
 <tr><td>transitionMode</td><td>ExpansionTileTransitionMode</td><td>ExpansionTileTransitionMode</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -24592,6 +25089,7 @@ or collapses the tile to reveal or hide the [child].</p>
 <tr><td>error</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -24629,6 +25127,7 @@ or collapses the tile to reveal or hide the [child].</p>
 <tr><td>clipBehavior</td><td>Clip</td><td>Clip</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -24666,6 +25165,7 @@ or collapses the tile to reveal or hide the [child].</p>
 <tr><td>linearTransition</td><td>boolean</td><td>bool</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -24704,6 +25204,7 @@ or collapses the tile to reveal or hide the [child].</p>
 <tr><td>color</td><td>ColorValue</td><td>Color?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -24742,6 +25243,7 @@ or collapses the tile to reveal or hide the [child].</p>
 <tr><td>separatorColor</td><td>ColorValue</td><td>Color?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -24791,6 +25293,7 @@ or collapses the tile to reveal or hide the [child].</p>
 <tr><td>leadingToTitle</td><td>number</td><td>double</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -24821,6 +25324,7 @@ or collapses the tile to reveal or hide the [child].</p>
 <h3>CupertinoListTileChevron<span class="badge badge-lib">cupertino</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A typical iOS trailing widget used to denote that a `CupertinoListTile` is a
 button with an action.</p>
+
 
 <div class="tabs">
 <div class="tab-btns" role="tablist">
@@ -24854,6 +25358,7 @@ finger may be blocking the point of interest, like a selection handle.</p>
 <tr><td>magnificationScale</td><td>number</td><td>double</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -24902,6 +25407,7 @@ with an alignment.</p>
 <tr><td>childFocusNode</td><td>FocusNode</td><td>FocusNode?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -24944,6 +25450,7 @@ a [CupertinoMenuAnchor].</p>
 <tr><td>color</td><td>ColorValue</td><td>Color</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -24989,6 +25496,7 @@ a [CupertinoMenuAnchor].</p>
 <tr><td>isDestructiveAction</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -25050,6 +25558,7 @@ a [CupertinoMenuAnchor].</p>
 <tr><td>bottom</td><td>FlutterChild</td><td>PreferredSizeWidget?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -25091,6 +25600,7 @@ a [CupertinoMenuAnchor].</p>
 <tr><td>onClick</td><td>() =&gt; void</td><td>void Function()?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -25121,6 +25631,7 @@ a [CupertinoMenuAnchor].</p>
 <tr><td>resizeToAvoidBottomInset</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -25152,6 +25663,7 @@ a [CupertinoMenuAnchor].</p>
 <tr><td>color</td><td>ColorValue</td><td>Color</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -25183,6 +25695,7 @@ a [CupertinoMenuAnchor].</p>
 <tr><td>linearTransition</td><td>boolean</td><td>bool</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -25231,6 +25744,7 @@ a [CupertinoMenuAnchor].</p>
 <tr><td>looping</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -25273,6 +25787,7 @@ a [CupertinoMenuAnchor].</p>
 <tr><td>capEndEdge</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -25303,6 +25818,7 @@ sheets.</p>
 <tr><td>isSurfacePainted</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -25345,6 +25861,7 @@ sheets.</p>
 <tr><td>groupRegistry</td><td>RadioGroupRegistry</td><td>RadioGroupRegistry&lt;T&gt;?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -25392,6 +25909,7 @@ sheets.</p>
 <tr><td>mainAxisMargin</td><td>number</td><td>double</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -25461,6 +25979,7 @@ sheets.</p>
 <tr><td>cursorColor</td><td>ColorValue</td><td>Color?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -25528,6 +26047,7 @@ sheets.</p>
 <tr><td>disabledChildren</td><td>unknown[]</td><td>Set&lt;T&gt;</td><td class="req"></td></tr>
 </tbody>
 </table>
+<p class="note"><code>children</code> (Map&lt;T, Widget&gt;) — a shape the compiler does not write yet.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -25567,6 +26087,7 @@ sheets.</p>
 <tr><td>topGap</td><td>number</td><td>double</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -25612,6 +26133,7 @@ sheets.</p>
 <tr><td>thumbColor</td><td>ColorValue</td><td>Color</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -25653,6 +26175,7 @@ sheets.</p>
 <tr><td>isMomentary</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
+<p class="note"><code>children</code> (Map&lt;T, Widget&gt;) — a shape the compiler does not write yet.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -25704,6 +26227,7 @@ sheets.</p>
 <tr><td>bottomMode</td><td>NavigationBarBottomMode</td><td>NavigationBarBottomMode?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -25750,6 +26274,7 @@ sheets.</p>
 <tr><td>onRefresh</td><td>() =&gt; Promise&lt;void&gt;</td><td>Future&lt;void&gt; Function()?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -25779,6 +26304,7 @@ sheets.</p>
 <tr><td>buttonItems</td><td>ContextMenuButtonItem[]</td><td>List&lt;ContextMenuButtonItem&gt;</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -25828,6 +26354,7 @@ sheets.</p>
 <tr><td>dragStartBehavior</td><td>DragStartBehavior</td><td>DragStartBehavior</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -25884,6 +26411,7 @@ sheets.</p>
 <tr><td>border</td><td>BorderValue</td><td>Border?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -25922,6 +26450,7 @@ sheets.</p>
 <tr><td>restorationId</td><td>string</td><td>String?</td><td class="req"></td></tr>
 </tbody>
 </table>
+<p class="note"><code>tabBar</code> (CupertinoTabBar) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -25959,6 +26488,7 @@ sheets.</p>
 <tr><td>restorationScopeId</td><td>string</td><td>String?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -26062,6 +26592,7 @@ sheets.</p>
 <tr><td>magnifierConfiguration</td><td>TextMagnifierConfigurationValue</td><td>TextMagnifierConfiguration?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -26211,6 +26742,7 @@ a [CupertinoTextField].</p>
 <tr><td>restorationId</td><td>string</td><td>String?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -26294,6 +26826,7 @@ finger may be blocking the point of interest, like a selection handle.</p>
 <tr><td>magnifierInfo</td><td>ValueNotifier</td><td>ValueNotifier&lt;MagnifierInfo&gt;</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -26333,6 +26866,7 @@ finger may be blocking the point of interest, like a selection handle.</p>
 <tr><td>toolbarBuilder</td><td>(context: BuildContext, anchorAbove: Offset, anchorBelow: Offset, child: FlutterElement) =&gt; FlutterElement</td><td>Widget Function(BuildContext, Offset, Offset, Widget)</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -26365,6 +26899,7 @@ finger may be blocking the point of interest, like a selection handle.</p>
 <tr><td>onClick</td><td>() =&gt; void</td><td>void Function()?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -26394,6 +26929,7 @@ finger may be blocking the point of interest, like a selection handle.</p>
 <tr><td>data</td><td>CupertinoThemeDataValue</td><td>CupertinoThemeData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -26431,6 +26967,7 @@ finger may be blocking the point of interest, like a selection handle.</p>
 <tr><td>selectionOverlayBuilder</td><td>(context: BuildContext, columnCount: number, selectedIndex: number) =&gt; FlutterElement | null</td><td>Widget? Function(BuildContext, {required int columnCount, required int selectedIndex})?</td><td class="req"></td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -26468,6 +27005,7 @@ can be used to apply style differences based on a widget's elevation.</p>
 <tr><td>data</td><td>CupertinoUserInterfaceLevelData</td><td>CupertinoUserInterfaceLevelData</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -26497,6 +27035,7 @@ can be used to apply style differences based on a widget's elevation.</p>
 <tr><td>theme</td><td>FlutterChild</td><td>CupertinoTheme</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+<p class="note"><code>theme</code> (CupertinoTheme) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>

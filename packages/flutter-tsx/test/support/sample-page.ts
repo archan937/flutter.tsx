@@ -21,6 +21,7 @@ export const frame: SiteWidget = {
   example: {
     tsx: '<Frame color={Colors.blue}>\n  <Text>Content</Text>\n</Frame>',
     bindings: [],
+    unwritable: [],
     complete: true,
   },
   dartSignature: 'Frame({\n  Key? key,\n  Widget? child,\n  Color? color,\n})',

@@ -12,7 +12,7 @@ const widget = (
   library: 'widgets',
   doc: '',
   props: [],
-  example: { bindings: [], ...example },
+  example: { bindings: [], unwritable: [], ...example },
   dartSignature: `${name}()`,
 });
 

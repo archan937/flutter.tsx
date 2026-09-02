@@ -105,10 +105,19 @@ process.stdout.write(
     `(${(html.length / 1024).toFixed(0)} KB).\n`,
 );
 if (page.incompleteExamples.length > 0) {
+  const reasons = page.widgets
+    .flatMap((widget) => widget.example.unwritable)
+    .reduce<Record<string, number>>(
+      (counts, entry) => ({
+        ...counts,
+        [entry.reason]: (counts[entry.reason] ?? 0) + 1,
+      }),
+      {},
+    );
   process.stdout.write(
-    `${page.incompleteExamples.length} widget example(s) carry a {…} ` +
-      `placeholder for value kinds later roadmap steps make expressible ` +
-      `(callbacks with bodies, controllers, animations): ` +
-      `${page.incompleteExamples.join(', ')}\n`,
+    `${page.incompleteExamples.length} widget example(s) leave a value ` +
+      `unwritten — ${Object.entries(reasons)
+        .map(([reason, count]) => `${count} ${reason}`)
+        .join(', ')}: ${page.incompleteExamples.join(', ')}\n`,
   );
 }

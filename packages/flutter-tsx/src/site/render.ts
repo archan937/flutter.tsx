@@ -74,10 +74,25 @@ export const widgetSection = (widget: SiteWidget): string => {
   const verifiedBadge = widget.example.complete
     ? '<a class="badge badge-pkg" href="#verification">✓ typechecked</a>'
     : '';
+  // An example that cannot be finished says which values it could not write
+  // and why, so a placeholder is never left to be guessed at.
+  const unwritten =
+    widget.example.unwritable.length === 0
+      ? ''
+      : `<p class="note">${widget.example.unwritable
+          .map(
+            (entry) =>
+              `<code>${escapeHtml(entry.prop)}</code> (${escapeHtml(entry.type)}) — ` +
+              (entry.reason === 'supplied-by-flutter'
+                ? 'a value Flutter supplies to the widget; nothing in the SDK builds one.'
+                : 'a shape the compiler does not write yet.'),
+          )
+          .join('<br>')}</p>`;
   return `<article class="widget" id="${widget.name}" data-name="${widget.name}">
 <h3>${escapeHtml(widget.name)}<span class="badge badge-lib">${escapeHtml(widget.library)}</span>${verifiedBadge}</h3>
 ${summary ? `<p class="doc">${escapeHtml(summary)}</p>` : ''}
 ${table}
+${unwritten}
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -445,7 +460,7 @@ ${navList(page.enums.map((entry) => entry.name))}
 
 const verificationSection = `<article class="widget" id="verification" data-name="verification">
 <h3>✓ typechecked — what the badge means</h3>
-<p class="doc">Every example carrying the badge is generated into a probe module and compiled by the TypeScript compiler against the published <code>flutter-tsx</code> package surface on every CI run. Examples showing a <code>{…}</code> placeholder need a value kind a later compiler step makes expressible (callbacks with bodies, controllers, animations); they are excluded from the probe and carry no badge until then.</p>
+<p class="doc">Every example carrying the badge is generated into a probe module, compiled by the TypeScript compiler against the published <code>flutter-tsx</code> package surface, transpiled to Dart and run through <code>flutter analyze</code> — on every CI run. An example without the badge says, under its prop table, exactly which values it could not write and why: either a value Flutter supplies to the widget, which nothing in the SDK builds, or a shape the compiler does not write yet. There is no third case, and a placeholder without a reason fails the build.</p>
 </article>`;
 
 export const pageContent = (page: SitePage): string => {

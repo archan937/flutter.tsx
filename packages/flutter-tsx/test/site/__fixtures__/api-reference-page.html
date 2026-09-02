@@ -278,7 +278,7 @@ details details > ul { padding-left: 24px; }
 <h2 id="about-verification">Verification</h2>
 <article class="widget" id="verification" data-name="verification">
 <h3>✓ typechecked — what the badge means</h3>
-<p class="doc">Every example carrying the badge is generated into a probe module and compiled by the TypeScript compiler against the published <code>flutter-tsx</code> package surface on every CI run. Examples showing a <code>{…}</code> placeholder need a value kind a later compiler step makes expressible (callbacks with bodies, controllers, animations); they are excluded from the probe and carry no badge until then.</p>
+<p class="doc">Every example carrying the badge is generated into a probe module, compiled by the TypeScript compiler against the published <code>flutter-tsx</code> package surface, transpiled to Dart and run through <code>flutter analyze</code> — on every CI run. An example without the badge says, under its prop table, exactly which values it could not write and why: either a value Flutter supplies to the widget, which nothing in the SDK builds, or a shape the compiler does not write yet. There is no third case, and a placeholder without a reason fails the build.</p>
 </article>
 <h2 id="core">Hooks &amp; core APIs</h2>
 <article class="widget" id="core-useState" data-name="useState">
@@ -298,6 +298,7 @@ details details > ul { padding-left: 24px; }
 <tr><td>color</td><td>Color</td><td>Color?</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>

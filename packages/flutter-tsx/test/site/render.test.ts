@@ -67,6 +67,7 @@ describe('widgetSection', () => {
 <tr><td>color</td><td>Color</td><td>Color?</td><td class="req">✓</td></tr>
 </tbody>
 </table>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>

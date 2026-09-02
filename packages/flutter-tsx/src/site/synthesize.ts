@@ -3,6 +3,7 @@ import { DATE_FORMS } from '../derive/date-forms';
 import type { NamedSlot, WidgetSlots } from '../derive/slots';
 import { EDGE_INSETS_TYPES, type ValueForms } from '../derive/value-forms';
 import { jsxPropName } from '../generate/renames';
+import { type UnwritableProp, unwritableReason } from './unwritable';
 
 /** A class the SDK builds, and what its constructor asks for. */
 export interface Constructible {
@@ -43,6 +44,8 @@ export interface SynthesizedExample {
   tsx: string;
   bindings: ExampleBinding[];
   complete: boolean;
+  /** Every prop left unwritten, and why — never a placeholder alone. */
+  unwritable: UnwritableProp[];
 }
 
 /** A synthesized value, with whatever has to be bound for it to exist. */
@@ -407,11 +410,21 @@ export const synthesizeTsx = (input: SynthesisInput): SynthesizedExample => {
     suppliedNames.add(slots.children.param);
   }
 
+  const unwritable: UnwritableProp[] = [];
+
   // One binding per line written, however many props ask for it: two
   // transitions driven by one animation is what a developer would write.
-  const record = (value: SynthesizedValue | null): string => {
+  const record = (
+    value: SynthesizedValue | null,
+    param: ParamModel,
+  ): string => {
     if (value === null) {
       complete = false;
+      unwritable.push({
+        prop: param.name,
+        type: param.display,
+        reason: unwritableReason(param.type, context.construction),
+      });
       return INCOMPLETE_VALUE;
     }
     if (value.binding !== undefined) {
@@ -429,7 +442,9 @@ export const synthesizeTsx = (input: SynthesisInput): SynthesizedExample => {
     const slot = slots.slots.find((entry) => entry.param === candidate.name);
     const value =
       slot !== undefined ? slotValue(slot) : attrValue(candidate.type, context);
-    attrs.push(`${jsxPropName(candidate.name, takenNames)}=${record(value)}`);
+    attrs.push(
+      `${jsxPropName(candidate.name, takenNames)}=${record(value, candidate)}`,
+    );
   }
 
   for (const group of input.requiredOneOf ?? []) {
@@ -441,13 +456,14 @@ export const synthesizeTsx = (input: SynthesisInput): SynthesizedExample => {
       continue;
     }
     const propName = jsxPropName(chosen.param.name, takenNames);
-    attrs.push(`${propName}=${record(chosen.value)}`);
+    attrs.push(`${propName}=${record(chosen.value, chosen.param)}`);
   }
 
   return {
     tsx: tagText(widgetName, attrs, slots.children),
     bindings: [...bindings.values()],
     complete,
+    unwritable,
   };
 };
 
