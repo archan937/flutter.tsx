@@ -18,8 +18,11 @@ export const frame: SiteWidget = {
     },
     { tsxProp: 'color', tsType: 'Color', dartType: 'Color?', required: true },
   ],
-  tsxExample: '<Frame color={Colors.blue}>\n  <Text>Content</Text>\n</Frame>',
-  exampleComplete: true,
+  example: {
+    tsx: '<Frame color={Colors.blue}>\n  <Text>Content</Text>\n</Frame>',
+    bindings: [],
+    complete: true,
+  },
   dartSignature: 'Frame({\n  Key? key,\n  Widget? child,\n  Color? color,\n})',
 };
 

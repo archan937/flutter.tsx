@@ -63,11 +63,26 @@ class TestVault {
 }
 
 /// A stateful helper whose constructor is deliberately not const.
+/// Holds a value of some type.
+class TestHolder<T> {
+  const TestHolder(this.value);
+
+  final T value;
+}
+
 class TestController {
   TestController({this.tick = 0});
 
   /// The current tick.
   final int tick;
+
+  /// Releases what the controller holds.
+  void dispose() {}
+}
+
+/// A value with nothing to release, so nothing to dispose.
+class TestLink {
+  TestLink();
 }
 
 abstract class AbstractWidget extends StatelessWidget {
@@ -105,12 +120,14 @@ class TestWidget extends StatelessWidget {
     this.ticks,
     this.extra,
     this.anything,
+    this.holder,
     @Deprecated('Use title instead.') this.legacyTitle,
   }) : assert(count >= 0, 'count must not be negative');
 
   /// A compact variant.
   const TestWidget.compact({required this.title})
-    : count = 1,
+    : holder = null,
+      count = 1,
       scale = null,
       enabled = true,
       child = null,
@@ -168,6 +185,9 @@ class TestWidget extends StatelessWidget {
 
   /// Escape hatch with no static type.
   final dynamic anything;
+
+  /// A value whose type argument is part of what it is.
+  final TestHolder<TestController>? holder;
 
   /// The old title.
   final String? legacyTitle;

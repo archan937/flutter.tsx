@@ -34,6 +34,21 @@ void main() {
       });
     });
 
+    test('a named type keeps the arguments it was written with', () {
+      // `Animation<Color>` is not `Animation`: what a value is made of is
+      // part of the type, and the compiler needs it to build one.
+      expect(typeOf('holder'), {
+        'kind': 'nullable',
+        'inner': {
+          'kind': 'named',
+          'name': 'TestHolder',
+          'args': [
+            {'kind': 'named', 'name': 'TestController'},
+          ],
+        },
+      });
+    });
+
     test('widgets', () {
       expect(typeOf('child'), {
         'kind': 'nullable',

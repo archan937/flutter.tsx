@@ -124,6 +124,7 @@ describe('buildSitePage', () => {
       },
       {
         kind: 'class',
+        disposable: false,
         name: 'TestPalette',
         library: 'material',
         doc: '',
@@ -232,8 +233,11 @@ describe('buildSitePage', () => {
               required: false,
             },
           ],
-          tsxExample: '<Frame paint="main">\n  <Text>Content</Text>\n</Frame>',
-          exampleComplete: true,
+          example: {
+            tsx: '<Frame paint="main">\n  <Text>Content</Text>\n</Frame>',
+            bindings: [],
+            complete: true,
+          },
           dartSignature: [
             'Frame({',
             '  Key? key,',

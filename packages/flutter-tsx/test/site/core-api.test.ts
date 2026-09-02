@@ -22,6 +22,7 @@ const everything = (): Recipe[] => [
     [
       'useState useEffect useAsync useStream createStore useStore',
       'useNavigation createRouter json TabItem TabView Animated',
+      'useAnimation tween',
     ].join(' '),
   ),
 ];

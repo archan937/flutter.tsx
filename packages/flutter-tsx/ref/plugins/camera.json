@@ -2039,7 +2039,13 @@
                 "kind": "nullable",
                 "inner": {
                   "kind": "named",
-                  "name": "Optional"
+                  "name": "Optional",
+                  "args": [
+                    {
+                      "kind": "enum",
+                      "name": "DeviceOrientation"
+                    }
+                  ]
                 }
               },
               "display": "Optional<DeviceOrientation>?",
@@ -2055,7 +2061,13 @@
                 "kind": "nullable",
                 "inner": {
                   "kind": "named",
-                  "name": "Optional"
+                  "name": "Optional",
+                  "args": [
+                    {
+                      "kind": "enum",
+                      "name": "DeviceOrientation"
+                    }
+                  ]
                 }
               },
               "display": "Optional<DeviceOrientation>?",
@@ -2103,7 +2115,13 @@
                 "kind": "nullable",
                 "inner": {
                   "kind": "named",
-                  "name": "Optional"
+                  "name": "Optional",
+                  "args": [
+                    {
+                      "kind": "enum",
+                      "name": "DeviceOrientation"
+                    }
+                  ]
                 }
               },
               "display": "Optional<DeviceOrientation>?",
@@ -2275,7 +2293,12 @@
           "doc": "",
           "type": {
             "kind": "named",
-            "name": "Iterator"
+            "name": "Iterator",
+            "args": [
+              {
+                "kind": "unknown"
+              }
+            ]
           }
         },
         {
@@ -2442,7 +2465,12 @@
           "static": false,
           "returnType": {
             "kind": "named",
-            "name": "Optional"
+            "name": "Optional",
+            "args": [
+              {
+                "kind": "unknown"
+              }
+            ]
           },
           "params": [
             {
@@ -2478,7 +2506,12 @@
           "static": false,
           "returnType": {
             "kind": "named",
-            "name": "Optional"
+            "name": "Optional",
+            "args": [
+              {
+                "kind": "unknown"
+              }
+            ]
           },
           "params": [
             {

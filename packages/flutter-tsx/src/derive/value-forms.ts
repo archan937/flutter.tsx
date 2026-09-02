@@ -1,4 +1,5 @@
 import type { ApiSnapshot, ParamModel, TypeNode } from '../api/model';
+import { DATE_FORMS } from './date-forms';
 
 export interface ValueForms {
   constantMembers: Map<string, Map<string, string>>;
@@ -15,6 +16,7 @@ export const HEX_COLOR_TYPE = 'Color';
 export const hasValueForms = (name: string, forms: ValueForms): boolean =>
   EDGE_INSETS_TYPES.has(name) ||
   name === HEX_COLOR_TYPE ||
+  DATE_FORMS.has(name) ||
   forms.constantMembers.has(name) ||
   forms.constructibles.has(name);
 

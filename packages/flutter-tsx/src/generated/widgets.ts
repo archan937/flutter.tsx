@@ -3035,6 +3035,8 @@ export interface BackdropKey {
   readonly __fsxBrand?: { readonly BackdropKey: true };
 }
 
+export declare const BackdropKey: new () => BackdropKey;
+
 export interface BadgeThemeData {
   readonly __fsxBrand?: {
     readonly BadgeThemeData: true;
@@ -3219,6 +3221,8 @@ export interface ChipAnimationStyle {
   readonly __fsxBrand?: { readonly ChipAnimationStyle: true };
 }
 
+export declare const ChipAnimationStyle: new () => ChipAnimationStyle;
+
 export interface ChipThemeData {
   readonly __fsxBrand?: {
     readonly ChipThemeData: true;
@@ -3301,6 +3305,8 @@ export interface CupertinoTabController {
     readonly Listenable: true;
   };
 }
+
+export declare const CupertinoTabController: new () => CupertinoTabController;
 
 export interface CupertinoTextThemeData {
   readonly __fsxBrand?: {
@@ -3424,6 +3430,8 @@ export interface DismissUpdateDetails {
   readonly reached: boolean;
 }
 
+export declare const DismissUpdateDetails: new () => DismissUpdateDetails;
+
 export interface DisplayFeature {
   readonly __fsxBrand?: { readonly DisplayFeature: true };
 }
@@ -3457,6 +3465,8 @@ export interface DragDownDetails {
   readonly localPosition: OffsetValue;
 }
 
+export declare const DragDownDetails: new () => DragDownDetails;
+
 export interface DragEndDetails {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -3469,6 +3479,8 @@ export interface DragEndDetails {
   readonly velocity: VelocityValue;
 }
 
+export declare const DragEndDetails: new () => DragEndDetails;
+
 export interface DragStartDetails {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -3480,6 +3492,8 @@ export interface DragStartDetails {
   readonly localPosition: OffsetValue;
   readonly sourceTimeStamp: DurationValue;
 }
+
+export declare const DragStartDetails: new () => DragStartDetails;
 
 export interface DragTargetDetails {
   readonly __fsxBrand?: { readonly DragTargetDetails: true };
@@ -3533,6 +3547,8 @@ export interface DraggableScrollableController {
     readonly Listenable: true;
   };
 }
+
+export declare const DraggableScrollableController: new () => DraggableScrollableController;
 
 export interface DrawerThemeData {
   readonly __fsxBrand?: {
@@ -3619,6 +3635,8 @@ export interface EditableTextState {
   readonly wantKeepAlive: boolean;
 }
 
+export declare const EditableTextState: new () => EditableTextState;
+
 export interface ElasticInCurve {
   readonly __fsxBrand?: {
     readonly Curve: true;
@@ -3661,6 +3679,8 @@ export interface ExpansibleController {
     readonly Listenable: true;
   };
 }
+
+export declare const ExpansibleController: new () => ExpansibleController;
 
 export interface ExpansionPanel {
   readonly __fsxBrand?: { readonly ExpansionPanel: true };
@@ -3857,6 +3877,8 @@ export interface FormFieldState {
   readonly restorePending: boolean;
 }
 
+export declare const FormFieldState: new () => FormFieldState;
+
 export interface FractionalOffset {
   readonly __fsxBrand?: {
     readonly Alignment: true;
@@ -3887,6 +3909,8 @@ export interface HeroController {
     readonly NavigatorObserver: true;
   };
 }
+
+export declare const HeroController: new () => HeroController;
 
 export interface HitTestResponse {
   readonly __fsxBrand?: { readonly HitTestResponse: true };
@@ -4009,6 +4033,8 @@ export interface LayerLink {
   readonly __fsxBrand?: { readonly LayerLink: true };
 }
 
+export declare const LayerLink: new () => LayerLink;
+
 export interface LinearBorder {
   readonly __fsxBrand?: {
     readonly LinearBorder: true;
@@ -4100,6 +4126,8 @@ export interface MagnifierController {
   readonly __fsxBrand?: { readonly MagnifierController: true };
 }
 
+export declare const MagnifierController: new () => MagnifierController;
+
 export interface MagnifierDecoration {
   readonly __fsxBrand?: { readonly MagnifierDecoration: true };
 }
@@ -4158,6 +4186,8 @@ export interface MenuController {
   readonly __fsxBrand?: { readonly MenuController: true };
   readonly isOpen: boolean;
 }
+
+export declare const MenuController: new () => MenuController;
 
 export interface MenuSerializableShortcut {
   readonly __fsxBrand?: {
@@ -4240,6 +4270,8 @@ export interface NavigatorObserver {
   readonly __fsxBrand?: { readonly NavigatorObserver: true };
 }
 
+export declare const NavigatorObserver: new () => NavigatorObserver;
+
 export interface NavigatorState {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -4258,6 +4290,8 @@ export interface NavigatorState {
   readonly userGestureInProgress: boolean;
   readonly userGestureInProgressNotifier: ValueNotifier;
 }
+
+export declare const NavigatorState: new () => NavigatorState;
 
 export interface NotchedShape {
   readonly __fsxBrand?: { readonly NotchedShape: true };
@@ -4324,6 +4358,8 @@ export interface OverlayPortalController {
   readonly __fsxBrand?: { readonly OverlayPortalController: true };
 }
 
+export declare const OverlayPortalController: new () => OverlayPortalController;
+
 export interface Page {
   readonly __fsxBrand?: { readonly Page: true; readonly RouteSettings: true };
 }
@@ -4365,9 +4401,13 @@ export interface PageStorageBucket {
   readonly __fsxBrand?: { readonly PageStorageBucket: true };
 }
 
+export declare const PageStorageBucket: new () => PageStorageBucket;
+
 export interface Paint {
   readonly __fsxBrand?: { readonly Paint: true };
 }
+
+export declare const Paint: new () => Paint;
 
 export interface PartialStackFrame {
   readonly __fsxBrand?: { readonly PartialStackFrame: true };
@@ -4389,6 +4429,8 @@ export interface PipelineOwner {
     readonly PipelineOwner: true;
   };
 }
+
+export declare const PipelineOwner: new () => PipelineOwner;
 
 export interface PlaceholderDimensions {
   readonly __fsxBrand?: { readonly PlaceholderDimensions: true };
@@ -5003,6 +5045,8 @@ export interface ScaleEndDetails {
   readonly velocity: VelocityValue;
 }
 
+export declare const ScaleEndDetails: new () => ScaleEndDetails;
+
 export interface ScaleStartDetails {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -5014,6 +5058,8 @@ export interface ScaleStartDetails {
   readonly pointerCount: number;
   readonly sourceTimeStamp: DurationValue;
 }
+
+export declare const ScaleStartDetails: new () => ScaleStartDetails;
 
 export interface ScaleUpdateDetails {
   readonly __fsxBrand?: {
@@ -5030,6 +5076,8 @@ export interface ScaleUpdateDetails {
   readonly sourceTimeStamp: DurationValue;
   readonly verticalScale: number;
 }
+
+export declare const ScaleUpdateDetails: new () => ScaleUpdateDetails;
 
 export interface ScrollBehavior {
   readonly __fsxBrand?: { readonly ScrollBehavior: true };
@@ -5147,6 +5195,8 @@ export interface SelectableRegionState {
   readonly textEditingValue: TextEditingValueValue;
 }
 
+export declare const SelectableRegionState: new () => SelectableRegionState;
+
 export interface SelectedContent {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -5171,6 +5221,8 @@ export interface SelectionListenerNotifier {
     readonly SelectionListenerNotifier: true;
   };
 }
+
+export declare const SelectionListenerNotifier: new () => SelectionListenerNotifier;
 
 export interface SelectionRegistrar {
   readonly __fsxBrand?: { readonly SelectionRegistrar: true };
@@ -5303,6 +5355,8 @@ export interface SliverOverlapAbsorberHandle {
   };
 }
 
+export declare const SliverOverlapAbsorberHandle: new () => SliverOverlapAbsorberHandle;
+
 export interface SliverPersistentHeaderDelegate {
   readonly __fsxBrand?: { readonly SliverPersistentHeaderDelegate: true };
 }
@@ -5331,6 +5385,8 @@ export interface SnapshotController {
     readonly SnapshotController: true;
   };
 }
+
+export declare const SnapshotController: new () => SnapshotController;
 
 export interface SnapshotPainter {
   readonly __fsxBrand?: {
@@ -5443,6 +5499,8 @@ export interface TapDownDetails {
   readonly kind: PointerDeviceKind;
   readonly localPosition: OffsetValue;
 }
+
+export declare const TapDownDetails: new () => TapDownDetails;
 
 export interface TapDragDownDetails {
   readonly __fsxBrand?: {
@@ -5643,6 +5701,8 @@ export interface ThemeData {
   };
 }
 
+export declare const ThemeData: new () => ThemeData;
+
 export interface ThreePointCubic {
   readonly __fsxBrand?: {
     readonly Curve: true;
@@ -5718,6 +5778,8 @@ export interface TransformationController {
   };
 }
 
+export declare const TransformationController: new () => TransformationController;
+
 export interface TransitionDelegate {
   readonly __fsxBrand?: { readonly TransitionDelegate: true };
 }
@@ -5725,6 +5787,8 @@ export interface TransitionDelegate {
 export interface TreeSliverController {
   readonly __fsxBrand?: { readonly TreeSliverController: true };
 }
+
+export declare const TreeSliverController: new () => TreeSliverController;
 
 export interface TreeSliverIndentationType {
   readonly __fsxBrand?: { readonly TreeSliverIndentationType: true };
@@ -5742,6 +5806,8 @@ export interface Tween {
   readonly __fsxBrand?: { readonly Animatable: true; readonly Tween: true };
 }
 
+export declare const Tween: new () => Tween;
+
 export interface Type {
   readonly __fsxBrand?: { readonly Type: true };
 }
@@ -5755,6 +5821,8 @@ export interface UndoHistoryController {
     readonly ValueNotifier: true;
   };
 }
+
+export declare const UndoHistoryController: new () => UndoHistoryController;
 
 export interface UndoHistoryValue {
   readonly __fsxBrand?: { readonly UndoHistoryValue: true };
@@ -5834,6 +5902,8 @@ export interface WidgetStatesController {
     readonly WidgetStatesController: true;
   };
 }
+
+export declare const WidgetStatesController: new () => WidgetStatesController;
 
 export interface ActionIconThemeDataObject {
   /**
@@ -7815,6 +7885,8 @@ export interface DatePickerThemeDataObject {
 
 export type DatePickerThemeDataValue =
   DatePickerThemeData | DatePickerThemeDataObject;
+
+export type DateTimeValue = DateTime | `${number}-${number}-${number}`;
 
 export interface DeviceGestureSettingsObject {
   /**
@@ -24281,6 +24353,8 @@ export type TextStyleValue =
   | 'cupertinoMisspelledTextStyle'
   | 'materialMisspelledTextStyle';
 
+export type TimeOfDayValue = TimeOfDay | `${number}:${number}`;
+
 export interface TimePickerThemeDataObject {
   /**
    * The background color of a time picker.
@@ -33875,19 +33949,19 @@ export interface CalendarDatePickerProps extends GestureProps {
    * provide that widget the new [initialDate]. This will reset the widget's
    * interactive state.
    */
-  initialDate: DateTime | null;
+  initialDate: DateTimeValue | null;
   /**
    * The earliest allowable [DateTime] that the user can select.
    */
-  firstDate: DateTime;
+  firstDate: DateTimeValue;
   /**
    * The latest allowable [DateTime] that the user can select.
    */
-  lastDate: DateTime;
+  lastDate: DateTimeValue;
   /**
    * The [DateTime] representing today. It will be highlighted in the day grid.
    */
-  currentDate?: DateTime;
+  currentDate?: DateTimeValue;
   /**
    * Called when the user selects a date in the picker.
    */
@@ -40332,7 +40406,7 @@ export interface CupertinoDatePickerProps extends GestureProps {
    * Changing this value after the initial build will not affect the currently
    * selected date time.
    */
-  initialDateTime?: DateTime;
+  initialDateTime?: DateTimeValue;
   /**
    * The minimum selectable date that the picker can settle on.
    *
@@ -40348,7 +40422,7 @@ export interface CupertinoDatePickerProps extends GestureProps {
    * Defaults to null. When set to null, the picker does not impose a limit on
    * the earliest [DateTime] the user can select.
    */
-  minimumDate?: DateTime;
+  minimumDate?: DateTimeValue;
   /**
    * The maximum selectable date that the picker can settle on.
    *
@@ -40364,7 +40438,7 @@ export interface CupertinoDatePickerProps extends GestureProps {
    * Defaults to null. When set to null, the picker does not impose a limit on
    * the latest [DateTime] the user can select.
    */
-  maximumDate?: DateTime;
+  maximumDate?: DateTimeValue;
   /**
    * Minimum year that the picker can be scrolled to in
    * [CupertinoDatePickerMode.date] mode. Defaults to 1.
@@ -48193,19 +48267,19 @@ export interface DatePickerDialogProps extends GestureProps {
    * If this is null, there is no selected date. A date must be selected to
    * submit the dialog.
    */
-  initialDate?: DateTime;
+  initialDate?: DateTimeValue;
   /**
    * The earliest allowable [DateTime] that the user can select.
    */
-  firstDate: DateTime;
+  firstDate: DateTimeValue;
   /**
    * The latest allowable [DateTime] that the user can select.
    */
-  lastDate: DateTime;
+  lastDate: DateTimeValue;
   /**
    * The [DateTime] representing today. It will be highlighted in the day grid.
    */
-  currentDate?: DateTime;
+  currentDate?: DateTimeValue;
   /**
    * The initial mode of date entry method for the date picker dialog.
    *
@@ -48378,12 +48452,12 @@ export interface DateRangePickerDialogProps extends GestureProps {
   /**
    * The earliest allowable date on the date range.
    */
-  firstDate: DateTime;
+  firstDate: DateTimeValue;
   /**
    * The latest allowable date on the date range.
    */
-  lastDate: DateTime;
-  currentDate?: DateTime;
+  lastDate: DateTimeValue;
+  currentDate?: DateTimeValue;
   /**
    * The initial date range picker entry mode.
    *
@@ -65946,15 +66020,15 @@ export interface InputDatePickerFormFieldProps extends GestureProps {
   /**
    * If provided, it will be used as the default value of the field.
    */
-  initialDate?: DateTime;
+  initialDate?: DateTimeValue;
   /**
    * The earliest allowable [DateTime] that the user can input.
    */
-  firstDate: DateTime;
+  firstDate: DateTimeValue;
   /**
    * The latest allowable [DateTime] that the user can input.
    */
-  lastDate: DateTime;
+  lastDate: DateTimeValue;
   /**
    * An optional method to call when the user indicates they are done editing
    * the text in the field. Will only be called if the input represents a valid
@@ -103037,7 +103111,7 @@ export interface TimePickerDialogProps extends GestureProps {
   /**
    * The time initially selected when the dialog is shown.
    */
-  initialTime: TimeOfDay;
+  initialTime: TimeOfDayValue;
   /**
    * Optionally provide your own text for the cancel button.
    *
@@ -107440,25 +107514,25 @@ export interface YearPickerProps extends GestureProps {
    *
    * This date is subtly highlighted in the picker.
    */
-  currentDate?: DateTime;
+  currentDate?: DateTimeValue;
   /**
    * The earliest date the user is permitted to pick.
    */
-  firstDate: DateTime;
+  firstDate: DateTimeValue;
   /**
    * The latest date the user is permitted to pick.
    */
-  lastDate: DateTime;
+  lastDate: DateTimeValue;
   /**
    * @deprecated
    */
-  initialDate?: DateTime;
+  initialDate?: DateTimeValue;
   /**
    * The currently selected date.
    *
    * This date is highlighted in the picker.
    */
-  selectedDate: DateTime | null;
+  selectedDate: DateTimeValue | null;
   /**
    * Called when the user picks a year.
    */

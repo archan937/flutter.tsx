@@ -8,6 +8,7 @@ import { transpileComponent } from '@src/compiler/transpile';
 import { deriveSlots } from '@src/derive/slots';
 import { buildSitePage } from '@src/site/from-snapshot';
 import { loadSiteSections } from '@src/site/sections';
+import { exampleImports, exampleSource } from '@src/site/synthesize';
 import {
   ensurePackageResolved,
   flutterAnalyze,
@@ -32,16 +33,17 @@ describe('543-widget analyze sweep', () => {
       deriveSlots(snapshot),
       await loadSiteSections(),
     );
-    const complete = page.widgets.filter((widget) => widget.exampleComplete);
+    const complete = page.widgets.filter((widget) => widget.example.complete);
     expect(complete.length).toBeGreaterThanOrEqual(349);
 
     await ensurePackageResolved(sweepPackageDir);
     await rm(probesDir, { recursive: true, force: true });
     await mkdir(probesDir, { recursive: true });
     for (const widget of complete) {
+      const imports = exampleImports(widget.name, widget.example).join(', ');
       const source =
-        `import { ${widget.name}, Text } from 'flutter-tsx';\n\n` +
-        `export const Probe = () => (\n  ${widget.tsxExample}\n);\n`;
+        `import { ${imports} } from 'flutter-tsx';\n\n` +
+        `${exampleSource(widget.name, widget.example, { component: true })}\n`;
       const generated = await transpileComponent({
         source,
         filePath: `${widget.name}.tsx`,

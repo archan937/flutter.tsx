@@ -10,6 +10,7 @@ import {
   reachableValueFormNames,
   type ValueForms,
 } from '../derive/value-forms';
+import { isOwnedValue } from '../generate/emit';
 import { CHILDREN_TS_TYPES, propTsType } from '../generate/prop-type';
 import { jsxPropName } from '../generate/renames';
 import type {
@@ -75,7 +76,13 @@ const synthesisContext = (
       }
     }
   }
-  return { enumValues, forms };
+  return {
+    enumValues,
+    forms,
+    ownedValues: new Set(
+      snapshot.entities.filter(isOwnedValue).map((entity) => entity.name),
+    ),
+  };
 };
 
 const propRows = (
@@ -160,8 +167,7 @@ export const buildSitePage = (
       library: widget.library,
       doc: widget.doc,
       props: propRows(constructor, widgetSlots, formNames),
-      tsxExample: example.tsx,
-      exampleComplete: example.complete,
+      example,
       dartSignature: dartSignature(widget.name, constructor),
     });
   }

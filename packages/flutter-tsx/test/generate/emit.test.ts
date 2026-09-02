@@ -209,6 +209,7 @@ const snapshot: ApiSnapshot = {
     },
     {
       kind: 'class',
+      disposable: false,
       name: 'Style',
       library: 'painting',
       doc: '/// How to paint a frame.',
@@ -255,6 +256,7 @@ const snapshot: ApiSnapshot = {
     },
     {
       kind: 'class',
+      disposable: false,
       name: 'TestPalette',
       library: 'material',
       doc: '/// Well-known colors.',
@@ -480,6 +482,7 @@ describe('emitWidgetsFile value-form guards', () => {
         ...snapshot.entities,
         {
           kind: 'class',
+          disposable: false,
           name: 'ColorValue',
           library: 'painting',
           doc: '',
@@ -766,6 +769,7 @@ describe('emitConstantsFile — IconName', () => {
       ...snapshot.entities,
       {
         kind: 'class',
+        disposable: false,
         name: 'Icons',
         library: 'material',
         doc: '',

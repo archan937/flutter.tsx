@@ -223,7 +223,7 @@ details details > ul { padding-left: 24px; }
 </ul>
 </details>
 <details>
-<summary>Hooks &amp; core APIs<span class="nav-count">23</span></summary>
+<summary>Hooks &amp; core APIs<span class="nav-count">27</span></summary>
 <ul>
 <li data-name="StateSetter"><a href="#core-StateSetter">StateSetter</a></li>
 <li data-name="useState"><a href="#core-useState">useState</a></li>
@@ -232,6 +232,10 @@ details details > ul { padding-left: 24px; }
 <li data-name="AsyncOptions"><a href="#core-AsyncOptions">AsyncOptions</a></li>
 <li data-name="useAsync"><a href="#core-useAsync">useAsync</a></li>
 <li data-name="useStream"><a href="#core-useStream">useStream</a></li>
+<li data-name="AnimationHandle"><a href="#core-AnimationHandle">AnimationHandle</a></li>
+<li data-name="AnimationOptions"><a href="#core-AnimationOptions">AnimationOptions</a></li>
+<li data-name="useAnimation"><a href="#core-useAnimation">useAnimation</a></li>
+<li data-name="tween"><a href="#core-tween">tween</a></li>
 <li data-name="Store"><a href="#core-Store">Store</a></li>
 <li data-name="createStore"><a href="#core-createStore">createStore</a></li>
 <li data-name="StorePatch"><a href="#core-StorePatch">StorePatch</a></li>
@@ -822,7 +826,7 @@ details details > ul { padding-left: 24px; }
 </ul>
 </details>
 <details>
-<summary>Types<span class="nav-count">129</span></summary>
+<summary>Types<span class="nav-count">131</span></summary>
 <ul>
 <li data-name="ActionIconThemeDataValue"><a href="#type-ActionIconThemeDataValue">ActionIconThemeDataValue</a></li>
 <li data-name="AlignmentDirectionalValue"><a href="#type-AlignmentDirectionalValue">AlignmentDirectionalValue</a></li>
@@ -853,6 +857,7 @@ details details > ul { padding-left: 24px; }
 <li data-name="CurveValue"><a href="#type-CurveValue">CurveValue</a></li>
 <li data-name="DataTableThemeDataValue"><a href="#type-DataTableThemeDataValue">DataTableThemeDataValue</a></li>
 <li data-name="DatePickerThemeDataValue"><a href="#type-DatePickerThemeDataValue">DatePickerThemeDataValue</a></li>
+<li data-name="DateTimeValue"><a href="#type-DateTimeValue">DateTimeValue</a></li>
 <li data-name="DeviceGestureSettingsValue"><a href="#type-DeviceGestureSettingsValue">DeviceGestureSettingsValue</a></li>
 <li data-name="DialogThemeDataValue"><a href="#type-DialogThemeDataValue">DialogThemeDataValue</a></li>
 <li data-name="DividerThemeDataValue"><a href="#type-DividerThemeDataValue">DividerThemeDataValue</a></li>
@@ -944,6 +949,7 @@ details details > ul { padding-left: 24px; }
 <li data-name="TextScalerValue"><a href="#type-TextScalerValue">TextScalerValue</a></li>
 <li data-name="TextSelectionThemeDataValue"><a href="#type-TextSelectionThemeDataValue">TextSelectionThemeDataValue</a></li>
 <li data-name="TextStyleValue"><a href="#type-TextStyleValue">TextStyleValue</a></li>
+<li data-name="TimeOfDayValue"><a href="#type-TimeOfDayValue">TimeOfDayValue</a></li>
 <li data-name="TimePickerThemeDataValue"><a href="#type-TimePickerThemeDataValue">TimePickerThemeDataValue</a></li>
 <li data-name="ToggleButtonsThemeDataValue"><a href="#type-ToggleButtonsThemeDataValue">ToggleButtonsThemeDataValue</a></li>
 <li data-name="ToolbarOptionsValue"><a href="#type-ToolbarOptionsValue">ToolbarOptionsValue</a></li>
@@ -2086,6 +2092,221 @@ export const Shell = () =&gt; (
 </div>
 <p class="note">Used by <a href="./cookbook.html#18-connectivity-stream"><code>18-connectivity-stream</code></a></p>
 </article>
+<article class="widget" id="core-AnimationHandle" data-name="AnimationHandle">
+<h3>AnimationHandle<span class="badge badge-lib">type</span></h3>
+<p class="doc">An animation a component drives itself, where `Animated` is not enough:
+the handle is the `Animation` a transition takes, and its methods are the
+controls Flutter's own controller has.</p>
+<pre><code class="language-typescript"><span class="tok-kw">export</span> <span class="tok-kw">interface</span> <span class="tok-typ">AnimationHandle</span> <span class="tok-kw">extends</span> <span class="tok-typ">AnimationController</span> {
+  <span class="tok-com">/** Runs from where it is to the end. */</span>
+  <span class="tok-kw">readonly</span> forward: () =&gt; <span class="tok-kw">void</span>;
+  <span class="tok-com">/** Runs back to the start. */</span>
+  <span class="tok-kw">readonly</span> reverse: () =&gt; <span class="tok-kw">void</span>;
+  <span class="tok-com">/** Stops where it is. */</span>
+  <span class="tok-kw">readonly</span> stop: () =&gt; <span class="tok-kw">void</span>;
+  <span class="tok-com">/** Runs from the start, over and over. */</span>
+  <span class="tok-kw">readonly</span> repeat: () =&gt; <span class="tok-kw">void</span>;
+  <span class="tok-com">/** Jumps back to the start. */</span>
+  <span class="tok-kw">readonly</span> reset: () =&gt; <span class="tok-kw">void</span>;
+}</code></pre>
+
+</article>
+<article class="widget" id="core-AnimationOptions" data-name="AnimationOptions">
+<h3>AnimationOptions<span class="badge badge-lib">type</span></h3>
+
+<pre><code class="language-typescript"><span class="tok-kw">export</span> <span class="tok-kw">interface</span> <span class="tok-typ">AnimationOptions</span> {
+  <span class="tok-com">/** How long one run takes, in milliseconds. */</span>
+  duration: number;
+  <span class="tok-com">/** Runs as soon as the widget is mounted. */</span>
+  autoplay?: boolean;
+  <span class="tok-com">/** Keeps running from the start, for as long as the widget is mounted. */</span>
+  repeat?: boolean;
+}</code></pre>
+
+</article>
+<article class="widget" id="core-useAnimation" data-name="useAnimation">
+<h3>useAnimation<span class="badge badge-lib">hook</span></h3>
+<p class="doc">Compile target: the transpiler reads the call from the AST and generates an
+`AnimationController` the State owns — ticker, disposal and all.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="Signature" role="tab" aria-selected="true">Signature</button>
+<button class="tab-btn" data-tab="TSX" role="tab" aria-selected="false">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+</div>
+<div class="tab-panel active" data-panel="Signature" role="tabpanel">
+<pre><code class="language-typescript">(options: <span class="tok-typ">AnimationOptions</span>) =&gt; <span class="tok-typ">AnimationHandle</span></code></pre>
+</div>
+<div class="tab-panel" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx"><span class="tok-kw">import</span> {
+  <span class="tok-typ">AlignTransition</span>,
+  <span class="tok-typ">Column</span>,
+  <span class="tok-typ">ElevatedButton</span>,
+  <span class="tok-typ">Text</span>,
+  tween,
+  useAnimation,
+} <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Drifter</span> = () =&gt; {
+  <span class="tok-kw">const</span> drift = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">400</span> });
+
+  <span class="tok-kw">const</span> run = () =&gt; {
+    drift.<span class="tok-fn">forward</span>();
+  };
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">AlignTransition</span>
+        alignment={<span class="tok-fn">tween</span>(drift, { <span class="tok-kw">from</span>: <span class="tok-str">'topLeft'</span>, to: <span class="tok-str">'bottomRight'</span> })}
+      &gt;
+        &lt;<span class="tok-typ">Text</span>&gt;Drifts across&lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;/<span class="tok-typ">AlignTransition</span>&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={run}&gt;Run&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
+  );
+};</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">Drifter</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Drifter</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">Drifter</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_DrifterState</span>();
+}
+
+<span class="tok-kw">class</span> _DrifterState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">Drifter</span>&gt; <span class="tok-kw">with</span> <span class="tok-typ">SingleTickerProviderStateMixin</span> {
+  <span class="tok-kw">late</span> <span class="tok-kw">final</span> <span class="tok-typ">AnimationController</span> _drift = <span class="tok-typ">AnimationController</span>(
+    vsync: <span class="tok-kw">this</span>,
+    duration: <span class="tok-kw">const</span> <span class="tok-typ">Duration</span>(milliseconds: <span class="tok-num">400</span>),
+  );
+
+  @override
+  <span class="tok-kw">void</span> <span class="tok-fn">dispose</span>() {
+    _drift.<span class="tok-fn">dispose</span>();
+    <span class="tok-kw">super</span>.<span class="tok-fn">dispose</span>();
+  }
+
+  <span class="tok-kw">void</span> <span class="tok-fn">_run</span>() {
+    _drift.<span class="tok-fn">forward</span>();
+  }
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+      children: [
+        <span class="tok-typ">AlignTransition</span>(
+          alignment: _drift.<span class="tok-fn">drive</span>(
+            <span class="tok-typ">Tween</span>&lt;<span class="tok-typ">AlignmentGeometry</span>&gt;(
+              begin: <span class="tok-typ">AlignmentGeometry</span>.topLeft,
+              end: <span class="tok-typ">AlignmentGeometry</span>.bottomRight,
+            ),
+          ),
+          child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Drifts across'</span>),
+        ),
+        <span class="tok-typ">ElevatedButton</span>(onPressed: _run, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Run'</span>)),
+      ],
+    );
+  }
+}</code></pre>
+</div>
+</div>
+<p class="note">Used by <a href="./cookbook.html#56-animation"><code>56-animation</code></a>, <a href="./cookbook.html#57-tween"><code>57-tween</code></a></p>
+</article>
+<article class="widget" id="core-tween" data-name="tween">
+<h3>tween<span class="badge badge-lib">function</span></h3>
+<p class="doc">An animation over values that are not numbers.
+
+`useAnimation` runs from 0 to 1; a transition over colours, alignments or
+offsets runs between two of those. `tween` is that range, driven by the
+same handle — Flutter's own `Tween(...).animate(controller)`.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="Signature" role="tab" aria-selected="true">Signature</button>
+<button class="tab-btn" data-tab="TSX" role="tab" aria-selected="false">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+</div>
+<div class="tab-panel active" data-panel="Signature" role="tabpanel">
+<pre><code class="language-typescript">&lt;<span class="tok-typ">TValue</span>&gt;(animation: AnimationHandle, range: { <span class="tok-kw">from</span>: <span class="tok-typ">TValue</span>; to: <span class="tok-typ">TValue</span>; }) =&gt; Animation</code></pre>
+</div>
+<div class="tab-panel" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx"><span class="tok-kw">import</span> {
+  <span class="tok-typ">AlignTransition</span>,
+  <span class="tok-typ">Column</span>,
+  <span class="tok-typ">ElevatedButton</span>,
+  <span class="tok-typ">Text</span>,
+  tween,
+  useAnimation,
+} <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Drifter</span> = () =&gt; {
+  <span class="tok-kw">const</span> drift = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">400</span> });
+
+  <span class="tok-kw">const</span> run = () =&gt; {
+    drift.<span class="tok-fn">forward</span>();
+  };
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">AlignTransition</span>
+        alignment={<span class="tok-fn">tween</span>(drift, { <span class="tok-kw">from</span>: <span class="tok-str">'topLeft'</span>, to: <span class="tok-str">'bottomRight'</span> })}
+      &gt;
+        &lt;<span class="tok-typ">Text</span>&gt;Drifts across&lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;/<span class="tok-typ">AlignTransition</span>&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={run}&gt;Run&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
+  );
+};</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">Drifter</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Drifter</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">Drifter</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_DrifterState</span>();
+}
+
+<span class="tok-kw">class</span> _DrifterState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">Drifter</span>&gt; <span class="tok-kw">with</span> <span class="tok-typ">SingleTickerProviderStateMixin</span> {
+  <span class="tok-kw">late</span> <span class="tok-kw">final</span> <span class="tok-typ">AnimationController</span> _drift = <span class="tok-typ">AnimationController</span>(
+    vsync: <span class="tok-kw">this</span>,
+    duration: <span class="tok-kw">const</span> <span class="tok-typ">Duration</span>(milliseconds: <span class="tok-num">400</span>),
+  );
+
+  @override
+  <span class="tok-kw">void</span> <span class="tok-fn">dispose</span>() {
+    _drift.<span class="tok-fn">dispose</span>();
+    <span class="tok-kw">super</span>.<span class="tok-fn">dispose</span>();
+  }
+
+  <span class="tok-kw">void</span> <span class="tok-fn">_run</span>() {
+    _drift.<span class="tok-fn">forward</span>();
+  }
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+      children: [
+        <span class="tok-typ">AlignTransition</span>(
+          alignment: _drift.<span class="tok-fn">drive</span>(
+            <span class="tok-typ">Tween</span>&lt;<span class="tok-typ">AlignmentGeometry</span>&gt;(
+              begin: <span class="tok-typ">AlignmentGeometry</span>.topLeft,
+              end: <span class="tok-typ">AlignmentGeometry</span>.bottomRight,
+            ),
+          ),
+          child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Drifts across'</span>),
+        ),
+        <span class="tok-typ">ElevatedButton</span>(onPressed: _run, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Run'</span>)),
+      ],
+    );
+  }
+}</code></pre>
+</div>
+</div>
+<p class="note">Used by <a href="./cookbook.html#57-tween"><code>57-tween</code></a></p>
+</article>
 <article class="widget" id="core-Store" data-name="Store">
 <h3>Store<span class="badge badge-lib">type</span></h3>
 <p class="doc">A module-level store. The transpiler reads the initial shape from the AST
@@ -3001,7 +3222,7 @@ based on the child's size.</p>
 </div>
 </article>
 <article class="widget" id="AlignTransition" data-name="AlignTransition">
-<h3>AlignTransition<span class="badge badge-lib">widgets</span></h3>
+<h3>AlignTransition<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Animated version of an [Align] that animates its [Align.alignment] property.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -3018,9 +3239,15 @@ based on the child's size.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">AlignTransition</span> alignment={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">AlignTransition</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">AlignTransitionExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> animation = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">600</span> });
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">AlignTransition</span> alignment={<span class="tok-fn">tween</span>(animation, { <span class="tok-kw">from</span>: <span class="tok-str">&quot;bottomCenter&quot;</span>, to: <span class="tok-str">&quot;bottomCenter&quot;</span> })}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">AlignTransition</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">AlignTransition</span>({
@@ -3142,7 +3369,7 @@ position over a given duration whenever the given [alignment] changes.</p>
 </div>
 </article>
 <article class="widget" id="AnimatedBuilder" data-name="AnimatedBuilder">
-<h3>AnimatedBuilder<span class="badge badge-lib">widgets</span></h3>
+<h3>AnimatedBuilder<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A general-purpose widget for building animations.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -3158,9 +3385,15 @@ position over a given duration whenever the given [alignment] changes.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">AnimatedBuilder</span> animation={…} builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">AnimatedBuilder</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">AnimatedBuilderExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> animation = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">600</span> });
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">AnimatedBuilder</span> animation={animation} builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">AnimatedBuilder</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">AnimatedBuilder</span>({
@@ -3463,7 +3696,7 @@ in a grid.</p>
 </div>
 </article>
 <article class="widget" id="AnimatedModalBarrier" data-name="AnimatedModalBarrier">
-<h3>AnimatedModalBarrier<span class="badge badge-lib">widgets</span></h3>
+<h3>AnimatedModalBarrier<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that prevents the user from interacting with widgets behind itself,
 and can be configured with an animated color value.</p>
 <table class="props">
@@ -3484,7 +3717,13 @@ and can be configured with an animated color value.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">AnimatedModalBarrier</span> color={…} /&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">AnimatedModalBarrierExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> animation = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">600</span> });
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">AnimatedModalBarrier</span> color={<span class="tok-fn">tween</span>(animation, { <span class="tok-kw">from</span>: <span class="tok-str">&quot;activeBlue&quot;</span>, to: <span class="tok-str">&quot;activeBlue&quot;</span> })} /&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">AnimatedModalBarrier</span>({
@@ -3913,7 +4152,7 @@ widget previously set on the [AnimatedSwitcher] as a child.</p>
 </div>
 </article>
 <article class="widget" id="AnnotatedRegion" data-name="AnnotatedRegion">
-<h3>AnnotatedRegion<span class="badge badge-lib">widgets</span></h3>
+<h3>AnnotatedRegion<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Annotates a region of the layer tree with a value.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -3929,7 +4168,7 @@ widget previously set on the [AnimatedSwitcher] as a child.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">AnnotatedRegion</span> value={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">AnnotatedRegion</span> value=<span class="tok-str">&quot;example&quot;</span>&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">AnnotatedRegion</span>&gt;</code></pre>
 </div>
@@ -4671,7 +4910,7 @@ child on top of that color.</p>
 </div>
 </article>
 <article class="widget" id="CompositedTransformFollower" data-name="CompositedTransformFollower">
-<h3>CompositedTransformFollower<span class="badge badge-lib">widgets</span></h3>
+<h3>CompositedTransformFollower<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that follows a [CompositedTransformTarget].</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -4690,9 +4929,15 @@ child on top of that color.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">CompositedTransformFollower</span> link={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">CompositedTransformFollower</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">CompositedTransformFollowerExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> layerLink = <span class="tok-kw">new</span> <span class="tok-typ">LayerLink</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">CompositedTransformFollower</span> link={layerLink}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">CompositedTransformFollower</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">CompositedTransformFollower</span>({
@@ -4708,7 +4953,7 @@ child on top of that color.</p>
 </div>
 </article>
 <article class="widget" id="CompositedTransformTarget" data-name="CompositedTransformTarget">
-<h3>CompositedTransformTarget<span class="badge badge-lib">widgets</span></h3>
+<h3>CompositedTransformTarget<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that can be targeted by a [CompositedTransformFollower].</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -4723,9 +4968,15 @@ child on top of that color.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">CompositedTransformTarget</span> link={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">CompositedTransformTarget</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">CompositedTransformTargetExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> layerLink = <span class="tok-kw">new</span> <span class="tok-typ">LayerLink</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">CompositedTransformTarget</span> link={layerLink}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">CompositedTransformTarget</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">CompositedTransformTarget</span>({
@@ -5271,7 +5522,7 @@ explicit style.</p>
 </div>
 </article>
 <article class="widget" id="DefaultTextStyleTransition" data-name="DefaultTextStyleTransition">
-<h3>DefaultTextStyleTransition<span class="badge badge-lib">widgets</span></h3>
+<h3>DefaultTextStyleTransition<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Animated version of a [DefaultTextStyle] that animates the different properties
 of its [TextStyle].</p>
 <table class="props">
@@ -5291,9 +5542,15 @@ of its [TextStyle].</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">DefaultTextStyleTransition</span> style={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">DefaultTextStyleTransition</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">DefaultTextStyleTransitionExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> animation = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">600</span> });
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">DefaultTextStyleTransition</span> style={<span class="tok-fn">tween</span>(animation, { <span class="tok-kw">from</span>: <span class="tok-str">&quot;cupertinoMisspelledTextStyle&quot;</span>, to: <span class="tok-str">&quot;cupertinoMisspelledTextStyle&quot;</span> })}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">DefaultTextStyleTransition</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">DefaultTextStyleTransition</span>({
@@ -5675,7 +5932,7 @@ the scrollable until a limit is reached, and then scrolling.</p>
 </div>
 </article>
 <article class="widget" id="DualTransitionBuilder" data-name="DualTransitionBuilder">
-<h3>DualTransitionBuilder<span class="badge badge-lib">widgets</span></h3>
+<h3>DualTransitionBuilder<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A transition builder that animates its [child] based on the
 [AnimationStatus] of the provided [animation].</p>
 <table class="props">
@@ -5693,9 +5950,15 @@ the scrollable until a limit is reached, and then scrolling.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">DualTransitionBuilder</span> animation={…} forwardBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} reverseBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;<span class="tok-typ">Content</span>&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">DualTransitionBuilder</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">DualTransitionBuilderExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> animation = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">600</span> });
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">DualTransitionBuilder</span> animation={animation} forwardBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} reverseBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;<span class="tok-typ">Content</span>&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">DualTransitionBuilder</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">DualTransitionBuilder</span>({
@@ -5709,7 +5972,7 @@ the scrollable until a limit is reached, and then scrolling.</p>
 </div>
 </article>
 <article class="widget" id="EditableText" data-name="EditableText">
-<h3>EditableText<span class="badge badge-lib">widgets</span></h3>
+<h3>EditableText<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A basic text input field.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -5798,7 +6061,14 @@ the scrollable until a limit is reached, and then scrolling.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">EditableText</span> controller={…} focusNode={…} style=<span class="tok-str">&quot;cupertinoMisspelledTextStyle&quot;</span> cursorColor=<span class="tok-str">&quot;activeBlue&quot;</span> backgroundCursorColor=<span class="tok-str">&quot;activeBlue&quot;</span> /&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">EditableTextExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> textEditingController = <span class="tok-kw">new</span> <span class="tok-typ">TextEditingController</span>();
+  <span class="tok-kw">const</span> focusNode = <span class="tok-kw">new</span> <span class="tok-typ">FocusNode</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">EditableText</span> controller={textEditingController} focusNode={focusNode} style=<span class="tok-str">&quot;cupertinoMisspelledTextStyle&quot;</span> cursorColor=<span class="tok-str">&quot;activeBlue&quot;</span> backgroundCursorColor=<span class="tok-str">&quot;activeBlue&quot;</span> /&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">EditableText</span>({
@@ -6054,7 +6324,7 @@ so that the child fills the available space.</p>
 </div>
 </article>
 <article class="widget" id="Expansible" data-name="Expansible">
-<h3>Expansible<span class="badge badge-lib">widgets</span></h3>
+<h3>Expansible<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A [StatefulWidget] that expands and collapses.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -6076,7 +6346,13 @@ so that the child fills the available space.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">Expansible</span> headerBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} bodyBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;<span class="tok-typ">Content</span>&lt;/<span class="tok-typ">Text</span>&gt;} controller={…} /&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">ExpansibleExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> expansibleController = <span class="tok-kw">new</span> <span class="tok-typ">ExpansibleController</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Expansible</span> headerBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} bodyBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;<span class="tok-typ">Content</span>&lt;/<span class="tok-typ">Text</span>&gt;} controller={expansibleController} /&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">Expansible</span>({
@@ -6165,7 +6441,7 @@ loading, then fades in the new image when it loads.</p>
 </div>
 </article>
 <article class="widget" id="FadeTransition" data-name="FadeTransition">
-<h3>FadeTransition<span class="badge badge-lib">widgets</span></h3>
+<h3>FadeTransition<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Animates the opacity of a widget.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -6181,9 +6457,15 @@ loading, then fades in the new image when it loads.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">FadeTransition</span> opacity={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">FadeTransition</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">FadeTransitionExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> animation = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">600</span> });
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">FadeTransition</span> opacity={animation}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">FadeTransition</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">FadeTransition</span>({
@@ -7113,7 +7395,7 @@ a [Future].</p>
 </div>
 </article>
 <article class="widget" id="HeroControllerScope" data-name="HeroControllerScope">
-<h3>HeroControllerScope<span class="badge badge-lib">widgets</span></h3>
+<h3>HeroControllerScope<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">An inherited widget to host a hero controller.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -7128,9 +7410,15 @@ a [Future].</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">HeroControllerScope</span> controller={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">HeroControllerScope</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">HeroControllerScopeExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> heroController = <span class="tok-kw">new</span> <span class="tok-typ">HeroController</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">HeroControllerScope</span> controller={heroController}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">HeroControllerScope</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">HeroControllerScope</span>({
@@ -7679,7 +7967,7 @@ would otherwise remove it.</p>
 </div>
 </article>
 <article class="widget" id="KeyboardListener" data-name="KeyboardListener">
-<h3>KeyboardListener<span class="badge badge-lib">widgets</span></h3>
+<h3>KeyboardListener<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that calls a callback whenever the user presses or releases a key
 on a keyboard.</p>
 <table class="props">
@@ -7698,9 +7986,15 @@ on a keyboard.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">KeyboardListener</span> focusNode={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">KeyboardListener</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">KeyboardListenerExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> focusNode = <span class="tok-kw">new</span> <span class="tok-typ">FocusNode</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">KeyboardListener</span> focusNode={focusNode}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">KeyboardListener</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">KeyboardListener</span>({
@@ -8041,7 +8335,7 @@ them to the dimension of the parent in the other axis.</p>
 </div>
 </article>
 <article class="widget" id="ListenableBuilder" data-name="ListenableBuilder">
-<h3>ListenableBuilder<span class="badge badge-lib">widgets</span></h3>
+<h3>ListenableBuilder<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A general-purpose widget for building a widget subtree when a [Listenable]
 changes.</p>
 <table class="props">
@@ -8058,9 +8352,15 @@ changes.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">ListenableBuilder</span> listenable={…} builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">ListenableBuilder</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">ListenableBuilderExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> animation = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">600</span> });
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">ListenableBuilder</span> listenable={animation} builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">ListenableBuilder</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">ListenableBuilder</span>({
@@ -8265,9 +8565,15 @@ boundary via the static lookup methods provided by the boundary.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">MatrixTransition</span> animation={…} onTransform={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">MatrixTransition</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">MatrixTransitionExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> animation = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">600</span> });
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">MatrixTransition</span> animation={animation} onTransform={…}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">MatrixTransition</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">MatrixTransition</span>({
@@ -8566,7 +8872,7 @@ navigation bar such as in Material Design and in iOS.</p>
 </div>
 </article>
 <article class="widget" id="NestedScrollView" data-name="NestedScrollView">
-<h3>NestedScrollView<span class="badge badge-lib">widgets</span></h3>
+<h3>NestedScrollView<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A scrolling view inside of which can be nested other scrolling views, with
 their scroll positions being intrinsically linked.</p>
 <table class="props">
@@ -8592,7 +8898,7 @@ their scroll positions being intrinsically linked.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">NestedScrollView</span> headerSliverBuilder={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">NestedScrollView</span> headerSliverBuilder={() =&gt; []}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">NestedScrollView</span>&gt;</code></pre>
 </div>
@@ -8637,7 +8943,13 @@ their scroll positions being intrinsically linked.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">NestedScrollViewViewport</span> offset={…} handle={…} /&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">NestedScrollViewViewportExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> sliverOverlapAbsorberHandle = <span class="tok-kw">new</span> <span class="tok-typ">SliverOverlapAbsorberHandle</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">NestedScrollViewViewport</span> offset={…} handle={sliverOverlapAbsorberHandle} /&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">NestedScrollViewViewport</span>({
@@ -8883,7 +9195,7 @@ from its parent, possibly allowing the child to overflow the parent.</p>
 </div>
 </article>
 <article class="widget" id="OverlayPortal" data-name="OverlayPortal">
-<h3>OverlayPortal<span class="badge badge-lib">widgets</span></h3>
+<h3>OverlayPortal<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that renders its overlay child on an [Overlay].</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -8900,9 +9212,15 @@ from its parent, possibly allowing the child to overflow the parent.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">OverlayPortal</span> controller={…} overlayChildBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">OverlayPortal</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">OverlayPortalExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> overlayPortalController = <span class="tok-kw">new</span> <span class="tok-typ">OverlayPortalController</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">OverlayPortal</span> controller={overlayPortalController} overlayChildBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">OverlayPortal</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">OverlayPortal</span>({
@@ -8945,7 +9263,7 @@ from its parent, possibly allowing the child to overflow the parent.</p>
 </div>
 </article>
 <article class="widget" id="PageStorage" data-name="PageStorage">
-<h3>PageStorage<span class="badge badge-lib">widgets</span></h3>
+<h3>PageStorage<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Establish a subtree in which widgets can opt into persisting states after
 being destroyed.</p>
 <table class="props">
@@ -8961,9 +9279,15 @@ being destroyed.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">PageStorage</span> bucket={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">PageStorage</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">PageStorageExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> pageStorageBucket = <span class="tok-kw">new</span> <span class="tok-typ">PageStorageBucket</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">PageStorage</span> bucket={pageStorageBucket}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">PageStorage</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">PageStorage</span>({
@@ -9422,7 +9746,7 @@ committing to a specific [TextDirection].</p>
 </div>
 </article>
 <article class="widget" id="PositionedTransition" data-name="PositionedTransition">
-<h3>PositionedTransition<span class="badge badge-lib">widgets</span></h3>
+<h3>PositionedTransition<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Animated version of [Positioned] which takes a specific
 [Animation&lt;RelativeRect&gt;] to transition the child's position from a start
 position to an end position over the lifetime of the animation.</p>
@@ -9439,9 +9763,15 @@ position to an end position over the lifetime of the animation.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">PositionedTransition</span> rect={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">PositionedTransition</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">PositionedTransitionExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> animation = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">600</span> });
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">PositionedTransition</span> rect={<span class="tok-fn">tween</span>(animation, { <span class="tok-kw">from</span>: <span class="tok-str">&quot;fill&quot;</span>, to: <span class="tok-str">&quot;fill&quot;</span> })}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">PositionedTransition</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">PositionedTransition</span>({
@@ -9482,7 +9812,7 @@ position to an end position over the lifetime of the animation.</p>
 </div>
 </article>
 <article class="widget" id="PrimaryScrollController" data-name="PrimaryScrollController">
-<h3>PrimaryScrollController<span class="badge badge-lib">widgets</span></h3>
+<h3>PrimaryScrollController<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Associates a [ScrollController] with a subtree.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -9499,9 +9829,15 @@ position to an end position over the lifetime of the animation.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">PrimaryScrollController</span> controller={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">PrimaryScrollController</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">PrimaryScrollControllerExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> scrollController = <span class="tok-kw">new</span> <span class="tok-typ">ScrollController</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">PrimaryScrollController</span> controller={scrollController}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">PrimaryScrollController</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">PrimaryScrollController</span>({
@@ -9680,7 +10016,7 @@ factories.</p>
 </div>
 </article>
 <article class="widget" id="RawKeyboardListener" data-name="RawKeyboardListener">
-<h3>RawKeyboardListener<span class="badge badge-lib">widgets</span></h3>
+<h3>RawKeyboardListener<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that calls a callback whenever the user presses or releases a key
 on a keyboard.</p>
 <table class="props">
@@ -9699,9 +10035,15 @@ on a keyboard.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">RawKeyboardListener</span> focusNode={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">RawKeyboardListener</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">RawKeyboardListenerExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> focusNode = <span class="tok-kw">new</span> <span class="tok-typ">FocusNode</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">RawKeyboardListener</span> focusNode={focusNode}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">RawKeyboardListener</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">RawKeyboardListener</span>({
@@ -9753,7 +10095,7 @@ on a keyboard.</p>
 </div>
 </article>
 <article class="widget" id="RawMenuAnchor" data-name="RawMenuAnchor">
-<h3>RawMenuAnchor<span class="badge badge-lib">widgets</span></h3>
+<h3>RawMenuAnchor<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that wraps a child and anchors a floating menu.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -9777,9 +10119,15 @@ on a keyboard.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">RawMenuAnchor</span> controller={…} overlayBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">RawMenuAnchor</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">RawMenuAnchorExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> menuController = <span class="tok-kw">new</span> <span class="tok-typ">MenuController</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">RawMenuAnchor</span> controller={menuController} overlayBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">RawMenuAnchor</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">RawMenuAnchor</span>({
@@ -9800,7 +10148,7 @@ on a keyboard.</p>
 </div>
 </article>
 <article class="widget" id="RawMenuAnchorGroup" data-name="RawMenuAnchorGroup">
-<h3>RawMenuAnchorGroup<span class="badge badge-lib">widgets</span></h3>
+<h3>RawMenuAnchorGroup<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Creates a menu anchor that is always visible and is not displayed in an
 [OverlayPortal].</p>
 <table class="props">
@@ -9816,9 +10164,15 @@ on a keyboard.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">RawMenuAnchorGroup</span> controller={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">RawMenuAnchorGroup</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">RawMenuAnchorGroupExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> menuController = <span class="tok-kw">new</span> <span class="tok-typ">MenuController</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">RawMenuAnchorGroup</span> controller={menuController}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">RawMenuAnchorGroup</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">RawMenuAnchorGroup</span>({
@@ -9851,7 +10205,13 @@ on a keyboard.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">RawRadio</span> value={…} mouseCursor=<span class="tok-str">&quot;adaptiveClickable&quot;</span> toggleable={<span class="tok-kw">true</span>} focusNode={…} autofocus={<span class="tok-kw">true</span>} groupRegistry={…} enabled={<span class="tok-kw">true</span>} builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">RawRadioExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> focusNode = <span class="tok-kw">new</span> <span class="tok-typ">FocusNode</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">RawRadio</span> value=<span class="tok-str">&quot;example&quot;</span> mouseCursor=<span class="tok-str">&quot;adaptiveClickable&quot;</span> toggleable={<span class="tok-kw">true</span>} focusNode={focusNode} autofocus={<span class="tok-kw">true</span>} groupRegistry={…} enabled={<span class="tok-kw">true</span>} builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">RawRadio</span>({
@@ -10024,7 +10384,7 @@ for a view.</p>
 </div>
 </article>
 <article class="widget" id="RelativePositionedTransition" data-name="RelativePositionedTransition">
-<h3>RelativePositionedTransition<span class="badge badge-lib">widgets</span></h3>
+<h3>RelativePositionedTransition<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Animated version of [Positioned] which transitions the child's position
 based on the value of [rect] relative to a bounding box with the
 specified [size].</p>
@@ -10042,9 +10402,15 @@ specified [size].</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">RelativePositionedTransition</span> rect={…} size=<span class="tok-str">&quot;infinite&quot;</span>&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">RelativePositionedTransition</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">RelativePositionedTransitionExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> animation = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">600</span> });
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">RelativePositionedTransition</span> rect={<span class="tok-fn">tween</span>(animation, { <span class="tok-kw">from</span>: <span class="tok-str">&quot;largest&quot;</span>, to: <span class="tok-str">&quot;largest&quot;</span> })} size=<span class="tok-str">&quot;infinite&quot;</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">RelativePositionedTransition</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">RelativePositionedTransition</span>({
@@ -10464,7 +10830,7 @@ tree and makes it available to descendants via [RestorationScope.of].</p>
 </div>
 </article>
 <article class="widget" id="RotationTransition" data-name="RotationTransition">
-<h3>RotationTransition<span class="badge badge-lib">widgets</span></h3>
+<h3>RotationTransition<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Animates the rotation of a widget.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -10481,9 +10847,15 @@ tree and makes it available to descendants via [RestorationScope.of].</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">RotationTransition</span> turns={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">RotationTransition</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">RotationTransitionExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> animation = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">600</span> });
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">RotationTransition</span> turns={animation}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">RotationTransition</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">RotationTransition</span>({
@@ -10612,7 +10984,7 @@ by the operating system.</p>
 </div>
 </article>
 <article class="widget" id="ScaleTransition" data-name="ScaleTransition">
-<h3>ScaleTransition<span class="badge badge-lib">widgets</span></h3>
+<h3>ScaleTransition<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Animates the scale of a transformed widget.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -10629,9 +11001,15 @@ by the operating system.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">ScaleTransition</span> scale={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">ScaleTransition</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">ScaleTransitionExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> animation = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">600</span> });
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">ScaleTransition</span> scale={animation}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">ScaleTransition</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">ScaleTransition</span>({
@@ -10818,7 +11196,7 @@ the subtree.</p>
 </div>
 </article>
 <article class="widget" id="SelectionListener" data-name="SelectionListener">
-<h3>SelectionListener<span class="badge badge-lib">widgets</span></h3>
+<h3>SelectionListener<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A [SelectionContainer] that allows the user to access the [SelectionDetails] and
 listen to selection changes for the child subtree it wraps under a [SelectionArea]
 or [SelectableRegion].</p>
@@ -10835,9 +11213,15 @@ or [SelectableRegion].</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">SelectionListener</span> selectionNotifier={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">SelectionListener</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">SelectionListenerExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> selectionListenerNotifier = <span class="tok-kw">new</span> <span class="tok-typ">SelectionListenerNotifier</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">SelectionListener</span> selectionNotifier={selectionListenerNotifier}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">SelectionListener</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">SelectionListener</span>({
@@ -11369,7 +11753,7 @@ when the layout dimensions of its child change.</p>
 </div>
 </article>
 <article class="widget" id="SizeTransition" data-name="SizeTransition">
-<h3>SizeTransition<span class="badge badge-lib">widgets</span></h3>
+<h3>SizeTransition<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Animates its own size and clips and aligns its child.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -11388,9 +11772,15 @@ when the layout dimensions of its child change.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">SizeTransition</span> sizeFactor={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">SizeTransition</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">SizeTransitionExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> animation = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">600</span> });
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">SizeTransition</span> sizeFactor={animation}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">SizeTransition</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">SizeTransition</span>({
@@ -11469,7 +11859,7 @@ through to its child, which may then overflow.</p>
 </div>
 </article>
 <article class="widget" id="SlideTransition" data-name="SlideTransition">
-<h3>SlideTransition<span class="badge badge-lib">widgets</span></h3>
+<h3>SlideTransition<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Animates the position of a widget relative to its normal position.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -11486,9 +11876,15 @@ through to its child, which may then overflow.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">SlideTransition</span> position={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">SlideTransition</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">SlideTransitionExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> animation = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">600</span> });
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">SlideTransition</span> position={<span class="tok-fn">tween</span>(animation, { <span class="tok-kw">from</span>: <span class="tok-str">&quot;infinite&quot;</span>, to: <span class="tok-str">&quot;infinite&quot;</span> })}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">SlideTransition</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">SlideTransition</span>({
@@ -11704,7 +12100,7 @@ the cross axis.</p>
 </div>
 </article>
 <article class="widget" id="SliverFadeTransition" data-name="SliverFadeTransition">
-<h3>SliverFadeTransition<span class="badge badge-lib">widgets</span></h3>
+<h3>SliverFadeTransition<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Animates the opacity of a sliver widget.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -11720,7 +12116,13 @@ the cross axis.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">SliverFadeTransition</span> opacity={…} /&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">SliverFadeTransitionExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> animation = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">600</span> });
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">SliverFadeTransition</span> opacity={animation} /&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">SliverFadeTransition</span>({
@@ -12047,7 +12449,7 @@ testing, and without taking any room in the parent.</p>
 </div>
 </article>
 <article class="widget" id="SliverOverlapAbsorber" data-name="SliverOverlapAbsorber">
-<h3>SliverOverlapAbsorber<span class="badge badge-lib">widgets</span></h3>
+<h3>SliverOverlapAbsorber<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A sliver that wraps another, forcing its layout extent to be treated as
 overlap.</p>
 <table class="props">
@@ -12063,7 +12465,13 @@ overlap.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">SliverOverlapAbsorber</span> handle={…} /&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">SliverOverlapAbsorberExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> sliverOverlapAbsorberHandle = <span class="tok-kw">new</span> <span class="tok-typ">SliverOverlapAbsorberHandle</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">SliverOverlapAbsorber</span> handle={sliverOverlapAbsorberHandle} /&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">SliverOverlapAbsorber</span>({
@@ -12075,7 +12483,7 @@ overlap.</p>
 </div>
 </article>
 <article class="widget" id="SliverOverlapInjector" data-name="SliverOverlapInjector">
-<h3>SliverOverlapInjector<span class="badge badge-lib">widgets</span></h3>
+<h3>SliverOverlapInjector<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A sliver that has a sliver geometry based on the values stored in a
 [SliverOverlapAbsorberHandle].</p>
 <table class="props">
@@ -12091,7 +12499,13 @@ overlap.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">SliverOverlapInjector</span> handle={…} /&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">SliverOverlapInjectorExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> sliverOverlapAbsorberHandle = <span class="tok-kw">new</span> <span class="tok-typ">SliverOverlapAbsorberHandle</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">SliverOverlapInjector</span> handle={sliverOverlapAbsorberHandle} /&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">SliverOverlapInjector</span>({
@@ -12539,7 +12953,7 @@ to have the corresponding extent returned by [itemExtentBuilder].</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">SliverVariedExtentList</span> delegate={…} itemExtentBuilder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">SliverVariedExtentList</span> delegate={…} itemExtentBuilder={() =&gt; <span class="tok-num">1</span>} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">SliverVariedExtentList</span>({
@@ -12590,7 +13004,7 @@ to have the corresponding extent returned by [itemExtentBuilder].</p>
 </div>
 </article>
 <article class="widget" id="SnapshotWidget" data-name="SnapshotWidget">
-<h3>SnapshotWidget<span class="badge badge-lib">widgets</span></h3>
+<h3>SnapshotWidget<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that can replace its child with a snapshotted version of the child.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -12608,9 +13022,15 @@ to have the corresponding extent returned by [itemExtentBuilder].</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">SnapshotWidget</span> controller={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">SnapshotWidget</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">SnapshotWidgetExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> snapshotController = <span class="tok-kw">new</span> <span class="tok-typ">SnapshotController</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">SnapshotWidget</span> controller={snapshotController}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">SnapshotWidget</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">SnapshotWidget</span>({
@@ -13299,7 +13719,7 @@ vertically and horizontally scrolling [Viewport].</p>
 </div>
 </article>
 <article class="widget" id="TweenAnimationBuilder" data-name="TweenAnimationBuilder">
-<h3>TweenAnimationBuilder<span class="badge badge-lib">widgets</span></h3>
+<h3>TweenAnimationBuilder<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">[Widget] builder that animates a property of a [Widget] to a target value
 whenever the target value changes.</p>
 <table class="props">
@@ -13319,9 +13739,15 @@ whenever the target value changes.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">TweenAnimationBuilder</span> tween={…} duration=<span class="tok-str">&quot;defaultAnimationDuration&quot;</span> builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">TweenAnimationBuilder</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">TweenAnimationBuilderExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> tween = <span class="tok-kw">new</span> <span class="tok-typ">Tween</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">TweenAnimationBuilder</span> tween={tween} duration=<span class="tok-str">&quot;defaultAnimationDuration&quot;</span> builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">TweenAnimationBuilder</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">TweenAnimationBuilder</span>({
@@ -13475,9 +13901,15 @@ at its &quot;natural&quot; size.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">UndoHistory</span> value={…} onTriggered={() =&gt; {}} focusNode={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">UndoHistory</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">UndoHistoryExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> focusNode = <span class="tok-kw">new</span> <span class="tok-typ">FocusNode</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">UndoHistory</span> value={…} onTriggered={() =&gt; {}} focusNode={focusNode}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">UndoHistory</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">UndoHistory</span>({
@@ -13524,7 +13956,7 @@ available to descendants via [RestorationScope.of].</p>
 </div>
 </article>
 <article class="widget" id="ValueListenableBuilder" data-name="ValueListenableBuilder">
-<h3>ValueListenableBuilder<span class="badge badge-lib">widgets</span></h3>
+<h3>ValueListenableBuilder<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget whose content stays synced with a [ValueListenable].</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -13540,9 +13972,15 @@ available to descendants via [RestorationScope.of].</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">ValueListenableBuilder</span> valueListenable={…} builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">ValueListenableBuilder</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">ValueListenableBuilderExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> animation = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">600</span> });
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">ValueListenableBuilder</span> valueListenable={<span class="tok-fn">tween</span>(animation, { <span class="tok-kw">from</span>: <span class="tok-str">&quot;example&quot;</span>, to: <span class="tok-str">&quot;example&quot;</span> })} builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">ValueListenableBuilder</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">ValueListenableBuilder</span>({
@@ -14245,7 +14683,7 @@ widget's subtree.</p>
 </div>
 </article>
 <article class="widget" id="AnimatedIcon" data-name="AnimatedIcon">
-<h3>AnimatedIcon<span class="badge badge-lib">material</span></h3>
+<h3>AnimatedIcon<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Shows an animated icon at a given animation [progress].</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -14264,7 +14702,13 @@ widget's subtree.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">AnimatedIcon</span> icon=<span class="tok-str">&quot;add_event&quot;</span> progress={…} /&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">AnimatedIconExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> animation = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">600</span> });
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">AnimatedIcon</span> icon=<span class="tok-str">&quot;add_event&quot;</span> progress={animation} /&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">AnimatedIcon</span>({
@@ -14280,7 +14724,7 @@ widget's subtree.</p>
 </div>
 </article>
 <article class="widget" id="AnimatedTheme" data-name="AnimatedTheme">
-<h3>AnimatedTheme<span class="badge badge-lib">material</span></h3>
+<h3>AnimatedTheme<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Animated version of [Theme] which automatically transitions the colors,
 etc, over a given duration whenever the given theme changes.</p>
 <table class="props">
@@ -14299,9 +14743,15 @@ etc, over a given duration whenever the given theme changes.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">AnimatedTheme</span> data={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">AnimatedTheme</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">AnimatedThemeExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> themeData = <span class="tok-kw">new</span> <span class="tok-typ">ThemeData</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">AnimatedTheme</span> data={themeData}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">AnimatedTheme</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">AnimatedTheme</span>({
@@ -15012,16 +15462,16 @@ enough horizontal space.</p>
 </div>
 </article>
 <article class="widget" id="CalendarDatePicker" data-name="CalendarDatePicker">
-<h3>CalendarDatePicker<span class="badge badge-lib">material</span></h3>
+<h3>CalendarDatePicker<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Displays a grid of days for a given month and allows the user to select a
 date.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
 <tbody>
-<tr><td>initialDate</td><td>DateTime | null</td><td>DateTime?</td><td class="req">✓</td></tr>
-<tr><td>firstDate</td><td>DateTime</td><td>DateTime</td><td class="req">✓</td></tr>
-<tr><td>lastDate</td><td>DateTime</td><td>DateTime</td><td class="req">✓</td></tr>
-<tr><td>currentDate</td><td>DateTime</td><td>DateTime?</td><td class="req"></td></tr>
+<tr><td>initialDate</td><td>DateTimeValue | null</td><td>DateTime?</td><td class="req">✓</td></tr>
+<tr><td>firstDate</td><td>DateTimeValue</td><td>DateTime</td><td class="req">✓</td></tr>
+<tr><td>lastDate</td><td>DateTimeValue</td><td>DateTime</td><td class="req">✓</td></tr>
+<tr><td>currentDate</td><td>DateTimeValue</td><td>DateTime?</td><td class="req"></td></tr>
 <tr><td>onDateChanged</td><td>(value: DateTime) =&gt; void</td><td>void Function(DateTime)</td><td class="req">✓</td></tr>
 <tr><td>onDisplayedMonthChanged</td><td>(value: DateTime) =&gt; void</td><td>void Function(DateTime)?</td><td class="req"></td></tr>
 <tr><td>initialCalendarMode</td><td>DatePickerMode</td><td>DatePickerMode</td><td class="req"></td></tr>
@@ -15035,7 +15485,7 @@ date.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">CalendarDatePicker</span> initialDate={…} firstDate={…} lastDate={…} onDateChanged={() =&gt; {}} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">CalendarDatePicker</span> initialDate=<span class="tok-str">&quot;2026-01-31&quot;</span> firstDate=<span class="tok-str">&quot;2026-01-31&quot;</span> lastDate=<span class="tok-str">&quot;2026-01-31&quot;</span> onDateChanged={() =&gt; {}} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">CalendarDatePicker</span>({
@@ -15954,15 +16404,15 @@ design specification.</p>
 </div>
 </article>
 <article class="widget" id="DatePickerDialog" data-name="DatePickerDialog">
-<h3>DatePickerDialog<span class="badge badge-lib">material</span></h3>
+<h3>DatePickerDialog<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A Material-style date picker dialog.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
 <tbody>
-<tr><td>initialDate</td><td>DateTime</td><td>DateTime?</td><td class="req"></td></tr>
-<tr><td>firstDate</td><td>DateTime</td><td>DateTime</td><td class="req">✓</td></tr>
-<tr><td>lastDate</td><td>DateTime</td><td>DateTime</td><td class="req">✓</td></tr>
-<tr><td>currentDate</td><td>DateTime</td><td>DateTime?</td><td class="req"></td></tr>
+<tr><td>initialDate</td><td>DateTimeValue</td><td>DateTime?</td><td class="req"></td></tr>
+<tr><td>firstDate</td><td>DateTimeValue</td><td>DateTime</td><td class="req">✓</td></tr>
+<tr><td>lastDate</td><td>DateTimeValue</td><td>DateTime</td><td class="req">✓</td></tr>
+<tr><td>currentDate</td><td>DateTimeValue</td><td>DateTime?</td><td class="req"></td></tr>
 <tr><td>initialEntryMode</td><td>DatePickerEntryMode</td><td>DatePickerEntryMode</td><td class="req"></td></tr>
 <tr><td>selectableDayPredicate</td><td>(day: DateTime) =&gt; boolean</td><td>bool Function(DateTime)?</td><td class="req"></td></tr>
 <tr><td>cancelText</td><td>string</td><td>String?</td><td class="req"></td></tr>
@@ -15988,7 +16438,7 @@ design specification.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">DatePickerDialog</span> firstDate={…} lastDate={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">DatePickerDialog</span> firstDate=<span class="tok-str">&quot;2026-01-31&quot;</span> lastDate=<span class="tok-str">&quot;2026-01-31&quot;</span> /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">DatePickerDialog</span>({
@@ -16049,15 +16499,15 @@ design specification.</p>
 </div>
 </article>
 <article class="widget" id="DateRangePickerDialog" data-name="DateRangePickerDialog">
-<h3>DateRangePickerDialog<span class="badge badge-lib">material</span></h3>
+<h3>DateRangePickerDialog<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A Material-style date range picker dialog.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
 <tbody>
 <tr><td>initialDateRange</td><td>DateTimeRange</td><td>DateTimeRange&lt;DateTime&gt;?</td><td class="req"></td></tr>
-<tr><td>firstDate</td><td>DateTime</td><td>DateTime</td><td class="req">✓</td></tr>
-<tr><td>lastDate</td><td>DateTime</td><td>DateTime</td><td class="req">✓</td></tr>
-<tr><td>currentDate</td><td>DateTime</td><td>DateTime?</td><td class="req"></td></tr>
+<tr><td>firstDate</td><td>DateTimeValue</td><td>DateTime</td><td class="req">✓</td></tr>
+<tr><td>lastDate</td><td>DateTimeValue</td><td>DateTime</td><td class="req">✓</td></tr>
+<tr><td>currentDate</td><td>DateTimeValue</td><td>DateTime?</td><td class="req"></td></tr>
 <tr><td>initialEntryMode</td><td>DatePickerEntryMode</td><td>DatePickerEntryMode</td><td class="req"></td></tr>
 <tr><td>helpText</td><td>string</td><td>String?</td><td class="req"></td></tr>
 <tr><td>cancelText</td><td>string</td><td>String?</td><td class="req"></td></tr>
@@ -16084,7 +16534,7 @@ design specification.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">DateRangePickerDialog</span> firstDate={…} lastDate={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">DateRangePickerDialog</span> firstDate=<span class="tok-str">&quot;2026-01-31&quot;</span> lastDate=<span class="tok-str">&quot;2026-01-31&quot;</span> /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">DateRangePickerDialog</span>({
@@ -18222,14 +18672,14 @@ can be configured to clip splashes that extend outside its bounds or not.</p>
 </div>
 </article>
 <article class="widget" id="InputDatePickerFormField" data-name="InputDatePickerFormField">
-<h3>InputDatePickerFormField<span class="badge badge-lib">material</span></h3>
+<h3>InputDatePickerFormField<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A [TextFormField] configured to accept and validate a date entered by a user.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
 <tbody>
-<tr><td>initialDate</td><td>DateTime</td><td>DateTime?</td><td class="req"></td></tr>
-<tr><td>firstDate</td><td>DateTime</td><td>DateTime</td><td class="req">✓</td></tr>
-<tr><td>lastDate</td><td>DateTime</td><td>DateTime</td><td class="req">✓</td></tr>
+<tr><td>initialDate</td><td>DateTimeValue</td><td>DateTime?</td><td class="req"></td></tr>
+<tr><td>firstDate</td><td>DateTimeValue</td><td>DateTime</td><td class="req">✓</td></tr>
+<tr><td>lastDate</td><td>DateTimeValue</td><td>DateTime</td><td class="req">✓</td></tr>
 <tr><td>onDateSubmitted</td><td>(value: DateTime) =&gt; void</td><td>void Function(DateTime)?</td><td class="req"></td></tr>
 <tr><td>onDateSaved</td><td>(value: DateTime) =&gt; void</td><td>void Function(DateTime)?</td><td class="req"></td></tr>
 <tr><td>selectableDayPredicate</td><td>(day: DateTime) =&gt; boolean</td><td>bool Function(DateTime)?</td><td class="req"></td></tr>
@@ -18250,7 +18700,7 @@ can be configured to clip splashes that extend outside its bounds or not.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">InputDatePickerFormField</span> firstDate={…} lastDate={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">InputDatePickerFormField</span> firstDate=<span class="tok-str">&quot;2026-01-31&quot;</span> lastDate=<span class="tok-str">&quot;2026-01-31&quot;</span> /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">InputDatePickerFormField</span>({
@@ -19595,7 +20045,7 @@ as needed.</p>
 </div>
 </article>
 <article class="widget" id="NavigationIndicator" data-name="NavigationIndicator">
-<h3>NavigationIndicator<span class="badge badge-lib">material</span></h3>
+<h3>NavigationIndicator<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Selection Indicator for the Material 3 [NavigationBar] and [NavigationRail]
 components.</p>
 <table class="props">
@@ -19615,7 +20065,13 @@ components.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">NavigationIndicator</span> animation={…} /&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">NavigationIndicatorExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> animation = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">600</span> });
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">NavigationIndicator</span> animation={animation} /&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">NavigationIndicator</span>({
@@ -19888,7 +20344,7 @@ design specification, using multiple pages to display data.</p>
 </div>
 </article>
 <article class="widget" id="PopupMenuButton" data-name="PopupMenuButton">
-<h3>PopupMenuButton<span class="badge badge-lib">material</span></h3>
+<h3>PopupMenuButton<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Displays a menu when pressed and calls [onSelected] when the menu is dismissed
 because an item was selected. The value passed to [onSelected] is the value of
 the selected menu item.</p>
@@ -19933,7 +20389,7 @@ the selected menu item.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">PopupMenuButton</span> itemBuilder={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">PopupMenuButton</span> itemBuilder={() =&gt; []}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">PopupMenuButton</span>&gt;</code></pre>
 </div>
@@ -20113,7 +20569,7 @@ popup menus in this widget's subtree.</p>
 </div>
 </article>
 <article class="widget" id="Radio" data-name="Radio">
-<h3>Radio<span class="badge badge-lib">material</span></h3>
+<h3>Radio<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A Material Design radio button.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -20146,7 +20602,7 @@ popup menus in this widget's subtree.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">Radio</span> value={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">Radio</span> value=<span class="tok-str">&quot;example&quot;</span> /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">Radio</span>({
@@ -20176,7 +20632,7 @@ popup menus in this widget's subtree.</p>
 </div>
 </article>
 <article class="widget" id="RadioListTile" data-name="RadioListTile">
-<h3>RadioListTile<span class="badge badge-lib">material</span></h3>
+<h3>RadioListTile<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A [ListTile] with a [Radio]. In other words, a radio button with a label.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -20228,7 +20684,7 @@ popup menus in this widget's subtree.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">RadioListTile</span> value={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">RadioListTile</span> value=<span class="tok-str">&quot;example&quot;</span> /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">RadioListTile</span>({
@@ -20277,7 +20733,7 @@ popup menus in this widget's subtree.</p>
 </div>
 </article>
 <article class="widget" id="RadioMenuButton" data-name="RadioMenuButton">
-<h3>RadioMenuButton<span class="badge badge-lib">material</span></h3>
+<h3>RadioMenuButton<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A menu item that combines a [Radio] widget with a [MenuItemButton].</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -20304,7 +20760,7 @@ popup menus in this widget's subtree.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">RadioMenuButton</span> value={…} groupValue={…} onChanged={() =&gt; {}}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">RadioMenuButton</span> value=<span class="tok-str">&quot;example&quot;</span> groupValue=<span class="tok-str">&quot;example&quot;</span> onChanged={() =&gt; {}}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">RadioMenuButton</span>&gt;</code></pre>
 </div>
@@ -23031,7 +23487,7 @@ this widget's subtree.</p>
 </div>
 </article>
 <article class="widget" id="Theme" data-name="Theme">
-<h3>Theme<span class="badge badge-lib">material</span></h3>
+<h3>Theme<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Applies a theme to descendant widgets.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -23046,9 +23502,15 @@ this widget's subtree.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">Theme</span> data={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">Theme</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">ThemeExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> themeData = <span class="tok-kw">new</span> <span class="tok-typ">ThemeData</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Theme</span> data={themeData}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">Theme</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">Theme</span>({
@@ -23060,12 +23522,12 @@ this widget's subtree.</p>
 </div>
 </article>
 <article class="widget" id="TimePickerDialog" data-name="TimePickerDialog">
-<h3>TimePickerDialog<span class="badge badge-lib">material</span></h3>
+<h3>TimePickerDialog<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A Material Design time picker designed to appear inside a popup dialog.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
 <tbody>
-<tr><td>initialTime</td><td>TimeOfDay</td><td>TimeOfDay</td><td class="req">✓</td></tr>
+<tr><td>initialTime</td><td>TimeOfDayValue</td><td>TimeOfDay</td><td class="req">✓</td></tr>
 <tr><td>cancelText</td><td>string</td><td>String?</td><td class="req"></td></tr>
 <tr><td>confirmText</td><td>string</td><td>String?</td><td class="req"></td></tr>
 <tr><td>helpText</td><td>string</td><td>String?</td><td class="req"></td></tr>
@@ -23087,7 +23549,7 @@ this widget's subtree.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">TimePickerDialog</span> initialTime={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">TimePickerDialog</span> initialTime=<span class="tok-str">&quot;09:30&quot;</span> /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">TimePickerDialog</span>({
@@ -23452,16 +23914,16 @@ displayed using [showTimePicker] in this widget's subtree.</p>
 </div>
 </article>
 <article class="widget" id="YearPicker" data-name="YearPicker">
-<h3>YearPicker<span class="badge badge-lib">material</span></h3>
+<h3>YearPicker<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A scrollable grid of years to allow picking a year.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
 <tbody>
-<tr><td>currentDate</td><td>DateTime</td><td>DateTime?</td><td class="req"></td></tr>
-<tr><td>firstDate</td><td>DateTime</td><td>DateTime</td><td class="req">✓</td></tr>
-<tr><td>lastDate</td><td>DateTime</td><td>DateTime</td><td class="req">✓</td></tr>
-<tr><td>initialDate</td><td>DateTime</td><td>DateTime?</td><td class="req"></td></tr>
-<tr><td>selectedDate</td><td>DateTime | null</td><td>DateTime?</td><td class="req">✓</td></tr>
+<tr><td>currentDate</td><td>DateTimeValue</td><td>DateTime?</td><td class="req"></td></tr>
+<tr><td>firstDate</td><td>DateTimeValue</td><td>DateTime</td><td class="req">✓</td></tr>
+<tr><td>lastDate</td><td>DateTimeValue</td><td>DateTime</td><td class="req">✓</td></tr>
+<tr><td>initialDate</td><td>DateTimeValue</td><td>DateTime?</td><td class="req"></td></tr>
+<tr><td>selectedDate</td><td>DateTimeValue | null</td><td>DateTime?</td><td class="req">✓</td></tr>
 <tr><td>onChanged</td><td>(value: DateTime) =&gt; void</td><td>void Function(DateTime)</td><td class="req">✓</td></tr>
 <tr><td>dragStartBehavior</td><td>DragStartBehavior</td><td>DragStartBehavior</td><td class="req"></td></tr>
 <tr><td>calendarDelegate</td><td>CalendarDelegate</td><td>CalendarDelegate&lt;DateTime&gt;</td><td class="req"></td></tr>
@@ -23473,7 +23935,7 @@ displayed using [showTimePicker] in this widget's subtree.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">YearPicker</span> firstDate={…} lastDate={…} selectedDate={…} onChanged={() =&gt; {}} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">YearPicker</span> firstDate=<span class="tok-str">&quot;2026-01-31&quot;</span> lastDate=<span class="tok-str">&quot;2026-01-31&quot;</span> selectedDate=<span class="tok-str">&quot;2026-01-31&quot;</span> onChanged={() =&gt; {}} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">YearPicker</span>({
@@ -23931,9 +24393,9 @@ platform with the given children.</p>
 <tbody>
 <tr><td>mode</td><td>CupertinoDatePickerMode</td><td>CupertinoDatePickerMode</td><td class="req"></td></tr>
 <tr><td>onDateTimeChanged</td><td>(value: DateTime) =&gt; void</td><td>void Function(DateTime)</td><td class="req">✓</td></tr>
-<tr><td>initialDateTime</td><td>DateTime</td><td>DateTime?</td><td class="req"></td></tr>
-<tr><td>minimumDate</td><td>DateTime</td><td>DateTime?</td><td class="req"></td></tr>
-<tr><td>maximumDate</td><td>DateTime</td><td>DateTime?</td><td class="req"></td></tr>
+<tr><td>initialDateTime</td><td>DateTimeValue</td><td>DateTime?</td><td class="req"></td></tr>
+<tr><td>minimumDate</td><td>DateTimeValue</td><td>DateTime?</td><td class="req"></td></tr>
+<tr><td>maximumDate</td><td>DateTimeValue</td><td>DateTime?</td><td class="req"></td></tr>
 <tr><td>minimumYear</td><td>number</td><td>int</td><td class="req"></td></tr>
 <tr><td>maximumYear</td><td>number</td><td>int?</td><td class="req"></td></tr>
 <tr><td>minuteInterval</td><td>number</td><td>int</td><td class="req"></td></tr>
@@ -24186,7 +24648,7 @@ or collapses the tile to reveal or hide the [child].</p>
 </div>
 </article>
 <article class="widget" id="CupertinoFullscreenDialogTransition" data-name="CupertinoFullscreenDialogTransition">
-<h3>CupertinoFullscreenDialogTransition<span class="badge badge-lib">cupertino</span></h3>
+<h3>CupertinoFullscreenDialogTransition<span class="badge badge-lib">cupertino</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">An iOS-style transition used for summoning fullscreen dialogs.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -24203,9 +24665,15 @@ or collapses the tile to reveal or hide the [child].</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">CupertinoFullscreenDialogTransition</span> primaryRouteAnimation={…} secondaryRouteAnimation={…} linearTransition={<span class="tok-kw">true</span>}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">CupertinoFullscreenDialogTransition</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">CupertinoFullscreenDialogTransitionExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> animation = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">600</span> });
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">CupertinoFullscreenDialogTransition</span> primaryRouteAnimation={animation} secondaryRouteAnimation={animation} linearTransition={<span class="tok-kw">true</span>}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">CupertinoFullscreenDialogTransition</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">CupertinoFullscreenDialogTransition</span>({
@@ -24697,7 +25165,7 @@ a [CupertinoMenuAnchor].</p>
 </div>
 </article>
 <article class="widget" id="CupertinoPageTransition" data-name="CupertinoPageTransition">
-<h3>CupertinoPageTransition<span class="badge badge-lib">cupertino</span></h3>
+<h3>CupertinoPageTransition<span class="badge badge-lib">cupertino</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Provides an iOS-style page transition animation.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -24714,9 +25182,15 @@ a [CupertinoMenuAnchor].</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">CupertinoPageTransition</span> primaryRouteAnimation={…} secondaryRouteAnimation={…} linearTransition={<span class="tok-kw">true</span>}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">CupertinoPageTransition</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">CupertinoPageTransitionExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> animation = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">600</span> });
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">CupertinoPageTransition</span> primaryRouteAnimation={animation} secondaryRouteAnimation={animation} linearTransition={<span class="tok-kw">true</span>}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">CupertinoPageTransition</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">CupertinoPageTransition</span>({
@@ -24843,7 +25317,7 @@ sheets.</p>
 </div>
 </article>
 <article class="widget" id="CupertinoRadio" data-name="CupertinoRadio">
-<h3>CupertinoRadio<span class="badge badge-lib">cupertino</span></h3>
+<h3>CupertinoRadio<span class="badge badge-lib">cupertino</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that builds a [RawRadio] with a macOS-style UI.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -24870,7 +25344,7 @@ sheets.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">CupertinoRadio</span> value={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">CupertinoRadio</span> value=<span class="tok-str">&quot;example&quot;</span> /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">CupertinoRadio</span>({
@@ -25074,7 +25548,7 @@ sheets.</p>
 </div>
 </article>
 <article class="widget" id="CupertinoSheetTransition" data-name="CupertinoSheetTransition">
-<h3>CupertinoSheetTransition<span class="badge badge-lib">cupertino</span></h3>
+<h3>CupertinoSheetTransition<span class="badge badge-lib">cupertino</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Provides an iOS-style sheet transition.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -25092,9 +25566,15 @@ sheets.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">CupertinoSheetTransition</span> primaryRouteAnimation={…} secondaryRouteAnimation={…} linearTransition={<span class="tok-kw">true</span>}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">CupertinoSheetTransition</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">CupertinoSheetTransitionExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> animation = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">600</span> });
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">CupertinoSheetTransition</span> primaryRouteAnimation={animation} secondaryRouteAnimation={animation} linearTransition={<span class="tok-kw">true</span>}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">CupertinoSheetTransition</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">CupertinoSheetTransition</span>({
@@ -25813,7 +26293,13 @@ finger may be blocking the point of interest, like a selection handle.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">CupertinoTextMagnifier</span> controller={…} magnifierInfo={…} /&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">CupertinoTextMagnifierExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> magnifierController = <span class="tok-kw">new</span> <span class="tok-typ">MagnifierController</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">CupertinoTextMagnifier</span> controller={magnifierController} magnifierInfo={…} /&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">CupertinoTextMagnifier</span>({
@@ -29669,6 +30155,13 @@ declare module <span class="tok-str">'plugin:url_launcher'</span> {
   subHeaderForegroundColor?: ColorValue;
 }</code></pre>
 <p class="note">Accepted by <a href="#DatePickerTheme">DatePickerTheme</a></p>
+</article>
+<article class="widget" id="type-DateTimeValue" data-name="DateTimeValue">
+<h3>DateTimeValue<span class="badge badge-lib">DateTime</span></h3>
+
+<pre><code class="language-typescript"><span class="tok-kw">export</span> <span class="tok-kw">type</span> <span class="tok-typ">DateTimeValue</span> = <span class="tok-typ">DateTime</span> | <span class="tok-str">`${number}-${number}-${number}`</span>;</code></pre>
+
+<p class="note">Accepted by <a href="#CalendarDatePicker">CalendarDatePicker</a>, <a href="#CupertinoDatePicker">CupertinoDatePicker</a>, <a href="#DatePickerDialog">DatePickerDialog</a>, <a href="#DateRangePickerDialog">DateRangePickerDialog</a>, <a href="#InputDatePickerFormField">InputDatePickerFormField</a>, <a href="#YearPicker">YearPicker</a></p>
 </article>
 <article class="widget" id="type-DeviceGestureSettingsValue" data-name="DeviceGestureSettingsValue">
 <h3>DeviceGestureSettingsValue<span class="badge badge-lib">DeviceGestureSettings</span></h3>
@@ -46469,6 +46962,13 @@ declare module <span class="tok-str">'plugin:url_launcher'</span> {
   overflow?: TextOverflow;
 }</code></pre>
 <p class="note">Accepted by <a href="#ActionChip">ActionChip</a>, <a href="#AlertDialog">AlertDialog</a>, <a href="#AnimatedDefaultTextStyle">AnimatedDefaultTextStyle</a>, <a href="#AppBar">AppBar</a>, <a href="#AppBarTheme">AppBarTheme</a>, <a href="#Badge">Badge</a>, <a href="#Banner">Banner</a>, <a href="#BottomNavigationBar">BottomNavigationBar</a>, <a href="#Chip">Chip</a>, <a href="#ChoiceChip">ChoiceChip</a>, <a href="#CupertinoDialogAction">CupertinoDialogAction</a>, <a href="#CupertinoSearchTextField">CupertinoSearchTextField</a> and 34 more</p>
+</article>
+<article class="widget" id="type-TimeOfDayValue" data-name="TimeOfDayValue">
+<h3>TimeOfDayValue<span class="badge badge-lib">TimeOfDay</span></h3>
+
+<pre><code class="language-typescript"><span class="tok-kw">export</span> <span class="tok-kw">type</span> <span class="tok-typ">TimeOfDayValue</span> = <span class="tok-typ">TimeOfDay</span> | <span class="tok-str">`${number}:${number}`</span>;</code></pre>
+
+<p class="note">Accepted by <a href="#TimePickerDialog">TimePickerDialog</a></p>
 </article>
 <article class="widget" id="type-TimePickerThemeDataValue" data-name="TimePickerThemeDataValue">
 <h3>TimePickerThemeDataValue<span class="badge badge-lib">TimePickerThemeData</span></h3>

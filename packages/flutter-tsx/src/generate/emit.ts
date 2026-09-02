@@ -6,6 +6,7 @@ import type {
   TypeNode,
   WidgetEntity,
 } from '../api/model';
+import { DATE_FORMS } from '../derive/date-forms';
 import type { ChildrenSlot, SlotMap, WidgetSlots } from '../derive/slots';
 import {
   deriveValueForms,
@@ -288,16 +289,15 @@ const brandInterface = (
     ...new Set([name, ...(snapshot.hierarchy[name] ?? [])]),
   ].sort();
   const brand = brandKeys.map((key) => `readonly ${key}: true`).join('; ');
+  const entity = snapshot.entities.find(
+    (candidate) => candidate.name === name && candidate.kind !== 'enum',
+  );
   // What a value of this type can be read for. A callback is handed one of
   // these — `(context, constraints) => …` — and the compiler resolves
-  // `constraints.maxWidth`, so the editor has to know it too.
-  const entity = handed.has(name)
-    ? snapshot.entities.find(
-        (candidate) => candidate.name === name && candidate.kind !== 'enum',
-      )
-    : undefined;
+  // `constraints.maxWidth`, so the editor has to know it too. A type nothing
+  // hands over is a shape, and declaring members on it would guide nobody.
   const fields =
-    entity === undefined || entity.kind === 'enum'
+    entity === undefined || entity.kind === 'enum' || !handed.has(name)
       ? []
       : entity.fields
           // A field is exposed when its type is one the surface already
@@ -317,7 +317,7 @@ const brandInterface = (
     `  readonly __fsxBrand?: { ${brand} };`,
     ...fields,
     '}',
-    ...ownedConstructor(name, entity, snapshot),
+    ...ownedConstructor(name, entity),
   ].join('\n');
 };
 
@@ -333,30 +333,39 @@ const brandInterface = (
 const ownedConstructor = (
   name: string,
   entity: ApiSnapshot['entities'][number] | undefined,
-  snapshot: ApiSnapshot,
 ): string[] => {
-  if (entity === undefined || !isOwnedController(name, entity, snapshot)) {
+  if (entity === undefined || !isOwnedValue(entity)) {
     return [];
   }
   return ['', `export declare const ${name}: new () => ${name};`];
 };
 
-/** Controllers a component can own: notify listeners, and need no arguments. */
-export const isOwnedController = (
-  name: string,
+/**
+ * A value a component can own: something the SDK builds with no arguments,
+ * and that has an identity worth keeping.
+ *
+ * A controller, a focus node, a link between two layers — each is made once,
+ * kept for as long as the widget lives, and handed to the widgets that use
+ * it. A const class is not one of these: `BoxDecoration` is a value written
+ * where it is used, and it is written as one — `decoration={{ … }}`. The
+ * constructor's own const-ness is what separates them, and whether owning a
+ * value also means disposing it is the class's own answer, both read from the
+ * SDK rather than guessed from the name.
+ */
+export const isOwnedValue = (
   entity: ApiSnapshot['entities'][number],
-  snapshot: ApiSnapshot,
 ): boolean => {
-  if (
-    entity.kind === 'enum' ||
-    !(snapshot.hierarchy[name] ?? []).includes('ChangeNotifier')
-  ) {
+  if (entity.kind !== 'class') {
     return false;
   }
   const constructor = entity.constructors.find(
     (candidate) => candidate.name === '',
   );
-  return constructor?.params.every((param) => !param.required) === true;
+  return (
+    constructor !== undefined &&
+    !constructor.isConst &&
+    constructor.params.every((param) => !param.required)
+  );
 };
 
 const unwrapNullable = (node: TypeNode): TypeNode =>
@@ -387,6 +396,10 @@ const valueAliasBlock = (name: string, forms: ValueForms): string => {
       '{ horizontal?: number; vertical?: number }',
       '{ left?: number; top?: number; right?: number; bottom?: number }',
     );
+  }
+  const dateForm = DATE_FORMS.get(name);
+  if (dateForm !== undefined) {
+    arms.push(dateForm.tsArm);
   }
   if (name === HEX_COLOR_TYPE) {
     arms.push('`#${string}`');

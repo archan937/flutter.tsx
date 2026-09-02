@@ -33,11 +33,27 @@ void main() {
         'class NotAWidget',
         'enum TestAlignment',
         'class TestController',
+        'class TestHolder',
+        'class TestLink',
         'class TestPalette',
         'class TestVault',
         'widget TestWidget',
         'widget Wrapper',
       ]);
+    });
+
+    test('records whether a value has to be disposed', () {
+      // A component owning one of these has to release it; the compiler
+      // cannot know which from the name, so the extractor says so.
+      final controller = entities.whereType<ClassEntity>().singleWhere(
+        (entity) => entity.name == 'TestController',
+      );
+      final link = entities.whereType<ClassEntity>().singleWhere(
+        (entity) => entity.name == 'TestLink',
+      );
+
+      expect(controller.disposable, isTrue);
+      expect(link.disposable, isFalse);
     });
 
     test('labels entities with their library', () {
@@ -202,6 +218,8 @@ void main() {
         'StatelessWidget': ['Widget'],
         'Tappable': ['Widget'],
         'TestController': <String>[],
+        'TestHolder': <String>[],
+        'TestLink': <String>[],
         'TestPalette': <String>[],
         'TestVault': <String>[],
         'TestWidget': ['StatelessWidget', 'Widget'],

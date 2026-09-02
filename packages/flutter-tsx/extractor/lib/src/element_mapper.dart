@@ -46,6 +46,20 @@ EntityModel? mapClass(
     constructors: constructors,
     constants: constants,
     fields: fields,
+    disposable: _hasPublicDispose(classElement),
+  );
+}
+
+/// Whether the class, or anything it inherits from, offers `dispose()`.
+bool _hasPublicDispose(ClassElement classElement) {
+  final owners = [
+    classElement,
+    ...classElement.allSupertypes.map((supertype) => supertype.element),
+  ];
+  return owners.whereType<ClassElement>().any(
+    (owner) => owner.methods.any(
+      (method) => method.name == 'dispose' && method.isPublic,
+    ),
   );
 }
 

@@ -58,7 +58,7 @@ TypeNode _encodeInterface(InterfaceType type) {
   if (_scalarNames.contains(name)) {
     return ScalarTypeNode(name);
   }
-  return NamedTypeNode(name);
+  return NamedTypeNode(name, type.typeArguments.map(encodeType).toList());
 }
 
 FunctionTypeNode _encodeFunction(FunctionType type) {

@@ -359,10 +359,24 @@ class ClassEntity extends ConstructedEntity {
     required super.constructors,
     required super.constants,
     required super.fields,
+    required this.disposable,
   });
+
+  /// Whether a public `dispose()` is part of this class's surface.
+  ///
+  /// A component that owns a value of this type has to release it, and the
+  /// name alone does not say: `FocusNode` has to be disposed, `LayerLink`
+  /// has nothing to release.
+  final bool disposable;
 
   @override
   String get kind => 'class';
+
+  @override
+  Map<String, Object?> toJson() => {
+    ...super.toJson(),
+    'disposable': disposable,
+  };
 }
 
 class EnumValueModel {

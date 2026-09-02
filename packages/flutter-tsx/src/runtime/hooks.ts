@@ -1,6 +1,7 @@
 // Compile targets: the transpiler rewrites hook calls from the AST; at
 // TypeScript runtime they only need to be inert and deterministic.
 
+import type { Animation, AnimationController } from '../generated/widgets';
 import type { FlutterElement } from './types';
 
 export type StateSetter<TValue> = (value: TValue) => void;
@@ -36,6 +37,57 @@ export const useStream: <TValue>(
   options: AsyncOptions,
 ) => Promise<TValue> = () =>
   Promise.reject(new Error('useStream is compile-time'));
+
+/**
+ * An animation a component drives itself, where `Animated` is not enough:
+ * the handle is the `Animation` a transition takes, and its methods are the
+ * controls Flutter's own controller has.
+ */
+export interface AnimationHandle extends AnimationController {
+  /** Runs from where it is to the end. */
+  readonly forward: () => void;
+  /** Runs back to the start. */
+  readonly reverse: () => void;
+  /** Stops where it is. */
+  readonly stop: () => void;
+  /** Runs from the start, over and over. */
+  readonly repeat: () => void;
+  /** Jumps back to the start. */
+  readonly reset: () => void;
+}
+
+export interface AnimationOptions {
+  /** How long one run takes, in milliseconds. */
+  duration: number;
+  /** Runs as soon as the widget is mounted. */
+  autoplay?: boolean;
+  /** Keeps running from the start, for as long as the widget is mounted. */
+  repeat?: boolean;
+}
+
+/**
+ * Compile target: the transpiler reads the call from the AST and generates an
+ * `AnimationController` the State owns — ticker, disposal and all.
+ */
+export const useAnimation: (
+  options: AnimationOptions,
+) => AnimationHandle = () => {
+  throw new Error('useAnimation is compile-time');
+};
+
+/**
+ * An animation over values that are not numbers.
+ *
+ * `useAnimation` runs from 0 to 1; a transition over colours, alignments or
+ * offsets runs between two of those. `tween` is that range, driven by the
+ * same handle — Flutter's own `Tween(...).animate(controller)`.
+ */
+export const tween: <TValue>(
+  animation: AnimationHandle,
+  range: { from: TValue; to: TValue },
+) => Animation = () => {
+  throw new Error('tween is compile-time');
+};
 
 /**
  * A module-level store. The transpiler reads the initial shape from the AST

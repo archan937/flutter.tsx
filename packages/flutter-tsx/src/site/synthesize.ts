@@ -1,4 +1,5 @@
 import type { ParamModel, TypeNode } from '../api/model';
+import { DATE_FORMS } from '../derive/date-forms';
 import type { NamedSlot, WidgetSlots } from '../derive/slots';
 import { EDGE_INSETS_TYPES, type ValueForms } from '../derive/value-forms';
 import { jsxPropName } from '../generate/renames';
@@ -6,14 +7,114 @@ import { jsxPropName } from '../generate/renames';
 export interface SynthesisContext {
   enumValues: Record<string, string>;
   forms: ValueForms;
+  /** Types a component can make for itself, e.g. `new FocusNode()`. */
+  ownedValues: ReadonlySet<string>;
+}
+
+/**
+ * A line the example needs above its tag.
+ *
+ * Not every value is a literal: an animation is driven by the component that
+ * holds it, a controller is owned by it. Those examples are components, and
+ * the binding is the line a developer would really write.
+ */
+export interface ExampleBinding {
+  line: string;
+  imports: string[];
 }
 
 export interface SynthesizedExample {
   tsx: string;
+  bindings: ExampleBinding[];
   complete: boolean;
 }
 
+/** A synthesized value, with whatever has to be bound for it to exist. */
+interface SynthesizedValue {
+  value: string;
+  binding?: ExampleBinding;
+}
+
 const INCOMPLETE_VALUE = '{…}';
+
+// `<Icon icon={Icons.add} />` — a namespaced value the example needs imported.
+const NAMESPACE_REFERENCE = /\{([A-Z][A-Za-z0-9_]*)\./g;
+
+const literal = (value: string): SynthesizedValue => ({ value });
+
+/**
+ * An animation of the type the prop carries.
+ *
+ * A controller is an `Animation<double>` already; anything else runs between
+ * two values of what it carries, which is what a tween is for.
+ */
+const animationValue = (
+  type: TypeNode & { kind: 'named' },
+  context: SynthesisContext,
+): SynthesizedValue | null => {
+  const [carried] = type.args ?? [];
+  if (carried === undefined || carried.kind === 'scalar') {
+    return { value: '{animation}', binding: ANIMATION_BINDING };
+  }
+  const from = attrValue(carried, context);
+  const to = attrValue(carried, context);
+  if (from === null || to === null || from.binding !== undefined) {
+    return null;
+  }
+  return {
+    value: `{tween(animation, { from: ${braced(from.value)}, to: ${braced(to.value)} })}`,
+    binding: {
+      line: ANIMATION_BINDING.line,
+      imports: [...ANIMATION_BINDING.imports, 'tween'],
+    },
+  };
+};
+
+/** `const focusNode = new FocusNode();` — a value the component makes. */
+const ownedValue = (
+  typeName: string,
+  context: SynthesisContext,
+): SynthesizedValue | null => {
+  if (!context.ownedValues.has(typeName)) {
+    return null;
+  }
+  const name = `${typeName[0]?.toLowerCase() ?? ''}${typeName.slice(1)}`;
+  return {
+    value: `{${name}}`,
+    binding: {
+      line: `const ${name} = new ${typeName}();`,
+      imports: [typeName],
+    },
+  };
+};
+
+/**
+ * A prop value written `{…}` as the expression inside it.
+ *
+ * An object stays wrapped: `() => {}` is an empty body where `() => ({})` is
+ * the value the callback answers with.
+ */
+const braced = (value: string): string => {
+  if (!value.startsWith('{')) {
+    return value;
+  }
+  const inner = value.slice(1, -1);
+  return inner.startsWith('{') ? `(${inner})` : inner;
+};
+
+// The Animation family: every one of these is what a controller hands over,
+// and `useAnimation` is how a component gets one.
+const ANIMATION_TYPES: ReadonlySet<string> = new Set([
+  'Animation',
+  'AnimationController',
+  'Listenable',
+  'ValueListenable',
+]);
+
+const ANIMATION_BINDING: ExampleBinding = {
+  line: 'const animation = useAnimation({ duration: 600 });',
+  imports: ['useAnimation'],
+};
 
 const SCALAR_VALUES: Record<string, string> = {
   String: '"example"',
@@ -23,47 +124,94 @@ const SCALAR_VALUES: Record<string, string> = {
   bool: '{true}',
 };
 
+/**
+ * Where a value is being written.
+ *
+ * A prop accepts the shorthands its declared union offers — `padding={8}`,
+ * `color="red"`. Inside an expression, the value has to be the type itself,
+ * so only the forms that are the type are written there.
+ */
+type ValuePosition = 'prop' | 'expression';
+
 const attrValue = (
   type: TypeNode,
   context: SynthesisContext,
-): string | null => {
+  position: ValuePosition = 'prop',
+): SynthesizedValue | null => {
   switch (type.kind) {
     case 'nullable':
-      return attrValue(type.inner, context);
-    case 'scalar':
-      return SCALAR_VALUES[type.name] ?? null;
+      return attrValue(type.inner, context, position);
+    case 'scalar': {
+      const scalar = SCALAR_VALUES[type.name];
+      return scalar === undefined ? null : literal(scalar);
+    }
     case 'enum': {
       const value = context.enumValues[type.name];
-      return value === undefined ? null : `"${value}"`;
+      return value === undefined || position === 'expression'
+        ? null
+        : literal(`"${value}"`);
     }
     case 'named': {
+      if (ANIMATION_TYPES.has(type.name)) {
+        return animationValue(type, context);
+      }
+      if (position === 'expression') {
+        // A shorthand is a prop's own union; here the value has to be one a
+        // component makes, or there is none to write.
+        return ownedValue(type.name, context);
+      }
+      const dateForm = DATE_FORMS.get(type.name);
+      if (dateForm !== undefined) {
+        return literal(`"${dateForm.example}"`);
+      }
       const [firstMember] =
         context.forms.constantMembers.get(type.name)?.keys() ?? [];
       if (firstMember !== undefined) {
-        return `"${firstMember}"`;
+        return literal(`"${firstMember}"`);
       }
       if (EDGE_INSETS_TYPES.has(type.name)) {
-        return '{8}';
+        return literal('{8}');
       }
-      return context.forms.constructibles.has(type.name) ? '{{}}' : null;
+      if (context.forms.constructibles.has(type.name)) {
+        return literal('{{}}');
+      }
+      // A value the component makes and keeps: the example is the component,
+      // and the binding is the line that makes it.
+      return ownedValue(type.name, context);
     }
-    case 'function':
+    case 'function': {
       if (type.returnType.kind === 'void') {
-        return '{() => {}}';
+        return literal('{() => {}}');
       }
-      // A builder is a callback that returns what to render, and TSX writes
-      // it the way it writes any other child. One whose typedef takes named
-      // parameters is not satisfied by a plain closure, so it keeps its
-      // placeholder rather than showing Dart that would not compile.
-      return type.returnType.kind === 'widget' &&
-        type.params.every((param) => !param.named)
-        ? '{() => <Text>Content</Text>}'
-        : null;
+      // A typedef that takes named parameters is not satisfied by the
+      // positional closure TSX writes, so it has no example yet.
+      if (type.params.some((param) => param.named)) {
+        return null;
+      }
+      if (type.returnType.kind === 'widget') {
+        return literal('{() => <Text>Content</Text>}');
+      }
+      // Any other callback answers with a value, and a value is exactly what
+      // this function knows how to make: the callback is written around it.
+      const answer = attrValue(type.returnType, context, 'expression');
+      return answer === null
+        ? null
+        : {
+            value: `{() => ${braced(answer.value)}}`,
+            ...(answer.binding === undefined
+              ? {}
+              : { binding: answer.binding }),
+          };
+    }
+    // A generic value is whatever the example makes it: the widget's own
+    // type parameter follows what it is given.
+    case 'unknown':
+      return literal('"example"');
     case 'list':
-      return '{[]}';
+      return literal('{[]}');
     case 'map':
       return type.key.kind === 'scalar' && type.key.name !== 'bool'
-        ? '{{}}'
+        ? literal('{{}}')
         : null;
     default:
       return null;
@@ -77,7 +225,7 @@ const pickOneOfMember = (
   group: string[],
   params: ParamModel[],
   context: SynthesisContext,
-): { param: ParamModel; value: string | null } | null => {
+): { param: ParamModel; value: SynthesizedValue | null } | null => {
   const members = group.flatMap((name) => {
     const found = params.find((candidate) => candidate.name === name);
     return found === undefined ? [] : [found];
@@ -92,11 +240,11 @@ const pickOneOfMember = (
   return first === undefined ? null : { param: first, value: null };
 };
 
-const slotValue = (slot: NamedSlot): string | null => {
+const slotValue = (slot: NamedSlot): SynthesizedValue | null => {
   if (slot.mode === 'multi') {
-    return '{[]}';
+    return literal('{[]}');
   }
-  return slot.accepts === 'Widget' ? '{<Text>Content</Text>}' : null;
+  return slot.accepts === 'Widget' ? literal('{<Text>Content</Text>}') : null;
 };
 
 const childrenBlock = (kind: 'widgetList' | 'widget' | 'text'): string => {
@@ -119,15 +267,49 @@ export interface SynthesisInput {
   requiredOneOf?: string[][];
 }
 
+/** The tag, given the attributes and what the widget takes as children. */
+const tagText = (
+  widgetName: string,
+  attrs: string[],
+  children: WidgetSlots['children'],
+): string => {
+  const attrText = attrs.length > 0 ? ` ${attrs.join(' ')}` : '';
+  if (children === null) {
+    return `<${widgetName}${attrText} />`;
+  }
+  if (children.kind === 'text') {
+    return `<${widgetName}${attrText}>${childrenBlock('text')}</${widgetName}>`;
+  }
+  return (
+    `<${widgetName}${attrText}>\n` +
+    `${childrenBlock(children.kind)}\n` +
+    `</${widgetName}>`
+  );
+};
+
 export const synthesizeTsx = (input: SynthesisInput): SynthesizedExample => {
   const { widgetName, params, slots, context } = input;
   const takenNames = new Set(params.map((candidate) => candidate.name));
   const attrs: string[] = [];
+  const bindings = new Map<string, ExampleBinding>();
   const suppliedNames = new Set<string>();
   let complete = true;
   if (slots.children !== null) {
     suppliedNames.add(slots.children.param);
   }
+
+  // One binding per line written, however many props ask for it: two
+  // transitions driven by one animation is what a developer would write.
+  const record = (value: SynthesizedValue | null): string => {
+    if (value === null) {
+      complete = false;
+      return INCOMPLETE_VALUE;
+    }
+    if (value.binding !== undefined) {
+      bindings.set(value.binding.line, value.binding);
+    }
+    return value.value;
+  };
 
   for (const candidate of params) {
     if (!candidate.required || candidate.name === slots.children?.param) {
@@ -138,12 +320,7 @@ export const synthesizeTsx = (input: SynthesisInput): SynthesizedExample => {
     const slot = slots.slots.find((entry) => entry.param === candidate.name);
     const value =
       slot !== undefined ? slotValue(slot) : attrValue(candidate.type, context);
-    if (value === null) {
-      complete = false;
-    }
-    attrs.push(
-      `${jsxPropName(candidate.name, takenNames)}=${value ?? INCOMPLETE_VALUE}`,
-    );
+    attrs.push(`${jsxPropName(candidate.name, takenNames)}=${record(value)}`);
   }
 
   for (const group of input.requiredOneOf ?? []) {
@@ -154,29 +331,61 @@ export const synthesizeTsx = (input: SynthesisInput): SynthesizedExample => {
     if (chosen === null) {
       continue;
     }
-    if (chosen.value === null) {
-      complete = false;
-    }
     const propName = jsxPropName(chosen.param.name, takenNames);
-    attrs.push(`${propName}=${chosen.value ?? INCOMPLETE_VALUE}`);
+    attrs.push(`${propName}=${record(chosen.value)}`);
   }
 
-  const attrText = attrs.length > 0 ? ` ${attrs.join(' ')}` : '';
-  if (slots.children === null) {
-    return { tsx: `<${widgetName}${attrText} />`, complete };
-  }
-
-  if (slots.children.kind === 'text') {
-    return {
-      tsx: `<${widgetName}${attrText}>${childrenBlock('text')}</${widgetName}>`,
-      complete,
-    };
-  }
   return {
-    tsx:
-      `<${widgetName}${attrText}>\n` +
-      `${childrenBlock(slots.children.kind)}\n` +
-      `</${widgetName}>`,
+    tsx: tagText(widgetName, attrs, slots.children),
+    bindings: [...bindings.values()],
     complete,
   };
 };
+
+/**
+ * The example as source a developer could paste.
+ *
+ * A tag whose values are all literals stands on its own. One with bindings is
+ * a component, because that is where a value the component holds can live —
+ * and every reader of an example (the docs, the typecheck probe, the analyze
+ * sweep) renders it from here, so they can never disagree.
+ */
+export const exampleSource = (
+  widgetName: string,
+  example: SynthesizedExample,
+  options: { component: boolean },
+): string => {
+  if (!options.component && example.bindings.length === 0) {
+    return example.tsx;
+  }
+  const indented = (spaces: number): string =>
+    example.tsx.replaceAll('\n', `\n${' '.repeat(spaces)}`);
+  if (example.bindings.length === 0) {
+    return `export const ${widgetName}Example = () => (\n  ${indented(2)}\n);`;
+  }
+  const lines = example.bindings.map((binding) => `  ${binding.line}`);
+  return (
+    `export const ${widgetName}Example = () => {\n` +
+    `${lines.join('\n')}\n\n` +
+    `  return (\n    ${indented(4)}\n  );\n` +
+    '};'
+  );
+};
+
+/** Everything an example's source has to import from the package. */
+export const exampleImports = (
+  widgetName: string,
+  example: SynthesizedExample,
+): string[] =>
+  [
+    ...new Set([
+      widgetName,
+      'Text',
+      ...example.bindings.flatMap((binding) => binding.imports),
+      ...[...example.tsx.matchAll(NAMESPACE_REFERENCE)].map(
+        (match) => match[1] ?? '',
+      ),
+    ]),
+  ]
+    .filter((name) => name !== '')
+    .sort();

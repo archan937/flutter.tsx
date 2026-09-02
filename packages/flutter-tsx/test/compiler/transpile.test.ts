@@ -1234,7 +1234,7 @@ describe('transpileComponent — controllers a component owns', () => {
     expect(dart).toContain('TextField(controller: _query)');
   });
 
-  test('a class that is not a controller is a numbered error', () => {
+  test('a class that is not a value to own is a numbered error', () => {
     // `Text` is a widget, not something with a lifecycle to own.
     expect(
       transpileComponent({
@@ -1246,7 +1246,7 @@ describe('transpileComponent — controllers a component owns', () => {
           '};\n',
         filePath: 'probe.tsx',
       }),
-    ).rejects.toThrow(/TSX0351 .* `Text` is not a controller a component owns/);
+    ).rejects.toThrow(/TSX0351 .* `Text` is not a value a component owns/);
   });
 });
 
@@ -1282,6 +1282,37 @@ describe('transpileComponent — a value a plugin answers with', () => {
     });
 
     expect(dart).toContain("    return Text('${_prefs?.getInt('visits')}');");
+  });
+});
+
+describe('transpileComponent — dates and times', () => {
+  const picker = (attributes: string): Promise<string> =>
+    transpileComponent({
+      source:
+        "import { CalendarDatePicker } from 'flutter-tsx';\n" +
+        'export const Probe = () => (\n' +
+        `  <CalendarDatePicker ${attributes} onDateChanged={() => {}} />\n` +
+        ');\n',
+      filePath: 'probe.tsx',
+    });
+
+  test('a written date is the DateTime it names', async () => {
+    const dart = await picker(
+      'initialDate="2026-01-31" firstDate="2020-01-01" lastDate="2030-12-31"',
+    );
+
+    expect(dart).toContain('      initialDate: DateTime(2026, 1, 31),');
+    expect(dart).toContain('      firstDate: DateTime(2020, 1, 1),');
+  });
+
+  test('a value that is not a date is a numbered error', () => {
+    expect(
+      picker(
+        'initialDate="tomorrow" firstDate="2020-01-01" lastDate="2030-12-31"',
+      ),
+    ).rejects.toThrow(
+      /TSX0205 .* `tomorrow` is not a date, written YYYY-MM-DD: `2026-01-31`/,
+    );
   });
 });
 

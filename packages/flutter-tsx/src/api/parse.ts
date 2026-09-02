@@ -77,8 +77,19 @@ export const parseTypeNode = (value: unknown, path: string): TypeNode => {
     case 'scalar':
       return { kind, name: asScalarName(record.name, `${path}.name`) };
     case 'enum':
-    case 'named':
-      return { kind, name: asString(record.name, `${path}.name`) };
+    case 'named': {
+      const args =
+        record.args === undefined
+          ? []
+          : asArray(record.args, `${path}.args`).map((arg, index) =>
+              parseTypeNode(arg, `${path}.args[${index}]`),
+            );
+      return {
+        kind,
+        name: asString(record.name, `${path}.name`),
+        ...(args.length > 0 ? { args } : {}),
+      };
+    }
     case 'nullable':
       return { kind, inner: parseTypeNode(record.inner, `${path}.inner`) };
     case 'list':
@@ -180,27 +191,41 @@ const parseEntity = (value: unknown, path: string): Entity => {
     doc: asString(record.doc, `${path}.doc`),
   };
 
+  // Only a widget or a class carries these; an enum has none of them, so
+  // they are read where they exist rather than for every entity.
+  const constructed = (): {
+    supertypes: string[];
+    constructors: ConstructorModel[];
+    constants: ConstantModel[];
+    fields: FieldModel[];
+  } => ({
+    supertypes: asArray(record.supertypes, `${path}.supertypes`).map(
+      (supertype, index) => asString(supertype, `${path}.supertypes[${index}]`),
+    ),
+    constructors: asArray(record.constructors, `${path}.constructors`).map(
+      (constructor, index) =>
+        parseConstructor(constructor, `${path}.constructors[${index}]`),
+    ),
+    constants: asArray(record.constants, `${path}.constants`).map(
+      (constant, index) =>
+        parseConstant(constant, `${path}.constants[${index}]`),
+    ),
+    fields: asArray(record.fields, `${path}.fields`).map((field, index) =>
+      parseField(field, `${path}.fields[${index}]`),
+    ),
+  });
+
   switch (kind) {
     case 'widget':
+      return { kind, ...base, ...constructed() };
+    // A class may be a value a component owns, and then it says whether
+    // owning it means disposing it.
     case 'class':
       return {
         kind,
         ...base,
-        supertypes: asArray(record.supertypes, `${path}.supertypes`).map(
-          (supertype, index) =>
-            asString(supertype, `${path}.supertypes[${index}]`),
-        ),
-        constructors: asArray(record.constructors, `${path}.constructors`).map(
-          (constructor, index) =>
-            parseConstructor(constructor, `${path}.constructors[${index}]`),
-        ),
-        constants: asArray(record.constants, `${path}.constants`).map(
-          (constant, index) =>
-            parseConstant(constant, `${path}.constants[${index}]`),
-        ),
-        fields: asArray(record.fields, `${path}.fields`).map((field, index) =>
-          parseField(field, `${path}.fields[${index}]`),
-        ),
+        ...constructed(),
+        disposable: asBoolean(record.disposable, `${path}.disposable`),
       };
     case 'enum':
       return {

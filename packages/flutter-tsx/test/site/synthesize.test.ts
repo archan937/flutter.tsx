@@ -22,6 +22,7 @@ const param = (
 
 const context: SynthesisContext = {
   enumValues: { TestAlign: 'start' },
+  ownedValues: new Set(['TestController']),
   forms: {
     constantMembers: new Map([['IconData', new Map([['add', 'Icons']])]]),
     constructibles: new Map([
@@ -41,6 +42,51 @@ const context: SynthesisContext = {
 const noSlots: WidgetSlots = { children: null, slots: [] };
 
 describe('synthesizeTsx', () => {
+  test('a value that must be bound comes with the line that binds it', () => {
+    // An Animation is not a literal: it is held by the component that drives
+    // it, so the example is the component, and the reference shows what a
+    // developer would really write.
+    expect(
+      synthesizeTsx({
+        widgetName: 'FadeTransition',
+        params: [param('opacity', { kind: 'named', name: 'Animation' })],
+        slots: noSlots,
+        context,
+      }),
+    ).toEqual({
+      tsx: '<FadeTransition opacity={animation} />',
+      bindings: [
+        {
+          line: 'const animation = useAnimation({ duration: 600 });',
+          imports: ['useAnimation'],
+        },
+      ],
+      complete: true,
+    });
+  });
+
+  test('a value the component owns is made in the example that uses it', () => {
+    expect(
+      synthesizeTsx({
+        widgetName: 'Field',
+        params: [
+          param('controller', { kind: 'named', name: 'TestController' }),
+        ],
+        slots: noSlots,
+        context,
+      }),
+    ).toEqual({
+      tsx: '<Field controller={testController} />',
+      bindings: [
+        {
+          line: 'const testController = new TestController();',
+          imports: ['TestController'],
+        },
+      ],
+      complete: true,
+    });
+  });
+
   test('a leaf widget without required props self-closes', () => {
     expect(
       synthesizeTsx({
@@ -51,6 +97,7 @@ describe('synthesizeTsx', () => {
       }),
     ).toEqual({
       tsx: '<Spacer />',
+      bindings: [],
       complete: true,
     });
   });
@@ -73,6 +120,7 @@ describe('synthesizeTsx', () => {
       }),
     ).toEqual({
       tsx: '<Probe label="example" count={8} scale={1} enabled={true} align="start" />',
+      bindings: [],
       complete: true,
     });
   });
@@ -93,6 +141,7 @@ describe('synthesizeTsx', () => {
       }),
     ).toEqual({
       tsx: '<Icon icon="add" padding={8} ornament={{}} />',
+      bindings: [],
       complete: true,
     });
   });
@@ -114,6 +163,7 @@ describe('synthesizeTsx', () => {
       }),
     ).toEqual({
       tsx: '<Pressable onClick={() => {}} />',
+      bindings: [],
       complete: true,
     });
   });
@@ -132,6 +182,7 @@ describe('synthesizeTsx', () => {
       }),
     ).toEqual({
       tsx: '<Quiet />',
+      bindings: [],
       complete: true,
     });
   });
@@ -149,6 +200,7 @@ describe('synthesizeTsx', () => {
       synthesizeTsx({ widgetName: 'Keys', params, slots: noSlots, context }),
     ).toEqual({
       tsx: '<Keys shortcuts={…} />',
+      bindings: [],
       complete: false,
     });
   });
@@ -166,6 +218,7 @@ describe('synthesizeTsx', () => {
       synthesizeTsx({ widgetName: 'Tags', params, slots: noSlots, context }),
     ).toEqual({
       tsx: '<Tags labels={{}} />',
+      bindings: [],
       complete: true,
     });
   });
@@ -182,6 +235,7 @@ describe('synthesizeTsx', () => {
       }),
     ).toEqual({
       tsx: '<Canvas painter={…} />',
+      bindings: [],
       complete: false,
     });
   });
@@ -200,6 +254,7 @@ describe('synthesizeTsx', () => {
       }),
     ).toEqual({
       tsx: '<Column>\n  <Text>Item 1</Text>\n  <Text>Item 2</Text>\n</Column>',
+      bindings: [],
       complete: true,
     });
 
@@ -216,6 +271,7 @@ describe('synthesizeTsx', () => {
       }),
     ).toEqual({
       tsx: '<Center>\n  <Text>Content</Text>\n</Center>',
+      bindings: [],
       complete: true,
     });
 
@@ -232,6 +288,7 @@ describe('synthesizeTsx', () => {
       }),
     ).toEqual({
       tsx: '<Text>Hello world</Text>',
+      bindings: [],
       complete: true,
     });
   });
@@ -264,6 +321,7 @@ describe('synthesizeTsx', () => {
       }),
     ).toEqual({
       tsx: '<Frame title="example">\n  <Text>Content</Text>\n</Frame>',
+      bindings: [],
       complete: true,
     });
   });
@@ -290,6 +348,7 @@ describe('synthesizeTsx', () => {
       }),
     ).toEqual({
       tsx: '<Sheet header={<Text>Content</Text>} rows={[]} />',
+      bindings: [],
       complete: true,
     });
   });
@@ -327,6 +386,7 @@ describe('synthesizeTsx — assert-implied requirements', () => {
       }),
     ).toEqual({
       tsx: '<Tooltip message="example">\n  <Text>Content</Text>\n</Tooltip>',
+      bindings: [],
       complete: true,
     });
   });
@@ -363,6 +423,7 @@ describe('synthesizeTsx — assert-implied requirements', () => {
       tsx:
         '<BackdropFilter filter={…}>\n  <Text>Content</Text>\n' +
         '</BackdropFilter>',
+      bindings: [],
       complete: false,
     });
   });
@@ -390,6 +451,7 @@ describe('synthesizeTsx — assert-implied requirements', () => {
       }),
     ).toEqual({
       tsx: '<Sheet title="example" />',
+      bindings: [],
       complete: true,
     });
   });

@@ -1,3 +1,5 @@
+import type { SynthesizedExample } from './synthesize';
+
 export interface SiteProp {
   tsxProp: string;
   tsType: string;
@@ -10,8 +12,7 @@ export interface SiteWidget {
   library: string;
   doc: string;
   props: SiteProp[];
-  tsxExample: string;
-  exampleComplete: boolean;
+  example: SynthesizedExample;
   dartSignature: string;
 }
 

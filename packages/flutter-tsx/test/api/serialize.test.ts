@@ -14,6 +14,7 @@ const snapshot: ApiSnapshot = {
   entities: [
     {
       kind: 'class',
+      disposable: false,
       name: 'Alpha',
       library: 'widgets',
       doc: '',
@@ -56,7 +57,8 @@ describe('serializeApiSnapshot', () => {
       "supertypes": [],
       "constructors": [],
       "constants": [],
-      "fields": []
+      "fields": [],
+      "disposable": false
     },
     {
       "kind": "enum",

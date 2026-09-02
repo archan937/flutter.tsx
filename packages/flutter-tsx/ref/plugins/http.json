@@ -618,7 +618,16 @@
           "doc": "/// The sink to which to write data that will be sent as the request body.\n///\n/// This may be safely written to before the request is sent; the data will be\n/// buffered.\n///\n/// Closing this signals the end of the request.",
           "type": {
             "kind": "named",
-            "name": "StreamSink"
+            "name": "StreamSink",
+            "args": [
+              {
+                "kind": "list",
+                "item": {
+                  "kind": "scalar",
+                  "name": "int"
+                }
+              }
+            ]
           }
         },
         {
@@ -3812,7 +3821,16 @@
           "doc": "/// The sink to which to write data that will be sent as the request body.\n///\n/// This may be safely written to before the request is sent; the data will be\n/// buffered.\n///\n/// Closing this signals the end of the request.",
           "type": {
             "kind": "named",
-            "name": "StreamSink"
+            "name": "StreamSink",
+            "args": [
+              {
+                "kind": "list",
+                "item": {
+                  "kind": "scalar",
+                  "name": "int"
+                }
+              }
+            ]
           }
         },
         {

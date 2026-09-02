@@ -18,6 +18,13 @@ export type IrValue =
       className: string;
       constructorName: string;
       args: IrArgument[];
+      /**
+       * Whether the constructor is a const one. Most of the SDK's value
+       * classes are; a `Tween` is not, and `const Tween(…)` does not compile.
+       */
+      constConstructor?: boolean;
+      /** What the class is built for: the `Color` of a `Tween<Color>`. */
+      typeArguments?: string[];
     }
   | {
       kind: 'closure';
@@ -38,6 +45,13 @@ export type IrValue =
   | {
       kind: 'interpolation';
       parts: { kind: 'text' | 'expr'; value: string }[];
+    }
+  // `_slide.drive(…)` — a method called on a value the component names.
+  | {
+      kind: 'invoke';
+      receiver: string;
+      method: string;
+      args: IrArgument[];
     }
   | { kind: 'dartExpr'; dart: string }
   | { kind: 'handlerRef'; name: string }

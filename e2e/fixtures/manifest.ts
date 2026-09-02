@@ -331,6 +331,18 @@ export const FIXTURE_APPS: FixtureApp[] = [
     deps: ['camera'],
   },
   {
+    id: '57-tween',
+    component: 'Drifter',
+    dartFile: 'drifter.dart',
+    deps: [],
+  },
+  {
+    id: '56-animation',
+    component: 'Pulse',
+    dartFile: 'pulse.dart',
+    deps: [],
+  },
+  {
     id: '55-try-finally',
     component: 'SavedGreeting',
     dartFile: 'saved_greeting.dart',

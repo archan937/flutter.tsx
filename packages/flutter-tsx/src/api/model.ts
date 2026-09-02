@@ -14,7 +14,9 @@ export type TypeNode =
   | { kind: 'unknown' }
   | { kind: 'scalar'; name: ScalarName }
   | { kind: 'enum'; name: string }
-  | { kind: 'named'; name: string }
+  // `args` is what the type was written with: the `Color` of an
+  // `Animation<Color>`, which is part of what a value of it has to be.
+  | { kind: 'named'; name: string; args?: TypeNode[] }
   | { kind: 'nullable'; inner: TypeNode }
   | { kind: 'list'; item: TypeNode }
   | { kind: 'set'; item: TypeNode }
@@ -86,6 +88,8 @@ export interface ClassEntity extends EntityBase {
   constructors: ConstructorModel[];
   constants: ConstantModel[];
   fields: FieldModel[];
+  /** Whether a component owning one of these has to release it. */
+  disposable: boolean;
 }
 
 export interface EnumValue {

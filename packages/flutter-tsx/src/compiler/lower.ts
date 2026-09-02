@@ -8,6 +8,7 @@ import type {
   TypeNode,
 } from '../api/model';
 import { dartTypeOf as bareDartTypeOf } from '../derive/dart-types';
+import { DATE_FORMS, dateFormDart } from '../derive/date-forms';
 import type { SlotMap, WidgetSlots } from '../derive/slots';
 import {
   deriveValueForms,
@@ -15,7 +16,7 @@ import {
   HEX_COLOR_TYPE,
   type ValueForms,
 } from '../derive/value-forms';
-import { isOwnedController } from '../generate/emit';
+import { isOwnedValue } from '../generate/emit';
 import { jsxPropName } from '../generate/renames';
 import type { PluginMethod } from '../plugins/api';
 import { type DerivedHook, isNullableHandle } from '../plugins/hooks';
@@ -30,6 +31,12 @@ import type {
   RouterBinding,
   StoreBinding,
 } from './analyze';
+import {
+  animationCallLine,
+  lowerAnimations,
+  tickerMixin,
+  tweenCall,
+} from './animation';
 import {
   dartConstantName,
   listElementType,
@@ -118,7 +125,8 @@ export interface CompileContext {
    * disposed when it goes, which is the whole reason they are not values
    * rebuilt in `build`.
    */
-  ownedControllers: Set<string>;
+  /** Values a component can own, and whether owning means disposing. */
+  ownedValues: Map<string, { disposable: boolean }>;
   /** Plugin classes an object literal can construct, by name. */
   pluginConstructibles: Map<string, ParamModel[]>;
   /** Every plugin class with a constructor, and what it takes. */
@@ -215,7 +223,7 @@ export const buildCompileContext = (
   // What a value of an SDK type can be read for, so a callback parameter —
   // `constraints.maxWidth` — resolves to the Dart member it names.
   const sdkClassFields = new Map<string, Map<string, TypeNode>>();
-  const ownedControllers = new Set<string>();
+  const ownedValues = new Map<string, { disposable: boolean }>();
 
   for (const entity of snapshot.entities) {
     libraries.set(entity.name, entity.library);
@@ -236,8 +244,8 @@ export const buildCompileContext = (
       );
     }
     if (entity.kind !== 'widget') {
-      if (isOwnedController(entity.name, entity, snapshot)) {
-        ownedControllers.add(entity.name);
+      if (isOwnedValue(entity)) {
+        ownedValues.set(entity.name, { disposable: entity.disposable });
       }
       continue;
     }
@@ -265,7 +273,7 @@ export const buildCompileContext = (
   return {
     widgets,
     gestures: gestureWrapOf(widgets.get(GESTURE_WIDGET)),
-    ownedControllers,
+    ownedValues,
     constants: new Map(),
     pluginConstructibles: new Map(),
     pluginConstructors: new Map(),
@@ -351,6 +359,7 @@ const rendersTabView = (component: ComponentAnalysis): boolean => {
 const statefulComponent = (component: ComponentAnalysis): boolean =>
   component.states.length > 0 ||
   component.controllers.length > 0 ||
+  component.animations.length > 0 ||
   component.plugins.length > 0 ||
   component.effects.length > 0 ||
   component.asyncBinding !== null ||
@@ -572,6 +581,7 @@ const helperContext = (
   navigators: new Set(),
   tabState: null,
   settersToStates: new Map(),
+  animationNames: new Set<string>(),
   localDartTypes: translate.localDartTypes,
   returnsValue: true,
   translate,
@@ -625,6 +635,8 @@ interface LowerContext {
   // even though the author declared no state.
   tabState: { fieldName: string } | null;
   settersToStates: Map<string, string>;
+  /** Names bound by `useAnimation`, whose calls are controller calls. */
+  animationNames: ReadonlySet<string>;
   /** Whether `return <value>;` belongs here: a helper's body, not a handler. */
   returnsValue: boolean;
   /// Dart types of this component's props and state, by name.
@@ -781,6 +793,18 @@ const lowerString = (text: string, site: ValueSite): IrValue => {
       ?.get(text);
     if (owner !== undefined) {
       return { kind: 'constantRef', owner, member: text };
+    }
+    const written = dateFormDart(type.name, text);
+    if (written !== null) {
+      return { kind: 'dartExpr', dart: written };
+    }
+    const form = DATE_FORMS.get(type.name);
+    if (form !== undefined) {
+      throw tsxErrorAt(
+        'TSX0205',
+        `\`${text}\` is not ${form.shape}: \`${form.example}\`.`,
+        { sourceFile: context.sourceFile, node },
+      );
     }
   }
   throw tsxErrorAt(
@@ -1172,6 +1196,19 @@ const lowerArrowFunction = (
       value: lowerChildValue(unwrapParenthesized(body), scoped),
     };
   }
+  // `itemExtentBuilder={(index) => 48}` — a callback that answers with a
+  // value is that value, lowered against the type the callback declares.
+  if (!ts.isBlock(body) && type.returnType.kind !== 'void') {
+    return {
+      kind: 'closureValue',
+      params,
+      value: lowerExpression(
+        unwrapParenthesized(body),
+        type.returnType,
+        scoped,
+      ),
+    };
+  }
   return {
     kind: 'closure',
     params,
@@ -1180,6 +1217,61 @@ const lowerArrowFunction = (
         (modifier) => modifier.kind === ts.SyntaxKind.AsyncKeyword,
       ) ?? false,
     statements: lowerBodyStatements(body, scoped, true),
+  };
+};
+
+/**
+ * `tween(slide, { from, to })` as the animation Flutter would build.
+ *
+ * A controller runs from 0 to 1; a transition over offsets or colours runs
+ * between two of them, which is what `drive` is for. The bounds are lowered
+ * against the type the animation carries, so they are written the way every
+ * other value of that type is.
+ */
+const lowerTween = (
+  expression: ts.Expression,
+  type: TypeNode,
+  context: LowerContext,
+): IrValue | null => {
+  const call = tweenCall(expression, (name) =>
+    context.animationNames.has(name),
+  );
+  if (call === null) {
+    return null;
+  }
+  const [carried] = type.kind === 'named' ? (type.args ?? []) : [];
+  const bound = carried ?? { kind: 'unknown' as const };
+  const carriedDart = carried === undefined ? null : bareDartTypeOf(carried);
+  return {
+    kind: 'invoke',
+    receiver: translateIdentifier(call.handle, context.translate),
+    method: 'drive',
+    args: [
+      {
+        param: '',
+        positional: true,
+        value: {
+          kind: 'construct',
+          className: 'Tween',
+          constructorName: '',
+          // Flutter's Tween has no const constructor.
+          constConstructor: false,
+          ...(carriedDart === null ? {} : { typeArguments: [carriedDart] }),
+          args: [
+            {
+              param: 'begin',
+              positional: false,
+              value: lowerExpression(call.from, bound, context),
+            },
+            {
+              param: 'end',
+              positional: false,
+              value: lowerExpression(call.to, bound, context),
+            },
+          ],
+        },
+      },
+    ],
   };
 };
 
@@ -1197,6 +1289,10 @@ const lowerExpression = (
   }
   if (ts.isJsxElement(expression) || ts.isJsxSelfClosingElement(expression)) {
     return { kind: 'widget', widget: lowerJsxElement(expression, context) };
+  }
+  const tween = lowerTween(expression, type, context);
+  if (tween !== null) {
+    return tween;
   }
   if (ts.isArrowFunction(expression)) {
     return lowerArrowFunction(expression, site);
@@ -2923,6 +3019,17 @@ const lowerExpressionStatement = (
   if (storeLine !== null) {
     return [{ kind: 'dart', line: storeLine }];
   }
+  const animationLine =
+    expression === undefined
+      ? null
+      : animationCallLine(
+          expression,
+          (name) => context.animationNames.has(name),
+          (name) => translateIdentifier(name, context.translate),
+        );
+  if (animationLine !== null) {
+    return [{ kind: 'dart', line: animationLine }];
+  }
   const stateName =
     expression !== undefined &&
     ts.isCallExpression(expression) &&
@@ -3949,6 +4056,9 @@ export const lowerComponent = (
     settersToStates: new Map(
       component.states.map((state) => [state.setterName, state.name]),
     ),
+    animationNames: new Set(
+      component.animations.map((animation) => animation.name),
+    ),
     translate: {
       sourceFile: component.sourceFile,
       stateNames,
@@ -3975,9 +4085,10 @@ export const lowerComponent = (
       jsonModels: new Set(compile.models.keys()),
       nullableHandles,
       narrowed,
-      controllerNames: new Set(
-        component.controllers.map((controller) => controller.name),
-      ),
+      controllerNames: new Set([
+        ...component.controllers.map((controller) => controller.name),
+        ...component.animations.map((animation) => animation.name),
+      ]),
       pluginConstructibles: compile.pluginConstructibles,
       pluginConstructors: compile.pluginConstructors,
       // A call that answers immediately is a value like any other, so it may
@@ -4073,11 +4184,14 @@ export const lowerComponent = (
   );
   const overrides = listening.flatMap(({ overrides: answered }) => answered);
   const mixins = [
-    ...new Set(
-      listening.flatMap(({ info }) =>
+    ...new Set([
+      ...listening.flatMap(({ info }) =>
         info.hook.listener === null ? [] : [info.hook.listener.className],
       ),
-    ),
+      ...(component.animations.length === 0
+        ? []
+        : [tickerMixin(component.animations)]),
+    ]),
   ];
   const listenerRegistrations = listening.flatMap(({ binding, info }) => {
     const lines = listenerLines(binding.binding, info);
@@ -4087,26 +4201,36 @@ export const lowerComponent = (
   // A controller is made once, with the widget, and disposed with it — the
   // lifecycle a `build` local could never have.
   const controllers = component.controllers.map((controller) => {
-    if (!compile.ownedControllers.has(controller.className)) {
+    const owned = compile.ownedValues.get(controller.className);
+    if (owned === undefined) {
       throw tsxErrorAt(
         'TSX0351',
-        `\`${controller.className}\` is not a controller a component owns — ` +
-          'a ChangeNotifier the SDK builds with no arguments is.',
+        `\`${controller.className}\` is not a value a component owns — ` +
+          'one the SDK builds with no arguments is.',
         { sourceFile: context.sourceFile, node: controller.node },
       );
     }
-    return controller;
+    return { ...controller, ...owned };
   });
+  // An animation is a controller too, with a ticker the State provides.
+  const animations = lowerAnimations(component.animations, (name) =>
+    translateIdentifier(name, context.translate),
+  );
+
   const controllerFields: IrField[] = controllers.map((controller) => ({
     name: translateIdentifier(controller.name, context.translate),
     dartType: controller.className,
     mutable: false,
     initializer: `${controller.className}()`,
   }));
-  const controllerDisposals = controllers.map(
-    (controller) =>
-      `${translateIdentifier(controller.name, context.translate)}.dispose();`,
-  );
+  // Only what has something to release is released: a LayerLink has no
+  // dispose, and calling one would not compile.
+  const controllerDisposals = controllers
+    .filter((controller) => controller.disposable)
+    .map(
+      (controller) =>
+        `${translateIdentifier(controller.name, context.translate)}.dispose();`,
+    );
 
   const effects = lowerEffects(component.effects, context);
 
@@ -4241,6 +4365,7 @@ export const lowerComponent = (
     handlers: component.handlers,
     effects: component.effects,
     fields: [
+      ...animations.map((animation) => animation.field),
       ...controllerFields,
       ...loweredPlugins.flatMap(({ lowered: plugin }) =>
         plugin.field === null ? [] : [plugin.field],
@@ -4273,6 +4398,7 @@ export const lowerComponent = (
       ...effects.init,
     ],
     disposeLines: [
+      ...animations.map((animation) => animation.disposal),
       ...controllerDisposals,
       ...listenerRegistrations.map((lines) => lines.unregister),
       ...loweredPlugins.flatMap(({ lowered }) =>

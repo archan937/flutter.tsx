@@ -90,6 +90,16 @@ export interface HelperBinding {
  * Which classes qualify is the compiler's to say — the analyzer records every
  * `new` here and the lowering keeps the ones that are controllers.
  */
+/** `const fade = useAnimation({ duration: 600 })` in a component body. */
+export interface AnimationBinding {
+  name: string;
+  /** How long one run takes, in milliseconds. */
+  durationMs: number;
+  autoplay: boolean;
+  repeat: boolean;
+  node: ts.CallExpression;
+}
+
 export interface ControllerBinding {
   name: string;
   className: string;
@@ -145,6 +155,7 @@ export interface ComponentAnalysis {
   helpers: HelperBinding[];
   effects: ts.CallExpression[];
   controllers: ControllerBinding[];
+  animations: AnimationBinding[];
   guards: GuardBinding[];
   returnJsx: ts.Expression;
   sourceFile: ts.SourceFile;
@@ -690,6 +701,10 @@ const analyzeBodyStatement = (
       const module = context.hookModules.get(callee);
       if (callee === 'useState') {
         analyzeStateDeclaration(declaration, called, context);
+      } else if (callee === 'useAnimation') {
+        context.analysis.animations.push(
+          animationBinding(declaration.name.getText(), called, context),
+        );
       } else if (callee === 'useNavigation') {
         context.analysis.navigators.push(declaration.name.getText());
       } else if (callee === 'useStore') {
@@ -715,6 +730,47 @@ const analyzeBodyStatement = (
     }
   }
   return true;
+};
+
+/** The options a `useAnimation` call was written with. */
+const animationBinding = (
+  name: string,
+  call: ts.CallExpression,
+  context: BodyContext,
+): AnimationBinding => {
+  const [options] = call.arguments;
+  if (options === undefined || !ts.isObjectLiteralExpression(options)) {
+    throw tsxErrorAt(
+      'TSX0354',
+      '`useAnimation` takes its options as they are written: ' +
+        '`useAnimation({ duration: 600 })`.',
+      { sourceFile: context.sourceFile, node: call },
+    );
+  }
+  const value = (property: string): ts.Expression | undefined =>
+    options.properties.find(
+      (candidate): candidate is ts.PropertyAssignment =>
+        ts.isPropertyAssignment(candidate) &&
+        candidate.name.getText() === property,
+    )?.initializer;
+  const duration = value('duration');
+  if (duration === undefined || !ts.isNumericLiteral(duration)) {
+    throw tsxErrorAt(
+      'TSX0354',
+      '`useAnimation` needs a duration in milliseconds: ' +
+        '`useAnimation({ duration: 600 })`.',
+      { sourceFile: context.sourceFile, node: call },
+    );
+  }
+  const flag = (property: string): boolean =>
+    value(property)?.kind === ts.SyntaxKind.TrueKeyword;
+  return {
+    name,
+    durationMs: Number(duration.text),
+    autoplay: flag('autoplay'),
+    repeat: flag('repeat'),
+    node: call,
+  };
 };
 
 /** `if (cond) return <jsx>;` — anything else in an `if` is not a guard. */
@@ -1453,6 +1509,7 @@ const analyzeComponent = (
     helpers: [],
     effects: [],
     controllers: [],
+    animations: [],
     guards: [],
     returnJsx,
     sourceFile: context.sourceFile,

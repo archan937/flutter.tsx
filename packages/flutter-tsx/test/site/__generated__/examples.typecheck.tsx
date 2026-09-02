@@ -9,13 +9,17 @@ import {
   ActionIconTheme,
   AlertDialog,
   Align,
+  AlignTransition,
   AndroidView,
   AnimatedAlign,
+  AnimatedBuilder,
   AnimatedContainer,
   AnimatedCrossFade,
   AnimatedDefaultTextStyle,
   AnimatedFractionallySizedBox,
+  AnimatedIcon,
   AnimatedList,
+  AnimatedModalBarrier,
   AnimatedOpacity,
   AnimatedPadding,
   AnimatedPhysicalModel,
@@ -26,6 +30,8 @@ import {
   AnimatedSize,
   AnimatedSlide,
   AnimatedSwitcher,
+  AnimatedTheme,
+  AnnotatedRegion,
   AppBar,
   AppBarTheme,
   AppKitView,
@@ -49,6 +55,7 @@ import {
   ButtonBar,
   ButtonBarTheme,
   ButtonTheme,
+  CalendarDatePicker,
   Card,
   CardTheme,
   CarouselView,
@@ -74,6 +81,8 @@ import {
   CloseButtonIcon,
   ColoredBox,
   Column,
+  CompositedTransformFollower,
+  CompositedTransformTarget,
   ConstrainedBox,
   Container,
   CupertinoActionSheet,
@@ -92,6 +101,7 @@ import {
   CupertinoExpansionTile,
   CupertinoFormRow,
   CupertinoFormSection,
+  CupertinoFullscreenDialogTransition,
   CupertinoLinearActivityIndicator,
   CupertinoListSection,
   CupertinoListTile,
@@ -104,11 +114,14 @@ import {
   CupertinoNavigationBarBackButton,
   CupertinoPageScaffold,
   CupertinoPageScaffoldBackgroundColor,
+  CupertinoPageTransition,
   CupertinoPicker,
   CupertinoPickerDefaultSelectionOverlay,
   CupertinoPopupSurface,
+  CupertinoRadio,
   CupertinoScrollbar,
   CupertinoSearchTextField,
+  CupertinoSheetTransition,
   CupertinoSlider,
   CupertinoSliverNavigationBar,
   CupertinoSliverRefreshControl,
@@ -126,12 +139,15 @@ import {
   CustomScrollView,
   DataTable,
   DataTableTheme,
+  DatePickerDialog,
   DatePickerTheme,
+  DateRangePickerDialog,
   DefaultSelectionStyle,
   DefaultTabController,
   DefaultTextEditingShortcuts,
   DefaultTextHeightBehavior,
   DefaultTextStyle,
+  DefaultTextStyleTransition,
   DesktopTextSelectionToolbar,
   DesktopTextSelectionToolbarButton,
   DeviceOrientationBuilder,
@@ -160,6 +176,8 @@ import {
   DropdownMenuFormField,
   DropdownMenuItem,
   DropdownMenuTheme,
+  DualTransitionBuilder,
+  EditableText,
   ElevatedButton,
   ElevatedButtonTheme,
   EnableWidgetInspectorScope,
@@ -170,9 +188,12 @@ import {
   ExcludeSemantics,
   ExpandIcon,
   Expanded,
+  Expansible,
+  ExpansibleController,
   ExpansionPanelList,
   ExpansionTile,
   ExpansionTileTheme,
+  FadeTransition,
   FilledButton,
   FilledButtonTheme,
   FilterChip,
@@ -185,6 +206,7 @@ import {
   FloatingActionButtonTheme,
   FlutterLogo,
   Focus,
+  FocusNode,
   FocusScope,
   FocusTraversalGroup,
   FocusableActionDetector,
@@ -197,6 +219,8 @@ import {
   GridPaper,
   GridTile,
   GridTileBar,
+  HeroController,
+  HeroControllerScope,
   HeroMode,
   HtmlElementView,
   Icon,
@@ -211,13 +235,16 @@ import {
   InkResponse,
   InkWell,
   InputChip,
+  InputDatePickerFormField,
   InputDecorationTheme,
   InputDecorator,
   InteractiveViewer,
   IntrinsicHeight,
   IntrinsicWidth,
   KeepAlive,
+  KeyboardListener,
   KeyedSubtree,
+  LayerLink,
   LayoutBuilder,
   LicensePage,
   LimitedBox,
@@ -227,6 +254,7 @@ import {
   ListTileTheme,
   ListView,
   ListWheelScrollView,
+  ListenableBuilder,
   Listener,
   LongPressDraggable,
   LookupBoundary,
@@ -243,6 +271,7 @@ import {
   MenuBar,
   MenuBarTheme,
   MenuButtonTheme,
+  MenuController,
   MenuItemButton,
   MenuTheme,
   MergeSemantics,
@@ -256,11 +285,13 @@ import {
   NavigationDrawer,
   NavigationDrawerDestination,
   NavigationDrawerTheme,
+  NavigationIndicator,
   NavigationRail,
   NavigationRailTheme,
   NavigationToolbar,
   Navigator,
   NavigatorPopHandler,
+  NestedScrollView,
   NotificationListener,
   Offstage,
   Opacity,
@@ -270,7 +301,11 @@ import {
   OverflowBar,
   OverflowBox,
   Overlay,
+  OverlayPortal,
+  OverlayPortalController,
   Padding,
+  PageStorage,
+  PageStorageBucket,
   PageView,
   PerformanceOverlay,
   PhysicalModel,
@@ -279,23 +314,33 @@ import {
   PlatformMenuBar,
   PlatformSelectableRegionContextMenu,
   PopScope,
+  PopupMenuButton,
   PopupMenuDivider,
   PopupMenuItem,
   PopupMenuTheme,
   Positioned,
   PositionedDirectional,
+  PositionedTransition,
   PreferredSize,
+  PrimaryScrollController,
   ProgressIndicatorTheme,
+  Radio,
   RadioGroup,
+  RadioListTile,
+  RadioMenuButton,
   RadioTheme,
   RawChip,
   RawGestureDetector,
   RawImage,
+  RawKeyboardListener,
   RawMagnifier,
   RawMaterialButton,
+  RawMenuAnchor,
+  RawMenuAnchorGroup,
   RawScrollbar,
   RawTooltip,
   RefreshProgressIndicator,
+  RelativePositionedTransition,
   ReorderableDelayedDragStartListener,
   ReorderableDragStartListener,
   ReorderableList,
@@ -305,10 +350,13 @@ import {
   RootRestorationScope,
   RootWidget,
   RotatedBox,
+  RotationTransition,
   Row,
   SafeArea,
   Scaffold,
   ScaffoldMessenger,
+  ScaleTransition,
+  ScrollController,
   ScrollNotificationObserver,
   Scrollable,
   Scrollbar,
@@ -319,6 +367,8 @@ import {
   SegmentedButtonTheme,
   SelectableText,
   SelectionArea,
+  SelectionListener,
+  SelectionListenerNotifier,
   Semantics,
   SemanticsDebugger,
   SensitiveContent,
@@ -328,8 +378,10 @@ import {
   SimpleDialogOption,
   SingleChildScrollView,
   SizeChangedLayoutNotifier,
+  SizeTransition,
   SizedBox,
   SizedOverflowBox,
+  SlideTransition,
   Slider,
   SliderTheme,
   SliverAnimatedList,
@@ -339,6 +391,7 @@ import {
   SliverCrossAxisExpanded,
   SliverCrossAxisGroup,
   SliverEnsureSemantics,
+  SliverFadeTransition,
   SliverFillRemaining,
   SliverFloatingHeader,
   SliverIgnorePointer,
@@ -346,6 +399,9 @@ import {
   SliverMainAxisGroup,
   SliverOffstage,
   SliverOpacity,
+  SliverOverlapAbsorber,
+  SliverOverlapAbsorberHandle,
+  SliverOverlapInjector,
   SliverPadding,
   SliverReorderableList,
   SliverResizingHeader,
@@ -356,6 +412,8 @@ import {
   SnackBar,
   SnackBarAction,
   SnackBarTheme,
+  SnapshotController,
+  SnapshotWidget,
   Spacer,
   SpellCheckSuggestionsToolbar,
   Stack,
@@ -381,6 +439,7 @@ import {
   Text,
   TextButton,
   TextButtonTheme,
+  TextEditingController,
   TextField,
   TextFieldTapRegion,
   TextFormField,
@@ -389,7 +448,10 @@ import {
   TextSelectionToolbar,
   TextSelectionToolbarTextButton,
   Texture,
+  Theme,
+  ThemeData,
   TickerMode,
+  TimePickerDialog,
   TimePickerTheme,
   Title,
   ToggleButtons,
@@ -398,455 +460,1142 @@ import {
   TooltipTheme,
   TooltipVisibility,
   TreeSliver,
+  Tween,
+  TweenAnimationBuilder,
   UiKitView,
   UnconstrainedBox,
   UnmanagedRestorationScope,
   UserAccountsDrawerHeader,
+  ValueListenableBuilder,
   VerticalDivider,
   ViewAnchor,
   ViewCollection,
   Visibility,
   WidgetsApp,
   Wrap,
+  YearPicker,
+  tween,
+  useAnimation,
 } from 'flutter-tsx';
 
-export const examples = [
+export const AboutDialogExample = () => (
   <AboutDialog>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </AboutDialog>,
+  </AboutDialog>
+);
+
+export const AboutListTileExample = () => (
   <AboutListTile>
     <Text>Content</Text>
-  </AboutListTile>,
+  </AboutListTile>
+);
+
+export const AbsorbPointerExample = () => (
   <AbsorbPointer>
     <Text>Content</Text>
-  </AbsorbPointer>,
-  <ActionChip label={<Text>Content</Text>} />,
+  </AbsorbPointer>
+);
+
+export const ActionChipExample = () => (
+  <ActionChip label={<Text>Content</Text>} />
+);
+
+export const ActionIconThemeExample = () => (
   <ActionIconTheme data={{}}>
     <Text>Content</Text>
-  </ActionIconTheme>,
-  <AlertDialog />,
+  </ActionIconTheme>
+);
+
+export const AlertDialogExample = () => <AlertDialog />;
+
+export const AlignExample = () => (
   <Align>
     <Text>Content</Text>
-  </Align>,
-  <AndroidView viewType="example" />,
+  </Align>
+);
+
+export const AlignTransitionExample = () => {
+  const animation = useAnimation({ duration: 600 });
+
+  return (
+    <AlignTransition
+      alignment={tween(animation, { from: 'bottomCenter', to: 'bottomCenter' })}
+    >
+      <Text>Content</Text>
+    </AlignTransition>
+  );
+};
+
+export const AndroidViewExample = () => <AndroidView viewType="example" />;
+
+export const AnimatedAlignExample = () => (
   <AnimatedAlign alignment="bottomCenter" duration="defaultAnimationDuration">
     <Text>Content</Text>
-  </AnimatedAlign>,
+  </AnimatedAlign>
+);
+
+export const AnimatedBuilderExample = () => {
+  const animation = useAnimation({ duration: 600 });
+
+  return (
+    <AnimatedBuilder animation={animation} builder={() => <Text>Content</Text>}>
+      <Text>Content</Text>
+    </AnimatedBuilder>
+  );
+};
+
+export const AnimatedContainerExample = () => (
   <AnimatedContainer duration="defaultAnimationDuration">
     <Text>Content</Text>
-  </AnimatedContainer>,
+  </AnimatedContainer>
+);
+
+export const AnimatedCrossFadeExample = () => (
   <AnimatedCrossFade
     firstChild={<Text>Content</Text>}
     secondChild={<Text>Content</Text>}
     crossFadeState="showFirst"
     duration="defaultAnimationDuration"
-  />,
+  />
+);
+
+export const AnimatedDefaultTextStyleExample = () => (
   <AnimatedDefaultTextStyle
     style="cupertinoMisspelledTextStyle"
     duration="defaultAnimationDuration"
   >
     <Text>Content</Text>
-  </AnimatedDefaultTextStyle>,
+  </AnimatedDefaultTextStyle>
+);
+
+export const AnimatedFractionallySizedBoxExample = () => (
   <AnimatedFractionallySizedBox duration="defaultAnimationDuration">
     <Text>Content</Text>
-  </AnimatedFractionallySizedBox>,
-  <AnimatedList itemBuilder={() => <Text>Content</Text>} />,
+  </AnimatedFractionallySizedBox>
+);
+
+export const AnimatedIconExample = () => {
+  const animation = useAnimation({ duration: 600 });
+
+  return <AnimatedIcon icon="add_event" progress={animation} />;
+};
+
+export const AnimatedListExample = () => (
+  <AnimatedList itemBuilder={() => <Text>Content</Text>} />
+);
+
+export const AnimatedModalBarrierExample = () => {
+  const animation = useAnimation({ duration: 600 });
+
+  return (
+    <AnimatedModalBarrier
+      color={tween(animation, { from: 'activeBlue', to: 'activeBlue' })}
+    />
+  );
+};
+
+export const AnimatedOpacityExample = () => (
   <AnimatedOpacity opacity={1} duration="defaultAnimationDuration">
     <Text>Content</Text>
-  </AnimatedOpacity>,
+  </AnimatedOpacity>
+);
+
+export const AnimatedPaddingExample = () => (
   <AnimatedPadding padding="infinity" duration="defaultAnimationDuration">
     <Text>Content</Text>
-  </AnimatedPadding>,
+  </AnimatedPadding>
+);
+
+export const AnimatedPhysicalModelExample = () => (
   <AnimatedPhysicalModel
     color="activeBlue"
     shadowColor="activeBlue"
     duration="defaultAnimationDuration"
   >
     <Text>Content</Text>
-  </AnimatedPhysicalModel>,
+  </AnimatedPhysicalModel>
+);
+
+export const AnimatedPositionedExample = () => (
   <AnimatedPositioned duration="defaultAnimationDuration">
     <Text>Content</Text>
-  </AnimatedPositioned>,
+  </AnimatedPositioned>
+);
+
+export const AnimatedPositionedDirectionalExample = () => (
   <AnimatedPositionedDirectional duration="defaultAnimationDuration">
     <Text>Content</Text>
-  </AnimatedPositionedDirectional>,
+  </AnimatedPositionedDirectional>
+);
+
+export const AnimatedRotationExample = () => (
   <AnimatedRotation turns={1} duration="defaultAnimationDuration">
     <Text>Content</Text>
-  </AnimatedRotation>,
+  </AnimatedRotation>
+);
+
+export const AnimatedScaleExample = () => (
   <AnimatedScale scale={1} duration="defaultAnimationDuration">
     <Text>Content</Text>
-  </AnimatedScale>,
+  </AnimatedScale>
+);
+
+export const AnimatedSizeExample = () => (
   <AnimatedSize duration="defaultAnimationDuration">
     <Text>Content</Text>
-  </AnimatedSize>,
+  </AnimatedSize>
+);
+
+export const AnimatedSlideExample = () => (
   <AnimatedSlide offset="infinite" duration="defaultAnimationDuration">
     <Text>Content</Text>
-  </AnimatedSlide>,
+  </AnimatedSlide>
+);
+
+export const AnimatedSwitcherExample = () => (
   <AnimatedSwitcher duration="defaultAnimationDuration">
     <Text>Content</Text>
-  </AnimatedSwitcher>,
-  <AppBar />,
+  </AnimatedSwitcher>
+);
+
+export const AnimatedThemeExample = () => {
+  const themeData = new ThemeData();
+
+  return (
+    <AnimatedTheme data={themeData}>
+      <Text>Content</Text>
+    </AnimatedTheme>
+  );
+};
+
+export const AnnotatedRegionExample = () => (
+  <AnnotatedRegion value="example">
+    <Text>Content</Text>
+  </AnnotatedRegion>
+);
+
+export const AppBarExample = () => <AppBar />;
+
+export const AppBarThemeExample = () => (
   <AppBarTheme>
     <Text>Content</Text>
-  </AppBarTheme>,
-  <AppKitView viewType="example" />,
+  </AppBarTheme>
+);
+
+export const AppKitViewExample = () => <AppKitView viewType="example" />;
+
+export const AspectRatioExample = () => (
   <AspectRatio aspectRatio={1}>
     <Text>Content</Text>
-  </AspectRatio>,
+  </AspectRatio>
+);
+
+export const AutofillGroupExample = () => (
   <AutofillGroup>
     <Text>Content</Text>
-  </AutofillGroup>,
+  </AutofillGroup>
+);
+
+export const AutomaticKeepAliveExample = () => (
   <AutomaticKeepAlive>
     <Text>Content</Text>
-  </AutomaticKeepAlive>,
-  <BackButton />,
-  <BackButtonIcon />,
+  </AutomaticKeepAlive>
+);
+
+export const BackButtonExample = () => <BackButton />;
+
+export const BackButtonIconExample = () => <BackButtonIcon />;
+
+export const BackdropGroupExample = () => (
   <BackdropGroup>
     <Text>Content</Text>
-  </BackdropGroup>,
+  </BackdropGroup>
+);
+
+export const BadgeExample = () => (
   <Badge>
     <Text>Content</Text>
-  </Badge>,
+  </Badge>
+);
+
+export const BadgeThemeExample = () => (
   <BadgeTheme data={{}}>
     <Text>Content</Text>
-  </BadgeTheme>,
+  </BadgeTheme>
+);
+
+export const BannerExample = () => (
   <Banner message="example" location="topStart">
     <Text>Content</Text>
-  </Banner>,
+  </Banner>
+);
+
+export const BaselineExample = () => (
   <Baseline baseline={1} baselineType="alphabetic">
     <Text>Content</Text>
-  </Baseline>,
+  </Baseline>
+);
+
+export const BlockSemanticsExample = () => (
   <BlockSemantics>
     <Text>Content</Text>
-  </BlockSemantics>,
+  </BlockSemantics>
+);
+
+export const BottomAppBarExample = () => (
   <BottomAppBar>
     <Text>Content</Text>
-  </BottomAppBar>,
+  </BottomAppBar>
+);
+
+export const BottomAppBarThemeExample = () => (
   <BottomAppBarTheme>
     <Text>Content</Text>
-  </BottomAppBarTheme>,
-  <BottomNavigationBar items={[]} />,
+  </BottomAppBarTheme>
+);
+
+export const BottomNavigationBarExample = () => (
+  <BottomNavigationBar items={[]} />
+);
+
+export const BottomNavigationBarThemeExample = () => (
   <BottomNavigationBarTheme data={{}}>
     <Text>Content</Text>
-  </BottomNavigationBarTheme>,
-  <BottomSheet onClosing={() => {}} builder={() => <Text>Content</Text>} />,
-  <Builder builder={() => <Text>Content</Text>} />,
+  </BottomNavigationBarTheme>
+);
+
+export const BottomSheetExample = () => (
+  <BottomSheet onClosing={() => {}} builder={() => <Text>Content</Text>} />
+);
+
+export const BuilderExample = () => (
+  <Builder builder={() => <Text>Content</Text>} />
+);
+
+export const ButtonBarExample = () => (
   <ButtonBar>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </ButtonBar>,
+  </ButtonBar>
+);
+
+export const ButtonBarThemeExample = () => (
   <ButtonBarTheme data={{}}>
     <Text>Content</Text>
-  </ButtonBarTheme>,
+  </ButtonBarTheme>
+);
+
+export const ButtonThemeExample = () => (
   <ButtonTheme>
     <Text>Content</Text>
-  </ButtonTheme>,
+  </ButtonTheme>
+);
+
+export const CalendarDatePickerExample = () => (
+  <CalendarDatePicker
+    initialDate="2026-01-31"
+    firstDate="2026-01-31"
+    lastDate="2026-01-31"
+    onDateChanged={() => {}}
+  />
+);
+
+export const CardExample = () => (
   <Card>
     <Text>Content</Text>
-  </Card>,
+  </Card>
+);
+
+export const CardThemeExample = () => (
   <CardTheme>
     <Text>Content</Text>
-  </CardTheme>,
+  </CardTheme>
+);
+
+export const CarouselViewExample = () => (
   <CarouselView itemExtent={1}>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </CarouselView>,
+  </CarouselView>
+);
+
+export const CarouselViewThemeExample = () => (
   <CarouselViewTheme data={{}}>
     <Text>Content</Text>
-  </CarouselViewTheme>,
+  </CarouselViewTheme>
+);
+
+export const CenterExample = () => (
   <Center>
     <Text>Content</Text>
-  </Center>,
-  <Checkbox value={true} onChanged={() => {}} />,
-  <CheckboxListTile value={true} onChanged={() => {}} />,
+  </Center>
+);
+
+export const CheckboxExample = () => (
+  <Checkbox value={true} onChanged={() => {}} />
+);
+
+export const CheckboxListTileExample = () => (
+  <CheckboxListTile value={true} onChanged={() => {}} />
+);
+
+export const CheckboxMenuButtonExample = () => (
   <CheckboxMenuButton value={true} onChanged={() => {}}>
     <Text>Content</Text>
-  </CheckboxMenuButton>,
+  </CheckboxMenuButton>
+);
+
+export const CheckboxThemeExample = () => (
   <CheckboxTheme data={{}}>
     <Text>Content</Text>
-  </CheckboxTheme>,
+  </CheckboxTheme>
+);
+
+export const CheckedModeBannerExample = () => (
   <CheckedModeBanner>
     <Text>Content</Text>
-  </CheckedModeBanner>,
+  </CheckedModeBanner>
+);
+
+export const CheckedPopupMenuItemExample = () => (
   <CheckedPopupMenuItem>
     <Text>Content</Text>
-  </CheckedPopupMenuItem>,
-  <Chip label={<Text>Content</Text>} />,
+  </CheckedPopupMenuItem>
+);
+
+export const ChipExample = () => <Chip label={<Text>Content</Text>} />;
+
+export const ChipThemeExample = () => (
   <ChipTheme data={{}}>
     <Text>Content</Text>
-  </ChipTheme>,
-  <ChoiceChip label={<Text>Content</Text>} selected={true} />,
+  </ChipTheme>
+);
+
+export const ChoiceChipExample = () => (
+  <ChoiceChip label={<Text>Content</Text>} selected={true} />
+);
+
+export const CircleAvatarExample = () => (
   <CircleAvatar>
     <Text>Content</Text>
-  </CircleAvatar>,
-  <CircularProgressIndicator />,
+  </CircleAvatar>
+);
+
+export const CircularProgressIndicatorExample = () => (
+  <CircularProgressIndicator />
+);
+
+export const ClipOvalExample = () => (
   <ClipOval>
     <Text>Content</Text>
-  </ClipOval>,
+  </ClipOval>
+);
+
+export const ClipPathExample = () => (
   <ClipPath>
     <Text>Content</Text>
-  </ClipPath>,
+  </ClipPath>
+);
+
+export const ClipRRectExample = () => (
   <ClipRRect>
     <Text>Content</Text>
-  </ClipRRect>,
+  </ClipRRect>
+);
+
+export const ClipRSuperellipseExample = () => (
   <ClipRSuperellipse>
     <Text>Content</Text>
-  </ClipRSuperellipse>,
+  </ClipRSuperellipse>
+);
+
+export const ClipRectExample = () => (
   <ClipRect>
     <Text>Content</Text>
-  </ClipRect>,
-  <CloseButton />,
-  <CloseButtonIcon />,
+  </ClipRect>
+);
+
+export const CloseButtonExample = () => <CloseButton />;
+
+export const CloseButtonIconExample = () => <CloseButtonIcon />;
+
+export const ColoredBoxExample = () => (
   <ColoredBox color="activeBlue">
     <Text>Content</Text>
-  </ColoredBox>,
+  </ColoredBox>
+);
+
+export const ColumnExample = () => (
   <Column>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </Column>,
+  </Column>
+);
+
+export const CompositedTransformFollowerExample = () => {
+  const layerLink = new LayerLink();
+
+  return (
+    <CompositedTransformFollower link={layerLink}>
+      <Text>Content</Text>
+    </CompositedTransformFollower>
+  );
+};
+
+export const CompositedTransformTargetExample = () => {
+  const layerLink = new LayerLink();
+
+  return (
+    <CompositedTransformTarget link={layerLink}>
+      <Text>Content</Text>
+    </CompositedTransformTarget>
+  );
+};
+
+export const ConstrainedBoxExample = () => (
   <ConstrainedBox constraints={{}}>
     <Text>Content</Text>
-  </ConstrainedBox>,
+  </ConstrainedBox>
+);
+
+export const ContainerExample = () => (
   <Container>
     <Text>Content</Text>
-  </Container>,
-  <CupertinoActionSheet actions={[]} />,
+  </Container>
+);
+
+export const CupertinoActionSheetExample = () => (
+  <CupertinoActionSheet actions={[]} />
+);
+
+export const CupertinoActionSheetActionExample = () => (
   <CupertinoActionSheetAction onClick={() => {}}>
     <Text>Content</Text>
-  </CupertinoActionSheetAction>,
-  <CupertinoActivityIndicator />,
-  <CupertinoAlertDialog />,
-  <CupertinoApp />,
+  </CupertinoActionSheetAction>
+);
+
+export const CupertinoActivityIndicatorExample = () => (
+  <CupertinoActivityIndicator />
+);
+
+export const CupertinoAlertDialogExample = () => <CupertinoAlertDialog />;
+
+export const CupertinoAppExample = () => <CupertinoApp />;
+
+export const CupertinoButtonExample = () => (
   <CupertinoButton onClick={() => {}}>
     <Text>Content</Text>
-  </CupertinoButton>,
-  <CupertinoCheckbox value={true} onChanged={() => {}} />,
+  </CupertinoButton>
+);
+
+export const CupertinoCheckboxExample = () => (
+  <CupertinoCheckbox value={true} onChanged={() => {}} />
+);
+
+export const CupertinoContextMenuExample = () => (
   <CupertinoContextMenu actions={[]}>
     <Text>Content</Text>
-  </CupertinoContextMenu>,
+  </CupertinoContextMenu>
+);
+
+export const CupertinoContextMenuActionExample = () => (
   <CupertinoContextMenuAction>
     <Text>Content</Text>
-  </CupertinoContextMenuAction>,
-  <CupertinoDatePicker onDateTimeChanged={() => {}} />,
+  </CupertinoContextMenuAction>
+);
+
+export const CupertinoDatePickerExample = () => (
+  <CupertinoDatePicker onDateTimeChanged={() => {}} />
+);
+
+export const CupertinoDesktopTextSelectionToolbarExample = () => (
   <CupertinoDesktopTextSelectionToolbar anchor="infinite">
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </CupertinoDesktopTextSelectionToolbar>,
+  </CupertinoDesktopTextSelectionToolbar>
+);
+
+export const CupertinoDesktopTextSelectionToolbarButtonExample = () => (
   <CupertinoDesktopTextSelectionToolbarButton onClick={() => {}}>
     <Text>Content</Text>
-  </CupertinoDesktopTextSelectionToolbarButton>,
+  </CupertinoDesktopTextSelectionToolbarButton>
+);
+
+export const CupertinoDialogActionExample = () => (
   <CupertinoDialogAction>
     <Text>Content</Text>
-  </CupertinoDialogAction>,
+  </CupertinoDialogAction>
+);
+
+export const CupertinoExpansionTileExample = () => (
   <CupertinoExpansionTile title={<Text>Content</Text>}>
     <Text>Content</Text>
-  </CupertinoExpansionTile>,
+  </CupertinoExpansionTile>
+);
+
+export const CupertinoFormRowExample = () => (
   <CupertinoFormRow>
     <Text>Content</Text>
-  </CupertinoFormRow>,
+  </CupertinoFormRow>
+);
+
+export const CupertinoFormSectionExample = () => (
   <CupertinoFormSection>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </CupertinoFormSection>,
-  <CupertinoLinearActivityIndicator progress={1} />,
+  </CupertinoFormSection>
+);
+
+export const CupertinoFullscreenDialogTransitionExample = () => {
+  const animation = useAnimation({ duration: 600 });
+
+  return (
+    <CupertinoFullscreenDialogTransition
+      primaryRouteAnimation={animation}
+      secondaryRouteAnimation={animation}
+      linearTransition={true}
+    >
+      <Text>Content</Text>
+    </CupertinoFullscreenDialogTransition>
+  );
+};
+
+export const CupertinoLinearActivityIndicatorExample = () => (
+  <CupertinoLinearActivityIndicator progress={1} />
+);
+
+export const CupertinoListSectionExample = () => (
   <CupertinoListSection>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </CupertinoListSection>,
-  <CupertinoListTile title={<Text>Content</Text>} />,
-  <CupertinoListTileChevron />,
-  <CupertinoMagnifier />,
+  </CupertinoListSection>
+);
+
+export const CupertinoListTileExample = () => (
+  <CupertinoListTile title={<Text>Content</Text>} />
+);
+
+export const CupertinoListTileChevronExample = () => (
+  <CupertinoListTileChevron />
+);
+
+export const CupertinoMagnifierExample = () => <CupertinoMagnifier />;
+
+export const CupertinoMenuAnchorExample = () => (
   <CupertinoMenuAnchor menuChildren={[]}>
     <Text>Content</Text>
-  </CupertinoMenuAnchor>,
-  <CupertinoMenuDivider />,
+  </CupertinoMenuAnchor>
+);
+
+export const CupertinoMenuDividerExample = () => <CupertinoMenuDivider />;
+
+export const CupertinoMenuItemExample = () => (
   <CupertinoMenuItem>
     <Text>Content</Text>
-  </CupertinoMenuItem>,
-  <CupertinoNavigationBar />,
-  <CupertinoNavigationBarBackButton />,
+  </CupertinoMenuItem>
+);
+
+export const CupertinoNavigationBarExample = () => <CupertinoNavigationBar />;
+
+export const CupertinoNavigationBarBackButtonExample = () => (
+  <CupertinoNavigationBarBackButton />
+);
+
+export const CupertinoPageScaffoldExample = () => (
   <CupertinoPageScaffold>
     <Text>Content</Text>
-  </CupertinoPageScaffold>,
+  </CupertinoPageScaffold>
+);
+
+export const CupertinoPageScaffoldBackgroundColorExample = () => (
   <CupertinoPageScaffoldBackgroundColor color="activeBlue">
     <Text>Content</Text>
-  </CupertinoPageScaffoldBackgroundColor>,
+  </CupertinoPageScaffoldBackgroundColor>
+);
+
+export const CupertinoPageTransitionExample = () => {
+  const animation = useAnimation({ duration: 600 });
+
+  return (
+    <CupertinoPageTransition
+      primaryRouteAnimation={animation}
+      secondaryRouteAnimation={animation}
+      linearTransition={true}
+    >
+      <Text>Content</Text>
+    </CupertinoPageTransition>
+  );
+};
+
+export const CupertinoPickerExample = () => (
   <CupertinoPicker itemExtent={1} onSelectedItemChanged={() => {}}>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </CupertinoPicker>,
-  <CupertinoPickerDefaultSelectionOverlay />,
+  </CupertinoPicker>
+);
+
+export const CupertinoPickerDefaultSelectionOverlayExample = () => (
+  <CupertinoPickerDefaultSelectionOverlay />
+);
+
+export const CupertinoPopupSurfaceExample = () => (
   <CupertinoPopupSurface>
     <Text>Content</Text>
-  </CupertinoPopupSurface>,
+  </CupertinoPopupSurface>
+);
+
+export const CupertinoRadioExample = () => <CupertinoRadio value="example" />;
+
+export const CupertinoScrollbarExample = () => (
   <CupertinoScrollbar>
     <Text>Content</Text>
-  </CupertinoScrollbar>,
-  <CupertinoSearchTextField />,
-  <CupertinoSlider value={1} onChanged={() => {}} />,
-  <CupertinoSliverNavigationBar />,
-  <CupertinoSliverRefreshControl />,
-  <CupertinoSwitch value={true} onChanged={() => {}} />,
-  <CupertinoTabBar items={[]} />,
-  <CupertinoTabView />,
-  <CupertinoTextField />,
-  <CupertinoTextFormFieldRow />,
+  </CupertinoScrollbar>
+);
+
+export const CupertinoSearchTextFieldExample = () => (
+  <CupertinoSearchTextField />
+);
+
+export const CupertinoSheetTransitionExample = () => {
+  const animation = useAnimation({ duration: 600 });
+
+  return (
+    <CupertinoSheetTransition
+      primaryRouteAnimation={animation}
+      secondaryRouteAnimation={animation}
+      linearTransition={true}
+    >
+      <Text>Content</Text>
+    </CupertinoSheetTransition>
+  );
+};
+
+export const CupertinoSliderExample = () => (
+  <CupertinoSlider value={1} onChanged={() => {}} />
+);
+
+export const CupertinoSliverNavigationBarExample = () => (
+  <CupertinoSliverNavigationBar />
+);
+
+export const CupertinoSliverRefreshControlExample = () => (
+  <CupertinoSliverRefreshControl />
+);
+
+export const CupertinoSwitchExample = () => (
+  <CupertinoSwitch value={true} onChanged={() => {}} />
+);
+
+export const CupertinoTabBarExample = () => <CupertinoTabBar items={[]} />;
+
+export const CupertinoTabViewExample = () => <CupertinoTabView />;
+
+export const CupertinoTextFieldExample = () => <CupertinoTextField />;
+
+export const CupertinoTextFormFieldRowExample = () => (
+  <CupertinoTextFormFieldRow />
+);
+
+export const CupertinoTextSelectionToolbarExample = () => (
   <CupertinoTextSelectionToolbar anchorAbove="infinite" anchorBelow="infinite">
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </CupertinoTextSelectionToolbar>,
+  </CupertinoTextSelectionToolbar>
+);
+
+export const CupertinoTextSelectionToolbarButtonExample = () => (
   <CupertinoTextSelectionToolbarButton>
     <Text>Content</Text>
-  </CupertinoTextSelectionToolbarButton>,
+  </CupertinoTextSelectionToolbarButton>
+);
+
+export const CupertinoThemeExample = () => (
   <CupertinoTheme data={{}}>
     <Text>Content</Text>
-  </CupertinoTheme>,
-  <CupertinoTimerPicker onTimerDurationChanged={() => {}} />,
+  </CupertinoTheme>
+);
+
+export const CupertinoTimerPickerExample = () => (
+  <CupertinoTimerPicker onTimerDurationChanged={() => {}} />
+);
+
+export const CupertinoUserInterfaceLevelExample = () => (
   <CupertinoUserInterfaceLevel data="base">
     <Text>Content</Text>
-  </CupertinoUserInterfaceLevel>,
+  </CupertinoUserInterfaceLevel>
+);
+
+export const CustomPaintExample = () => (
   <CustomPaint>
     <Text>Content</Text>
-  </CustomPaint>,
-  <CustomScrollView />,
-  <DataTable columns={[]} rows={[]} />,
+  </CustomPaint>
+);
+
+export const CustomScrollViewExample = () => <CustomScrollView />;
+
+export const DataTableExample = () => <DataTable columns={[]} rows={[]} />;
+
+export const DataTableThemeExample = () => (
   <DataTableTheme data={{}}>
     <Text>Content</Text>
-  </DataTableTheme>,
+  </DataTableTheme>
+);
+
+export const DatePickerDialogExample = () => (
+  <DatePickerDialog firstDate="2026-01-31" lastDate="2026-01-31" />
+);
+
+export const DatePickerThemeExample = () => (
   <DatePickerTheme data={{}}>
     <Text>Content</Text>
-  </DatePickerTheme>,
+  </DatePickerTheme>
+);
+
+export const DateRangePickerDialogExample = () => (
+  <DateRangePickerDialog firstDate="2026-01-31" lastDate="2026-01-31" />
+);
+
+export const DefaultSelectionStyleExample = () => (
   <DefaultSelectionStyle>
     <Text>Content</Text>
-  </DefaultSelectionStyle>,
+  </DefaultSelectionStyle>
+);
+
+export const DefaultTabControllerExample = () => (
   <DefaultTabController length={8}>
     <Text>Content</Text>
-  </DefaultTabController>,
+  </DefaultTabController>
+);
+
+export const DefaultTextEditingShortcutsExample = () => (
   <DefaultTextEditingShortcuts>
     <Text>Content</Text>
-  </DefaultTextEditingShortcuts>,
+  </DefaultTextEditingShortcuts>
+);
+
+export const DefaultTextHeightBehaviorExample = () => (
   <DefaultTextHeightBehavior textHeightBehavior={{}}>
     <Text>Content</Text>
-  </DefaultTextHeightBehavior>,
+  </DefaultTextHeightBehavior>
+);
+
+export const DefaultTextStyleExample = () => (
   <DefaultTextStyle style="cupertinoMisspelledTextStyle">
     <Text>Content</Text>
-  </DefaultTextStyle>,
+  </DefaultTextStyle>
+);
+
+export const DefaultTextStyleTransitionExample = () => {
+  const animation = useAnimation({ duration: 600 });
+
+  return (
+    <DefaultTextStyleTransition
+      style={tween(animation, {
+        from: 'cupertinoMisspelledTextStyle',
+        to: 'cupertinoMisspelledTextStyle',
+      })}
+    >
+      <Text>Content</Text>
+    </DefaultTextStyleTransition>
+  );
+};
+
+export const DesktopTextSelectionToolbarExample = () => (
   <DesktopTextSelectionToolbar anchor="infinite">
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </DesktopTextSelectionToolbar>,
+  </DesktopTextSelectionToolbar>
+);
+
+export const DesktopTextSelectionToolbarButtonExample = () => (
   <DesktopTextSelectionToolbarButton onClick={() => {}}>
     <Text>Content</Text>
-  </DesktopTextSelectionToolbarButton>,
-  <DeviceOrientationBuilder builder={() => <Text>Content</Text>} />,
+  </DesktopTextSelectionToolbarButton>
+);
+
+export const DeviceOrientationBuilderExample = () => (
+  <DeviceOrientationBuilder builder={() => <Text>Content</Text>} />
+);
+
+export const DialogExample = () => (
   <Dialog>
     <Text>Content</Text>
-  </Dialog>,
+  </Dialog>
+);
+
+export const DialogThemeExample = () => (
   <DialogTheme>
     <Text>Content</Text>
-  </DialogTheme>,
+  </DialogTheme>
+);
+
+export const DirectionalityExample = () => (
   <Directionality textDirection="rtl">
     <Text>Content</Text>
-  </Directionality>,
+  </Directionality>
+);
+
+export const DisableWidgetInspectorScopeExample = () => (
   <DisableWidgetInspectorScope>
     <Text>Content</Text>
-  </DisableWidgetInspectorScope>,
+  </DisableWidgetInspectorScope>
+);
+
+export const DisplayFeatureSubScreenExample = () => (
   <DisplayFeatureSubScreen>
     <Text>Content</Text>
-  </DisplayFeatureSubScreen>,
-  <Divider />,
+  </DisplayFeatureSubScreen>
+);
+
+export const DividerExample = () => <Divider />;
+
+export const DividerThemeExample = () => (
   <DividerTheme data={{}}>
     <Text>Content</Text>
-  </DividerTheme>,
+  </DividerTheme>
+);
+
+export const DragBoundaryExample = () => (
   <DragBoundary>
     <Text>Content</Text>
-  </DragBoundary>,
-  <DragTarget builder={() => <Text>Content</Text>} />,
+  </DragBoundary>
+);
+
+export const DragTargetExample = () => (
+  <DragTarget builder={() => <Text>Content</Text>} />
+);
+
+export const DraggableExample = () => (
   <Draggable feedback={<Text>Content</Text>}>
     <Text>Content</Text>
-  </Draggable>,
+  </Draggable>
+);
+
+export const DraggableScrollableActuatorExample = () => (
   <DraggableScrollableActuator>
     <Text>Content</Text>
-  </DraggableScrollableActuator>,
-  <DraggableScrollableSheet builder={() => <Text>Content</Text>} />,
+  </DraggableScrollableActuator>
+);
+
+export const DraggableScrollableSheetExample = () => (
+  <DraggableScrollableSheet builder={() => <Text>Content</Text>} />
+);
+
+export const DrawerExample = () => (
   <Drawer>
     <Text>Content</Text>
-  </Drawer>,
-  <DrawerButton />,
-  <DrawerButtonIcon />,
+  </Drawer>
+);
+
+export const DrawerButtonExample = () => <DrawerButton />;
+
+export const DrawerButtonIconExample = () => <DrawerButtonIcon />;
+
+export const DrawerControllerExample = () => (
   <DrawerController alignment="start">
     <Text>Content</Text>
-  </DrawerController>,
+  </DrawerController>
+);
+
+export const DrawerHeaderExample = () => (
   <DrawerHeader>
     <Text>Content</Text>
-  </DrawerHeader>,
+  </DrawerHeader>
+);
+
+export const DrawerThemeExample = () => (
   <DrawerTheme data={{}}>
     <Text>Content</Text>
-  </DrawerTheme>,
-  <DropdownButton items={[]} onChanged={() => {}} />,
-  <DropdownButtonFormField items={[]} onChanged={() => {}} />,
+  </DrawerTheme>
+);
+
+export const DropdownButtonExample = () => (
+  <DropdownButton items={[]} onChanged={() => {}} />
+);
+
+export const DropdownButtonFormFieldExample = () => (
+  <DropdownButtonFormField items={[]} onChanged={() => {}} />
+);
+
+export const DropdownButtonHideUnderlineExample = () => (
   <DropdownButtonHideUnderline>
     <Text>Content</Text>
-  </DropdownButtonHideUnderline>,
-  <DropdownMenu dropdownMenuEntries={[]} />,
-  <DropdownMenuFormField dropdownMenuEntries={[]} />,
+  </DropdownButtonHideUnderline>
+);
+
+export const DropdownMenuExample = () => (
+  <DropdownMenu dropdownMenuEntries={[]} />
+);
+
+export const DropdownMenuFormFieldExample = () => (
+  <DropdownMenuFormField dropdownMenuEntries={[]} />
+);
+
+export const DropdownMenuItemExample = () => (
   <DropdownMenuItem>
     <Text>Content</Text>
-  </DropdownMenuItem>,
+  </DropdownMenuItem>
+);
+
+export const DropdownMenuThemeExample = () => (
   <DropdownMenuTheme data={{}}>
     <Text>Content</Text>
-  </DropdownMenuTheme>,
+  </DropdownMenuTheme>
+);
+
+export const DualTransitionBuilderExample = () => {
+  const animation = useAnimation({ duration: 600 });
+
+  return (
+    <DualTransitionBuilder
+      animation={animation}
+      forwardBuilder={() => <Text>Content</Text>}
+      reverseBuilder={() => <Text>Content</Text>}
+    >
+      <Text>Content</Text>
+    </DualTransitionBuilder>
+  );
+};
+
+export const EditableTextExample = () => {
+  const textEditingController = new TextEditingController();
+  const focusNode = new FocusNode();
+
+  return (
+    <EditableText
+      controller={textEditingController}
+      focusNode={focusNode}
+      style="cupertinoMisspelledTextStyle"
+      cursorColor="activeBlue"
+      backgroundCursorColor="activeBlue"
+    />
+  );
+};
+
+export const ElevatedButtonExample = () => (
   <ElevatedButton onClick={() => {}}>
     <Text>Content</Text>
-  </ElevatedButton>,
+  </ElevatedButton>
+);
+
+export const ElevatedButtonThemeExample = () => (
   <ElevatedButtonTheme data={{}}>
     <Text>Content</Text>
-  </ElevatedButtonTheme>,
+  </ElevatedButtonTheme>
+);
+
+export const EnableWidgetInspectorScopeExample = () => (
   <EnableWidgetInspectorScope>
     <Text>Content</Text>
-  </EnableWidgetInspectorScope>,
-  <EndDrawerButton />,
-  <EndDrawerButtonIcon />,
+  </EnableWidgetInspectorScope>
+);
+
+export const EndDrawerButtonExample = () => <EndDrawerButton />;
+
+export const EndDrawerButtonIconExample = () => <EndDrawerButtonIcon />;
+
+export const ExcludeFocusExample = () => (
   <ExcludeFocus>
     <Text>Content</Text>
-  </ExcludeFocus>,
+  </ExcludeFocus>
+);
+
+export const ExcludeFocusTraversalExample = () => (
   <ExcludeFocusTraversal>
     <Text>Content</Text>
-  </ExcludeFocusTraversal>,
+  </ExcludeFocusTraversal>
+);
+
+export const ExcludeSemanticsExample = () => (
   <ExcludeSemantics>
     <Text>Content</Text>
-  </ExcludeSemantics>,
-  <ExpandIcon onClick={() => {}} />,
+  </ExcludeSemantics>
+);
+
+export const ExpandIconExample = () => <ExpandIcon onClick={() => {}} />;
+
+export const ExpandedExample = () => (
   <Expanded>
     <Text>Content</Text>
-  </Expanded>,
-  <ExpansionPanelList />,
+  </Expanded>
+);
+
+export const ExpansibleExample = () => {
+  const expansibleController = new ExpansibleController();
+
+  return (
+    <Expansible
+      headerBuilder={() => <Text>Content</Text>}
+      bodyBuilder={() => <Text>Content</Text>}
+      controller={expansibleController}
+    />
+  );
+};
+
+export const ExpansionPanelListExample = () => <ExpansionPanelList />;
+
+export const ExpansionTileExample = () => (
   <ExpansionTile title={<Text>Content</Text>}>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </ExpansionTile>,
+  </ExpansionTile>
+);
+
+export const ExpansionTileThemeExample = () => (
   <ExpansionTileTheme data={{}}>
     <Text>Content</Text>
-  </ExpansionTileTheme>,
+  </ExpansionTileTheme>
+);
+
+export const FadeTransitionExample = () => {
+  const animation = useAnimation({ duration: 600 });
+
+  return (
+    <FadeTransition opacity={animation}>
+      <Text>Content</Text>
+    </FadeTransition>
+  );
+};
+
+export const FilledButtonExample = () => (
   <FilledButton onClick={() => {}}>
     <Text>Content</Text>
-  </FilledButton>,
+  </FilledButton>
+);
+
+export const FilledButtonThemeExample = () => (
   <FilledButtonTheme data={{}}>
     <Text>Content</Text>
-  </FilledButtonTheme>,
-  <FilterChip label={<Text>Content</Text>} onSelected={() => {}} />,
+  </FilledButtonTheme>
+);
+
+export const FilterChipExample = () => (
+  <FilterChip label={<Text>Content</Text>} onSelected={() => {}} />
+);
+
+export const FittedBoxExample = () => (
   <FittedBox>
     <Text>Content</Text>
-  </FittedBox>,
+  </FittedBox>
+);
+
+export const FlexExample = () => (
   <Flex direction="horizontal">
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </Flex>,
+  </Flex>
+);
+
+export const FlexibleExample = () => (
   <Flexible>
     <Text>Content</Text>
-  </Flexible>,
-  <FlexibleSpaceBar />,
+  </Flexible>
+);
+
+export const FlexibleSpaceBarExample = () => <FlexibleSpaceBar />;
+
+export const FlexibleSpaceBarSettingsExample = () => (
   <FlexibleSpaceBarSettings
     toolbarOpacity={1}
     minExtent={1}
@@ -854,570 +1603,1457 @@ export const examples = [
     currentExtent={1}
   >
     <Text>Content</Text>
-  </FlexibleSpaceBarSettings>,
+  </FlexibleSpaceBarSettings>
+);
+
+export const FloatingActionButtonExample = () => (
   <FloatingActionButton onClick={() => {}}>
     <Text>Content</Text>
-  </FloatingActionButton>,
+  </FloatingActionButton>
+);
+
+export const FloatingActionButtonThemeExample = () => (
   <FloatingActionButtonTheme data={{}}>
     <Text>Content</Text>
-  </FloatingActionButtonTheme>,
-  <FlutterLogo />,
+  </FloatingActionButtonTheme>
+);
+
+export const FlutterLogoExample = () => <FlutterLogo />;
+
+export const FocusExample = () => (
   <Focus>
     <Text>Content</Text>
-  </Focus>,
+  </Focus>
+);
+
+export const FocusScopeExample = () => (
   <FocusScope>
     <Text>Content</Text>
-  </FocusScope>,
+  </FocusScope>
+);
+
+export const FocusTraversalGroupExample = () => (
   <FocusTraversalGroup>
     <Text>Content</Text>
-  </FocusTraversalGroup>,
+  </FocusTraversalGroup>
+);
+
+export const FocusableActionDetectorExample = () => (
   <FocusableActionDetector>
     <Text>Content</Text>
-  </FocusableActionDetector>,
+  </FocusableActionDetector>
+);
+
+export const FormExample = () => (
   <Form>
     <Text>Content</Text>
-  </Form>,
-  <FormField builder={() => <Text>Content</Text>} />,
+  </Form>
+);
+
+export const FormFieldExample = () => (
+  <FormField builder={() => <Text>Content</Text>} />
+);
+
+export const FractionalTranslationExample = () => (
   <FractionalTranslation translation="infinite">
     <Text>Content</Text>
-  </FractionalTranslation>,
+  </FractionalTranslation>
+);
+
+export const FractionallySizedBoxExample = () => (
   <FractionallySizedBox>
     <Text>Content</Text>
-  </FractionallySizedBox>,
+  </FractionallySizedBox>
+);
+
+export const GestureDetectorExample = () => (
   <GestureDetector>
     <Text>Content</Text>
-  </GestureDetector>,
+  </GestureDetector>
+);
+
+export const GlowingOverscrollIndicatorExample = () => (
   <GlowingOverscrollIndicator axisDirection="up" color="activeBlue">
     <Text>Content</Text>
-  </GlowingOverscrollIndicator>,
+  </GlowingOverscrollIndicator>
+);
+
+export const GridPaperExample = () => (
   <GridPaper>
     <Text>Content</Text>
-  </GridPaper>,
+  </GridPaper>
+);
+
+export const GridTileExample = () => (
   <GridTile>
     <Text>Content</Text>
-  </GridTile>,
-  <GridTileBar />,
+  </GridTile>
+);
+
+export const GridTileBarExample = () => <GridTileBar />;
+
+export const HeroControllerScopeExample = () => {
+  const heroController = new HeroController();
+
+  return (
+    <HeroControllerScope controller={heroController}>
+      <Text>Content</Text>
+    </HeroControllerScope>
+  );
+};
+
+export const HeroModeExample = () => (
   <HeroMode>
     <Text>Content</Text>
-  </HeroMode>,
-  <HtmlElementView viewType="example" />,
-  <Icon icon="abc" />,
-  <IconButton onClick={() => {}} icon={<Text>Content</Text>} />,
+  </HeroMode>
+);
+
+export const HtmlElementViewExample = () => (
+  <HtmlElementView viewType="example" />
+);
+
+export const IconExample = () => <Icon icon="abc" />;
+
+export const IconButtonExample = () => (
+  <IconButton onClick={() => {}} icon={<Text>Content</Text>} />
+);
+
+export const IconButtonThemeExample = () => (
   <IconButtonTheme data={{}}>
     <Text>Content</Text>
-  </IconButtonTheme>,
+  </IconButtonTheme>
+);
+
+export const IconThemeExample = () => (
   <IconTheme data={{}}>
     <Text>Content</Text>
-  </IconTheme>,
+  </IconTheme>
+);
+
+export const IgnoreBaselineExample = () => (
   <IgnoreBaseline>
     <Text>Content</Text>
-  </IgnoreBaseline>,
+  </IgnoreBaseline>
+);
+
+export const IgnorePointerExample = () => (
   <IgnorePointer>
     <Text>Content</Text>
-  </IgnorePointer>,
+  </IgnorePointer>
+);
+
+export const IndexedSemanticsExample = () => (
   <IndexedSemantics index={8}>
     <Text>Content</Text>
-  </IndexedSemantics>,
+  </IndexedSemantics>
+);
+
+export const IndexedStackExample = () => (
   <IndexedStack>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </IndexedStack>,
+  </IndexedStack>
+);
+
+export const InkExample = () => (
   <Ink>
     <Text>Content</Text>
-  </Ink>,
+  </Ink>
+);
+
+export const InkResponseExample = () => (
   <InkResponse>
     <Text>Content</Text>
-  </InkResponse>,
+  </InkResponse>
+);
+
+export const InkWellExample = () => (
   <InkWell>
     <Text>Content</Text>
-  </InkWell>,
-  <InputChip label={<Text>Content</Text>} />,
+  </InkWell>
+);
+
+export const InputChipExample = () => (
+  <InputChip label={<Text>Content</Text>} />
+);
+
+export const InputDatePickerFormFieldExample = () => (
+  <InputDatePickerFormField firstDate="2026-01-31" lastDate="2026-01-31" />
+);
+
+export const InputDecorationThemeExample = () => (
   <InputDecorationTheme>
     <Text>Content</Text>
-  </InputDecorationTheme>,
+  </InputDecorationTheme>
+);
+
+export const InputDecoratorExample = () => (
   <InputDecorator decoration={{}}>
     <Text>Content</Text>
-  </InputDecorator>,
+  </InputDecorator>
+);
+
+export const InteractiveViewerExample = () => (
   <InteractiveViewer>
     <Text>Content</Text>
-  </InteractiveViewer>,
+  </InteractiveViewer>
+);
+
+export const IntrinsicHeightExample = () => (
   <IntrinsicHeight>
     <Text>Content</Text>
-  </IntrinsicHeight>,
+  </IntrinsicHeight>
+);
+
+export const IntrinsicWidthExample = () => (
   <IntrinsicWidth>
     <Text>Content</Text>
-  </IntrinsicWidth>,
+  </IntrinsicWidth>
+);
+
+export const KeepAliveExample = () => (
   <KeepAlive keepAlive={true}>
     <Text>Content</Text>
-  </KeepAlive>,
+  </KeepAlive>
+);
+
+export const KeyboardListenerExample = () => {
+  const focusNode = new FocusNode();
+
+  return (
+    <KeyboardListener focusNode={focusNode}>
+      <Text>Content</Text>
+    </KeyboardListener>
+  );
+};
+
+export const KeyedSubtreeExample = () => (
   <KeyedSubtree>
     <Text>Content</Text>
-  </KeyedSubtree>,
-  <LayoutBuilder builder={() => <Text>Content</Text>} />,
-  <LicensePage />,
+  </KeyedSubtree>
+);
+
+export const LayoutBuilderExample = () => (
+  <LayoutBuilder builder={() => <Text>Content</Text>} />
+);
+
+export const LicensePageExample = () => <LicensePage />;
+
+export const LimitedBoxExample = () => (
   <LimitedBox>
     <Text>Content</Text>
-  </LimitedBox>,
-  <LinearProgressIndicator />,
+  </LimitedBox>
+);
+
+export const LinearProgressIndicatorExample = () => <LinearProgressIndicator />;
+
+export const ListBodyExample = () => (
   <ListBody>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </ListBody>,
-  <ListTile />,
+  </ListBody>
+);
+
+export const ListTileExample = () => <ListTile />;
+
+export const ListTileThemeExample = () => (
   <ListTileTheme>
     <Text>Content</Text>
-  </ListTileTheme>,
+  </ListTileTheme>
+);
+
+export const ListViewExample = () => (
   <ListView>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </ListView>,
+  </ListView>
+);
+
+export const ListWheelScrollViewExample = () => (
   <ListWheelScrollView itemExtent={1}>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </ListWheelScrollView>,
+  </ListWheelScrollView>
+);
+
+export const ListenableBuilderExample = () => {
+  const animation = useAnimation({ duration: 600 });
+
+  return (
+    <ListenableBuilder
+      listenable={animation}
+      builder={() => <Text>Content</Text>}
+    >
+      <Text>Content</Text>
+    </ListenableBuilder>
+  );
+};
+
+export const ListenerExample = () => (
   <Listener>
     <Text>Content</Text>
-  </Listener>,
+  </Listener>
+);
+
+export const LongPressDraggableExample = () => (
   <LongPressDraggable feedback={<Text>Content</Text>}>
     <Text>Content</Text>
-  </LongPressDraggable>,
+  </LongPressDraggable>
+);
+
+export const LookupBoundaryExample = () => (
   <LookupBoundary>
     <Text>Content</Text>
-  </LookupBoundary>,
-  <Magnifier />,
+  </LookupBoundary>
+);
+
+export const MagnifierExample = () => <Magnifier />;
+
+export const MaterialExample = () => (
   <Material>
     <Text>Content</Text>
-  </Material>,
-  <MaterialApp />,
-  <MaterialBanner content={<Text>Content</Text>} actions={[]} />,
+  </Material>
+);
+
+export const MaterialAppExample = () => <MaterialApp />;
+
+export const MaterialBannerExample = () => (
+  <MaterialBanner content={<Text>Content</Text>} actions={[]} />
+);
+
+export const MaterialBannerThemeExample = () => (
   <MaterialBannerTheme>
     <Text>Content</Text>
-  </MaterialBannerTheme>,
+  </MaterialBannerTheme>
+);
+
+export const MaterialButtonExample = () => (
   <MaterialButton onClick={() => {}}>
     <Text>Content</Text>
-  </MaterialButton>,
+  </MaterialButton>
+);
+
+export const MediaQueryExample = () => (
   <MediaQuery data={{}}>
     <Text>Content</Text>
-  </MediaQuery>,
+  </MediaQuery>
+);
+
+export const MenuAcceleratorCallbackBindingExample = () => (
   <MenuAcceleratorCallbackBinding>
     <Text>Content</Text>
-  </MenuAcceleratorCallbackBinding>,
-  <MenuAcceleratorLabel>Hello world</MenuAcceleratorLabel>,
+  </MenuAcceleratorCallbackBinding>
+);
+
+export const MenuAcceleratorLabelExample = () => (
+  <MenuAcceleratorLabel>Hello world</MenuAcceleratorLabel>
+);
+
+export const MenuAnchorExample = () => (
   <MenuAnchor menuChildren={[]}>
     <Text>Content</Text>
-  </MenuAnchor>,
+  </MenuAnchor>
+);
+
+export const MenuBarExample = () => (
   <MenuBar>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </MenuBar>,
+  </MenuBar>
+);
+
+export const MenuBarThemeExample = () => (
   <MenuBarTheme data={{}}>
     <Text>Content</Text>
-  </MenuBarTheme>,
+  </MenuBarTheme>
+);
+
+export const MenuButtonThemeExample = () => (
   <MenuButtonTheme data={{}}>
     <Text>Content</Text>
-  </MenuButtonTheme>,
+  </MenuButtonTheme>
+);
+
+export const MenuItemButtonExample = () => (
   <MenuItemButton>
     <Text>Content</Text>
-  </MenuItemButton>,
+  </MenuItemButton>
+);
+
+export const MenuThemeExample = () => (
   <MenuTheme data={{}}>
     <Text>Content</Text>
-  </MenuTheme>,
+  </MenuTheme>
+);
+
+export const MergeSemanticsExample = () => (
   <MergeSemantics>
     <Text>Content</Text>
-  </MergeSemantics>,
-  <MergeableMaterial />,
+  </MergeSemantics>
+);
+
+export const MergeableMaterialExample = () => <MergeableMaterial />;
+
+export const MetaDataExample = () => (
   <MetaData>
     <Text>Content</Text>
-  </MetaData>,
-  <ModalBarrier />,
+  </MetaData>
+);
+
+export const ModalBarrierExample = () => <ModalBarrier />;
+
+export const MouseRegionExample = () => (
   <MouseRegion>
     <Text>Content</Text>
-  </MouseRegion>,
-  <NavigationBar destinations={[]} />,
+  </MouseRegion>
+);
+
+export const NavigationBarExample = () => <NavigationBar destinations={[]} />;
+
+export const NavigationBarThemeExample = () => (
   <NavigationBarTheme data={{}}>
     <Text>Content</Text>
-  </NavigationBarTheme>,
-  <NavigationDestination icon={<Text>Content</Text>} label="example" />,
+  </NavigationBarTheme>
+);
+
+export const NavigationDestinationExample = () => (
+  <NavigationDestination icon={<Text>Content</Text>} label="example" />
+);
+
+export const NavigationDrawerExample = () => (
   <NavigationDrawer>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </NavigationDrawer>,
+  </NavigationDrawer>
+);
+
+export const NavigationDrawerDestinationExample = () => (
   <NavigationDrawerDestination
     icon={<Text>Content</Text>}
     label={<Text>Content</Text>}
-  />,
+  />
+);
+
+export const NavigationDrawerThemeExample = () => (
   <NavigationDrawerTheme data={{}}>
     <Text>Content</Text>
-  </NavigationDrawerTheme>,
-  <NavigationRail destinations={[]} selectedIndex={8} />,
+  </NavigationDrawerTheme>
+);
+
+export const NavigationIndicatorExample = () => {
+  const animation = useAnimation({ duration: 600 });
+
+  return <NavigationIndicator animation={animation} />;
+};
+
+export const NavigationRailExample = () => (
+  <NavigationRail destinations={[]} selectedIndex={8} />
+);
+
+export const NavigationRailThemeExample = () => (
   <NavigationRailTheme data={{}}>
     <Text>Content</Text>
-  </NavigationRailTheme>,
-  <NavigationToolbar />,
-  <Navigator />,
+  </NavigationRailTheme>
+);
+
+export const NavigationToolbarExample = () => <NavigationToolbar />;
+
+export const NavigatorExample = () => <Navigator />;
+
+export const NavigatorPopHandlerExample = () => (
   <NavigatorPopHandler>
     <Text>Content</Text>
-  </NavigatorPopHandler>,
+  </NavigatorPopHandler>
+);
+
+export const NestedScrollViewExample = () => (
+  <NestedScrollView headerSliverBuilder={() => []}>
+    <Text>Content</Text>
+  </NestedScrollView>
+);
+
+export const NotificationListenerExample = () => (
   <NotificationListener>
     <Text>Content</Text>
-  </NotificationListener>,
+  </NotificationListener>
+);
+
+export const OffstageExample = () => (
   <Offstage>
     <Text>Content</Text>
-  </Offstage>,
+  </Offstage>
+);
+
+export const OpacityExample = () => (
   <Opacity opacity={1}>
     <Text>Content</Text>
-  </Opacity>,
-  <OrientationBuilder builder={() => <Text>Content</Text>} />,
+  </Opacity>
+);
+
+export const OrientationBuilderExample = () => (
+  <OrientationBuilder builder={() => <Text>Content</Text>} />
+);
+
+export const OutlinedButtonExample = () => (
   <OutlinedButton onClick={() => {}}>
     <Text>Content</Text>
-  </OutlinedButton>,
+  </OutlinedButton>
+);
+
+export const OutlinedButtonThemeExample = () => (
   <OutlinedButtonTheme data={{}}>
     <Text>Content</Text>
-  </OutlinedButtonTheme>,
+  </OutlinedButtonTheme>
+);
+
+export const OverflowBarExample = () => (
   <OverflowBar>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </OverflowBar>,
+  </OverflowBar>
+);
+
+export const OverflowBoxExample = () => (
   <OverflowBox>
     <Text>Content</Text>
-  </OverflowBox>,
-  <Overlay />,
+  </OverflowBox>
+);
+
+export const OverlayExample = () => <Overlay />;
+
+export const OverlayPortalExample = () => {
+  const overlayPortalController = new OverlayPortalController();
+
+  return (
+    <OverlayPortal
+      controller={overlayPortalController}
+      overlayChildBuilder={() => <Text>Content</Text>}
+    >
+      <Text>Content</Text>
+    </OverlayPortal>
+  );
+};
+
+export const PaddingExample = () => (
   <Padding padding="infinity">
     <Text>Content</Text>
-  </Padding>,
+  </Padding>
+);
+
+export const PageStorageExample = () => {
+  const pageStorageBucket = new PageStorageBucket();
+
+  return (
+    <PageStorage bucket={pageStorageBucket}>
+      <Text>Content</Text>
+    </PageStorage>
+  );
+};
+
+export const PageViewExample = () => (
   <PageView>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </PageView>,
-  <PerformanceOverlay />,
+  </PageView>
+);
+
+export const PerformanceOverlayExample = () => <PerformanceOverlay />;
+
+export const PhysicalModelExample = () => (
   <PhysicalModel color="activeBlue">
     <Text>Content</Text>
-  </PhysicalModel>,
+  </PhysicalModel>
+);
+
+export const PinnedHeaderSliverExample = () => (
   <PinnedHeaderSliver>
     <Text>Content</Text>
-  </PinnedHeaderSliver>,
+  </PinnedHeaderSliver>
+);
+
+export const PlaceholderExample = () => (
   <Placeholder>
     <Text>Content</Text>
-  </Placeholder>,
+  </Placeholder>
+);
+
+export const PlatformMenuBarExample = () => (
   <PlatformMenuBar menus={[]}>
     <Text>Content</Text>
-  </PlatformMenuBar>,
+  </PlatformMenuBar>
+);
+
+export const PlatformSelectableRegionContextMenuExample = () => (
   <PlatformSelectableRegionContextMenu>
     <Text>Content</Text>
-  </PlatformSelectableRegionContextMenu>,
+  </PlatformSelectableRegionContextMenu>
+);
+
+export const PopScopeExample = () => (
   <PopScope>
     <Text>Content</Text>
-  </PopScope>,
-  <PopupMenuDivider />,
+  </PopScope>
+);
+
+export const PopupMenuButtonExample = () => (
+  <PopupMenuButton itemBuilder={() => []}>
+    <Text>Content</Text>
+  </PopupMenuButton>
+);
+
+export const PopupMenuDividerExample = () => <PopupMenuDivider />;
+
+export const PopupMenuItemExample = () => (
   <PopupMenuItem>
     <Text>Content</Text>
-  </PopupMenuItem>,
+  </PopupMenuItem>
+);
+
+export const PopupMenuThemeExample = () => (
   <PopupMenuTheme data={{}}>
     <Text>Content</Text>
-  </PopupMenuTheme>,
+  </PopupMenuTheme>
+);
+
+export const PositionedExample = () => (
   <Positioned>
     <Text>Content</Text>
-  </Positioned>,
+  </Positioned>
+);
+
+export const PositionedDirectionalExample = () => (
   <PositionedDirectional>
     <Text>Content</Text>
-  </PositionedDirectional>,
+  </PositionedDirectional>
+);
+
+export const PositionedTransitionExample = () => {
+  const animation = useAnimation({ duration: 600 });
+
+  return (
+    <PositionedTransition rect={tween(animation, { from: 'fill', to: 'fill' })}>
+      <Text>Content</Text>
+    </PositionedTransition>
+  );
+};
+
+export const PreferredSizeExample = () => (
   <PreferredSize preferredSize="infinite">
     <Text>Content</Text>
-  </PreferredSize>,
+  </PreferredSize>
+);
+
+export const PrimaryScrollControllerExample = () => {
+  const scrollController = new ScrollController();
+
+  return (
+    <PrimaryScrollController controller={scrollController}>
+      <Text>Content</Text>
+    </PrimaryScrollController>
+  );
+};
+
+export const ProgressIndicatorThemeExample = () => (
   <ProgressIndicatorTheme data={{}}>
     <Text>Content</Text>
-  </ProgressIndicatorTheme>,
+  </ProgressIndicatorTheme>
+);
+
+export const RadioExample = () => <Radio value="example" />;
+
+export const RadioGroupExample = () => (
   <RadioGroup onChanged={() => {}}>
     <Text>Content</Text>
-  </RadioGroup>,
+  </RadioGroup>
+);
+
+export const RadioListTileExample = () => <RadioListTile value="example" />;
+
+export const RadioMenuButtonExample = () => (
+  <RadioMenuButton value="example" groupValue="example" onChanged={() => {}}>
+    <Text>Content</Text>
+  </RadioMenuButton>
+);
+
+export const RadioThemeExample = () => (
   <RadioTheme data={{}}>
     <Text>Content</Text>
-  </RadioTheme>,
-  <RawChip label={<Text>Content</Text>} />,
+  </RadioTheme>
+);
+
+export const RawChipExample = () => <RawChip label={<Text>Content</Text>} />;
+
+export const RawGestureDetectorExample = () => (
   <RawGestureDetector>
     <Text>Content</Text>
-  </RawGestureDetector>,
-  <RawImage />,
+  </RawGestureDetector>
+);
+
+export const RawImageExample = () => <RawImage />;
+
+export const RawKeyboardListenerExample = () => {
+  const focusNode = new FocusNode();
+
+  return (
+    <RawKeyboardListener focusNode={focusNode}>
+      <Text>Content</Text>
+    </RawKeyboardListener>
+  );
+};
+
+export const RawMagnifierExample = () => (
   <RawMagnifier size="infinite">
     <Text>Content</Text>
-  </RawMagnifier>,
+  </RawMagnifier>
+);
+
+export const RawMaterialButtonExample = () => (
   <RawMaterialButton onClick={() => {}}>
     <Text>Content</Text>
-  </RawMaterialButton>,
+  </RawMaterialButton>
+);
+
+export const RawMenuAnchorExample = () => {
+  const menuController = new MenuController();
+
+  return (
+    <RawMenuAnchor
+      controller={menuController}
+      overlayBuilder={() => <Text>Content</Text>}
+    >
+      <Text>Content</Text>
+    </RawMenuAnchor>
+  );
+};
+
+export const RawMenuAnchorGroupExample = () => {
+  const menuController = new MenuController();
+
+  return (
+    <RawMenuAnchorGroup controller={menuController}>
+      <Text>Content</Text>
+    </RawMenuAnchorGroup>
+  );
+};
+
+export const RawScrollbarExample = () => (
   <RawScrollbar>
     <Text>Content</Text>
-  </RawScrollbar>,
+  </RawScrollbar>
+);
+
+export const RawTooltipExample = () => (
   <RawTooltip
     semanticsTooltip="example"
     tooltipBuilder={() => <Text>Content</Text>}
   >
     <Text>Content</Text>
-  </RawTooltip>,
-  <RefreshProgressIndicator />,
+  </RawTooltip>
+);
+
+export const RefreshProgressIndicatorExample = () => (
+  <RefreshProgressIndicator />
+);
+
+export const RelativePositionedTransitionExample = () => {
+  const animation = useAnimation({ duration: 600 });
+
+  return (
+    <RelativePositionedTransition
+      rect={tween(animation, { from: 'largest', to: 'largest' })}
+      size="infinite"
+    >
+      <Text>Content</Text>
+    </RelativePositionedTransition>
+  );
+};
+
+export const ReorderableDelayedDragStartListenerExample = () => (
   <ReorderableDelayedDragStartListener index={8}>
     <Text>Content</Text>
-  </ReorderableDelayedDragStartListener>,
+  </ReorderableDelayedDragStartListener>
+);
+
+export const ReorderableDragStartListenerExample = () => (
   <ReorderableDragStartListener index={8}>
     <Text>Content</Text>
-  </ReorderableDragStartListener>,
-  <ReorderableList itemBuilder={() => <Text>Content</Text>} itemCount={8} />,
+  </ReorderableDragStartListener>
+);
+
+export const ReorderableListExample = () => (
+  <ReorderableList itemBuilder={() => <Text>Content</Text>} itemCount={8} />
+);
+
+export const ReorderableListViewExample = () => (
   <ReorderableListView>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </ReorderableListView>,
+  </ReorderableListView>
+);
+
+export const RepaintBoundaryExample = () => (
   <RepaintBoundary>
     <Text>Content</Text>
-  </RepaintBoundary>,
+  </RepaintBoundary>
+);
+
+export const RestorationScopeExample = () => (
   <RestorationScope restorationId="example">
     <Text>Content</Text>
-  </RestorationScope>,
+  </RestorationScope>
+);
+
+export const RootRestorationScopeExample = () => (
   <RootRestorationScope restorationId="example">
     <Text>Content</Text>
-  </RootRestorationScope>,
+  </RootRestorationScope>
+);
+
+export const RootWidgetExample = () => (
   <RootWidget>
     <Text>Content</Text>
-  </RootWidget>,
+  </RootWidget>
+);
+
+export const RotatedBoxExample = () => (
   <RotatedBox quarterTurns={8}>
     <Text>Content</Text>
-  </RotatedBox>,
+  </RotatedBox>
+);
+
+export const RotationTransitionExample = () => {
+  const animation = useAnimation({ duration: 600 });
+
+  return (
+    <RotationTransition turns={animation}>
+      <Text>Content</Text>
+    </RotationTransition>
+  );
+};
+
+export const RowExample = () => (
   <Row>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </Row>,
+  </Row>
+);
+
+export const SafeAreaExample = () => (
   <SafeArea>
     <Text>Content</Text>
-  </SafeArea>,
+  </SafeArea>
+);
+
+export const ScaffoldExample = () => (
   <Scaffold>
     <Text>Content</Text>
-  </Scaffold>,
+  </Scaffold>
+);
+
+export const ScaffoldMessengerExample = () => (
   <ScaffoldMessenger>
     <Text>Content</Text>
-  </ScaffoldMessenger>,
+  </ScaffoldMessenger>
+);
+
+export const ScaleTransitionExample = () => {
+  const animation = useAnimation({ duration: 600 });
+
+  return (
+    <ScaleTransition scale={animation}>
+      <Text>Content</Text>
+    </ScaleTransition>
+  );
+};
+
+export const ScrollNotificationObserverExample = () => (
   <ScrollNotificationObserver>
     <Text>Content</Text>
-  </ScrollNotificationObserver>,
-  <Scrollable viewportBuilder={() => <Text>Content</Text>} />,
+  </ScrollNotificationObserver>
+);
+
+export const ScrollableExample = () => (
+  <Scrollable viewportBuilder={() => <Text>Content</Text>} />
+);
+
+export const ScrollbarExample = () => (
   <Scrollbar>
     <Text>Content</Text>
-  </Scrollbar>,
+  </Scrollbar>
+);
+
+export const ScrollbarThemeExample = () => (
   <ScrollbarTheme data={{}}>
     <Text>Content</Text>
-  </ScrollbarTheme>,
-  <SearchBar />,
+  </ScrollbarTheme>
+);
+
+export const SearchBarExample = () => <SearchBar />;
+
+export const SearchBarThemeExample = () => (
   <SearchBarTheme data={{}}>
     <Text>Content</Text>
-  </SearchBarTheme>,
+  </SearchBarTheme>
+);
+
+export const SearchViewThemeExample = () => (
   <SearchViewTheme data={{}}>
     <Text>Content</Text>
-  </SearchViewTheme>,
+  </SearchViewTheme>
+);
+
+export const SegmentedButtonThemeExample = () => (
   <SegmentedButtonTheme data={{}}>
     <Text>Content</Text>
-  </SegmentedButtonTheme>,
-  <SelectableText>Hello world</SelectableText>,
+  </SegmentedButtonTheme>
+);
+
+export const SelectableTextExample = () => (
+  <SelectableText>Hello world</SelectableText>
+);
+
+export const SelectionAreaExample = () => (
   <SelectionArea>
     <Text>Content</Text>
-  </SelectionArea>,
+  </SelectionArea>
+);
+
+export const SelectionListenerExample = () => {
+  const selectionListenerNotifier = new SelectionListenerNotifier();
+
+  return (
+    <SelectionListener selectionNotifier={selectionListenerNotifier}>
+      <Text>Content</Text>
+    </SelectionListener>
+  );
+};
+
+export const SemanticsExample = () => (
   <Semantics>
     <Text>Content</Text>
-  </Semantics>,
+  </Semantics>
+);
+
+export const SemanticsDebuggerExample = () => (
   <SemanticsDebugger>
     <Text>Content</Text>
-  </SemanticsDebugger>,
+  </SemanticsDebugger>
+);
+
+export const SensitiveContentExample = () => (
   <SensitiveContent sensitivity="autoSensitive">
     <Text>Content</Text>
-  </SensitiveContent>,
+  </SensitiveContent>
+);
+
+export const SharedAppDataExample = () => (
   <SharedAppData>
     <Text>Content</Text>
-  </SharedAppData>,
+  </SharedAppData>
+);
+
+export const ShortcutRegistrarExample = () => (
   <ShortcutRegistrar>
     <Text>Content</Text>
-  </ShortcutRegistrar>,
+  </ShortcutRegistrar>
+);
+
+export const SimpleDialogExample = () => (
   <SimpleDialog>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </SimpleDialog>,
+  </SimpleDialog>
+);
+
+export const SimpleDialogOptionExample = () => (
   <SimpleDialogOption>
     <Text>Content</Text>
-  </SimpleDialogOption>,
+  </SimpleDialogOption>
+);
+
+export const SingleChildScrollViewExample = () => (
   <SingleChildScrollView>
     <Text>Content</Text>
-  </SingleChildScrollView>,
+  </SingleChildScrollView>
+);
+
+export const SizeChangedLayoutNotifierExample = () => (
   <SizeChangedLayoutNotifier>
     <Text>Content</Text>
-  </SizeChangedLayoutNotifier>,
+  </SizeChangedLayoutNotifier>
+);
+
+export const SizeTransitionExample = () => {
+  const animation = useAnimation({ duration: 600 });
+
+  return (
+    <SizeTransition sizeFactor={animation}>
+      <Text>Content</Text>
+    </SizeTransition>
+  );
+};
+
+export const SizedBoxExample = () => (
   <SizedBox>
     <Text>Content</Text>
-  </SizedBox>,
+  </SizedBox>
+);
+
+export const SizedOverflowBoxExample = () => (
   <SizedOverflowBox size="infinite">
     <Text>Content</Text>
-  </SizedOverflowBox>,
-  <Slider value={1} onChanged={() => {}} />,
+  </SizedOverflowBox>
+);
+
+export const SlideTransitionExample = () => {
+  const animation = useAnimation({ duration: 600 });
+
+  return (
+    <SlideTransition
+      position={tween(animation, { from: 'infinite', to: 'infinite' })}
+    >
+      <Text>Content</Text>
+    </SlideTransition>
+  );
+};
+
+export const SliderExample = () => <Slider value={1} onChanged={() => {}} />;
+
+export const SliderThemeExample = () => (
   <SliderTheme data={{}}>
     <Text>Content</Text>
-  </SliderTheme>,
-  <SliverAnimatedList itemBuilder={() => <Text>Content</Text>} />,
-  <SliverAnimatedOpacity opacity={1} duration="defaultAnimationDuration" />,
-  <SliverAppBar />,
-  <SliverConstrainedCrossAxis maxExtent={1} sliver={<Text>Content</Text>} />,
-  <SliverCrossAxisExpanded flex={8} sliver={<Text>Content</Text>} />,
-  <SliverCrossAxisGroup slivers={[]} />,
-  <SliverEnsureSemantics sliver={<Text>Content</Text>} />,
+  </SliderTheme>
+);
+
+export const SliverAnimatedListExample = () => (
+  <SliverAnimatedList itemBuilder={() => <Text>Content</Text>} />
+);
+
+export const SliverAnimatedOpacityExample = () => (
+  <SliverAnimatedOpacity opacity={1} duration="defaultAnimationDuration" />
+);
+
+export const SliverAppBarExample = () => <SliverAppBar />;
+
+export const SliverConstrainedCrossAxisExample = () => (
+  <SliverConstrainedCrossAxis maxExtent={1} sliver={<Text>Content</Text>} />
+);
+
+export const SliverCrossAxisExpandedExample = () => (
+  <SliverCrossAxisExpanded flex={8} sliver={<Text>Content</Text>} />
+);
+
+export const SliverCrossAxisGroupExample = () => (
+  <SliverCrossAxisGroup slivers={[]} />
+);
+
+export const SliverEnsureSemanticsExample = () => (
+  <SliverEnsureSemantics sliver={<Text>Content</Text>} />
+);
+
+export const SliverFadeTransitionExample = () => {
+  const animation = useAnimation({ duration: 600 });
+
+  return <SliverFadeTransition opacity={animation} />;
+};
+
+export const SliverFillRemainingExample = () => (
   <SliverFillRemaining>
     <Text>Content</Text>
-  </SliverFillRemaining>,
+  </SliverFillRemaining>
+);
+
+export const SliverFloatingHeaderExample = () => (
   <SliverFloatingHeader>
     <Text>Content</Text>
-  </SliverFloatingHeader>,
-  <SliverIgnorePointer />,
-  <SliverLayoutBuilder builder={() => <Text>Content</Text>} />,
-  <SliverMainAxisGroup slivers={[]} />,
-  <SliverOffstage />,
-  <SliverOpacity opacity={1} />,
-  <SliverPadding padding="infinity" />,
+  </SliverFloatingHeader>
+);
+
+export const SliverIgnorePointerExample = () => <SliverIgnorePointer />;
+
+export const SliverLayoutBuilderExample = () => (
+  <SliverLayoutBuilder builder={() => <Text>Content</Text>} />
+);
+
+export const SliverMainAxisGroupExample = () => (
+  <SliverMainAxisGroup slivers={[]} />
+);
+
+export const SliverOffstageExample = () => <SliverOffstage />;
+
+export const SliverOpacityExample = () => <SliverOpacity opacity={1} />;
+
+export const SliverOverlapAbsorberExample = () => {
+  const sliverOverlapAbsorberHandle = new SliverOverlapAbsorberHandle();
+
+  return <SliverOverlapAbsorber handle={sliverOverlapAbsorberHandle} />;
+};
+
+export const SliverOverlapInjectorExample = () => {
+  const sliverOverlapAbsorberHandle = new SliverOverlapAbsorberHandle();
+
+  return <SliverOverlapInjector handle={sliverOverlapAbsorberHandle} />;
+};
+
+export const SliverPaddingExample = () => <SliverPadding padding="infinity" />;
+
+export const SliverReorderableListExample = () => (
   <SliverReorderableList
     itemBuilder={() => <Text>Content</Text>}
     itemCount={8}
-  />,
+  />
+);
+
+export const SliverResizingHeaderExample = () => (
   <SliverResizingHeader>
     <Text>Content</Text>
-  </SliverResizingHeader>,
-  <SliverSafeArea sliver={<Text>Content</Text>} />,
-  <SliverSemantics sliver={<Text>Content</Text>} />,
+  </SliverResizingHeader>
+);
+
+export const SliverSafeAreaExample = () => (
+  <SliverSafeArea sliver={<Text>Content</Text>} />
+);
+
+export const SliverSemanticsExample = () => (
+  <SliverSemantics sliver={<Text>Content</Text>} />
+);
+
+export const SliverToBoxAdapterExample = () => (
   <SliverToBoxAdapter>
     <Text>Content</Text>
-  </SliverToBoxAdapter>,
-  <SliverVisibility sliver={<Text>Content</Text>} />,
-  <SnackBar content={<Text>Content</Text>} />,
-  <SnackBarAction label="example" onClick={() => {}} />,
+  </SliverToBoxAdapter>
+);
+
+export const SliverVisibilityExample = () => (
+  <SliverVisibility sliver={<Text>Content</Text>} />
+);
+
+export const SnackBarExample = () => (
+  <SnackBar content={<Text>Content</Text>} />
+);
+
+export const SnackBarActionExample = () => (
+  <SnackBarAction label="example" onClick={() => {}} />
+);
+
+export const SnackBarThemeExample = () => (
   <SnackBarTheme data={{}}>
     <Text>Content</Text>
-  </SnackBarTheme>,
-  <Spacer />,
-  <SpellCheckSuggestionsToolbar anchor="infinite" buttonItems={[]} />,
+  </SnackBarTheme>
+);
+
+export const SnapshotWidgetExample = () => {
+  const snapshotController = new SnapshotController();
+
+  return (
+    <SnapshotWidget controller={snapshotController}>
+      <Text>Content</Text>
+    </SnapshotWidget>
+  );
+};
+
+export const SpacerExample = () => <Spacer />;
+
+export const SpellCheckSuggestionsToolbarExample = () => (
+  <SpellCheckSuggestionsToolbar anchor="infinite" buttonItems={[]} />
+);
+
+export const StackExample = () => (
   <Stack>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </Stack>,
-  <StatefulBuilder builder={() => <Text>Content</Text>} />,
-  <Stepper steps={[]} />,
+  </Stack>
+);
+
+export const StatefulBuilderExample = () => (
+  <StatefulBuilder builder={() => <Text>Content</Text>} />
+);
+
+export const StepperExample = () => <Stepper steps={[]} />;
+
+export const StretchEffectExample = () => (
   <StretchEffect axis="horizontal">
     <Text>Content</Text>
-  </StretchEffect>,
+  </StretchEffect>
+);
+
+export const StretchingOverscrollIndicatorExample = () => (
   <StretchingOverscrollIndicator axisDirection="up">
     <Text>Content</Text>
-  </StretchingOverscrollIndicator>,
+  </StretchingOverscrollIndicator>
+);
+
+export const SubmenuButtonExample = () => (
   <SubmenuButton menuChildren={[]}>
     <Text>Content</Text>
-  </SubmenuButton>,
-  <Switch value={true} onChanged={() => {}} />,
-  <SwitchListTile value={true} onChanged={() => {}} />,
+  </SubmenuButton>
+);
+
+export const SwitchExample = () => <Switch value={true} onChanged={() => {}} />;
+
+export const SwitchListTileExample = () => (
+  <SwitchListTile value={true} onChanged={() => {}} />
+);
+
+export const SwitchThemeExample = () => (
   <SwitchTheme data={{}}>
     <Text>Content</Text>
-  </SwitchTheme>,
+  </SwitchTheme>
+);
+
+export const TabExample = () => (
   <Tab>
     <Text>Content</Text>
-  </Tab>,
-  <TabBar tabs={[]} />,
+  </Tab>
+);
+
+export const TabBarExample = () => <TabBar tabs={[]} />;
+
+export const TabBarThemeExample = () => (
   <TabBarTheme>
     <Text>Content</Text>
-  </TabBarTheme>,
+  </TabBarTheme>
+);
+
+export const TabBarViewExample = () => (
   <TabBarView>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </TabBarView>,
-  <TabPageSelector />,
+  </TabBarView>
+);
+
+export const TabPageSelectorExample = () => <TabPageSelector />;
+
+export const TabPageSelectorIndicatorExample = () => (
   <TabPageSelectorIndicator
     backgroundColor="activeBlue"
     borderColor="activeBlue"
     size={1}
-  />,
-  <Table />,
+  />
+);
+
+export const TableExample = () => <Table />;
+
+export const TableCellExample = () => (
   <TableCell>
     <Text>Content</Text>
-  </TableCell>,
+  </TableCell>
+);
+
+export const TableRowInkWellExample = () => (
   <TableRowInkWell>
     <Text>Content</Text>
-  </TableRowInkWell>,
+  </TableRowInkWell>
+);
+
+export const TapRegionExample = () => (
   <TapRegion>
     <Text>Content</Text>
-  </TapRegion>,
+  </TapRegion>
+);
+
+export const TapRegionSurfaceExample = () => (
   <TapRegionSurface>
     <Text>Content</Text>
-  </TapRegionSurface>,
-  <Text>Hello world</Text>,
+  </TapRegionSurface>
+);
+
+export const TextExample = () => <Text>Hello world</Text>;
+
+export const TextButtonExample = () => (
   <TextButton onClick={() => {}}>
     <Text>Content</Text>
-  </TextButton>,
+  </TextButton>
+);
+
+export const TextButtonThemeExample = () => (
   <TextButtonTheme data={{}}>
     <Text>Content</Text>
-  </TextButtonTheme>,
-  <TextField />,
+  </TextButtonTheme>
+);
+
+export const TextFieldExample = () => <TextField />;
+
+export const TextFieldTapRegionExample = () => (
   <TextFieldTapRegion>
     <Text>Content</Text>
-  </TextFieldTapRegion>,
-  <TextFormField />,
+  </TextFieldTapRegion>
+);
+
+export const TextFormFieldExample = () => <TextFormField />;
+
+export const TextSelectionGestureDetectorExample = () => (
   <TextSelectionGestureDetector>
     <Text>Content</Text>
-  </TextSelectionGestureDetector>,
+  </TextSelectionGestureDetector>
+);
+
+export const TextSelectionThemeExample = () => (
   <TextSelectionTheme data={{}}>
     <Text>Content</Text>
-  </TextSelectionTheme>,
+  </TextSelectionTheme>
+);
+
+export const TextSelectionToolbarExample = () => (
   <TextSelectionToolbar anchorAbove="infinite" anchorBelow="infinite">
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </TextSelectionToolbar>,
+  </TextSelectionToolbar>
+);
+
+export const TextSelectionToolbarTextButtonExample = () => (
   <TextSelectionToolbarTextButton padding="infinity">
     <Text>Content</Text>
-  </TextSelectionToolbarTextButton>,
-  <Texture textureId={8} />,
+  </TextSelectionToolbarTextButton>
+);
+
+export const TextureExample = () => <Texture textureId={8} />;
+
+export const ThemeExample = () => {
+  const themeData = new ThemeData();
+
+  return (
+    <Theme data={themeData}>
+      <Text>Content</Text>
+    </Theme>
+  );
+};
+
+export const TickerModeExample = () => (
   <TickerMode enabled={true}>
     <Text>Content</Text>
-  </TickerMode>,
+  </TickerMode>
+);
+
+export const TimePickerDialogExample = () => (
+  <TimePickerDialog initialTime="09:30" />
+);
+
+export const TimePickerThemeExample = () => (
   <TimePickerTheme data={{}}>
     <Text>Content</Text>
-  </TimePickerTheme>,
+  </TimePickerTheme>
+);
+
+export const TitleExample = () => (
   <Title color="activeBlue">
     <Text>Content</Text>
-  </Title>,
+  </Title>
+);
+
+export const ToggleButtonsExample = () => (
   <ToggleButtons isSelected={[]}>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </ToggleButtons>,
+  </ToggleButtons>
+);
+
+export const ToggleButtonsThemeExample = () => (
   <ToggleButtonsTheme data={{}}>
     <Text>Content</Text>
-  </ToggleButtonsTheme>,
+  </ToggleButtonsTheme>
+);
+
+export const TooltipExample = () => (
   <Tooltip message="example">
     <Text>Content</Text>
-  </Tooltip>,
+  </Tooltip>
+);
+
+export const TooltipThemeExample = () => (
   <TooltipTheme data={{}}>
     <Text>Content</Text>
-  </TooltipTheme>,
+  </TooltipTheme>
+);
+
+export const TooltipVisibilityExample = () => (
   <TooltipVisibility visible={true}>
     <Text>Content</Text>
-  </TooltipVisibility>,
-  <TreeSliver tree={[]} />,
-  <UiKitView viewType="example" />,
+  </TooltipVisibility>
+);
+
+export const TreeSliverExample = () => <TreeSliver tree={[]} />;
+
+export const TweenAnimationBuilderExample = () => {
+  const tween = new Tween();
+
+  return (
+    <TweenAnimationBuilder
+      tween={tween}
+      duration="defaultAnimationDuration"
+      builder={() => <Text>Content</Text>}
+    >
+      <Text>Content</Text>
+    </TweenAnimationBuilder>
+  );
+};
+
+export const UiKitViewExample = () => <UiKitView viewType="example" />;
+
+export const UnconstrainedBoxExample = () => (
   <UnconstrainedBox>
     <Text>Content</Text>
-  </UnconstrainedBox>,
+  </UnconstrainedBox>
+);
+
+export const UnmanagedRestorationScopeExample = () => (
   <UnmanagedRestorationScope>
     <Text>Content</Text>
-  </UnmanagedRestorationScope>,
+  </UnmanagedRestorationScope>
+);
+
+export const UserAccountsDrawerHeaderExample = () => (
   <UserAccountsDrawerHeader
     accountName={<Text>Content</Text>}
     accountEmail={<Text>Content</Text>}
-  />,
-  <VerticalDivider />,
+  />
+);
+
+export const ValueListenableBuilderExample = () => {
+  const animation = useAnimation({ duration: 600 });
+
+  return (
+    <ValueListenableBuilder
+      valueListenable={tween(animation, { from: 'example', to: 'example' })}
+      builder={() => <Text>Content</Text>}
+    >
+      <Text>Content</Text>
+    </ValueListenableBuilder>
+  );
+};
+
+export const VerticalDividerExample = () => <VerticalDivider />;
+
+export const ViewAnchorExample = () => (
   <ViewAnchor>
     <Text>Content</Text>
-  </ViewAnchor>,
-  <ViewCollection views={[]} />,
+  </ViewAnchor>
+);
+
+export const ViewCollectionExample = () => <ViewCollection views={[]} />;
+
+export const VisibilityExample = () => (
   <Visibility>
     <Text>Content</Text>
-  </Visibility>,
-  <WidgetsApp color="activeBlue" builder={() => <Text>Content</Text>} />,
+  </Visibility>
+);
+
+export const WidgetsAppExample = () => (
+  <WidgetsApp color="activeBlue" builder={() => <Text>Content</Text>} />
+);
+
+export const WrapExample = () => (
   <Wrap>
     <Text>Item 1</Text>
     <Text>Item 2</Text>
-  </Wrap>,
-];
+  </Wrap>
+);
+
+export const YearPickerExample = () => (
+  <YearPicker
+    firstDate="2026-01-31"
+    lastDate="2026-01-31"
+    selectedDate="2026-01-31"
+    onChanged={() => {}}
+  />
+);

@@ -3,6 +3,8 @@ export const FLUTTER_TSX_VERSION = '1.0.0-alpha.0';
 export * from './generated';
 export type { AppConfig, AppTarget } from './runtime/config';
 export type {
+  AnimationHandle,
+  AnimationOptions,
   AsyncOptions,
   EffectCleanup,
   Navigation,
@@ -16,6 +18,7 @@ export {
   createRouter,
   createStore,
   json,
+  useAnimation,
   useAsync,
   useEffect,
   useNavigation,
@@ -23,6 +26,7 @@ export {
   useStore,
   useStream,
 } from './runtime/hooks';
+export { tween } from './runtime/hooks';
 export type {
   AnimatedProps,
   TabItemProps,

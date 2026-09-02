@@ -44,12 +44,19 @@ class EnumTypeNode extends TypeNode {
 }
 
 class NamedTypeNode extends TypeNode {
-  const NamedTypeNode(this.name);
+  const NamedTypeNode(this.name, [this.args = const []]);
 
   final String name;
 
+  /// What the type was written with: the `Color` of an `Animation<Color>`.
+  final List<TypeNode> args;
+
   @override
-  Map<String, Object?> toJson() => {'kind': 'named', 'name': name};
+  Map<String, Object?> toJson() => {
+    'kind': 'named',
+    'name': name,
+    if (args.isNotEmpty) 'args': args.map((arg) => arg.toJson()).toList(),
+  };
 }
 
 class NullableTypeNode extends TypeNode {

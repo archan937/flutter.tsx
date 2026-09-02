@@ -19,7 +19,10 @@ export const isConstable = (value: IrValue): boolean => {
     case 'constantRef':
       return true;
     case 'construct':
-      return value.args.every((argument) => isConstable(argument.value));
+      return (
+        value.constConstructor !== false &&
+        value.args.every((argument) => isConstable(argument.value))
+      );
     case 'widget':
       return (
         value.widget.constConstructor &&
@@ -100,15 +103,31 @@ const valueToDart = (
         enumName: value.owner,
         member: value.member,
       };
-    case 'construct':
+    case 'construct': {
+      const generic =
+        value.typeArguments === undefined || value.typeArguments.length === 0
+          ? ''
+          : `<${value.typeArguments.join(', ')}>`;
       return callToDart(
         {
           target:
             value.constructorName === ''
-              ? value.className
-              : `${value.className}.${value.constructorName}`,
+              ? `${value.className}${generic}`
+              : `${value.className}${generic}.${value.constructorName}`,
           args: value.args,
           constable: isConstable(value),
+        },
+        naming,
+        insideConst,
+      );
+    }
+    case 'invoke':
+      return callToDart(
+        {
+          target: `${value.receiver}.${value.method}`,
+          args: value.args,
+          // A method call is never const, whatever it is called with.
+          constable: false,
         },
         naming,
         insideConst,

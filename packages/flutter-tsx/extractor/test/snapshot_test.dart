@@ -37,6 +37,7 @@ void main() {
           supertypes: const [],
           constructors: const [],
           constants: const [],
+          disposable: false,
           fields: const [
             FieldModel(
               name: 'maxWidth',
@@ -89,7 +90,8 @@ void main() {
             "name": "double"
           }
         }
-      ]
+      ],
+      "disposable": false
     },
     {
       "kind": "enum",

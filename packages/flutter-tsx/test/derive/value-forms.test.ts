@@ -52,6 +52,7 @@ const classEntity = (
   overrides: Partial<Extract<Entity, { kind: 'class' }>> = {},
 ): Entity => ({
   kind: 'class',
+  disposable: false,
   name,
   library: 'painting',
   doc: '',

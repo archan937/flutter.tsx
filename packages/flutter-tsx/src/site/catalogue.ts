@@ -269,6 +269,18 @@ export const CATALOGUE: Readonly<Record<string, CatalogueEntry>> = {
       'A `finally` clause compiles to Dart’s `finally`, so the flag a button reads is cleared on the failing path as well as the passing one.',
     category: 'State and effects',
   },
+  '56-animation': {
+    title: 'An animation the component drives',
+    blurb:
+      '`useAnimation({ duration: 600 })` is an `AnimationController` the State owns — ticker mixin, duration and disposal written for you — and the handle is the `Animation` a transition takes.',
+    category: 'State and effects',
+  },
+  '57-tween': {
+    title: 'An animation over values that are not numbers',
+    blurb:
+      "`tween(drift, { from: 'topLeft', to: 'bottomRight' })` drives a transition between two values of the type the animation carries — Flutter’s own `controller.drive(Tween(…))`.",
+    category: 'State and effects',
+  },
   '10-camera-options': {
     title: 'Choosing a camera resolution',
     blurb:

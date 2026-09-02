@@ -166,7 +166,10 @@ describe('navHtml', () => {
 
 describe('widgetSection without a verified example', () => {
   test('carries no badge', () => {
-    const incomplete = { ...frame, exampleComplete: false };
+    const incomplete = {
+      ...frame,
+      example: { ...frame.example, complete: false },
+    };
     expect(widgetSection(incomplete)).not.toBe(widgetSection(frame));
     expect(widgetSection(incomplete)).toBe(
       widgetSection(frame).replace(

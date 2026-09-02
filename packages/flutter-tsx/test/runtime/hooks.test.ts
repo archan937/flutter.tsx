@@ -1,9 +1,12 @@
 import { describe, expect, test } from 'bun:test';
 
 import {
+  type AnimationHandle,
   createRouter,
   createStore,
   json,
+  tween,
+  useAnimation,
   useAsync,
   useEffect,
   useNavigation,
@@ -59,6 +62,20 @@ describe('useStream (compile-target stub)', () => {
         error: () => ({ widgetName: 'Text', props: {} }),
       }),
     ).rejects.toThrow(new Error('useStream is compile-time'));
+  });
+});
+
+describe('useAnimation and tween (compile-target stubs)', () => {
+  test('throw at runtime: they only exist for the compiler to read', () => {
+    expect(() => useAnimation({ duration: 600 })).toThrow(
+      new Error('useAnimation is compile-time'),
+    );
+    // The handle only has to exist for the call to be made; at runtime
+    // neither of these gets as far as reading it.
+    const handle = {} as AnimationHandle;
+    expect(() => tween(handle, { from: 'topLeft', to: 'bottomRight' })).toThrow(
+      new Error('tween is compile-time'),
+    );
   });
 });
 

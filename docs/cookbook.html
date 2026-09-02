@@ -161,7 +161,7 @@ main p { margin-bottom: 12px; }
     <a href="https://github.com/archan937/flutter.tsx" target="_blank" rel="noopener">GitHub ↗</a>
   </nav>
   <input id="search" type="search" placeholder="Search recipes…" autocomplete="off" spellcheck="false">
-  <div class="meta-info">55 recipes · Flutter 3.47.1</div>
+  <div class="meta-info">57 recipes · Flutter 3.47.1</div>
   <nav id="sidebar-nav">
 <details open>
 <summary>Start here<span class="nav-count">7</span></summary>
@@ -176,7 +176,7 @@ main p { margin-bottom: 12px; }
 </ul>
 </details>
 <details>
-<summary>State and effects<span class="nav-count">10</span></summary>
+<summary>State and effects<span class="nav-count">12</span></summary>
 <ul>
 <li data-name="Running code on mount"><a href="#06-mount-effect">Running code on mount</a></li>
 <li data-name="State shared across screens"><a href="#19-store-counter">State shared across screens</a></li>
@@ -188,6 +188,8 @@ main p { margin-bottom: 12px; }
 <li data-name="A label made of text and a value"><a href="#52-mixed-label">A label made of text and a value</a></li>
 <li data-name="A controller the component owns"><a href="#53-owned-controller">A controller the component owns</a></li>
 <li data-name="Clearing a busy flag whatever happens"><a href="#55-try-finally">Clearing a busy flag whatever happens</a></li>
+<li data-name="An animation the component drives"><a href="#56-animation">An animation the component drives</a></li>
+<li data-name="An animation over values that are not numbers"><a href="#57-tween">An animation over values that are not numbers</a></li>
 </ul>
 </details>
 <details>
@@ -1323,6 +1325,165 @@ export const TaskBoard = () =&gt; {
           onPressed: _load,
           child: _busy ? <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Loading…'</span>) : <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Load'</span>),
         ),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section class="recipe" id="56-animation" data-name="An animation the component drives">
+<h3>An animation the component drives</h3>
+<p class="blurb"><code>useAnimation({ duration: 600 })</code> is an <code>AnimationController</code> the State owns — ticker mixin, duration and disposal written for you — and the handle is the <code>Animation</code> a transition takes.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Pulse.tsx" role="tab" aria-selected="true">src/Pulse.tsx</button>
+<button class="tab-btn" data-tab="pulse.dart" role="tab" aria-selected="false">pulse.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Pulse.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> {
+  <span class="tok-typ">Column</span>,
+  <span class="tok-typ">ElevatedButton</span>,
+  <span class="tok-typ">FadeTransition</span>,
+  <span class="tok-typ">Text</span>,
+  useAnimation,
+} <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Pulse</span> = () =&gt; {
+  <span class="tok-kw">const</span> fade = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">600</span> });
+
+  <span class="tok-kw">const</span> show = () =&gt; {
+    fade.<span class="tok-fn">forward</span>();
+  };
+
+  <span class="tok-kw">const</span> hide = () =&gt; {
+    fade.<span class="tok-fn">reverse</span>();
+  };
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">FadeTransition</span> opacity={fade}&gt;
+        &lt;<span class="tok-typ">Text</span>&gt;Now you see me&lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;/<span class="tok-typ">FadeTransition</span>&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={show}&gt;Show&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={hide}&gt;Hide&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
+  );
+};</code></pre></div>
+<div class="tab-panel" data-panel="pulse.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">Pulse</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Pulse</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">Pulse</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_PulseState</span>();
+}
+
+<span class="tok-kw">class</span> _PulseState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">Pulse</span>&gt; <span class="tok-kw">with</span> <span class="tok-typ">SingleTickerProviderStateMixin</span> {
+  <span class="tok-kw">late</span> <span class="tok-kw">final</span> <span class="tok-typ">AnimationController</span> _fade = <span class="tok-typ">AnimationController</span>(
+    vsync: <span class="tok-kw">this</span>,
+    duration: <span class="tok-kw">const</span> <span class="tok-typ">Duration</span>(milliseconds: <span class="tok-num">600</span>),
+  );
+
+  @override
+  <span class="tok-kw">void</span> <span class="tok-fn">dispose</span>() {
+    _fade.<span class="tok-fn">dispose</span>();
+    <span class="tok-kw">super</span>.<span class="tok-fn">dispose</span>();
+  }
+
+  <span class="tok-kw">void</span> <span class="tok-fn">_show</span>() {
+    _fade.<span class="tok-fn">forward</span>();
+  }
+
+  <span class="tok-kw">void</span> <span class="tok-fn">_hide</span>() {
+    _fade.<span class="tok-fn">reverse</span>();
+  }
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+      children: [
+        <span class="tok-typ">FadeTransition</span>(opacity: _fade, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Now you see me'</span>)),
+        <span class="tok-typ">ElevatedButton</span>(onPressed: _show, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Show'</span>)),
+        <span class="tok-typ">ElevatedButton</span>(onPressed: _hide, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Hide'</span>)),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section class="recipe" id="57-tween" data-name="An animation over values that are not numbers">
+<h3>An animation over values that are not numbers</h3>
+<p class="blurb"><code>tween(drift, { from: 'topLeft', to: 'bottomRight' })</code> drives a transition between two values of the type the animation carries — Flutter’s own <code>controller.drive(Tween(…))</code>.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Drifter.tsx" role="tab" aria-selected="true">src/Drifter.tsx</button>
+<button class="tab-btn" data-tab="drifter.dart" role="tab" aria-selected="false">drifter.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Drifter.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> {
+  <span class="tok-typ">AlignTransition</span>,
+  <span class="tok-typ">Column</span>,
+  <span class="tok-typ">ElevatedButton</span>,
+  <span class="tok-typ">Text</span>,
+  tween,
+  useAnimation,
+} <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Drifter</span> = () =&gt; {
+  <span class="tok-kw">const</span> drift = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">400</span> });
+
+  <span class="tok-kw">const</span> run = () =&gt; {
+    drift.<span class="tok-fn">forward</span>();
+  };
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">AlignTransition</span>
+        alignment={<span class="tok-fn">tween</span>(drift, { <span class="tok-kw">from</span>: <span class="tok-str">'topLeft'</span>, to: <span class="tok-str">'bottomRight'</span> })}
+      &gt;
+        &lt;<span class="tok-typ">Text</span>&gt;Drifts across&lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;/<span class="tok-typ">AlignTransition</span>&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={run}&gt;Run&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
+  );
+};</code></pre></div>
+<div class="tab-panel" data-panel="drifter.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">Drifter</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Drifter</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">Drifter</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_DrifterState</span>();
+}
+
+<span class="tok-kw">class</span> _DrifterState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">Drifter</span>&gt; <span class="tok-kw">with</span> <span class="tok-typ">SingleTickerProviderStateMixin</span> {
+  <span class="tok-kw">late</span> <span class="tok-kw">final</span> <span class="tok-typ">AnimationController</span> _drift = <span class="tok-typ">AnimationController</span>(
+    vsync: <span class="tok-kw">this</span>,
+    duration: <span class="tok-kw">const</span> <span class="tok-typ">Duration</span>(milliseconds: <span class="tok-num">400</span>),
+  );
+
+  @override
+  <span class="tok-kw">void</span> <span class="tok-fn">dispose</span>() {
+    _drift.<span class="tok-fn">dispose</span>();
+    <span class="tok-kw">super</span>.<span class="tok-fn">dispose</span>();
+  }
+
+  <span class="tok-kw">void</span> <span class="tok-fn">_run</span>() {
+    _drift.<span class="tok-fn">forward</span>();
+  }
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+      children: [
+        <span class="tok-typ">AlignTransition</span>(
+          alignment: _drift.<span class="tok-fn">drive</span>(
+            <span class="tok-typ">Tween</span>&lt;<span class="tok-typ">AlignmentGeometry</span>&gt;(
+              begin: <span class="tok-typ">AlignmentGeometry</span>.topLeft,
+              end: <span class="tok-typ">AlignmentGeometry</span>.bottomRight,
+            ),
+          ),
+          child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Drifts across'</span>),
+        ),
+        <span class="tok-typ">ElevatedButton</span>(onPressed: _run, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Run'</span>)),
       ],
     );
   }

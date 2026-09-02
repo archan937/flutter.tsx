@@ -11,6 +11,7 @@ import type {
   SiteWidget,
 } from './model';
 import { NAV_CSS, sidebarHtml, TABS_CSS, TABS_JS } from './shell';
+import { exampleSource } from './synthesize';
 
 export const escapeHtml = (raw: string): string =>
   raw
@@ -70,7 +71,7 @@ export const widgetSection = (widget: SiteWidget): string => {
   const summary = cleanDoc(widget.doc, { firstParagraphOnly: true });
   const table = propTable(widget.props);
 
-  const verifiedBadge = widget.exampleComplete
+  const verifiedBadge = widget.example.complete
     ? '<a class="badge badge-pkg" href="#verification">✓ typechecked</a>'
     : '';
   return `<article class="widget" id="${widget.name}" data-name="${widget.name}">
@@ -83,7 +84,7 @@ ${table}
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-${codeBlock(widget.tsxExample, 'tsx')}
+${codeBlock(exampleSource(widget.name, widget.example, { component: false }), 'tsx')}
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 ${codeBlock(widget.dartSignature, 'dart')}

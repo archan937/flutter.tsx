@@ -73,6 +73,8 @@ describe('committed golden expected.dart files', () => {
       '53-owned-controller',
       '54-typed-error',
       '55-try-finally',
+      '56-animation',
+      '57-tween',
     ]);
   });
 

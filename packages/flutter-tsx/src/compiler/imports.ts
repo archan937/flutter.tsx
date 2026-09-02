@@ -9,11 +9,46 @@ import type { CompileContext } from './lower';
  * tree hides its whole subtree behind one builder — and the Dart would name
  * classes it never imported. A new kind fails to typecheck here instead.
  */
+/**
+ * Whether a value kind can name a class this file has to import.
+ *
+ * The walk above handles every kind marked true. Listing all of them here is
+ * what makes adding a kind a decision: a new one is a missing key, which does
+ * not compile — the mistake that once let a value inside a builder, and later
+ * one inside a method call, go uncollected.
+ */
+const NAMES_A_CLASS: Record<IrValue['kind'], boolean> = {
+  widget: true,
+  enumValue: true,
+  constantRef: true,
+  construct: true,
+  widgetList: true,
+  listValue: true,
+  conditional: true,
+  closureValue: true,
+  builder: true,
+  invoke: true,
+  closure: false,
+  string: false,
+  number: false,
+  boolean: false,
+  interpolation: false,
+  dartExpr: false,
+  handlerRef: false,
+  stateRef: false,
+};
+
 const collectValue = (
   value: IrValue,
   context: CompileContext,
   names: Set<string>,
 ): void => {
+  // Text, numbers and references to this file's own members name no class,
+  // and the table below says which kinds do — so the walk below only has to
+  // handle those, and a kind nobody classified does not compile.
+  if (!NAMES_A_CLASS[value.kind]) {
+    return;
+  }
   switch (value.kind) {
     case 'widget':
       collectWidget(value.widget, context, names);
@@ -61,17 +96,12 @@ const collectValue = (
       }
       collectValue(value.value, context, names);
       break;
-    // Nothing inside these names a class: they are text, numbers and
-    // references to members this file already declares. Listing them keeps
-    // the switch exhaustive, so a new kind has to say what it needs.
-    case 'closure':
-    case 'string':
-    case 'number':
-    case 'boolean':
-    case 'interpolation':
-    case 'dartExpr':
-    case 'handlerRef':
-    case 'stateRef':
+    // The receiver is a member of this file; what it is called with may not
+    // be — a Cupertino constant inside one needs Cupertino imported.
+    case 'invoke':
+      for (const argument of value.args) {
+        collectValue(argument.value, context, names);
+      }
       break;
   }
 };
