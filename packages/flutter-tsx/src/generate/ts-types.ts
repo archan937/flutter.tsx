@@ -32,6 +32,9 @@ const mapType = (key: TypeNode, value: TypeNode): string => {
   return `Map<${tsTypeOf(key)}, ${tsTypeOf(value)}>`;
 };
 
+/** `FutureOr<T>` — Dart accepts either, and so does the declaration. */
+const EITHER_TYPE = 'FutureOr';
+
 export const tsTypeOf = (node: TypeNode): string => {
   switch (node.kind) {
     case 'widget':
@@ -45,8 +48,15 @@ export const tsTypeOf = (node: TypeNode): string => {
       return 'unknown';
     case 'scalar':
       return SCALAR_TS_TYPES[node.name] ?? 'unknown';
+    case 'named': {
+      const [either] = node.name === EITHER_TYPE ? (node.args ?? []) : [];
+      if (either !== undefined) {
+        const held = tsTypeOf(either);
+        return `${held} | Promise<${held}>`;
+      }
+      return node.name;
+    }
     case 'enum':
-    case 'named':
       return node.name;
     case 'nullable': {
       const inner = tsTypeOf(node.inner);

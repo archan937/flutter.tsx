@@ -3,6 +3,7 @@
 
 import { declareConstants } from '../runtime/constants';
 import type * as widgetTypes from './widgets';
+import type { FlutterElement } from '../runtime/types';
 
 /**
  * Every icon name the installed SDK provides.
@@ -8876,44 +8877,46 @@ export type IconName =
  *  * [AlignmentGeometry], which is an abstract type that is agnostic as to
  *    whether the horizontal direction depends on the [TextDirection].
  */
-export const Alignment = declareConstants<{
-  /**
-   * The center point along the bottom edge.
-   */
-  readonly bottomCenter: widgetTypes.Alignment;
-  /**
-   * The bottom left corner.
-   */
-  readonly bottomLeft: widgetTypes.Alignment;
-  /**
-   * The bottom right corner.
-   */
-  readonly bottomRight: widgetTypes.Alignment;
-  /**
-   * The center point, both horizontally and vertically.
-   */
-  readonly center: widgetTypes.Alignment;
-  /**
-   * The center point along the left edge.
-   */
-  readonly centerLeft: widgetTypes.Alignment;
-  /**
-   * The center point along the right edge.
-   */
-  readonly centerRight: widgetTypes.Alignment;
-  /**
-   * The center point along the top edge.
-   */
-  readonly topCenter: widgetTypes.Alignment;
-  /**
-   * The top left corner.
-   */
-  readonly topLeft: widgetTypes.Alignment;
-  /**
-   * The top right corner.
-   */
-  readonly topRight: widgetTypes.Alignment;
-}>('Alignment');
+export const Alignment = declareConstants<
+  {
+    /**
+     * The center point along the bottom edge.
+     */
+    readonly bottomCenter: widgetTypes.Alignment;
+    /**
+     * The bottom left corner.
+     */
+    readonly bottomLeft: widgetTypes.Alignment;
+    /**
+     * The bottom right corner.
+     */
+    readonly bottomRight: widgetTypes.Alignment;
+    /**
+     * The center point, both horizontally and vertically.
+     */
+    readonly center: widgetTypes.Alignment;
+    /**
+     * The center point along the left edge.
+     */
+    readonly centerLeft: widgetTypes.Alignment;
+    /**
+     * The center point along the right edge.
+     */
+    readonly centerRight: widgetTypes.Alignment;
+    /**
+     * The center point along the top edge.
+     */
+    readonly topCenter: widgetTypes.Alignment;
+    /**
+     * The top left corner.
+     */
+    readonly topLeft: widgetTypes.Alignment;
+    /**
+     * The top right corner.
+     */
+    readonly topRight: widgetTypes.Alignment;
+  } & (new (x: number, y: number) => widgetTypes.Alignment)
+>('Alignment');
 
 /**
  * An offset that's expressed as a fraction of a [Size], but whose horizontal
@@ -8928,53 +8931,55 @@ export const Alignment = declareConstants<{
  *  * [Alignment], a variant that is defined in physical terms (i.e.
  *    whose horizontal component does not depend on the text direction).
  */
-export const AlignmentDirectional = declareConstants<{
-  /**
-   * The center point along the bottom edge.
-   *
-   * Consider using [Alignment.bottomCenter] instead, as it does not
-   * need to be [resolve]d to be used.
-   */
-  readonly bottomCenter: widgetTypes.AlignmentDirectional;
-  /**
-   * The bottom corner on the "end" side.
-   */
-  readonly bottomEnd: widgetTypes.AlignmentDirectional;
-  /**
-   * The bottom corner on the "start" side.
-   */
-  readonly bottomStart: widgetTypes.AlignmentDirectional;
-  /**
-   * The center point, both horizontally and vertically.
-   *
-   * Consider using [Alignment.center] instead, as it does not need to
-   * be [resolve]d to be used.
-   */
-  readonly center: widgetTypes.AlignmentDirectional;
-  /**
-   * The center point along the "end" edge.
-   */
-  readonly centerEnd: widgetTypes.AlignmentDirectional;
-  /**
-   * The center point along the "start" edge.
-   */
-  readonly centerStart: widgetTypes.AlignmentDirectional;
-  /**
-   * The center point along the top edge.
-   *
-   * Consider using [Alignment.topCenter] instead, as it does not need
-   * to be [resolve]d to be used.
-   */
-  readonly topCenter: widgetTypes.AlignmentDirectional;
-  /**
-   * The top corner on the "end" side.
-   */
-  readonly topEnd: widgetTypes.AlignmentDirectional;
-  /**
-   * The top corner on the "start" side.
-   */
-  readonly topStart: widgetTypes.AlignmentDirectional;
-}>('AlignmentDirectional');
+export const AlignmentDirectional = declareConstants<
+  {
+    /**
+     * The center point along the bottom edge.
+     *
+     * Consider using [Alignment.bottomCenter] instead, as it does not
+     * need to be [resolve]d to be used.
+     */
+    readonly bottomCenter: widgetTypes.AlignmentDirectional;
+    /**
+     * The bottom corner on the "end" side.
+     */
+    readonly bottomEnd: widgetTypes.AlignmentDirectional;
+    /**
+     * The bottom corner on the "start" side.
+     */
+    readonly bottomStart: widgetTypes.AlignmentDirectional;
+    /**
+     * The center point, both horizontally and vertically.
+     *
+     * Consider using [Alignment.center] instead, as it does not need to
+     * be [resolve]d to be used.
+     */
+    readonly center: widgetTypes.AlignmentDirectional;
+    /**
+     * The center point along the "end" edge.
+     */
+    readonly centerEnd: widgetTypes.AlignmentDirectional;
+    /**
+     * The center point along the "start" edge.
+     */
+    readonly centerStart: widgetTypes.AlignmentDirectional;
+    /**
+     * The center point along the top edge.
+     *
+     * Consider using [Alignment.topCenter] instead, as it does not need
+     * to be [resolve]d to be used.
+     */
+    readonly topCenter: widgetTypes.AlignmentDirectional;
+    /**
+     * The top corner on the "end" side.
+     */
+    readonly topEnd: widgetTypes.AlignmentDirectional;
+    /**
+     * The top corner on the "start" side.
+     */
+    readonly topStart: widgetTypes.AlignmentDirectional;
+  } & (new (start: number, y: number) => widgetTypes.AlignmentDirectional)
+>('AlignmentDirectional');
 
 /**
  * Base class for [Alignment] that allows for text-direction aware
@@ -8986,168 +8991,181 @@ export const AlignmentDirectional = declareConstants<{
  * To convert an [AlignmentGeometry] object of indeterminate type into an
  * [Alignment] object, call the [resolve] method.
  */
-export const AlignmentGeometry = declareConstants<{
-  /**
-   * The center point along the bottom edge.
-   *
-   * See also:
-   *
-   * * [Alignment.bottomCenter], which is the same thing.
-   */
-  readonly bottomCenter: widgetTypes.AlignmentGeometry;
-  /**
-   * The bottom corner on the "end" edge.
-   *
-   *
-   * See also:
-   *
-   * * [AlignmentDirectional.bottomEnd], which is the same thing.
-   */
-  readonly bottomEnd: widgetTypes.AlignmentGeometry;
-  /**
-   * The bottom left corner.
-   *
-   * See also:
-   *
-   * * [Alignment.bottomLeft], which is the same thing.
-   */
-  readonly bottomLeft: widgetTypes.AlignmentGeometry;
-  /**
-   * The bottom right corner.
-   *
-   * See also:
-   *
-   * * [Alignment.bottomRight], which is the same thing.
-   */
-  readonly bottomRight: widgetTypes.AlignmentGeometry;
-  /**
-   * The bottom corner on the "start" edge.
-   *
-   *
-   * See also:
-   *
-   * * [AlignmentDirectional.bottomStart], which is the same thing.
-   */
-  readonly bottomStart: widgetTypes.AlignmentGeometry;
-  /**
-   * The center point, both horizontally and vertically.
-   *
-   * See also:
-   *
-   * * [Alignment.center], which is the same thing.
-   */
-  readonly center: widgetTypes.AlignmentGeometry;
-  /**
-   * The center point along the "end" edge.
-   *
-   *
-   * See also:
-   *
-   * * [AlignmentDirectional.centerEnd], which is the same thing.
-   */
-  readonly centerEnd: widgetTypes.AlignmentGeometry;
-  /**
-   * The center point along the left edge.
-   *
-   * See also:
-   *
-   * * [Alignment.centerLeft], which is the same thing.
-   */
-  readonly centerLeft: widgetTypes.AlignmentGeometry;
-  /**
-   * The center point along the right edge.
-   *
-   * See also:
-   *
-   * * [Alignment.centerRight], which is the same thing.
-   */
-  readonly centerRight: widgetTypes.AlignmentGeometry;
-  /**
-   * The center point along the "start" edge.
-   *
-   *
-   * See also:
-   *
-   * * [AlignmentDirectional.centerStart], which is the same thing.
-   */
-  readonly centerStart: widgetTypes.AlignmentGeometry;
-  /**
-   * The center point along the top edge.
-   *
-   * See also:
-   *
-   * * [Alignment.topCenter], which is the same thing.
-   */
-  readonly topCenter: widgetTypes.AlignmentGeometry;
-  /**
-   * The top corner on the "end" edge.
-   *
-   * This can be used to indicate an offset from the right in [TextDirection.ltr]
-   * text and an offset from the left in [TextDirection.rtl] text without having
-   * to be aware of the current text direction.
-   *
-   * See also:
-   *
-   * * [AlignmentDirectional.topEnd], which is the same thing.
-   */
-  readonly topEnd: widgetTypes.AlignmentGeometry;
-  /**
-   * The top left corner.
-   *
-   * See also:
-   *
-   * * [Alignment.topLeft], which is the same thing.
-   */
-  readonly topLeft: widgetTypes.AlignmentGeometry;
-  /**
-   * The top right corner.
-   *
-   * See also:
-   *
-   * * [Alignment.topRight], which is the same thing.
-   */
-  readonly topRight: widgetTypes.AlignmentGeometry;
-  /**
-   * The top corner on the "start" edge.
-   *
-   * This can be used to indicate an offset from the left in [TextDirection.ltr]
-   * text and an offset from the right in [TextDirection.rtl] text without having
-   * to be aware of the current text direction.
-   *
-   * See also:
-   *
-   * * [AlignmentDirectional.topStart], which is the same thing.
-   */
-  readonly topStart: widgetTypes.AlignmentGeometry;
-}>('AlignmentGeometry');
+export const AlignmentGeometry = declareConstants<
+  {
+    /**
+     * The center point along the bottom edge.
+     *
+     * See also:
+     *
+     * * [Alignment.bottomCenter], which is the same thing.
+     */
+    readonly bottomCenter: widgetTypes.AlignmentGeometry;
+    /**
+     * The bottom corner on the "end" edge.
+     *
+     *
+     * See also:
+     *
+     * * [AlignmentDirectional.bottomEnd], which is the same thing.
+     */
+    readonly bottomEnd: widgetTypes.AlignmentGeometry;
+    /**
+     * The bottom left corner.
+     *
+     * See also:
+     *
+     * * [Alignment.bottomLeft], which is the same thing.
+     */
+    readonly bottomLeft: widgetTypes.AlignmentGeometry;
+    /**
+     * The bottom right corner.
+     *
+     * See also:
+     *
+     * * [Alignment.bottomRight], which is the same thing.
+     */
+    readonly bottomRight: widgetTypes.AlignmentGeometry;
+    /**
+     * The bottom corner on the "start" edge.
+     *
+     *
+     * See also:
+     *
+     * * [AlignmentDirectional.bottomStart], which is the same thing.
+     */
+    readonly bottomStart: widgetTypes.AlignmentGeometry;
+    /**
+     * The center point, both horizontally and vertically.
+     *
+     * See also:
+     *
+     * * [Alignment.center], which is the same thing.
+     */
+    readonly center: widgetTypes.AlignmentGeometry;
+    /**
+     * The center point along the "end" edge.
+     *
+     *
+     * See also:
+     *
+     * * [AlignmentDirectional.centerEnd], which is the same thing.
+     */
+    readonly centerEnd: widgetTypes.AlignmentGeometry;
+    /**
+     * The center point along the left edge.
+     *
+     * See also:
+     *
+     * * [Alignment.centerLeft], which is the same thing.
+     */
+    readonly centerLeft: widgetTypes.AlignmentGeometry;
+    /**
+     * The center point along the right edge.
+     *
+     * See also:
+     *
+     * * [Alignment.centerRight], which is the same thing.
+     */
+    readonly centerRight: widgetTypes.AlignmentGeometry;
+    /**
+     * The center point along the "start" edge.
+     *
+     *
+     * See also:
+     *
+     * * [AlignmentDirectional.centerStart], which is the same thing.
+     */
+    readonly centerStart: widgetTypes.AlignmentGeometry;
+    /**
+     * The center point along the top edge.
+     *
+     * See also:
+     *
+     * * [Alignment.topCenter], which is the same thing.
+     */
+    readonly topCenter: widgetTypes.AlignmentGeometry;
+    /**
+     * The top corner on the "end" edge.
+     *
+     * This can be used to indicate an offset from the right in [TextDirection.ltr]
+     * text and an offset from the left in [TextDirection.rtl] text without having
+     * to be aware of the current text direction.
+     *
+     * See also:
+     *
+     * * [AlignmentDirectional.topEnd], which is the same thing.
+     */
+    readonly topEnd: widgetTypes.AlignmentGeometry;
+    /**
+     * The top left corner.
+     *
+     * See also:
+     *
+     * * [Alignment.topLeft], which is the same thing.
+     */
+    readonly topLeft: widgetTypes.AlignmentGeometry;
+    /**
+     * The top right corner.
+     *
+     * See also:
+     *
+     * * [Alignment.topRight], which is the same thing.
+     */
+    readonly topRight: widgetTypes.AlignmentGeometry;
+    /**
+     * The top corner on the "start" edge.
+     *
+     * This can be used to indicate an offset from the left in [TextDirection.ltr]
+     * text and an offset from the right in [TextDirection.rtl] text without having
+     * to be aware of the current text direction.
+     *
+     * See also:
+     *
+     * * [AlignmentDirectional.topStart], which is the same thing.
+     */
+    readonly topStart: widgetTypes.AlignmentGeometry;
+  } & {
+    readonly directional: (
+      start: number,
+      y: number,
+    ) => widgetTypes.AlignmentGeometry;
+    readonly xy: (x: number, y: number) => widgetTypes.AlignmentGeometry;
+  }
+>('AlignmentGeometry');
 
 /**
  * Properties of an Android pointer.
  *
  * A Dart version of Android's [MotionEvent.PointerProperties](https://developer.android.com/reference/android/view/MotionEvent.PointerProperties).
  */
-export const AndroidPointerProperties = declareConstants<{
-  /**
-   * Value for `toolType` when the tool type is an eraser.
-   */
-  readonly kToolTypeEraser: number;
-  /**
-   * Value for `toolType` when the tool type is a finger.
-   */
-  readonly kToolTypeFinger: number;
-  /**
-   * Value for `toolType` when the tool type is a mouse.
-   */
-  readonly kToolTypeMouse: number;
-  /**
-   * Value for `toolType` when the tool type is a stylus.
-   */
-  readonly kToolTypeStylus: number;
-  /**
-   * Value for `toolType` when the tool type is unknown.
-   */
-  readonly kToolTypeUnknown: number;
-}>('AndroidPointerProperties');
+export const AndroidPointerProperties = declareConstants<
+  {
+    /**
+     * Value for `toolType` when the tool type is an eraser.
+     */
+    readonly kToolTypeEraser: number;
+    /**
+     * Value for `toolType` when the tool type is a finger.
+     */
+    readonly kToolTypeFinger: number;
+    /**
+     * Value for `toolType` when the tool type is a mouse.
+     */
+    readonly kToolTypeMouse: number;
+    /**
+     * Value for `toolType` when the tool type is a stylus.
+     */
+    readonly kToolTypeStylus: number;
+    /**
+     * Value for `toolType` when the tool type is unknown.
+     */
+    readonly kToolTypeUnknown: number;
+  } & (new (options: {
+    id: number;
+    toolType: number;
+  }) => widgetTypes.AndroidPointerProperties)
+>('AndroidPointerProperties');
 
 /**
  * Controls an Android view that is composed using a GL texture.
@@ -9312,25 +9330,39 @@ export const AnimatedIcons = declareConstants<{
  * All of the parameters are optional. If no parameters are specified,
  * the default animation will be used.
  */
-export const AnimationStyle = declareConstants<{
-  /**
-   * Creates an instance of Animation Style class with no animation.
-   */
-  readonly noAnimation: widgetTypes.AnimationStyle;
-}>('AnimationStyle');
+export const AnimationStyle = declareConstants<
+  {
+    /**
+     * Creates an instance of Animation Style class with no animation.
+     */
+    readonly noAnimation: widgetTypes.AnimationStyle;
+  } & (new (options?: {
+    curve?: widgetTypes.Curve;
+    duration?: widgetTypes.Duration;
+    reverseCurve?: widgetTypes.Curve;
+    reverseDuration?: widgetTypes.Duration;
+  }) => widgetTypes.AnimationStyle)
+>('AnimationStyle');
 
 /**
  * A collection of autofill related information that represents an [AutofillClient].
  *
  * Typically used in [TextInputConfiguration.autofillConfiguration].
  */
-export const AutofillConfiguration = declareConstants<{
-  /**
-   * An [AutofillConfiguration] that indicates the [AutofillClient] does not
-   * wish to be autofilled.
-   */
-  readonly disabled: widgetTypes.AutofillConfiguration;
-}>('AutofillConfiguration');
+export const AutofillConfiguration = declareConstants<
+  {
+    /**
+     * An [AutofillConfiguration] that indicates the [AutofillClient] does not
+     * wish to be autofilled.
+     */
+    readonly disabled: widgetTypes.AutofillConfiguration;
+  } & (new (options: {
+    uniqueIdentifier: string;
+    autofillHints: string[];
+    currentEditingValue: widgetTypes.TextEditingValue;
+    hintText?: string;
+  }) => widgetTypes.AutofillConfiguration)
+>('AutofillConfiguration');
 
 /**
  * A collection of commonly used autofill hint strings on different platforms.
@@ -10025,12 +10057,31 @@ export const AutofillHints = declareConstants<{
  * [BorderRadiusDirectional], which is expressed in terms that are relative to
  * a [TextDirection] (typically obtained from the ambient [Directionality]).
  */
-export const BorderRadius = declareConstants<{
-  /**
-   * A border radius with all zero radii.
-   */
-  readonly zero: widgetTypes.BorderRadius;
-}>('BorderRadius');
+export const BorderRadius = declareConstants<
+  {
+    /**
+     * A border radius with all zero radii.
+     */
+    readonly zero: widgetTypes.BorderRadius;
+  } & {
+    readonly all: (radius: widgetTypes.Radius) => widgetTypes.BorderRadius;
+    readonly circular: (radius: number) => widgetTypes.BorderRadius;
+    readonly horizontal: (options?: {
+      left?: widgetTypes.Radius;
+      right?: widgetTypes.Radius;
+    }) => widgetTypes.BorderRadius;
+    readonly only: (options?: {
+      topLeft?: widgetTypes.Radius;
+      topRight?: widgetTypes.Radius;
+      bottomLeft?: widgetTypes.Radius;
+      bottomRight?: widgetTypes.Radius;
+    }) => widgetTypes.BorderRadius;
+    readonly vertical: (options?: {
+      top?: widgetTypes.Radius;
+      bottom?: widgetTypes.Radius;
+    }) => widgetTypes.BorderRadius;
+  }
+>('BorderRadius');
 
 /**
  * An immutable set of radii for each corner of a rectangle, but with the
@@ -10046,15 +10097,36 @@ export const BorderRadius = declareConstants<{
  *  * [BorderRadius], a variant that uses physical labels (`topLeft` and
  *    `topRight` instead of `topStart` and `topEnd`).
  */
-export const BorderRadiusDirectional = declareConstants<{
-  /**
-   * A border radius with all zero radii.
-   *
-   * Consider using [BorderRadius.zero] instead, since that object has the same
-   * effect, but will be cheaper to [resolve].
-   */
-  readonly zero: widgetTypes.BorderRadiusDirectional;
-}>('BorderRadiusDirectional');
+export const BorderRadiusDirectional = declareConstants<
+  {
+    /**
+     * A border radius with all zero radii.
+     *
+     * Consider using [BorderRadius.zero] instead, since that object has the same
+     * effect, but will be cheaper to [resolve].
+     */
+    readonly zero: widgetTypes.BorderRadiusDirectional;
+  } & {
+    readonly all: (
+      radius: widgetTypes.Radius,
+    ) => widgetTypes.BorderRadiusDirectional;
+    readonly circular: (radius: number) => widgetTypes.BorderRadiusDirectional;
+    readonly horizontal: (options?: {
+      start?: widgetTypes.Radius;
+      end?: widgetTypes.Radius;
+    }) => widgetTypes.BorderRadiusDirectional;
+    readonly only: (options?: {
+      topStart?: widgetTypes.Radius;
+      topEnd?: widgetTypes.Radius;
+      bottomStart?: widgetTypes.Radius;
+      bottomEnd?: widgetTypes.Radius;
+    }) => widgetTypes.BorderRadiusDirectional;
+    readonly vertical: (options?: {
+      top?: widgetTypes.Radius;
+      bottom?: widgetTypes.Radius;
+    }) => widgetTypes.BorderRadiusDirectional;
+  }
+>('BorderRadiusDirectional');
 
 /**
  * Base class for [BorderRadius] that allows for text-direction aware resolution.
@@ -10066,12 +10138,41 @@ export const BorderRadiusDirectional = declareConstants<{
  * To convert a [BorderRadiusGeometry] object of indeterminate type into a
  * [BorderRadius] object, call the [resolve] method.
  */
-export const BorderRadiusGeometry = declareConstants<{
-  /**
-   * A [BorderRadius] with all zero radii.
-   */
-  readonly zero: widgetTypes.BorderRadiusGeometry;
-}>('BorderRadiusGeometry');
+export const BorderRadiusGeometry = declareConstants<
+  {
+    /**
+     * A [BorderRadius] with all zero radii.
+     */
+    readonly zero: widgetTypes.BorderRadiusGeometry;
+  } & {
+    readonly all: (
+      radius: widgetTypes.Radius,
+    ) => widgetTypes.BorderRadiusGeometry;
+    readonly circular: (radius: number) => widgetTypes.BorderRadiusGeometry;
+    readonly directional: (options?: {
+      topStart?: widgetTypes.Radius;
+      topEnd?: widgetTypes.Radius;
+      bottomStart?: widgetTypes.Radius;
+      bottomEnd?: widgetTypes.Radius;
+    }) => widgetTypes.BorderRadiusGeometry;
+    readonly horizontal: (options?: {
+      left?: widgetTypes.Radius;
+      right?: widgetTypes.Radius;
+      start?: widgetTypes.Radius;
+      end?: widgetTypes.Radius;
+    }) => widgetTypes.BorderRadiusGeometry;
+    readonly only: (options?: {
+      topLeft?: widgetTypes.Radius;
+      topRight?: widgetTypes.Radius;
+      bottomLeft?: widgetTypes.Radius;
+      bottomRight?: widgetTypes.Radius;
+    }) => widgetTypes.BorderRadiusGeometry;
+    readonly vertical: (options?: {
+      top?: widgetTypes.Radius;
+      bottom?: widgetTypes.Radius;
+    }) => widgetTypes.BorderRadiusGeometry;
+  }
+>('BorderRadiusGeometry');
 
 /**
  * A side of a border of a box.
@@ -10108,34 +10209,41 @@ export const BorderRadiusGeometry = declareConstants<{
  *    ([TableBorder.horizontalInside] and [TableBorder.verticalInside]), both
  *    of which are also [BorderSide] objects.
  */
-export const BorderSide = declareConstants<{
-  /**
-   * A hairline black border that is not rendered.
-   */
-  readonly none: widgetTypes.BorderSide;
-  /**
-   * The border is drawn on the center of the border path, with half of the
-   * [BorderSide.width] on the inside, and the other half on the outside of
-   * the path.
-   *
-   * This is a constant for use with [strokeAlign].
-   */
-  readonly strokeAlignCenter: number;
-  /**
-   * The border is drawn fully inside of the border path.
-   *
-   * This is a constant for use with [strokeAlign].
-   *
-   * This is the default value for [strokeAlign].
-   */
-  readonly strokeAlignInside: number;
-  /**
-   * The border is drawn on the outside of the border path.
-   *
-   * This is a constant for use with [strokeAlign].
-   */
-  readonly strokeAlignOutside: number;
-}>('BorderSide');
+export const BorderSide = declareConstants<
+  {
+    /**
+     * A hairline black border that is not rendered.
+     */
+    readonly none: widgetTypes.BorderSide;
+    /**
+     * The border is drawn on the center of the border path, with half of the
+     * [BorderSide.width] on the inside, and the other half on the outside of
+     * the path.
+     *
+     * This is a constant for use with [strokeAlign].
+     */
+    readonly strokeAlignCenter: number;
+    /**
+     * The border is drawn fully inside of the border path.
+     *
+     * This is a constant for use with [strokeAlign].
+     *
+     * This is the default value for [strokeAlign].
+     */
+    readonly strokeAlignInside: number;
+    /**
+     * The border is drawn on the outside of the border path.
+     *
+     * This is a constant for use with [strokeAlign].
+     */
+    readonly strokeAlignOutside: number;
+  } & (new (options?: {
+    color?: widgetTypes.Color;
+    width?: number;
+    style?: widgetTypes.BorderStyle;
+    strokeAlign?: number;
+  }) => widgetTypes.BorderSide)
+>('BorderSide');
 
 /**
  * An implementation of scroll physics that matches iOS.
@@ -10144,13 +10252,23 @@ export const BorderSide = declareConstants<{
  *
  *  * [ClampingScrollSimulation], which implements Android scroll physics.
  */
-export const BouncingScrollSimulation = declareConstants<{
-  /**
-   * The maximum velocity that can be transferred from the inertia of a ballistic
-   * scroll into overscroll.
-   */
-  readonly maxSpringTransferVelocity: number;
-}>('BouncingScrollSimulation');
+export const BouncingScrollSimulation = declareConstants<
+  {
+    /**
+     * The maximum velocity that can be transferred from the inertia of a ballistic
+     * scroll into overscroll.
+     */
+    readonly maxSpringTransferVelocity: number;
+  } & (new (options: {
+    position: number;
+    velocity: number;
+    leadingExtent: number;
+    trailingExtent: number;
+    spring: widgetTypes.SpringDescription;
+    constantDeceleration?: number;
+    tolerance?: widgetTypes.Tolerance;
+  }) => widgetTypes.BouncingScrollSimulation)
+>('BouncingScrollSimulation');
 
 /**
  * The buffering and dispatch mechanism for messages sent by plugins
@@ -10228,19 +10346,21 @@ export const BouncingScrollSimulation = declareConstants<{
  * the buffer size and to disable the overflow warnings. See [handleMessage]
  * for details on these messages.
  */
-export const ChannelBuffers = declareConstants<{
-  /**
-   * The name of the channel that plugins can use to communicate with the
-   * channel buffers system.
-   *
-   * These messages are handled by [handleMessage].
-   */
-  readonly kControlChannelName: string;
-  /**
-   * The number of messages that channel buffers will store by default.
-   */
-  readonly kDefaultBufferSize: number;
-}>('ChannelBuffers');
+export const ChannelBuffers = declareConstants<
+  {
+    /**
+     * The name of the channel that plugins can use to communicate with the
+     * channel buffers system.
+     *
+     * These messages are handled by [handleMessage].
+     */
+    readonly kControlChannelName: string;
+    /**
+     * The number of messages that channel buffers will store by default.
+     */
+    readonly kDefaultBufferSize: number;
+  } & (new () => widgetTypes.ChannelBuffers)
+>('ChannelBuffers');
 
 /**
  * The characters of a string.
@@ -10259,12 +10379,14 @@ export const ChannelBuffers = declareConstants<{
  * but which also provides ways to select other ranges of characters
  * in different ways.
  */
-export const Characters = declareConstants<{
-  /**
-   * An empty [Characters] containing no characters.
-   */
-  readonly empty: widgetTypes.Characters;
-}>('Characters');
+export const Characters = declareConstants<
+  {
+    /**
+     * An empty [Characters] containing no characters.
+     */
+    readonly empty: widgetTypes.Characters;
+  } & (new (string: string) => widgetTypes.Characters)
+>('Characters');
 
 /**
  * The relative position of a child in a [TwoDimensionalViewport] in relation
@@ -10277,13 +10399,18 @@ export const Characters = declareConstants<{
  * Combined with the [RenderTwoDimensionalViewport.mainAxis], each child's
  * vicinity determines its paint order among all of the children.
  */
-export const ChildVicinity = declareConstants<{
-  /**
-   * Represents an unassigned child position. The given child may be in the
-   * process of moving from one position to another.
-   */
-  readonly invalid: widgetTypes.ChildVicinity;
-}>('ChildVicinity');
+export const ChildVicinity = declareConstants<
+  {
+    /**
+     * Represents an unassigned child position. The given child may be in the
+     * process of moving from one position to another.
+     */
+    readonly invalid: widgetTypes.ChildVicinity;
+  } & (new (options: {
+    xIndex: number;
+    yIndex: number;
+  }) => widgetTypes.ChildVicinity)
+>('ChildVicinity');
 
 /**
  * Utility methods for interacting with the system's clipboard.
@@ -18118,16 +18245,26 @@ export const CupertinoIcons = declareConstants<{
  *
  * Used by [CupertinoSlider].
  */
-export const CupertinoThumbPainter = declareConstants<{
-  /**
-   * The default amount the thumb should be extended horizontally when pressed.
-   */
-  readonly extension: number;
-  /**
-   * Half the default diameter of the thumb.
-   */
-  readonly radius: number;
-}>('CupertinoThumbPainter');
+export const CupertinoThumbPainter = declareConstants<
+  {
+    /**
+     * The default amount the thumb should be extended horizontally when pressed.
+     */
+    readonly extension: number;
+    /**
+     * Half the default diameter of the thumb.
+     */
+    readonly radius: number;
+  } & (new (options?: {
+    color?: widgetTypes.Color;
+    shadows?: widgetTypes.BoxShadow[];
+  }) => widgetTypes.CupertinoThumbPainter & {
+    readonly switchThumb: (options?: {
+      color?: widgetTypes.Color;
+      shadows?: widgetTypes.BoxShadow[];
+    }) => widgetTypes.CupertinoThumbPainter;
+  })
+>('CupertinoThumbPainter');
 
 /**
  * A collection of common animation curves.
@@ -18530,23 +18667,38 @@ export const Curves = declareConstants<{
  * in the [DataTable], in the new [DataRow] constructor's `cells`
  * argument.
  */
-export const DataCell = declareConstants<{
-  /**
-   * A cell that has no content and has zero width and height.
-   */
-  readonly empty: widgetTypes.DataCell;
-}>('DataCell');
+export const DataCell = declareConstants<
+  {
+    /**
+     * A cell that has no content and has zero width and height.
+     */
+    readonly empty: widgetTypes.DataCell;
+  } & (new (
+    child: FlutterElement,
+    options?: {
+      placeholder?: boolean;
+      showEditIcon?: boolean;
+      onTap?: () => void;
+      onLongPress?: () => void;
+      onTapDown?: (details: widgetTypes.TapDownDetails) => void;
+      onDoubleTap?: () => void;
+      onTapCancel?: () => void;
+    },
+  ) => widgetTypes.DataCell)
+>('DataCell');
 
 /**
  * US English strings for the Cupertino widgets.
  */
-export const DefaultCupertinoLocalizations = declareConstants<{
-  /**
-   * A [LocalizationsDelegate] that uses [DefaultCupertinoLocalizations.load]
-   * to create an instance of this class.
-   */
-  readonly delegate: widgetTypes.LocalizationsDelegate;
-}>('DefaultCupertinoLocalizations');
+export const DefaultCupertinoLocalizations = declareConstants<
+  {
+    /**
+     * A [LocalizationsDelegate] that uses [DefaultCupertinoLocalizations.load]
+     * to create an instance of this class.
+     */
+    readonly delegate: widgetTypes.LocalizationsDelegate;
+  } & (new () => widgetTypes.DefaultCupertinoLocalizations)
+>('DefaultCupertinoLocalizations');
 
 /**
  * US English strings for the material widgets.
@@ -18558,15 +18710,17 @@ export const DefaultCupertinoLocalizations = declareConstants<{
  *  * [MaterialApp.localizationsDelegates], which automatically includes
  *    [DefaultMaterialLocalizations.delegate] by default.
  */
-export const DefaultMaterialLocalizations = declareConstants<{
-  /**
-   * A [LocalizationsDelegate] that uses [DefaultMaterialLocalizations.load]
-   * to create an instance of this class.
-   *
-   * [MaterialApp] automatically adds this value to [MaterialApp.localizationsDelegates].
-   */
-  readonly delegate: widgetTypes.LocalizationsDelegate;
-}>('DefaultMaterialLocalizations');
+export const DefaultMaterialLocalizations = declareConstants<
+  {
+    /**
+     * A [LocalizationsDelegate] that uses [DefaultMaterialLocalizations.load]
+     * to create an instance of this class.
+     *
+     * [MaterialApp] automatically adds this value to [MaterialApp.localizationsDelegates].
+     */
+    readonly delegate: widgetTypes.LocalizationsDelegate;
+  } & (new () => widgetTypes.DefaultMaterialLocalizations)
+>('DefaultMaterialLocalizations');
 
 /**
  * US English localizations for the widgets library.
@@ -18578,15 +18732,17 @@ export const DefaultMaterialLocalizations = declareConstants<{
  *  * [WidgetsApp.localizationsDelegates], which automatically includes
  *    [DefaultWidgetsLocalizations.delegate] by default.
  */
-export const DefaultWidgetsLocalizations = declareConstants<{
-  /**
-   * A [LocalizationsDelegate] that uses [DefaultWidgetsLocalizations.load]
-   * to create an instance of this class.
-   *
-   * [WidgetsApp] automatically adds this value to [WidgetsApp.localizationsDelegates].
-   */
-  readonly delegate: widgetTypes.LocalizationsDelegate;
-}>('DefaultWidgetsLocalizations');
+export const DefaultWidgetsLocalizations = declareConstants<
+  {
+    /**
+     * A [LocalizationsDelegate] that uses [DefaultWidgetsLocalizations.load]
+     * to create an instance of this class.
+     *
+     * [WidgetsApp] automatically adds this value to [WidgetsApp.localizationsDelegates].
+     */
+    readonly delegate: widgetTypes.LocalizationsDelegate;
+  } & (new () => widgetTypes.DefaultWidgetsLocalizations)
+>('DefaultWidgetsLocalizations');
 
 /**
  * The set of durations in the Material specification.
@@ -18877,12 +19033,40 @@ export const Easing = declareConstants<{
  *    the type [EdgeInsetsGeometry]) allows the horizontal insets to be
  *    specified in a [TextDirection]-aware manner.
  */
-export const EdgeInsets = declareConstants<{
-  /**
-   * An [EdgeInsets] with zero offsets in each direction.
-   */
-  readonly zero: widgetTypes.EdgeInsets;
-}>('EdgeInsets');
+export const EdgeInsets = declareConstants<
+  {
+    /**
+     * An [EdgeInsets] with zero offsets in each direction.
+     */
+    readonly zero: widgetTypes.EdgeInsets;
+  } & {
+    readonly all: (value: number) => widgetTypes.EdgeInsets;
+    readonly fromLTRB: (
+      left: number,
+      top: number,
+      right: number,
+      bottom: number,
+    ) => widgetTypes.EdgeInsets;
+    readonly fromViewPadding: (
+      padding: widgetTypes.ViewPadding,
+      devicePixelRatio: number,
+    ) => widgetTypes.EdgeInsets;
+    readonly fromWindowPadding: (
+      padding: widgetTypes.ViewPadding,
+      devicePixelRatio: number,
+    ) => widgetTypes.EdgeInsets;
+    readonly only: (options?: {
+      left?: number;
+      top?: number;
+      right?: number;
+      bottom?: number;
+    }) => widgetTypes.EdgeInsets;
+    readonly symmetric: (options?: {
+      vertical?: number;
+      horizontal?: number;
+    }) => widgetTypes.EdgeInsets;
+  }
+>('EdgeInsets');
 
 /**
  * An immutable set of offsets in each of the four cardinal directions, but
@@ -18897,15 +19081,35 @@ export const EdgeInsets = declareConstants<{
  *  * [EdgeInsets], a variant that uses physical labels (left and right instead
  *    of start and end).
  */
-export const EdgeInsetsDirectional = declareConstants<{
-  /**
-   * An [EdgeInsetsDirectional] with zero offsets in each direction.
-   *
-   * Consider using [EdgeInsets.zero] instead, since that object has the same
-   * effect, but will be cheaper to [resolve].
-   */
-  readonly zero: widgetTypes.EdgeInsetsDirectional;
-}>('EdgeInsetsDirectional');
+export const EdgeInsetsDirectional = declareConstants<
+  {
+    /**
+     * An [EdgeInsetsDirectional] with zero offsets in each direction.
+     *
+     * Consider using [EdgeInsets.zero] instead, since that object has the same
+     * effect, but will be cheaper to [resolve].
+     */
+    readonly zero: widgetTypes.EdgeInsetsDirectional;
+  } & {
+    readonly all: (value: number) => widgetTypes.EdgeInsetsDirectional;
+    readonly fromSTEB: (
+      start: number,
+      top: number,
+      end: number,
+      bottom: number,
+    ) => widgetTypes.EdgeInsetsDirectional;
+    readonly only: (options?: {
+      start?: number;
+      top?: number;
+      end?: number;
+      bottom?: number;
+    }) => widgetTypes.EdgeInsetsDirectional;
+    readonly symmetric: (options?: {
+      horizontal?: number;
+      vertical?: number;
+    }) => widgetTypes.EdgeInsetsDirectional;
+  }
+>('EdgeInsetsDirectional');
 
 /**
  * Base class for [EdgeInsets] that allows for text-direction aware
@@ -18922,18 +19126,54 @@ export const EdgeInsetsDirectional = declareConstants<{
  *
  *  * [Padding], a widget that describes margins using [EdgeInsetsGeometry].
  */
-export const EdgeInsetsGeometry = declareConstants<{
-  /**
-   * An [EdgeInsetsGeometry] with infinite offsets in each direction.
-   *
-   * Can be used as an infinite upper bound for [clamp].
-   */
-  readonly infinity: widgetTypes.EdgeInsetsGeometry;
-  /**
-   * An [EdgeInsets] with zero offsets in each direction.
-   */
-  readonly zero: widgetTypes.EdgeInsetsGeometry;
-}>('EdgeInsetsGeometry');
+export const EdgeInsetsGeometry = declareConstants<
+  {
+    /**
+     * An [EdgeInsetsGeometry] with infinite offsets in each direction.
+     *
+     * Can be used as an infinite upper bound for [clamp].
+     */
+    readonly infinity: widgetTypes.EdgeInsetsGeometry;
+    /**
+     * An [EdgeInsets] with zero offsets in each direction.
+     */
+    readonly zero: widgetTypes.EdgeInsetsGeometry;
+  } & {
+    readonly all: (value: number) => widgetTypes.EdgeInsetsGeometry;
+    readonly directional: (options?: {
+      start?: number;
+      end?: number;
+      top?: number;
+      bottom?: number;
+    }) => widgetTypes.EdgeInsetsGeometry;
+    readonly fromLTRB: (
+      left: number,
+      top: number,
+      right: number,
+      bottom: number,
+    ) => widgetTypes.EdgeInsetsGeometry;
+    readonly fromSTEB: (
+      start: number,
+      top: number,
+      end: number,
+      bottom: number,
+    ) => widgetTypes.EdgeInsetsGeometry;
+    readonly fromViewPadding: (
+      padding: widgetTypes.ViewPadding,
+      devicePixelRatio: number,
+    ) => widgetTypes.EdgeInsetsGeometry;
+    readonly only: (options?: {
+      left?: number;
+      right?: number;
+      top?: number;
+      bottom?: number;
+    }) => widgetTypes.EdgeInsetsGeometry;
+    readonly symmetric: (options?: {
+      vertical?: number;
+      horizontal?: number;
+    }) => widgetTypes.EdgeInsetsGeometry;
+  }
+>('EdgeInsetsGeometry');
 
 /**
  * Endianness of number representation.
@@ -18983,17 +19223,21 @@ export const Endian = declareConstants<{
  *  * [FadeForwardsPageTransitionsBuilder], which defines a page transition
  *    that's similar to the one provided by Android U.
  */
-export const FadeForwardsPageTransitionsBuilder = declareConstants<{
-  /**
-   * The value of [transitionDuration] in milliseconds.
-   *
-   * Eyeballed on a physical Pixel 9 running Android 16. This does not match
-   * the actual value used by native Android, which is 800ms, because native
-   * Android is using Material 3 Expressive springs that are not currently
-   * supported by Flutter. So for now at least, this is an approximation.
-   */
-  readonly kTransitionMilliseconds: number;
-}>('FadeForwardsPageTransitionsBuilder');
+export const FadeForwardsPageTransitionsBuilder = declareConstants<
+  {
+    /**
+     * The value of [transitionDuration] in milliseconds.
+     *
+     * Eyeballed on a physical Pixel 9 running Android 16. This does not match
+     * the actual value used by native Android, which is 800ms, because native
+     * Android is using Material 3 Expressive springs that are not currently
+     * supported by Flutter. So for now at least, this is an approximation.
+     */
+    readonly kTransitionMilliseconds: number;
+  } & (new (options?: {
+    backgroundColor?: widgetTypes.Color;
+  }) => widgetTypes.FadeForwardsPageTransitionsBuilder)
+>('FadeForwardsPageTransitionsBuilder');
 
 /**
  * A fixed-length list of IEEE 754 single-precision binary floating-point
@@ -19010,9 +19254,13 @@ export const FadeForwardsPageTransitionsBuilder = declareConstants<{
  * It is a compile-time error for a class to attempt to extend or implement
  * `Float32List`.
  */
-export const Float32List = declareConstants<{
-  readonly bytesPerElement: number;
-}>('Float32List');
+export const Float32List = declareConstants<
+  {
+    readonly bytesPerElement: number;
+  } & (new (length: number) => widgetTypes.Float32List & {
+    readonly fromList: (elements: number[]) => widgetTypes.Float32List;
+  })
+>('Float32List');
 
 /**
  * A fixed-length list of IEEE 754 double-precision binary floating-point
@@ -19025,9 +19273,13 @@ export const Float32List = declareConstants<{
  * It is a compile-time error for a class to attempt to extend or implement
  * `Float64List`.
  */
-export const Float64List = declareConstants<{
-  readonly bytesPerElement: number;
-}>('Float64List');
+export const Float64List = declareConstants<
+  {
+    readonly bytesPerElement: number;
+  } & (new (length: number) => widgetTypes.Float64List & {
+    readonly fromList: (elements: number[]) => widgetTypes.Float64List;
+  })
+>('Float64List');
 
 /**
  * Provider of animations to move the [FloatingActionButton] between [FloatingActionButtonLocation]s.
@@ -19503,15 +19755,17 @@ export const FloatingLabelAlignment = declareConstants<{
  *  * <https://docs.flutter.dev/testing/errors>, more information about error
  *    handling in Flutter.
  */
-export const FlutterError = declareConstants<{
-  /**
-   * The width to which [dumpErrorToConsole] will wrap lines.
-   *
-   * This can be used to ensure strings will not exceed the length at which
-   * they will wrap, e.g. when placing ASCII art diagrams in messages.
-   */
-  readonly wrapWidth: number;
-}>('FlutterError');
+export const FlutterError = declareConstants<
+  {
+    /**
+     * The width to which [dumpErrorToConsole] will wrap lines.
+     *
+     * This can be used to ensure strings will not exceed the length at which
+     * they will wrap, e.g. when placing ASCII art diagrams in messages.
+     */
+    readonly wrapWidth: number;
+  } & (new (message: string) => widgetTypes.FlutterError)
+>('FlutterError');
 
 /**
  * Details about the Flutter version this app was compiled with,
@@ -19586,56 +19840,58 @@ export const FlutterVersion = declareConstants<{
  * [FontWeight] will set the value of the `wght` axis (producing the same
  * results as explicitly setting that attribute using [FontVariation.weight]).
  */
-export const FontWeight = declareConstants<{
-  /**
-   * A commonly used font weight that is heavier than normal.
-   */
-  readonly bold: widgetTypes.FontWeight;
-  /**
-   * The default font weight.
-   */
-  readonly normal: widgetTypes.FontWeight;
-  /**
-   * A list of all the font weights.
-   */
-  readonly values: widgetTypes.FontWeight[];
-  /**
-   * Thin, the least thick.
-   */
-  readonly w100: widgetTypes.FontWeight;
-  /**
-   * Extra-light.
-   */
-  readonly w200: widgetTypes.FontWeight;
-  /**
-   * Light.
-   */
-  readonly w300: widgetTypes.FontWeight;
-  /**
-   * Normal / regular / plain.
-   */
-  readonly w400: widgetTypes.FontWeight;
-  /**
-   * Medium.
-   */
-  readonly w500: widgetTypes.FontWeight;
-  /**
-   * Semi-bold.
-   */
-  readonly w600: widgetTypes.FontWeight;
-  /**
-   * Bold.
-   */
-  readonly w700: widgetTypes.FontWeight;
-  /**
-   * Extra-bold.
-   */
-  readonly w800: widgetTypes.FontWeight;
-  /**
-   * Black, the most thick.
-   */
-  readonly w900: widgetTypes.FontWeight;
-}>('FontWeight');
+export const FontWeight = declareConstants<
+  {
+    /**
+     * A commonly used font weight that is heavier than normal.
+     */
+    readonly bold: widgetTypes.FontWeight;
+    /**
+     * The default font weight.
+     */
+    readonly normal: widgetTypes.FontWeight;
+    /**
+     * A list of all the font weights.
+     */
+    readonly values: widgetTypes.FontWeight[];
+    /**
+     * Thin, the least thick.
+     */
+    readonly w100: widgetTypes.FontWeight;
+    /**
+     * Extra-light.
+     */
+    readonly w200: widgetTypes.FontWeight;
+    /**
+     * Light.
+     */
+    readonly w300: widgetTypes.FontWeight;
+    /**
+     * Normal / regular / plain.
+     */
+    readonly w400: widgetTypes.FontWeight;
+    /**
+     * Medium.
+     */
+    readonly w500: widgetTypes.FontWeight;
+    /**
+     * Semi-bold.
+     */
+    readonly w600: widgetTypes.FontWeight;
+    /**
+     * Bold.
+     */
+    readonly w700: widgetTypes.FontWeight;
+    /**
+     * Extra-bold.
+     */
+    readonly w800: widgetTypes.FontWeight;
+    /**
+     * Black, the most thick.
+     */
+    readonly w900: widgetTypes.FontWeight;
+  } & (new (value: number) => widgetTypes.FontWeight)
+>('FontWeight');
 
 /**
  * An offset that's expressed as a fraction of a [Size].
@@ -19680,44 +19936,58 @@ export const FontWeight = declareConstants<{
  *  * [Alignment], which uses a coordinate system based on the center of the
  *    rectangle instead of the top left corner of the rectangle.
  */
-export const FractionalOffset = declareConstants<{
-  /**
-   * The center point along the bottom edge.
-   */
-  readonly bottomCenter: widgetTypes.FractionalOffset;
-  /**
-   * The bottom left corner.
-   */
-  readonly bottomLeft: widgetTypes.FractionalOffset;
-  /**
-   * The bottom right corner.
-   */
-  readonly bottomRight: widgetTypes.FractionalOffset;
-  /**
-   * The center point, both horizontally and vertically.
-   */
-  readonly center: widgetTypes.FractionalOffset;
-  /**
-   * The center point along the left edge.
-   */
-  readonly centerLeft: widgetTypes.FractionalOffset;
-  /**
-   * The center point along the right edge.
-   */
-  readonly centerRight: widgetTypes.FractionalOffset;
-  /**
-   * The center point along the top edge.
-   */
-  readonly topCenter: widgetTypes.FractionalOffset;
-  /**
-   * The top left corner.
-   */
-  readonly topLeft: widgetTypes.FractionalOffset;
-  /**
-   * The top right corner.
-   */
-  readonly topRight: widgetTypes.FractionalOffset;
-}>('FractionalOffset');
+export const FractionalOffset = declareConstants<
+  {
+    /**
+     * The center point along the bottom edge.
+     */
+    readonly bottomCenter: widgetTypes.FractionalOffset;
+    /**
+     * The bottom left corner.
+     */
+    readonly bottomLeft: widgetTypes.FractionalOffset;
+    /**
+     * The bottom right corner.
+     */
+    readonly bottomRight: widgetTypes.FractionalOffset;
+    /**
+     * The center point, both horizontally and vertically.
+     */
+    readonly center: widgetTypes.FractionalOffset;
+    /**
+     * The center point along the left edge.
+     */
+    readonly centerLeft: widgetTypes.FractionalOffset;
+    /**
+     * The center point along the right edge.
+     */
+    readonly centerRight: widgetTypes.FractionalOffset;
+    /**
+     * The center point along the top edge.
+     */
+    readonly topCenter: widgetTypes.FractionalOffset;
+    /**
+     * The top left corner.
+     */
+    readonly topLeft: widgetTypes.FractionalOffset;
+    /**
+     * The top right corner.
+     */
+    readonly topRight: widgetTypes.FractionalOffset;
+  } & (new (
+    dx: number,
+    dy: number,
+  ) => widgetTypes.FractionalOffset & {
+    readonly fromOffsetAndRect: (
+      offset: widgetTypes.Offset,
+      rect: widgetTypes.Rect,
+    ) => widgetTypes.FractionalOffset;
+    readonly fromOffsetAndSize: (
+      offset: widgetTypes.Offset,
+      size: widgetTypes.Size,
+    ) => widgetTypes.FractionalOffset;
+  })
+>('FractionalOffset');
 
 /**
  * Helper class that uses GLFW-specific key mappings.
@@ -19725,44 +19995,46 @@ export const FractionalOffset = declareConstants<{
  * This class is deprecated and will be removed. Platform specific key event
  * data will no longer be available. See [KeyEvent] for what is available.
  */
-export const GLFWKeyHelper = declareConstants<{
-  /**
-   * This mask is used to check the [RawKeyEventDataLinux.modifiers] field to
-   * test whether one of the ALT modifier keys is pressed.
-   */
-  readonly modifierAlt: number;
-  /**
-   * This mask is used to check the [RawKeyEventDataLinux.modifiers] field to
-   * test whether the CAPS LOCK modifier key is on.
-   *
-   * Use this value if you need to decode the [RawKeyEventDataLinux.modifiers]
-   * field yourself, but it's much easier to use [isModifierPressed] if you
-   * just want to know if a modifier is pressed. This is especially true on
-   * GLFW, since its modifiers don't include the effects of the current key
-   * event.
-   */
-  readonly modifierCapsLock: number;
-  /**
-   * This mask is used to check the [RawKeyEventDataLinux.modifiers] field to
-   * test whether one of the CTRL modifier keys is pressed.
-   */
-  readonly modifierControl: number;
-  /**
-   * This mask is used to check the [RawKeyEventDataLinux.modifiers] field to
-   * test whether one of the Meta(SUPER) modifier keys is pressed.
-   */
-  readonly modifierMeta: number;
-  /**
-   * This mask is used to check the [RawKeyEventDataLinux.modifiers] field to
-   * test whether any key in the numeric keypad is pressed.
-   */
-  readonly modifierNumericPad: number;
-  /**
-   * This mask is used to check the [RawKeyEventDataLinux.modifiers] field to
-   * test whether one of the SHIFT modifier keys is pressed.
-   */
-  readonly modifierShift: number;
-}>('GLFWKeyHelper');
+export const GLFWKeyHelper = declareConstants<
+  {
+    /**
+     * This mask is used to check the [RawKeyEventDataLinux.modifiers] field to
+     * test whether one of the ALT modifier keys is pressed.
+     */
+    readonly modifierAlt: number;
+    /**
+     * This mask is used to check the [RawKeyEventDataLinux.modifiers] field to
+     * test whether the CAPS LOCK modifier key is on.
+     *
+     * Use this value if you need to decode the [RawKeyEventDataLinux.modifiers]
+     * field yourself, but it's much easier to use [isModifierPressed] if you
+     * just want to know if a modifier is pressed. This is especially true on
+     * GLFW, since its modifiers don't include the effects of the current key
+     * event.
+     */
+    readonly modifierCapsLock: number;
+    /**
+     * This mask is used to check the [RawKeyEventDataLinux.modifiers] field to
+     * test whether one of the CTRL modifier keys is pressed.
+     */
+    readonly modifierControl: number;
+    /**
+     * This mask is used to check the [RawKeyEventDataLinux.modifiers] field to
+     * test whether one of the Meta(SUPER) modifier keys is pressed.
+     */
+    readonly modifierMeta: number;
+    /**
+     * This mask is used to check the [RawKeyEventDataLinux.modifiers] field to
+     * test whether any key in the numeric keypad is pressed.
+     */
+    readonly modifierNumericPad: number;
+    /**
+     * This mask is used to check the [RawKeyEventDataLinux.modifiers] field to
+     * test whether one of the SHIFT modifier keys is pressed.
+     */
+    readonly modifierShift: number;
+  } & (new () => widgetTypes.GLFWKeyHelper)
+>('GLFWKeyHelper');
 
 /**
  * Helper class that uses GTK-specific key mappings.
@@ -19770,44 +20042,46 @@ export const GLFWKeyHelper = declareConstants<{
  * This class is deprecated and will be removed. Platform specific key event
  * data will no longer be available. See [KeyEvent] for what is available.
  */
-export const GtkKeyHelper = declareConstants<{
-  /**
-   * This mask is used to check the [RawKeyEventDataLinux.modifiers] field to
-   * test whether the CAPS LOCK modifier key is on.
-   */
-  readonly modifierCapsLock: number;
-  /**
-   * This mask is used to check the [RawKeyEventDataLinux.modifiers] field to
-   * test whether one of the CTRL modifier keys is pressed.
-   */
-  readonly modifierControl: number;
-  /**
-   * This mask is used to check the [RawKeyEventDataLinux.modifiers] field to
-   * test whether one of the Meta(SUPER) modifier keys is pressed.
-   */
-  readonly modifierMeta: number;
-  /**
-   * This mask is used to check the [RawKeyEventDataLinux.modifiers] field to
-   * test whether the first modifier key is pressed (usually mapped to alt).
-   */
-  readonly modifierMod1: number;
-  /**
-   * This mask is used to check the [RawKeyEventDataLinux.modifiers] field to
-   * test whether the second modifier key is pressed (assumed to be mapped to
-   * num lock).
-   */
-  readonly modifierMod2: number;
-  /**
-   * This mask is used to check the [RawKeyEventDataLinux.modifiers] field to
-   * test whether one of the SHIFT modifier keys is pressed.
-   *
-   * Use this value if you need to decode the [RawKeyEventDataLinux.modifiers] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if a
-   * modifier is pressed. This is especially true on GTK, since its modifiers
-   * don't include the effects of the current key event.
-   */
-  readonly modifierShift: number;
-}>('GtkKeyHelper');
+export const GtkKeyHelper = declareConstants<
+  {
+    /**
+     * This mask is used to check the [RawKeyEventDataLinux.modifiers] field to
+     * test whether the CAPS LOCK modifier key is on.
+     */
+    readonly modifierCapsLock: number;
+    /**
+     * This mask is used to check the [RawKeyEventDataLinux.modifiers] field to
+     * test whether one of the CTRL modifier keys is pressed.
+     */
+    readonly modifierControl: number;
+    /**
+     * This mask is used to check the [RawKeyEventDataLinux.modifiers] field to
+     * test whether one of the Meta(SUPER) modifier keys is pressed.
+     */
+    readonly modifierMeta: number;
+    /**
+     * This mask is used to check the [RawKeyEventDataLinux.modifiers] field to
+     * test whether the first modifier key is pressed (usually mapped to alt).
+     */
+    readonly modifierMod1: number;
+    /**
+     * This mask is used to check the [RawKeyEventDataLinux.modifiers] field to
+     * test whether the second modifier key is pressed (assumed to be mapped to
+     * num lock).
+     */
+    readonly modifierMod2: number;
+    /**
+     * This mask is used to check the [RawKeyEventDataLinux.modifiers] field to
+     * test whether one of the SHIFT modifier keys is pressed.
+     *
+     * Use this value if you need to decode the [RawKeyEventDataLinux.modifiers] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if a
+     * modifier is pressed. This is especially true on GTK, since its modifiers
+     * don't include the effects of the current key event.
+     */
+    readonly modifierShift: number;
+  } & (new () => widgetTypes.GtkKeyHelper)
+>('GtkKeyHelper');
 
 /**
  * The results of hit testing a view at a specific position.
@@ -55195,14 +55469,23 @@ export const Icons = declareConstants<{
  *  * [ImageProvider], which uses [ImageConfiguration] objects to determine
  *    which image to obtain.
  */
-export const ImageConfiguration = declareConstants<{
-  /**
-   * An image configuration that provides no additional information.
-   *
-   * Useful when resolving an [ImageProvider] without any context.
-   */
-  readonly empty: widgetTypes.ImageConfiguration;
-}>('ImageConfiguration');
+export const ImageConfiguration = declareConstants<
+  {
+    /**
+     * An image configuration that provides no additional information.
+     *
+     * Useful when resolving an [ImageProvider] without any context.
+     */
+    readonly empty: widgetTypes.ImageConfiguration;
+  } & (new (options?: {
+    bundle?: widgetTypes.AssetBundle;
+    devicePixelRatio?: number;
+    locale?: widgetTypes.Locale;
+    textDirection?: widgetTypes.TextDirection;
+    size?: widgetTypes.Size;
+    platform?: widgetTypes.TargetPlatform;
+  }) => widgetTypes.ImageConfiguration)
+>('ImageConfiguration');
 
 /**
  * A visual reaction on a piece of [Material] to user input.
@@ -55228,13 +55511,27 @@ export const ImageConfiguration = declareConstants<{
  *  * [InkHighlight], which is an ink feature that emphasizes a part of a
  *    [Material].
  */
-export const InkRipple = declareConstants<{
-  /**
-   * Used to specify this type of ink splash for an [InkWell], [InkResponse],
-   * material [Theme], or [ButtonStyle].
-   */
-  readonly splashFactory: widgetTypes.InteractiveInkFeatureFactory;
-}>('InkRipple');
+export const InkRipple = declareConstants<
+  {
+    /**
+     * Used to specify this type of ink splash for an [InkWell], [InkResponse],
+     * material [Theme], or [ButtonStyle].
+     */
+    readonly splashFactory: widgetTypes.InteractiveInkFeatureFactory;
+  } & (new (options: {
+    controller: widgetTypes.MaterialInkController;
+    referenceBox: widgetTypes.RenderBox;
+    position: widgetTypes.Offset;
+    color: widgetTypes.Color;
+    textDirection: widgetTypes.TextDirection;
+    containedInkWell?: boolean;
+    rectCallback?: () => widgetTypes.Rect;
+    borderRadius?: widgetTypes.BorderRadius;
+    customBorder?: widgetTypes.ShapeBorder;
+    radius?: number;
+    onRemoved?: () => void;
+  }) => widgetTypes.InkRipple)
+>('InkRipple');
 
 /**
  * Begin a Material 3 ink sparkle ripple, centered at the tap or click position
@@ -55273,24 +55570,39 @@ export const InkRipple = declareConstants<{
  * )
  * ```
  */
-export const InkSparkle = declareConstants<{
-  /**
-   * Used to specify this type of ink splash for an [InkWell], [InkResponse],
-   * material [Theme], or [ButtonStyle].
-   *
-   * Since a `turbulenceSeed` is passed, the effect will not be random for
-   * subsequent presses in the same position. This can be used for testing.
-   */
-  readonly constantTurbulenceSeedSplashFactory: widgetTypes.InteractiveInkFeatureFactory;
-  /**
-   * Used to specify this type of ink splash for an [InkWell], [InkResponse],
-   * material [Theme], or [ButtonStyle].
-   *
-   * Since no `turbulenceSeed` is passed, the effect will be random for
-   * subsequent presses in the same position.
-   */
-  readonly splashFactory: widgetTypes.InteractiveInkFeatureFactory;
-}>('InkSparkle');
+export const InkSparkle = declareConstants<
+  {
+    /**
+     * Used to specify this type of ink splash for an [InkWell], [InkResponse],
+     * material [Theme], or [ButtonStyle].
+     *
+     * Since a `turbulenceSeed` is passed, the effect will not be random for
+     * subsequent presses in the same position. This can be used for testing.
+     */
+    readonly constantTurbulenceSeedSplashFactory: widgetTypes.InteractiveInkFeatureFactory;
+    /**
+     * Used to specify this type of ink splash for an [InkWell], [InkResponse],
+     * material [Theme], or [ButtonStyle].
+     *
+     * Since no `turbulenceSeed` is passed, the effect will be random for
+     * subsequent presses in the same position.
+     */
+    readonly splashFactory: widgetTypes.InteractiveInkFeatureFactory;
+  } & (new (options: {
+    controller: widgetTypes.MaterialInkController;
+    referenceBox: widgetTypes.RenderBox;
+    color: widgetTypes.Color;
+    position: widgetTypes.Offset;
+    textDirection: widgetTypes.TextDirection;
+    containedInkWell?: boolean;
+    rectCallback?: () => widgetTypes.Rect;
+    borderRadius?: widgetTypes.BorderRadius;
+    customBorder?: widgetTypes.ShapeBorder;
+    radius?: number;
+    onRemoved?: () => void;
+    turbulenceSeed?: number;
+  }) => widgetTypes.InkSparkle)
+>('InkSparkle');
 
 /**
  * A visual reaction on a piece of [Material] to user input.
@@ -55316,13 +55628,27 @@ export const InkSparkle = declareConstants<{
  *  * [Ink], a convenience widget for drawing images and other decorations on
  *    Material widgets.
  */
-export const InkSplash = declareConstants<{
-  /**
-   * Used to specify this type of ink splash for an [InkWell], [InkResponse],
-   * material [Theme], or [ButtonStyle].
-   */
-  readonly splashFactory: widgetTypes.InteractiveInkFeatureFactory;
-}>('InkSplash');
+export const InkSplash = declareConstants<
+  {
+    /**
+     * Used to specify this type of ink splash for an [InkWell], [InkResponse],
+     * material [Theme], or [ButtonStyle].
+     */
+    readonly splashFactory: widgetTypes.InteractiveInkFeatureFactory;
+  } & (new (options: {
+    controller: widgetTypes.MaterialInkController;
+    referenceBox: widgetTypes.RenderBox;
+    textDirection: widgetTypes.TextDirection;
+    position?: widgetTypes.Offset;
+    color: widgetTypes.Color;
+    containedInkWell?: boolean;
+    rectCallback?: () => widgetTypes.Rect;
+    borderRadius?: widgetTypes.BorderRadius;
+    customBorder?: widgetTypes.ShapeBorder;
+    radius?: number;
+    onRemoved?: () => void;
+  }) => widgetTypes.InkSplash)
+>('InkSplash');
 
 /**
  * The textual and semantic label information for an [InlineSpan].
@@ -55333,12 +55659,23 @@ export const InkSplash = declareConstants<{
  *
  *  * [InlineSpan.getSemanticsInformation]
  */
-export const InlineSpanSemanticsInformation = declareConstants<{
-  /**
-   * The text info for a [PlaceholderSpan].
-   */
-  readonly placeholder: widgetTypes.InlineSpanSemanticsInformation;
-}>('InlineSpanSemanticsInformation');
+export const InlineSpanSemanticsInformation = declareConstants<
+  {
+    /**
+     * The text info for a [PlaceholderSpan].
+     */
+    readonly placeholder: widgetTypes.InlineSpanSemanticsInformation;
+  } & (new (
+    text: string,
+    options?: {
+      isPlaceholder?: boolean;
+      semanticsLabel?: string;
+      semanticsIdentifier?: string;
+      stringAttributes?: widgetTypes.StringAttribute[];
+      recognizer?: widgetTypes.GestureRecognizer;
+    },
+  ) => widgetTypes.InlineSpanSemanticsInformation)
+>('InlineSpanSemanticsInformation');
 
 /**
  * Defines the appearance of an [InputDecorator]'s border.
@@ -55408,9 +55745,13 @@ export const InspectorButton = declareConstants<{
  * It is a compile-time error for a class to attempt to extend or implement
  * `Int32List`.
  */
-export const Int32List = declareConstants<{
-  readonly bytesPerElement: number;
-}>('Int32List');
+export const Int32List = declareConstants<
+  {
+    readonly bytesPerElement: number;
+  } & (new (length: number) => widgetTypes.Int32List & {
+    readonly fromList: (elements: number[]) => widgetTypes.Int32List;
+  })
+>('Int32List');
 
 /**
  * A fixed-length list of 64-bit signed integers that is viewable as a
@@ -55426,9 +55767,13 @@ export const Int32List = declareConstants<{
  * It is a compile-time error for a class to attempt to extend or implement
  * `Int64List`.
  */
-export const Int64List = declareConstants<{
-  readonly bytesPerElement: number;
-}>('Int64List');
+export const Int64List = declareConstants<
+  {
+    readonly bytesPerElement: number;
+  } & (new (length: number) => widgetTypes.Int64List & {
+    readonly fromList: (elements: number[]) => widgetTypes.Int64List;
+  })
+>('Int64List');
 
 /**
  * An abstract class representing a particular configuration of an [Action].
@@ -55462,12 +55807,14 @@ export const Intent = declareConstants<{
  *
  * See [LicenseEntry.paragraphs].
  */
-export const LicenseParagraph = declareConstants<{
-  /**
-   * A constant that represents "centered" alignment for [indent].
-   */
-  readonly centeredIndent: number;
-}>('LicenseParagraph');
+export const LicenseParagraph = declareConstants<
+  {
+    /**
+     * A constant that represents "centered" alignment for [indent].
+     */
+    readonly centeredIndent: number;
+  } & (new (text: string, indent: number) => widgetTypes.LicenseParagraph)
+>('LicenseParagraph');
 
 /**
  * An [OutlinedBorder] like [BoxBorder] that allows one to define a rectangular (box) border
@@ -55504,12 +55851,41 @@ export const LicenseParagraph = declareConstants<{
  *
  * ** See code in examples/api/lib/painting/linear_border/linear_border.0.dart **
  */
-export const LinearBorder = declareConstants<{
-  /**
-   * No border.
-   */
-  readonly none: widgetTypes.LinearBorder;
-}>('LinearBorder');
+export const LinearBorder = declareConstants<
+  {
+    /**
+     * No border.
+     */
+    readonly none: widgetTypes.LinearBorder;
+  } & (new (options?: {
+    side?: widgetTypes.BorderSide;
+    start?: widgetTypes.LinearBorderEdge;
+    end?: widgetTypes.LinearBorderEdge;
+    top?: widgetTypes.LinearBorderEdge;
+    bottom?: widgetTypes.LinearBorderEdge;
+  }) => widgetTypes.LinearBorder & {
+    readonly bottom: (options?: {
+      side?: widgetTypes.BorderSide;
+      alignment?: number;
+      size?: number;
+    }) => widgetTypes.LinearBorder;
+    readonly end: (options?: {
+      side?: widgetTypes.BorderSide;
+      alignment?: number;
+      size?: number;
+    }) => widgetTypes.LinearBorder;
+    readonly start: (options?: {
+      side?: widgetTypes.BorderSide;
+      alignment?: number;
+      size?: number;
+    }) => widgetTypes.LinearBorder;
+    readonly top: (options?: {
+      side?: widgetTypes.BorderSide;
+      alignment?: number;
+      size?: number;
+    }) => widgetTypes.LinearBorder;
+  })
+>('LinearBorder');
 
 /**
  * A class with static values that describe the keys that are returned from
@@ -55545,2778 +55921,2787 @@ export const LinearBorder = declareConstants<{
  *  * [RawKeyboardListener], a widget used to listen to keyboard events (but
  *    not handle them).
  */
-export const LogicalKeyboardKey = declareConstants<{
-  /**
-   * Represents the logical "Abort" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly abort: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Accel" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly accel: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Accept" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly accept: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Add" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly add: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Again" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly again: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "All Candidates" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly allCandidates: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Alphanumeric" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly alphanumeric: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Alt" key on the keyboard.
-   *
-   * This key represents the union of the keys {altLeft, altRight} when
-   * comparing keys. This key will never be generated directly, its main use is
-   * in defining key maps.
-   */
-  readonly alt: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Alt Graph" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly altGraph: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Alt Left" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly altLeft: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Alt Right" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly altRight: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Ampersand" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly ampersand: widgetTypes.LogicalKeyboardKey;
-  /**
-   * The plane value for the private keys defined by the Android embedding.
-   *
-   * This is used by platform-specific code to generate Flutter key codes.
-   */
-  readonly androidPlane: number;
-  /**
-   * Represents the logical "App Switch" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly appSwitch: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Arrow Down" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly arrowDown: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Arrow Left" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly arrowLeft: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Arrow Right" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly arrowRight: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Arrow Up" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly arrowUp: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Asterisk" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly asterisk: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "At" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly at: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Attn" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly attn: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Audio Balance Left" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly audioBalanceLeft: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Audio Balance Right" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly audioBalanceRight: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Audio Bass Boost Down" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly audioBassBoostDown: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Audio Bass Boost Toggle" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly audioBassBoostToggle: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Audio Bass Boost Up" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly audioBassBoostUp: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Audio Fader Front" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly audioFaderFront: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Audio Fader Rear" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly audioFaderRear: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Audio Surround Mode Next" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly audioSurroundModeNext: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Audio Treble Down" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly audioTrebleDown: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Audio Treble Up" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly audioTrebleUp: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Audio Volume Down" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly audioVolumeDown: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Audio Volume Mute" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly audioVolumeMute: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Audio Volume Up" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly audioVolumeUp: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "AVR Input" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly avrInput: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "AVR Power" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly avrPower: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Backquote" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly backquote: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Backslash" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly backslash: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Backspace" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly backspace: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Bar" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly bar: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Brace Left" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly braceLeft: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Brace Right" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly braceRight: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Bracket Left" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly bracketLeft: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Bracket Right" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly bracketRight: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Brightness Down" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly brightnessDown: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Brightness Up" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly brightnessUp: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Browser Back" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly browserBack: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Browser Favorites" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly browserFavorites: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Browser Forward" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly browserForward: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Browser Home" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly browserHome: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Browser Refresh" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly browserRefresh: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Browser Search" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly browserSearch: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Browser Stop" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly browserStop: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Call" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly call: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Camera" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly camera: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Camera Focus" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly cameraFocus: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Cancel" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly cancel: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Caps Lock" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly capsLock: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Caret" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly caret: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Channel Down" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly channelDown: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Channel Up" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly channelUp: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Clear" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly clear: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Close" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly close: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Closed Caption Toggle" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly closedCaptionToggle: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Code Input" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly codeInput: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Colon" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly colon: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Color F0 Red" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly colorF0Red: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Color F1 Green" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly colorF1Green: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Color F2 Yellow" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly colorF2Yellow: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Color F3 Blue" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly colorF3Blue: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Color F4 Grey" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly colorF4Grey: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Color F5 Brown" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly colorF5Brown: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Comma" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly comma: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Compose" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly compose: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Context Menu" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly contextMenu: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Control" key on the keyboard.
-   *
-   * This key represents the union of the keys {controlLeft, controlRight} when
-   * comparing keys. This key will never be generated directly, its main use is
-   * in defining key maps.
-   */
-  readonly control: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Control Left" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly controlLeft: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Control Right" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly controlRight: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Convert" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly convert: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Copy" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly copy: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Cr Sel" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly crSel: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Cut" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly cut: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Delete" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly delete: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Digit 0" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly digit0: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Digit 1" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly digit1: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Digit 2" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly digit2: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Digit 3" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly digit3: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Digit 4" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly digit4: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Digit 5" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly digit5: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Digit 6" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly digit6: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Digit 7" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly digit7: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Digit 8" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly digit8: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Digit 9" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly digit9: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Dimmer" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly dimmer: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Display Swap" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly displaySwap: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Dollar" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly dollar: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "DVR" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly dvr: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Eisu" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly eisu: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Eject" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly eject: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "End" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly end: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "End Call" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly endCall: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Enter" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly enter: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Equal" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly equal: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Erase Eof" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly eraseEof: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Escape" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly escape: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Ex Sel" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly exSel: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Exclamation" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly exclamation: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Execute" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly execute: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Exit" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly exit: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "F1" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly f1: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "F10" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly f10: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "F11" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly f11: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "F12" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly f12: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "F13" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly f13: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "F14" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly f14: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "F15" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly f15: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "F16" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly f16: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "F17" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly f17: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "F18" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly f18: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "F19" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly f19: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "F2" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly f2: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "F20" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly f20: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "F21" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly f21: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "F22" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly f22: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "F23" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly f23: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "F24" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly f24: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "F3" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly f3: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "F4" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly f4: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "F5" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly f5: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "F6" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly f6: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "F7" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly f7: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "F8" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly f8: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "F9" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly f9: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Favorite Clear 0" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly favoriteClear0: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Favorite Clear 1" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly favoriteClear1: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Favorite Clear 2" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly favoriteClear2: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Favorite Clear 3" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly favoriteClear3: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Favorite Recall 0" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly favoriteRecall0: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Favorite Recall 1" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly favoriteRecall1: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Favorite Recall 2" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly favoriteRecall2: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Favorite Recall 3" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly favoriteRecall3: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Favorite Store 0" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly favoriteStore0: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Favorite Store 1" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly favoriteStore1: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Favorite Store 2" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly favoriteStore2: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Favorite Store 3" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly favoriteStore3: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Final Mode" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly finalMode: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Find" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly find: widgetTypes.LogicalKeyboardKey;
-  /**
-   * The plane value for keys defined by Flutter.
-   *
-   * This is used by platform-specific code to generate Flutter key codes.
-   */
-  readonly flutterPlane: number;
-  /**
-   * Represents the logical "Fn" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly fn: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Fn Lock" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly fnLock: widgetTypes.LogicalKeyboardKey;
-  /**
-   * The plane value for the private keys defined by the Fuchsia embedding.
-   *
-   * This is used by platform-specific code to generate Flutter key codes.
-   */
-  readonly fuchsiaPlane: number;
-  /**
-   * Represents the logical "Game Button 1" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButton1: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button 10" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButton10: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button 11" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButton11: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button 12" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButton12: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button 13" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButton13: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button 14" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButton14: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button 15" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButton15: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button 16" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButton16: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button 2" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButton2: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button 3" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButton3: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button 4" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButton4: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button 5" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButton5: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button 6" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButton6: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button 7" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButton7: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button 8" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButton8: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button 9" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButton9: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button A" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButtonA: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button B" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButtonB: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button C" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButtonC: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button Left 1" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButtonLeft1: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button Left 2" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButtonLeft2: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button Mode" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButtonMode: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button Right 1" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButtonRight1: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button Right 2" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButtonRight2: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button Select" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButtonSelect: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button Start" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButtonStart: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button Thumb Left" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButtonThumbLeft: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button Thumb Right" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButtonThumbRight: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button X" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButtonX: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button Y" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButtonY: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Game Button Z" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly gameButtonZ: widgetTypes.LogicalKeyboardKey;
-  /**
-   * The plane value for the private keys defined by the GLFW embedding.
-   *
-   * This is used by platform-specific code to generate Flutter key codes.
-   */
-  readonly glfwPlane: number;
-  /**
-   * Represents the logical "Go Back" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly goBack: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Go Home" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly goHome: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Greater" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly greater: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Group First" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly groupFirst: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Group Last" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly groupLast: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Group Next" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly groupNext: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Group Previous" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly groupPrevious: widgetTypes.LogicalKeyboardKey;
-  /**
-   * The plane value for the private keys defined by the Gtk embedding.
-   *
-   * This is used by platform-specific code to generate Flutter key codes.
-   */
-  readonly gtkPlane: number;
-  /**
-   * Represents the logical "Guide" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly guide: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Guide Next Day" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly guideNextDay: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Guide Previous Day" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly guidePreviousDay: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Hangul Mode" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly hangulMode: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Hanja Mode" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly hanjaMode: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Hankaku" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly hankaku: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Headset Hook" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly headsetHook: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Help" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly help: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Hibernate" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly hibernate: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Hiragana" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly hiragana: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Hiragana Katakana" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly hiraganaKatakana: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Home" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly home: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Hyper" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly hyper: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Info" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly info: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Insert" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly insert: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Instant Replay" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly instantReplay: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Intl Backslash" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly intlBackslash: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Intl Ro" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly intlRo: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Intl Yen" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly intlYen: widgetTypes.LogicalKeyboardKey;
-  /**
-   * The plane value for the private keys defined by the iOS embedding.
-   *
-   * This is used by platform-specific code to generate Flutter key codes.
-   */
-  readonly iosPlane: number;
-  /**
-   * Represents the logical "Junja Mode" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly junjaMode: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Kana Mode" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly kanaMode: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Kanji Mode" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly kanjiMode: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Katakana" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly katakana: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key 11" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly key11: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key 12" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly key12: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key A" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyA: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key B" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyB: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key C" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyC: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key D" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyD: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key E" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyE: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key F" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyF: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key G" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyG: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key H" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyH: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key I" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyI: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key J" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyJ: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key K" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyK: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key L" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyL: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key M" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyM: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key N" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyN: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key O" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyO: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key P" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyP: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key Q" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyQ: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key R" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyR: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key S" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyS: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key T" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyT: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key U" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyU: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key V" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyV: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key W" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyW: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key X" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyX: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key Y" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyY: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Key Z" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly keyZ: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Lang 1" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly lang1: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Lang 2" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly lang2: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Lang 3" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly lang3: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Lang 4" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly lang4: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Lang 5" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly lang5: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Last Number Redial" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly lastNumberRedial: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Launch Application 1" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly launchApplication1: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Launch Application 2" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly launchApplication2: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Launch Assistant" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly launchAssistant: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Launch Calendar" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly launchCalendar: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Launch Contacts" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly launchContacts: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Launch Control Panel" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly launchControlPanel: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Launch Mail" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly launchMail: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Launch Media Player" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly launchMediaPlayer: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Launch Music Player" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly launchMusicPlayer: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Launch Phone" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly launchPhone: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Launch Screen Saver" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly launchScreenSaver: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Launch Spreadsheet" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly launchSpreadsheet: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Launch Web Browser" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly launchWebBrowser: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Launch Web Cam" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly launchWebCam: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Launch Word Processor" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly launchWordProcessor: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Less" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly less: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Link" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly link: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "List Program" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly listProgram: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Live Content" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly liveContent: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Lock" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly lock: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Log Off" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly logOff: widgetTypes.LogicalKeyboardKey;
-  /**
-   * The plane value for the private keys defined by the macOS embedding.
-   *
-   * This is used by platform-specific code to generate Flutter key codes.
-   */
-  readonly macosPlane: number;
-  /**
-   * Represents the logical "Mail Forward" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly mailForward: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Mail Reply" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly mailReply: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Mail Send" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly mailSend: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Manner Mode" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly mannerMode: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Media Apps" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly mediaApps: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Media Audio Track" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly mediaAudioTrack: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Media Close" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly mediaClose: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Media Fast Forward" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly mediaFastForward: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Media Last" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly mediaLast: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Media Pause" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly mediaPause: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Media Play" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly mediaPlay: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Media Play Pause" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly mediaPlayPause: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Media Record" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly mediaRecord: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Media Rewind" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly mediaRewind: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Media Skip" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly mediaSkip: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Media Skip Backward" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly mediaSkipBackward: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Media Skip Forward" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly mediaSkipForward: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Media Step Backward" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly mediaStepBackward: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Media Step Forward" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly mediaStepForward: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Media Stop" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly mediaStop: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Media Top Menu" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly mediaTopMenu: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Media Track Next" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly mediaTrackNext: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Media Track Previous" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly mediaTrackPrevious: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Meta" key on the keyboard.
-   *
-   * This key represents the union of the keys {metaLeft, metaRight} when
-   * comparing keys. This key will never be generated directly, its main use is
-   * in defining key maps.
-   */
-  readonly meta: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Meta Left" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly metaLeft: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Meta Right" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly metaRight: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Microphone Toggle" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly microphoneToggle: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Microphone Volume Down" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly microphoneVolumeDown: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Microphone Volume Mute" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly microphoneVolumeMute: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Microphone Volume Up" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly microphoneVolumeUp: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Minus" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly minus: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Mode Change" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly modeChange: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Navigate In" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly navigateIn: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Navigate Next" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly navigateNext: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Navigate Out" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly navigateOut: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Navigate Previous" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly navigatePrevious: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "New" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly newKey: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Next Candidate" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly nextCandidate: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Next Favorite Channel" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly nextFavoriteChannel: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Next User Profile" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly nextUserProfile: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Non Convert" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly nonConvert: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Notification" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly notification: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Num Lock" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly numLock: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Number Sign" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly numberSign: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Numpad 0" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly numpad0: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Numpad 1" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly numpad1: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Numpad 2" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly numpad2: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Numpad 3" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly numpad3: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Numpad 4" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly numpad4: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Numpad 5" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly numpad5: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Numpad 6" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly numpad6: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Numpad 7" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly numpad7: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Numpad 8" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly numpad8: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Numpad 9" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly numpad9: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Numpad Add" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly numpadAdd: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Numpad Comma" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly numpadComma: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Numpad Decimal" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly numpadDecimal: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Numpad Divide" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly numpadDivide: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Numpad Enter" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly numpadEnter: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Numpad Equal" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly numpadEqual: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Numpad Multiply" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly numpadMultiply: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Numpad Paren Left" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly numpadParenLeft: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Numpad Paren Right" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly numpadParenRight: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Numpad Subtract" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly numpadSubtract: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "On Demand" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly onDemand: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Open" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly open: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "P In P Down" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly pInPDown: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "P In P Move" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly pInPMove: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "P In P Toggle" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly pInPToggle: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "P In P Up" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly pInPUp: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Page Down" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly pageDown: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Page Up" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly pageUp: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Pairing" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly pairing: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Parenthesis Left" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly parenthesisLeft: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Parenthesis Right" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly parenthesisRight: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Paste" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly paste: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Pause" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly pause: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Percent" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly percent: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Period" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly period: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Mask for the plane prefix portion of the key code.
-   *
-   * This is used by platform-specific code to generate Flutter key codes.
-   */
-  readonly planeMask: number;
-  /**
-   * Represents the logical "Play" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly play: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Play Speed Down" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly playSpeedDown: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Play Speed Reset" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly playSpeedReset: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Play Speed Up" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly playSpeedUp: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Power" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly power: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Power Off" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly powerOff: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Previous Candidate" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly previousCandidate: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Print" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly print: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Print Screen" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly printScreen: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Process" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly process: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Props" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly props: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Question" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly question: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Quote" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly quote: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Quote Single" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly quoteSingle: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Random Toggle" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly randomToggle: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Rc Low Battery" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly rcLowBattery: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Record Speed Next" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly recordSpeedNext: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Redo" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly redo: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Resume" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly resume: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Rf Bypass" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly rfBypass: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Romaji" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly romaji: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Save" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly save: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Scan Channels Toggle" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly scanChannelsToggle: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Screen Mode Next" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly screenModeNext: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Scroll Lock" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly scrollLock: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Select" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly select: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Semicolon" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly semicolon: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Settings" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly settings: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Shift" key on the keyboard.
-   *
-   * This key represents the union of the keys {shiftLeft, shiftRight} when
-   * comparing keys. This key will never be generated directly, its main use is
-   * in defining key maps.
-   */
-  readonly shift: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Shift Left" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly shiftLeft: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Shift Level 5" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly shiftLevel5: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Shift Right" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly shiftRight: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Single Candidate" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly singleCandidate: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Slash" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly slash: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Sleep" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly sleep: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Soft 1" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly soft1: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Soft 2" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly soft2: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Soft 3" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly soft3: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Soft 4" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly soft4: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Soft 5" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly soft5: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Soft 6" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly soft6: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Soft 7" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly soft7: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Soft 8" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly soft8: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Space" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly space: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Speech Correction List" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly speechCorrectionList: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Speech Input Toggle" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly speechInputToggle: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Spell Check" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly spellCheck: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Split Screen Toggle" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly splitScreenToggle: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Standby" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly standby: widgetTypes.LogicalKeyboardKey;
-  /**
-   * The platform plane with the lowest mask value, beyond which the keys are
-   * considered autogenerated.
-   *
-   * This is used by platform-specific code to generate Flutter key codes.
-   */
-  readonly startOfPlatformPlanes: number;
-  /**
-   * Represents the logical "STB Input" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly stbInput: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "STB Power" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly stbPower: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Subtitle" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly subtitle: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Super" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly superKey: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Suspend" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly suspend: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Symbol" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly symbol: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Symbol Lock" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly symbolLock: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Tab" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tab: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Teletext" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly teletext: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Tilde" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tilde: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tv: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV 3 D Mode" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tv3DMode: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Antenna Cable" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvAntennaCable: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Audio Description" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvAudioDescription: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Audio Description Mix Down" key on the
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvAudioDescriptionMixDown: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Audio Description Mix Up" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvAudioDescriptionMixUp: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Contents Menu" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvContentsMenu: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Data Service" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvDataService: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Input" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvInput: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Input Component 1" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvInputComponent1: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Input Component 2" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvInputComponent2: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Input Composite 1" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvInputComposite1: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Input Composite 2" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvInputComposite2: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Input HDMI 1" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvInputHDMI1: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Input HDMI 2" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvInputHDMI2: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Input HDMI 3" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvInputHDMI3: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Input HDMI 4" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvInputHDMI4: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Input VGA 1" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvInputVGA1: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Media Context" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvMediaContext: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Network" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvNetwork: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Number Entry" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvNumberEntry: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Power" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvPower: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Radio Service" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvRadioService: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Satellite" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvSatellite: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Satellite BS" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvSatelliteBS: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Satellite CS" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvSatelliteCS: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Satellite Toggle" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvSatelliteToggle: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Terrestrial Analog" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvTerrestrialAnalog: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Terrestrial Digital" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvTerrestrialDigital: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "TV Timer" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly tvTimer: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Underscore" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly underscore: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Undo" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly undo: widgetTypes.LogicalKeyboardKey;
-  /**
-   * The plane value for keys which have a Unicode representation.
-   *
-   * This is used by platform-specific code to generate Flutter key codes.
-   */
-  readonly unicodePlane: number;
-  /**
-   * Represents the logical "Unidentified" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly unidentified: widgetTypes.LogicalKeyboardKey;
-  /**
-   * The plane value for keys defined by Chromium and does not have a Unicode
-   * representation.
-   *
-   * This is used by platform-specific code to generate Flutter key codes.
-   */
-  readonly unprintablePlane: number;
-  /**
-   * Mask for the 32-bit value portion of the key code.
-   *
-   * This is used by platform-specific code to generate Flutter key codes.
-   */
-  readonly valueMask: number;
-  /**
-   * Represents the logical "Video Mode Next" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly videoModeNext: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Voice Dial" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly voiceDial: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Wake Up" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly wakeUp: widgetTypes.LogicalKeyboardKey;
-  /**
-   * The plane value for the private keys defined by the Web embedding.
-   *
-   * This is used by platform-specific code to generate Flutter key codes.
-   */
-  readonly webPlane: number;
-  /**
-   * The plane value for the private keys defined by the Windows embedding.
-   *
-   * This is used by platform-specific code to generate Flutter key codes.
-   */
-  readonly windowsPlane: number;
-  /**
-   * Represents the logical "Wink" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly wink: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Zenkaku" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly zenkaku: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Zenkaku Hankaku" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly zenkakuHankaku: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Zoom In" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly zoomIn: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Zoom Out" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly zoomOut: widgetTypes.LogicalKeyboardKey;
-  /**
-   * Represents the logical "Zoom Toggle" key on the keyboard.
-   *
-   * See the function [RawKeyEvent.logicalKey] for more information.
-   */
-  readonly zoomToggle: widgetTypes.LogicalKeyboardKey;
-}>('LogicalKeyboardKey');
+export const LogicalKeyboardKey = declareConstants<
+  {
+    /**
+     * Represents the logical "Abort" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly abort: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Accel" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly accel: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Accept" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly accept: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Add" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly add: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Again" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly again: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "All Candidates" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly allCandidates: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Alphanumeric" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly alphanumeric: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Alt" key on the keyboard.
+     *
+     * This key represents the union of the keys {altLeft, altRight} when
+     * comparing keys. This key will never be generated directly, its main use is
+     * in defining key maps.
+     */
+    readonly alt: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Alt Graph" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly altGraph: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Alt Left" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly altLeft: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Alt Right" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly altRight: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Ampersand" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly ampersand: widgetTypes.LogicalKeyboardKey;
+    /**
+     * The plane value for the private keys defined by the Android embedding.
+     *
+     * This is used by platform-specific code to generate Flutter key codes.
+     */
+    readonly androidPlane: number;
+    /**
+     * Represents the logical "App Switch" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly appSwitch: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Arrow Down" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly arrowDown: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Arrow Left" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly arrowLeft: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Arrow Right" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly arrowRight: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Arrow Up" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly arrowUp: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Asterisk" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly asterisk: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "At" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly at: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Attn" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly attn: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Audio Balance Left" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly audioBalanceLeft: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Audio Balance Right" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly audioBalanceRight: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Audio Bass Boost Down" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly audioBassBoostDown: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Audio Bass Boost Toggle" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly audioBassBoostToggle: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Audio Bass Boost Up" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly audioBassBoostUp: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Audio Fader Front" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly audioFaderFront: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Audio Fader Rear" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly audioFaderRear: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Audio Surround Mode Next" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly audioSurroundModeNext: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Audio Treble Down" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly audioTrebleDown: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Audio Treble Up" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly audioTrebleUp: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Audio Volume Down" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly audioVolumeDown: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Audio Volume Mute" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly audioVolumeMute: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Audio Volume Up" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly audioVolumeUp: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "AVR Input" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly avrInput: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "AVR Power" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly avrPower: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Backquote" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly backquote: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Backslash" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly backslash: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Backspace" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly backspace: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Bar" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly bar: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Brace Left" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly braceLeft: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Brace Right" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly braceRight: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Bracket Left" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly bracketLeft: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Bracket Right" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly bracketRight: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Brightness Down" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly brightnessDown: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Brightness Up" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly brightnessUp: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Browser Back" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly browserBack: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Browser Favorites" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly browserFavorites: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Browser Forward" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly browserForward: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Browser Home" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly browserHome: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Browser Refresh" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly browserRefresh: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Browser Search" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly browserSearch: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Browser Stop" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly browserStop: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Call" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly call: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Camera" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly camera: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Camera Focus" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly cameraFocus: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Cancel" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly cancel: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Caps Lock" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly capsLock: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Caret" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly caret: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Channel Down" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly channelDown: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Channel Up" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly channelUp: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Clear" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly clear: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Close" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly close: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Closed Caption Toggle" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly closedCaptionToggle: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Code Input" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly codeInput: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Colon" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly colon: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Color F0 Red" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly colorF0Red: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Color F1 Green" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly colorF1Green: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Color F2 Yellow" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly colorF2Yellow: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Color F3 Blue" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly colorF3Blue: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Color F4 Grey" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly colorF4Grey: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Color F5 Brown" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly colorF5Brown: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Comma" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly comma: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Compose" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly compose: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Context Menu" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly contextMenu: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Control" key on the keyboard.
+     *
+     * This key represents the union of the keys {controlLeft, controlRight} when
+     * comparing keys. This key will never be generated directly, its main use is
+     * in defining key maps.
+     */
+    readonly control: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Control Left" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly controlLeft: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Control Right" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly controlRight: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Convert" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly convert: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Copy" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly copy: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Cr Sel" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly crSel: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Cut" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly cut: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Delete" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly delete: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Digit 0" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly digit0: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Digit 1" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly digit1: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Digit 2" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly digit2: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Digit 3" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly digit3: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Digit 4" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly digit4: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Digit 5" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly digit5: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Digit 6" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly digit6: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Digit 7" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly digit7: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Digit 8" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly digit8: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Digit 9" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly digit9: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Dimmer" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly dimmer: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Display Swap" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly displaySwap: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Dollar" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly dollar: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "DVR" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly dvr: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Eisu" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly eisu: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Eject" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly eject: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "End" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly end: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "End Call" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly endCall: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Enter" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly enter: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Equal" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly equal: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Erase Eof" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly eraseEof: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Escape" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly escape: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Ex Sel" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly exSel: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Exclamation" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly exclamation: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Execute" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly execute: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Exit" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly exit: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "F1" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly f1: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "F10" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly f10: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "F11" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly f11: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "F12" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly f12: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "F13" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly f13: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "F14" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly f14: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "F15" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly f15: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "F16" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly f16: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "F17" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly f17: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "F18" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly f18: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "F19" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly f19: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "F2" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly f2: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "F20" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly f20: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "F21" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly f21: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "F22" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly f22: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "F23" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly f23: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "F24" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly f24: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "F3" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly f3: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "F4" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly f4: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "F5" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly f5: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "F6" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly f6: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "F7" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly f7: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "F8" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly f8: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "F9" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly f9: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Favorite Clear 0" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly favoriteClear0: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Favorite Clear 1" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly favoriteClear1: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Favorite Clear 2" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly favoriteClear2: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Favorite Clear 3" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly favoriteClear3: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Favorite Recall 0" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly favoriteRecall0: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Favorite Recall 1" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly favoriteRecall1: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Favorite Recall 2" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly favoriteRecall2: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Favorite Recall 3" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly favoriteRecall3: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Favorite Store 0" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly favoriteStore0: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Favorite Store 1" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly favoriteStore1: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Favorite Store 2" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly favoriteStore2: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Favorite Store 3" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly favoriteStore3: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Final Mode" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly finalMode: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Find" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly find: widgetTypes.LogicalKeyboardKey;
+    /**
+     * The plane value for keys defined by Flutter.
+     *
+     * This is used by platform-specific code to generate Flutter key codes.
+     */
+    readonly flutterPlane: number;
+    /**
+     * Represents the logical "Fn" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly fn: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Fn Lock" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly fnLock: widgetTypes.LogicalKeyboardKey;
+    /**
+     * The plane value for the private keys defined by the Fuchsia embedding.
+     *
+     * This is used by platform-specific code to generate Flutter key codes.
+     */
+    readonly fuchsiaPlane: number;
+    /**
+     * Represents the logical "Game Button 1" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButton1: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button 10" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButton10: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button 11" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButton11: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button 12" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButton12: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button 13" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButton13: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button 14" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButton14: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button 15" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButton15: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button 16" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButton16: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button 2" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButton2: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button 3" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButton3: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button 4" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButton4: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button 5" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButton5: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button 6" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButton6: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button 7" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButton7: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button 8" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButton8: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button 9" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButton9: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button A" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButtonA: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button B" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButtonB: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button C" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButtonC: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button Left 1" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButtonLeft1: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button Left 2" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButtonLeft2: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button Mode" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButtonMode: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button Right 1" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButtonRight1: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button Right 2" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButtonRight2: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button Select" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButtonSelect: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button Start" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButtonStart: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button Thumb Left" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButtonThumbLeft: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button Thumb Right" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButtonThumbRight: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button X" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButtonX: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button Y" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButtonY: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Game Button Z" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly gameButtonZ: widgetTypes.LogicalKeyboardKey;
+    /**
+     * The plane value for the private keys defined by the GLFW embedding.
+     *
+     * This is used by platform-specific code to generate Flutter key codes.
+     */
+    readonly glfwPlane: number;
+    /**
+     * Represents the logical "Go Back" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly goBack: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Go Home" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly goHome: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Greater" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly greater: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Group First" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly groupFirst: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Group Last" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly groupLast: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Group Next" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly groupNext: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Group Previous" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly groupPrevious: widgetTypes.LogicalKeyboardKey;
+    /**
+     * The plane value for the private keys defined by the Gtk embedding.
+     *
+     * This is used by platform-specific code to generate Flutter key codes.
+     */
+    readonly gtkPlane: number;
+    /**
+     * Represents the logical "Guide" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly guide: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Guide Next Day" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly guideNextDay: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Guide Previous Day" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly guidePreviousDay: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Hangul Mode" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly hangulMode: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Hanja Mode" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly hanjaMode: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Hankaku" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly hankaku: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Headset Hook" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly headsetHook: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Help" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly help: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Hibernate" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly hibernate: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Hiragana" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly hiragana: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Hiragana Katakana" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly hiraganaKatakana: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Home" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly home: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Hyper" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly hyper: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Info" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly info: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Insert" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly insert: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Instant Replay" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly instantReplay: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Intl Backslash" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly intlBackslash: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Intl Ro" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly intlRo: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Intl Yen" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly intlYen: widgetTypes.LogicalKeyboardKey;
+    /**
+     * The plane value for the private keys defined by the iOS embedding.
+     *
+     * This is used by platform-specific code to generate Flutter key codes.
+     */
+    readonly iosPlane: number;
+    /**
+     * Represents the logical "Junja Mode" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly junjaMode: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Kana Mode" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly kanaMode: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Kanji Mode" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly kanjiMode: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Katakana" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly katakana: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key 11" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly key11: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key 12" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly key12: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key A" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyA: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key B" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyB: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key C" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyC: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key D" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyD: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key E" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyE: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key F" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyF: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key G" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyG: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key H" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyH: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key I" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyI: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key J" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyJ: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key K" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyK: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key L" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyL: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key M" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyM: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key N" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyN: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key O" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyO: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key P" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyP: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key Q" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyQ: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key R" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyR: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key S" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyS: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key T" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyT: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key U" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyU: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key V" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyV: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key W" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyW: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key X" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyX: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key Y" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyY: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Key Z" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly keyZ: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Lang 1" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly lang1: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Lang 2" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly lang2: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Lang 3" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly lang3: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Lang 4" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly lang4: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Lang 5" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly lang5: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Last Number Redial" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly lastNumberRedial: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Launch Application 1" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly launchApplication1: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Launch Application 2" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly launchApplication2: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Launch Assistant" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly launchAssistant: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Launch Calendar" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly launchCalendar: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Launch Contacts" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly launchContacts: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Launch Control Panel" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly launchControlPanel: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Launch Mail" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly launchMail: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Launch Media Player" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly launchMediaPlayer: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Launch Music Player" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly launchMusicPlayer: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Launch Phone" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly launchPhone: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Launch Screen Saver" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly launchScreenSaver: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Launch Spreadsheet" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly launchSpreadsheet: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Launch Web Browser" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly launchWebBrowser: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Launch Web Cam" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly launchWebCam: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Launch Word Processor" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly launchWordProcessor: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Less" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly less: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Link" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly link: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "List Program" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly listProgram: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Live Content" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly liveContent: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Lock" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly lock: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Log Off" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly logOff: widgetTypes.LogicalKeyboardKey;
+    /**
+     * The plane value for the private keys defined by the macOS embedding.
+     *
+     * This is used by platform-specific code to generate Flutter key codes.
+     */
+    readonly macosPlane: number;
+    /**
+     * Represents the logical "Mail Forward" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly mailForward: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Mail Reply" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly mailReply: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Mail Send" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly mailSend: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Manner Mode" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly mannerMode: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Media Apps" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly mediaApps: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Media Audio Track" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly mediaAudioTrack: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Media Close" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly mediaClose: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Media Fast Forward" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly mediaFastForward: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Media Last" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly mediaLast: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Media Pause" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly mediaPause: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Media Play" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly mediaPlay: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Media Play Pause" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly mediaPlayPause: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Media Record" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly mediaRecord: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Media Rewind" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly mediaRewind: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Media Skip" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly mediaSkip: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Media Skip Backward" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly mediaSkipBackward: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Media Skip Forward" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly mediaSkipForward: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Media Step Backward" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly mediaStepBackward: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Media Step Forward" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly mediaStepForward: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Media Stop" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly mediaStop: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Media Top Menu" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly mediaTopMenu: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Media Track Next" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly mediaTrackNext: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Media Track Previous" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly mediaTrackPrevious: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Meta" key on the keyboard.
+     *
+     * This key represents the union of the keys {metaLeft, metaRight} when
+     * comparing keys. This key will never be generated directly, its main use is
+     * in defining key maps.
+     */
+    readonly meta: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Meta Left" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly metaLeft: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Meta Right" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly metaRight: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Microphone Toggle" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly microphoneToggle: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Microphone Volume Down" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly microphoneVolumeDown: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Microphone Volume Mute" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly microphoneVolumeMute: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Microphone Volume Up" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly microphoneVolumeUp: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Minus" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly minus: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Mode Change" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly modeChange: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Navigate In" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly navigateIn: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Navigate Next" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly navigateNext: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Navigate Out" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly navigateOut: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Navigate Previous" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly navigatePrevious: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "New" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly newKey: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Next Candidate" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly nextCandidate: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Next Favorite Channel" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly nextFavoriteChannel: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Next User Profile" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly nextUserProfile: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Non Convert" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly nonConvert: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Notification" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly notification: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Num Lock" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly numLock: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Number Sign" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly numberSign: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Numpad 0" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly numpad0: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Numpad 1" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly numpad1: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Numpad 2" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly numpad2: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Numpad 3" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly numpad3: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Numpad 4" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly numpad4: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Numpad 5" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly numpad5: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Numpad 6" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly numpad6: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Numpad 7" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly numpad7: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Numpad 8" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly numpad8: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Numpad 9" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly numpad9: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Numpad Add" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly numpadAdd: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Numpad Comma" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly numpadComma: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Numpad Decimal" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly numpadDecimal: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Numpad Divide" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly numpadDivide: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Numpad Enter" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly numpadEnter: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Numpad Equal" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly numpadEqual: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Numpad Multiply" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly numpadMultiply: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Numpad Paren Left" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly numpadParenLeft: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Numpad Paren Right" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly numpadParenRight: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Numpad Subtract" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly numpadSubtract: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "On Demand" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly onDemand: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Open" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly open: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "P In P Down" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly pInPDown: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "P In P Move" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly pInPMove: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "P In P Toggle" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly pInPToggle: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "P In P Up" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly pInPUp: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Page Down" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly pageDown: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Page Up" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly pageUp: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Pairing" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly pairing: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Parenthesis Left" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly parenthesisLeft: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Parenthesis Right" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly parenthesisRight: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Paste" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly paste: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Pause" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly pause: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Percent" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly percent: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Period" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly period: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Mask for the plane prefix portion of the key code.
+     *
+     * This is used by platform-specific code to generate Flutter key codes.
+     */
+    readonly planeMask: number;
+    /**
+     * Represents the logical "Play" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly play: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Play Speed Down" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly playSpeedDown: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Play Speed Reset" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly playSpeedReset: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Play Speed Up" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly playSpeedUp: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Power" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly power: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Power Off" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly powerOff: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Previous Candidate" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly previousCandidate: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Print" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly print: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Print Screen" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly printScreen: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Process" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly process: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Props" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly props: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Question" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly question: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Quote" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly quote: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Quote Single" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly quoteSingle: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Random Toggle" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly randomToggle: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Rc Low Battery" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly rcLowBattery: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Record Speed Next" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly recordSpeedNext: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Redo" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly redo: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Resume" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly resume: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Rf Bypass" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly rfBypass: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Romaji" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly romaji: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Save" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly save: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Scan Channels Toggle" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly scanChannelsToggle: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Screen Mode Next" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly screenModeNext: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Scroll Lock" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly scrollLock: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Select" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly select: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Semicolon" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly semicolon: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Settings" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly settings: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Shift" key on the keyboard.
+     *
+     * This key represents the union of the keys {shiftLeft, shiftRight} when
+     * comparing keys. This key will never be generated directly, its main use is
+     * in defining key maps.
+     */
+    readonly shift: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Shift Left" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly shiftLeft: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Shift Level 5" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly shiftLevel5: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Shift Right" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly shiftRight: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Single Candidate" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly singleCandidate: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Slash" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly slash: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Sleep" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly sleep: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Soft 1" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly soft1: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Soft 2" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly soft2: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Soft 3" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly soft3: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Soft 4" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly soft4: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Soft 5" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly soft5: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Soft 6" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly soft6: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Soft 7" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly soft7: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Soft 8" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly soft8: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Space" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly space: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Speech Correction List" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly speechCorrectionList: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Speech Input Toggle" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly speechInputToggle: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Spell Check" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly spellCheck: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Split Screen Toggle" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly splitScreenToggle: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Standby" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly standby: widgetTypes.LogicalKeyboardKey;
+    /**
+     * The platform plane with the lowest mask value, beyond which the keys are
+     * considered autogenerated.
+     *
+     * This is used by platform-specific code to generate Flutter key codes.
+     */
+    readonly startOfPlatformPlanes: number;
+    /**
+     * Represents the logical "STB Input" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly stbInput: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "STB Power" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly stbPower: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Subtitle" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly subtitle: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Super" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly superKey: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Suspend" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly suspend: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Symbol" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly symbol: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Symbol Lock" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly symbolLock: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Tab" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tab: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Teletext" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly teletext: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Tilde" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tilde: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tv: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV 3 D Mode" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tv3DMode: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Antenna Cable" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvAntennaCable: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Audio Description" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvAudioDescription: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Audio Description Mix Down" key on the
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvAudioDescriptionMixDown: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Audio Description Mix Up" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvAudioDescriptionMixUp: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Contents Menu" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvContentsMenu: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Data Service" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvDataService: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Input" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvInput: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Input Component 1" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvInputComponent1: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Input Component 2" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvInputComponent2: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Input Composite 1" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvInputComposite1: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Input Composite 2" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvInputComposite2: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Input HDMI 1" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvInputHDMI1: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Input HDMI 2" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvInputHDMI2: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Input HDMI 3" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvInputHDMI3: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Input HDMI 4" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvInputHDMI4: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Input VGA 1" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvInputVGA1: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Media Context" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvMediaContext: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Network" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvNetwork: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Number Entry" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvNumberEntry: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Power" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvPower: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Radio Service" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvRadioService: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Satellite" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvSatellite: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Satellite BS" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvSatelliteBS: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Satellite CS" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvSatelliteCS: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Satellite Toggle" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvSatelliteToggle: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Terrestrial Analog" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvTerrestrialAnalog: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Terrestrial Digital" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvTerrestrialDigital: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "TV Timer" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly tvTimer: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Underscore" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly underscore: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Undo" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly undo: widgetTypes.LogicalKeyboardKey;
+    /**
+     * The plane value for keys which have a Unicode representation.
+     *
+     * This is used by platform-specific code to generate Flutter key codes.
+     */
+    readonly unicodePlane: number;
+    /**
+     * Represents the logical "Unidentified" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly unidentified: widgetTypes.LogicalKeyboardKey;
+    /**
+     * The plane value for keys defined by Chromium and does not have a Unicode
+     * representation.
+     *
+     * This is used by platform-specific code to generate Flutter key codes.
+     */
+    readonly unprintablePlane: number;
+    /**
+     * Mask for the 32-bit value portion of the key code.
+     *
+     * This is used by platform-specific code to generate Flutter key codes.
+     */
+    readonly valueMask: number;
+    /**
+     * Represents the logical "Video Mode Next" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly videoModeNext: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Voice Dial" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly voiceDial: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Wake Up" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly wakeUp: widgetTypes.LogicalKeyboardKey;
+    /**
+     * The plane value for the private keys defined by the Web embedding.
+     *
+     * This is used by platform-specific code to generate Flutter key codes.
+     */
+    readonly webPlane: number;
+    /**
+     * The plane value for the private keys defined by the Windows embedding.
+     *
+     * This is used by platform-specific code to generate Flutter key codes.
+     */
+    readonly windowsPlane: number;
+    /**
+     * Represents the logical "Wink" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly wink: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Zenkaku" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly zenkaku: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Zenkaku Hankaku" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly zenkakuHankaku: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Zoom In" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly zoomIn: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Zoom Out" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly zoomOut: widgetTypes.LogicalKeyboardKey;
+    /**
+     * Represents the logical "Zoom Toggle" key on the keyboard.
+     *
+     * See the function [RawKeyEvent.logicalKey] for more information.
+     */
+    readonly zoomToggle: widgetTypes.LogicalKeyboardKey;
+  } & (new (keyId: number) => widgetTypes.LogicalKeyboardKey)
+>('LogicalKeyboardKey');
 
 /**
  * A data class that contains the geometry information of text layouts
  * and selection gestures, used to position magnifiers.
  */
-export const MagnifierInfo = declareConstants<{
-  /**
-   * Const [MagnifierInfo] with all values set to 0.
-   */
-  readonly empty: widgetTypes.MagnifierInfo;
-}>('MagnifierInfo');
+export const MagnifierInfo = declareConstants<
+  {
+    /**
+     * Const [MagnifierInfo] with all values set to 0.
+     */
+    readonly empty: widgetTypes.MagnifierInfo;
+  } & (new (options: {
+    globalGesturePosition: widgetTypes.Offset;
+    caretRect: widgetTypes.Rect;
+    fieldBounds: widgetTypes.Rect;
+    currentLineBoundaries: widgetTypes.Rect;
+  }) => widgetTypes.MagnifierInfo)
+>('MagnifierInfo');
 
 /**
  * An interface for mouse cursor definitions.
@@ -58414,13 +58799,20 @@ export const MouseCursor = declareConstants<{
  * )
  * ```
  */
-export const NoSplash = declareConstants<{
-  /**
-   * Used to specify this type of ink splash for an [InkWell], [InkResponse]
-   * material [Theme], or [ButtonStyle].
-   */
-  readonly splashFactory: widgetTypes.InteractiveInkFeatureFactory;
-}>('NoSplash');
+export const NoSplash = declareConstants<
+  {
+    /**
+     * Used to specify this type of ink splash for an [InkWell], [InkResponse]
+     * material [Theme], or [ButtonStyle].
+     */
+    readonly splashFactory: widgetTypes.InteractiveInkFeatureFactory;
+  } & (new (options: {
+    controller: widgetTypes.MaterialInkController;
+    referenceBox: widgetTypes.RenderBox;
+    color: widgetTypes.Color;
+    onRemoved?: () => void;
+  }) => widgetTypes.NoSplash)
+>('NoSplash');
 
 /**
  * An immutable 2D floating-point offset.
@@ -58445,23 +58837,33 @@ export const NoSplash = declareConstants<{
  *
  *  * [Size], which represents a vector describing the size of a rectangle.
  */
-export const Offset = declareConstants<{
-  /**
-   * An offset with infinite x and y components.
-   *
-   * See also:
-   *
-   *  * [isInfinite], which checks whether either component is infinite.
-   *  * [isFinite], which checks whether both components are finite.
-   */
-  readonly infinite: widgetTypes.Offset;
-  /**
-   * An offset with zero magnitude.
-   *
-   * This can be used to represent the origin of a coordinate space.
-   */
-  readonly zero: widgetTypes.Offset;
-}>('Offset');
+export const Offset = declareConstants<
+  {
+    /**
+     * An offset with infinite x and y components.
+     *
+     * See also:
+     *
+     *  * [isInfinite], which checks whether either component is infinite.
+     *  * [isFinite], which checks whether both components are finite.
+     */
+    readonly infinite: widgetTypes.Offset;
+    /**
+     * An offset with zero magnitude.
+     *
+     * This can be used to represent the origin of a coordinate space.
+     */
+    readonly zero: widgetTypes.Offset;
+  } & (new (
+    dx: number,
+    dy: number,
+  ) => widgetTypes.Offset & {
+    readonly fromDirection: (
+      direction: number,
+      distance?: number,
+    ) => widgetTypes.Offset;
+  })
+>('Offset');
 
 /**
  * A container for a [local] and [global] [Offset] pair.
@@ -58470,12 +58872,17 @@ export const Offset = declareConstants<{
  * after conversion to logical pixels and the [local] offset is the same
  * [Offset], but transformed to a local coordinate space.
  */
-export const OffsetPair = declareConstants<{
-  /**
-   * A [OffsetPair] where both [Offset]s are [Offset.zero].
-   */
-  readonly zero: widgetTypes.OffsetPair;
-}>('OffsetPair');
+export const OffsetPair = declareConstants<
+  {
+    /**
+     * A [OffsetPair] where both [Offset]s are [Offset.zero].
+     */
+    readonly zero: widgetTypes.OffsetPair;
+  } & (new (options: {
+    local: widgetTypes.Offset;
+    global: widgetTypes.Offset;
+  }) => widgetTypes.OffsetPair)
+>('OffsetPair');
 
 /**
  * Partial information from a stack frame for stack filtering purposes.
@@ -58484,12 +58891,18 @@ export const OffsetPair = declareConstants<{
  *
  *  * [RepetitiveStackFrameFilter], which uses this class to compare against [StackFrame]s.
  */
-export const PartialStackFrame = declareConstants<{
-  /**
-   * An `<asynchronous suspension>` line in a stack trace.
-   */
-  readonly asynchronousSuspension: widgetTypes.PartialStackFrame;
-}>('PartialStackFrame');
+export const PartialStackFrame = declareConstants<
+  {
+    /**
+     * An `<asynchronous suspension>` line in a stack trace.
+     */
+    readonly asynchronousSuspension: widgetTypes.PartialStackFrame;
+  } & (new (options: {
+    package: widgetTypes.Pattern;
+    className: string;
+    method: string;
+  }) => widgetTypes.PartialStackFrame)
+>('PartialStackFrame');
 
 /**
  * A class with static values that describe the keys that are returned from
@@ -58525,1741 +58938,1743 @@ export const PartialStackFrame = declareConstants<{
  *  * [RawKeyboardListener], a widget used to listen to keyboard events (but
  *    not handle them).
  */
-export const PhysicalKeyboardKey = declareConstants<{
-  /**
-   * Represents the location of the "Abort" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly abort: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Again" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly again: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Alt Left" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly altLeft: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Alt Right" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly altRight: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Arrow Down" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly arrowDown: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Arrow Left" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly arrowLeft: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Arrow Right" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly arrowRight: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Arrow Up" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly arrowUp: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Audio Volume Down" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly audioVolumeDown: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Audio Volume Mute" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly audioVolumeMute: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Audio Volume Up" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly audioVolumeUp: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Backquote" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly backquote: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Backslash" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly backslash: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Backspace" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly backspace: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Bass Boost" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly bassBoost: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Bracket Left" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly bracketLeft: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Bracket Right" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly bracketRight: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Brightness Auto" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly brightnessAuto: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Brightness Down" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly brightnessDown: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Brightness Maximum" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly brightnessMaximum: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Brightness Minimum" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly brightnessMinimum: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Brightness Toggle" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly brightnessToggle: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Brightness Up" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly brightnessUp: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Browser Back" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly browserBack: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Browser Favorites" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly browserFavorites: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Browser Forward" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly browserForward: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Browser Home" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly browserHome: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Browser Refresh" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly browserRefresh: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Browser Search" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly browserSearch: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Browser Stop" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly browserStop: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Caps Lock" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly capsLock: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Channel Down" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly channelDown: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Channel Up" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly channelUp: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Close" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly close: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Closed Caption Toggle" key on a
-   * generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly closedCaptionToggle: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Comma" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly comma: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Context Menu" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly contextMenu: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Control Left" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly controlLeft: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Control Right" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly controlRight: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Convert" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly convert: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Copy" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly copy: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Cut" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly cut: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Delete" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly delete: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Digit 0" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly digit0: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Digit 1" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly digit1: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Digit 2" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly digit2: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Digit 3" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly digit3: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Digit 4" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly digit4: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Digit 5" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly digit5: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Digit 6" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly digit6: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Digit 7" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly digit7: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Digit 8" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly digit8: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Digit 9" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly digit9: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Display Toggle Int Ext" key on a
-   * generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly displayToggleIntExt: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Eject" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly eject: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "End" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly end: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Enter" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly enter: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Equal" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly equal: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Escape" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly escape: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Exit" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly exit: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "F1" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly f1: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "F10" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly f10: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "F11" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly f11: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "F12" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly f12: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "F13" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly f13: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "F14" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly f14: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "F15" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly f15: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "F16" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly f16: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "F17" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly f17: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "F18" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly f18: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "F19" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly f19: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "F2" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly f2: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "F20" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly f20: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "F21" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly f21: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "F22" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly f22: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "F23" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly f23: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "F24" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly f24: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "F3" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly f3: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "F4" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly f4: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "F5" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly f5: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "F6" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly f6: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "F7" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly f7: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "F8" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly f8: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "F9" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly f9: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Find" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly find: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Fn" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly fn: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Fn Lock" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly fnLock: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button 1" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButton1: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button 10" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButton10: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button 11" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButton11: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button 12" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButton12: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button 13" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButton13: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button 14" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButton14: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button 15" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButton15: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button 16" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButton16: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button 2" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButton2: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button 3" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButton3: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button 4" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButton4: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button 5" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButton5: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button 6" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButton6: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button 7" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButton7: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button 8" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButton8: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button 9" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButton9: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button A" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButtonA: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button B" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButtonB: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button C" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButtonC: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button Left 1" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButtonLeft1: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button Left 2" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButtonLeft2: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button Mode" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButtonMode: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button Right 1" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButtonRight1: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button Right 2" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButtonRight2: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button Select" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButtonSelect: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button Start" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButtonStart: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button Thumb Left" key on a
-   * generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButtonThumbLeft: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button Thumb Right" key on a
-   * generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButtonThumbRight: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button X" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButtonX: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button Y" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButtonY: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Game Button Z" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly gameButtonZ: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Help" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly help: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Home" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly home: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Hyper" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly hyper: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Info" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly info: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Insert" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly insert: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Intl Backslash" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly intlBackslash: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Intl Ro" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly intlRo: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Intl Yen" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly intlYen: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Kana Mode" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly kanaMode: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Kbd Illum Down" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly kbdIllumDown: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Kbd Illum Up" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly kbdIllumUp: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key A" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyA: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key B" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyB: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key C" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyC: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key D" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyD: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key E" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyE: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key F" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyF: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key G" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyG: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key H" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyH: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key I" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyI: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key J" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyJ: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key K" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyK: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key L" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyL: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key M" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyM: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key N" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyN: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key O" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyO: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key P" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyP: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key Q" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyQ: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key R" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyR: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key S" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyS: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key T" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyT: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key U" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyU: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key V" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyV: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key W" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyW: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key X" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyX: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key Y" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyY: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Key Z" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyZ: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Keyboard Layout Select" key on a
-   * generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly keyboardLayoutSelect: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Lang 1" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly lang1: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Lang 2" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly lang2: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Lang 3" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly lang3: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Lang 4" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly lang4: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Lang 5" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly lang5: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Launch App1" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly launchApp1: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Launch App2" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly launchApp2: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Launch Assistant" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly launchAssistant: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Launch Audio Browser" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly launchAudioBrowser: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Launch Calendar" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly launchCalendar: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Launch Contacts" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly launchContacts: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Launch Control Panel" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly launchControlPanel: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Launch Documents" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly launchDocuments: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Launch Internet Browser" key on a
-   * generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly launchInternetBrowser: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Launch Keyboard Layout" key on a
-   * generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly launchKeyboardLayout: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Launch Mail" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly launchMail: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Launch Phone" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly launchPhone: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Launch Screen Saver" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly launchScreenSaver: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Launch Spreadsheet" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly launchSpreadsheet: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Launch Word Processor" key on a
-   * generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly launchWordProcessor: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Lock Screen" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly lockScreen: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Log Off" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly logOff: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Mail Forward" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly mailForward: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Mail Reply" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly mailReply: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Mail Send" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly mailSend: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Media Fast Forward" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly mediaFastForward: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Media Last" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly mediaLast: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Media Pause" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly mediaPause: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Media Play" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly mediaPlay: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Media Play Pause" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly mediaPlayPause: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Media Record" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly mediaRecord: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Media Rewind" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly mediaRewind: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Media Select" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly mediaSelect: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Media Stop" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly mediaStop: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Media Track Next" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly mediaTrackNext: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Media Track Previous" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly mediaTrackPrevious: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Meta Left" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly metaLeft: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Meta Right" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly metaRight: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Microphone Mute Toggle" key on a
-   * generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly microphoneMuteToggle: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Minus" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly minus: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "New Key" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly newKey: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Non Convert" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly nonConvert: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Num Lock" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numLock: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad 0" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpad0: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad 1" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpad1: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad 2" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpad2: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad 3" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpad3: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad 4" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpad4: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad 5" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpad5: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad 6" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpad6: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad 7" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpad7: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad 8" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpad8: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad 9" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpad9: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad Add" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpadAdd: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad Backspace" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpadBackspace: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad Clear" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpadClear: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad Clear Entry" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpadClearEntry: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad Comma" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpadComma: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad Decimal" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpadDecimal: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad Divide" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpadDivide: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad Enter" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpadEnter: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad Equal" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpadEqual: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad Memory Add" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpadMemoryAdd: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad Memory Clear" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpadMemoryClear: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad Memory Recall" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpadMemoryRecall: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad Memory Store" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpadMemoryStore: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad Memory Subtract" key on a
-   * generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpadMemorySubtract: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad Multiply" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpadMultiply: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad Paren Left" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpadParenLeft: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad Paren Right" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpadParenRight: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad Sign Change" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpadSignChange: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Numpad Subtract" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly numpadSubtract: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Open" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly open: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Page Down" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly pageDown: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Page Up" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly pageUp: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Paste" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly paste: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Pause" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly pause: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Period" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly period: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Power" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly power: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Print" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly print: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Print Screen" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly printScreen: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Privacy Screen Toggle" key on a
-   * generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly privacyScreenToggle: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Program Guide" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly programGuide: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Props" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly props: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Quote" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly quote: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Redo" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly redo: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Resume" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly resume: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Save" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly save: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Scroll Lock" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly scrollLock: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Select" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly select: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Select Task" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly selectTask: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Semicolon" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly semicolon: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Shift Left" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly shiftLeft: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Shift Right" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly shiftRight: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Show All Windows" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly showAllWindows: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Slash" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly slash: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Sleep" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly sleep: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Space" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly space: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Speech Input Toggle" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly speechInputToggle: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Spell Check" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly spellCheck: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Super Key" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly superKey: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Suspend" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly suspend: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Tab" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly tab: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Turbo" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly turbo: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Undo" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly undo: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Usb Error Roll Over" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly usbErrorRollOver: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Usb Error Undefined" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly usbErrorUndefined: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Usb Post Fail" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly usbPostFail: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Usb Reserved" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly usbReserved: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Wake Up" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly wakeUp: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Zoom In" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly zoomIn: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Zoom Out" key on a generalized keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly zoomOut: widgetTypes.PhysicalKeyboardKey;
-  /**
-   * Represents the location of the "Zoom Toggle" key on a generalized
-   * keyboard.
-   *
-   * See the function [RawKeyEvent.physicalKey] for more information.
-   */
-  readonly zoomToggle: widgetTypes.PhysicalKeyboardKey;
-}>('PhysicalKeyboardKey');
+export const PhysicalKeyboardKey = declareConstants<
+  {
+    /**
+     * Represents the location of the "Abort" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly abort: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Again" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly again: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Alt Left" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly altLeft: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Alt Right" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly altRight: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Arrow Down" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly arrowDown: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Arrow Left" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly arrowLeft: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Arrow Right" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly arrowRight: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Arrow Up" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly arrowUp: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Audio Volume Down" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly audioVolumeDown: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Audio Volume Mute" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly audioVolumeMute: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Audio Volume Up" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly audioVolumeUp: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Backquote" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly backquote: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Backslash" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly backslash: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Backspace" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly backspace: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Bass Boost" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly bassBoost: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Bracket Left" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly bracketLeft: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Bracket Right" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly bracketRight: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Brightness Auto" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly brightnessAuto: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Brightness Down" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly brightnessDown: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Brightness Maximum" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly brightnessMaximum: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Brightness Minimum" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly brightnessMinimum: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Brightness Toggle" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly brightnessToggle: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Brightness Up" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly brightnessUp: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Browser Back" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly browserBack: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Browser Favorites" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly browserFavorites: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Browser Forward" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly browserForward: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Browser Home" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly browserHome: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Browser Refresh" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly browserRefresh: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Browser Search" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly browserSearch: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Browser Stop" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly browserStop: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Caps Lock" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly capsLock: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Channel Down" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly channelDown: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Channel Up" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly channelUp: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Close" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly close: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Closed Caption Toggle" key on a
+     * generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly closedCaptionToggle: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Comma" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly comma: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Context Menu" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly contextMenu: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Control Left" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly controlLeft: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Control Right" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly controlRight: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Convert" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly convert: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Copy" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly copy: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Cut" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly cut: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Delete" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly delete: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Digit 0" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly digit0: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Digit 1" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly digit1: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Digit 2" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly digit2: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Digit 3" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly digit3: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Digit 4" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly digit4: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Digit 5" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly digit5: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Digit 6" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly digit6: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Digit 7" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly digit7: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Digit 8" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly digit8: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Digit 9" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly digit9: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Display Toggle Int Ext" key on a
+     * generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly displayToggleIntExt: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Eject" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly eject: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "End" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly end: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Enter" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly enter: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Equal" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly equal: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Escape" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly escape: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Exit" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly exit: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "F1" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly f1: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "F10" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly f10: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "F11" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly f11: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "F12" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly f12: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "F13" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly f13: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "F14" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly f14: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "F15" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly f15: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "F16" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly f16: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "F17" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly f17: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "F18" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly f18: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "F19" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly f19: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "F2" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly f2: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "F20" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly f20: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "F21" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly f21: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "F22" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly f22: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "F23" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly f23: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "F24" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly f24: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "F3" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly f3: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "F4" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly f4: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "F5" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly f5: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "F6" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly f6: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "F7" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly f7: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "F8" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly f8: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "F9" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly f9: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Find" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly find: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Fn" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly fn: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Fn Lock" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly fnLock: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button 1" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButton1: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button 10" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButton10: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button 11" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButton11: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button 12" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButton12: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button 13" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButton13: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button 14" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButton14: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button 15" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButton15: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button 16" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButton16: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button 2" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButton2: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button 3" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButton3: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button 4" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButton4: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button 5" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButton5: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button 6" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButton6: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button 7" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButton7: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button 8" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButton8: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button 9" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButton9: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button A" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButtonA: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button B" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButtonB: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button C" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButtonC: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button Left 1" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButtonLeft1: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button Left 2" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButtonLeft2: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button Mode" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButtonMode: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button Right 1" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButtonRight1: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button Right 2" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButtonRight2: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button Select" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButtonSelect: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button Start" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButtonStart: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button Thumb Left" key on a
+     * generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButtonThumbLeft: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button Thumb Right" key on a
+     * generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButtonThumbRight: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button X" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButtonX: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button Y" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButtonY: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Game Button Z" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly gameButtonZ: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Help" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly help: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Home" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly home: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Hyper" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly hyper: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Info" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly info: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Insert" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly insert: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Intl Backslash" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly intlBackslash: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Intl Ro" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly intlRo: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Intl Yen" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly intlYen: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Kana Mode" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly kanaMode: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Kbd Illum Down" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly kbdIllumDown: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Kbd Illum Up" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly kbdIllumUp: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key A" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyA: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key B" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyB: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key C" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyC: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key D" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyD: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key E" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyE: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key F" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyF: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key G" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyG: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key H" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyH: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key I" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyI: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key J" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyJ: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key K" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyK: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key L" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyL: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key M" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyM: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key N" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyN: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key O" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyO: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key P" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyP: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key Q" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyQ: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key R" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyR: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key S" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyS: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key T" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyT: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key U" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyU: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key V" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyV: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key W" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyW: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key X" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyX: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key Y" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyY: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Key Z" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyZ: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Keyboard Layout Select" key on a
+     * generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly keyboardLayoutSelect: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Lang 1" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly lang1: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Lang 2" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly lang2: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Lang 3" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly lang3: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Lang 4" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly lang4: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Lang 5" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly lang5: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Launch App1" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly launchApp1: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Launch App2" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly launchApp2: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Launch Assistant" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly launchAssistant: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Launch Audio Browser" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly launchAudioBrowser: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Launch Calendar" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly launchCalendar: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Launch Contacts" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly launchContacts: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Launch Control Panel" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly launchControlPanel: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Launch Documents" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly launchDocuments: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Launch Internet Browser" key on a
+     * generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly launchInternetBrowser: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Launch Keyboard Layout" key on a
+     * generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly launchKeyboardLayout: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Launch Mail" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly launchMail: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Launch Phone" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly launchPhone: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Launch Screen Saver" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly launchScreenSaver: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Launch Spreadsheet" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly launchSpreadsheet: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Launch Word Processor" key on a
+     * generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly launchWordProcessor: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Lock Screen" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly lockScreen: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Log Off" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly logOff: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Mail Forward" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly mailForward: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Mail Reply" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly mailReply: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Mail Send" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly mailSend: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Media Fast Forward" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly mediaFastForward: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Media Last" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly mediaLast: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Media Pause" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly mediaPause: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Media Play" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly mediaPlay: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Media Play Pause" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly mediaPlayPause: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Media Record" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly mediaRecord: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Media Rewind" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly mediaRewind: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Media Select" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly mediaSelect: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Media Stop" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly mediaStop: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Media Track Next" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly mediaTrackNext: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Media Track Previous" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly mediaTrackPrevious: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Meta Left" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly metaLeft: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Meta Right" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly metaRight: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Microphone Mute Toggle" key on a
+     * generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly microphoneMuteToggle: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Minus" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly minus: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "New Key" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly newKey: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Non Convert" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly nonConvert: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Num Lock" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numLock: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad 0" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpad0: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad 1" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpad1: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad 2" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpad2: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad 3" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpad3: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad 4" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpad4: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad 5" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpad5: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad 6" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpad6: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad 7" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpad7: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad 8" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpad8: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad 9" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpad9: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad Add" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpadAdd: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad Backspace" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpadBackspace: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad Clear" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpadClear: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad Clear Entry" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpadClearEntry: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad Comma" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpadComma: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad Decimal" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpadDecimal: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad Divide" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpadDivide: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad Enter" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpadEnter: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad Equal" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpadEqual: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad Memory Add" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpadMemoryAdd: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad Memory Clear" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpadMemoryClear: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad Memory Recall" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpadMemoryRecall: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad Memory Store" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpadMemoryStore: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad Memory Subtract" key on a
+     * generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpadMemorySubtract: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad Multiply" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpadMultiply: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad Paren Left" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpadParenLeft: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad Paren Right" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpadParenRight: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad Sign Change" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpadSignChange: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Numpad Subtract" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly numpadSubtract: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Open" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly open: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Page Down" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly pageDown: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Page Up" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly pageUp: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Paste" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly paste: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Pause" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly pause: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Period" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly period: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Power" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly power: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Print" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly print: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Print Screen" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly printScreen: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Privacy Screen Toggle" key on a
+     * generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly privacyScreenToggle: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Program Guide" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly programGuide: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Props" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly props: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Quote" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly quote: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Redo" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly redo: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Resume" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly resume: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Save" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly save: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Scroll Lock" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly scrollLock: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Select" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly select: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Select Task" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly selectTask: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Semicolon" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly semicolon: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Shift Left" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly shiftLeft: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Shift Right" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly shiftRight: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Show All Windows" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly showAllWindows: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Slash" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly slash: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Sleep" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly sleep: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Space" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly space: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Speech Input Toggle" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly speechInputToggle: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Spell Check" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly spellCheck: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Super Key" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly superKey: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Suspend" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly suspend: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Tab" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly tab: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Turbo" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly turbo: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Undo" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly undo: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Usb Error Roll Over" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly usbErrorRollOver: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Usb Error Undefined" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly usbErrorUndefined: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Usb Post Fail" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly usbPostFail: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Usb Reserved" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly usbReserved: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Wake Up" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly wakeUp: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Zoom In" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly zoomIn: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Zoom Out" key on a generalized keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly zoomOut: widgetTypes.PhysicalKeyboardKey;
+    /**
+     * Represents the location of the "Zoom Toggle" key on a generalized
+     * keyboard.
+     *
+     * See the function [RawKeyEvent.physicalKey] for more information.
+     */
+    readonly zoomToggle: widgetTypes.PhysicalKeyboardKey;
+  } & (new (usbHidUsage: number) => widgetTypes.PhysicalKeyboardKey)
+>('PhysicalKeyboardKey');
 
 /**
  * Holds the [Size] and baseline required to represent the dimensions of
@@ -60275,12 +60690,19 @@ export const PhysicalKeyboardKey = declareConstants<{
  *    widget takes is indicated by a placeholder.
  *  * [RichText], a text widget that supports text inline widgets.
  */
-export const PlaceholderDimensions = declareConstants<{
-  /**
-   * A constant representing an empty placeholder.
-   */
-  readonly empty: widgetTypes.PlaceholderDimensions;
-}>('PlaceholderDimensions');
+export const PlaceholderDimensions = declareConstants<
+  {
+    /**
+     * A constant representing an empty placeholder.
+     */
+    readonly empty: widgetTypes.PlaceholderDimensions;
+  } & (new (options: {
+    size: widgetTypes.Size;
+    alignment: widgetTypes.PlaceholderAlignment;
+    baseline?: widgetTypes.TextBaseline;
+    baselineOffset?: number;
+  }) => widgetTypes.PlaceholderDimensions)
+>('PlaceholderDimensions');
 
 /**
  * An immutable placeholder that is embedded inline within text.
@@ -60341,12 +60763,60 @@ export const Priority = declareConstants<{
 /**
  * An immutable rounded rectangle with the custom radii for all four corners.
  */
-export const RRect = declareConstants<{
-  /**
-   * A rounded rectangle with all the values set to zero.
-   */
-  readonly zero: widgetTypes.RRect;
-}>('RRect');
+export const RRect = declareConstants<
+  {
+    /**
+     * A rounded rectangle with all the values set to zero.
+     */
+    readonly zero: widgetTypes.RRect;
+  } & {
+    readonly fromLTRBAndCorners: (
+      left: number,
+      top: number,
+      right: number,
+      bottom: number,
+      options?: {
+        topLeft?: widgetTypes.Radius;
+        topRight?: widgetTypes.Radius;
+        bottomRight?: widgetTypes.Radius;
+        bottomLeft?: widgetTypes.Radius;
+      },
+    ) => widgetTypes.RRect;
+    readonly fromLTRBR: (
+      left: number,
+      top: number,
+      right: number,
+      bottom: number,
+      radius: widgetTypes.Radius,
+    ) => widgetTypes.RRect;
+    readonly fromLTRBXY: (
+      left: number,
+      top: number,
+      right: number,
+      bottom: number,
+      radiusX: number,
+      radiusY: number,
+    ) => widgetTypes.RRect;
+    readonly fromRectAndCorners: (
+      rect: widgetTypes.Rect,
+      options?: {
+        topLeft?: widgetTypes.Radius;
+        topRight?: widgetTypes.Radius;
+        bottomRight?: widgetTypes.Radius;
+        bottomLeft?: widgetTypes.Radius;
+      },
+    ) => widgetTypes.RRect;
+    readonly fromRectAndRadius: (
+      rect: widgetTypes.Rect,
+      radius: widgetTypes.Radius,
+    ) => widgetTypes.RRect;
+    readonly fromRectXY: (
+      rect: widgetTypes.Rect,
+      radiusX: number,
+      radiusY: number,
+    ) => widgetTypes.RRect;
+  }
+>('RRect');
 
 /**
  * An immutable rounded superellipse.
@@ -60363,25 +60833,78 @@ export const RRect = declareConstants<{
  * corners. It closely matches the `RoundedRectangle` shape in SwiftUI with the
  * `.continuous` corner style.
  */
-export const RSuperellipse = declareConstants<{
-  /**
-   * A rounded rectangle with all the values set to zero.
-   */
-  readonly zero: widgetTypes.RSuperellipse;
-}>('RSuperellipse');
+export const RSuperellipse = declareConstants<
+  {
+    /**
+     * A rounded rectangle with all the values set to zero.
+     */
+    readonly zero: widgetTypes.RSuperellipse;
+  } & {
+    readonly fromLTRBAndCorners: (
+      left: number,
+      top: number,
+      right: number,
+      bottom: number,
+      options?: {
+        topLeft?: widgetTypes.Radius;
+        topRight?: widgetTypes.Radius;
+        bottomRight?: widgetTypes.Radius;
+        bottomLeft?: widgetTypes.Radius;
+      },
+    ) => widgetTypes.RSuperellipse;
+    readonly fromLTRBR: (
+      left: number,
+      top: number,
+      right: number,
+      bottom: number,
+      radius: widgetTypes.Radius,
+    ) => widgetTypes.RSuperellipse;
+    readonly fromLTRBXY: (
+      left: number,
+      top: number,
+      right: number,
+      bottom: number,
+      radiusX: number,
+      radiusY: number,
+    ) => widgetTypes.RSuperellipse;
+    readonly fromRectAndCorners: (
+      rect: widgetTypes.Rect,
+      options?: {
+        topLeft?: widgetTypes.Radius;
+        topRight?: widgetTypes.Radius;
+        bottomRight?: widgetTypes.Radius;
+        bottomLeft?: widgetTypes.Radius;
+      },
+    ) => widgetTypes.RSuperellipse;
+    readonly fromRectAndRadius: (
+      rect: widgetTypes.Rect,
+      radius: widgetTypes.Radius,
+    ) => widgetTypes.RSuperellipse;
+    readonly fromRectXY: (
+      rect: widgetTypes.Rect,
+      radiusX: number,
+      radiusY: number,
+    ) => widgetTypes.RSuperellipse;
+  }
+>('RSuperellipse');
 
 /**
  * A radius for either circular or elliptical shapes.
  */
-export const Radius = declareConstants<{
-  /**
-   * A radius with [x] and [y] values set to zero.
-   *
-   * You can use [Radius.zero] with [RRect] or [RSuperellipse] to have
-   * right-angle corners.
-   */
-  readonly zero: widgetTypes.Radius;
-}>('Radius');
+export const Radius = declareConstants<
+  {
+    /**
+     * A radius with [x] and [y] values set to zero.
+     *
+     * You can use [Radius.zero] with [RRect] or [RSuperellipse] to have
+     * right-angle corners.
+     */
+    readonly zero: widgetTypes.Radius;
+  } & {
+    readonly circular: (radius: number) => widgetTypes.Radius;
+    readonly elliptical: (x: number, y: number) => widgetTypes.Radius;
+  }
+>('Radius');
 
 /**
  * Platform-specific key event data for Android.
@@ -60396,169 +60919,183 @@ export const Radius = declareConstants<{
  *
  * * [RawKeyboard], which uses this interface to expose key data.
  */
-export const RawKeyEventDataAndroid = declareConstants<{
-  /**
-   * This mask is used to check the [metaState] field to test whether one of
-   * the ALT modifier keys is pressed.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierAlt: number;
-  /**
-   * This mask is used to check the [metaState] field to test whether the CAPS
-   * LOCK modifier key is on.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierCapsLock: number;
-  /**
-   * This mask is used to check the [metaState] field to test whether one of
-   * the CTRL modifier keys is pressed.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierControl: number;
-  /**
-   * This mask is used to check the [metaState] field to test whether the
-   * Function modifier key (Fn) is pressed.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierFunction: number;
-  /**
-   * This mask is used to check the [metaState] field to test whether the left
-   * ALT modifier key is pressed.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierLeftAlt: number;
-  /**
-   * This mask is used to check the [metaState] field to test whether the left
-   * CTRL modifier key is pressed.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierLeftControl: number;
-  /**
-   * This mask is used to check the [metaState] field to test whether the left
-   * META modifier key is pressed.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierLeftMeta: number;
-  /**
-   * This mask is used to check the [metaState] field to test whether the left
-   * SHIFT modifier key is pressed.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierLeftShift: number;
-  /**
-   * This mask is used to check the [metaState] field to test whether one of
-   * the META modifier keys is pressed.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierMeta: number;
-  /**
-   * No modifier keys are pressed in the [metaState] field.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierNone: number;
-  /**
-   * This mask is used to check the [metaState] field to test whether the NUM
-   * LOCK modifier key is on.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierNumLock: number;
-  /**
-   * This mask is used to check the [metaState] field to test whether the right
-   * ALT modifier key is pressed.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierRightAlt: number;
-  /**
-   * This mask is used to check the [metaState] field to test whether the right
-   * CTRL modifier key is pressed.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierRightControl: number;
-  /**
-   * This mask is used to check the [metaState] field to test whether the right
-   * META modifier key is pressed.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierRightMeta: number;
-  /**
-   * This mask is used to check the [metaState] field to test whether the right
-   * SHIFT modifier key is pressed.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierRightShift: number;
-  /**
-   * This mask is used to check the [metaState] field to test whether the
-   * SCROLL LOCK modifier key is on.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierScrollLock: number;
-  /**
-   * This mask is used to check the [metaState] field to test whether one of
-   * the SHIFT modifier keys is pressed.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierShift: number;
-  /**
-   * This mask is used to check the [metaState] field to test whether the SYM
-   * modifier key is pressed.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierSym: number;
-}>('RawKeyEventDataAndroid');
+export const RawKeyEventDataAndroid = declareConstants<
+  {
+    /**
+     * This mask is used to check the [metaState] field to test whether one of
+     * the ALT modifier keys is pressed.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierAlt: number;
+    /**
+     * This mask is used to check the [metaState] field to test whether the CAPS
+     * LOCK modifier key is on.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierCapsLock: number;
+    /**
+     * This mask is used to check the [metaState] field to test whether one of
+     * the CTRL modifier keys is pressed.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierControl: number;
+    /**
+     * This mask is used to check the [metaState] field to test whether the
+     * Function modifier key (Fn) is pressed.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierFunction: number;
+    /**
+     * This mask is used to check the [metaState] field to test whether the left
+     * ALT modifier key is pressed.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierLeftAlt: number;
+    /**
+     * This mask is used to check the [metaState] field to test whether the left
+     * CTRL modifier key is pressed.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierLeftControl: number;
+    /**
+     * This mask is used to check the [metaState] field to test whether the left
+     * META modifier key is pressed.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierLeftMeta: number;
+    /**
+     * This mask is used to check the [metaState] field to test whether the left
+     * SHIFT modifier key is pressed.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierLeftShift: number;
+    /**
+     * This mask is used to check the [metaState] field to test whether one of
+     * the META modifier keys is pressed.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierMeta: number;
+    /**
+     * No modifier keys are pressed in the [metaState] field.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierNone: number;
+    /**
+     * This mask is used to check the [metaState] field to test whether the NUM
+     * LOCK modifier key is on.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierNumLock: number;
+    /**
+     * This mask is used to check the [metaState] field to test whether the right
+     * ALT modifier key is pressed.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierRightAlt: number;
+    /**
+     * This mask is used to check the [metaState] field to test whether the right
+     * CTRL modifier key is pressed.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierRightControl: number;
+    /**
+     * This mask is used to check the [metaState] field to test whether the right
+     * META modifier key is pressed.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierRightMeta: number;
+    /**
+     * This mask is used to check the [metaState] field to test whether the right
+     * SHIFT modifier key is pressed.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierRightShift: number;
+    /**
+     * This mask is used to check the [metaState] field to test whether the
+     * SCROLL LOCK modifier key is on.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierScrollLock: number;
+    /**
+     * This mask is used to check the [metaState] field to test whether one of
+     * the SHIFT modifier keys is pressed.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierShift: number;
+    /**
+     * This mask is used to check the [metaState] field to test whether the SYM
+     * modifier key is pressed.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierSym: number;
+  } & (new (options?: {
+    flags?: number;
+    codePoint?: number;
+    plainCodePoint?: number;
+    keyCode?: number;
+    scanCode?: number;
+    metaState?: number;
+    eventSource?: number;
+    vendorId?: number;
+    productId?: number;
+    deviceId?: number;
+    repeatCount?: number;
+  }) => widgetTypes.RawKeyEventDataAndroid)
+>('RawKeyEventDataAndroid');
 
 /**
  * Platform-specific key event data for Fuchsia.
@@ -60573,134 +61110,140 @@ export const RawKeyEventDataAndroid = declareConstants<{
  *
  * * [RawKeyboard], which uses this interface to expose key data.
  */
-export const RawKeyEventDataFuchsia = declareConstants<{
-  /**
-   * This mask is used to check the [modifiers] field to test whether one of
-   * the ALT modifier keys is pressed.
-   *
-   * Use this value if you need to decode the [modifiers] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierAlt: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the CAPS
-   * LOCK modifier key is on.
-   *
-   * Use this value if you need to decode the [modifiers] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierCapsLock: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether one of
-   * the CTRL modifier keys is pressed.
-   *
-   * Use this value if you need to decode the [modifiers] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierControl: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the left
-   * ALT modifier key is pressed.
-   *
-   * Use this value if you need to decode the [modifiers] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierLeftAlt: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the left
-   * CTRL modifier key is pressed.
-   *
-   * Use this value if you need to decode the [modifiers] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierLeftControl: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the left
-   * META modifier key is pressed.
-   *
-   * Use this value if you need to decode the [modifiers] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierLeftMeta: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the left
-   * SHIFT modifier key is pressed.
-   *
-   * Use this value if you need to decode the [modifiers] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierLeftShift: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether one of
-   * the META modifier keys is pressed.
-   *
-   * Use this value if you need to decode the [modifiers] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierMeta: number;
-  /**
-   * The [modifiers] field indicates that no modifier keys are pressed if it
-   * equals this value.
-   *
-   * Use this value if you need to decode the [modifiers] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierNone: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the right
-   * ALT modifier key is pressed.
-   *
-   * Use this value if you need to decode the [modifiers] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierRightAlt: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the right
-   * CTRL modifier key is pressed.
-   *
-   * Use this value if you need to decode the [modifiers] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierRightControl: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the right
-   * META modifier key is pressed.
-   *
-   * Use this value if you need to decode the [modifiers] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierRightMeta: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the right
-   * SHIFT modifier key is pressed.
-   *
-   * Use this value if you need to decode the [modifiers] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierRightShift: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether one of
-   * the SHIFT modifier keys is pressed.
-   *
-   * Use this value if you need to decode the [modifiers] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierShift: number;
-}>('RawKeyEventDataFuchsia');
+export const RawKeyEventDataFuchsia = declareConstants<
+  {
+    /**
+     * This mask is used to check the [modifiers] field to test whether one of
+     * the ALT modifier keys is pressed.
+     *
+     * Use this value if you need to decode the [modifiers] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierAlt: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the CAPS
+     * LOCK modifier key is on.
+     *
+     * Use this value if you need to decode the [modifiers] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierCapsLock: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether one of
+     * the CTRL modifier keys is pressed.
+     *
+     * Use this value if you need to decode the [modifiers] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierControl: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the left
+     * ALT modifier key is pressed.
+     *
+     * Use this value if you need to decode the [modifiers] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierLeftAlt: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the left
+     * CTRL modifier key is pressed.
+     *
+     * Use this value if you need to decode the [modifiers] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierLeftControl: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the left
+     * META modifier key is pressed.
+     *
+     * Use this value if you need to decode the [modifiers] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierLeftMeta: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the left
+     * SHIFT modifier key is pressed.
+     *
+     * Use this value if you need to decode the [modifiers] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierLeftShift: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether one of
+     * the META modifier keys is pressed.
+     *
+     * Use this value if you need to decode the [modifiers] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierMeta: number;
+    /**
+     * The [modifiers] field indicates that no modifier keys are pressed if it
+     * equals this value.
+     *
+     * Use this value if you need to decode the [modifiers] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierNone: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the right
+     * ALT modifier key is pressed.
+     *
+     * Use this value if you need to decode the [modifiers] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierRightAlt: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the right
+     * CTRL modifier key is pressed.
+     *
+     * Use this value if you need to decode the [modifiers] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierRightControl: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the right
+     * META modifier key is pressed.
+     *
+     * Use this value if you need to decode the [modifiers] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierRightMeta: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the right
+     * SHIFT modifier key is pressed.
+     *
+     * Use this value if you need to decode the [modifiers] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierRightShift: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether one of
+     * the SHIFT modifier keys is pressed.
+     *
+     * Use this value if you need to decode the [modifiers] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierShift: number;
+  } & (new (options?: {
+    hidUsage?: number;
+    codePoint?: number;
+    modifiers?: number;
+  }) => widgetTypes.RawKeyEventDataFuchsia)
+>('RawKeyEventDataFuchsia');
 
 /**
  * Platform-specific key event data for iOS.
@@ -60715,98 +61258,105 @@ export const RawKeyEventDataFuchsia = declareConstants<{
  *
  *  * [RawKeyboard], which uses this interface to expose key data.
  */
-export const RawKeyEventDataIos = declareConstants<{
-  /**
-   * Used to retrieve only the device-independent modifier flags, allowing
-   * applications to mask off the device-dependent modifier flags, including
-   * event coalescing information.
-   */
-  readonly deviceIndependentMask: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the CAPS
-   * LOCK modifier key is on.
-   *
-   * Use this value if you need to decode the [modifiers] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierCapsLock: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether one of the
-   * CMD modifier keys is pressed.
-   */
-  readonly modifierCommand: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether one of the
-   * CTRL modifier keys is pressed.
-   */
-  readonly modifierControl: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether one of the
-   * FUNCTION modifier keys is pressed.
-   */
-  readonly modifierFunction: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the
-   * HELP modifier key is pressed.
-   */
-  readonly modifierHelp: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the left
-   * CMD modifier keys is pressed.
-   */
-  readonly modifierLeftCommand: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the left
-   * CTRL modifier key is pressed.
-   */
-  readonly modifierLeftControl: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the left
-   * ALT modifier key is pressed.
-   */
-  readonly modifierLeftOption: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the left
-   * SHIFT modifier key is pressed.
-   */
-  readonly modifierLeftShift: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether any key in
-   * the numeric keypad is pressed.
-   */
-  readonly modifierNumericPad: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether one of the
-   * ALT modifier keys is pressed.
-   */
-  readonly modifierOption: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the right
-   * CMD modifier keys is pressed.
-   */
-  readonly modifierRightCommand: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the right
-   * CTRL modifier key is pressed.
-   */
-  readonly modifierRightControl: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the right
-   * ALT modifier key is pressed.
-   */
-  readonly modifierRightOption: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the right
-   * SHIFT modifier key is pressed.
-   */
-  readonly modifierRightShift: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether one of the
-   * SHIFT modifier keys is pressed.
-   */
-  readonly modifierShift: number;
-}>('RawKeyEventDataIos');
+export const RawKeyEventDataIos = declareConstants<
+  {
+    /**
+     * Used to retrieve only the device-independent modifier flags, allowing
+     * applications to mask off the device-dependent modifier flags, including
+     * event coalescing information.
+     */
+    readonly deviceIndependentMask: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the CAPS
+     * LOCK modifier key is on.
+     *
+     * Use this value if you need to decode the [modifiers] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierCapsLock: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether one of the
+     * CMD modifier keys is pressed.
+     */
+    readonly modifierCommand: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether one of the
+     * CTRL modifier keys is pressed.
+     */
+    readonly modifierControl: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether one of the
+     * FUNCTION modifier keys is pressed.
+     */
+    readonly modifierFunction: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the
+     * HELP modifier key is pressed.
+     */
+    readonly modifierHelp: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the left
+     * CMD modifier keys is pressed.
+     */
+    readonly modifierLeftCommand: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the left
+     * CTRL modifier key is pressed.
+     */
+    readonly modifierLeftControl: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the left
+     * ALT modifier key is pressed.
+     */
+    readonly modifierLeftOption: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the left
+     * SHIFT modifier key is pressed.
+     */
+    readonly modifierLeftShift: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether any key in
+     * the numeric keypad is pressed.
+     */
+    readonly modifierNumericPad: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether one of the
+     * ALT modifier keys is pressed.
+     */
+    readonly modifierOption: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the right
+     * CMD modifier keys is pressed.
+     */
+    readonly modifierRightCommand: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the right
+     * CTRL modifier key is pressed.
+     */
+    readonly modifierRightControl: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the right
+     * ALT modifier key is pressed.
+     */
+    readonly modifierRightOption: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the right
+     * SHIFT modifier key is pressed.
+     */
+    readonly modifierRightShift: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether one of the
+     * SHIFT modifier keys is pressed.
+     */
+    readonly modifierShift: number;
+  } & (new (options?: {
+    characters?: string;
+    charactersIgnoringModifiers?: string;
+    keyCode?: number;
+    modifiers?: number;
+  }) => widgetTypes.RawKeyEventDataIos)
+>('RawKeyEventDataIos');
 
 /**
  * Platform-specific key event data for macOS.
@@ -60821,98 +61371,106 @@ export const RawKeyEventDataIos = declareConstants<{
  *
  *  * [RawKeyboard], which uses this interface to expose key data.
  */
-export const RawKeyEventDataMacOs = declareConstants<{
-  /**
-   * Used to retrieve only the device-independent modifier flags, allowing
-   * applications to mask off the device-dependent modifier flags, including
-   * event coalescing information.
-   */
-  readonly deviceIndependentMask: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the CAPS
-   * LOCK modifier key is on.
-   *
-   * Use this value if you need to decode the [modifiers] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierCapsLock: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether one of the
-   * CMD modifier keys is pressed.
-   */
-  readonly modifierCommand: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether one of the
-   * CTRL modifier keys is pressed.
-   */
-  readonly modifierControl: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether one of the
-   * FUNCTION modifier keys is pressed.
-   */
-  readonly modifierFunction: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the
-   * HELP modifier key is pressed.
-   */
-  readonly modifierHelp: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the left
-   * CMD modifier keys is pressed.
-   */
-  readonly modifierLeftCommand: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the left
-   * CTRL modifier key is pressed.
-   */
-  readonly modifierLeftControl: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the left
-   * ALT modifier key is pressed.
-   */
-  readonly modifierLeftOption: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the left
-   * SHIFT modifier key is pressed.
-   */
-  readonly modifierLeftShift: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether any key in
-   * the numeric keypad is pressed.
-   */
-  readonly modifierNumericPad: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether one of the
-   * ALT modifier keys is pressed.
-   */
-  readonly modifierOption: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the right
-   * CMD modifier keys is pressed.
-   */
-  readonly modifierRightCommand: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the right
-   * CTRL modifier key is pressed.
-   */
-  readonly modifierRightControl: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the right
-   * ALT modifier key is pressed.
-   */
-  readonly modifierRightOption: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the right
-   * SHIFT modifier key is pressed.
-   */
-  readonly modifierRightShift: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether one of the
-   * SHIFT modifier keys is pressed.
-   */
-  readonly modifierShift: number;
-}>('RawKeyEventDataMacOs');
+export const RawKeyEventDataMacOs = declareConstants<
+  {
+    /**
+     * Used to retrieve only the device-independent modifier flags, allowing
+     * applications to mask off the device-dependent modifier flags, including
+     * event coalescing information.
+     */
+    readonly deviceIndependentMask: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the CAPS
+     * LOCK modifier key is on.
+     *
+     * Use this value if you need to decode the [modifiers] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierCapsLock: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether one of the
+     * CMD modifier keys is pressed.
+     */
+    readonly modifierCommand: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether one of the
+     * CTRL modifier keys is pressed.
+     */
+    readonly modifierControl: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether one of the
+     * FUNCTION modifier keys is pressed.
+     */
+    readonly modifierFunction: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the
+     * HELP modifier key is pressed.
+     */
+    readonly modifierHelp: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the left
+     * CMD modifier keys is pressed.
+     */
+    readonly modifierLeftCommand: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the left
+     * CTRL modifier key is pressed.
+     */
+    readonly modifierLeftControl: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the left
+     * ALT modifier key is pressed.
+     */
+    readonly modifierLeftOption: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the left
+     * SHIFT modifier key is pressed.
+     */
+    readonly modifierLeftShift: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether any key in
+     * the numeric keypad is pressed.
+     */
+    readonly modifierNumericPad: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether one of the
+     * ALT modifier keys is pressed.
+     */
+    readonly modifierOption: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the right
+     * CMD modifier keys is pressed.
+     */
+    readonly modifierRightCommand: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the right
+     * CTRL modifier key is pressed.
+     */
+    readonly modifierRightControl: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the right
+     * ALT modifier key is pressed.
+     */
+    readonly modifierRightOption: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the right
+     * SHIFT modifier key is pressed.
+     */
+    readonly modifierRightShift: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether one of the
+     * SHIFT modifier keys is pressed.
+     */
+    readonly modifierShift: number;
+  } & (new (options?: {
+    characters?: string;
+    charactersIgnoringModifiers?: string;
+    keyCode?: number;
+    modifiers?: number;
+    specifiedLogicalKey?: number;
+  }) => widgetTypes.RawKeyEventDataMacOs)
+>('RawKeyEventDataMacOs');
 
 /**
  * Platform-specific key event data for Web.
@@ -60924,79 +61482,87 @@ export const RawKeyEventDataMacOs = declareConstants<{
  *
  *  * [RawKeyboard], which uses this interface to expose key data.
  */
-export const RawKeyEventDataWeb = declareConstants<{
-  /**
-   * This mask is used to check the [metaState] field to test whether one of
-   * the ALT modifier keys is pressed.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierAlt: number;
-  /**
-   * This mask is used to check the [metaState] field to test whether the CAPS
-   * LOCK modifier key is on.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierCapsLock: number;
-  /**
-   * This mask is used to check the [metaState] field to test whether one of
-   * the CTRL modifier keys is pressed.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierControl: number;
-  /**
-   * This mask is used to check the [metaState] field to test whether one of
-   * the META modifier keys is pressed.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierMeta: number;
-  /**
-   * No modifier keys are pressed in the [metaState] field.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierNone: number;
-  /**
-   * This mask is used to check the [metaState] field to test whether the NUM
-   * LOCK modifier key is on.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierNumLock: number;
-  /**
-   * This mask is used to check the [metaState] field to test whether the
-   * SCROLL LOCK modifier key is on.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierScrollLock: number;
-  /**
-   * This mask is used to check the [metaState] field to test whether one of
-   * the SHIFT modifier keys is pressed.
-   *
-   * Use this value if you need to decode the [metaState] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierShift: number;
-}>('RawKeyEventDataWeb');
+export const RawKeyEventDataWeb = declareConstants<
+  {
+    /**
+     * This mask is used to check the [metaState] field to test whether one of
+     * the ALT modifier keys is pressed.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierAlt: number;
+    /**
+     * This mask is used to check the [metaState] field to test whether the CAPS
+     * LOCK modifier key is on.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierCapsLock: number;
+    /**
+     * This mask is used to check the [metaState] field to test whether one of
+     * the CTRL modifier keys is pressed.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierControl: number;
+    /**
+     * This mask is used to check the [metaState] field to test whether one of
+     * the META modifier keys is pressed.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierMeta: number;
+    /**
+     * No modifier keys are pressed in the [metaState] field.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierNone: number;
+    /**
+     * This mask is used to check the [metaState] field to test whether the NUM
+     * LOCK modifier key is on.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierNumLock: number;
+    /**
+     * This mask is used to check the [metaState] field to test whether the
+     * SCROLL LOCK modifier key is on.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierScrollLock: number;
+    /**
+     * This mask is used to check the [metaState] field to test whether one of
+     * the SHIFT modifier keys is pressed.
+     *
+     * Use this value if you need to decode the [metaState] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierShift: number;
+  } & (new (options: {
+    code: string;
+    key: string;
+    location?: number;
+    metaState?: number;
+    keyCode?: number;
+  }) => widgetTypes.RawKeyEventDataWeb)
+>('RawKeyEventDataWeb');
 
 /**
  * Platform-specific key event data for Windows.
@@ -61011,82 +61577,89 @@ export const RawKeyEventDataWeb = declareConstants<{
  *
  *  * [RawKeyboard], which uses this interface to expose key data.
  */
-export const RawKeyEventDataWindows = declareConstants<{
-  /**
-   * This mask is used to check the [modifiers] field to test whether one of the
-   * ALT modifier keys is pressed.
-   */
-  readonly modifierAlt: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the CAPS LOCK key
-   * is pressed.
-   */
-  readonly modifierCaps: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether one of the
-   * CTRL modifier keys is pressed.
-   */
-  readonly modifierControl: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the left
-   * ALT modifier key is pressed.
-   */
-  readonly modifierLeftAlt: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the left
-   * CTRL modifier key is pressed.
-   */
-  readonly modifierLeftControl: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the left
-   * WIN modifier keys is pressed.
-   */
-  readonly modifierLeftMeta: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the left
-   * SHIFT modifier key is pressed.
-   */
-  readonly modifierLeftShift: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the NUM LOCK key
-   * is pressed.
-   */
-  readonly modifierNumLock: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the right
-   * ALT modifier key is pressed.
-   */
-  readonly modifierRightAlt: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the right
-   * CTRL modifier key is pressed.
-   */
-  readonly modifierRightControl: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the right
-   * WIN modifier keys is pressed.
-   */
-  readonly modifierRightMeta: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the right
-   * SHIFT modifier key is pressed.
-   */
-  readonly modifierRightShift: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether the SCROLL LOCK key
-   * is pressed.
-   */
-  readonly modifierScrollLock: number;
-  /**
-   * This mask is used to check the [modifiers] field to test whether one of the
-   * SHIFT modifier keys is pressed.
-   *
-   * Use this value if you need to decode the [modifiers] field yourself, but
-   * it's much easier to use [isModifierPressed] if you just want to know if
-   * a modifier is pressed.
-   */
-  readonly modifierShift: number;
-}>('RawKeyEventDataWindows');
+export const RawKeyEventDataWindows = declareConstants<
+  {
+    /**
+     * This mask is used to check the [modifiers] field to test whether one of the
+     * ALT modifier keys is pressed.
+     */
+    readonly modifierAlt: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the CAPS LOCK key
+     * is pressed.
+     */
+    readonly modifierCaps: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether one of the
+     * CTRL modifier keys is pressed.
+     */
+    readonly modifierControl: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the left
+     * ALT modifier key is pressed.
+     */
+    readonly modifierLeftAlt: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the left
+     * CTRL modifier key is pressed.
+     */
+    readonly modifierLeftControl: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the left
+     * WIN modifier keys is pressed.
+     */
+    readonly modifierLeftMeta: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the left
+     * SHIFT modifier key is pressed.
+     */
+    readonly modifierLeftShift: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the NUM LOCK key
+     * is pressed.
+     */
+    readonly modifierNumLock: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the right
+     * ALT modifier key is pressed.
+     */
+    readonly modifierRightAlt: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the right
+     * CTRL modifier key is pressed.
+     */
+    readonly modifierRightControl: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the right
+     * WIN modifier keys is pressed.
+     */
+    readonly modifierRightMeta: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the right
+     * SHIFT modifier key is pressed.
+     */
+    readonly modifierRightShift: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether the SCROLL LOCK key
+     * is pressed.
+     */
+    readonly modifierScrollLock: number;
+    /**
+     * This mask is used to check the [modifiers] field to test whether one of the
+     * SHIFT modifier keys is pressed.
+     *
+     * Use this value if you need to decode the [modifiers] field yourself, but
+     * it's much easier to use [isModifierPressed] if you just want to know if
+     * a modifier is pressed.
+     */
+    readonly modifierShift: number;
+  } & (new (options?: {
+    keyCode?: number;
+    scanCode?: number;
+    characterCodePoint?: number;
+    modifiers?: number;
+  }) => widgetTypes.RawKeyEventDataWindows)
+>('RawKeyEventDataWindows');
 
 /**
  * An immutable, 2D, axis-aligned, floating-point rectangle whose coordinates
@@ -61099,19 +61672,47 @@ export const RawKeyEventDataWindows = declareConstants<{
  * Rect myRect = const Offset(1.0, 2.0) & const Size(3.0, 4.0);
  * ```
  */
-export const Rect = declareConstants<{
-  /**
-   * A rectangle that covers the entire coordinate space.
-   *
-   * This covers the space from -1e9,-1e9 to 1e9,1e9.
-   * This is the space over which graphics operations are valid.
-   */
-  readonly largest: widgetTypes.Rect;
-  /**
-   * A rectangle with left, top, right, and bottom edges all at zero.
-   */
-  readonly zero: widgetTypes.Rect;
-}>('Rect');
+export const Rect = declareConstants<
+  {
+    /**
+     * A rectangle that covers the entire coordinate space.
+     *
+     * This covers the space from -1e9,-1e9 to 1e9,1e9.
+     * This is the space over which graphics operations are valid.
+     */
+    readonly largest: widgetTypes.Rect;
+    /**
+     * A rectangle with left, top, right, and bottom edges all at zero.
+     */
+    readonly zero: widgetTypes.Rect;
+  } & {
+    readonly fromCenter: (options: {
+      center: widgetTypes.Offset;
+      width: number;
+      height: number;
+    }) => widgetTypes.Rect;
+    readonly fromCircle: (options: {
+      center: widgetTypes.Offset;
+      radius: number;
+    }) => widgetTypes.Rect;
+    readonly fromLTRB: (
+      left: number,
+      top: number,
+      right: number,
+      bottom: number,
+    ) => widgetTypes.Rect;
+    readonly fromLTWH: (
+      left: number,
+      top: number,
+      width: number,
+      height: number,
+    ) => widgetTypes.Rect;
+    readonly fromPoints: (
+      a: widgetTypes.Offset,
+      b: widgetTypes.Offset,
+    ) => widgetTypes.Rect;
+  }
+>('Rect');
 
 /**
  * An immutable 2D, axis-aligned, floating-point rectangle whose coordinates
@@ -61121,12 +61722,36 @@ export const Rect = declareConstants<{
  * width or height of the rectangle, convert it to a [Rect] using [toRect()]
  * (passing the container's own Rect), and then examine that object.
  */
-export const RelativeRect = declareConstants<{
-  /**
-   * A rect that covers the entire container.
-   */
-  readonly fill: widgetTypes.RelativeRect;
-}>('RelativeRect');
+export const RelativeRect = declareConstants<
+  {
+    /**
+     * A rect that covers the entire container.
+     */
+    readonly fill: widgetTypes.RelativeRect;
+  } & {
+    readonly fromDirectional: (options: {
+      textDirection: widgetTypes.TextDirection;
+      start: number;
+      top: number;
+      end: number;
+      bottom: number;
+    }) => widgetTypes.RelativeRect;
+    readonly fromLTRB: (
+      left: number,
+      top: number,
+      right: number,
+      bottom: number,
+    ) => widgetTypes.RelativeRect;
+    readonly fromRect: (
+      rect: widgetTypes.Rect,
+      container: widgetTypes.Rect,
+    ) => widgetTypes.RelativeRect;
+    readonly fromSize: (
+      rect: widgetTypes.Rect,
+      container: widgetTypes.Size,
+    ) => widgetTypes.RelativeRect;
+  }
+>('RelativeRect');
 
 /**
  * An interface for render objects that are bigger on the inside.
@@ -61222,29 +61847,45 @@ export const RenderAbstractViewport = declareConstants<{
  *    in the center of that plane will be mostly untransformed with children
  *    above and below it being transformed more as the angle increases.
  */
-export const RenderListWheelViewport = declareConstants<{
-  /**
-   * An error message to show when [clipBehavior] and [renderChildrenOutsideViewport]
-   * are set to conflicting values.
-   */
-  readonly clipBehaviorAndRenderChildrenOutsideViewportConflict: string;
-  /**
-   * An arbitrary but aesthetically reasonable default value for [diameterRatio].
-   */
-  readonly defaultDiameterRatio: number;
-  /**
-   * An arbitrary but aesthetically reasonable default value for [perspective].
-   */
-  readonly defaultPerspective: number;
-  /**
-   * An error message to show when the provided [diameterRatio] is zero.
-   */
-  readonly diameterRatioZeroMessage: string;
-  /**
-   * An error message to show when the [perspective] value is too high.
-   */
-  readonly perspectiveTooHighMessage: string;
-}>('RenderListWheelViewport');
+export const RenderListWheelViewport = declareConstants<
+  {
+    /**
+     * An error message to show when [clipBehavior] and [renderChildrenOutsideViewport]
+     * are set to conflicting values.
+     */
+    readonly clipBehaviorAndRenderChildrenOutsideViewportConflict: string;
+    /**
+     * An arbitrary but aesthetically reasonable default value for [diameterRatio].
+     */
+    readonly defaultDiameterRatio: number;
+    /**
+     * An arbitrary but aesthetically reasonable default value for [perspective].
+     */
+    readonly defaultPerspective: number;
+    /**
+     * An error message to show when the provided [diameterRatio] is zero.
+     */
+    readonly diameterRatioZeroMessage: string;
+    /**
+     * An error message to show when the [perspective] value is too high.
+     */
+    readonly perspectiveTooHighMessage: string;
+  } & (new (options: {
+    childManager: widgetTypes.ListWheelChildManager;
+    offset: widgetTypes.ViewportOffset;
+    diameterRatio?: number;
+    perspective?: number;
+    offAxisFraction?: number;
+    useMagnifier?: boolean;
+    magnification?: number;
+    overAndUnderCenterOpacity?: number;
+    itemExtent: number;
+    squeeze?: number;
+    renderChildrenOutsideViewport?: boolean;
+    clipBehavior?: widgetTypes.Clip;
+    children?: widgetTypes.RenderBox[];
+  }) => widgetTypes.RenderListWheelViewport)
+>('RenderListWheelViewport');
 
 /**
  * A render object that is bigger on the inside.
@@ -61281,45 +61922,59 @@ export const RenderListWheelViewport = declareConstants<{
  *  * [RenderShrinkWrappingViewport], a variant of [RenderViewport] that
  *    shrink-wraps its contents along the main axis.
  */
-export const RenderViewport = declareConstants<{
-  /**
-   * When a top-level [SemanticsNode] below a [RenderAbstractViewport] is
-   * tagged with [excludeFromScrolling] it will not be part of the scrolling
-   * area for semantic purposes.
-   *
-   * This behavior is only active if the [RenderAbstractViewport]
-   * tagged its [SemanticsConfiguration] with [useTwoPaneSemantics].
-   * Otherwise, the [excludeFromScrolling] tag is ignored.
-   *
-   * As an example, a [RenderSliver] that stays on the screen within a
-   * [Scrollable] even though the user has scrolled past it (e.g. a pinned app
-   * bar) can tag its [SemanticsNode] with [excludeFromScrolling] to indicate
-   * that it should no longer be considered for semantic actions related to
-   * scrolling.
-   */
-  readonly excludeFromScrolling: widgetTypes.SemanticsTag;
-  /**
-   * If a [RenderAbstractViewport] overrides
-   * [RenderObject.describeSemanticsConfiguration] to add the [SemanticsTag]
-   * [useTwoPaneSemantics] to its [SemanticsConfiguration], two semantics nodes
-   * will be used to represent the viewport with its associated scrolling
-   * actions in the semantics tree.
-   *
-   * Two semantics nodes (an inner and an outer node) are necessary to exclude
-   * certain child nodes (via the [excludeFromScrolling] tag) from the
-   * scrollable area for semantic purposes: The [SemanticsNode]s of children
-   * that should be excluded from scrolling will be attached to the outer node.
-   * The semantic scrolling actions and the [SemanticsNode]s of scrollable
-   * children will be attached to the inner node, which itself is a child of
-   * the outer node.
-   *
-   * See also:
-   *
-   * * [RenderViewportBase.describeSemanticsConfiguration], which adds this
-   *   tag to its [SemanticsConfiguration].
-   */
-  readonly useTwoPaneSemantics: widgetTypes.SemanticsTag;
-}>('RenderViewport');
+export const RenderViewport = declareConstants<
+  {
+    /**
+     * When a top-level [SemanticsNode] below a [RenderAbstractViewport] is
+     * tagged with [excludeFromScrolling] it will not be part of the scrolling
+     * area for semantic purposes.
+     *
+     * This behavior is only active if the [RenderAbstractViewport]
+     * tagged its [SemanticsConfiguration] with [useTwoPaneSemantics].
+     * Otherwise, the [excludeFromScrolling] tag is ignored.
+     *
+     * As an example, a [RenderSliver] that stays on the screen within a
+     * [Scrollable] even though the user has scrolled past it (e.g. a pinned app
+     * bar) can tag its [SemanticsNode] with [excludeFromScrolling] to indicate
+     * that it should no longer be considered for semantic actions related to
+     * scrolling.
+     */
+    readonly excludeFromScrolling: widgetTypes.SemanticsTag;
+    /**
+     * If a [RenderAbstractViewport] overrides
+     * [RenderObject.describeSemanticsConfiguration] to add the [SemanticsTag]
+     * [useTwoPaneSemantics] to its [SemanticsConfiguration], two semantics nodes
+     * will be used to represent the viewport with its associated scrolling
+     * actions in the semantics tree.
+     *
+     * Two semantics nodes (an inner and an outer node) are necessary to exclude
+     * certain child nodes (via the [excludeFromScrolling] tag) from the
+     * scrollable area for semantic purposes: The [SemanticsNode]s of children
+     * that should be excluded from scrolling will be attached to the outer node.
+     * The semantic scrolling actions and the [SemanticsNode]s of scrollable
+     * children will be attached to the inner node, which itself is a child of
+     * the outer node.
+     *
+     * See also:
+     *
+     * * [RenderViewportBase.describeSemanticsConfiguration], which adds this
+     *   tag to its [SemanticsConfiguration].
+     */
+    readonly useTwoPaneSemantics: widgetTypes.SemanticsTag;
+  } & (new (options: {
+    axisDirection?: widgetTypes.AxisDirection;
+    crossAxisDirection: widgetTypes.AxisDirection;
+    offset: widgetTypes.ViewportOffset;
+    anchor?: number;
+    children?: widgetTypes.RenderSliver[];
+    center?: widgetTypes.RenderSliver;
+    cacheExtent?: number;
+    cacheExtentStyle?: widgetTypes.CacheExtentStyle;
+    scrollCacheExtent?: widgetTypes.ScrollCacheExtent;
+    paintOrder?: widgetTypes.SliverPaintOrder;
+    clipBehavior?: widgetTypes.Clip;
+  }) => widgetTypes.RenderViewport)
+>('RenderViewport');
 
 /**
  * Scrolls a scroll view as the user drags their finger across the screen.
@@ -61329,29 +61984,37 @@ export const RenderViewport = declareConstants<{
  *  * [DragScrollActivity], which is the activity the scroll view performs
  *    while a drag is underway.
  */
-export const ScrollDragController = declareConstants<{
-  /**
-   * Maximum amount of time interval the drag can have consecutive stationary
-   * pointer update events before losing the momentum carried from a previous
-   * scroll activity.
-   */
-  readonly momentumRetainStationaryDurationThreshold: widgetTypes.Duration;
-  /**
-   * The minimum amount of velocity needed to apply the [carriedVelocity] at
-   * the end of a drag. Expressed as a factor. For example with a
-   * [carriedVelocity] of 2000, we will need a velocity of at least 1000 to
-   * apply the [carriedVelocity] as well. If the velocity does not meet the
-   * threshold, the [carriedVelocity] is lost. Decided by fair eyeballing
-   * with the scroll_overlay platform test.
-   */
-  readonly momentumRetainVelocityThresholdFactor: number;
-  /**
-   * Maximum amount of time interval the drag can have consecutive stationary
-   * pointer update events before needing to break the
-   * [motionStartDistanceThreshold] to start motion again.
-   */
-  readonly motionStoppedDurationThreshold: widgetTypes.Duration;
-}>('ScrollDragController');
+export const ScrollDragController = declareConstants<
+  {
+    /**
+     * Maximum amount of time interval the drag can have consecutive stationary
+     * pointer update events before losing the momentum carried from a previous
+     * scroll activity.
+     */
+    readonly momentumRetainStationaryDurationThreshold: widgetTypes.Duration;
+    /**
+     * The minimum amount of velocity needed to apply the [carriedVelocity] at
+     * the end of a drag. Expressed as a factor. For example with a
+     * [carriedVelocity] of 2000, we will need a velocity of at least 1000 to
+     * apply the [carriedVelocity] as well. If the velocity does not meet the
+     * threshold, the [carriedVelocity] is lost. Decided by fair eyeballing
+     * with the scroll_overlay platform test.
+     */
+    readonly momentumRetainVelocityThresholdFactor: number;
+    /**
+     * Maximum amount of time interval the drag can have consecutive stationary
+     * pointer update events before needing to break the
+     * [motionStartDistanceThreshold] to start motion again.
+     */
+    readonly motionStoppedDurationThreshold: widgetTypes.Duration;
+  } & (new (options: {
+    delegate: widgetTypes.ScrollActivityDelegate;
+    details: widgetTypes.DragStartDetails;
+    onDragCanceled?: () => void;
+    carriedVelocity?: number;
+    motionStartDistanceThreshold?: number;
+  }) => widgetTypes.ScrollDragController)
+>('ScrollDragController');
 
 /**
  * An object that manages a pair of selection handles and a toolbar.
@@ -61359,12 +62022,41 @@ export const ScrollDragController = declareConstants<{
  * The selection handles are displayed in the [Overlay] that most closely
  * encloses the given [BuildContext].
  */
-export const SelectionOverlay = declareConstants<{
-  /**
-   * Controls the fade-in and fade-out animations for the toolbar and handles.
-   */
-  readonly fadeDuration: widgetTypes.Duration;
-}>('SelectionOverlay');
+export const SelectionOverlay = declareConstants<
+  {
+    /**
+     * Controls the fade-in and fade-out animations for the toolbar and handles.
+     */
+    readonly fadeDuration: widgetTypes.Duration;
+  } & (new (options: {
+    context: widgetTypes.BuildContext;
+    debugRequiredFor?: FlutterElement;
+    startHandleType: widgetTypes.TextSelectionHandleType;
+    lineHeightAtStart: number;
+    startHandlesVisible?: widgetTypes.ValueListenable;
+    onStartHandleDragStart?: (value: widgetTypes.DragStartDetails) => void;
+    onStartHandleDragUpdate?: (value: widgetTypes.DragUpdateDetails) => void;
+    onStartHandleDragEnd?: (value: widgetTypes.DragEndDetails) => void;
+    endHandleType: widgetTypes.TextSelectionHandleType;
+    lineHeightAtEnd: number;
+    endHandlesVisible?: widgetTypes.ValueListenable;
+    onEndHandleDragStart?: (value: widgetTypes.DragStartDetails) => void;
+    onEndHandleDragUpdate?: (value: widgetTypes.DragUpdateDetails) => void;
+    onEndHandleDragEnd?: (value: widgetTypes.DragEndDetails) => void;
+    toolbarVisible?: widgetTypes.ValueListenable;
+    selectionEndpoints: widgetTypes.TextSelectionPoint[];
+    selectionControls: widgetTypes.TextSelectionControls;
+    selectionDelegate: widgetTypes.TextSelectionDelegate;
+    clipboardStatus: widgetTypes.ClipboardStatusNotifier;
+    startHandleLayerLink: widgetTypes.LayerLink;
+    endHandleLayerLink: widgetTypes.LayerLink;
+    toolbarLayerLink: widgetTypes.LayerLink;
+    dragStartBehavior?: widgetTypes.DragStartBehavior;
+    onSelectionHandleTapped?: () => void;
+    toolbarLocation?: widgetTypes.Offset;
+    magnifierConfiguration?: widgetTypes.TextMagnifierConfiguration;
+  }) => widgetTypes.SelectionOverlay)
+>('SelectionOverlay');
 
 /**
  * The possible actions that can be conveyed from the operating system
@@ -61952,21 +62644,32 @@ export const SemanticsFlag = declareConstants<{
  *
  * You can think of this as an [Offset] from the origin.
  */
-export const Size = declareConstants<{
-  /**
-   * A size whose [width] and [height] are infinite.
-   *
-   * See also:
-   *
-   *  * [isInfinite], which checks whether either dimension is infinite.
-   *  * [isFinite], which checks whether both dimensions are finite.
-   */
-  readonly infinite: widgetTypes.Size;
-  /**
-   * An empty size, one with a zero width and a zero height.
-   */
-  readonly zero: widgetTypes.Size;
-}>('Size');
+export const Size = declareConstants<
+  {
+    /**
+     * A size whose [width] and [height] are infinite.
+     *
+     * See also:
+     *
+     *  * [isInfinite], which checks whether either dimension is infinite.
+     *  * [isFinite], which checks whether both dimensions are finite.
+     */
+    readonly infinite: widgetTypes.Size;
+    /**
+     * An empty size, one with a zero width and a zero height.
+     */
+    readonly zero: widgetTypes.Size;
+  } & (new (
+    width: number,
+    height: number,
+  ) => widgetTypes.Size & {
+    readonly copy: (source: widgetTypes.Size) => widgetTypes.Size;
+    readonly fromHeight: (height: number) => widgetTypes.Size;
+    readonly fromRadius: (radius: number) => widgetTypes.Size;
+    readonly fromWidth: (width: number) => widgetTypes.Size;
+    readonly square: (dimension: number) => widgetTypes.Size;
+  })
+>('Size');
 
 /**
  * Describes the amount of space occupied by a [RenderSliver].
@@ -61974,12 +62677,27 @@ export const Size = declareConstants<{
  * A sliver can occupy space in several different ways, which is why this class
  * contains multiple values.
  */
-export const SliverGeometry = declareConstants<{
-  /**
-   * A sliver that occupies no space at all.
-   */
-  readonly zero: widgetTypes.SliverGeometry;
-}>('SliverGeometry');
+export const SliverGeometry = declareConstants<
+  {
+    /**
+     * A sliver that occupies no space at all.
+     */
+    readonly zero: widgetTypes.SliverGeometry;
+  } & (new (options?: {
+    scrollExtent?: number;
+    paintExtent?: number;
+    paintOrigin?: number;
+    layoutExtent?: number;
+    maxPaintExtent?: number;
+    maxScrollObstructionExtent?: number;
+    crossAxisExtent?: number;
+    hitTestExtent?: number;
+    visible?: boolean;
+    hasVisualOverflow?: boolean;
+    scrollOffsetCorrection?: number;
+    cacheExtent?: number;
+  }) => widgetTypes.SliverGeometry)
+>('SliverGeometry');
 
 /**
  * A object representation of a frame from a stack trace.
@@ -61992,16 +62710,29 @@ export const SliverGeometry = declareConstants<{
  * final List<StackFrame> currentFrames = StackFrame.fromStackTrace(StackTrace.current);
  * ```
  */
-export const StackFrame = declareConstants<{
-  /**
-   * A stack frame representing an asynchronous suspension.
-   */
-  readonly asynchronousSuspension: widgetTypes.StackFrame;
-  /**
-   * A stack frame representing a Dart elided stack overflow frame.
-   */
-  readonly stackOverFlowElision: widgetTypes.StackFrame;
-}>('StackFrame');
+export const StackFrame = declareConstants<
+  {
+    /**
+     * A stack frame representing an asynchronous suspension.
+     */
+    readonly asynchronousSuspension: widgetTypes.StackFrame;
+    /**
+     * A stack frame representing a Dart elided stack overflow frame.
+     */
+    readonly stackOverFlowElision: widgetTypes.StackFrame;
+  } & (new (options: {
+    number: number;
+    column: number;
+    line: number;
+    packageScheme: string;
+    package: string;
+    packagePath: string;
+    className?: string;
+    method: string;
+    isConstructor?: boolean;
+    source: string;
+  }) => widgetTypes.StackFrame)
+>('StackFrame');
 
 /**
  * Defines the strut, which sets the minimum height a line can be
@@ -62264,15 +62995,29 @@ export const StackFrame = declareConstants<{
  * )
  * ```
  */
-export const StrutStyle = declareConstants<{
-  /**
-   * A [StrutStyle] that will have no impact on the text layout.
-   *
-   * Equivalent to having no strut at all. All lines will be laid out according to
-   * the properties defined in [TextStyle].
-   */
-  readonly disabled: widgetTypes.StrutStyle;
-}>('StrutStyle');
+export const StrutStyle = declareConstants<
+  {
+    /**
+     * A [StrutStyle] that will have no impact on the text layout.
+     *
+     * Equivalent to having no strut at all. All lines will be laid out according to
+     * the properties defined in [TextStyle].
+     */
+    readonly disabled: widgetTypes.StrutStyle;
+  } & (new (options?: {
+    fontFamily?: string;
+    fontFamilyFallback?: string[];
+    fontSize?: number;
+    height?: number;
+    leadingDistribution?: widgetTypes.TextLeadingDistribution;
+    leading?: number;
+    fontWeight?: widgetTypes.FontWeight;
+    fontStyle?: widgetTypes.FontStyle;
+    forceStrutHeight?: boolean;
+    debugLabel?: string;
+    package?: string;
+  }) => widgetTypes.StrutStyle)
+>('StrutStyle');
 
 /**
  * Platform channels used by the Flutter system.
@@ -63414,18 +64159,29 @@ export const SystemMouseCursors = declareConstants<{
  * the system overlays, and by [SystemChrome.setSystemUIOverlayStyle] for
  * imperatively setting the style of the system overlays.
  */
-export const SystemUiOverlayStyle = declareConstants<{
-  /**
-   * System overlays should be drawn with a dark color. Intended for
-   * applications with a light background.
-   */
-  readonly dark: widgetTypes.SystemUiOverlayStyle;
-  /**
-   * System overlays should be drawn with a light color. Intended for
-   * applications with a dark background.
-   */
-  readonly light: widgetTypes.SystemUiOverlayStyle;
-}>('SystemUiOverlayStyle');
+export const SystemUiOverlayStyle = declareConstants<
+  {
+    /**
+     * System overlays should be drawn with a dark color. Intended for
+     * applications with a light background.
+     */
+    readonly dark: widgetTypes.SystemUiOverlayStyle;
+    /**
+     * System overlays should be drawn with a light color. Intended for
+     * applications with a dark background.
+     */
+    readonly light: widgetTypes.SystemUiOverlayStyle;
+  } & (new (options?: {
+    systemNavigationBarColor?: widgetTypes.Color;
+    systemNavigationBarDividerColor?: widgetTypes.Color;
+    systemNavigationBarIconBrightness?: widgetTypes.Brightness;
+    systemNavigationBarContrastEnforced?: boolean;
+    statusBarColor?: widgetTypes.Color;
+    statusBarBrightness?: widgetTypes.Brightness;
+    statusBarIconBrightness?: widgetTypes.Brightness;
+    systemStatusBarContrastEnforced?: boolean;
+  }) => widgetTypes.SystemUiOverlayStyle)
+>('SystemUiOverlayStyle');
 
 /**
  * The vertical alignment of text within an input box.
@@ -63444,54 +64200,72 @@ export const SystemUiOverlayStyle = declareConstants<{
  *  * [InputDecorator.textAlignVertical], which defines the alignment of
  *    prefix, input, and suffix within an [InputDecorator].
  */
-export const TextAlignVertical = declareConstants<{
-  /**
-   * Aligns a TextField's input Text with the bottommost location within a
-   * TextField.
-   */
-  readonly bottom: widgetTypes.TextAlignVertical;
-  /**
-   * Aligns a TextField's input Text to the center of the TextField.
-   */
-  readonly center: widgetTypes.TextAlignVertical;
-  /**
-   * Aligns a TextField's input Text with the topmost location within a
-   * TextField's input box.
-   */
-  readonly top: widgetTypes.TextAlignVertical;
-}>('TextAlignVertical');
+export const TextAlignVertical = declareConstants<
+  {
+    /**
+     * Aligns a TextField's input Text with the bottommost location within a
+     * TextField.
+     */
+    readonly bottom: widgetTypes.TextAlignVertical;
+    /**
+     * Aligns a TextField's input Text to the center of the TextField.
+     */
+    readonly center: widgetTypes.TextAlignVertical;
+    /**
+     * Aligns a TextField's input Text with the topmost location within a
+     * TextField's input box.
+     */
+    readonly top: widgetTypes.TextAlignVertical;
+  } & (new (options: { y: number }) => widgetTypes.TextAlignVertical)
+>('TextAlignVertical');
 
 /**
  * A linear decoration to draw near the text.
  */
-export const TextDecoration = declareConstants<{
-  /**
-   * Draw a line through each line of text
-   */
-  readonly lineThrough: widgetTypes.TextDecoration;
-  /**
-   * Do not draw a decoration
-   */
-  readonly none: widgetTypes.TextDecoration;
-  /**
-   * Draw a line above each line of text
-   */
-  readonly overline: widgetTypes.TextDecoration;
-  /**
-   * Draw a line underneath each line of text
-   */
-  readonly underline: widgetTypes.TextDecoration;
-}>('TextDecoration');
+export const TextDecoration = declareConstants<
+  {
+    /**
+     * Draw a line through each line of text
+     */
+    readonly lineThrough: widgetTypes.TextDecoration;
+    /**
+     * Do not draw a decoration
+     */
+    readonly none: widgetTypes.TextDecoration;
+    /**
+     * Draw a line above each line of text
+     */
+    readonly overline: widgetTypes.TextDecoration;
+    /**
+     * Draw a line underneath each line of text
+     */
+    readonly underline: widgetTypes.TextDecoration;
+  } & {
+    readonly combine: (
+      decorations: widgetTypes.TextDecoration[],
+    ) => widgetTypes.TextDecoration;
+  }
+>('TextDecoration');
 
 /**
  * The current text, selection, and composing state for editing a run of text.
  */
-export const TextEditingValue = declareConstants<{
-  /**
-   * A value that corresponds to the empty string with no selection and no composing range.
-   */
-  readonly empty: widgetTypes.TextEditingValue;
-}>('TextEditingValue');
+export const TextEditingValue = declareConstants<
+  {
+    /**
+     * A value that corresponds to the empty string with no selection and no composing range.
+     */
+    readonly empty: widgetTypes.TextEditingValue;
+  } & (new (options?: {
+    text?: string;
+    selection?: widgetTypes.TextSelection;
+    composing?: widgetTypes.TextRange;
+  }) => widgetTypes.TextEditingValue & {
+    readonly fromJSON: (
+      encoded: Record<string, unknown>,
+    ) => widgetTypes.TextEditingValue;
+  })
+>('TextEditingValue');
 
 /**
  * The type of information for which to optimize the text input control.
@@ -63502,113 +64276,120 @@ export const TextEditingValue = declareConstants<{
  * for additional flags for some input types. For example, numeric input
  * can specify whether it supports decimal numbers and/or signed numbers.
  */
-export const TextInputType = declareConstants<{
-  /**
-   * Optimize for date and time information.
-   *
-   * On iOS, requests the default keyboard.
-   *
-   * On Android, requests a keyboard with ready access to the number keys,
-   * ":", and "-".
-   */
-  readonly datetime: widgetTypes.TextInputType;
-  /**
-   * Optimize for email addresses.
-   *
-   * Requests a keyboard with ready access to the "@" and "." keys.
-   */
-  readonly emailAddress: widgetTypes.TextInputType;
-  /**
-   * Optimize for multiline textual information.
-   *
-   * Requests the default platform keyboard, but accepts newlines when the
-   * enter key is pressed. This is the input type used for all multiline text
-   * fields.
-   */
-  readonly multiline: widgetTypes.TextInputType;
-  /**
-   * Optimized for a person's name.
-   *
-   * On iOS, requests the
-   * [UIKeyboardType.namePhonePad](https://developer.apple.com/documentation/uikit/uikeyboardtype/namephonepad)
-   * keyboard, a keyboard optimized for entering a person’s name or phone number.
-   * Does not support auto-capitalization.
-   *
-   * On Android, requests a keyboard optimized for
-   * [TYPE_TEXT_VARIATION_PERSON_NAME](https://developer.android.com/reference/android/text/InputType#TYPE_TEXT_VARIATION_PERSON_NAME).
-   */
-  readonly name: widgetTypes.TextInputType;
-  /**
-   * Prevent the OS from showing the on-screen virtual keyboard.
-   */
-  readonly none: widgetTypes.TextInputType;
-  /**
-   * Optimize for unsigned numerical information without a decimal point.
-   *
-   * Requests a default keyboard with ready access to the number keys.
-   * Additional options, such as decimal point and/or positive/negative
-   * signs, can be requested using [TextInputType.numberWithOptions].
-   */
-  readonly number: widgetTypes.TextInputType;
-  /**
-   * Optimize for telephone numbers.
-   *
-   * Requests a keyboard with ready access to the number keys, "*", and "#".
-   */
-  readonly phone: widgetTypes.TextInputType;
-  /**
-   * Optimized for postal mailing addresses.
-   *
-   * On iOS, requests the default keyboard.
-   *
-   * On Android, requests a keyboard optimized for
-   * [TYPE_TEXT_VARIATION_POSTAL_ADDRESS](https://developer.android.com/reference/android/text/InputType#TYPE_TEXT_VARIATION_POSTAL_ADDRESS).
-   */
-  readonly streetAddress: widgetTypes.TextInputType;
-  /**
-   * Optimize for textual information.
-   *
-   * Requests the default platform keyboard.
-   */
-  readonly text: widgetTypes.TextInputType;
-  /**
-   * Optimized for social media.
-   *
-   * Requests a keyboard that includes keys useful for handles and tags.
-   *
-   * On iOS, requests a default keyboard with ready access to the "@" and "#" keys.
-   *
-   * On Android this is remapped to the [emailAddress] keyboard type as it always shows the "@" key.
-   */
-  readonly twitter: widgetTypes.TextInputType;
-  /**
-   * Optimize for URLs.
-   *
-   * Requests a keyboard with ready access to the "/" and "." keys.
-   */
-  readonly url: widgetTypes.TextInputType;
-  /**
-   * All possible enum values.
-   */
-  readonly values: widgetTypes.TextInputType[];
-  /**
-   * Optimize for passwords that are visible to the user.
-   *
-   * Requests a keyboard with ready access to both letters and numbers.
-   */
-  readonly visiblePassword: widgetTypes.TextInputType;
-  /**
-   * Optimized for web searches.
-   *
-   * Requests a keyboard that includes keys useful for web searches as well as URLs.
-   *
-   * On iOS, requests a default keyboard with ready access to the "." key. In contrast to
-   * [url], a space bar is available.
-   *
-   * On Android this is remapped to the [url] keyboard type as it always shows a space bar.
-   */
-  readonly webSearch: widgetTypes.TextInputType;
-}>('TextInputType');
+export const TextInputType = declareConstants<
+  {
+    /**
+     * Optimize for date and time information.
+     *
+     * On iOS, requests the default keyboard.
+     *
+     * On Android, requests a keyboard with ready access to the number keys,
+     * ":", and "-".
+     */
+    readonly datetime: widgetTypes.TextInputType;
+    /**
+     * Optimize for email addresses.
+     *
+     * Requests a keyboard with ready access to the "@" and "." keys.
+     */
+    readonly emailAddress: widgetTypes.TextInputType;
+    /**
+     * Optimize for multiline textual information.
+     *
+     * Requests the default platform keyboard, but accepts newlines when the
+     * enter key is pressed. This is the input type used for all multiline text
+     * fields.
+     */
+    readonly multiline: widgetTypes.TextInputType;
+    /**
+     * Optimized for a person's name.
+     *
+     * On iOS, requests the
+     * [UIKeyboardType.namePhonePad](https://developer.apple.com/documentation/uikit/uikeyboardtype/namephonepad)
+     * keyboard, a keyboard optimized for entering a person’s name or phone number.
+     * Does not support auto-capitalization.
+     *
+     * On Android, requests a keyboard optimized for
+     * [TYPE_TEXT_VARIATION_PERSON_NAME](https://developer.android.com/reference/android/text/InputType#TYPE_TEXT_VARIATION_PERSON_NAME).
+     */
+    readonly name: widgetTypes.TextInputType;
+    /**
+     * Prevent the OS from showing the on-screen virtual keyboard.
+     */
+    readonly none: widgetTypes.TextInputType;
+    /**
+     * Optimize for unsigned numerical information without a decimal point.
+     *
+     * Requests a default keyboard with ready access to the number keys.
+     * Additional options, such as decimal point and/or positive/negative
+     * signs, can be requested using [TextInputType.numberWithOptions].
+     */
+    readonly number: widgetTypes.TextInputType;
+    /**
+     * Optimize for telephone numbers.
+     *
+     * Requests a keyboard with ready access to the number keys, "*", and "#".
+     */
+    readonly phone: widgetTypes.TextInputType;
+    /**
+     * Optimized for postal mailing addresses.
+     *
+     * On iOS, requests the default keyboard.
+     *
+     * On Android, requests a keyboard optimized for
+     * [TYPE_TEXT_VARIATION_POSTAL_ADDRESS](https://developer.android.com/reference/android/text/InputType#TYPE_TEXT_VARIATION_POSTAL_ADDRESS).
+     */
+    readonly streetAddress: widgetTypes.TextInputType;
+    /**
+     * Optimize for textual information.
+     *
+     * Requests the default platform keyboard.
+     */
+    readonly text: widgetTypes.TextInputType;
+    /**
+     * Optimized for social media.
+     *
+     * Requests a keyboard that includes keys useful for handles and tags.
+     *
+     * On iOS, requests a default keyboard with ready access to the "@" and "#" keys.
+     *
+     * On Android this is remapped to the [emailAddress] keyboard type as it always shows the "@" key.
+     */
+    readonly twitter: widgetTypes.TextInputType;
+    /**
+     * Optimize for URLs.
+     *
+     * Requests a keyboard with ready access to the "/" and "." keys.
+     */
+    readonly url: widgetTypes.TextInputType;
+    /**
+     * All possible enum values.
+     */
+    readonly values: widgetTypes.TextInputType[];
+    /**
+     * Optimize for passwords that are visible to the user.
+     *
+     * Requests a keyboard with ready access to both letters and numbers.
+     */
+    readonly visiblePassword: widgetTypes.TextInputType;
+    /**
+     * Optimized for web searches.
+     *
+     * Requests a keyboard that includes keys useful for web searches as well as URLs.
+     *
+     * On iOS, requests a default keyboard with ready access to the "." key. In contrast to
+     * [url], a space bar is available.
+     *
+     * On Android this is remapped to the [url] keyboard type as it always shows a space bar.
+     */
+    readonly webSearch: widgetTypes.TextInputType;
+  } & {
+    readonly numberWithOptions: (options?: {
+      signed?: boolean;
+      decimal?: boolean;
+    }) => widgetTypes.TextInputType;
+  }
+>('TextInputType');
 
 /**
  * A configuration object for a magnifier (e.g. in a text field).
@@ -63616,23 +64397,39 @@ export const TextInputType = declareConstants<{
  * In general, most features of the magnifier can be configured by controlling
  * the widgets built by the [magnifierBuilder].
  */
-export const TextMagnifierConfiguration = declareConstants<{
-  /**
-   * A constant for a [TextMagnifierConfiguration] that is disabled, meaning it
-   * never builds anything, regardless of platform.
-   */
-  readonly disabled: widgetTypes.TextMagnifierConfiguration;
-}>('TextMagnifierConfiguration');
+export const TextMagnifierConfiguration = declareConstants<
+  {
+    /**
+     * A constant for a [TextMagnifierConfiguration] that is disabled, meaning it
+     * never builds anything, regardless of platform.
+     */
+    readonly disabled: widgetTypes.TextMagnifierConfiguration;
+  } & (new (options?: {
+    magnifierBuilder?: (
+      context: widgetTypes.BuildContext,
+      controller: widgetTypes.MagnifierController,
+      magnifierInfo: widgetTypes.ValueNotifier,
+    ) => FlutterElement | null;
+    shouldDisplayHandlesInMagnifier?: boolean;
+  }) => widgetTypes.TextMagnifierConfiguration)
+>('TextMagnifierConfiguration');
 
 /**
  * A range of characters in a string of text.
  */
-export const TextRange = declareConstants<{
-  /**
-   * A text range that contains nothing and is not in the text.
-   */
-  readonly empty: widgetTypes.TextRange;
-}>('TextRange');
+export const TextRange = declareConstants<
+  {
+    /**
+     * A text range that contains nothing and is not in the text.
+     */
+    readonly empty: widgetTypes.TextRange;
+  } & (new (options: {
+    start: number;
+    end: number;
+  }) => widgetTypes.TextRange & {
+    readonly collapsed: (offset: number) => widgetTypes.TextRange;
+  })
+>('TextRange');
 
 /**
  * A class that describes how textual contents should be scaled for better
@@ -63646,15 +64443,19 @@ export const TextRange = declareConstants<{
  * [TextScaler] changes. Consider overriding the [==] operator if applicable
  * to avoid unnecessary rebuilds.
  */
-export const TextScaler = declareConstants<{
-  /**
-   * A [TextScaler] that doesn't scale the input font size.
-   *
-   * This is equivalent to `TextScaler.linear(1.0)`, the [TextScaler.scale]
-   * implementation always returns the input font size as-is.
-   */
-  readonly noScaling: widgetTypes.TextScaler;
-}>('TextScaler');
+export const TextScaler = declareConstants<
+  {
+    /**
+     * A [TextScaler] that doesn't scale the input font size.
+     *
+     * This is equivalent to `TextScaler.linear(1.0)`, the [TextScaler.scale]
+     * implementation always returns the input font size as-is.
+     */
+    readonly noScaling: widgetTypes.TextScaler;
+  } & {
+    readonly linear: (textScaleFactor: number) => widgetTypes.TextScaler;
+  }
+>('TextScaler');
 
 /**
  * Immutable compound values that describe the effective ticker behavior
@@ -63680,14 +64481,19 @@ export const TextScaler = declareConstants<{
  * automatically to the [Ticker]s they vend. Use this class when you need to
  * observe or react to ticker policy explicitly.
  */
-export const TickerModeData = declareConstants<{
-  /**
-   * Fallback values used when there is no ancestor [TickerMode].
-   *
-   * This corresponds to tickers being enabled and not forcing frames.
-   */
-  readonly fallback: widgetTypes.TickerModeData;
-}>('TickerModeData');
+export const TickerModeData = declareConstants<
+  {
+    /**
+     * Fallback values used when there is no ancestor [TickerMode].
+     *
+     * This corresponds to tickers being enabled and not forcing frames.
+     */
+    readonly fallback: widgetTypes.TickerModeData;
+  } & (new (options: {
+    enabled: boolean;
+    forceFrames: boolean;
+  }) => widgetTypes.TickerModeData)
+>('TickerModeData');
 
 /**
  * A value representing a time during the day, independent of the date that
@@ -63715,31 +64521,44 @@ export const TickerModeData = declareConstants<{
  *  * [DateTime], which represents date and time, and is subject to eras and
  *    time zones.
  */
-export const TimeOfDay = declareConstants<{
-  /**
-   * The number of hours in one day, i.e. 24.
-   */
-  readonly hoursPerDay: number;
-  /**
-   * The number of hours in one day period (see also [DayPeriod]), i.e. 12.
-   */
-  readonly hoursPerPeriod: number;
-  /**
-   * The number of minutes in one hour, i.e. 60.
-   */
-  readonly minutesPerHour: number;
-}>('TimeOfDay');
+export const TimeOfDay = declareConstants<
+  {
+    /**
+     * The number of hours in one day, i.e. 24.
+     */
+    readonly hoursPerDay: number;
+    /**
+     * The number of hours in one day period (see also [DayPeriod]), i.e. 12.
+     */
+    readonly hoursPerPeriod: number;
+    /**
+     * The number of minutes in one hour, i.e. 60.
+     */
+    readonly minutesPerHour: number;
+  } & (new (options: {
+    hour: number;
+    minute: number;
+  }) => widgetTypes.TimeOfDay & {
+    readonly now: () => widgetTypes.TimeOfDay;
+  })
+>('TimeOfDay');
 
 /**
  * Structure that specifies maximum allowable magnitudes for distances,
  * durations, and velocity differences to be considered equal.
  */
-export const Tolerance = declareConstants<{
-  /**
-   * A default tolerance of 0.001 for all three values.
-   */
-  readonly defaultTolerance: widgetTypes.Tolerance;
-}>('Tolerance');
+export const Tolerance = declareConstants<
+  {
+    /**
+     * A default tolerance of 0.001 for all three values.
+     */
+    readonly defaultTolerance: widgetTypes.Tolerance;
+  } & (new (options?: {
+    distance?: number;
+    time?: number;
+    velocity?: number;
+  }) => widgetTypes.Tolerance)
+>('Tolerance');
 
 /**
  * Toolbar configuration for [EditableText].
@@ -63752,12 +64571,19 @@ export const Tolerance = declareConstants<{
  * Create a custom [ToolbarOptions] if you want explicit control over the toolbar
  * option.
  */
-export const ToolbarOptions = declareConstants<{
-  /**
-   * An instance of [ToolbarOptions] with no options enabled.
-   */
-  readonly empty: widgetTypes.ToolbarOptions;
-}>('ToolbarOptions');
+export const ToolbarOptions = declareConstants<
+  {
+    /**
+     * An instance of [ToolbarOptions] with no options enabled.
+     */
+    readonly empty: widgetTypes.ToolbarOptions;
+  } & (new (options?: {
+    copy?: boolean;
+    cut?: boolean;
+    paste?: boolean;
+    selectAll?: boolean;
+  }) => widgetTypes.ToolbarOptions)
+>('ToolbarOptions');
 
 /**
  * The style of indentation for [TreeSliverNode]s in a [TreeSliver], as
@@ -63841,138 +64667,164 @@ export const TreeSliverIndentationType = declareConstants<{
  *  * <https://material.io/design/typography/>
  *  * <https://m3.material.io/styles/typography>
  */
-export const Typography = declareConstants<{
-  /**
-   * A Material Design text theme with dark glyphs based on San Francisco.
-   *
-   * This [TextTheme] provides color but not geometry (font size, weight, etc).
-   *
-   * This theme uses the iOS version of the font names.
-   */
-  readonly blackCupertino: widgetTypes.TextTheme;
-  /**
-   * A Material Design text theme with dark glyphs based on Roboto, with
-   * fallback fonts that are likely (but not guaranteed) to be installed on
-   * Linux.
-   *
-   * This [TextTheme] provides color but not geometry (font size, weight, etc).
-   */
-  readonly blackHelsinki: widgetTypes.TextTheme;
-  /**
-   * A Material Design text theme with dark glyphs based on Roboto.
-   *
-   * This [TextTheme] provides color but not geometry (font size, weight, etc).
-   */
-  readonly blackMountainView: widgetTypes.TextTheme;
-  /**
-   * A Material Design text theme with dark glyphs based on Segoe UI.
-   *
-   * This [TextTheme] provides color but not geometry (font size, weight, etc).
-   */
-  readonly blackRedmond: widgetTypes.TextTheme;
-  /**
-   * A Material Design text theme with dark glyphs based on San Francisco.
-   *
-   * This [TextTheme] provides color but not geometry (font size, weight, etc).
-   *
-   * This theme uses the macOS version of the font names.
-   */
-  readonly blackRedwoodCity: widgetTypes.TextTheme;
-  /**
-   * Defines text geometry for dense scripts, such as Chinese, Japanese
-   * and Korean.
-   */
-  readonly dense2014: widgetTypes.TextTheme;
-  /**
-   * Defines text geometry for dense scripts, such as Chinese, Japanese
-   * and Korean.
-   *
-   * The font sizes, weights, and letter spacings in this version match the
-   * 2018 [Material Design specification](https://material.io/go/design-typography#typography-styles).
-   */
-  readonly dense2018: widgetTypes.TextTheme;
-  /**
-   * Defines text geometry for dense scripts, such as Chinese, Japanese
-   * and Korean.
-   *
-   * The Material Design 3 specification does not include 'dense' text themes,
-   * so this is just here to be consistent with the API.
-   */
-  readonly dense2021: widgetTypes.TextTheme;
-  /**
-   * Defines text geometry for `ScriptCategory.englishLike` scripts, such as
-   * English, French, Russian, etc.
-   */
-  readonly englishLike2014: widgetTypes.TextTheme;
-  /**
-   * Defines text geometry for `ScriptCategory.englishLike` scripts, such as
-   * English, French, Russian, etc.
-   *
-   * The font sizes, weights, and letter spacings in this version match the
-   * [2018 Material Design specification](https://material.io/go/design-typography#typography-styles).
-   */
-  readonly englishLike2018: widgetTypes.TextTheme;
-  /**
-   * Defines text geometry for `ScriptCategory.englishLike` scripts, such as
-   * English, French, Russian, etc.
-   *
-   * The font sizes, weights, and letter spacings in this version match the
-   * [2021 Material Design 3 specification](https://m3.material.io/styles/typography/overview).
-   */
-  readonly englishLike2021: widgetTypes.TextTheme;
-  /**
-   * Defines text geometry for tall scripts, such as Farsi, Hindi, and Thai.
-   */
-  readonly tall2014: widgetTypes.TextTheme;
-  /**
-   * Defines text geometry for tall scripts, such as Farsi, Hindi, and Thai.
-   *
-   * The font sizes, weights, and letter spacings in this version match the
-   * 2018 [Material Design specification](https://material.io/go/design-typography#typography-styles).
-   */
-  readonly tall2018: widgetTypes.TextTheme;
-  /**
-   * Defines text geometry for tall scripts, such as Farsi, Hindi, and Thai.
-   *
-   * The Material Design 3 specification does not include 'tall' text themes,
-   * so this is just here to be consistent with the API.
-   */
-  readonly tall2021: widgetTypes.TextTheme;
-  /**
-   * A Material Design text theme with light glyphs based on San Francisco.
-   *
-   * This [TextTheme] provides color but not geometry (font size, weight, etc).
-   *
-   * This theme uses the iOS version of the font names.
-   */
-  readonly whiteCupertino: widgetTypes.TextTheme;
-  /**
-   * A Material Design text theme with light glyphs based on Roboto, with fallbacks of DejaVu Sans, Liberation Sans and Arial.
-   *
-   * This [TextTheme] provides color but not geometry (font size, weight, etc).
-   */
-  readonly whiteHelsinki: widgetTypes.TextTheme;
-  /**
-   * A Material Design text theme with light glyphs based on Roboto.
-   *
-   * This [TextTheme] provides color but not geometry (font size, weight, etc).
-   */
-  readonly whiteMountainView: widgetTypes.TextTheme;
-  /**
-   * A Material Design text theme with light glyphs based on Segoe UI.
-   *
-   * This [TextTheme] provides color but not geometry (font size, weight, etc).
-   */
-  readonly whiteRedmond: widgetTypes.TextTheme;
-  /**
-   * A Material Design text theme with light glyphs based on San Francisco.
-   *
-   * This [TextTheme] provides color but not geometry (font size, weight, etc).
-   *
-   * This theme uses the macOS version of the font names.
-   */
-  readonly whiteRedwoodCity: widgetTypes.TextTheme;
-}>('Typography');
+export const Typography = declareConstants<
+  {
+    /**
+     * A Material Design text theme with dark glyphs based on San Francisco.
+     *
+     * This [TextTheme] provides color but not geometry (font size, weight, etc).
+     *
+     * This theme uses the iOS version of the font names.
+     */
+    readonly blackCupertino: widgetTypes.TextTheme;
+    /**
+     * A Material Design text theme with dark glyphs based on Roboto, with
+     * fallback fonts that are likely (but not guaranteed) to be installed on
+     * Linux.
+     *
+     * This [TextTheme] provides color but not geometry (font size, weight, etc).
+     */
+    readonly blackHelsinki: widgetTypes.TextTheme;
+    /**
+     * A Material Design text theme with dark glyphs based on Roboto.
+     *
+     * This [TextTheme] provides color but not geometry (font size, weight, etc).
+     */
+    readonly blackMountainView: widgetTypes.TextTheme;
+    /**
+     * A Material Design text theme with dark glyphs based on Segoe UI.
+     *
+     * This [TextTheme] provides color but not geometry (font size, weight, etc).
+     */
+    readonly blackRedmond: widgetTypes.TextTheme;
+    /**
+     * A Material Design text theme with dark glyphs based on San Francisco.
+     *
+     * This [TextTheme] provides color but not geometry (font size, weight, etc).
+     *
+     * This theme uses the macOS version of the font names.
+     */
+    readonly blackRedwoodCity: widgetTypes.TextTheme;
+    /**
+     * Defines text geometry for dense scripts, such as Chinese, Japanese
+     * and Korean.
+     */
+    readonly dense2014: widgetTypes.TextTheme;
+    /**
+     * Defines text geometry for dense scripts, such as Chinese, Japanese
+     * and Korean.
+     *
+     * The font sizes, weights, and letter spacings in this version match the
+     * 2018 [Material Design specification](https://material.io/go/design-typography#typography-styles).
+     */
+    readonly dense2018: widgetTypes.TextTheme;
+    /**
+     * Defines text geometry for dense scripts, such as Chinese, Japanese
+     * and Korean.
+     *
+     * The Material Design 3 specification does not include 'dense' text themes,
+     * so this is just here to be consistent with the API.
+     */
+    readonly dense2021: widgetTypes.TextTheme;
+    /**
+     * Defines text geometry for `ScriptCategory.englishLike` scripts, such as
+     * English, French, Russian, etc.
+     */
+    readonly englishLike2014: widgetTypes.TextTheme;
+    /**
+     * Defines text geometry for `ScriptCategory.englishLike` scripts, such as
+     * English, French, Russian, etc.
+     *
+     * The font sizes, weights, and letter spacings in this version match the
+     * [2018 Material Design specification](https://material.io/go/design-typography#typography-styles).
+     */
+    readonly englishLike2018: widgetTypes.TextTheme;
+    /**
+     * Defines text geometry for `ScriptCategory.englishLike` scripts, such as
+     * English, French, Russian, etc.
+     *
+     * The font sizes, weights, and letter spacings in this version match the
+     * [2021 Material Design 3 specification](https://m3.material.io/styles/typography/overview).
+     */
+    readonly englishLike2021: widgetTypes.TextTheme;
+    /**
+     * Defines text geometry for tall scripts, such as Farsi, Hindi, and Thai.
+     */
+    readonly tall2014: widgetTypes.TextTheme;
+    /**
+     * Defines text geometry for tall scripts, such as Farsi, Hindi, and Thai.
+     *
+     * The font sizes, weights, and letter spacings in this version match the
+     * 2018 [Material Design specification](https://material.io/go/design-typography#typography-styles).
+     */
+    readonly tall2018: widgetTypes.TextTheme;
+    /**
+     * Defines text geometry for tall scripts, such as Farsi, Hindi, and Thai.
+     *
+     * The Material Design 3 specification does not include 'tall' text themes,
+     * so this is just here to be consistent with the API.
+     */
+    readonly tall2021: widgetTypes.TextTheme;
+    /**
+     * A Material Design text theme with light glyphs based on San Francisco.
+     *
+     * This [TextTheme] provides color but not geometry (font size, weight, etc).
+     *
+     * This theme uses the iOS version of the font names.
+     */
+    readonly whiteCupertino: widgetTypes.TextTheme;
+    /**
+     * A Material Design text theme with light glyphs based on Roboto, with fallbacks of DejaVu Sans, Liberation Sans and Arial.
+     *
+     * This [TextTheme] provides color but not geometry (font size, weight, etc).
+     */
+    readonly whiteHelsinki: widgetTypes.TextTheme;
+    /**
+     * A Material Design text theme with light glyphs based on Roboto.
+     *
+     * This [TextTheme] provides color but not geometry (font size, weight, etc).
+     */
+    readonly whiteMountainView: widgetTypes.TextTheme;
+    /**
+     * A Material Design text theme with light glyphs based on Segoe UI.
+     *
+     * This [TextTheme] provides color but not geometry (font size, weight, etc).
+     */
+    readonly whiteRedmond: widgetTypes.TextTheme;
+    /**
+     * A Material Design text theme with light glyphs based on San Francisco.
+     *
+     * This [TextTheme] provides color but not geometry (font size, weight, etc).
+     *
+     * This theme uses the macOS version of the font names.
+     */
+    readonly whiteRedwoodCity: widgetTypes.TextTheme;
+  } & (new (options?: {
+    platform?: widgetTypes.TargetPlatform;
+    black?: widgetTypes.TextTheme;
+    white?: widgetTypes.TextTheme;
+    englishLike?: widgetTypes.TextTheme;
+    dense?: widgetTypes.TextTheme;
+    tall?: widgetTypes.TextTheme;
+  }) => widgetTypes.Typography & {
+    readonly material2014: (options?: {
+      platform?: widgetTypes.TargetPlatform;
+      black?: widgetTypes.TextTheme;
+      white?: widgetTypes.TextTheme;
+      englishLike?: widgetTypes.TextTheme;
+      dense?: widgetTypes.TextTheme;
+      tall?: widgetTypes.TextTheme;
+    }) => widgetTypes.Typography;
+    readonly material2018: (options?: {
+      platform?: widgetTypes.TargetPlatform;
+      black?: widgetTypes.TextTheme;
+      white?: widgetTypes.TextTheme;
+      englishLike?: widgetTypes.TextTheme;
+      dense?: widgetTypes.TextTheme;
+      tall?: widgetTypes.TextTheme;
+    }) => widgetTypes.Typography;
+  })
+>('Typography');
 
 /**
  * A fixed-length list of 8-bit unsigned integers.
@@ -63987,19 +64839,28 @@ export const Typography = declareConstants<{
  * It is a compile-time error for a class to attempt to extend or implement
  * `Uint8List`.
  */
-export const Uint8List = declareConstants<{
-  readonly bytesPerElement: number;
-}>('Uint8List');
+export const Uint8List = declareConstants<
+  {
+    readonly bytesPerElement: number;
+  } & (new (length: number) => widgetTypes.Uint8List & {
+    readonly fromList: (elements: number[]) => widgetTypes.Uint8List;
+  })
+>('Uint8List');
 
 /**
  * Represents whether the current undo stack can undo or redo.
  */
-export const UndoHistoryValue = declareConstants<{
-  /**
-   * A value corresponding to an undo stack that can neither undo nor redo.
-   */
-  readonly empty: widgetTypes.UndoHistoryValue;
-}>('UndoHistoryValue');
+export const UndoHistoryValue = declareConstants<
+  {
+    /**
+     * A value corresponding to an undo stack that can neither undo nor redo.
+     */
+    readonly empty: widgetTypes.UndoHistoryValue;
+  } & (new (options?: {
+    canUndo?: boolean;
+    canRedo?: boolean;
+  }) => widgetTypes.UndoHistoryValue)
+>('UndoHistoryValue');
 
 /**
  * Constants for useful Unicode characters.
@@ -64113,12 +64974,16 @@ export const Unicode = declareConstants<{
 /**
  * A velocity in two dimensions.
  */
-export const Velocity = declareConstants<{
-  /**
-   * A velocity that isn't moving at all.
-   */
-  readonly zero: widgetTypes.Velocity;
-}>('Velocity');
+export const Velocity = declareConstants<
+  {
+    /**
+     * A velocity that isn't moving at all.
+     */
+    readonly zero: widgetTypes.Velocity;
+  } & (new (options: {
+    pixelsPerSecond: widgetTypes.Offset;
+  }) => widgetTypes.Velocity)
+>('Velocity');
 
 /**
  * A representation of distances for each of the four edges of a rectangle,
@@ -64187,46 +65052,51 @@ export const ViewPadding = declareConstants<{
  *    horizontal density of Material components.
  *  * [Material design guidance on density](https://material.io/design/layout/applying-density.html).
  */
-export const VisualDensity = declareConstants<{
-  /**
-   * The profile for a "comfortable" interpretation of [VisualDensity].
-   *
-   * Individual components will interpret the density value independently,
-   * making themselves more visually dense than [standard] and less dense than
-   * [compact] to different degrees based on the Material Design specification
-   * of the "comfortable" setting for their particular use case.
-   *
-   * It corresponds to a density value of -1 in both axes.
-   */
-  readonly comfortable: widgetTypes.VisualDensity;
-  /**
-   * The profile for a "compact" interpretation of [VisualDensity].
-   *
-   * Individual components will interpret the density value independently,
-   * making themselves more visually dense than [standard] and [comfortable] to
-   * different degrees based on the Material Design specification of the
-   * "comfortable" setting for their particular use case.
-   *
-   * It corresponds to a density value of -2 in both axes.
-   */
-  readonly compact: widgetTypes.VisualDensity;
-  /**
-   * The maximum allowed density.
-   */
-  readonly maximumDensity: number;
-  /**
-   * The minimum allowed density.
-   */
-  readonly minimumDensity: number;
-  /**
-   * The default profile for [VisualDensity] in [ThemeData].
-   *
-   * This default value represents a visual density that is less dense than
-   * either [comfortable] or [compact], and corresponds to density values of
-   * zero in both axes.
-   */
-  readonly standard: widgetTypes.VisualDensity;
-}>('VisualDensity');
+export const VisualDensity = declareConstants<
+  {
+    /**
+     * The profile for a "comfortable" interpretation of [VisualDensity].
+     *
+     * Individual components will interpret the density value independently,
+     * making themselves more visually dense than [standard] and less dense than
+     * [compact] to different degrees based on the Material Design specification
+     * of the "comfortable" setting for their particular use case.
+     *
+     * It corresponds to a density value of -1 in both axes.
+     */
+    readonly comfortable: widgetTypes.VisualDensity;
+    /**
+     * The profile for a "compact" interpretation of [VisualDensity].
+     *
+     * Individual components will interpret the density value independently,
+     * making themselves more visually dense than [standard] and [comfortable] to
+     * different degrees based on the Material Design specification of the
+     * "comfortable" setting for their particular use case.
+     *
+     * It corresponds to a density value of -2 in both axes.
+     */
+    readonly compact: widgetTypes.VisualDensity;
+    /**
+     * The maximum allowed density.
+     */
+    readonly maximumDensity: number;
+    /**
+     * The minimum allowed density.
+     */
+    readonly minimumDensity: number;
+    /**
+     * The default profile for [VisualDensity] in [ThemeData].
+     *
+     * This default value represents a visual density that is less dense than
+     * either [comfortable] or [compact], and corresponds to density values of
+     * zero in both axes.
+     */
+    readonly standard: widgetTypes.VisualDensity;
+  } & (new (options?: {
+    horizontal?: number;
+    vertical?: number;
+  }) => widgetTypes.VisualDensity)
+>('VisualDensity');
 
 /**
  * Defines a [Color] that is also a [WidgetStateProperty].

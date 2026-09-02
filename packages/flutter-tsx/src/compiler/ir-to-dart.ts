@@ -34,6 +34,10 @@ export const isConstable = (value: IrValue): boolean => {
       );
     case 'listValue':
       return value.items.every(isConstable);
+    case 'mapValue':
+      return value.entries.every(
+        (entry) => isConstable(entry.key) && isConstable(entry.value),
+      );
     default:
       return false;
   }
@@ -184,6 +188,25 @@ const valueToDart = (
         items: value.items.map((item) => ({
           kind: 'element' as const,
           value: valueToDart(item, naming, insideConst || isConst),
+        })),
+      };
+    }
+    case 'mapValue': {
+      const isConst = !insideConst && isConstable(value);
+      const held =
+        value.entries.length > 0 ||
+        value.types.key === null ||
+        value.types.value === null
+          ? null
+          : `${value.types.key}, ${value.types.value}`;
+      return {
+        kind: 'list',
+        isConst,
+        set: { itemType: held, braces: true },
+        items: value.entries.map((entry) => ({
+          kind: 'entry' as const,
+          key: valueToDart(entry.key, naming, insideConst || isConst),
+          value: valueToDart(entry.value, naming, insideConst || isConst),
         })),
       };
     }

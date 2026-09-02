@@ -2,6 +2,7 @@ import type {
   ApiSnapshot,
   ClassEntity,
   ConstantModel,
+  ConstructorModel,
   Entity,
   ParamModel,
   TypeNode,
@@ -11,6 +12,7 @@ import { DATE_FORMS } from '../derive/date-forms';
 import type { ChildrenSlot, SlotMap, WidgetSlots } from '../derive/slots';
 import {
   ANY_VALUE_TYPE,
+  DART_TYPE,
   deriveValueForms,
   EDGE_INSETS_TYPES,
   HEX_COLOR_TYPE,
@@ -237,9 +239,29 @@ const isDeclaredType = (
       return isDeclaredType(node.inner, declared, enumRefs);
     case 'list':
     case 'set':
+    case 'future':
+    case 'stream':
       return isDeclaredType(node.item, declared, enumRefs);
-    default:
-      return false;
+    case 'map':
+      return (
+        isDeclaredType(node.key, declared, enumRefs) &&
+        isDeclaredType(node.value, declared, enumRefs)
+      );
+    // A callback is declared by what it takes and answers with.
+    case 'function':
+      return (
+        isDeclaredType(node.returnType, declared, enumRefs) &&
+        node.params.every((param) =>
+          isDeclaredType(param.type, declared, enumRefs),
+        )
+      );
+    // A widget, a type variable, `void` and an unknown are all writable as
+    // they are: none of them names a declaration that could be missing.
+    case 'widget':
+    case 'typeVar':
+    case 'void':
+    case 'unknown':
+      return true;
   }
 };
 
@@ -274,6 +296,10 @@ const indentBlock = (block: string): string =>
 
 /** What a nominal interface needs beyond the snapshot to declare its members. */
 interface ReadableTypes {
+  /** Classes the constants module exports, which carry their own newable. */
+  namespaces: ReadonlySet<string>;
+  /** Classes only `dart:ui` exports, whose names Flutter's own also take. */
+  uiOnly: ReadonlySet<string>;
   /** Types a callback hands back, whose members are therefore readable. */
   handed: ReadonlySet<string>;
   /** Every named type the surface declares, so a member can be typed. */
@@ -333,22 +359,79 @@ const brandInterface = (
  * rather than a value rebuilt every frame. Declaring the constructor is what
  * lets it be written at all; every other class stays a shape you receive.
  */
+/** A name TypeScript can declare a member with, plainly. */
+const TS_IDENTIFIER = /^[A-Za-z_$][A-Za-z0-9_$]*$/;
+
+/**
+ * How a class is built, as TypeScript declares it.
+ *
+ * Dart builds a value with an unnamed constructor, with named ones, or with
+ * both — `Offset(1, 1)` and `Rect.fromLTRB(…)` — so the declaration carries
+ * whichever the class really has, and this is the one place that decides it
+ * for every module that emits it.
+ */
+export const constructorSurface = (
+  name: string,
+  entity: ApiSnapshot['entities'][number] | undefined,
+  readable: ReadableTypes,
+): string | null => {
+  // A widget is written as a tag, never constructed: its name already
+  // belongs to the component the file declares.
+  if (entity?.kind !== 'class') {
+    return null;
+  }
+  // A `dart:ui` class shares its name with a Flutter one of the same name —
+  // `Gradient` is both — so writing it plainly would mean the other. Until
+  // the compiler writes a prefixed import, it is not constructed.
+  if (readable.uiOnly.has(name)) {
+    return null;
+  }
+  const writable = (constructor: ConstructorModel): boolean =>
+    constructor.params.every((param) =>
+      isDeclaredType(param.type, readable.declared, readable.enums),
+    );
+  const params = (constructor: ConstructorModel): string =>
+    signatureParams(constructor.params, (param) =>
+      valueFormTsType(unwrapNullable(param.type), readable.forms),
+    );
+  const unnamed = defaultConstructorOf(entity);
+  const newable =
+    unnamed === undefined || !writable(unnamed)
+      ? null
+      : `new (${params(unnamed)}) => ${name}`;
+  const named = entity.constructors
+    .filter(
+      (constructor) =>
+        constructor.name !== '' &&
+        TS_IDENTIFIER.test(constructor.name) &&
+        writable(constructor),
+    )
+    .map(
+      (constructor) =>
+        `  readonly ${constructor.name}: (${params(constructor)}) => ${name};`,
+    );
+  if (newable === null && named.length === 0) {
+    return null;
+  }
+  const members = named.length === 0 ? '' : `{\n${named.join('\n')}\n}`;
+  return [newable, members]
+    .filter((part) => part !== null && part !== '')
+    .join(' & ');
+};
+
 const ownedConstructor = (
   name: string,
   entity: ApiSnapshot['entities'][number] | undefined,
   readable: ReadableTypes,
 ): string[] => {
-  // A widget is written as a tag, never constructed: its name already
-  // belongs to the component the file declares.
-  const constructor =
-    entity?.kind === 'class' ? defaultConstructorOf(entity) : undefined;
-  if (constructor === undefined) {
-    return [];
-  }
-  const params = signatureParams(constructor.params, (param) =>
-    valueFormTsType(unwrapNullable(param.type), readable.forms),
-  );
-  return ['', `export declare const ${name}: new (${params}) => ${name};`];
+  // A class whose constants module already exports it gets its constructors
+  // there; two exports of one name would shadow each other.
+  const surface = readable.namespaces.has(name)
+    ? null
+    : constructorSurface(name, entity, readable);
+  return surface === null
+    ? []
+    : ['', `export declare const ${name}: ${surface};`];
 };
 
 /**
@@ -417,6 +500,9 @@ const valueAliasBlock = (name: string, forms: ValueForms): string => {
   }
   if (name === ANY_VALUE_TYPE) {
     arms.push('string', 'number', 'boolean');
+  }
+  if (name === DART_TYPE) {
+    arms.push('string');
   }
   const members = forms.constantMembers.get(name);
   if (members !== undefined) {
@@ -498,6 +584,11 @@ export const emitWidgetsFile = (
       for (const constant of entity.constants) {
         collectRefs(constant.type, namedRefs, enumRefs);
       }
+    }
+    // A class the constants module exports is a value a developer holds, so
+    // this module has to declare what that value is.
+    if (entity.kind === 'class' && entity.constants.length > 0) {
+      namedRefs.add(entity.name);
     }
   }
   // A type a prop asks for is often abstract — `ImageProvider`, a sliver
@@ -587,6 +678,8 @@ export const emitWidgetsFile = (
         declared: namedRefs,
         enums: enumRefs,
         forms: formNames,
+        namespaces: new Set(constantNamespaceEntities(snapshot)),
+        uiOnly: uiOnlyNames(snapshot),
       }),
     );
   }
@@ -609,6 +702,14 @@ export const emitWidgetsFile = (
   return `${blocks.join('\n\n')}\n`;
 };
 
+/** Names only `dart:ui` exports, which a Flutter library also declares. */
+const uiOnlyNames = (snapshot: ApiSnapshot): Set<string> =>
+  new Set(
+    Object.entries(snapshot.exports)
+      .filter(([, barrels]) => barrels.length === 1 && barrels[0] === 'ui')
+      .map(([name]) => name),
+  );
+
 const constantNamespaceEntities = (snapshot: ApiSnapshot): string[] =>
   snapshot.entities
     .filter(
@@ -627,6 +728,9 @@ export const emitGeneratedIndex = (snapshot: ApiSnapshot): string => {
   return `${[
     header(snapshot.meta.frameworkVersion),
     "export * from './widgets';",
+    // A class the constants module exports is a value; the interface of the
+    // same name is a type, and both are part of the surface — `Intent` is
+    // written as a value and named as a type.
     `export { ${names} } from './constants';`,
   ].join('\n\n')}\n`;
 };
@@ -641,17 +745,25 @@ export const emitConstantsFile = (snapshot: ApiSnapshot): string => {
 
   const generatedNames = new Set<string>();
   for (const namespace of namespaces) {
-    if (namespace.kind !== 'enum') {
-      for (const constant of namespace.constants) {
-        collectRefs(constant.type, generatedNames, generatedNames);
-      }
+    if (namespace.kind === 'enum') {
+      continue;
+    }
+    for (const constant of namespace.constants) {
+      collectRefs(constant.type, generatedNames, generatedNames);
+    }
+    // The constructor these carry names types too, and they are declared in
+    // the widgets module, so they need qualifying like everything else.
+    generatedNames.add(namespace.name);
+    for (const param of defaultConstructorOf(namespace)?.params ?? []) {
+      collectRefs(param.type, generatedNames, generatedNames);
     }
   }
 
   const blocks: string[] = [
     header(snapshot.meta.frameworkVersion),
     "import { declareConstants } from '../runtime/constants';\n" +
-      "import type * as widgetTypes from './widgets';",
+      "import type * as widgetTypes from './widgets';\n" +
+      "import type { FlutterElement } from '../runtime/types';",
   ];
 
   // Icon names are chosen by hand in TSX (`<TabItem icon="home">`), so they
@@ -677,9 +789,25 @@ export const emitConstantsFile = (snapshot: ApiSnapshot): string => {
     const members = namespace.constants
       .map((constant) => constantMember(constant, generatedNames))
       .join('\n');
+    // A class with static constants may also have constructors —
+    // `Offset.zero`, `new Offset(1, 1)` and `Rect.fromLTRB(…)` are all real.
+    // One export carries them all, or whichever is declared second would
+    // shadow the other.
+    const surface = constructorSurface(namespace.name, namespace, {
+      handed: generatedNames,
+      declared: generatedNames,
+      enums: generatedNames,
+      forms: new Set(),
+      namespaces: new Set(),
+      uiOnly: uiOnlyNames(snapshot),
+    });
+    const newable =
+      surface === null
+        ? ''
+        : qualifyGeneratedTypes(` & (${surface})`, generatedNames);
     blocks.push(
       `${docPrefix}export const ${namespace.name} = declareConstants<{\n` +
-        `${members}\n}>('${namespace.name}');`,
+        `${members}\n}${newable}>('${namespace.name}');`,
     );
   }
 

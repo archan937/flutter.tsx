@@ -361,6 +361,7 @@ class ClassEntity extends ConstructedEntity {
     required super.fields,
     required this.disposable,
     required this.typeParams,
+    required this.supertypeBindings,
   });
 
   /// Whether a public `dispose()` is part of this class's surface.
@@ -373,6 +374,10 @@ class ClassEntity extends ConstructedEntity {
   /// The names this class is generic over: the `T` of a `ValueNotifier<T>`.
   final List<String> typeParams;
 
+  /// What it hands each generic supertype: `CustomClipper<Path>` for a
+  /// `ShapeBorderClipper`, which is what makes it usable as one.
+  final Map<String, List<TypeNode>> supertypeBindings;
+
   @override
   String get kind => 'class';
 
@@ -381,6 +386,11 @@ class ClassEntity extends ConstructedEntity {
     ...super.toJson(),
     'disposable': disposable,
     if (typeParams.isNotEmpty) 'typeParams': typeParams,
+    if (supertypeBindings.isNotEmpty)
+      'supertypeBindings': {
+        for (final entry in supertypeBindings.entries)
+          entry.key: entry.value.map((node) => node.toJson()).toList(),
+      },
   };
 }
 

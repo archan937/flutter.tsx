@@ -2,6 +2,7 @@ import ts from 'typescript';
 
 import type {
   ApiSnapshot,
+  ConstructorModel,
   FunctionParam,
   ParamModel,
   ScalarName,
@@ -12,6 +13,7 @@ import { DATE_FORMS, dateFormDart } from '../derive/date-forms';
 import type { SlotMap, WidgetSlots } from '../derive/slots';
 import {
   ANY_VALUE_TYPE,
+  DART_TYPE,
   deriveValueForms,
   EDGE_INSETS_TYPES,
   HEX_COLOR_TYPE,
@@ -133,6 +135,8 @@ export interface CompileContext {
     string,
     { params: ParamModel[]; isConst: boolean; typeParams: string[] }
   >;
+  /** `Rect.fromLTRB(…)` — every constructor a class declares by name. */
+  sdkNamedConstructors: Map<string, Map<string, ConstructorModel>>;
   /** Plugin classes an object literal can construct, by name. */
   pluginConstructibles: Map<string, ParamModel[]>;
   /** Every plugin class with a constructor, and what it takes. */
@@ -234,6 +238,7 @@ export const buildCompileContext = (
     string,
     { params: ParamModel[]; isConst: boolean; typeParams: string[] }
   >();
+  const sdkNamedConstructors = new Map<string, Map<string, ConstructorModel>>();
 
   for (const entity of snapshot.entities) {
     libraries.set(entity.name, entity.library);
@@ -256,6 +261,18 @@ export const buildCompileContext = (
     if (entity.kind !== 'widget') {
       if (isOwnedValue(entity)) {
         ownedValues.set(entity.name, { disposable: entity.disposable });
+      }
+      // A `dart:ui` class shares its name with a Flutter one, so writing it
+      // plainly would mean the other; it is not constructed by name.
+      const uiOnly = (snapshot.exports[entity.name] ?? []).join() === 'ui';
+      const byName = uiOnly
+        ? []
+        : entity.constructors.filter((candidate) => candidate.name !== '');
+      if (byName.length > 0) {
+        sdkNamedConstructors.set(
+          entity.name,
+          new Map(byName.map((candidate) => [candidate.name, candidate])),
+        );
       }
       const constructor = entity.constructors.find(
         (candidate) => candidate.name === '',
@@ -295,6 +312,7 @@ export const buildCompileContext = (
     gestures: gestureWrapOf(widgets.get(GESTURE_WIDGET)),
     ownedValues,
     sdkConstructors,
+    sdkNamedConstructors,
     constants: new Map(),
     pluginConstructibles: new Map(),
     pluginConstructors: new Map(),
@@ -483,6 +501,7 @@ const constantContext = (
     sourceFile,
     nullableHandles: new Map(),
     narrowed: new Set(),
+    renames: new Map(),
     pluginValueCall: noPluginValues,
     controllerNames: new Set<string>(),
     pluginConstructibles: compile.pluginConstructibles,
@@ -518,6 +537,7 @@ export const lowerHelper = (
     sourceFile: helper.body.getSourceFile(),
     nullableHandles: new Map(),
     narrowed: new Set(),
+    renames: new Map(),
     pluginValueCall: noPluginValues,
     controllerNames: new Set<string>(),
     pluginConstructibles: compile.pluginConstructibles,
@@ -665,6 +685,20 @@ interface LowerContext {
   translate: TranslateContext;
 }
 
+/** Dart's own classes, which every program has without importing them. */
+const CORE_CLASSES: ReadonlySet<string> = new Set([
+  ANY_VALUE_TYPE,
+  'String',
+  'int',
+  'double',
+  'num',
+  'bool',
+  'Type',
+]);
+
+/** `FutureOr<T>` — a value or a Future of one, which Dart accepts either of. */
+const EITHER_TYPE = 'FutureOr';
+
 const SYMMETRIC_INSETS_KEYS = new Set(['horizontal', 'vertical']);
 const SIDE_INSETS_KEYS = new Set(['left', 'top', 'right', 'bottom']);
 const NUMBER_SCALARS = new Set(['int', 'double', 'num']);
@@ -680,6 +714,10 @@ const HEX_COLOR_PATTERN = /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/;
 const unwrapType = (type: TypeNode): TypeNode => {
   if (type.kind === 'nullable') {
     return unwrapType(type.inner);
+  }
+  // `FutureOr<T>` is a T or a Future of one; a value written for it is a T.
+  if (type.kind === 'named' && type.name === EITHER_TYPE) {
+    return unwrapType(type.args?.[0] ?? { kind: 'unknown' });
   }
   return type.kind === 'typeVar' ? { kind: 'unknown' } : type;
 };
@@ -849,6 +887,19 @@ const lowerString = (text: string, site: ValueSite): IrValue => {
     }
     if (KEY_TYPES.has(type.name)) {
       return keyValue({ kind: 'string', value: text });
+    }
+    // `Type` is a class itself: `"ActivateIntent"` names one, and the name
+    // has to be one the SDK really has.
+    if (type.name === DART_TYPE) {
+      if (!context.compile.libraries.has(text) && !CORE_CLASSES.has(text)) {
+        throw tsxErrorAt(
+          'TSX0357',
+          `\`${text}\` is not a class the SDK declares. A \`Type\` value is ` +
+            'the name of one.',
+          { sourceFile: context.sourceFile, node },
+        );
+      }
+      return { kind: 'dartExpr', dart: text };
     }
     const written = dateFormDart(type.name, text);
     if (written !== null) {
@@ -1023,6 +1074,25 @@ const lowerObjectLiteral = (
   type: TypeNode,
   context: LowerContext,
 ): IrValue => {
+  // `{ home: <Text/> }` where a Map is asked for: the property names are the
+  // keys, which is the shape TypeScript writes a string-keyed map in.
+  if (type.kind === 'map') {
+    return {
+      kind: 'mapValue',
+      types: {
+        key: bareDartTypeOf(type.key),
+        value: bareDartTypeOf(type.value),
+      },
+      entries: objectEntries(literal, 'TSX0207', context).map((entry) => ({
+        key: lowerExpression(
+          ts.factory.createStringLiteral(entry.key),
+          type.key,
+          context,
+        ),
+        value: lowerExpression(entry.initializer, type.value, context),
+      })),
+    };
+  }
   if (type.kind === 'named') {
     if (EDGE_INSETS_TYPES.has(type.name)) {
       return lowerInsetsObject(literal, context);
@@ -1199,11 +1269,26 @@ const withScopedParams = (
 };
 
 const withClosureParams = (
-  declared: FunctionParam[],
-  names: string[],
+  closure: {
+    declared: FunctionParam[];
+    names: string[];
+    /** Author's name → the Dart name it stands for, for named parameters. */
+    renames?: ReadonlyMap<string, string>;
+  },
   context: LowerContext,
-): LowerContext =>
-  withScopedParams(
+): LowerContext => {
+  const { declared, names, renames = new Map<string, string>() } = closure;
+  // A parameter's declared type is what it is: a String read stays a String
+  // rather than being interpolated into one.
+  const declaredTypes = new Map([
+    ...context.localDartTypes,
+    ...declared.flatMap((param, index): [string, string][] => {
+      const name = names[index];
+      const dartType = bareDartTypeOf(param.type);
+      return name === undefined || dartType === null ? [] : [[name, dartType]];
+    }),
+  ]);
+  return withScopedParams(
     declared.flatMap((param, index) => {
       const name = names[index];
       return name === undefined
@@ -1219,8 +1304,34 @@ const withClosureParams = (
             },
           ];
     }),
-    context,
+    {
+      ...context,
+      localDartTypes: declaredTypes,
+      translate: {
+        ...context.translate,
+        renames: new Map([...context.translate.renames, ...renames]),
+        localDartTypes: declaredTypes,
+      },
+    },
   );
+};
+
+/**
+ * One named parameter of a closure, as Dart declares it.
+ *
+ * A required one is `required name`. An optional one has to be written with
+ * a type Dart can accept nothing for, or the closure would demand a value
+ * the caller may not pass — so it takes the declared type, nullable.
+ */
+const namedParam = (param: FunctionParam): string => {
+  if (param.required) {
+    return `required ${param.name}`;
+  }
+  // A parameter Dart may leave out has to be nullable, and one whose type
+  // has no name is written as the type everything is: a closure that takes
+  // `Object?` is assignable wherever a narrower one is expected.
+  return `${bareDartTypeOf(param.type) ?? ANY_VALUE_TYPE}? ${param.name}`;
+};
 
 const lowerArrowFunction = (
   arrow: ts.ArrowFunction,
@@ -1234,14 +1345,37 @@ const lowerArrowFunction = (
       { sourceFile: context.sourceFile, node: arrow },
     );
   }
-  const params = type.params.map((_, index) => {
+  const written = type.params.map((_, index) => {
     const name = arrow.parameters[index]?.name.getText() ?? '_';
     return name.startsWith('_') ? '_' : name;
   });
+  // A typedef's named parameters are named in Dart, and the closure has to
+  // declare them that way: `(context, {required onPressed})`. What the
+  // author called them reads as the declared name inside the body.
+  const namedParams = type.params.filter((param) => param.named);
+  const params = [
+    ...type.params.flatMap((param, index) =>
+      param.named ? [] : [written[index] ?? '_'],
+    ),
+    ...(namedParams.length === 0
+      ? []
+      : [`{${namedParams.map((param) => namedParam(param)).join(', ')}}`]),
+  ];
+  const renames = new Map(
+    type.params.flatMap((param, index): [string, string][] => {
+      const authored = written[index];
+      return param.named && authored !== undefined && authored !== param.name
+        ? [[authored, param.name]]
+        : [];
+    }),
+  );
   // Each named parameter is readable inside the body, for the members its
   // declared SDK type has — `(context, constraints) => …` can read
   // `constraints.maxWidth` because BoxConstraints declares it.
-  const scoped = withClosureParams(type.params, params, context);
+  const scoped = withClosureParams(
+    { declared: type.params, names: written, renames },
+    context,
+  );
   // A builder prop — `builder={() => <Text>…</Text>}` — is a callback whose
   // body is a widget rather than a block, so it becomes an expression-bodied
   // Dart closure. Lowering it against the declared return type means a
@@ -1285,14 +1419,6 @@ const lowerArrowFunction = (
   };
 };
 
-/**
- * `tween(slide, { from, to })` as the animation Flutter would build.
- *
- * A controller runs from 0 to 1; a transition over offsets or colours runs
- * between two of them, which is what `drive` is for. The bounds are lowered
- * against the type the animation carries, so they are written the way every
- * other value of that type is.
- */
 const lowerTween = (
   expression: ts.Expression,
   type: TypeNode,
@@ -1341,35 +1467,63 @@ const lowerTween = (
 };
 
 /**
- * `new AssetImage('images/logo.png')` — a value the SDK builds.
+ * `Rect.fromLTRB(0, 0, 1, 1)` — a constructor the class declares by name.
  *
- * Dart's positional arguments stay positional and its named ones are the
- * trailing object, which is the shape the typings declare, so what compiles
- * is exactly what the editor accepted.
+ * Dart names these and TypeScript reads them the same way, so the call is
+ * the construction: the arguments are mapped exactly as an unnamed
+ * constructor's are.
  */
-const lowerSdkConstruction = (
+const lowerNamedConstruction = (
   expression: ts.Expression,
-  expected: TypeNode,
   context: LowerContext,
 ): IrValue | null => {
   if (
-    !ts.isNewExpression(expression) ||
-    !ts.isIdentifier(expression.expression)
+    !ts.isCallExpression(expression) ||
+    !ts.isPropertyAccessExpression(expression.expression) ||
+    !ts.isIdentifier(expression.expression.expression)
   ) {
     return null;
   }
-  const className = expression.expression.text;
-  const constructor = context.compile.sdkConstructors.get(className);
+  const className = expression.expression.expression.text;
+  const constructor = context.compile.sdkNamedConstructors
+    .get(className)
+    ?.get(expression.expression.name.text);
   if (constructor === undefined) {
     return null;
   }
+  return constructionValue(
+    { className, constructorName: constructor.name, constructor },
+    [...expression.arguments],
+    context,
+  );
+};
+
+/**
+ * A construction, however it is written.
+ *
+ * Dart's positional arguments stay positional and its named ones are the
+ * trailing object, which is the shape the typings declare — so what compiles
+ * is exactly what the editor accepted, whether the constructor was named or
+ * not.
+ */
+const constructionValue = (
+  target: {
+    className: string;
+    constructorName: string;
+    constructor: { params: ParamModel[]; isConst?: boolean };
+    typeParams?: string[];
+    wanted?: readonly TypeNode[];
+  },
+  args: ts.Expression[],
+  context: LowerContext,
+): IrValue => {
+  const { className, constructorName, constructor } = target;
   // `new ValueNotifier(0)` where an `Animation<int>` is asked for builds an
   // int, so what the class is generic over is bound to what the site wants.
-  const wanted = expected.kind === 'named' ? (expected.args ?? []) : [];
   const bound = new Map(
-    constructor.typeParams.map((name, index): [string, TypeNode] => [
+    (target.typeParams ?? []).map((name, index): [string, TypeNode] => [
       name,
-      wanted[index] ?? { kind: 'unknown' },
+      target.wanted?.[index] ?? { kind: 'unknown' },
     ]),
   );
   const asWritten = (param: ParamModel): ParamModel =>
@@ -1382,13 +1536,13 @@ const lowerSdkConstruction = (
   const named = constructor.params
     .filter((param) => param.named)
     .map(asWritten);
-  const args = [...(expression.arguments ?? [])];
   const options = named.length > 0 ? args[positional.length] : undefined;
+  const written = `${className}${constructorName === '' ? '' : `.${constructorName}`}`;
   const construction: IrValue = {
     kind: 'construct',
     className,
-    constructorName: '',
-    constConstructor: constructor.isConst,
+    constructorName,
+    constConstructor: constructor.isConst ?? false,
     args: args.slice(0, positional.length).map((argument, index) => ({
       param: positional[index]?.name ?? '',
       positional: true,
@@ -1405,8 +1559,8 @@ const lowerSdkConstruction = (
   if (!ts.isObjectLiteralExpression(options)) {
     throw tsxErrorAt(
       'TSX0355',
-      `\`${className}\` takes its named arguments as one object: ` +
-        `\`new ${className}({ … })\`.`,
+      `\`${written}\` takes its named arguments as one object: ` +
+        `\`${written}({ … })\`.`,
       { sourceFile: context.sourceFile, node: options },
     );
   }
@@ -1421,6 +1575,81 @@ const lowerSdkConstruction = (
       ...(fromOptions.kind === 'construct' ? fromOptions.args : []),
     ],
   };
+};
+
+/**
+ * `new Map([[key, value]])` as the Dart map it is.
+ *
+ * A Dart map's keys are often not strings — a shortcut activator, a type —
+ * and TypeScript writes exactly that map as pairs, so the pairs are the
+ * entries.
+ */
+const lowerMapEntries = (
+  expression: ts.NewExpression,
+  type: TypeNode & { kind: 'map' },
+  context: LowerContext,
+): IrValue => {
+  const [pairs] = expression.arguments ?? [];
+  if (pairs !== undefined && !ts.isArrayLiteralExpression(pairs)) {
+    throw tsxErrorAt(
+      'TSX0356',
+      '`new Map(…)` takes its entries as pairs: ' +
+        '`new Map([[key, value], …])`.',
+      { sourceFile: context.sourceFile, node: pairs },
+    );
+  }
+  const entries = (pairs?.elements ?? []).map((element) => {
+    if (
+      !ts.isArrayLiteralExpression(element) ||
+      element.elements.length !== 2
+    ) {
+      throw tsxErrorAt(
+        'TSX0356',
+        'each entry of a `new Map(…)` is a key and a value: `[key, value]`.',
+        { sourceFile: context.sourceFile, node: element },
+      );
+    }
+    const [key, value] = element.elements;
+    return {
+      key: lowerExpression(key ?? element, type.key, context),
+      value: lowerExpression(value ?? element, type.value, context),
+    };
+  });
+  return {
+    kind: 'mapValue',
+    types: { key: bareDartTypeOf(type.key), value: bareDartTypeOf(type.value) },
+    entries,
+  };
+};
+
+/** `new AssetImage('images/logo.png')` — a value the SDK builds. */
+const lowerSdkConstruction = (
+  expression: ts.Expression,
+  expected: TypeNode,
+  context: LowerContext,
+): IrValue | null => {
+  if (
+    !ts.isNewExpression(expression) ||
+    !ts.isIdentifier(expression.expression)
+  ) {
+    return null;
+  }
+  const className = expression.expression.text;
+  const constructor = context.compile.sdkConstructors.get(className);
+  if (constructor === undefined) {
+    return null;
+  }
+  return constructionValue(
+    {
+      className,
+      constructorName: '',
+      constructor,
+      typeParams: constructor.typeParams,
+      wanted: expected.kind === 'named' ? (expected.args ?? []) : [],
+    },
+    [...(expression.arguments ?? [])],
+    context,
+  );
 };
 
 const lowerExpression = (
@@ -1441,6 +1670,18 @@ const lowerExpression = (
   const tween = lowerTween(expression, type, context);
   if (tween !== null) {
     return tween;
+  }
+  if (
+    ts.isNewExpression(expression) &&
+    ts.isIdentifier(expression.expression) &&
+    expression.expression.text === 'Map' &&
+    type.kind === 'map'
+  ) {
+    return lowerMapEntries(expression, type, context);
+  }
+  const byName = lowerNamedConstruction(expression, context);
+  if (byName !== null) {
+    return byName;
   }
   const constructed = lowerSdkConstruction(expression, type, context);
   if (constructed !== null) {
@@ -1478,12 +1719,14 @@ const lowerExpression = (
     ts.isArrayLiteralExpression(expression) &&
     (type.kind === 'list' || type.kind === 'set')
   ) {
+    const itemType = bareDartTypeOf(type.item);
     return {
       kind: 'listValue',
-      // A Dart set is written in braces, and an empty one has to say what it
-      // holds or it would be a map.
-      ...(type.kind === 'set'
-        ? { set: { itemType: bareDartTypeOf(type.item) } }
+      // A Dart set is written in braces, and an empty collection of either
+      // kind says what it holds — `[]` alone is a list of dynamic, which no
+      // typed parameter accepts.
+      ...(type.kind === 'set' || expression.elements.length === 0
+        ? { set: { itemType, braces: type.kind === 'set' } }
         : {}),
       items: expression.elements.map((element) =>
         lowerExpression(element, type.item, context),
@@ -4249,6 +4492,7 @@ export const lowerComponent = (
         ...component.controllers.map((controller) => controller.name),
         ...component.animations.map((animation) => animation.name),
       ]),
+      renames: new Map(),
       pluginConstructibles: compile.pluginConstructibles,
       pluginConstructors: compile.pluginConstructors,
       // A call that answers immediately is a value like any other, so it may

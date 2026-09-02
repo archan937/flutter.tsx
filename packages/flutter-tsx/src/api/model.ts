@@ -94,6 +94,11 @@ export interface ClassEntity extends EntityBase {
   disposable: boolean;
   /** The names this class is generic over: the `T` of a `ValueNotifier<T>`. */
   typeParams: string[];
+  /**
+   * What it hands each generic supertype — `CustomClipper<Path>` for a
+   * `ShapeBorderClipper` — which is what makes it usable as one.
+   */
+  supertypeBindings: Record<string, TypeNode[]>;
 }
 
 export interface EnumValue {

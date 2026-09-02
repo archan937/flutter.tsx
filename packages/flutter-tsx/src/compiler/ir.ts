@@ -68,8 +68,18 @@ export type IrValue =
   | {
       kind: 'listValue';
       items: IrValue[];
-      /** Written in braces, as Dart writes a set. */
-      set?: { itemType: string | null };
+      /**
+       * How the collection is written: in braces for a set, and naming what
+       * it holds when it is empty.
+       */
+      set?: { itemType: string | null; braces: boolean };
+    }
+  /// `{'a': 1}` — a Dart map, from an object literal or a `new Map([…])`.
+  | {
+      kind: 'mapValue';
+      entries: { key: IrValue; value: IrValue }[];
+      /** What an empty one holds, since `{}` alone says nothing. */
+      types: { key: string | null; value: string | null };
     }
   | {
       kind: 'builder';

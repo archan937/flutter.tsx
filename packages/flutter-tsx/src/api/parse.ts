@@ -184,6 +184,23 @@ export const parseEnumValue = (value: unknown, path: string): EnumValue => {
   };
 };
 
+const parseSupertypeBindings = (
+  value: unknown,
+  path: string,
+): Record<string, TypeNode[]> => {
+  if (value === undefined) {
+    return {};
+  }
+  const record = asObject(value, path);
+  const bindings: Record<string, TypeNode[]> = {};
+  for (const [name, args] of Object.entries(record)) {
+    bindings[name] = asArray(args, `${path}.${name}`).map((arg, index) =>
+      parseTypeNode(arg, `${path}.${name}[${index}]`),
+    );
+  }
+  return bindings;
+};
+
 const parseEntity = (value: unknown, path: string): Entity => {
   const record = asObject(value, path);
   const kind = asString(record.kind, `${path}.kind`);
@@ -234,6 +251,10 @@ const parseEntity = (value: unknown, path: string): Entity => {
             : asArray(record.typeParams, `${path}.typeParams`).map(
                 (name, index) => asString(name, `${path}.typeParams[${index}]`),
               ),
+        supertypeBindings: parseSupertypeBindings(
+          record.supertypeBindings,
+          `${path}.supertypeBindings`,
+        ),
       };
     case 'enum':
       return {

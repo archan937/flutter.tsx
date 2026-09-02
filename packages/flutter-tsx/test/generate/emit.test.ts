@@ -211,6 +211,7 @@ const snapshot: ApiSnapshot = {
       kind: 'class',
       disposable: false,
       typeParams: [],
+      supertypeBindings: {},
       name: 'Style',
       library: 'painting',
       doc: '/// How to paint a frame.',
@@ -259,6 +260,7 @@ const snapshot: ApiSnapshot = {
       kind: 'class',
       disposable: false,
       typeParams: [],
+      supertypeBindings: {},
       name: 'TestPalette',
       library: 'material',
       doc: '/// Well-known colors.',
@@ -340,6 +342,10 @@ export interface Style {
 }
 
 export declare const Style: new (options?: { tint?: ColorValue; size?: number }) => Style;
+
+export interface TestPalette {
+  readonly __fsxBrand?: { readonly TestPalette: true };
+}
 
 export type ColorValue =
   | Color
@@ -488,6 +494,7 @@ describe('emitWidgetsFile value-form guards', () => {
           kind: 'class',
           disposable: false,
           typeParams: [],
+          supertypeBindings: {},
           name: 'ColorValue',
           library: 'painting',
           doc: '',
@@ -568,6 +575,7 @@ describe('emitConstantsFile', () => {
 
 import { declareConstants } from '../runtime/constants';
 import type * as widgetTypes from './widgets';
+import type { FlutterElement } from '../runtime/types';
 
 /**
  * Well-known colors.
@@ -756,6 +764,9 @@ describe('emitWidgetsFile — gesture props', () => {
       'export interface Key {',
       'export interface MaterialColor {',
       'export interface Style {',
+      // A class the constants module exports is a value there and a type
+      // here, so this module declares it too.
+      'export interface TestPalette {',
       'export interface StyleObject {',
       'export interface GestureProps {',
       "export interface FrameProps extends Omit<GestureProps, 'onClick'> {",
@@ -776,6 +787,7 @@ describe('emitConstantsFile — IconName', () => {
         kind: 'class',
         disposable: false,
         typeParams: [],
+        supertypeBindings: {},
         name: 'Icons',
         library: 'material',
         doc: '',

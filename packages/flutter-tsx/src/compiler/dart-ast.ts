@@ -22,8 +22,12 @@ export type DartExpr =
       kind: 'list';
       isConst: boolean;
       items: DartListItem[];
-      /** A set is written in braces, and an empty one names what it holds. */
-      set?: { itemType: string | null };
+      /**
+       * How the collection is written: in braces for a set or a map, and
+       * naming what it holds when it is empty — `[]` alone is a list of
+       * dynamic and `{}` alone is a map.
+       */
+      set?: { itemType: string | null; braces: boolean };
     }
   | {
       kind: 'builder';
@@ -60,6 +64,8 @@ export interface DartArgument {
 
 export type DartListItem =
   | { kind: 'element'; value: DartExpr }
+  /// `'a': 1` — an entry of a map, which is a collection written in braces.
+  | { kind: 'entry'; key: DartExpr; value: DartExpr }
   | { kind: 'if'; condition: DartExpr; value: DartExpr }
   | { kind: 'for'; itemName: string; iterable: DartExpr; value: DartExpr };
 

@@ -826,7 +826,7 @@ details details > ul { padding-left: 24px; }
 </ul>
 </details>
 <details>
-<summary>Types<span class="nav-count">132</span></summary>
+<summary>Types<span class="nav-count">133</span></summary>
 <ul>
 <li data-name="ActionIconThemeDataValue"><a href="#type-ActionIconThemeDataValue">ActionIconThemeDataValue</a></li>
 <li data-name="AlignmentDirectionalValue"><a href="#type-AlignmentDirectionalValue">AlignmentDirectionalValue</a></li>
@@ -956,6 +956,7 @@ details details > ul { padding-left: 24px; }
 <li data-name="ToolbarOptionsValue"><a href="#type-ToolbarOptionsValue">ToolbarOptionsValue</a></li>
 <li data-name="TooltipThemeDataValue"><a href="#type-TooltipThemeDataValue">TooltipThemeDataValue</a></li>
 <li data-name="TreeSliverIndentationTypeValue"><a href="#type-TreeSliverIndentationTypeValue">TreeSliverIndentationTypeValue</a></li>
+<li data-name="TypeValue"><a href="#type-TypeValue">TypeValue</a></li>
 <li data-name="UndoHistoryValue"><a href="#type-UndoHistoryValue">UndoHistoryValue</a></li>
 <li data-name="VelocityValue"><a href="#type-VelocityValue">VelocityValue</a></li>
 <li data-name="VisualDensityValue"><a href="#type-VisualDensityValue">VisualDensityValue</a></li>
@@ -3127,7 +3128,7 @@ animates.</p>
 </div>
 </article>
 <article class="widget" id="ActionListener" data-name="ActionListener">
-<h3>ActionListener<span class="badge badge-lib">widgets</span></h3>
+<h3>ActionListener<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A helper widget for making sure that listeners on an action are removed properly.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -3137,14 +3138,14 @@ animates.</p>
 <tr><td>action</td><td>Action</td><td>Action&lt;Intent&gt;</td><td class="req">✓</td></tr>
 </tbody>
 </table>
-<p class="note"><code>action</code> (Action&lt;Intent&gt;) — a shape the compiler does not write yet.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">ActionListener</span> listener={() =&gt; {}} action={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">ActionListener</span> listener={() =&gt; {}} action={<span class="tok-kw">new</span> <span class="tok-typ">DoNothingAction</span>()}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">ActionListener</span>&gt;</code></pre>
 </div>
@@ -3167,7 +3168,7 @@ when invoking an [Action].</p>
 <tbody>
 <tr><td>children</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
 <tr><td>dispatcher</td><td>ActionDispatcher</td><td>ActionDispatcher?</td><td class="req"></td></tr>
-<tr><td>actions</td><td>Map&lt;Type, Action&gt;</td><td>Map&lt;Type, Action&lt;Intent&gt;&gt;</td><td class="req">✓</td></tr>
+<tr><td>actions</td><td>Map&lt;TypeValue, Action&gt;</td><td>Map&lt;Type, Action&lt;Intent&gt;&gt;</td><td class="req">✓</td></tr>
 </tbody>
 </table>
 <p class="note"><code>actions</code> (Map&lt;Type, Action&lt;Intent&gt;&gt;) — a shape the compiler does not write yet.</p>
@@ -4398,7 +4399,7 @@ highlighted for keyboard navigation.</p>
 </div>
 </article>
 <article class="widget" id="BackdropFilter" data-name="BackdropFilter">
-<h3>BackdropFilter<span class="badge badge-lib">widgets</span></h3>
+<h3>BackdropFilter<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that applies a filter to the existing painted content and then
 paints [child].</p>
 <table class="props">
@@ -4412,14 +4413,14 @@ paints [child].</p>
 <tr><td>backdropGroupKey</td><td>BackdropKey</td><td>BackdropKey?</td><td class="req"></td></tr>
 </tbody>
 </table>
-<p class="note"><code>filter</code> (ImageFilter?) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">BackdropFilter</span> filter={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">BackdropFilter</span> filter={<span class="tok-typ">ColorFilter</span>.<span class="tok-fn">linearToSrgbGamma</span>()}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">BackdropFilter</span>&gt;</code></pre>
 </div>
@@ -4855,7 +4856,7 @@ in the same semantic container.</p>
 </div>
 </article>
 <article class="widget" id="ColorFiltered" data-name="ColorFiltered">
-<h3>ColorFiltered<span class="badge badge-lib">widgets</span></h3>
+<h3>ColorFiltered<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Applies a [ColorFilter] to its child.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -4864,14 +4865,14 @@ in the same semantic container.</p>
 <tr><td>colorFilter</td><td>ColorFilter</td><td>ColorFilter</td><td class="req">✓</td></tr>
 </tbody>
 </table>
-<p class="note"><code>colorFilter</code> (ColorFilter) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">ColorFiltered</span> colorFilter={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">ColorFiltered</span> colorFilter={<span class="tok-typ">ColorFilter</span>.<span class="tok-fn">linearToSrgbGamma</span>()}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">ColorFiltered</span>&gt;</code></pre>
 </div>
@@ -5071,7 +5072,7 @@ child on top of that color.</p>
 </div>
 </article>
 <article class="widget" id="ConstraintsTransformBox" data-name="ConstraintsTransformBox">
-<h3>ConstraintsTransformBox<span class="badge badge-lib">widgets</span></h3>
+<h3>ConstraintsTransformBox<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A container widget that applies an arbitrary transform to its constraints,
 and sizes its child using the resulting [BoxConstraints], optionally
 clipping, or treating the overflow as an error.</p>
@@ -5086,14 +5087,14 @@ clipping, or treating the overflow as an error.</p>
 <tr><td>debugTransformType</td><td>string</td><td>String</td><td class="req"></td></tr>
 </tbody>
 </table>
-<p class="note"><code>constraintsTransform</code> (BoxConstraints Function(BoxConstraints)) — a shape the compiler does not write yet.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">ConstraintsTransformBox</span> constraintsTransform={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">ConstraintsTransformBox</span> constraintsTransform={() =&gt; new BoxConstraints()}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">ConstraintsTransformBox</span>&gt;</code></pre>
 </div>
@@ -6946,8 +6947,8 @@ highlights.</p>
 <tr><td>autofocus</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 <tr><td>descendantsAreFocusable</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 <tr><td>descendantsAreTraversable</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
-<tr><td>shortcuts</td><td>Map&lt;ShortcutActivator, Intent&gt;</td><td>Map&lt;ShortcutActivator, Intent&gt;?</td><td class="req"></td></tr>
-<tr><td>actions</td><td>Map&lt;Type, Action&gt;</td><td>Map&lt;Type, Action&lt;Intent&gt;&gt;?</td><td class="req"></td></tr>
+<tr><td>shortcuts</td><td>Map&lt;ShortcutActivator, IntentValue&gt;</td><td>Map&lt;ShortcutActivator, Intent&gt;?</td><td class="req"></td></tr>
+<tr><td>actions</td><td>Map&lt;TypeValue, Action&gt;</td><td>Map&lt;Type, Action&lt;Intent&gt;&gt;?</td><td class="req"></td></tr>
 <tr><td>onShowFocusHighlight</td><td>(value: boolean) =&gt; void</td><td>void Function(bool)?</td><td class="req"></td></tr>
 <tr><td>onShowHoverHighlight</td><td>(value: boolean) =&gt; void</td><td>void Function(bool)?</td><td class="req"></td></tr>
 <tr><td>onFocusChange</td><td>(value: boolean) =&gt; void</td><td>void Function(bool)?</td><td class="req"></td></tr>
@@ -7151,7 +7152,7 @@ a [Future].</p>
 <tr><td>builder</td><td>(context: BuildContext, snapshot: AsyncSnapshot) =&gt; FlutterElement</td><td>Widget Function(BuildContext, AsyncSnapshot&lt;T&gt;)</td><td class="req">✓</td></tr>
 </tbody>
 </table>
-<p class="note"><code>future</code> (Future&lt;T&gt;?) — a shape the compiler does not write yet.</p>
+<p class="note"><code>future</code> (Future&lt;T&gt;?) — a value `useAsync` or `useStream` supplies: they generate this widget.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -7622,7 +7623,7 @@ an [IconData] such as material's predefined [IconData]s in [Icons].</p>
 <tr><td>grade</td><td>number</td><td>double?</td><td class="req"></td></tr>
 <tr><td>opticalSize</td><td>number</td><td>double?</td><td class="req"></td></tr>
 <tr><td>color</td><td>ColorValue</td><td>Color?</td><td class="req"></td></tr>
-<tr><td>shadows</td><td>Shadow[]</td><td>List&lt;Shadow&gt;?</td><td class="req"></td></tr>
+<tr><td>shadows</td><td>ShadowValue[]</td><td>List&lt;Shadow&gt;?</td><td class="req"></td></tr>
 <tr><td>semanticLabel</td><td>string</td><td>String?</td><td class="req"></td></tr>
 <tr><td>textDirection</td><td>TextDirection</td><td>TextDirection?</td><td class="req"></td></tr>
 <tr><td>applyTextScaling</td><td>boolean</td><td>bool?</td><td class="req"></td></tr>
@@ -7813,7 +7814,7 @@ of baseline alignment.</p>
 </div>
 </article>
 <article class="widget" id="ImageFiltered" data-name="ImageFiltered">
-<h3>ImageFiltered<span class="badge badge-lib">widgets</span></h3>
+<h3>ImageFiltered<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Applies an [ImageFilter] to its child.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -7823,14 +7824,14 @@ of baseline alignment.</p>
 <tr><td>enabled</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
-<p class="note"><code>imageFilter</code> (ImageFilter) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">ImageFiltered</span> imageFilter={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">ImageFiltered</span> imageFilter={<span class="tok-typ">ColorFilter</span>.<span class="tok-fn">linearToSrgbGamma</span>()}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">ImageFiltered</span>&gt;</code></pre>
 </div>
@@ -8571,7 +8572,7 @@ child depends on.</p>
 <tbody>
 <tr><td>children</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 <tr><td>locale</td><td>Locale</td><td>Locale</td><td class="req">✓</td></tr>
-<tr><td>delegates</td><td>LocalizationsDelegate[]</td><td>List&lt;LocalizationsDelegate&lt;dynamic&gt;&gt;</td><td class="req">✓</td></tr>
+<tr><td>delegates</td><td>LocalizationsDelegateValue[]</td><td>List&lt;LocalizationsDelegate&lt;dynamic&gt;&gt;</td><td class="req">✓</td></tr>
 <tr><td>isApplicationLevel</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
@@ -8693,7 +8694,7 @@ boundary via the static lookup methods provided by the boundary.</p>
 </div>
 </article>
 <article class="widget" id="MatrixTransition" data-name="MatrixTransition">
-<h3>MatrixTransition<span class="badge badge-lib">widgets</span></h3>
+<h3>MatrixTransition<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Animates the [Matrix4] of a transformed widget.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -8705,7 +8706,7 @@ boundary via the static lookup methods provided by the boundary.</p>
 <tr><td>filterQuality</td><td>FilterQuality</td><td>FilterQuality?</td><td class="req"></td></tr>
 </tbody>
 </table>
-<p class="note"><code>onTransform</code> (Matrix4 Function(double)) — a shape the compiler does not write yet.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -8716,7 +8717,7 @@ boundary via the static lookup methods provided by the boundary.</p>
   <span class="tok-kw">const</span> animation = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">600</span> });
 
   <span class="tok-kw">return</span> (
-    &lt;<span class="tok-typ">MatrixTransition</span> animation={animation} onTransform={…}&gt;
+    &lt;<span class="tok-typ">MatrixTransition</span> animation={animation} onTransform={() =&gt; new Matrix4(<span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>)}&gt;
       &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
     &lt;/<span class="tok-typ">MatrixTransition</span>&gt;
   );
@@ -9589,7 +9590,7 @@ being destroyed.</p>
 </div>
 </article>
 <article class="widget" id="PhysicalShape" data-name="PhysicalShape">
-<h3>PhysicalShape<span class="badge badge-lib">widgets</span></h3>
+<h3>PhysicalShape<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget representing a physical layer that clips its children to a path.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -9602,14 +9603,14 @@ being destroyed.</p>
 <tr><td>shadowColor</td><td>ColorValue</td><td>Color</td><td class="req"></td></tr>
 </tbody>
 </table>
-<p class="note"><code>clipper</code> (CustomClipper&lt;Path&gt;) — a shape the compiler does not write yet.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">PhysicalShape</span> clipper={…} color=<span class="tok-str">&quot;activeBlue&quot;</span>&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">PhysicalShape</span> clipper={<span class="tok-kw">new</span> <span class="tok-typ">ShapeBorderClipper</span>({ shape: <span class="tok-str">&quot;none&quot;</span> })} color=<span class="tok-str">&quot;activeBlue&quot;</span>&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">PhysicalShape</span>&gt;</code></pre>
 </div>
@@ -10066,7 +10067,7 @@ position to an end position over the lifetime of the animation.</p>
 </div>
 </article>
 <article class="widget" id="RawAutocomplete" data-name="RawAutocomplete">
-<h3>RawAutocomplete<span class="badge badge-lib">widgets</span></h3>
+<h3>RawAutocomplete<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">{@template flutter.widgets.RawAutocomplete.RawAutocomplete}
 A widget for helping the user make a selection by entering some text and
 choosing from among a list of options.</p>
@@ -10074,7 +10075,7 @@ choosing from among a list of options.</p>
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
 <tbody>
 <tr><td>optionsViewBuilder</td><td>(context: BuildContext, onSelected: (option: unknown) =&gt; void, options: unknown[]) =&gt; FlutterElement</td><td>Widget Function(BuildContext, void Function(T), Iterable&lt;T&gt;)</td><td class="req">✓</td></tr>
-<tr><td>optionsBuilder</td><td>(textEditingValue: TextEditingValue) =&gt; FutureOr</td><td>FutureOr&lt;Iterable&lt;T&gt;&gt; Function(TextEditingValue)</td><td class="req">✓</td></tr>
+<tr><td>optionsBuilder</td><td>(textEditingValue: TextEditingValue) =&gt; unknown[] | Promise&lt;unknown[]&gt;</td><td>FutureOr&lt;Iterable&lt;T&gt;&gt; Function(TextEditingValue)</td><td class="req">✓</td></tr>
 <tr><td>optionsViewOpenDirection</td><td>OptionsViewOpenDirection</td><td>OptionsViewOpenDirection</td><td class="req"></td></tr>
 <tr><td>displayStringForOption</td><td>(option: unknown) =&gt; string</td><td>String Function(T)</td><td class="req"></td></tr>
 <tr><td>fieldViewBuilder</td><td>(context: BuildContext, textEditingController: TextEditingController, focusNode: FocusNode, onFieldSubmitted: () =&gt; void) =&gt; FlutterElement</td><td>Widget Function(BuildContext, TextEditingController, FocusNode, void Function())?</td><td class="req"></td></tr>
@@ -10084,14 +10085,14 @@ choosing from among a list of options.</p>
 <tr><td>initialValue</td><td>TextEditingValueValue</td><td>TextEditingValue?</td><td class="req"></td></tr>
 </tbody>
 </table>
-<p class="note"><code>optionsBuilder</code> (FutureOr&lt;Iterable&lt;T&gt;&gt; Function(TextEditingValue)) — a shape the compiler does not write yet.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">RawAutocomplete</span> optionsViewBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} optionsBuilder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">RawAutocomplete</span> optionsViewBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} optionsBuilder={() =&gt; [<span class="tok-str">&quot;example&quot;</span>]} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">RawAutocomplete</span>({
@@ -10117,7 +10118,7 @@ factories.</p>
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
 <tbody>
 <tr><td>children</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
-<tr><td>gestures</td><td>Map&lt;Type, GestureRecognizerFactory&gt;</td><td>Map&lt;Type, GestureRecognizerFactory&lt;GestureRecognizer&gt;&gt;</td><td class="req"></td></tr>
+<tr><td>gestures</td><td>Map&lt;TypeValue, GestureRecognizerFactory&gt;</td><td>Map&lt;Type, GestureRecognizerFactory&lt;GestureRecognizer&gt;&gt;</td><td class="req"></td></tr>
 <tr><td>behavior</td><td>HitTestBehavior</td><td>HitTestBehavior?</td><td class="req"></td></tr>
 <tr><td>excludeFromSemantics</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 <tr><td>semantics</td><td>SemanticsGestureDelegate</td><td>SemanticsGestureDelegate?</td><td class="req"></td></tr>
@@ -11832,7 +11833,7 @@ descendants.</p>
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
 <tbody>
 <tr><td>children</td><td>FlutterChild</td><td>Widget</td><td class="req">✓</td></tr>
-<tr><td>shortcuts</td><td>Map&lt;ShortcutActivator, Intent&gt;</td><td>Map&lt;ShortcutActivator, Intent&gt;</td><td class="req">✓</td></tr>
+<tr><td>shortcuts</td><td>Map&lt;ShortcutActivator, IntentValue&gt;</td><td>Map&lt;ShortcutActivator, Intent&gt;</td><td class="req">✓</td></tr>
 <tr><td>debugLabel</td><td>string</td><td>String?</td><td class="req"></td></tr>
 <tr><td>includeSemantics</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
@@ -13411,7 +13412,7 @@ a [Stream].</p>
 <tr><td>builder</td><td>(context: BuildContext, snapshot: AsyncSnapshot) =&gt; FlutterElement</td><td>Widget Function(BuildContext, AsyncSnapshot&lt;T&gt;)</td><td class="req">✓</td></tr>
 </tbody>
 </table>
-<p class="note"><code>stream</code> (Stream&lt;T&gt;?) — a shape the compiler does not write yet.</p>
+<p class="note"><code>stream</code> (Stream&lt;T&gt;?) — a value `useAsync` or `useStream` supplies: they generate this widget.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -13502,7 +13503,7 @@ a [Stream].</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
 <tbody>
-<tr><td>children</td><td>TableRow[]</td><td>List&lt;TableRow&gt;</td><td class="req"></td></tr>
+<tr><td>children</td><td>TableRowValue[]</td><td>List&lt;TableRow&gt;</td><td class="req"></td></tr>
 <tr><td>columnWidths</td><td>Record&lt;number, TableColumnWidth&gt;</td><td>Map&lt;int, TableColumnWidth&gt;?</td><td class="req"></td></tr>
 <tr><td>defaultColumnWidth</td><td>TableColumnWidth</td><td>TableColumnWidth</td><td class="req"></td></tr>
 <tr><td>textDirection</td><td>TextDirection</td><td>TextDirection?</td><td class="req"></td></tr>
@@ -14168,7 +14169,7 @@ at its &quot;natural&quot; size.</p>
 </div>
 </article>
 <article class="widget" id="UndoHistory" data-name="UndoHistory">
-<h3>UndoHistory<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
+<h3>UndoHistory<span class="badge badge-lib">widgets</span></h3>
 <p class="doc">Provides undo/redo capabilities for a [ValueNotifier].</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -14182,7 +14183,7 @@ at its &quot;natural&quot; size.</p>
 <tr><td>controller</td><td>UndoHistoryController</td><td>UndoHistoryController?</td><td class="req"></td></tr>
 </tbody>
 </table>
-
+<p class="note"><code>value</code> (ValueNotifier&lt;T&gt;) — a shape the compiler does not write yet.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -14193,7 +14194,7 @@ at its &quot;natural&quot; size.</p>
   <span class="tok-kw">const</span> focusNode = <span class="tok-kw">new</span> <span class="tok-typ">FocusNode</span>();
 
   <span class="tok-kw">return</span> (
-    &lt;<span class="tok-typ">UndoHistory</span> value={<span class="tok-kw">new</span> <span class="tok-typ">ValueNotifier</span>(<span class="tok-str">&quot;example&quot;</span>)} onTriggered={() =&gt; {}} focusNode={focusNode}&gt;
+    &lt;<span class="tok-typ">UndoHistory</span> value={…} onTriggered={() =&gt; {}} focusNode={focusNode}&gt;
       &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
     &lt;/<span class="tok-typ">UndoHistory</span>&gt;
   );
@@ -14464,7 +14465,7 @@ in combination with a [Scrollable].</p>
 </div>
 </article>
 <article class="widget" id="WidgetInspector" data-name="WidgetInspector">
-<h3>WidgetInspector<span class="badge badge-lib">widgets</span></h3>
+<h3>WidgetInspector<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that enables inspecting the child widget's structure.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -14475,14 +14476,14 @@ in combination with a [Scrollable].</p>
 <tr><td>moveExitWidgetSelectionButtonBuilder</td><td>((context: BuildContext, onPressed: () =&gt; void, semanticsLabel: string, usesDefaultAlignment?: boolean) =&gt; FlutterElement) | null</td><td>Widget Function(BuildContext, {required void Function() onPressed, required String semanticsLabel, bool usesDefaultAlignment})?</td><td class="req">✓</td></tr>
 </tbody>
 </table>
-<p class="note"><code>tapBehaviorButtonBuilder</code> (Widget Function(BuildContext, {required void Function() onPressed, required bool selectionOnTapEnabled, required String semanticsLabel})?) — a shape the compiler does not write yet.<br><code>exitWidgetSelectionButtonBuilder</code> (Widget Function(BuildContext, {required GlobalKey&lt;State&lt;StatefulWidget&gt;&gt; key, required void Function() onPressed, required String semanticsLabel})?) — a shape the compiler does not write yet.<br><code>moveExitWidgetSelectionButtonBuilder</code> (Widget Function(BuildContext, {required void Function() onPressed, required String semanticsLabel, bool usesDefaultAlignment})?) — a shape the compiler does not write yet.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">WidgetInspector</span> tapBehaviorButtonBuilder={…} exitWidgetSelectionButtonBuilder={…} moveExitWidgetSelectionButtonBuilder={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">WidgetInspector</span> tapBehaviorButtonBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} exitWidgetSelectionButtonBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;<span class="tok-typ">Content</span>&lt;/<span class="tok-typ">Text</span>&gt;} moveExitWidgetSelectionButtonBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;<span class="tok-typ">Content</span>&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">WidgetInspector</span>&gt;</code></pre>
 </div>
@@ -14549,7 +14550,7 @@ required for an application.</p>
 <tr><td>textStyle</td><td>TextStyleValue</td><td>TextStyle?</td><td class="req"></td></tr>
 <tr><td>color</td><td>ColorValue</td><td>Color</td><td class="req">✓</td></tr>
 <tr><td>locale</td><td>Locale</td><td>Locale?</td><td class="req"></td></tr>
-<tr><td>localizationsDelegates</td><td>LocalizationsDelegate[]</td><td>Iterable&lt;LocalizationsDelegate&lt;dynamic&gt;&gt;?</td><td class="req"></td></tr>
+<tr><td>localizationsDelegates</td><td>LocalizationsDelegateValue[]</td><td>Iterable&lt;LocalizationsDelegate&lt;dynamic&gt;&gt;?</td><td class="req"></td></tr>
 <tr><td>localeListResolutionCallback</td><td>(locales: Locale[] | null, supportedLocales: Locale[]) =&gt; Locale | null</td><td>Locale? Function(List&lt;Locale&gt;?, Iterable&lt;Locale&gt;)?</td><td class="req"></td></tr>
 <tr><td>localeResolutionCallback</td><td>(locale: Locale | null, supportedLocales: Locale[]) =&gt; Locale | null</td><td>Locale? Function(Locale?, Iterable&lt;Locale&gt;)?</td><td class="req"></td></tr>
 <tr><td>supportedLocales</td><td>Locale[]</td><td>Iterable&lt;Locale&gt;</td><td class="req"></td></tr>
@@ -14560,8 +14561,8 @@ required for an application.</p>
 <tr><td>exitWidgetSelectionButtonBuilder</td><td>(context: BuildContext, key: GlobalKey, onPressed: () =&gt; void, semanticsLabel: string) =&gt; FlutterElement</td><td>Widget Function(BuildContext, {required GlobalKey&lt;State&lt;StatefulWidget&gt;&gt; key, required void Function() onPressed, required String semanticsLabel})?</td><td class="req"></td></tr>
 <tr><td>moveExitWidgetSelectionButtonBuilder</td><td>(context: BuildContext, onPressed: () =&gt; void, semanticsLabel: string, usesDefaultAlignment?: boolean) =&gt; FlutterElement</td><td>Widget Function(BuildContext, {required void Function() onPressed, required String semanticsLabel, bool usesDefaultAlignment})?</td><td class="req"></td></tr>
 <tr><td>tapBehaviorButtonBuilder</td><td>(context: BuildContext, onPressed: () =&gt; void, selectionOnTapEnabled: boolean, semanticsLabel: string) =&gt; FlutterElement</td><td>Widget Function(BuildContext, {required void Function() onPressed, required bool selectionOnTapEnabled, required String semanticsLabel})?</td><td class="req"></td></tr>
-<tr><td>shortcuts</td><td>Map&lt;ShortcutActivator, Intent&gt;</td><td>Map&lt;ShortcutActivator, Intent&gt;?</td><td class="req"></td></tr>
-<tr><td>actions</td><td>Map&lt;Type, Action&gt;</td><td>Map&lt;Type, Action&lt;Intent&gt;&gt;?</td><td class="req"></td></tr>
+<tr><td>shortcuts</td><td>Map&lt;ShortcutActivator, IntentValue&gt;</td><td>Map&lt;ShortcutActivator, Intent&gt;?</td><td class="req"></td></tr>
+<tr><td>actions</td><td>Map&lt;TypeValue, Action&gt;</td><td>Map&lt;Type, Action&lt;Intent&gt;&gt;?</td><td class="req"></td></tr>
 <tr><td>restorationScopeId</td><td>string</td><td>String?</td><td class="req"></td></tr>
 <tr><td>useInheritedMediaQuery</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
@@ -15230,12 +15231,12 @@ etc, over a given duration whenever the given theme changes.</p>
 </div>
 </article>
 <article class="widget" id="Autocomplete" data-name="Autocomplete">
-<h3>Autocomplete<span class="badge badge-lib">material</span></h3>
+<h3>Autocomplete<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">{@macro flutter.widgets.RawAutocomplete.RawAutocomplete}</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
 <tbody>
-<tr><td>optionsBuilder</td><td>(textEditingValue: TextEditingValue) =&gt; FutureOr</td><td>FutureOr&lt;Iterable&lt;T&gt;&gt; Function(TextEditingValue)</td><td class="req">✓</td></tr>
+<tr><td>optionsBuilder</td><td>(textEditingValue: TextEditingValue) =&gt; unknown[] | Promise&lt;unknown[]&gt;</td><td>FutureOr&lt;Iterable&lt;T&gt;&gt; Function(TextEditingValue)</td><td class="req">✓</td></tr>
 <tr><td>displayStringForOption</td><td>(option: unknown) =&gt; string</td><td>String Function(T)</td><td class="req"></td></tr>
 <tr><td>fieldViewBuilder</td><td>(context: BuildContext, textEditingController: TextEditingController, focusNode: FocusNode, onFieldSubmitted: () =&gt; void) =&gt; FlutterElement</td><td>Widget Function(BuildContext, TextEditingController, FocusNode, void Function())</td><td class="req"></td></tr>
 <tr><td>focusNode</td><td>FocusNode</td><td>FocusNode?</td><td class="req"></td></tr>
@@ -15247,14 +15248,14 @@ etc, over a given duration whenever the given theme changes.</p>
 <tr><td>initialValue</td><td>TextEditingValueValue</td><td>TextEditingValue?</td><td class="req"></td></tr>
 </tbody>
 </table>
-<p class="note"><code>optionsBuilder</code> (FutureOr&lt;Iterable&lt;T&gt;&gt; Function(TextEditingValue)) — a shape the compiler does not write yet.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">Autocomplete</span> optionsBuilder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">Autocomplete</span> optionsBuilder={() =&gt; [<span class="tok-str">&quot;example&quot;</span>]} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">Autocomplete</span>({
@@ -19512,7 +19513,7 @@ in this widget's subtree.</p>
 <tr><td>additionalFocalPointOffset</td><td>OffsetValue</td><td>Offset</td><td class="req"></td></tr>
 <tr><td>borderRadius</td><td>BorderRadiusValue</td><td>BorderRadius</td><td class="req"></td></tr>
 <tr><td>filmColor</td><td>ColorValue</td><td>Color</td><td class="req"></td></tr>
-<tr><td>shadows</td><td>BoxShadow[]</td><td>List&lt;BoxShadow&gt;</td><td class="req"></td></tr>
+<tr><td>shadows</td><td>BoxShadowValue[]</td><td>List&lt;BoxShadow&gt;</td><td class="req"></td></tr>
 <tr><td>clipBehavior</td><td>Clip</td><td>Clip</td><td class="req"></td></tr>
 <tr><td>size</td><td>SizeValue</td><td>Size</td><td class="req"></td></tr>
 </tbody>
@@ -19619,7 +19620,7 @@ in this widget's subtree.</p>
 <tr><td>themeAnimationDuration</td><td>DurationValue</td><td>Duration</td><td class="req"></td></tr>
 <tr><td>themeAnimationCurve</td><td>CurveValue</td><td>Curve</td><td class="req"></td></tr>
 <tr><td>locale</td><td>Locale</td><td>Locale?</td><td class="req"></td></tr>
-<tr><td>localizationsDelegates</td><td>LocalizationsDelegate[]</td><td>Iterable&lt;LocalizationsDelegate&lt;dynamic&gt;&gt;?</td><td class="req"></td></tr>
+<tr><td>localizationsDelegates</td><td>LocalizationsDelegateValue[]</td><td>Iterable&lt;LocalizationsDelegate&lt;dynamic&gt;&gt;?</td><td class="req"></td></tr>
 <tr><td>localeListResolutionCallback</td><td>(locales: Locale[] | null, supportedLocales: Locale[]) =&gt; Locale | null</td><td>Locale? Function(List&lt;Locale&gt;?, Iterable&lt;Locale&gt;)?</td><td class="req"></td></tr>
 <tr><td>localeResolutionCallback</td><td>(locale: Locale | null, supportedLocales: Locale[]) =&gt; Locale | null</td><td>Locale? Function(Locale?, Iterable&lt;Locale&gt;)?</td><td class="req"></td></tr>
 <tr><td>supportedLocales</td><td>Locale[]</td><td>Iterable&lt;Locale&gt;</td><td class="req"></td></tr>
@@ -19629,8 +19630,8 @@ in this widget's subtree.</p>
 <tr><td>checkerboardOffscreenLayers</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 <tr><td>showSemanticsDebugger</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 <tr><td>debugShowCheckedModeBanner</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
-<tr><td>shortcuts</td><td>Map&lt;ShortcutActivator, Intent&gt;</td><td>Map&lt;ShortcutActivator, Intent&gt;?</td><td class="req"></td></tr>
-<tr><td>actions</td><td>Map&lt;Type, Action&gt;</td><td>Map&lt;Type, Action&lt;Intent&gt;&gt;?</td><td class="req"></td></tr>
+<tr><td>shortcuts</td><td>Map&lt;ShortcutActivator, IntentValue&gt;</td><td>Map&lt;ShortcutActivator, Intent&gt;?</td><td class="req"></td></tr>
+<tr><td>actions</td><td>Map&lt;TypeValue, Action&gt;</td><td>Map&lt;Type, Action&lt;Intent&gt;&gt;?</td><td class="req"></td></tr>
 <tr><td>restorationScopeId</td><td>string</td><td>String?</td><td class="req"></td></tr>
 <tr><td>scrollBehavior</td><td>ScrollBehavior</td><td>ScrollBehavior?</td><td class="req"></td></tr>
 <tr><td>useInheritedMediaQuery</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
@@ -21848,7 +21849,7 @@ widgets.</p>
 </div>
 </article>
 <article class="widget" id="SearchAnchor" data-name="SearchAnchor">
-<h3>SearchAnchor<span class="badge badge-lib">material</span></h3>
+<h3>SearchAnchor<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Manages a &quot;search view&quot; route that allows the user to select one of the
 suggested completions for a search query.</p>
 <table class="props">
@@ -21879,7 +21880,7 @@ suggested completions for a search query.</p>
 <tr><td>viewOnClose</td><td>() =&gt; void</td><td>void Function()?</td><td class="req"></td></tr>
 <tr><td>viewOnOpen</td><td>() =&gt; void</td><td>void Function()?</td><td class="req"></td></tr>
 <tr><td>builder</td><td>(context: BuildContext, controller: SearchController) =&gt; FlutterElement</td><td>Widget Function(BuildContext, SearchController)</td><td class="req">✓</td></tr>
-<tr><td>suggestionsBuilder</td><td>(context: BuildContext, controller: SearchController) =&gt; FutureOr</td><td>FutureOr&lt;Iterable&lt;Widget&gt;&gt; Function(BuildContext, SearchController)</td><td class="req">✓</td></tr>
+<tr><td>suggestionsBuilder</td><td>(context: BuildContext, controller: SearchController) =&gt; FlutterElement[] | Promise&lt;FlutterElement[]&gt;</td><td>FutureOr&lt;Iterable&lt;Widget&gt;&gt; Function(BuildContext, SearchController)</td><td class="req">✓</td></tr>
 <tr><td>textInputAction</td><td>TextInputAction</td><td>TextInputAction?</td><td class="req"></td></tr>
 <tr><td>keyboardType</td><td>TextInputTypeValue</td><td>TextInputType?</td><td class="req"></td></tr>
 <tr><td>enabled</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
@@ -21887,14 +21888,14 @@ suggested completions for a search query.</p>
 <tr><td>smartQuotesType</td><td>SmartQuotesType</td><td>SmartQuotesType?</td><td class="req"></td></tr>
 </tbody>
 </table>
-<p class="note"><code>suggestionsBuilder</code> (FutureOr&lt;Iterable&lt;Widget&gt;&gt; Function(BuildContext, SearchController)) — a shape the compiler does not write yet.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">SearchAnchor</span> builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} suggestionsBuilder={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">SearchAnchor</span> builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} suggestionsBuilder={() =&gt; []} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">SearchAnchor</span>({
@@ -22104,7 +22105,7 @@ descendants for search view created by the [SearchAnchor] widget.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">SegmentedButton</span> segments={[]} selected={[]} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">SegmentedButton</span> segments={[]} selected={[<span class="tok-str">&quot;example&quot;</span>]} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">SegmentedButton</span>({
@@ -24639,7 +24640,7 @@ platform with the given children.</p>
 <tr><td>onGenerateTitle</td><td>(context: BuildContext) =&gt; string</td><td>String Function(BuildContext)?</td><td class="req"></td></tr>
 <tr><td>color</td><td>ColorValue</td><td>Color?</td><td class="req"></td></tr>
 <tr><td>locale</td><td>Locale</td><td>Locale?</td><td class="req"></td></tr>
-<tr><td>localizationsDelegates</td><td>LocalizationsDelegate[]</td><td>Iterable&lt;LocalizationsDelegate&lt;dynamic&gt;&gt;?</td><td class="req"></td></tr>
+<tr><td>localizationsDelegates</td><td>LocalizationsDelegateValue[]</td><td>Iterable&lt;LocalizationsDelegate&lt;dynamic&gt;&gt;?</td><td class="req"></td></tr>
 <tr><td>localeListResolutionCallback</td><td>(locales: Locale[] | null, supportedLocales: Locale[]) =&gt; Locale | null</td><td>Locale? Function(List&lt;Locale&gt;?, Iterable&lt;Locale&gt;)?</td><td class="req"></td></tr>
 <tr><td>localeResolutionCallback</td><td>(locale: Locale | null, supportedLocales: Locale[]) =&gt; Locale | null</td><td>Locale? Function(Locale?, Iterable&lt;Locale&gt;)?</td><td class="req"></td></tr>
 <tr><td>supportedLocales</td><td>Locale[]</td><td>Iterable&lt;Locale&gt;</td><td class="req"></td></tr>
@@ -24648,8 +24649,8 @@ platform with the given children.</p>
 <tr><td>checkerboardOffscreenLayers</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 <tr><td>showSemanticsDebugger</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 <tr><td>debugShowCheckedModeBanner</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
-<tr><td>shortcuts</td><td>Map&lt;ShortcutActivator, Intent&gt;</td><td>Map&lt;ShortcutActivator, Intent&gt;?</td><td class="req"></td></tr>
-<tr><td>actions</td><td>Map&lt;Type, Action&gt;</td><td>Map&lt;Type, Action&lt;Intent&gt;&gt;?</td><td class="req"></td></tr>
+<tr><td>shortcuts</td><td>Map&lt;ShortcutActivator, IntentValue&gt;</td><td>Map&lt;ShortcutActivator, Intent&gt;?</td><td class="req"></td></tr>
+<tr><td>actions</td><td>Map&lt;TypeValue, Action&gt;</td><td>Map&lt;Type, Action&lt;Intent&gt;&gt;?</td><td class="req"></td></tr>
 <tr><td>restorationScopeId</td><td>string</td><td>String?</td><td class="req"></td></tr>
 <tr><td>scrollBehavior</td><td>ScrollBehavior</td><td>ScrollBehavior?</td><td class="req"></td></tr>
 <tr><td>useInheritedMediaQuery</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
@@ -25285,7 +25286,7 @@ or collapses the tile to reveal or hide the [child].</p>
 <tr><td>additionalInfo</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 <tr><td>leading</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
 <tr><td>trailing</td><td>FlutterChild</td><td>Widget?</td><td class="req"></td></tr>
-<tr><td>onClick</td><td>() =&gt; FutureOr</td><td>FutureOr&lt;void&gt; Function()?</td><td class="req"></td></tr>
+<tr><td>onClick</td><td>() =&gt; void | Promise&lt;void&gt;</td><td>FutureOr&lt;void&gt; Function()?</td><td class="req"></td></tr>
 <tr><td>backgroundColor</td><td>ColorValue</td><td>Color?</td><td class="req"></td></tr>
 <tr><td>backgroundColorActivated</td><td>ColorValue</td><td>Color?</td><td class="req"></td></tr>
 <tr><td>padding</td><td>EdgeInsetsGeometryValue</td><td>EdgeInsetsGeometry?</td><td class="req"></td></tr>
@@ -25351,7 +25352,7 @@ finger may be blocking the point of interest, like a selection handle.</p>
 <tr><td>size</td><td>SizeValue</td><td>Size</td><td class="req"></td></tr>
 <tr><td>borderRadius</td><td>BorderRadiusValue</td><td>BorderRadius</td><td class="req"></td></tr>
 <tr><td>additionalFocalPointOffset</td><td>OffsetValue</td><td>Offset</td><td class="req"></td></tr>
-<tr><td>shadows</td><td>BoxShadow[]</td><td>List&lt;BoxShadow&gt;</td><td class="req"></td></tr>
+<tr><td>shadows</td><td>BoxShadowValue[]</td><td>List&lt;BoxShadow&gt;</td><td class="req"></td></tr>
 <tr><td>clipBehavior</td><td>Clip</td><td>Clip</td><td class="req"></td></tr>
 <tr><td>borderSide</td><td>BorderSideValue</td><td>BorderSide</td><td class="req"></td></tr>
 <tr><td>inOutAnimation</td><td>Animation</td><td>Animation&lt;double&gt;?</td><td class="req"></td></tr>
@@ -26029,7 +26030,7 @@ sheets.</p>
 </div>
 </article>
 <article class="widget" id="CupertinoSegmentedControl" data-name="CupertinoSegmentedControl">
-<h3>CupertinoSegmentedControl<span class="badge badge-lib">cupertino</span></h3>
+<h3>CupertinoSegmentedControl<span class="badge badge-lib">cupertino</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">An iOS-style segmented control.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -26047,14 +26048,14 @@ sheets.</p>
 <tr><td>disabledChildren</td><td>unknown[]</td><td>Set&lt;T&gt;</td><td class="req"></td></tr>
 </tbody>
 </table>
-<p class="note"><code>children</code> (Map&lt;T, Widget&gt;) — a shape the compiler does not write yet.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">CupertinoSegmentedControl</span> children={…} onValueChanged={() =&gt; {}} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">CupertinoSegmentedControl</span> children={<span class="tok-kw">new</span> <span class="tok-typ">Map</span>&lt;unknown, <span class="tok-typ">FlutterElement</span>&gt;([[<span class="tok-str">&quot;example&quot;</span>, &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;]])} onValueChanged={() =&gt; {}} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">CupertinoSegmentedControl</span>({
@@ -26159,7 +26160,7 @@ sheets.</p>
 </div>
 </article>
 <article class="widget" id="CupertinoSlidingSegmentedControl" data-name="CupertinoSlidingSegmentedControl">
-<h3>CupertinoSlidingSegmentedControl<span class="badge badge-lib">cupertino</span></h3>
+<h3>CupertinoSlidingSegmentedControl<span class="badge badge-lib">cupertino</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">An iOS 13 style segmented control.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -26175,14 +26176,14 @@ sheets.</p>
 <tr><td>isMomentary</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
-<p class="note"><code>children</code> (Map&lt;T, Widget&gt;) — a shape the compiler does not write yet.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">CupertinoSlidingSegmentedControl</span> children={…} onValueChanged={() =&gt; {}} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">CupertinoSlidingSegmentedControl</span> children={<span class="tok-kw">new</span> <span class="tok-typ">Map</span>&lt;unknown, <span class="tok-typ">FlutterElement</span>&gt;([[<span class="tok-str">&quot;example&quot;</span>, &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;]])} onValueChanged={() =&gt; {}} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">CupertinoSlidingSegmentedControl</span>({
@@ -29199,7 +29200,7 @@ declare module <span class="tok-str">'plugin:url_launcher'</span> {
    *    Design.
    *  * [PhysicalModel], a widget for showing shadows.
    */</span>
-  boxShadow?: <span class="tok-typ">BoxShadow</span>[];
+  boxShadow?: <span class="tok-typ">BoxShadowValue</span>[];
   <span class="tok-com">/**
    * A gradient to use when filling the box.
    *
@@ -41353,7 +41354,7 @@ declare module <span class="tok-str">'plugin:url_launcher'</span> {
   <span class="tok-com">/**
    * The default for [Icon.shadows].
    */</span>
-  shadows?: <span class="tok-typ">Shadow</span>[];
+  shadows?: <span class="tok-typ">ShadowValue</span>[];
   <span class="tok-com">/**
    * The default for [Icon.applyTextScaling].
    */</span>
@@ -43031,7 +43032,7 @@ declare module <span class="tok-str">'plugin:url_launcher'</span> {
    *    Those shadows use [BlurStyle.normal] and may need to be converted to
    *    [BlurStyle.outer] for use with [MagnifierDecoration].
    */</span>
-  shadows?: <span class="tok-typ">BoxShadow</span>[];
+  shadows?: <span class="tok-typ">BoxShadowValue</span>[];
   <span class="tok-com">/**
    * The shape of the magnifier and the outline (border) around it.
    *
@@ -47370,7 +47371,7 @@ declare module <span class="tok-str">'plugin:url_launcher'</span> {
    * Shadows must be in the same order for [TextStyle] to be considered as
    * equivalent as order produces differing transparency.
    */</span>
-  shadows?: <span class="tok-typ">Shadow</span>[];
+  shadows?: <span class="tok-typ">ShadowValue</span>[];
   <span class="tok-com">/**
    * A list of [FontFeature]s that affect how the font selects glyphs.
    *
@@ -47975,6 +47976,13 @@ declare module <span class="tok-str">'plugin:url_launcher'</span> {
   <span class="tok-typ">TreeSliverIndentationType</span> | <span class="tok-str">'none'</span> | <span class="tok-str">'standard'</span>;</code></pre>
 
 <p class="note">Accepted by <a href="#TreeSliver">TreeSliver</a></p>
+</article>
+<article class="widget" id="type-TypeValue" data-name="TypeValue">
+<h3>TypeValue<span class="badge badge-lib">Type</span></h3>
+
+<pre><code class="language-typescript"><span class="tok-kw">export</span> <span class="tok-kw">type</span> <span class="tok-typ">TypeValue</span> = <span class="tok-typ">Type</span> | string;</code></pre>
+
+
 </article>
 <article class="widget" id="type-UndoHistoryValue" data-name="UndoHistoryValue">
 <h3>UndoHistoryValue<span class="badge badge-lib">UndoHistory</span></h3>

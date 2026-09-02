@@ -36,7 +36,9 @@ const listItemPrefix = (item: DartListItem): string => {
 };
 
 const inlineListItem = (item: DartListItem): string =>
-  `${listItemPrefix(item)}${inlineExpr(item.value)}`;
+  item.kind === 'entry'
+    ? `${inlineExpr(item.key)}: ${inlineExpr(item.value)}`
+    : `${listItemPrefix(item)}${inlineExpr(item.value)}`;
 
 const inlineExpr = (expr: DartExpr): string => {
   switch (expr.kind) {
@@ -76,9 +78,10 @@ const inlineExpr = (expr: DartExpr): string => {
       );
     case 'list': {
       const constPrefix = expr.isConst ? 'const ' : '';
-      const [open, close] = expr.set === undefined ? ['[', ']'] : ['{', '}'];
+      const [open, close] = expr.set?.braces === true ? ['{', '}'] : ['[', ']'];
       if (expr.items.length === 0) {
-        // `{}` alone is a map, so an empty set says what it holds.
+        // An empty collection names what it holds: `{}` alone is a map and
+        // `[]` alone holds dynamic, which a typed parameter refuses.
         const held = expr.set?.itemType;
         const typed = held === null || held === undefined ? '' : `<${held}>`;
         return `${constPrefix}${typed}${open}${close}`;
@@ -159,7 +162,12 @@ const printListTall = (
 ): string => {
   const childIndent = site.indent + 2;
   const lines = expr.items.map((item) => {
-    const prefix = listItemPrefix(item);
+    // An entry's key is written before its value, so the value is measured
+    // from after the `key: ` that precedes it.
+    const prefix =
+      item.kind === 'entry'
+        ? `${inlineExpr(item.key)}: `
+        : listItemPrefix(item);
     const value = splitsInsideTallList(item)
       ? printCallTall(item.value as Extract<DartExpr, { kind: 'call' }>, {
           indent: childIndent,
@@ -174,7 +182,7 @@ const printListTall = (
     return `${pad(childIndent)}${prefix}${value},`;
   });
   const constPrefix = expr.isConst ? 'const ' : '';
-  const [open, close] = expr.set === undefined ? ['[', ']'] : ['{', '}'];
+  const [open, close] = expr.set?.braces === true ? ['{', '}'] : ['[', ']'];
   return `${constPrefix}${open}\n${lines.join('\n')}\n${pad(site.indent)}${close}`;
 };
 

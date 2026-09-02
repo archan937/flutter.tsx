@@ -16,6 +16,7 @@ const snapshot: ApiSnapshot = {
       kind: 'class',
       disposable: false,
       typeParams: [],
+      supertypeBindings: {},
       name: 'Alpha',
       library: 'widgets',
       doc: '',

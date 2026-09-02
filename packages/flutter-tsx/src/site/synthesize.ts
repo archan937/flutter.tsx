@@ -2,15 +2,24 @@ import type { ParamModel, TypeNode } from '../api/model';
 import { DATE_FORMS } from '../derive/date-forms';
 import type { NamedSlot, WidgetSlots } from '../derive/slots';
 import { EDGE_INSETS_TYPES, type ValueForms } from '../derive/value-forms';
+import { valueFormTsType } from '../generate/prop-type';
 import { jsxPropName } from '../generate/renames';
 import { type UnwritableProp, unwritableReason } from './unwritable';
 
 /** A class the SDK builds, and what its constructor asks for. */
 export interface Constructible {
   name: string;
+  /** The constructor's own name, when the class builds only by name. */
+  constructorName?: string;
   params: readonly ParamModel[];
   /** The names it is generic over, in order, so arguments can be bound. */
   typeParams: readonly string[];
+  /**
+   * What it hands the type it is standing in for, when that type is generic
+   * and this class is not — `ShapeBorderClipper` is a `CustomClipper<Path>`,
+   * so it satisfies a prop asking for one.
+   */
+  binds?: readonly TypeNode[];
 }
 
 export interface SynthesisContext {
@@ -23,9 +32,18 @@ export interface SynthesisContext {
    * or the concrete subclass that is the way to satisfy an abstract one —
    * an `ImageProvider` is written as an `AssetImage`.
    */
-  construction: ReadonlyMap<string, Constructible>;
+  construction: ReadonlyMap<string, readonly Constructible[]>;
   /** Widgets asked for by name, and the tag that writes each one. */
   widgetExamples: ReadonlyMap<string, string>;
+  /**
+   * Names the package exports only as a value — a class with static
+   * constants — which therefore cannot be written as a type.
+   */
+  valueOnlyNames: ReadonlySet<string>;
+  /** Types whose props accept a shorthand union, by name. */
+  formNames: ReadonlySet<string>;
+  /** Types the surface declares, and so can be written as a type. */
+  declaredTypes: ReadonlySet<string>;
 }
 
 /**
@@ -56,10 +74,25 @@ interface SynthesizedValue {
 
 const INCOMPLETE_VALUE = '{…}';
 
-// `<Icon icon={Icons.add} />` — a namespaced value the example needs
-// imported, and `new AssetImage(…)` is a class it names outright.
-const NAMESPACE_REFERENCE = /\{([A-Z][A-Za-z0-9_]*)\./g;
+// `<Icon icon={Icons.add} />` reads a value off a class, `Rect.fromLTRB(…)`
+// calls a constructor on one, and `new AssetImage(…)` names one outright —
+// each is a name the example has to import.
+const NAMESPACE_REFERENCE = /\b([A-Z][A-Za-z0-9_]*)\./g;
+// `new Map<ShortcutActivator, Intent>(…)` names the types it holds.
+const TYPE_ARGUMENT = /new Map<([^>]+)>\(/g;
 const CONSTRUCTED_CLASS = /\bnew ([A-Z][A-Za-z0-9_]*)\(/g;
+// A Map is JavaScript's own; the package exports nothing by that name.
+const BUILT_IN_CLASSES: ReadonlySet<string> = new Set(['Map']);
+
+/** What a callback answers with, once a Future or a FutureOr is opened. */
+const awaitedValue = (type: TypeNode): TypeNode => {
+  if (type.kind === 'future') {
+    return type.item;
+  }
+  return type.kind === 'named' && type.name === EITHER_TYPE
+    ? (type.args?.[0] ?? { kind: 'unknown' })
+    : type;
+};
 
 const literal = (value: string): SynthesizedValue => ({ value });
 
@@ -102,13 +135,13 @@ const builtValue = (
   type: TypeNode & { kind: 'named' },
   context: SynthesisContext,
 ): SynthesizedValue | null => {
-  const built = context.construction.get(type.name);
-  // A type asked for with arguments is only satisfied by a class generic
-  // over them: an `Animatable<Object>` is not a tween of one fixed type.
-  const wantedArgs = (type.args ?? []).filter(
-    (arg) => !(arg.kind === 'named' && arg.name === ANY_VALUE),
+  // The simplest class that really satisfies the type: one that cannot carry
+  // what the type asked for is not a way to write it at all — an
+  // `Animatable<T>` is not a tween of one fixed type.
+  const built = (context.construction.get(type.name) ?? []).find((candidate) =>
+    satisfies(candidate, type),
   );
-  if (built === undefined || built.typeParams.length < wantedArgs.length) {
+  if (built === undefined) {
     return null;
   }
   // `ValueNotifier<int>` builds with an int: what the class is generic over
@@ -126,7 +159,9 @@ const builtValue = (
   );
   const named = built.params.filter((param) => param.named && param.required);
   const written = (param: ParamModel): string | null => {
-    const value = attrValue(substituted(param.type), context);
+    // A generated constructor declares its arguments with the same unions a
+    // prop has, so a shorthand is written here too.
+    const value = attrValue(substituted(param.type), context, 'argument');
     return value === null || value.binding !== undefined
       ? null
       : braced(value.value);
@@ -143,7 +178,51 @@ const builtValue = (
     ...positionalText,
     ...(namedText.length === 0 ? [] : [`{ ${namedText.join(', ')} }`]),
   ];
-  return { value: `{new ${built.name}(${args.join(', ')})}` };
+  // `Rect.fromLTRB(…)` is a call, `new Rect(…)` a construction: whichever
+  // the class really offers is what the example writes.
+  const construction =
+    built.constructorName === undefined
+      ? `new ${built.name}`
+      : `${built.name}.${built.constructorName}`;
+  return { value: `{${construction}(${args.join(', ')})}` };
+};
+
+/** The Dart name of a type, as far as one shape can be compared to another. */
+const shapeOf = (type: TypeNode): string =>
+  type.kind === 'nullable'
+    ? shapeOf(type.inner)
+    : 'name' in type
+      ? type.name
+      : type.kind;
+
+/**
+ * Whether writing this class satisfies a prop asking for that type.
+ *
+ * A class generic over as much as the type asked for can be built for
+ * whatever it asked for. One that is not generic can still stand in — if
+ * what it hands the type is what was asked for, or if what was asked for is
+ * `Object`, which anything is.
+ */
+const satisfies = (
+  built: Constructible,
+  type: TypeNode & { kind: 'named' },
+): boolean => {
+  const wanted = type.args ?? [];
+  // What the type asked for is the widget's own type parameter, and TSX has
+  // no way to name it: `Animatable<T>` cannot be written until it can.
+  if (wanted.some((arg) => arg.kind === 'typeVar')) {
+    return false;
+  }
+  if (built.typeParams.length >= wanted.length) {
+    return true;
+  }
+  // A type variable is the widget's own, and only a class generic over it
+  // can carry it — which the arity above already decides.
+  return wanted.every(
+    (arg, index) =>
+      (arg.kind === 'named' && arg.name === ANY_VALUE) ||
+      shapeOf(built.binds?.[index] ?? { kind: 'unknown' }) === shapeOf(arg),
+  );
 };
 
 /** `const focusNode = new FocusNode();` — a value the component makes. */
@@ -187,8 +266,12 @@ const ANIMATION_TYPES: ReadonlySet<string> = new Set([
   'ValueListenable',
 ]);
 
+// `FutureOr<T>` is a T or a Future of one, so a T is always an answer.
+const EITHER_TYPE = 'FutureOr';
+
 // Dart's top type: a prop asking for one takes whatever it is given.
 const ANY_VALUE = 'Object';
+const DART_TYPE = 'Type';
 
 // A key is written as the text or number that tells one item from another;
 // the compiler makes the Key itself.
@@ -216,10 +299,12 @@ const SCALAR_VALUES: Record<string, string> = {
  * Where a value is being written.
  *
  * A prop accepts the shorthands its declared union offers — `padding={8}`,
- * `color="red"`. Inside an expression, the value has to be the type itself,
- * so only the forms that are the type are written there.
+ * `color="red"` — and so does an argument of a generated constructor, which
+ * is declared with the same unions. A bare expression, like what a callback
+ * answers with, is typed as the type itself, so only the forms that *are*
+ * the type may be written there.
  */
-type ValuePosition = 'prop' | 'expression';
+type ValuePosition = 'prop' | 'argument' | 'expression';
 
 const attrValue = (
   type: TypeNode,
@@ -239,13 +324,24 @@ const attrValue = (
         ? null
         : literal(`"${value}"`);
     }
+    // A shorthand is available wherever the declaration carries the union.
+
     case 'named': {
       if (KEY_TYPES.has(type.name) || type.name === ANY_VALUE) {
         return literal('"example"');
       }
+      // A `Type` value is a class; `Object` is one, and every SDK class is
+      // one of those, so it is the example that is always true.
+      if (type.name === DART_TYPE) {
+        return literal(`"${ANY_VALUE}"`);
+      }
       // A widget asked for by name is written as itself: `CupertinoTabBar`
-      // is a tag, not a value to construct.
-      const asWidget = context.widgetExamples.get(type.name);
+      // is a tag, not a value to construct. Only a prop asks that way —
+      // inside an expression a name like `Image` is as likely to be the
+      // `dart:ui` class of that name, which is not a widget at all.
+      const asWidget =
+        position === 'prop' ? context.widgetExamples.get(type.name) : undefined;
+
       if (asWidget !== undefined) {
         return literal(`{${asWidget}}`);
       }
@@ -253,9 +349,10 @@ const attrValue = (
         return animationValue(type, context);
       }
       if (position === 'expression') {
-        // A shorthand is a prop's own union; here the value has to be one a
-        // component makes, or there is none to write.
-        return ownedValue(type.name, context);
+        // A bare expression is typed as the type itself, so there is no
+        // union to shorten — but a value the component makes, and one the
+        // SDK builds, are the values themselves.
+        return ownedValue(type.name, context) ?? builtValue(type, context);
       }
       const dateForm = DATE_FORMS.get(type.name);
       if (dateForm !== undefined) {
@@ -286,17 +383,12 @@ const attrValue = (
       if (answers.kind === 'void') {
         return literal('{() => {}}');
       }
-      // A typedef that takes named parameters is not satisfied by the
-      // positional closure TSX writes, so it has no example yet.
-      if (type.params.some((param) => param.named)) {
-        return null;
-      }
       if (answers.kind === 'widget') {
         return literal('{() => <Text>Content</Text>}');
       }
       // Any other callback answers with a value, and a value is exactly what
       // this function knows how to make: the callback is written around it.
-      const awaited = answers.kind === 'future' ? answers.item : answers;
+      const awaited = awaitedValue(answers);
       // A Future that carries nothing is awaited for what it does, so the
       // callback that answers with one has nothing to write in its body.
       if (awaited.kind === 'void') {
@@ -306,6 +398,8 @@ const attrValue = (
       if (answer === null) {
         return null;
       }
+      // A FutureOr is satisfied by the value itself, so only a real Future
+      // needs the callback to be async.
       const body = answers.kind === 'future' ? 'async () => ' : '() => ';
       return {
         value: `{${body}${braced(answer.value)}}`,
@@ -317,14 +411,54 @@ const attrValue = (
     case 'unknown':
     case 'typeVar':
       return literal('"example"');
-    // A Dart set is written as the collection it is, the same as a list.
+    // A widget is written as a tag wherever a widget is asked for.
+    case 'widget':
+      return literal('{<Text>Content</Text>}');
+    // A Dart set is written as the collection it is, the same as a list. An
+    // empty one has to name what it holds, so one holding only a type
+    // variable is not writable: there is no name to give.
     case 'list':
-    case 'set':
-      return literal('{[]}');
-    case 'map':
-      return type.key.kind === 'scalar' && type.key.name !== 'bool'
-        ? literal('{{}}')
-        : null;
+    case 'set': {
+      if (type.item.kind !== 'typeVar') {
+        return literal('{[]}');
+      }
+      // What the collection holds is the widget's own type parameter, and an
+      // empty one would leave Dart nothing to infer it from — so the example
+      // holds a value, which is what tells the widget what it is for.
+      const item = attrValue(type.item, context, position);
+      return item === null ? null : literal(`{[${braced(item.value)}]}`);
+    }
+    case 'map': {
+      // A string-keyed map is an object; any other is written as the pairs
+      // TypeScript writes a Map with, and both are real Dart maps.
+      const key = attrValue(type.key, context, 'expression');
+      const value = attrValue(type.value, context, 'expression');
+      if (type.key.kind === 'scalar' && type.key.name !== 'bool') {
+        return literal('{{}}');
+      }
+      // TypeScript's Map is invariant, so the entries have to name the key
+      // and value types — and a name the package exports only as a value
+      // cannot be named as a type, so such a map is not writable yet.
+      const names = [type.key, type.value].flatMap((held) =>
+        held.kind === 'named' ? [held.name] : [],
+      );
+      const nameable = (name: string): boolean =>
+        context.declaredTypes.has(name) && !context.valueOnlyNames.has(name);
+      if (key === null || value === null || !names.every(nameable)) {
+        return null;
+      }
+      // TypeScript's Map is invariant in its key and value, so the entries
+      // alone would infer a narrower map than the prop declares: the types
+      // are written out, exactly as a developer would have to.
+      const entries = `[[${braced(key.value)}, ${braced(value.value)}]]`;
+      return {
+        value:
+          `{new Map<${valueFormTsType(type.key, context.formNames)}, ` +
+          `${valueFormTsType(type.value, context.formNames)}>` +
+          `(${entries})}`,
+        ...(value.binding === undefined ? {} : { binding: value.binding }),
+      };
+    }
     default:
       return null;
   }
@@ -497,23 +631,36 @@ export const exampleSource = (
   );
 };
 
-/** Everything an example's source has to import from the package. */
+/**
+ * Everything an example's source has to import from the package.
+ *
+ * A name written as a type — the key of a `Map<ShortcutActivator, …>` — is
+ * imported as one, which is what `verbatimModuleSyntax` asks for.
+ */
 export const exampleImports = (
   widgetName: string,
   example: SynthesizedExample,
-): string[] =>
-  [
-    ...new Set([
-      widgetName,
-      'Text',
-      ...example.bindings.flatMap((binding) => binding.imports),
-      ...[...example.tsx.matchAll(NAMESPACE_REFERENCE)].map(
-        (match) => match[1] ?? '',
-      ),
-      ...[...example.tsx.matchAll(CONSTRUCTED_CLASS)].map(
-        (match) => match[1] ?? '',
-      ),
-    ]),
-  ]
-    .filter((name) => name !== '')
-    .sort();
+): { values: string[]; types: string[] } => {
+  const named = (pattern: RegExp): string[] =>
+    [...example.tsx.matchAll(pattern)].map((match) => match[1] ?? '');
+  const values = new Set([
+    widgetName,
+    'Text',
+    ...example.bindings.flatMap((binding) => binding.imports),
+    ...named(NAMESPACE_REFERENCE),
+    ...named(CONSTRUCTED_CLASS).filter((name) => !BUILT_IN_CLASSES.has(name)),
+  ]);
+  const types = new Set(
+    [...example.tsx.matchAll(TYPE_ARGUMENT)]
+      .flatMap((match) =>
+        (match[1] ?? '')
+          .split(',')
+          .map((name) => name.trim())
+          .filter((name) => /^[A-Z]/.test(name)),
+      )
+      .filter((name) => !values.has(name)),
+  );
+  const listed = (names: Set<string>): string[] =>
+    [...names].filter((name) => name !== '').sort();
+  return { values: listed(values), types: listed(types) };
+};

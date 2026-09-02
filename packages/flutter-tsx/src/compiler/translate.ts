@@ -79,6 +79,8 @@ export interface TranslateContext {
    * type is `any` and would claim every value is non-null.
    */
   narrowed: ReadonlySet<string>;
+  /** Author's name → the Dart name it stands for, inside a closure. */
+  renames: ReadonlyMap<string, string>;
 }
 
 const BINARY_OPERATORS = new Map<ts.SyntaxKind, string>([
@@ -705,6 +707,12 @@ export const translateIdentifier = (
   const constant = dartConstantName(name);
   if (constant !== name) {
     return constant;
+  }
+  // A closure over a typedef with named parameters declares them by the
+  // names Dart knows; whatever the author called them reads as those.
+  const declared = context.renames.get(name);
+  if (declared !== undefined) {
+    return declared;
   }
   const isMember =
     context.stateNames.has(name) ||

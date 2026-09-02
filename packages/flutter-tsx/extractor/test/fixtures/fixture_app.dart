@@ -70,6 +70,14 @@ class TestHolder<T> {
   final T value;
 }
 
+/// Compares controllers, which is what it is built for.
+class TestSorter implements Comparable<TestController> {
+  const TestSorter();
+
+  @override
+  int compareTo(TestController other) => 0;
+}
+
 /// Takes a value of the type it is built for.
 class TestBox<T> {
   const TestBox({required this.item});

@@ -12,6 +12,7 @@ import type {
 } from './model';
 import { NAV_CSS, sidebarHtml, TABS_CSS, TABS_JS } from './shell';
 import { exampleSource } from './synthesize';
+import type { Unwritable } from './unwritable';
 
 export const escapeHtml = (raw: string): string =>
   raw
@@ -67,6 +68,15 @@ ${rows}
 </table>`;
 };
 
+/** What each reason means, in the words a reader needs. */
+const REASON_TEXT: Record<Unwritable, string> = {
+  'supplied-by-flutter':
+    'a value Flutter supplies to the widget; nothing in the SDK builds one.',
+  'written-by-a-hook':
+    'a value `useAsync` or `useStream` supplies: they generate this widget.',
+  'not-yet-expressible': 'a shape the compiler does not write yet.',
+};
+
 export const widgetSection = (widget: SiteWidget): string => {
   const summary = cleanDoc(widget.doc, { firstParagraphOnly: true });
   const table = propTable(widget.props);
@@ -83,9 +93,7 @@ export const widgetSection = (widget: SiteWidget): string => {
           .map(
             (entry) =>
               `<code>${escapeHtml(entry.prop)}</code> (${escapeHtml(entry.type)}) — ` +
-              (entry.reason === 'supplied-by-flutter'
-                ? 'a value Flutter supplies to the widget; nothing in the SDK builds one.'
-                : 'a shape the compiler does not write yet.'),
+              REASON_TEXT[entry.reason],
           )
           .join('<br>')}</p>`;
   return `<article class="widget" id="${widget.name}" data-name="${widget.name}">

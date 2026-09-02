@@ -1360,6 +1360,122 @@ describe('transpileComponent — values the SDK builds', () => {
   });
 });
 
+describe('transpileComponent — maps, types and named parameters', () => {
+  test('a map is written as the entries it holds', async () => {
+    // A map whose keys are not strings is written as the pairs TypeScript
+    // writes a Map with, and it compiles to the Dart map it is.
+    const dart = await transpileComponent({
+      source:
+        "import { CallbackShortcuts, CharacterActivator, Text } from 'flutter-tsx';\n" +
+        'export const Probe = () => (\n' +
+        '  <CallbackShortcuts\n' +
+        '    bindings={new Map([[new CharacterActivator("a"), () => {}]])}\n' +
+        '  >\n' +
+        '    <Text>Hi</Text>\n' +
+        '  </CallbackShortcuts>\n' +
+        ');\n',
+      filePath: 'probe.tsx',
+    });
+
+    expect(dart).toContain(
+      "      bindings: {const CharacterActivator('a'): () {}},",
+    );
+  });
+
+  test('a string-keyed map is written as the object it is', async () => {
+    const dart = await transpileComponent({
+      source:
+        "import { CupertinoSegmentedControl, Text } from 'flutter-tsx';\n" +
+        'export const Probe = () => (\n' +
+        '  <CupertinoSegmentedControl\n' +
+        '    children={{ home: <Text>Home</Text>, away: <Text>Away</Text> }}\n' +
+        '    onValueChanged={() => {}}\n' +
+        '  />\n' +
+        ');\n',
+      filePath: 'probe.tsx',
+    });
+
+    expect(dart).toContain(
+      "      children: const {'home': Text('Home'), 'away': Text('Away')},",
+    );
+  });
+
+  test('a Type value is the class it names', async () => {
+    const dart = await transpileComponent({
+      source:
+        "import { Actions, DoNothingAction, Text } from 'flutter-tsx';\n" +
+        'export const Probe = () => (\n' +
+        '  <Actions actions={new Map([["Object", new DoNothingAction()]])}>\n' +
+        '    <Text>Hi</Text>\n' +
+        '  </Actions>\n' +
+        ');\n',
+      filePath: 'probe.tsx',
+    });
+
+    expect(dart).toContain('      actions: {Object: DoNothingAction()},');
+  });
+
+  test('a map written any other way is a numbered error', () => {
+    const bindings = (value: string): Promise<string> =>
+      transpileComponent({
+        source:
+          "import { CallbackShortcuts, Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => (\n' +
+          `  <CallbackShortcuts bindings={${value}}>\n` +
+          '    <Text>Hi</Text>\n' +
+          '  </CallbackShortcuts>\n' +
+          ');\n',
+        filePath: 'probe.tsx',
+      });
+
+    expect(bindings('new Map(pairs)')).rejects.toThrow(
+      /TSX0356 .* `new Map\(…\)` takes its entries as pairs/,
+    );
+    expect(bindings('new Map([["a"]])')).rejects.toThrow(
+      /TSX0356 .* each entry of a `new Map\(…\)` is a key and a value/,
+    );
+  });
+
+  test('a Type value names a class the SDK really declares', () => {
+    expect(
+      transpileComponent({
+        source:
+          "import { Actions, Text } from 'flutter-tsx';\n" +
+          'export const Probe = () => (\n' +
+          '  <Actions actions={new Map([["NoSuchThing", "x"]])}>\n' +
+          '    <Text>Hi</Text>\n' +
+          '  </Actions>\n' +
+          ');\n',
+        filePath: 'probe.tsx',
+      }),
+    ).rejects.toThrow(
+      /TSX0357 .* `NoSuchThing` is not a class the SDK declares/,
+    );
+  });
+
+  test('a named parameter keeps the name Dart knows it by', async () => {
+    // The author may call it what they like; Dart's own name is what the
+    // closure declares, and the body reads as that.
+    const dart = await transpileComponent({
+      source:
+        "import { Text, WidgetInspector } from 'flutter-tsx';\n" +
+        'export const Probe = () => (\n' +
+        '  <WidgetInspector\n' +
+        '    exitWidgetSelectionButtonBuilder={(ctx, key, press, label) => (\n' +
+        '      <Text>{label}</Text>\n' +
+        '    )}\n' +
+        '  >\n' +
+        '    <Text>Tree</Text>\n' +
+        '  </WidgetInspector>\n' +
+        ');\n',
+      filePath: 'probe.tsx',
+    });
+
+    expect(dart).toContain('required semanticsLabel}) => Text(');
+    expect(dart).toContain('        semanticsLabel,');
+  });
+});
+
 describe('transpileComponent — failures with a type', () => {
   const probe = (body: string): Promise<string> =>
     transpileComponent({

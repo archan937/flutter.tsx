@@ -24,6 +24,7 @@ const NAMES_A_CLASS: Record<IrValue['kind'], boolean> = {
   construct: true,
   widgetList: true,
   listValue: true,
+  mapValue: true,
   conditional: true,
   closureValue: true,
   builder: true,
@@ -80,6 +81,12 @@ const collectValue = (
     case 'listValue':
       for (const item of value.items) {
         collectValue(item, context, names);
+      }
+      return;
+    case 'mapValue':
+      for (const entry of value.entries) {
+        collectValue(entry.key, context, names);
+        collectValue(entry.value, context, names);
       }
       return;
     case 'conditional':

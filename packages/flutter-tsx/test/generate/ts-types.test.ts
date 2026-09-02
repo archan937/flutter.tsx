@@ -68,6 +68,10 @@ describe('tsTypeOf', () => {
         value: { kind: 'named', name: 'Intent' },
       }),
     ).toBe('Map<ShortcutActivator, Intent>');
+    // A map keyed by anything else that a record can hold is a record of it.
+    expect(
+      tsTypeOf({ kind: 'map', key: scalar('int'), value: scalar('String') }),
+    ).toBe('Record<number, string>');
   });
 
   test('futures become promises', () => {

@@ -24,17 +24,22 @@ const context: SynthesisContext = {
   enumValues: { TestAlign: 'start' },
   ownedValues: new Set(['TestController']),
   widgetExamples: new Map([['Badge', '<Badge label="example" />']]),
+  valueOnlyNames: new Set(['Icons']),
+  formNames: new Set(['IconData', 'Ornament']),
+  declaredTypes: new Set(['IconData', 'Ornament', 'Intent']),
   construction: new Map([
     [
       'Ink',
-      {
-        name: 'InkSplash',
-        typeParams: [],
-        params: [
-          param('kind', { kind: 'scalar', name: 'String' }, { named: false }),
-          param('shade', { kind: 'scalar', name: 'String' }),
-        ],
-      },
+      [
+        {
+          name: 'InkSplash',
+          typeParams: [],
+          params: [
+            param('kind', { kind: 'scalar', name: 'String' }, { named: false }),
+            param('shade', { kind: 'scalar', name: 'String' }),
+          ],
+        },
+      ],
     ],
   ]),
   forms: {
@@ -129,13 +134,19 @@ describe('synthesizeTsx', () => {
       construction: new Map([
         [
           'Holder',
-          {
-            name: 'Holder',
-            typeParams: ['T'],
-            params: [
-              param('value', { kind: 'typeVar', name: 'T' }, { named: false }),
-            ],
-          },
+          [
+            {
+              name: 'Holder',
+              typeParams: ['T'],
+              params: [
+                param(
+                  'value',
+                  { kind: 'typeVar', name: 'T' },
+                  { named: false },
+                ),
+              ],
+            },
+          ],
         ],
       ]),
     };
@@ -228,11 +239,15 @@ describe('synthesizeTsx', () => {
           construction: new Map([
             [
               'Ink',
-              {
-                name: 'InkSplash',
-                typeParams: [],
-                params: [param('shade', { kind: 'named', name: 'Unwritable' })],
-              },
+              [
+                {
+                  name: 'InkSplash',
+                  typeParams: [],
+                  params: [
+                    param('shade', { kind: 'named', name: 'Unwritable' }),
+                  ],
+                },
+              ],
             ],
           ]),
         },

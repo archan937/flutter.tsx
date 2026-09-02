@@ -2945,19 +2945,12 @@ export interface Alignment {
   };
 }
 
-export declare const Alignment: new (x: number, y: number) => Alignment;
-
 export interface AlignmentDirectional {
   readonly __fsxBrand?: {
     readonly AlignmentDirectional: true;
     readonly AlignmentGeometry: true;
   };
 }
-
-export declare const AlignmentDirectional: new (
-  start: number,
-  y: number,
-) => AlignmentDirectional;
 
 export interface AlignmentGeometry {
   readonly __fsxBrand?: { readonly AlignmentGeometry: true };
@@ -3012,11 +3005,16 @@ export interface AlwaysStoppedAnimation {
   readonly isDismissed: boolean;
   readonly isForwardOrCompleted: boolean;
   readonly status: AnimationStatus;
+  readonly value: unknown;
 }
 
 export declare const AlwaysStoppedAnimation: new (
   value: unknown,
 ) => AlwaysStoppedAnimation;
+
+export interface AndroidPointerProperties {
+  readonly __fsxBrand?: { readonly AndroidPointerProperties: true };
+}
 
 export interface AndroidViewController {
   readonly __fsxBrand?: {
@@ -3024,7 +3022,9 @@ export interface AndroidViewController {
     readonly PlatformViewController: true;
   };
   readonly awaitingCreation: boolean;
+  readonly createdCallbacks: (id: number) => void[];
   readonly isCreated: boolean;
+  readonly pointTransformer: (position: Offset) => Offset;
   readonly requiresViewComposition: boolean;
   readonly textureId: number;
   readonly viewId: number;
@@ -3048,6 +3048,10 @@ export declare const AnimatedGridState: new () => AnimatedGridState;
 
 export interface AnimatedIconData {
   readonly __fsxBrand?: { readonly AnimatedIconData: true };
+}
+
+export interface AnimatedIcons {
+  readonly __fsxBrand?: { readonly AnimatedIcons: true };
 }
 
 export interface AnimatedListState {
@@ -3106,7 +3110,16 @@ export declare const AnimationController: new (options: {
   upperBound?: number;
   animationBehavior?: AnimationBehavior;
   vsync: TickerProvider;
-}) => AnimationController;
+}) => AnimationController & {
+  readonly unbounded: (options: {
+    value?: number;
+    duration?: DurationValue;
+    reverseDuration?: DurationValue;
+    debugLabel?: string;
+    vsync: TickerProvider;
+    animationBehavior?: AnimationBehavior;
+  }) => AnimationController;
+};
 
 export interface AnimationMax {
   readonly __fsxBrand?: {
@@ -3127,6 +3140,7 @@ export interface AnimationMax {
   readonly isListening: boolean;
   readonly next: Animation;
   readonly status: AnimationStatus;
+  readonly value: unknown;
 }
 
 export declare const AnimationMax: new (
@@ -3180,6 +3194,7 @@ export interface AnimationMin {
   readonly isListening: boolean;
   readonly next: Animation;
   readonly status: AnimationStatus;
+  readonly value: unknown;
 }
 
 export declare const AnimationMin: new (
@@ -3197,13 +3212,6 @@ export interface AnimationStyle {
   readonly reverseCurve: CurveValue;
   readonly reverseDuration: DurationValue;
 }
-
-export declare const AnimationStyle: new (options?: {
-  curve?: CurveValue;
-  duration?: DurationValue;
-  reverseCurve?: CurveValue;
-  reverseDuration?: DurationValue;
-}) => AnimationStyle;
 
 export interface AppBarThemeData {
   readonly __fsxBrand?: {
@@ -3259,11 +3267,18 @@ export declare const AssetImage: new (
 
 export interface AsyncSnapshot {
   readonly __fsxBrand?: { readonly AsyncSnapshot: true };
+  readonly data: unknown;
   readonly error: ObjectValue;
   readonly hasData: boolean;
   readonly hasError: boolean;
+  readonly requireData: unknown;
   readonly stackTrace: StackTrace;
 }
+
+export declare const AsyncSnapshot: {
+  readonly nothing: () => AsyncSnapshot;
+  readonly waiting: () => AsyncSnapshot;
+};
 
 export interface AttributedString {
   readonly __fsxBrand?: { readonly AttributedString: true };
@@ -3342,12 +3357,9 @@ export interface AutofillConfiguration {
   readonly __fsxBrand?: { readonly AutofillConfiguration: true };
 }
 
-export declare const AutofillConfiguration: new (options: {
-  uniqueIdentifier: string;
-  autofillHints: string[];
-  currentEditingValue: TextEditingValueValue;
-  hintText?: string;
-}) => AutofillConfiguration;
+export interface AutofillHints {
+  readonly __fsxBrand?: { readonly AutofillHints: true };
+}
 
 export interface AutomaticNotchedShape {
   readonly __fsxBrand?: {
@@ -3456,7 +3468,19 @@ export declare const Border: new (options?: {
   right?: BorderSideValue;
   bottom?: BorderSideValue;
   left?: BorderSideValue;
-}) => Border;
+}) => Border & {
+  readonly all: (options?: {
+    color?: ColorValue;
+    width?: number;
+    style?: BorderStyle;
+    strokeAlign?: number;
+  }) => Border;
+  readonly fromBorderSide: (side: BorderSideValue) => Border;
+  readonly symmetric: (options?: {
+    vertical?: BorderSideValue;
+    horizontal?: BorderSideValue;
+  }) => Border;
+};
 
 export interface BorderDirectional {
   readonly __fsxBrand?: {
@@ -3510,13 +3534,6 @@ export interface BorderSide {
     readonly Diagnosticable: true;
   };
 }
-
-export declare const BorderSide: new (options?: {
-  color?: ColorValue;
-  width?: number;
-  style?: BorderStyle;
-  strokeAlign?: number;
-}) => BorderSide;
 
 export interface BorderTween {
   readonly __fsxBrand?: {
@@ -3621,6 +3638,13 @@ export declare const BouncingScrollPhysics: new (options?: {
   parent?: ScrollPhysicsValue;
 }) => BouncingScrollPhysics;
 
+export interface BouncingScrollSimulation {
+  readonly __fsxBrand?: {
+    readonly BouncingScrollSimulation: true;
+    readonly Simulation: true;
+  };
+}
+
 export interface BoxBorder {
   readonly __fsxBrand?: {
     readonly BoxBorder: true;
@@ -3655,7 +3679,22 @@ export declare const BoxConstraints: new (options?: {
   maxWidth?: number;
   minHeight?: number;
   maxHeight?: number;
-}) => BoxConstraints;
+}) => BoxConstraints & {
+  readonly expand: (options?: {
+    width?: number;
+    height?: number;
+  }) => BoxConstraints;
+  readonly loose: (size: SizeValue) => BoxConstraints;
+  readonly tight: (size: SizeValue) => BoxConstraints;
+  readonly tightFor: (options?: {
+    width?: number;
+    height?: number;
+  }) => BoxConstraints;
+  readonly tightForFinite: (options?: {
+    width?: number;
+    height?: number;
+  }) => BoxConstraints;
+};
 
 export interface BoxConstraintsTween {
   readonly __fsxBrand?: {
@@ -3683,7 +3722,7 @@ export declare const BoxDecoration: new (options?: {
   image?: DecorationImage;
   border?: BoxBorder;
   borderRadius?: BorderRadiusGeometryValue;
-  boxShadow?: BoxShadow[];
+  boxShadow?: BoxShadowValue[];
   gradient?: Gradient;
   backgroundBlendMode?: BlendMode;
   shape?: BoxShape;
@@ -3696,7 +3735,9 @@ export interface BoxHitTestResult {
   };
 }
 
-export declare const BoxHitTestResult: new () => BoxHitTestResult;
+export declare const BoxHitTestResult: new () => BoxHitTestResult & {
+  readonly wrap: (result: HitTestResult) => BoxHitTestResult;
+};
 
 export interface BoxShadow {
   readonly __fsxBrand?: { readonly BoxShadow: true; readonly Shadow: true };
@@ -3834,8 +3875,9 @@ export interface CallbackAction {
     readonly Diagnosticable: true;
   };
   readonly callingAction: Action;
-  readonly intentType: Type;
+  readonly intentType: TypeValue;
   readonly isActionEnabled: boolean;
+  readonly onInvoke: (intent: unknown) => Object | null;
 }
 
 export declare const CallbackAction: new (options: {
@@ -3878,6 +3920,8 @@ export interface CarouselController {
   readonly keepScrollOffset: boolean;
   readonly leadingItem: number;
   readonly offset: number;
+  readonly onAttach: (position: ScrollPosition) => void;
+  readonly onDetach: (position: ScrollPosition) => void;
   readonly position: ScrollPosition;
   readonly positions: ScrollPosition[];
 }
@@ -3922,9 +3966,14 @@ export interface CatmullRomCurve {
 }
 
 export declare const CatmullRomCurve: new (
-  controlPoints: Offset[],
+  controlPoints: OffsetValue[],
   options?: { tension?: number },
-) => CatmullRomCurve;
+) => CatmullRomCurve & {
+  readonly precompute: (
+    controlPoints: OffsetValue[],
+    options?: { tension?: number },
+  ) => CatmullRomCurve;
+};
 
 export interface ChangeNotifier {
   readonly __fsxBrand?: {
@@ -3934,6 +3983,10 @@ export interface ChangeNotifier {
 }
 
 export declare const ChangeNotifier: new () => ChangeNotifier;
+
+export interface ChannelBuffers {
+  readonly __fsxBrand?: { readonly ChannelBuffers: true };
+}
 
 export interface CharacterActivator {
   readonly __fsxBrand?: {
@@ -3957,8 +4010,6 @@ export declare const CharacterActivator: new (
 export interface Characters {
   readonly __fsxBrand?: { readonly Characters: true; readonly Iterable: true };
 }
-
-export declare const Characters: new (string: string) => Characters;
 
 export interface CheckboxThemeData {
   readonly __fsxBrand?: {
@@ -3996,11 +4047,6 @@ export interface ChildVicinity {
     readonly Comparable: true;
   };
 }
-
-export declare const ChildVicinity: new (options: {
-  xIndex: number;
-  yIndex: number;
-}) => ChildVicinity;
 
 export interface ChipAnimationStyle {
   readonly __fsxBrand?: { readonly ChipAnimationStyle: true };
@@ -4044,7 +4090,14 @@ export declare const ChipThemeData: new (options?: {
   iconTheme?: IconThemeDataValue;
   avatarBoxConstraints?: BoxConstraintsValue;
   deleteIconBoxConstraints?: BoxConstraintsValue;
-}) => ChipThemeData;
+}) => ChipThemeData & {
+  readonly fromDefaults: (options: {
+    brightness?: Brightness;
+    primaryColor?: ColorValue;
+    secondaryColor: ColorValue;
+    labelStyle: TextStyleValue;
+  }) => ChipThemeData;
+};
 
 export interface CircleBorder {
   readonly __fsxBrand?: {
@@ -4081,6 +4134,10 @@ export declare const ClampingScrollPhysics: new (options?: {
   parent?: ScrollPhysicsValue;
 }) => ClampingScrollPhysics;
 
+export interface Clipboard {
+  readonly __fsxBrand?: { readonly Clipboard: true };
+}
+
 export interface ClipboardStatusNotifier {
   readonly __fsxBrand?: {
     readonly ChangeNotifier: true;
@@ -4100,7 +4157,15 @@ export interface Color {
   readonly __fsxBrand?: { readonly Color: true };
 }
 
-export declare const Color: new (value: number) => Color;
+export declare const Color: new (value: number) => Color & {
+  readonly fromARGB: (a: number, r: number, g: number, b: number) => Color;
+  readonly fromRGBO: (
+    r: number,
+    g: number,
+    b: number,
+    opacity: number,
+  ) => Color;
+};
 
 export interface ColorFilter {
   readonly __fsxBrand?: {
@@ -4108,6 +4173,14 @@ export interface ColorFilter {
     readonly ImageFilter: true;
   };
 }
+
+export declare const ColorFilter: {
+  readonly linearToSrgbGamma: () => ColorFilter;
+  readonly matrix: (matrix: number[]) => ColorFilter;
+  readonly mode: (color: ColorValue, blendMode: BlendMode) => ColorFilter;
+  readonly saturation: (saturation: number) => ColorFilter;
+  readonly srgbToLinearGamma: () => ColorFilter;
+};
 
 export interface ColorScheme {
   readonly __fsxBrand?: {
@@ -4167,7 +4240,224 @@ export declare const ColorScheme: new (options: {
   background?: ColorValue;
   onBackground?: ColorValue;
   surfaceVariant?: ColorValue;
-}) => ColorScheme;
+}) => ColorScheme & {
+  readonly dark: (options?: {
+    brightness?: Brightness;
+    primary?: ColorValue;
+    onPrimary?: ColorValue;
+    primaryContainer?: ColorValue;
+    onPrimaryContainer?: ColorValue;
+    primaryFixed?: ColorValue;
+    primaryFixedDim?: ColorValue;
+    onPrimaryFixed?: ColorValue;
+    onPrimaryFixedVariant?: ColorValue;
+    secondary?: ColorValue;
+    onSecondary?: ColorValue;
+    secondaryContainer?: ColorValue;
+    onSecondaryContainer?: ColorValue;
+    secondaryFixed?: ColorValue;
+    secondaryFixedDim?: ColorValue;
+    onSecondaryFixed?: ColorValue;
+    onSecondaryFixedVariant?: ColorValue;
+    tertiary?: ColorValue;
+    onTertiary?: ColorValue;
+    tertiaryContainer?: ColorValue;
+    onTertiaryContainer?: ColorValue;
+    tertiaryFixed?: ColorValue;
+    tertiaryFixedDim?: ColorValue;
+    onTertiaryFixed?: ColorValue;
+    onTertiaryFixedVariant?: ColorValue;
+    error?: ColorValue;
+    onError?: ColorValue;
+    errorContainer?: ColorValue;
+    onErrorContainer?: ColorValue;
+    surface?: ColorValue;
+    onSurface?: ColorValue;
+    surfaceDim?: ColorValue;
+    surfaceBright?: ColorValue;
+    surfaceContainerLowest?: ColorValue;
+    surfaceContainerLow?: ColorValue;
+    surfaceContainer?: ColorValue;
+    surfaceContainerHigh?: ColorValue;
+    surfaceContainerHighest?: ColorValue;
+    onSurfaceVariant?: ColorValue;
+    outline?: ColorValue;
+    outlineVariant?: ColorValue;
+    shadow?: ColorValue;
+    scrim?: ColorValue;
+    inverseSurface?: ColorValue;
+    onInverseSurface?: ColorValue;
+    inversePrimary?: ColorValue;
+    surfaceTint?: ColorValue;
+    background?: ColorValue;
+    onBackground?: ColorValue;
+    surfaceVariant?: ColorValue;
+  }) => ColorScheme;
+  readonly fromSwatch: (options?: {
+    primarySwatch?: MaterialColor;
+    accentColor?: ColorValue;
+    cardColor?: ColorValue;
+    backgroundColor?: ColorValue;
+    errorColor?: ColorValue;
+    brightness?: Brightness;
+  }) => ColorScheme;
+  readonly highContrastDark: (options?: {
+    brightness?: Brightness;
+    primary?: ColorValue;
+    onPrimary?: ColorValue;
+    primaryContainer?: ColorValue;
+    onPrimaryContainer?: ColorValue;
+    primaryFixed?: ColorValue;
+    primaryFixedDim?: ColorValue;
+    onPrimaryFixed?: ColorValue;
+    onPrimaryFixedVariant?: ColorValue;
+    secondary?: ColorValue;
+    onSecondary?: ColorValue;
+    secondaryContainer?: ColorValue;
+    onSecondaryContainer?: ColorValue;
+    secondaryFixed?: ColorValue;
+    secondaryFixedDim?: ColorValue;
+    onSecondaryFixed?: ColorValue;
+    onSecondaryFixedVariant?: ColorValue;
+    tertiary?: ColorValue;
+    onTertiary?: ColorValue;
+    tertiaryContainer?: ColorValue;
+    onTertiaryContainer?: ColorValue;
+    tertiaryFixed?: ColorValue;
+    tertiaryFixedDim?: ColorValue;
+    onTertiaryFixed?: ColorValue;
+    onTertiaryFixedVariant?: ColorValue;
+    error?: ColorValue;
+    onError?: ColorValue;
+    errorContainer?: ColorValue;
+    onErrorContainer?: ColorValue;
+    surface?: ColorValue;
+    onSurface?: ColorValue;
+    surfaceDim?: ColorValue;
+    surfaceBright?: ColorValue;
+    surfaceContainerLowest?: ColorValue;
+    surfaceContainerLow?: ColorValue;
+    surfaceContainer?: ColorValue;
+    surfaceContainerHigh?: ColorValue;
+    surfaceContainerHighest?: ColorValue;
+    onSurfaceVariant?: ColorValue;
+    outline?: ColorValue;
+    outlineVariant?: ColorValue;
+    shadow?: ColorValue;
+    scrim?: ColorValue;
+    inverseSurface?: ColorValue;
+    onInverseSurface?: ColorValue;
+    inversePrimary?: ColorValue;
+    surfaceTint?: ColorValue;
+    background?: ColorValue;
+    onBackground?: ColorValue;
+    surfaceVariant?: ColorValue;
+  }) => ColorScheme;
+  readonly highContrastLight: (options?: {
+    brightness?: Brightness;
+    primary?: ColorValue;
+    onPrimary?: ColorValue;
+    primaryContainer?: ColorValue;
+    onPrimaryContainer?: ColorValue;
+    primaryFixed?: ColorValue;
+    primaryFixedDim?: ColorValue;
+    onPrimaryFixed?: ColorValue;
+    onPrimaryFixedVariant?: ColorValue;
+    secondary?: ColorValue;
+    onSecondary?: ColorValue;
+    secondaryContainer?: ColorValue;
+    onSecondaryContainer?: ColorValue;
+    secondaryFixed?: ColorValue;
+    secondaryFixedDim?: ColorValue;
+    onSecondaryFixed?: ColorValue;
+    onSecondaryFixedVariant?: ColorValue;
+    tertiary?: ColorValue;
+    onTertiary?: ColorValue;
+    tertiaryContainer?: ColorValue;
+    onTertiaryContainer?: ColorValue;
+    tertiaryFixed?: ColorValue;
+    tertiaryFixedDim?: ColorValue;
+    onTertiaryFixed?: ColorValue;
+    onTertiaryFixedVariant?: ColorValue;
+    error?: ColorValue;
+    onError?: ColorValue;
+    errorContainer?: ColorValue;
+    onErrorContainer?: ColorValue;
+    surface?: ColorValue;
+    onSurface?: ColorValue;
+    surfaceDim?: ColorValue;
+    surfaceBright?: ColorValue;
+    surfaceContainerLowest?: ColorValue;
+    surfaceContainerLow?: ColorValue;
+    surfaceContainer?: ColorValue;
+    surfaceContainerHigh?: ColorValue;
+    surfaceContainerHighest?: ColorValue;
+    onSurfaceVariant?: ColorValue;
+    outline?: ColorValue;
+    outlineVariant?: ColorValue;
+    shadow?: ColorValue;
+    scrim?: ColorValue;
+    inverseSurface?: ColorValue;
+    onInverseSurface?: ColorValue;
+    inversePrimary?: ColorValue;
+    surfaceTint?: ColorValue;
+    background?: ColorValue;
+    onBackground?: ColorValue;
+    surfaceVariant?: ColorValue;
+  }) => ColorScheme;
+  readonly light: (options?: {
+    brightness?: Brightness;
+    primary?: ColorValue;
+    onPrimary?: ColorValue;
+    primaryContainer?: ColorValue;
+    onPrimaryContainer?: ColorValue;
+    primaryFixed?: ColorValue;
+    primaryFixedDim?: ColorValue;
+    onPrimaryFixed?: ColorValue;
+    onPrimaryFixedVariant?: ColorValue;
+    secondary?: ColorValue;
+    onSecondary?: ColorValue;
+    secondaryContainer?: ColorValue;
+    onSecondaryContainer?: ColorValue;
+    secondaryFixed?: ColorValue;
+    secondaryFixedDim?: ColorValue;
+    onSecondaryFixed?: ColorValue;
+    onSecondaryFixedVariant?: ColorValue;
+    tertiary?: ColorValue;
+    onTertiary?: ColorValue;
+    tertiaryContainer?: ColorValue;
+    onTertiaryContainer?: ColorValue;
+    tertiaryFixed?: ColorValue;
+    tertiaryFixedDim?: ColorValue;
+    onTertiaryFixed?: ColorValue;
+    onTertiaryFixedVariant?: ColorValue;
+    error?: ColorValue;
+    onError?: ColorValue;
+    errorContainer?: ColorValue;
+    onErrorContainer?: ColorValue;
+    surface?: ColorValue;
+    onSurface?: ColorValue;
+    surfaceDim?: ColorValue;
+    surfaceBright?: ColorValue;
+    surfaceContainerLowest?: ColorValue;
+    surfaceContainerLow?: ColorValue;
+    surfaceContainer?: ColorValue;
+    surfaceContainerHigh?: ColorValue;
+    surfaceContainerHighest?: ColorValue;
+    onSurfaceVariant?: ColorValue;
+    outline?: ColorValue;
+    outlineVariant?: ColorValue;
+    shadow?: ColorValue;
+    scrim?: ColorValue;
+    inverseSurface?: ColorValue;
+    onInverseSurface?: ColorValue;
+    inversePrimary?: ColorValue;
+    surfaceTint?: ColorValue;
+    background?: ColorValue;
+    onBackground?: ColorValue;
+    surfaceVariant?: ColorValue;
+  }) => ColorScheme;
+};
 
 export interface ColorSwatch {
   readonly __fsxBrand?: { readonly Color: true; readonly ColorSwatch: true };
@@ -4175,7 +4465,7 @@ export interface ColorSwatch {
 
 export declare const ColorSwatch: new (
   primary: number,
-  _swatch: Map<unknown, Color>,
+  _swatch: Map<unknown, ColorValue>,
 ) => ColorSwatch;
 
 export interface ColorTween {
@@ -4190,6 +4480,10 @@ export declare const ColorTween: new (options?: {
   begin?: ColorValue;
   end?: ColorValue;
 }) => ColorTween;
+
+export interface Colors {
+  readonly __fsxBrand?: { readonly Colors: true };
+}
 
 export interface ConstantTween {
   readonly __fsxBrand?: {
@@ -4237,6 +4531,8 @@ export interface ControlsDetails {
   readonly __fsxBrand?: { readonly ControlsDetails: true };
   readonly currentStep: number;
   readonly isActive: boolean;
+  readonly onStepCancel: () => void;
+  readonly onStepContinue: () => void;
   readonly stepIndex: number;
 }
 
@@ -4270,6 +4566,10 @@ export declare const Cubic: new (
   d: number,
 ) => Cubic;
 
+export interface CupertinoColors {
+  readonly __fsxBrand?: { readonly CupertinoColors: true };
+}
+
 export interface CupertinoDesktopTextSelectionControls {
   readonly __fsxBrand?: {
     readonly CupertinoDesktopTextSelectionControls: true;
@@ -4299,8 +4599,17 @@ export interface CupertinoDialogRoute {
   readonly barrierDismissible: boolean;
   readonly barrierLabel: string;
   readonly canPop: boolean;
+  readonly completed: Promise<unknown | null>;
   readonly controller: AnimationController;
+  readonly currentResult: unknown;
   readonly debugLabel: string;
+  readonly delegatedTransition: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    allowSnapshotting: boolean,
+    child: FlutterElement | null,
+  ) => FlutterElement | null;
   readonly directionalTraversalEdgeBehavior: TraversalEdgeBehavior;
   readonly filter: ImageFilter;
   readonly finishedWhenPopped: boolean;
@@ -4318,6 +4627,14 @@ export interface CupertinoDialogRoute {
   readonly overlayEntries: OverlayEntry[];
   readonly popGestureEnabled: boolean;
   readonly popGestureInProgress: boolean;
+  readonly popped: Promise<unknown | null>;
+  readonly receivedTransition: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    allowSnapshotting: boolean,
+    child: FlutterElement | null,
+  ) => FlutterElement | null;
   readonly requestFocus: boolean;
   readonly restorationScopeId: ValueListenable;
   readonly reverseTransitionDuration: DurationValue;
@@ -4325,6 +4642,12 @@ export interface CupertinoDialogRoute {
   readonly semanticsDismissible: boolean;
   readonly settings: RouteSettingsValue;
   readonly subtreeContext: BuildContext;
+  readonly transitionBuilder: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    child: FlutterElement,
+  ) => FlutterElement;
   readonly transitionDuration: DurationValue;
   readonly traversalEdgeBehavior: TraversalEdgeBehavior;
   readonly willDisposeAnimationController: boolean;
@@ -4367,7 +4690,20 @@ export declare const CupertinoDynamicColor: new (options: {
   darkElevatedColor: ColorValue;
   highContrastElevatedColor: ColorValue;
   darkHighContrastElevatedColor: ColorValue;
-}) => CupertinoDynamicColor;
+}) => CupertinoDynamicColor & {
+  readonly withBrightness: (options: {
+    debugLabel?: string;
+    color: ColorValue;
+    darkColor: ColorValue;
+  }) => CupertinoDynamicColor;
+  readonly withBrightnessAndContrast: (options: {
+    debugLabel?: string;
+    color: ColorValue;
+    darkColor: ColorValue;
+    highContrastColor: ColorValue;
+    darkHighContrastColor: ColorValue;
+  }) => CupertinoDynamicColor;
+};
 
 export interface CupertinoIconThemeData {
   readonly __fsxBrand?: {
@@ -4385,9 +4721,13 @@ export declare const CupertinoIconThemeData: new (options?: {
   opticalSize?: number;
   color?: ColorValue;
   opacity?: number;
-  shadows?: Shadow[];
+  shadows?: ShadowValue[];
   applyTextScaling?: boolean;
 }) => CupertinoIconThemeData;
+
+export interface CupertinoIcons {
+  readonly __fsxBrand?: { readonly CupertinoIcons: true };
+}
 
 export interface CupertinoModalPopupRoute {
   readonly __fsxBrand?: {
@@ -4407,9 +4747,19 @@ export interface CupertinoModalPopupRoute {
   readonly barrierCurve: CurveValue;
   readonly barrierDismissible: boolean;
   readonly barrierLabel: string;
+  readonly builder: (context: BuildContext) => FlutterElement;
   readonly canPop: boolean;
+  readonly completed: Promise<unknown | null>;
   readonly controller: AnimationController;
+  readonly currentResult: unknown;
   readonly debugLabel: string;
+  readonly delegatedTransition: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    allowSnapshotting: boolean,
+    child: FlutterElement | null,
+  ) => FlutterElement | null;
   readonly directionalTraversalEdgeBehavior: TraversalEdgeBehavior;
   readonly filter: ImageFilter;
   readonly finishedWhenPopped: boolean;
@@ -4427,6 +4777,14 @@ export interface CupertinoModalPopupRoute {
   readonly overlayEntries: OverlayEntry[];
   readonly popGestureEnabled: boolean;
   readonly popGestureInProgress: boolean;
+  readonly popped: Promise<unknown | null>;
+  readonly receivedTransition: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    allowSnapshotting: boolean,
+    child: FlutterElement | null,
+  ) => FlutterElement | null;
   readonly requestFocus: boolean;
   readonly restorationScopeId: ValueListenable;
   readonly reverseTransitionDuration: DurationValue;
@@ -4461,10 +4819,12 @@ export interface CupertinoPage {
   readonly allowSnapshotting: boolean;
   readonly arguments: ObjectValue;
   readonly canPop: boolean;
+  readonly child: FlutterElement;
   readonly fullscreenDialog: boolean;
   readonly key: LocalKey;
   readonly maintainState: boolean;
   readonly name: string;
+  readonly onPopInvoked: (didPop: boolean, result: unknown | null) => void;
   readonly restorationId: string;
   readonly title: string;
 }
@@ -4501,9 +4861,19 @@ export interface CupertinoPageRoute {
   readonly barrierCurve: CurveValue;
   readonly barrierDismissible: boolean;
   readonly barrierLabel: string;
+  readonly builder: (context: BuildContext) => FlutterElement;
   readonly canPop: boolean;
+  readonly completed: Promise<unknown | null>;
   readonly controller: AnimationController;
+  readonly currentResult: unknown;
   readonly debugLabel: string;
+  readonly delegatedTransition: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    allowSnapshotting: boolean,
+    child: FlutterElement | null,
+  ) => FlutterElement | null;
   readonly directionalTraversalEdgeBehavior: TraversalEdgeBehavior;
   readonly filter: ImageFilter;
   readonly finishedWhenPopped: boolean;
@@ -4521,7 +4891,15 @@ export interface CupertinoPageRoute {
   readonly overlayEntries: OverlayEntry[];
   readonly popGestureEnabled: boolean;
   readonly popGestureInProgress: boolean;
+  readonly popped: Promise<unknown | null>;
   readonly previousTitle: ValueListenable;
+  readonly receivedTransition: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    allowSnapshotting: boolean,
+    child: FlutterElement | null,
+  ) => FlutterElement | null;
   readonly requestFocus: boolean;
   readonly restorationScopeId: ValueListenable;
   readonly reverseTransitionDuration: DurationValue;
@@ -4582,9 +4960,19 @@ export interface CupertinoSheetRoute {
   readonly barrierCurve: CurveValue;
   readonly barrierDismissible: boolean;
   readonly barrierLabel: string;
+  readonly builder: (context: BuildContext) => FlutterElement;
   readonly canPop: boolean;
+  readonly completed: Promise<unknown | null>;
   readonly controller: AnimationController;
+  readonly currentResult: unknown;
   readonly debugLabel: string;
+  readonly delegatedTransition: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    allowSnapshotting: boolean,
+    child: FlutterElement | null,
+  ) => FlutterElement | null;
   readonly directionalTraversalEdgeBehavior: TraversalEdgeBehavior;
   readonly enableDrag: boolean;
   readonly filter: ImageFilter;
@@ -4603,9 +4991,21 @@ export interface CupertinoSheetRoute {
   readonly overlayEntries: OverlayEntry[];
   readonly popGestureEnabled: boolean;
   readonly popGestureInProgress: boolean;
+  readonly popped: Promise<unknown | null>;
+  readonly receivedTransition: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    allowSnapshotting: boolean,
+    child: FlutterElement | null,
+  ) => FlutterElement | null;
   readonly requestFocus: boolean;
   readonly restorationScopeId: ValueListenable;
   readonly reverseTransitionDuration: DurationValue;
+  readonly scrollableBuilder: (
+    context: BuildContext,
+    scrollController: ScrollController,
+  ) => FlutterElement;
   readonly secondaryAnimation: Animation;
   readonly semanticsDismissible: boolean;
   readonly settings: RouteSettingsValue;
@@ -4720,7 +5120,22 @@ export declare const CupertinoThemeData: new (options?: {
   scaffoldBackgroundColor?: ColorValue;
   selectionHandleColor?: ColorValue;
   applyThemeToAll?: boolean;
-}) => CupertinoThemeData;
+}) => CupertinoThemeData & {
+  readonly raw: (
+    brightness: Brightness,
+    primaryColor: ColorValue,
+    primaryContrastingColor: ColorValue,
+    textTheme: CupertinoTextThemeDataValue,
+    barBackgroundColor: ColorValue,
+    scaffoldBackgroundColor: ColorValue,
+    selectionHandleColor: ColorValue,
+    applyThemeToAll: boolean,
+  ) => CupertinoThemeData;
+};
+
+export interface CupertinoThumbPainter {
+  readonly __fsxBrand?: { readonly CupertinoThumbPainter: true };
+}
 
 export interface Curve {
   readonly __fsxBrand?: {
@@ -4766,6 +5181,10 @@ export declare const CurvedAnimation: new (options: {
   reverseCurve?: CurveValue;
 }) => CurvedAnimation;
 
+export interface Curves {
+  readonly __fsxBrand?: { readonly Curves: true };
+}
+
 export interface CustomClipper {
   readonly __fsxBrand?: {
     readonly CustomClipper: true;
@@ -4786,24 +5205,16 @@ export interface CustomSemanticsAction {
 
 export declare const CustomSemanticsAction: new (options: {
   label: string;
-}) => CustomSemanticsAction;
+}) => CustomSemanticsAction & {
+  readonly overridingAction: (options: {
+    hint: string;
+    action: SemanticsAction;
+  }) => CustomSemanticsAction;
+};
 
 export interface DataCell {
   readonly __fsxBrand?: { readonly DataCell: true };
 }
-
-export declare const DataCell: new (
-  child: FlutterElement,
-  options?: {
-    placeholder?: boolean;
-    showEditIcon?: boolean;
-    onTap?: () => void;
-    onLongPress?: () => void;
-    onTapDown?: (details: TapDownDetails) => void;
-    onDoubleTap?: () => void;
-    onTapCancel?: () => void;
-  },
-) => DataCell;
 
 export interface DataColumn {
   readonly __fsxBrand?: { readonly DataColumn: true };
@@ -4832,7 +5243,18 @@ export declare const DataRow: new (options: {
   color?: WidgetStatePropertyValue;
   mouseCursor?: WidgetStatePropertyValue;
   cells: DataCell[];
-}) => DataRow;
+}) => DataRow & {
+  readonly byIndex: (options: {
+    index?: number;
+    selected?: boolean;
+    onSelectChanged?: (value: boolean | null) => void;
+    onLongPress?: () => void;
+    onHover?: (value: boolean) => void;
+    color?: WidgetStatePropertyValue;
+    mouseCursor?: WidgetStatePropertyValue;
+    cells: DataCell[];
+  }) => DataRow;
+};
 
 export interface DataTableSource {
   readonly __fsxBrand?: {
@@ -4972,6 +5394,20 @@ export declare const DecorationTween: new (options?: {
   end?: Decoration;
 }) => DecorationTween;
 
+export interface DefaultCupertinoLocalizations {
+  readonly __fsxBrand?: {
+    readonly CupertinoLocalizations: true;
+    readonly DefaultCupertinoLocalizations: true;
+  };
+}
+
+export interface DefaultMaterialLocalizations {
+  readonly __fsxBrand?: {
+    readonly DefaultMaterialLocalizations: true;
+    readonly MaterialLocalizations: true;
+  };
+}
+
 export interface DefaultSpellCheckService {
   readonly __fsxBrand?: {
     readonly DefaultSpellCheckService: true;
@@ -4989,6 +5425,13 @@ export interface DefaultTransitionDelegate {
 }
 
 export declare const DefaultTransitionDelegate: new () => DefaultTransitionDelegate;
+
+export interface DefaultWidgetsLocalizations {
+  readonly __fsxBrand?: {
+    readonly DefaultWidgetsLocalizations: true;
+    readonly WidgetsLocalizations: true;
+  };
+}
 
 export interface DelayedMultiDragGestureRecognizer {
   readonly __fsxBrand?: {
@@ -5074,7 +5517,9 @@ export interface DeviceGestureSettings {
 
 export declare const DeviceGestureSettings: new (options?: {
   touchSlop?: number;
-}) => DeviceGestureSettings;
+}) => DeviceGestureSettings & {
+  readonly fromView: (view: FlutterView) => DeviceGestureSettings;
+};
 
 export interface DialogRoute {
   readonly __fsxBrand?: {
@@ -5096,8 +5541,17 @@ export interface DialogRoute {
   readonly barrierDismissible: boolean;
   readonly barrierLabel: string;
   readonly canPop: boolean;
+  readonly completed: Promise<unknown | null>;
   readonly controller: AnimationController;
+  readonly currentResult: unknown;
   readonly debugLabel: string;
+  readonly delegatedTransition: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    allowSnapshotting: boolean,
+    child: FlutterElement | null,
+  ) => FlutterElement | null;
   readonly directionalTraversalEdgeBehavior: TraversalEdgeBehavior;
   readonly filter: ImageFilter;
   readonly finishedWhenPopped: boolean;
@@ -5115,6 +5569,14 @@ export interface DialogRoute {
   readonly overlayEntries: OverlayEntry[];
   readonly popGestureEnabled: boolean;
   readonly popGestureInProgress: boolean;
+  readonly popped: Promise<unknown | null>;
+  readonly receivedTransition: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    allowSnapshotting: boolean,
+    child: FlutterElement | null,
+  ) => FlutterElement | null;
   readonly requestFocus: boolean;
   readonly restorationScopeId: ValueListenable;
   readonly reverseTransitionDuration: DurationValue;
@@ -5175,11 +5637,13 @@ export interface DirectionalFocusAction {
     readonly DirectionalFocusAction: true;
   };
   readonly callingAction: Action;
-  readonly intentType: Type;
+  readonly intentType: TypeValue;
   readonly isActionEnabled: boolean;
 }
 
-export declare const DirectionalFocusAction: new () => DirectionalFocusAction;
+export declare const DirectionalFocusAction: new () => DirectionalFocusAction & {
+  readonly forTextField: () => DirectionalFocusAction;
+};
 
 export interface DirectionalFocusIntent {
   readonly __fsxBrand?: {
@@ -5213,7 +5677,7 @@ export interface DismissMenuAction {
   };
   readonly callingAction: Action;
   readonly controller: MenuController;
-  readonly intentType: Type;
+  readonly intentType: TypeValue;
   readonly isActionEnabled: boolean;
 }
 
@@ -5239,12 +5703,6 @@ export declare const DismissUpdateDetails: new (options?: {
 export interface DisplayFeature {
   readonly __fsxBrand?: { readonly DisplayFeature: true };
 }
-
-export declare const DisplayFeature: new (options: {
-  bounds: RectValue;
-  type: DisplayFeatureType;
-  state: DisplayFeatureState;
-}) => DisplayFeature;
 
 export interface DisposableBuildContext {
   readonly __fsxBrand?: { readonly DisposableBuildContext: true };
@@ -5277,7 +5735,7 @@ export interface DoNothingAction {
     readonly DoNothingAction: true;
   };
   readonly callingAction: Action;
-  readonly intentType: Type;
+  readonly intentType: TypeValue;
   readonly isActionEnabled: boolean;
 }
 
@@ -5391,6 +5849,7 @@ export declare const DragStartDetails: new (options?: {
 
 export interface DragTargetDetails {
   readonly __fsxBrand?: { readonly DragTargetDetails: true };
+  readonly data: unknown;
   readonly offset: OffsetValue;
 }
 
@@ -5431,13 +5890,28 @@ export interface Draggable {
     readonly Widget: true;
   };
   readonly affinity: Axis;
+  readonly allowedButtonsFilter: (buttons: number) => boolean;
   readonly axis: Axis;
+  readonly child: FlutterElement;
+  readonly childWhenDragging: FlutterElement;
+  readonly data: unknown;
+  readonly dragAnchorStrategy: (
+    draggable: Draggable,
+    context: BuildContext,
+    position: Offset,
+  ) => Offset;
+  readonly feedback: FlutterElement;
   readonly feedbackOffset: OffsetValue;
   readonly hitTestBehavior: HitTestBehavior;
   readonly ignoringFeedbackPointer: boolean;
   readonly ignoringFeedbackSemantics: boolean;
   readonly key: Key;
   readonly maxSimultaneousDrags: number;
+  readonly onDragCompleted: () => void;
+  readonly onDragEnd: (details: DraggableDetails) => void;
+  readonly onDragStarted: () => void;
+  readonly onDragUpdate: (details: DragUpdateDetails) => void;
+  readonly onDraggableCanceled: (velocity: Velocity, offset: Offset) => void;
   readonly rootOverlay: boolean;
 }
 
@@ -5555,6 +6029,10 @@ export interface Duration {
   readonly __fsxBrand?: { readonly Duration: true };
 }
 
+export interface Durations {
+  readonly __fsxBrand?: { readonly Durations: true };
+}
+
 export interface EagerGestureRecognizer {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -5571,6 +6049,10 @@ export declare const EagerGestureRecognizer: new (options?: {
   supportedDevices?: PointerDeviceKind[];
   allowedButtonsFilter?: (buttons: number) => boolean;
 }) => EagerGestureRecognizer;
+
+export interface Easing {
+  readonly __fsxBrand?: { readonly Easing: true };
+}
 
 export interface EdgeInsets {
   readonly __fsxBrand?: {
@@ -5651,6 +6133,7 @@ export interface EditableTextState {
   readonly spellCheckEnabled: boolean;
   readonly textEditingValue: TextEditingValueValue;
   readonly wantKeepAlive: boolean;
+  readonly widget: unknown;
 }
 
 export declare const EditableTextState: new () => EditableTextState;
@@ -5990,10 +6473,6 @@ export interface FadeForwardsPageTransitionsBuilder {
   };
 }
 
-export declare const FadeForwardsPageTransitionsBuilder: new (options?: {
-  backgroundColor?: ColorValue;
-}) => FadeForwardsPageTransitionsBuilder;
-
 export interface FadeUpwardsPageTransitionsBuilder {
   readonly __fsxBrand?: {
     readonly FadeUpwardsPageTransitionsBuilder: true;
@@ -6040,7 +6519,16 @@ export interface FilteringTextInputFormatter {
 export declare const FilteringTextInputFormatter: new (
   filterPattern: Pattern,
   options: { allow: boolean; replacementString?: string },
-) => FilteringTextInputFormatter;
+) => FilteringTextInputFormatter & {
+  readonly allow: (
+    filterPattern: Pattern,
+    options?: { replacementString?: string },
+  ) => FilteringTextInputFormatter;
+  readonly deny: (
+    filterPattern: Pattern,
+    options?: { replacementString?: string },
+  ) => FilteringTextInputFormatter;
+};
 
 export interface FixedColumnWidth {
   readonly __fsxBrand?: {
@@ -6083,6 +6571,8 @@ export interface FixedExtentScrollController {
   readonly initialScrollOffset: number;
   readonly keepScrollOffset: boolean;
   readonly offset: number;
+  readonly onAttach: (position: ScrollPosition) => void;
+  readonly onDetach: (position: ScrollPosition) => void;
   readonly position: ScrollPosition;
   readonly positions: ScrollPosition[];
   readonly selectedItem: number;
@@ -6154,6 +6644,18 @@ export declare const FlippedTweenSequence: new (
   items: TweenSequenceItem[],
 ) => FlippedTweenSequence;
 
+export interface Float32List {
+  readonly __fsxBrand?: {
+    readonly EfficientLengthIterable: true;
+    readonly Float32List: true;
+    readonly HideEfficientLengthIterable: true;
+    readonly Iterable: true;
+    readonly List: true;
+    readonly TypedData: true;
+    readonly TypedDataList: true;
+  };
+}
+
 export interface Float64List {
   readonly __fsxBrand?: {
     readonly EfficientLengthIterable: true;
@@ -6165,8 +6667,6 @@ export interface Float64List {
     readonly TypedDataList: true;
   };
 }
-
-export declare const Float64List: new (length: number) => Float64List;
 
 export interface FloatingActionButtonAnimator {
   readonly __fsxBrand?: { readonly FloatingActionButtonAnimator: true };
@@ -6215,6 +6715,17 @@ export interface FlowDelegate {
   readonly __fsxBrand?: { readonly FlowDelegate: true };
 }
 
+export interface FlutterError {
+  readonly __fsxBrand?: {
+    readonly AssertionError: true;
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DiagnosticableTreeMixin: true;
+    readonly Error: true;
+    readonly FlutterError: true;
+  };
+}
+
 export interface FlutterLogoDecoration {
   readonly __fsxBrand?: {
     readonly Decoration: true;
@@ -6228,6 +6739,10 @@ export declare const FlutterLogoDecoration: new (options?: {
   style?: FlutterLogoStyle;
   margin?: EdgeInsetsValue;
 }) => FlutterLogoDecoration;
+
+export interface FlutterVersion {
+  readonly __fsxBrand?: { readonly FlutterVersion: true };
+}
 
 export interface FlutterView {
   readonly __fsxBrand?: { readonly FlutterView: true };
@@ -6269,6 +6784,8 @@ export interface FocusNode {
   readonly hasPrimaryFocus: boolean;
   readonly nearestScope: FocusScopeNode;
   readonly offset: OffsetValue;
+  readonly onKey: (node: FocusNode, event: RawKeyEvent) => KeyEventResult;
+  readonly onKeyEvent: (node: FocusNode, event: KeyEvent) => KeyEventResult;
   readonly parent: FocusNode;
   readonly rect: RectValue;
   readonly size: SizeValue;
@@ -6322,6 +6839,8 @@ export interface FocusScopeNode {
   readonly isFirstFocus: boolean;
   readonly nearestScope: FocusScopeNode;
   readonly offset: OffsetValue;
+  readonly onKey: (node: FocusNode, event: RawKeyEvent) => KeyEventResult;
+  readonly onKeyEvent: (node: FocusNode, event: KeyEvent) => KeyEventResult;
   readonly parent: FocusNode;
   readonly rect: RectValue;
   readonly size: SizeValue;
@@ -6355,7 +6874,35 @@ export interface FontFeature {
 export declare const FontFeature: new (
   feature: string,
   value?: number,
-) => FontFeature;
+) => FontFeature & {
+  readonly alternative: (value: number) => FontFeature;
+  readonly alternativeFractions: () => FontFeature;
+  readonly caseSensitiveForms: () => FontFeature;
+  readonly characterVariant: (value: number) => FontFeature;
+  readonly contextualAlternates: () => FontFeature;
+  readonly denominator: () => FontFeature;
+  readonly disable: (feature: string) => FontFeature;
+  readonly enable: (feature: string) => FontFeature;
+  readonly fractions: () => FontFeature;
+  readonly historicalForms: () => FontFeature;
+  readonly historicalLigatures: () => FontFeature;
+  readonly liningFigures: () => FontFeature;
+  readonly localeAware: (options?: { enable?: boolean }) => FontFeature;
+  readonly notationalForms: (value?: number) => FontFeature;
+  readonly numerators: () => FontFeature;
+  readonly oldstyleFigures: () => FontFeature;
+  readonly ordinalForms: () => FontFeature;
+  readonly proportionalFigures: () => FontFeature;
+  readonly randomize: () => FontFeature;
+  readonly scientificInferiors: () => FontFeature;
+  readonly slashedZero: () => FontFeature;
+  readonly stylisticAlternates: () => FontFeature;
+  readonly stylisticSet: (value: number) => FontFeature;
+  readonly subscripts: () => FontFeature;
+  readonly superscripts: () => FontFeature;
+  readonly swash: (value?: number) => FontFeature;
+  readonly tabularFigures: () => FontFeature;
+};
 
 export interface FontVariation {
   readonly __fsxBrand?: { readonly FontVariation: true };
@@ -6364,13 +6911,17 @@ export interface FontVariation {
 export declare const FontVariation: new (
   axis: string,
   value: number,
-) => FontVariation;
+) => FontVariation & {
+  readonly italic: (value: number) => FontVariation;
+  readonly opticalSize: (value: number) => FontVariation;
+  readonly slant: (value: number) => FontVariation;
+  readonly weight: (value: number) => FontVariation;
+  readonly width: (value: number) => FontVariation;
+};
 
 export interface FontWeight {
   readonly __fsxBrand?: { readonly FontWeight: true };
 }
-
-export declare const FontWeight: new (value: number) => FontWeight;
 
 export interface ForcePressDetails {
   readonly __fsxBrand?: {
@@ -6430,6 +6981,8 @@ export interface FormFieldState {
   readonly mounted: boolean;
   readonly restorationId: string;
   readonly restorePending: boolean;
+  readonly value: unknown;
+  readonly widget: unknown;
 }
 
 export declare const FormFieldState: new () => FormFieldState;
@@ -6452,11 +7005,6 @@ export interface FractionalOffset {
     readonly FractionalOffset: true;
   };
 }
-
-export declare const FractionalOffset: new (
-  dx: number,
-  dy: number,
-) => FractionalOffset;
 
 export interface FractionalOffsetTween {
   readonly __fsxBrand?: {
@@ -6481,8 +7029,6 @@ export interface GLFWKeyHelper {
     readonly KeyHelper: true;
   };
 }
-
-export declare const GLFWKeyHelper: new () => GLFWKeyHelper;
 
 export interface GappedRangeSliderTrackShape {
   readonly __fsxBrand?: {
@@ -6541,6 +7087,8 @@ export interface GlobalObjectKey {
     readonly Key: true;
   };
   readonly currentContext: BuildContext;
+  readonly currentState: unknown;
+  readonly currentWidget: FlutterElement;
   readonly value: ObjectValue;
 }
 
@@ -6583,8 +7131,6 @@ export interface GtkKeyHelper {
   };
 }
 
-export declare const GtkKeyHelper: new () => GtkKeyHelper;
-
 export interface HandleRangeSliderThumbShape {
   readonly __fsxBrand?: {
     readonly HandleRangeSliderThumbShape: true;
@@ -6618,15 +7164,13 @@ export interface HitTestResponse {
   readonly __fsxBrand?: { readonly HitTestResponse: true };
 }
 
-export declare const HitTestResponse: new (options: {
-  hasPlatformView: boolean;
-}) => HitTestResponse;
-
 export interface HitTestResult {
   readonly __fsxBrand?: { readonly HitTestResult: true };
 }
 
-export declare const HitTestResult: new () => HitTestResult;
+export declare const HitTestResult: new () => HitTestResult & {
+  readonly wrap: (result: HitTestResult) => HitTestResult;
+};
 
 export interface HorizontalDragGestureRecognizer {
   readonly __fsxBrand?: {
@@ -6715,9 +7259,15 @@ export declare const IconThemeData: new (options?: {
   opticalSize?: number;
   color?: ColorValue;
   opacity?: number;
-  shadows?: Shadow[];
+  shadows?: ShadowValue[];
   applyTextScaling?: boolean;
-}) => IconThemeData;
+}) => IconThemeData & {
+  readonly fallback: () => IconThemeData;
+};
+
+export interface Icons {
+  readonly __fsxBrand?: { readonly Icons: true };
+}
 
 export interface Image {
   readonly __fsxBrand?: {
@@ -6744,15 +7294,6 @@ export declare const ImageChunkEvent: new (options: {
 export interface ImageConfiguration {
   readonly __fsxBrand?: { readonly ImageConfiguration: true };
 }
-
-export declare const ImageConfiguration: new (options?: {
-  bundle?: AssetBundle;
-  devicePixelRatio?: number;
-  locale?: Locale;
-  textDirection?: TextDirection;
-  size?: SizeValue;
-  platform?: TargetPlatform;
-}) => ImageConfiguration;
 
 export interface ImageFilter {
   readonly __fsxBrand?: { readonly ImageFilter: true };
@@ -6814,6 +7355,7 @@ export interface InheritedElement {
   readonly mounted: boolean;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
+  readonly widget: FlutterElement;
 }
 
 export declare const InheritedElement: new (
@@ -6850,6 +7392,7 @@ export interface InheritedModelElement {
   readonly mounted: boolean;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
+  readonly widget: FlutterElement;
 }
 
 export declare const InheritedModelElement: new (
@@ -6866,6 +7409,30 @@ export interface InheritedWidget {
   };
 }
 
+export interface InkRipple {
+  readonly __fsxBrand?: {
+    readonly InkFeature: true;
+    readonly InkRipple: true;
+    readonly InteractiveInkFeature: true;
+  };
+}
+
+export interface InkSparkle {
+  readonly __fsxBrand?: {
+    readonly InkFeature: true;
+    readonly InkSparkle: true;
+    readonly InteractiveInkFeature: true;
+  };
+}
+
+export interface InkSplash {
+  readonly __fsxBrand?: {
+    readonly InkFeature: true;
+    readonly InkSplash: true;
+    readonly InteractiveInkFeature: true;
+  };
+}
+
 export interface InlineSpan {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -6877,17 +7444,6 @@ export interface InlineSpan {
 export interface InlineSpanSemanticsInformation {
   readonly __fsxBrand?: { readonly InlineSpanSemanticsInformation: true };
 }
-
-export declare const InlineSpanSemanticsInformation: new (
-  text: string,
-  options?: {
-    isPlaceholder?: boolean;
-    semanticsLabel?: string;
-    semanticsIdentifier?: string;
-    stringAttributes?: StringAttribute[];
-    recognizer?: GestureRecognizer;
-  },
-) => InlineSpanSemanticsInformation;
 
 export interface InputBorder {
   readonly __fsxBrand?: {
@@ -6959,7 +7515,28 @@ export declare const InputDecoration: new (options?: {
   alignLabelWithHint?: boolean;
   constraints?: BoxConstraintsValue;
   visualDensity?: VisualDensityValue;
-}) => InputDecoration;
+}) => InputDecoration & {
+  readonly collapsed: (options: {
+    hintText: string;
+    floatingLabelBehavior?: FloatingLabelBehavior;
+    floatingLabelAlignment?: FloatingLabelAlignmentValue;
+    hintStyle?: TextStyleValue;
+    hint?: FlutterElement;
+    hintTextDirection?: TextDirection;
+    hintMaxLines?: number;
+    hintFadeDuration?: DurationValue;
+    maintainHintHeight?: boolean;
+    maintainHintSize?: boolean;
+    maintainLabelSize?: boolean;
+    filled?: boolean;
+    fillColor?: ColorValue;
+    focusColor?: ColorValue;
+    hoverColor?: ColorValue;
+    border?: InputBorderValue;
+    enabled?: boolean;
+    constraints?: BoxConstraintsValue;
+  }) => InputDecoration;
+};
 
 export interface InputDecorationThemeData {
   readonly __fsxBrand?: {
@@ -7017,6 +7594,30 @@ export interface InspectorSelection {
 }
 
 export declare const InspectorSelection: new () => InspectorSelection;
+
+export interface Int32List {
+  readonly __fsxBrand?: {
+    readonly EfficientLengthIterable: true;
+    readonly HideEfficientLengthIterable: true;
+    readonly Int32List: true;
+    readonly Iterable: true;
+    readonly List: true;
+    readonly TypedData: true;
+    readonly TypedDataList: true;
+  };
+}
+
+export interface Int64List {
+  readonly __fsxBrand?: {
+    readonly EfficientLengthIterable: true;
+    readonly HideEfficientLengthIterable: true;
+    readonly Int64List: true;
+    readonly Iterable: true;
+    readonly List: true;
+    readonly TypedData: true;
+    readonly TypedDataList: true;
+  };
+}
 
 export interface IntTween {
   readonly __fsxBrand?: {
@@ -7185,7 +7786,11 @@ export declare const KeyboardInsertedContent: new (options: {
   mimeType: string;
   uri: string;
   data?: Uint8List;
-}) => KeyboardInsertedContent;
+}) => KeyboardInsertedContent & {
+  readonly fromJson: (
+    metadata: Record<string, unknown>,
+  ) => KeyboardInsertedContent;
+};
 
 export interface LabeledGlobalKey {
   readonly __fsxBrand?: {
@@ -7194,6 +7799,8 @@ export interface LabeledGlobalKey {
     readonly LabeledGlobalKey: true;
   };
   readonly currentContext: BuildContext;
+  readonly currentState: unknown;
+  readonly currentWidget: FlutterElement;
 }
 
 export declare const LabeledGlobalKey: new (
@@ -7223,6 +7830,7 @@ export interface LeafRenderObjectElement {
   readonly mounted: boolean;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
+  readonly widget: FlutterElement;
 }
 
 export declare const LeafRenderObjectElement: new (
@@ -7264,6 +7872,10 @@ export declare const LexicalFocusOrder: new (
   order: string,
 ) => LexicalFocusOrder;
 
+export interface LicenseParagraph {
+  readonly __fsxBrand?: { readonly LicenseParagraph: true };
+}
+
 export interface LinearBorder {
   readonly __fsxBrand?: {
     readonly LinearBorder: true;
@@ -7271,14 +7883,6 @@ export interface LinearBorder {
     readonly ShapeBorder: true;
   };
 }
-
-export declare const LinearBorder: new (options?: {
-  side?: BorderSideValue;
-  start?: LinearBorderEdge;
-  end?: LinearBorderEdge;
-  top?: LinearBorderEdge;
-  bottom?: LinearBorderEdge;
-}) => LinearBorder;
 
 export interface LinearBorderEdge {
   readonly __fsxBrand?: { readonly LinearBorderEdge: true };
@@ -7299,7 +7903,7 @@ export interface LinearGradient {
 export declare const LinearGradient: new (options: {
   begin?: AlignmentGeometryValue;
   end?: AlignmentGeometryValue;
-  colors: Color[];
+  colors: ColorValue[];
   stops?: number[];
   tileMode?: TileMode;
   transform?: GradientTransform;
@@ -7399,6 +8003,7 @@ export interface ListWheelElement {
   readonly renderObject: RenderListWheelViewport;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
+  readonly widget: FlutterElement;
 }
 
 export declare const ListWheelElement: new (
@@ -7445,7 +8050,13 @@ export interface Locale {
 export declare const Locale: new (
   _languageCode: string,
   _countryCode?: string,
-) => Locale;
+) => Locale & {
+  readonly fromSubtags: (options?: {
+    languageCode?: string;
+    scriptCode?: string;
+    countryCode?: string;
+  }) => Locale;
+};
 
 export interface LocaleStringAttribute {
   readonly __fsxBrand?: {
@@ -7483,7 +8094,7 @@ export declare const LocalizationsResolver: new (options: {
     locale: Locale | null,
     supportedLocales: Locale[],
   ) => Locale | null;
-  localizationsDelegates?: LocalizationsDelegate[];
+  localizationsDelegates?: LocalizationsDelegateValue[];
 }) => LocalizationsResolver;
 
 export interface LogicalKeySet {
@@ -7500,7 +8111,9 @@ export declare const LogicalKeySet: new (
   key2?: LogicalKeyboardKey,
   key3?: LogicalKeyboardKey,
   key4?: LogicalKeyboardKey,
-) => LogicalKeySet;
+) => LogicalKeySet & {
+  readonly fromSet: (keys: LogicalKeyboardKey[]) => LogicalKeySet;
+};
 
 export interface LogicalKeyboardKey {
   readonly __fsxBrand?: {
@@ -7509,10 +8122,6 @@ export interface LogicalKeyboardKey {
     readonly LogicalKeyboardKey: true;
   };
 }
-
-export declare const LogicalKeyboardKey: new (
-  keyId: number,
-) => LogicalKeyboardKey;
 
 export interface LongPressDownDetails {
   readonly __fsxBrand?: {
@@ -7617,20 +8226,13 @@ export interface MagnifierDecoration {
 
 export declare const MagnifierDecoration: new (options?: {
   opacity?: number;
-  shadows?: BoxShadow[];
+  shadows?: BoxShadowValue[];
   shape?: ShapeBorderValue;
 }) => MagnifierDecoration;
 
 export interface MagnifierInfo {
   readonly __fsxBrand?: { readonly MagnifierInfo: true };
 }
-
-export declare const MagnifierInfo: new (options: {
-  globalGesturePosition: OffsetValue;
-  caretRect: RectValue;
-  fieldBounds: RectValue;
-  currentLineBoundaries: RectValue;
-}) => MagnifierInfo;
 
 export interface MaterialAccentColor {
   readonly __fsxBrand?: {
@@ -7642,7 +8244,7 @@ export interface MaterialAccentColor {
 
 export declare const MaterialAccentColor: new (
   primary: number,
-  swatch: Record<number, Color>,
+  swatch: Record<number, ColorValue>,
 ) => MaterialAccentColor;
 
 export interface MaterialBannerThemeData {
@@ -7686,7 +8288,7 @@ export interface MaterialColor {
 
 export declare const MaterialColor: new (
   primary: number,
-  swatch: Record<number, Color>,
+  swatch: Record<number, ColorValue>,
 ) => MaterialColor;
 
 export interface MaterialGap {
@@ -7701,6 +8303,10 @@ export declare const MaterialGap: new (options: {
   size?: number;
 }) => MaterialGap;
 
+export interface MaterialInkController {
+  readonly __fsxBrand?: { readonly MaterialInkController: true };
+}
+
 export interface MaterialPage {
   readonly __fsxBrand?: {
     readonly MaterialPage: true;
@@ -7710,10 +8316,12 @@ export interface MaterialPage {
   readonly allowSnapshotting: boolean;
   readonly arguments: ObjectValue;
   readonly canPop: boolean;
+  readonly child: FlutterElement;
   readonly fullscreenDialog: boolean;
   readonly key: LocalKey;
   readonly maintainState: boolean;
   readonly name: string;
+  readonly onPopInvoked: (didPop: boolean, result: unknown | null) => void;
   readonly restorationId: string;
 }
 
@@ -7748,9 +8356,19 @@ export interface MaterialPageRoute {
   readonly barrierCurve: CurveValue;
   readonly barrierDismissible: boolean;
   readonly barrierLabel: string;
+  readonly builder: (context: BuildContext) => FlutterElement;
   readonly canPop: boolean;
+  readonly completed: Promise<unknown | null>;
   readonly controller: AnimationController;
+  readonly currentResult: unknown;
   readonly debugLabel: string;
+  readonly delegatedTransition: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    allowSnapshotting: boolean,
+    child: FlutterElement | null,
+  ) => FlutterElement | null;
   readonly directionalTraversalEdgeBehavior: TraversalEdgeBehavior;
   readonly filter: ImageFilter;
   readonly finishedWhenPopped: boolean;
@@ -7768,6 +8386,14 @@ export interface MaterialPageRoute {
   readonly overlayEntries: OverlayEntry[];
   readonly popGestureEnabled: boolean;
   readonly popGestureInProgress: boolean;
+  readonly popped: Promise<unknown | null>;
+  readonly receivedTransition: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    allowSnapshotting: boolean,
+    child: FlutterElement | null,
+  ) => FlutterElement | null;
   readonly requestFocus: boolean;
   readonly restorationScopeId: ValueListenable;
   readonly reverseTransitionDuration: DurationValue;
@@ -7897,7 +8523,22 @@ export declare const Matrix4: new (
   arg13: number,
   arg14: number,
   arg15: number,
-) => Matrix4;
+) => Matrix4 & {
+  readonly copy: (other: Matrix4) => Matrix4;
+  readonly diagonal3Values: (x: number, y: number, z: number) => Matrix4;
+  readonly fromFloat64List: (_m4storage: Float64List) => Matrix4;
+  readonly fromList: (values: number[]) => Matrix4;
+  readonly identity: () => Matrix4;
+  readonly inverted: (other: Matrix4) => Matrix4;
+  readonly rotationX: (radians: number) => Matrix4;
+  readonly rotationY: (radians: number) => Matrix4;
+  readonly rotationZ: (radians: number) => Matrix4;
+  readonly skew: (alpha: number, beta: number) => Matrix4;
+  readonly skewX: (alpha: number) => Matrix4;
+  readonly skewY: (beta: number) => Matrix4;
+  readonly translationValues: (x: number, y: number, z: number) => Matrix4;
+  readonly zero: () => Matrix4;
+};
 
 export interface Matrix4Tween {
   readonly __fsxBrand?: {
@@ -7955,7 +8596,13 @@ export declare const MediaQueryData: new (options?: {
   wordSpacingOverride?: number;
   paragraphSpacingOverride?: number;
   displayCornerRadii?: BorderRadiusValue;
-}) => MediaQueryData;
+}) => MediaQueryData & {
+  readonly fromView: (
+    view: FlutterView,
+    options?: { platformData?: MediaQueryDataValue },
+  ) => MediaQueryData;
+  readonly fromWindow: (window: FlutterView) => MediaQueryData;
+};
 
 export interface MemoryImage {
   readonly __fsxBrand?: {
@@ -8095,12 +8742,22 @@ export interface ModalBottomSheetRoute {
   readonly barrierDismissible: boolean;
   readonly barrierLabel: string;
   readonly barrierOnTapHint: string;
+  readonly builder: (context: BuildContext) => FlutterElement;
   readonly canPop: boolean;
   readonly capturedThemes: CapturedThemes;
   readonly clipBehavior: Clip;
+  readonly completed: Promise<unknown | null>;
   readonly constraints: BoxConstraintsValue;
   readonly controller: AnimationController;
+  readonly currentResult: unknown;
   readonly debugLabel: string;
+  readonly delegatedTransition: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    allowSnapshotting: boolean,
+    child: FlutterElement | null,
+  ) => FlutterElement | null;
   readonly directionalTraversalEdgeBehavior: TraversalEdgeBehavior;
   readonly elevation: number;
   readonly enableDrag: boolean;
@@ -8123,6 +8780,14 @@ export interface ModalBottomSheetRoute {
   readonly overlayEntries: OverlayEntry[];
   readonly popGestureEnabled: boolean;
   readonly popGestureInProgress: boolean;
+  readonly popped: Promise<unknown | null>;
+  readonly receivedTransition: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    allowSnapshotting: boolean,
+    child: FlutterElement | null,
+  ) => FlutterElement | null;
   readonly requestFocus: boolean;
   readonly restorationScopeId: ValueListenable;
   readonly reverseTransitionDuration: DurationValue;
@@ -8206,6 +8871,7 @@ export interface MultiChildRenderObjectElement {
   readonly mounted: boolean;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
+  readonly widget: FlutterElement;
 }
 
 export declare const MultiChildRenderObjectElement: new (
@@ -8355,6 +9021,7 @@ export interface NavigatorState {
   readonly restorePending: boolean;
   readonly userGestureInProgress: boolean;
   readonly userGestureInProgressNotifier: ValueNotifier;
+  readonly widget: unknown;
 }
 
 export declare const NavigatorState: new () => NavigatorState;
@@ -8388,7 +9055,7 @@ export interface NextFocusAction {
     readonly NextFocusAction: true;
   };
   readonly callingAction: Action;
-  readonly intentType: Type;
+  readonly intentType: TypeValue;
   readonly isActionEnabled: boolean;
 }
 
@@ -8418,6 +9085,14 @@ export declare const NoDefaultCupertinoThemeData: new (options?: {
   selectionHandleColor?: ColorValue;
   applyThemeToAll?: boolean;
 }) => NoDefaultCupertinoThemeData;
+
+export interface NoSplash {
+  readonly __fsxBrand?: {
+    readonly InkFeature: true;
+    readonly InteractiveInkFeature: true;
+    readonly NoSplash: true;
+  };
+}
 
 export interface NotchedShape {
   readonly __fsxBrand?: { readonly NotchedShape: true };
@@ -8472,16 +9147,9 @@ export interface Offset {
   readonly isInfinite: boolean;
 }
 
-export declare const Offset: new (dx: number, dy: number) => Offset;
-
 export interface OffsetPair {
   readonly __fsxBrand?: { readonly OffsetPair: true };
 }
-
-export declare const OffsetPair: new (options: {
-  local: OffsetValue;
-  global: OffsetValue;
-}) => OffsetPair;
 
 export interface OpenUpwardsPageTransitionsBuilder {
   readonly __fsxBrand?: {
@@ -8680,6 +9348,8 @@ export interface PageController {
   readonly keepPage: boolean;
   readonly keepScrollOffset: boolean;
   readonly offset: number;
+  readonly onAttach: (position: ScrollPosition) => void;
+  readonly onDetach: (position: ScrollPosition) => void;
   readonly page: number;
   readonly position: ScrollPosition;
   readonly positions: ScrollPosition[];
@@ -8742,8 +9412,17 @@ export interface PageRouteBuilder {
   readonly barrierDismissible: boolean;
   readonly barrierLabel: string;
   readonly canPop: boolean;
+  readonly completed: Promise<unknown | null>;
   readonly controller: AnimationController;
+  readonly currentResult: unknown;
   readonly debugLabel: string;
+  readonly delegatedTransition: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    allowSnapshotting: boolean,
+    child: FlutterElement | null,
+  ) => FlutterElement | null;
   readonly directionalTraversalEdgeBehavior: TraversalEdgeBehavior;
   readonly filter: ImageFilter;
   readonly finishedWhenPopped: boolean;
@@ -8759,8 +9438,21 @@ export interface PageRouteBuilder {
   readonly offstage: boolean;
   readonly opaque: boolean;
   readonly overlayEntries: OverlayEntry[];
+  readonly pageBuilder: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+  ) => FlutterElement;
   readonly popGestureEnabled: boolean;
   readonly popGestureInProgress: boolean;
+  readonly popped: Promise<unknown | null>;
+  readonly receivedTransition: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    allowSnapshotting: boolean,
+    child: FlutterElement | null,
+  ) => FlutterElement | null;
   readonly requestFocus: boolean;
   readonly restorationScopeId: ValueListenable;
   readonly reverseTransitionDuration: DurationValue;
@@ -8769,6 +9461,12 @@ export interface PageRouteBuilder {
   readonly settings: RouteSettingsValue;
   readonly subtreeContext: BuildContext;
   readonly transitionDuration: DurationValue;
+  readonly transitionsBuilder: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    child: FlutterElement,
+  ) => FlutterElement;
   readonly traversalEdgeBehavior: TraversalEdgeBehavior;
   readonly willDisposeAnimationController: boolean;
   readonly willHandlePopInternally: boolean;
@@ -8823,6 +9521,7 @@ export interface PageStorageKey {
     readonly PageStorageKey: true;
     readonly ValueKey: true;
   };
+  readonly value: unknown;
 }
 
 export declare const PageStorageKey: new (value: unknown) => PageStorageKey;
@@ -8846,7 +9545,9 @@ export interface Paint {
   readonly __fsxBrand?: { readonly Paint: true };
 }
 
-export declare const Paint: new () => Paint;
+export declare const Paint: new () => Paint & {
+  readonly from: (other: Paint) => Paint;
+};
 
 export interface PanGestureRecognizer {
   readonly __fsxBrand?: {
@@ -8880,12 +9581,13 @@ export interface ParentDataElement {
   readonly debugDoingBuild: boolean;
   readonly debugIsActive: boolean;
   readonly debugIsDefunct: boolean;
-  readonly debugParentDataType: Type;
+  readonly debugParentDataType: TypeValue;
   readonly depth: number;
   readonly dirty: boolean;
   readonly mounted: boolean;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
+  readonly widget: FlutterElement;
 }
 
 export declare const ParentDataElement: new (
@@ -8905,12 +9607,6 @@ export interface ParentDataWidget {
 export interface PartialStackFrame {
   readonly __fsxBrand?: { readonly PartialStackFrame: true };
 }
-
-export declare const PartialStackFrame: new (options: {
-  package: Pattern;
-  className: string;
-  method: string;
-}) => PartialStackFrame;
 
 export interface PasteTextIntent {
   readonly __fsxBrand?: {
@@ -8936,10 +9632,6 @@ export interface PhysicalKeyboardKey {
   };
 }
 
-export declare const PhysicalKeyboardKey: new (
-  usbHidUsage: number,
-) => PhysicalKeyboardKey;
-
 export interface PipelineOwner {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -8960,12 +9652,14 @@ export interface PlaceholderDimensions {
   readonly __fsxBrand?: { readonly PlaceholderDimensions: true };
 }
 
-export declare const PlaceholderDimensions: new (options: {
-  size: SizeValue;
-  alignment: PlaceholderAlignment;
-  baseline?: TextBaseline;
-  baselineOffset?: number;
-}) => PlaceholderDimensions;
+export interface PlaceholderSpan {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly InlineSpan: true;
+    readonly PlaceholderSpan: true;
+  };
+}
 
 export interface PlaceholderSpanIndexSemanticsTag {
   readonly __fsxBrand?: {
@@ -9068,6 +9762,8 @@ export interface PlatformViewController {
 export interface PlatformViewCreationParams {
   readonly __fsxBrand?: { readonly PlatformViewCreationParams: true };
   readonly id: number;
+  readonly onFocusChanged: (value: boolean) => void;
+  readonly onPlatformViewCreated: (id: number) => void;
   readonly viewType: string;
 }
 
@@ -9898,7 +10594,7 @@ export interface PreviousFocusAction {
     readonly PreviousFocusAction: true;
   };
   readonly callingAction: Action;
-  readonly intentType: Type;
+  readonly intentType: TypeValue;
   readonly isActionEnabled: boolean;
 }
 
@@ -9922,7 +10618,7 @@ export interface PrioritizedAction {
     readonly PrioritizedAction: true;
   };
   readonly callingAction: Action;
-  readonly intentType: Type;
+  readonly intentType: TypeValue;
   readonly isActionEnabled: boolean;
 }
 
@@ -9937,7 +10633,7 @@ export interface PrioritizedIntents {
 }
 
 export declare const PrioritizedIntents: new (options: {
-  orderedIntents: Intent[];
+  orderedIntents: IntentValue[];
 }) => PrioritizedIntents;
 
 export interface Priority {
@@ -10012,7 +10708,7 @@ export interface RadialGradient {
 export declare const RadialGradient: new (options: {
   center?: AlignmentGeometryValue;
   radius?: number;
-  colors: Color[];
+  colors: ColorValue[];
   stops?: number[];
   tileMode?: TileMode;
   focal?: AlignmentGeometryValue;
@@ -10113,8 +10809,17 @@ export interface RawDialogRoute {
   readonly barrierDismissible: boolean;
   readonly barrierLabel: string;
   readonly canPop: boolean;
+  readonly completed: Promise<unknown | null>;
   readonly controller: AnimationController;
+  readonly currentResult: unknown;
   readonly debugLabel: string;
+  readonly delegatedTransition: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    allowSnapshotting: boolean,
+    child: FlutterElement | null,
+  ) => FlutterElement | null;
   readonly directionalTraversalEdgeBehavior: TraversalEdgeBehavior;
   readonly filter: ImageFilter;
   readonly finishedWhenPopped: boolean;
@@ -10132,6 +10837,14 @@ export interface RawDialogRoute {
   readonly overlayEntries: OverlayEntry[];
   readonly popGestureEnabled: boolean;
   readonly popGestureInProgress: boolean;
+  readonly popped: Promise<unknown | null>;
+  readonly receivedTransition: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    allowSnapshotting: boolean,
+    child: FlutterElement | null,
+  ) => FlutterElement | null;
   readonly requestFocus: boolean;
   readonly restorationScopeId: ValueListenable;
   readonly reverseTransitionDuration: DurationValue;
@@ -10214,20 +10927,6 @@ export interface RawKeyEventDataAndroid {
   };
 }
 
-export declare const RawKeyEventDataAndroid: new (options?: {
-  flags?: number;
-  codePoint?: number;
-  plainCodePoint?: number;
-  keyCode?: number;
-  scanCode?: number;
-  metaState?: number;
-  eventSource?: number;
-  vendorId?: number;
-  productId?: number;
-  deviceId?: number;
-  repeatCount?: number;
-}) => RawKeyEventDataAndroid;
-
 export interface RawKeyEventDataFuchsia {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -10236,12 +10935,6 @@ export interface RawKeyEventDataFuchsia {
   };
 }
 
-export declare const RawKeyEventDataFuchsia: new (options?: {
-  hidUsage?: number;
-  codePoint?: number;
-  modifiers?: number;
-}) => RawKeyEventDataFuchsia;
-
 export interface RawKeyEventDataIos {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -10249,13 +10942,6 @@ export interface RawKeyEventDataIos {
     readonly RawKeyEventDataIos: true;
   };
 }
-
-export declare const RawKeyEventDataIos: new (options?: {
-  characters?: string;
-  charactersIgnoringModifiers?: string;
-  keyCode?: number;
-  modifiers?: number;
-}) => RawKeyEventDataIos;
 
 export interface RawKeyEventDataLinux {
   readonly __fsxBrand?: {
@@ -10283,14 +10969,6 @@ export interface RawKeyEventDataMacOs {
   };
 }
 
-export declare const RawKeyEventDataMacOs: new (options?: {
-  characters?: string;
-  charactersIgnoringModifiers?: string;
-  keyCode?: number;
-  modifiers?: number;
-  specifiedLogicalKey?: number;
-}) => RawKeyEventDataMacOs;
-
 export interface RawKeyEventDataWeb {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -10299,14 +10977,6 @@ export interface RawKeyEventDataWeb {
   };
 }
 
-export declare const RawKeyEventDataWeb: new (options: {
-  code: string;
-  key: string;
-  location?: number;
-  metaState?: number;
-  keyCode?: number;
-}) => RawKeyEventDataWeb;
-
 export interface RawKeyEventDataWindows {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -10314,13 +10984,6 @@ export interface RawKeyEventDataWindows {
     readonly RawKeyEventDataWindows: true;
   };
 }
-
-export declare const RawKeyEventDataWindows: new (options?: {
-  keyCode?: number;
-  scanCode?: number;
-  characterCodePoint?: number;
-  modifiers?: number;
-}) => RawKeyEventDataWindows;
 
 export interface RawKeyUpEvent {
   readonly __fsxBrand?: {
@@ -10540,6 +11203,17 @@ export declare const RenderAbsorbPointer: new (options?: {
   absorbing?: boolean;
   ignoringSemantics?: boolean;
 }) => RenderAbsorbPointer;
+
+export interface RenderAbstractViewport {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DiagnosticableTreeMixin: true;
+    readonly HitTestTarget: true;
+    readonly RenderAbstractViewport: true;
+    readonly RenderObject: true;
+  };
+}
 
 export interface RenderAndroidView {
   readonly __fsxBrand?: {
@@ -11503,22 +12177,6 @@ export interface RenderListWheelViewport {
   };
 }
 
-export declare const RenderListWheelViewport: new (options: {
-  childManager: ListWheelChildManager;
-  offset: ViewportOffset;
-  diameterRatio?: number;
-  perspective?: number;
-  offAxisFraction?: number;
-  useMagnifier?: boolean;
-  magnification?: number;
-  overAndUnderCenterOpacity?: number;
-  itemExtent: number;
-  squeeze?: number;
-  renderChildrenOutsideViewport?: boolean;
-  clipBehavior?: Clip;
-  children?: RenderBox[];
-}) => RenderListWheelViewport;
-
 export interface RenderMergeSemantics {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -11645,6 +12303,7 @@ export interface RenderObjectToWidgetElement {
   readonly renderObject: RenderObjectWithChildMixin;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
+  readonly widget: FlutterElement;
 }
 
 export declare const RenderObjectToWidgetElement: new (
@@ -12663,20 +13322,6 @@ export interface RenderViewport {
   };
 }
 
-export declare const RenderViewport: new (options: {
-  axisDirection?: AxisDirection;
-  crossAxisDirection: AxisDirection;
-  offset: ViewportOffset;
-  anchor?: number;
-  children?: RenderSliver[];
-  center?: RenderSliver;
-  cacheExtent?: number;
-  cacheExtentStyle?: CacheExtentStyle;
-  scrollCacheExtent?: ScrollCacheExtent;
-  paintOrder?: SliverPaintOrder;
-  clipBehavior?: Clip;
-}) => RenderViewport;
-
 export interface RenderWrap {
   readonly __fsxBrand?: {
     readonly ContainerRenderObjectMixin: true;
@@ -12726,7 +13371,7 @@ export interface RequestFocusAction {
     readonly RequestFocusAction: true;
   };
   readonly callingAction: Action;
-  readonly intentType: Type;
+  readonly intentType: TypeValue;
   readonly isActionEnabled: boolean;
 }
 
@@ -13013,7 +13658,11 @@ export interface RestorableTextEditingController {
 
 export declare const RestorableTextEditingController: new (options?: {
   text?: string;
-}) => RestorableTextEditingController;
+}) => RestorableTextEditingController & {
+  readonly fromValue: (
+    value: TextEditingValueValue,
+  ) => RestorableTextEditingController;
+};
 
 export interface RestorableTimeOfDay {
   readonly __fsxBrand?: {
@@ -13032,6 +13681,22 @@ export declare const RestorableTimeOfDay: new (
 export interface RestorationBucket {
   readonly __fsxBrand?: { readonly RestorationBucket: true };
 }
+
+export declare const RestorationBucket: {
+  readonly child: (options: {
+    restorationId: string;
+    parent: RestorationBucket;
+    debugOwner: ObjectValue;
+  }) => RestorationBucket;
+  readonly empty: (options: {
+    restorationId: string;
+    debugOwner: ObjectValue;
+  }) => RestorationBucket;
+  readonly root: (options: {
+    manager: RestorationManager;
+    rawData: Map<ObjectValue | null, ObjectValue | null>;
+  }) => RestorationBucket;
+};
 
 export interface RestorationManager {
   readonly __fsxBrand?: {
@@ -13103,6 +13768,7 @@ export interface RootElement {
   readonly mounted: boolean;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
+  readonly widget: FlutterElement;
 }
 
 export declare const RootElement: new (widget: RootWidget) => RootElement;
@@ -13423,11 +14089,15 @@ export interface ScrollAction {
     readonly ScrollAction: true;
   };
   readonly callingAction: Action;
-  readonly intentType: Type;
+  readonly intentType: TypeValue;
   readonly isActionEnabled: boolean;
 }
 
 export declare const ScrollAction: new () => ScrollAction;
+
+export interface ScrollActivityDelegate {
+  readonly __fsxBrand?: { readonly ScrollActivityDelegate: true };
+}
 
 export interface ScrollAwareImageProvider {
   readonly __fsxBrand?: {
@@ -13467,6 +14137,8 @@ export interface ScrollController {
   readonly initialScrollOffset: number;
   readonly keepScrollOffset: boolean;
   readonly offset: number;
+  readonly onAttach: (position: ScrollPosition) => void;
+  readonly onDetach: (position: ScrollPosition) => void;
   readonly position: ScrollPosition;
   readonly positions: ScrollPosition[];
 }
@@ -13478,6 +14150,13 @@ export declare const ScrollController: new (options?: {
   onAttach?: (position: ScrollPosition) => void;
   onDetach?: (position: ScrollPosition) => void;
 }) => ScrollController;
+
+export interface ScrollDragController {
+  readonly __fsxBrand?: {
+    readonly Drag: true;
+    readonly ScrollDragController: true;
+  };
+}
 
 export interface ScrollEndNotification {
   readonly __fsxBrand?: {
@@ -13667,7 +14346,20 @@ export declare const ScrollableDetails: new (options: {
   physics?: ScrollPhysicsValue;
   clipBehavior?: Clip;
   decorationClipBehavior?: Clip;
-}) => ScrollableDetails;
+}) => ScrollableDetails & {
+  readonly horizontal: (options?: {
+    reverse?: boolean;
+    controller?: ScrollController;
+    physics?: ScrollPhysicsValue;
+    decorationClipBehavior?: Clip;
+  }) => ScrollableDetails;
+  readonly vertical: (options?: {
+    reverse?: boolean;
+    controller?: ScrollController;
+    physics?: ScrollPhysicsValue;
+    decorationClipBehavior?: Clip;
+  }) => ScrollableDetails;
+};
 
 export interface ScrollableState {
   readonly __fsxBrand?: {
@@ -13768,6 +14460,7 @@ export interface SearchController {
   readonly isOpen: boolean;
   readonly selection: TextSelection;
   readonly text: string;
+  readonly value: unknown;
 }
 
 export declare const SearchController: new () => SearchController;
@@ -13849,9 +14542,12 @@ export interface SelectableRegionState {
   readonly pasteEnabled: boolean;
   readonly searchWebEnabled: boolean;
   readonly selectAllEnabled: boolean;
+  readonly selectionEndpoints: TextSelectionPoint[];
+  readonly selectionOverlay: SelectionOverlay;
   readonly shareEnabled: boolean;
   readonly startGlyphHeight: number;
   readonly textEditingValue: TextEditingValueValue;
+  readonly widget: unknown;
 }
 
 export declare const SelectableRegionState: new () => SelectableRegionState;
@@ -13886,6 +14582,10 @@ export interface SelectionListenerNotifier {
 }
 
 export declare const SelectionListenerNotifier: new () => SelectionListenerNotifier;
+
+export interface SelectionOverlay {
+  readonly __fsxBrand?: { readonly SelectionOverlay: true };
+}
 
 export interface SelectionRegistrar {
   readonly __fsxBrand?: { readonly SelectionRegistrar: true };
@@ -14108,9 +14808,11 @@ export declare const ShapeDecoration: new (options: {
   color?: ColorValue;
   image?: DecorationImage;
   gradient?: Gradient;
-  shadows?: BoxShadow[];
+  shadows?: BoxShadowValue[];
   shape: ShapeBorderValue;
-}) => ShapeDecoration;
+}) => ShapeDecoration & {
+  readonly fromBoxDecoration: (source: BoxDecorationValue) => ShapeDecoration;
+};
 
 export interface ShapedInputBorder {
   readonly __fsxBrand?: {
@@ -14140,7 +14842,7 @@ export interface ShortcutManager {
 }
 
 export declare const ShortcutManager: new (options?: {
-  shortcuts?: Map<ShortcutActivator, Intent>;
+  shortcuts?: Map<ShortcutActivator, IntentValue>;
   modal?: boolean;
 }) => ShortcutManager;
 
@@ -14196,6 +14898,7 @@ export interface SingleChildRenderObjectElement {
   readonly mounted: boolean;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
+  readonly widget: FlutterElement;
 }
 
 export declare const SingleChildRenderObjectElement: new (
@@ -14224,8 +14927,6 @@ export interface Size {
   readonly shortestSide: number;
   readonly width: number;
 }
-
-export declare const Size: new (width: number, height: number) => Size;
 
 export interface SizeTween {
   readonly __fsxBrand?: {
@@ -14295,7 +14996,14 @@ export declare const SliderThemeData: new (options?: {
   thumbSize?: WidgetStatePropertyValue;
   trackGap?: number;
   year2023?: boolean;
-}) => SliderThemeData;
+}) => SliderThemeData & {
+  readonly fromPrimaryColors: (options: {
+    primaryColor: ColorValue;
+    primaryColorDark: ColorValue;
+    primaryColorLight: ColorValue;
+    valueIndicatorTextStyle: TextStyleValue;
+  }) => SliderThemeData;
+};
 
 export interface SliderTickMarkShape {
   readonly __fsxBrand?: { readonly SliderTickMarkShape: true };
@@ -14375,7 +15083,21 @@ export declare const SliverChildListDelegate: new (
     ) => number | null;
     semanticIndexOffset?: number;
   },
-) => SliverChildListDelegate;
+) => SliverChildListDelegate & {
+  readonly fixed: (
+    children: FlutterElement[],
+    options?: {
+      addAutomaticKeepAlives?: boolean;
+      addRepaintBoundaries?: boolean;
+      addSemanticIndexes?: boolean;
+      semanticIndexCallback?: (
+        widget: FlutterElement,
+        localIndex: number,
+      ) => number | null;
+      semanticIndexOffset?: number;
+    },
+  ) => SliverChildListDelegate;
+};
 
 export interface SliverConstraints {
   readonly __fsxBrand?: {
@@ -14422,21 +15144,6 @@ export interface SliverGeometry {
   };
 }
 
-export declare const SliverGeometry: new (options?: {
-  scrollExtent?: number;
-  paintExtent?: number;
-  paintOrigin?: number;
-  layoutExtent?: number;
-  maxPaintExtent?: number;
-  maxScrollObstructionExtent?: number;
-  crossAxisExtent?: number;
-  hitTestExtent?: number;
-  visible?: boolean;
-  hasVisualOverflow?: boolean;
-  scrollOffsetCorrection?: number;
-  cacheExtent?: number;
-}) => SliverGeometry;
-
 export interface SliverGridDelegate {
   readonly __fsxBrand?: { readonly SliverGridDelegate: true };
 }
@@ -14478,7 +15185,9 @@ export interface SliverHitTestResult {
   };
 }
 
-export declare const SliverHitTestResult: new () => SliverHitTestResult;
+export declare const SliverHitTestResult: new () => SliverHitTestResult & {
+  readonly wrap: (result: HitTestResult) => SliverHitTestResult;
+};
 
 export interface SliverLayoutDimensions {
   readonly __fsxBrand?: { readonly SliverLayoutDimensions: true };
@@ -14515,6 +15224,7 @@ export interface SliverMultiBoxAdaptorElement {
   readonly mounted: boolean;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
+  readonly widget: FlutterElement;
 }
 
 export declare const SliverMultiBoxAdaptorElement: new (
@@ -14586,6 +15296,7 @@ export interface SlottedRenderObjectElement {
   readonly mounted: boolean;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
+  readonly widget: FlutterElement;
 }
 
 export declare const SlottedRenderObjectElement: new (
@@ -14659,7 +15370,9 @@ export declare const SpellCheckConfiguration: new (options?: {
     context: BuildContext,
     editableTextState: EditableTextState,
   ) => FlutterElement;
-}) => SpellCheckConfiguration;
+}) => SpellCheckConfiguration & {
+  readonly disabled: () => SpellCheckConfiguration;
+};
 
 export interface SpellCheckService {
   readonly __fsxBrand?: { readonly SpellCheckService: true };
@@ -14700,22 +15413,29 @@ export declare const Split: new (
   options?: { beginCurve?: CurveValue; endCurve?: CurveValue },
 ) => Split;
 
+export interface SpringDescription {
+  readonly __fsxBrand?: { readonly SpringDescription: true };
+}
+
+export declare const SpringDescription: new (options: {
+  mass: number;
+  stiffness: number;
+  damping: number;
+}) => SpringDescription & {
+  readonly withDampingRatio: (options: {
+    mass: number;
+    stiffness: number;
+    ratio?: number;
+  }) => SpringDescription;
+  readonly withDurationAndBounce: (options?: {
+    duration?: DurationValue;
+    bounce?: number;
+  }) => SpringDescription;
+};
+
 export interface StackFrame {
   readonly __fsxBrand?: { readonly StackFrame: true };
 }
-
-export declare const StackFrame: new (options: {
-  number: number;
-  column: number;
-  line: number;
-  packageScheme: string;
-  package: string;
-  packagePath: string;
-  className?: string;
-  method: string;
-  isConstructor?: boolean;
-  source: string;
-}) => StackFrame;
 
 export interface StackTrace {
   readonly __fsxBrand?: { readonly StackTrace: true };
@@ -14769,7 +15489,15 @@ export declare const StarBorder: new (options?: {
   valleyRounding?: number;
   rotation?: number;
   squash?: number;
-}) => StarBorder;
+}) => StarBorder & {
+  readonly polygon: (options?: {
+    side?: BorderSideValue;
+    sides?: number;
+    pointRounding?: number;
+    rotation?: number;
+    squash?: number;
+  }) => StarBorder;
+};
 
 export interface StatefulElement {
   readonly __fsxBrand?: {
@@ -14788,6 +15516,7 @@ export interface StatefulElement {
   readonly mounted: boolean;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
+  readonly widget: FlutterElement;
 }
 
 export declare const StatefulElement: new (
@@ -14820,6 +15549,7 @@ export interface StatelessElement {
   readonly mounted: boolean;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
+  readonly widget: FlutterElement;
 }
 
 export declare const StatelessElement: new (
@@ -14915,20 +15645,6 @@ export interface StrutStyle {
   };
 }
 
-export declare const StrutStyle: new (options?: {
-  fontFamily?: string;
-  fontFamilyFallback?: string[];
-  fontSize?: number;
-  height?: number;
-  leadingDistribution?: TextLeadingDistribution;
-  leading?: number;
-  fontWeight?: FontWeightValue;
-  fontStyle?: FontStyle;
-  forceStrutHeight?: boolean;
-  debugLabel?: string;
-  package?: string;
-}) => StrutStyle;
-
 export interface SweepGradient {
   readonly __fsxBrand?: {
     readonly Gradient: true;
@@ -14940,7 +15656,7 @@ export declare const SweepGradient: new (options: {
   center?: AlignmentGeometryValue;
   startAngle?: number;
   endAngle?: number;
-  colors: Color[];
+  colors: ColorValue[];
   stops?: number[];
   tileMode?: TileMode;
   transform?: GradientTransform;
@@ -14966,6 +15682,10 @@ export declare const SwitchThemeData: new (options?: {
   padding?: EdgeInsetsGeometryValue;
 }) => SwitchThemeData;
 
+export interface SystemChannels {
+  readonly __fsxBrand?: { readonly SystemChannels: true };
+}
+
 export interface SystemMouseCursor {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -14974,23 +15694,16 @@ export interface SystemMouseCursor {
   };
 }
 
+export interface SystemMouseCursors {
+  readonly __fsxBrand?: { readonly SystemMouseCursors: true };
+}
+
 export interface SystemUiOverlayStyle {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
     readonly SystemUiOverlayStyle: true;
   };
 }
-
-export declare const SystemUiOverlayStyle: new (options?: {
-  systemNavigationBarColor?: ColorValue;
-  systemNavigationBarDividerColor?: ColorValue;
-  systemNavigationBarIconBrightness?: Brightness;
-  systemNavigationBarContrastEnforced?: boolean;
-  statusBarColor?: ColorValue;
-  statusBarBrightness?: Brightness;
-  statusBarIconBrightness?: Brightness;
-  systemStatusBarContrastEnforced?: boolean;
-}) => SystemUiOverlayStyle;
 
 export interface TabBarScrollController {
   readonly __fsxBrand?: {
@@ -15005,6 +15718,8 @@ export interface TabBarScrollController {
   readonly initialScrollOffset: number;
   readonly keepScrollOffset: boolean;
   readonly offset: number;
+  readonly onAttach: (position: ScrollPosition) => void;
+  readonly onDetach: (position: ScrollPosition) => void;
   readonly position: ScrollPosition;
   readonly positions: ScrollPosition[];
 }
@@ -15065,7 +15780,19 @@ export declare const TableBorder: new (options?: {
   horizontalInside?: BorderSideValue;
   verticalInside?: BorderSideValue;
   borderRadius?: BorderRadiusValue;
-}) => TableBorder;
+}) => TableBorder & {
+  readonly all: (options?: {
+    color?: ColorValue;
+    width?: number;
+    style?: BorderStyle;
+    borderRadius?: BorderRadiusValue;
+  }) => TableBorder;
+  readonly symmetric: (options?: {
+    inside?: BorderSideValue;
+    outside?: BorderSideValue;
+    borderRadius?: BorderRadiusValue;
+  }) => TableBorder;
+};
 
 export interface TableColumnWidth {
   readonly __fsxBrand?: { readonly TableColumnWidth: true };
@@ -15323,10 +16050,6 @@ export interface TextAlignVertical {
   readonly __fsxBrand?: { readonly TextAlignVertical: true };
 }
 
-export declare const TextAlignVertical: new (options: {
-  y: number;
-}) => TextAlignVertical;
-
 export interface TextButtonThemeData {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -15353,11 +16076,14 @@ export interface TextEditingController {
   readonly hasListeners: boolean;
   readonly selection: TextSelection;
   readonly text: string;
+  readonly value: unknown;
 }
 
 export declare const TextEditingController: new (options?: {
   text?: string;
-}) => TextEditingController;
+}) => TextEditingController & {
+  readonly fromValue: (value: TextEditingValueValue) => TextEditingController;
+};
 
 export interface TextEditingValue {
   readonly __fsxBrand?: { readonly TextEditingValue: true };
@@ -15366,12 +16092,6 @@ export interface TextEditingValue {
   readonly selection: TextSelection;
   readonly text: string;
 }
-
-export declare const TextEditingValue: new (options?: {
-  text?: string;
-  selection?: TextSelection;
-  composing?: TextRangeValue;
-}) => TextEditingValue;
 
 export interface TextHeightBehavior {
   readonly __fsxBrand?: { readonly TextHeightBehavior: true };
@@ -15395,23 +16115,9 @@ export interface TextMagnifierConfiguration {
   readonly __fsxBrand?: { readonly TextMagnifierConfiguration: true };
 }
 
-export declare const TextMagnifierConfiguration: new (options?: {
-  magnifierBuilder?: (
-    context: BuildContext,
-    controller: MagnifierController,
-    magnifierInfo: ValueNotifier,
-  ) => FlutterElement | null;
-  shouldDisplayHandlesInMagnifier?: boolean;
-}) => TextMagnifierConfiguration;
-
 export interface TextRange {
   readonly __fsxBrand?: { readonly TextRange: true };
 }
-
-export declare const TextRange: new (options: {
-  start: number;
-  end: number;
-}) => TextRange;
 
 export interface TextScaler {
   readonly __fsxBrand?: { readonly TextScaler: true };
@@ -15438,7 +16144,12 @@ export declare const TextSelection: new (options: {
   extentOffset: number;
   affinity?: TextAffinity;
   isDirectional?: boolean;
-}) => TextSelection;
+}) => TextSelection & {
+  readonly collapsed: (options: {
+    offset: number;
+    affinity?: TextAffinity;
+  }) => TextSelection;
+};
 
 export interface TextSelectionControls {
   readonly __fsxBrand?: { readonly TextSelectionControls: true };
@@ -15447,6 +16158,15 @@ export interface TextSelectionControls {
 export interface TextSelectionDelegate {
   readonly __fsxBrand?: { readonly TextSelectionDelegate: true };
 }
+
+export interface TextSelectionPoint {
+  readonly __fsxBrand?: { readonly TextSelectionPoint: true };
+}
+
+export declare const TextSelectionPoint: new (
+  point: OffsetValue,
+  direction: TextDirection,
+) => TextSelectionPoint;
 
 export interface TextSelectionThemeData {
   readonly __fsxBrand?: {
@@ -15468,7 +16188,14 @@ export interface TextSelectionToolbarAnchors {
 export declare const TextSelectionToolbarAnchors: new (options: {
   primaryAnchor: OffsetValue;
   secondaryAnchor?: OffsetValue;
-}) => TextSelectionToolbarAnchors;
+}) => TextSelectionToolbarAnchors & {
+  readonly fromSelection: (options: {
+    renderBox: RenderBox;
+    startGlyphHeight: number;
+    endGlyphHeight: number;
+    selectionEndpoints: TextSelectionPoint[];
+  }) => TextSelectionToolbarAnchors;
+};
 
 export interface TextSelectionToolbarLayoutDelegate {
   readonly __fsxBrand?: {
@@ -15530,7 +16257,7 @@ export declare const TextStyle: new (options?: {
   locale?: Locale;
   foreground?: Paint;
   background?: Paint;
-  shadows?: Shadow[];
+  shadows?: ShadowValue[];
   fontFeatures?: FontFeature[];
   fontVariations?: FontVariation[];
   decoration?: TextDecorationValue;
@@ -15698,7 +16425,101 @@ export declare const ThemeData: new (options?: {
   buttonBarTheme?: ButtonBarThemeDataValue;
   dialogBackgroundColor?: ColorValue;
   indicatorColor?: ColorValue;
-}) => ThemeData;
+}) => ThemeData & {
+  readonly dark: (options?: { useMaterial3?: boolean }) => ThemeData;
+  readonly fallback: (options?: { useMaterial3?: boolean }) => ThemeData;
+  readonly from: (options: {
+    colorScheme: ColorScheme;
+    textTheme?: TextTheme;
+    useMaterial3?: boolean;
+  }) => ThemeData;
+  readonly light: (options?: { useMaterial3?: boolean }) => ThemeData;
+  readonly raw: (options: {
+    adaptationMap: Map<TypeValue, Adaptation>;
+    applyElevationOverlayColor: boolean;
+    cupertinoOverrideTheme: NoDefaultCupertinoThemeData;
+    extensions: Map<ObjectValue, ThemeExtension>;
+    inputDecorationTheme: InputDecorationThemeDataValue;
+    materialTapTargetSize: MaterialTapTargetSize;
+    pageTransitionsTheme: PageTransitionsTheme;
+    platform: TargetPlatform;
+    scrollbarTheme: ScrollbarThemeDataValue;
+    splashFactory: InteractiveInkFeatureFactoryValue;
+    useMaterial3: boolean;
+    visualDensity: VisualDensityValue;
+    colorScheme: ColorScheme;
+    canvasColor: ColorValue;
+    cardColor: ColorValue;
+    disabledColor: ColorValue;
+    dividerColor: ColorValue;
+    focusColor: ColorValue;
+    highlightColor: ColorValue;
+    hintColor: ColorValue;
+    hoverColor: ColorValue;
+    primaryColor: ColorValue;
+    primaryColorDark: ColorValue;
+    primaryColorLight: ColorValue;
+    scaffoldBackgroundColor: ColorValue;
+    secondaryHeaderColor: ColorValue;
+    shadowColor: ColorValue;
+    splashColor: ColorValue;
+    unselectedWidgetColor: ColorValue;
+    iconTheme: IconThemeDataValue;
+    primaryIconTheme: IconThemeDataValue;
+    primaryTextTheme: TextTheme;
+    textTheme: TextTheme;
+    typography: Typography;
+    actionIconTheme: ActionIconThemeDataValue;
+    appBarTheme: AppBarThemeDataValue;
+    badgeTheme: BadgeThemeDataValue;
+    bannerTheme: MaterialBannerThemeDataValue;
+    bottomAppBarTheme: BottomAppBarThemeDataValue;
+    bottomNavigationBarTheme: BottomNavigationBarThemeDataValue;
+    bottomSheetTheme: BottomSheetThemeData;
+    buttonTheme: ButtonThemeData;
+    cardTheme: CardThemeDataValue;
+    carouselViewTheme: CarouselViewThemeDataValue;
+    checkboxTheme: CheckboxThemeDataValue;
+    chipTheme: ChipThemeDataValue;
+    dataTableTheme: DataTableThemeDataValue;
+    datePickerTheme: DatePickerThemeDataValue;
+    dialogTheme: DialogThemeDataValue;
+    dividerTheme: DividerThemeDataValue;
+    drawerTheme: DrawerThemeDataValue;
+    dropdownMenuTheme: DropdownMenuThemeDataValue;
+    elevatedButtonTheme: ElevatedButtonThemeDataValue;
+    expansionTileTheme: ExpansionTileThemeDataValue;
+    filledButtonTheme: FilledButtonThemeDataValue;
+    floatingActionButtonTheme: FloatingActionButtonThemeDataValue;
+    iconButtonTheme: IconButtonThemeDataValue;
+    listTileTheme: ListTileThemeDataValue;
+    menuBarTheme: MenuBarThemeDataValue;
+    menuButtonTheme: MenuButtonThemeDataValue;
+    menuTheme: MenuThemeDataValue;
+    navigationBarTheme: NavigationBarThemeDataValue;
+    navigationDrawerTheme: NavigationDrawerThemeDataValue;
+    navigationRailTheme: NavigationRailThemeDataValue;
+    outlinedButtonTheme: OutlinedButtonThemeDataValue;
+    popupMenuTheme: PopupMenuThemeDataValue;
+    progressIndicatorTheme: ProgressIndicatorThemeDataValue;
+    radioTheme: RadioThemeDataValue;
+    searchBarTheme: SearchBarThemeDataValue;
+    searchViewTheme: SearchViewThemeDataValue;
+    segmentedButtonTheme: SegmentedButtonThemeDataValue;
+    sliderTheme: SliderThemeDataValue;
+    snackBarTheme: SnackBarThemeDataValue;
+    switchTheme: SwitchThemeDataValue;
+    tabBarTheme: TabBarThemeDataValue;
+    textButtonTheme: TextButtonThemeDataValue;
+    textSelectionTheme: TextSelectionThemeDataValue;
+    timePickerTheme: TimePickerThemeDataValue;
+    toggleButtonsTheme: ToggleButtonsThemeDataValue;
+    tooltipTheme: TooltipThemeDataValue;
+    buttonBarTheme?: ButtonBarThemeDataValue;
+    dialogBackgroundColor: ColorValue;
+    indicatorColor: ColorValue;
+  }) => ThemeData;
+};
 
 export interface ThemeDataTween {
   readonly __fsxBrand?: {
@@ -15747,11 +16568,6 @@ export interface TickerModeData {
   readonly __fsxBrand?: { readonly TickerModeData: true };
 }
 
-export declare const TickerModeData: new (options: {
-  enabled: boolean;
-  forceFrames: boolean;
-}) => TickerModeData;
-
 export interface TickerProvider {
   readonly __fsxBrand?: { readonly TickerProvider: true };
 }
@@ -15759,11 +16575,6 @@ export interface TickerProvider {
 export interface TimeOfDay {
   readonly __fsxBrand?: { readonly Comparable: true; readonly TimeOfDay: true };
 }
-
-export declare const TimeOfDay: new (options: {
-  hour: number;
-  minute: number;
-}) => TimeOfDay;
 
 export interface TimePickerThemeData {
   readonly __fsxBrand?: {
@@ -15838,22 +16649,9 @@ export interface Tolerance {
   readonly __fsxBrand?: { readonly Tolerance: true };
 }
 
-export declare const Tolerance: new (options?: {
-  distance?: number;
-  time?: number;
-  velocity?: number;
-}) => Tolerance;
-
 export interface ToolbarOptions {
   readonly __fsxBrand?: { readonly ToolbarOptions: true };
 }
-
-export declare const ToolbarOptions: new (options?: {
-  copy?: boolean;
-  cut?: boolean;
-  paste?: boolean;
-  selectAll?: boolean;
-}) => ToolbarOptions;
 
 export interface TooltipPositionContext {
   readonly __fsxBrand?: { readonly TooltipPositionContext: true };
@@ -15925,6 +16723,8 @@ export interface TrackingScrollController {
   readonly keepScrollOffset: boolean;
   readonly mostRecentlyUpdatedPosition: ScrollPosition;
   readonly offset: number;
+  readonly onAttach: (position: ScrollPosition) => void;
+  readonly onDetach: (position: ScrollPosition) => void;
   readonly position: ScrollPosition;
   readonly positions: ScrollPosition[];
 }
@@ -15952,6 +16752,7 @@ export interface TrainHoppingAnimation {
   readonly isCompleted: boolean;
   readonly isDismissed: boolean;
   readonly isForwardOrCompleted: boolean;
+  readonly onSwitchedTrain: () => void;
   readonly status: AnimationStatus;
   readonly value: number;
 }
@@ -16003,6 +16804,7 @@ export interface TreeSliverIndentationType {
 export interface TreeSliverNode {
   readonly __fsxBrand?: { readonly TreeSliverNode: true };
   readonly children: TreeSliverNode[];
+  readonly content: unknown;
   readonly depth: number;
   readonly isExpanded: boolean;
   readonly parent: TreeSliverNode;
@@ -16088,15 +16890,6 @@ export interface Typography {
   };
 }
 
-export declare const Typography: new (options?: {
-  platform?: TargetPlatform;
-  black?: TextTheme;
-  white?: TextTheme;
-  englishLike?: TextTheme;
-  dense?: TextTheme;
-  tall?: TextTheme;
-}) => Typography;
-
 export interface UiKitViewController {
   readonly __fsxBrand?: {
     readonly DarwinPlatformViewController: true;
@@ -16115,8 +16908,6 @@ export interface Uint8List {
     readonly Uint8List: true;
   };
 }
-
-export declare const Uint8List: new (length: number) => Uint8List;
 
 export interface UnderlineInputBorder {
   readonly __fsxBrand?: {
@@ -16163,11 +16954,6 @@ export interface UndoHistoryValue {
   readonly __fsxBrand?: { readonly UndoHistoryValue: true };
 }
 
-export declare const UndoHistoryValue: new (options?: {
-  canUndo?: boolean;
-  canRedo?: boolean;
-}) => UndoHistoryValue;
-
 export interface UndoTextIntent {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -16179,6 +16965,10 @@ export interface UndoTextIntent {
 export declare const UndoTextIntent: new (
   cause: SelectionChangedCause,
 ) => UndoTextIntent;
+
+export interface Unicode {
+  readonly __fsxBrand?: { readonly Unicode: true };
+}
 
 export interface UniqueKey {
   readonly __fsxBrand?: {
@@ -16234,6 +17024,7 @@ export interface ValueKey {
     readonly LocalKey: true;
     readonly ValueKey: true;
   };
+  readonly value: unknown;
 }
 
 export declare const ValueKey: new (value: unknown) => ValueKey;
@@ -16260,10 +17051,6 @@ export interface Velocity {
   readonly __fsxBrand?: { readonly Velocity: true };
   readonly pixelsPerSecond: OffsetValue;
 }
-
-export declare const Velocity: new (options: {
-  pixelsPerSecond: OffsetValue;
-}) => Velocity;
 
 export interface VerticalDragGestureRecognizer {
   readonly __fsxBrand?: {
@@ -16310,7 +17097,9 @@ export declare const ViewConfiguration: new (options?: {
   physicalConstraints?: BoxConstraintsValue;
   logicalConstraints?: BoxConstraintsValue;
   devicePixelRatio?: number;
-}) => ViewConfiguration;
+}) => ViewConfiguration & {
+  readonly fromView: (view: FlutterView) => ViewConfiguration;
+};
 
 export interface ViewPadding {
   readonly __fsxBrand?: { readonly ViewPadding: true };
@@ -16331,11 +17120,6 @@ export interface VisualDensity {
   };
 }
 
-export declare const VisualDensity: new (options?: {
-  horizontal?: number;
-  vertical?: number;
-}) => VisualDensity;
-
 export interface VoidCallbackAction {
   readonly __fsxBrand?: {
     readonly Action: true;
@@ -16343,7 +17127,7 @@ export interface VoidCallbackAction {
     readonly VoidCallbackAction: true;
   };
   readonly callingAction: Action;
-  readonly intentType: Type;
+  readonly intentType: TypeValue;
   readonly isActionEnabled: boolean;
 }
 
@@ -16992,7 +17776,7 @@ export interface BoxDecorationObject {
    *    Design.
    *  * [PhysicalModel], a widget for showing shadows.
    */
-  boxShadow?: BoxShadow[];
+  boxShadow?: BoxShadowValue[];
   /**
    * A gradient to use when filling the box.
    *
@@ -29020,7 +29804,7 @@ export interface IconThemeDataObject {
   /**
    * The default for [Icon.shadows].
    */
-  shadows?: Shadow[];
+  shadows?: ShadowValue[];
   /**
    * The default for [Icon.applyTextScaling].
    */
@@ -30653,7 +31437,7 @@ export interface MagnifierDecorationObject {
    *    Those shadows use [BlurStyle.normal] and may need to be converted to
    *    [BlurStyle.outer] for use with [MagnifierDecoration].
    */
-  shadows?: BoxShadow[];
+  shadows?: BoxShadowValue[];
   /**
    * The shape of the magnifier and the outline (border) around it.
    *
@@ -34771,7 +35555,7 @@ export interface TextStyleObject {
    * Shadows must be in the same order for [TextStyle] to be considered as
    * equivalent as order produces differing transparency.
    */
-  shadows?: Shadow[];
+  shadows?: ShadowValue[];
   /**
    * A list of [FontFeature]s that affect how the font selects glyphs.
    *
@@ -35359,6 +36143,8 @@ export type TooltipThemeDataValue = TooltipThemeData | TooltipThemeDataObject;
 
 export type TreeSliverIndentationTypeValue =
   TreeSliverIndentationType | 'none' | 'standard';
+
+export type TypeValue = Type | string;
 
 export type VelocityValue = Velocity | 'zero';
 
@@ -36755,7 +37541,7 @@ export interface ActionsProps extends GestureProps {
    * passed in here (e.g. a final variable from your widget class) instead of
    * defining it inline in the build function.
    */
-  actions: Map<Type, Action>;
+  actions: Map<TypeValue, Action>;
 }
 
 /**
@@ -41729,7 +42515,9 @@ export const AspectRatio: FlutterComponent<AspectRatioProps> =
  *    contains more detailed examples.
  */
 export interface AutocompleteProps extends GestureProps {
-  optionsBuilder: (textEditingValue: TextEditingValue) => FutureOr;
+  optionsBuilder: (
+    textEditingValue: TextEditingValue,
+  ) => unknown[] | Promise<unknown[]>;
   displayStringForOption?: (option: unknown) => string;
   /**
    * If not provided, will build a standard Material-style text field by
@@ -49998,7 +50786,7 @@ export interface CupertinoAppProps extends GestureProps {
   onGenerateTitle?: (context: BuildContext) => string;
   color?: ColorValue;
   locale?: Locale;
-  localizationsDelegates?: LocalizationsDelegate[];
+  localizationsDelegates?: LocalizationsDelegateValue[];
   /**
    * This callback is passed along to the [WidgetsApp] built by this widget.
    */
@@ -50063,7 +50851,7 @@ export interface CupertinoAppProps extends GestureProps {
    * }
    * ```
    */
-  shortcuts?: Map<ShortcutActivator, Intent>;
+  shortcuts?: Map<ShortcutActivator, IntentValue>;
   /**
    * This example shows how to add a single action handling an
    * [ActivateAction] to the default actions without needing to
@@ -50093,7 +50881,7 @@ export interface CupertinoAppProps extends GestureProps {
    * }
    * ```
    */
-  actions?: Map<Type, Action>;
+  actions?: Map<TypeValue, Action>;
   restorationScopeId?: string;
   /**
    * When null, defaults to [CupertinoScrollBehavior].
@@ -51992,7 +52780,7 @@ export interface CupertinoListTileProps extends Omit<GestureProps, 'onClick'> {
    * However, if this function is a `void Function()`, then the tile is active
    * only for the duration of invocation.
    */
-  onClick?: () => FutureOr;
+  onClick?: () => void | Promise<void>;
   /**
    * The [backgroundColor] of the tile in normal state. Once the tile is
    * tapped, the background color switches to [backgroundColorActivated]. It is
@@ -52136,7 +52924,7 @@ export interface CupertinoMagnifierProps extends GestureProps {
    * By default, the [shadows] are not offset and use [BlurStyle.outer], and
    * correspondingly the default [clipBehavior] is [Clip.none].
    */
-  shadows?: BoxShadow[];
+  shadows?: BoxShadowValue[];
   /**
    * Whether and how to clip the [shadows] that render inside the loupe.
    *
@@ -69638,8 +70426,8 @@ export interface FocusableActionDetectorProps extends GestureProps {
   autofocus?: boolean;
   descendantsAreFocusable?: boolean;
   descendantsAreTraversable?: boolean;
-  shortcuts?: Map<ShortcutActivator, Intent>;
-  actions?: Map<Type, Action>;
+  shortcuts?: Map<ShortcutActivator, IntentValue>;
+  actions?: Map<TypeValue, Action>;
   /**
    * A function that will be called when the focus highlight should be shown or
    * hidden.
@@ -73421,7 +74209,7 @@ export interface IconProps extends GestureProps {
    *
    * Defaults to the nearest [IconTheme]'s [IconThemeData.shadows].
    */
-  shadows?: Shadow[];
+  shadows?: ShadowValue[];
   /**
    * Semantic label for the icon.
    *
@@ -80438,7 +81226,7 @@ export interface LocalizationsProps extends GestureProps {
    * This list collectively defines the localized resources objects that can
    * be retrieved with [Localizations.of].
    */
-  delegates: LocalizationsDelegate[];
+  delegates: LocalizationsDelegateValue[];
   /**
    * Whether this is the main localizations widget that represents the app's
    * locale.
@@ -80947,7 +81735,7 @@ export interface MagnifierProps extends GestureProps {
    * A shadow that uses [BlurStyle.outer] and is not offset does not need
    * clipping; in that case, consider setting [clipBehavior] to [Clip.none].
    */
-  shadows?: BoxShadow[];
+  shadows?: BoxShadowValue[];
   /**
    * Whether and how to clip the [shadows] that render inside the loupe.
    *
@@ -81739,7 +82527,7 @@ export interface MaterialAppProps extends GestureProps {
    *  * The Flutter Internationalization Tutorial,
    *    <https://flutter.dev/to/internationalization/>.
    */
-  localizationsDelegates?: LocalizationsDelegate[];
+  localizationsDelegates?: LocalizationsDelegateValue[];
   /**
    * This callback is passed along to the [WidgetsApp] built by this widget.
    */
@@ -81824,7 +82612,7 @@ export interface MaterialAppProps extends GestureProps {
    * }
    * ```
    */
-  shortcuts?: Map<ShortcutActivator, Intent>;
+  shortcuts?: Map<ShortcutActivator, IntentValue>;
   /**
    * This example shows how to add a single action handling an
    * [ActivateAction] to the default actions without needing to
@@ -81854,7 +82642,7 @@ export interface MaterialAppProps extends GestureProps {
    * }
    * ```
    */
-  actions?: Map<Type, Action>;
+  actions?: Map<TypeValue, Action>;
   restorationScopeId?: string;
   /**
    * The default [ScrollBehavior] for the application.
@@ -92472,7 +93260,9 @@ export interface RawAutocompleteProps extends GestureProps {
    * A function that returns the current selectable options objects given the
    * current TextEditingValue.
    */
-  optionsBuilder: (textEditingValue: TextEditingValue) => FutureOr;
+  optionsBuilder: (
+    textEditingValue: TextEditingValue,
+  ) => unknown[] | Promise<unknown[]>;
   /**
    * Determines the direction in which to open the options view.
    *
@@ -92772,7 +93562,7 @@ export interface RawGestureDetectorProps extends GestureProps {
    * This value can be late-bound at layout time using
    * [RawGestureDetectorState.replaceGestureRecognizers].
    */
-  gestures?: Map<Type, GestureRecognizerFactory>;
+  gestures?: Map<TypeValue, GestureRecognizerFactory>;
   /**
    * How this gesture detector should behave during hit testing.
    *
@@ -99563,7 +100353,7 @@ export interface SearchAnchorProps extends GestureProps {
   suggestionsBuilder: (
     context: BuildContext,
     controller: SearchController,
-  ) => FutureOr;
+  ) => FlutterElement[] | Promise<FlutterElement[]>;
   textInputAction?: TextInputAction;
   /**
    * The type of action button to use for the keyboard.
@@ -101923,7 +102713,7 @@ export interface ShortcutsProps extends GestureProps {
    * The child widget for this [Shortcuts] widget.
    */
   children: FlutterChild;
-  shortcuts: Map<ShortcutActivator, Intent>;
+  shortcuts: Map<ShortcutActivator, IntentValue>;
   /**
    * The debug label that is printed for this node when logged.
    *
@@ -110674,7 +111464,7 @@ export interface TableProps extends GestureProps {
    *
    * Every row in a table must have the same number of children.
    */
-  children?: TableRow[];
+  children?: TableRowValue[];
   /**
    * How the horizontal extents of the columns of this table should be determined.
    *
@@ -117361,7 +118151,7 @@ export interface WidgetsAppProps extends GestureProps {
    * The delegates collectively define all of the localized resources
    * for this application's [Localizations] widget.
    */
-  localizationsDelegates?: LocalizationsDelegate[];
+  localizationsDelegates?: LocalizationsDelegateValue[];
   /**
    * This callback is responsible for choosing the app's locale
    * when the app is started, and when the user changes the
@@ -117607,7 +118397,7 @@ export interface WidgetsAppProps extends GestureProps {
    *  * The [Intent] and [Action] classes, which allow definition of new
    *    actions.
    */
-  shortcuts?: Map<ShortcutActivator, Intent>;
+  shortcuts?: Map<ShortcutActivator, IntentValue>;
   /**
    * The default map of intent keys to actions for the application.
    *
@@ -117656,7 +118446,7 @@ export interface WidgetsAppProps extends GestureProps {
    *  * The [Intent] and [Action] classes, which allow definition of new
    *    actions.
    */
-  actions?: Map<Type, Action>;
+  actions?: Map<TypeValue, Action>;
   /**
    * The identifier to use for state restoration of this app.
    *

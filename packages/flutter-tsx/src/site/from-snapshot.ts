@@ -76,18 +76,39 @@ export const dartSignature = (
  * one chosen is the simplest to write, so an example shows the shortest true
  * way rather than an arbitrary one.
  */
-const constructionMap = (snapshot: ApiSnapshot): Map<string, Constructible> => {
+const constructionMap = (
+  snapshot: ApiSnapshot,
+): Map<string, Constructible[]> => {
   const classes = snapshot.entities.filter(
     (entity): entity is ClassEntity => entity.kind === 'class',
   );
   const buildable = new Map<string, Constructible>();
   for (const entity of classes) {
-    const constructor = entity.constructors.find(
+    // A `dart:ui` class shares its name with a Flutter one, so the compiler
+    // refuses to construct it plainly and no example may show it.
+    if ((snapshot.exports[entity.name] ?? []).join() === 'ui') {
+      continue;
+    }
+    // An unnamed constructor is how a class is usually built; one that has
+    // only named constructors is built by the simplest of those.
+    const unnamed = entity.constructors.find(
       (candidate) => candidate.name === '',
     );
+    const byName = [...entity.constructors]
+      .filter((candidate) => candidate.name !== '')
+      .sort(
+        (first, second) =>
+          first.params.filter((param) => param.required).length -
+            second.params.filter((param) => param.required).length ||
+          first.name.localeCompare(second.name),
+      );
+    const constructor = unnamed ?? byName[0];
     if (constructor !== undefined) {
       buildable.set(entity.name, {
         name: entity.name,
+        ...(constructor.name === ''
+          ? {}
+          : { constructorName: constructor.name }),
         params: constructor.params,
         typeParams: entity.typeParams,
       });
@@ -99,28 +120,30 @@ const constructionMap = (snapshot: ApiSnapshot): Map<string, Constructible> => {
       candidate.params.filter((param) => param.required).length;
     return cost(first) - cost(second) || first.name.localeCompare(second.name);
   };
-  const construction = new Map(buildable);
-  const generic = new Map(
-    classes.map((entity): [string, number] => [
-      entity.name,
-      entity.typeParams.length,
+  const construction = new Map(
+    [...buildable].map(([name, built]): [string, Constructible[]] => [
+      name,
+      [built],
     ]),
   );
   for (const entity of classes) {
     for (const supertype of entity.supertypes) {
       const built = buildable.get(entity.name);
-      const incumbent = construction.get(supertype);
-      // A subclass stands in for a base only if it is generic over as much:
-      // an `Animatable<T>` is not satisfied by a tween of one fixed type.
-      if (
-        built !== undefined &&
-        (generic.get(entity.name) ?? 0) >= (generic.get(supertype) ?? 0) &&
-        (incumbent === undefined || simplest(built, incumbent) < 0) &&
-        !buildable.has(supertype)
-      ) {
-        construction.set(supertype, built);
+      if (built === undefined || buildable.has(supertype)) {
+        continue;
       }
+      // Every subclass is a way to satisfy the base; which one an example
+      // can use depends on what the site asked for, so all are kept.
+      const binds = entity.supertypeBindings[supertype];
+      construction.set(supertype, [
+        ...(construction.get(supertype) ?? []),
+        { ...built, ...(binds === undefined ? {} : { binds }) },
+      ]);
     }
+  }
+  // Simplest first, so an example shows the shortest true way to write one.
+  for (const candidates of construction.values()) {
+    candidates.sort(simplest);
   }
   return construction;
 };
@@ -147,6 +170,15 @@ const synthesisContext = (
     ),
     construction: constructionMap(snapshot),
     widgetExamples,
+    formNames: reachableValueFormNames(snapshot, forms),
+    declaredTypes: new Set(snapshot.entities.map((entity) => entity.name)),
+    valueOnlyNames: new Set(
+      snapshot.entities
+        .filter(
+          (entity) => entity.kind !== 'enum' && entity.constants.length > 0,
+        )
+        .map((entity) => entity.name),
+    ),
   };
 };
 

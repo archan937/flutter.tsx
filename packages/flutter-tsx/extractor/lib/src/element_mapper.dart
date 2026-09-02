@@ -3,6 +3,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'api_model.dart';
 import 'assert_inspector.dart';
 import 'type_encoder.dart';
+import 'type_node.dart';
 
 EntityModel? mapClass(
   ClassElement classElement,
@@ -43,6 +44,7 @@ EntityModel? mapClass(
     library: libraryLabel,
     doc: doc,
     supertypes: supertypes,
+    supertypeBindings: publicSupertypeBindings(classElement),
     constructors: constructors,
     constants: constants,
     fields: fields,
@@ -274,6 +276,29 @@ List<ConstantModel> _mapConstants(ClassElement classElement) {
 
   constants.sort((first, second) => first.name.compareTo(second.name));
   return constants;
+}
+
+/// The type arguments a class hands each of its supertypes.
+///
+/// `ShapeBorderClipper implements CustomClipper<Path>` is not the same as
+/// implementing `CustomClipper<T>`: what it binds decides whether it can
+/// stand in for a prop asking for one, which the compiler cannot know from
+/// the name alone.
+Map<String, List<TypeNode>> publicSupertypeBindings(
+  InterfaceElement interfaceElement,
+) {
+  final bindings = <String, List<TypeNode>>{};
+  for (final supertype in interfaceElement.allSupertypes) {
+    final name = supertype.element.name ?? '';
+    if (name.isEmpty ||
+        name == 'Object' ||
+        name.startsWith('_') ||
+        supertype.typeArguments.isEmpty) {
+      continue;
+    }
+    bindings[name] = supertype.typeArguments.map(encodeType).toList();
+  }
+  return bindings;
 }
 
 List<String> publicSupertypeNames(InterfaceElement interfaceElement) {

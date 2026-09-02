@@ -27,26 +27,18 @@ const page = buildSitePage(
 
 /** Widgets whose examples wait on a shape the compiler does not write yet. */
 const NOT_YET_EXPRESSIBLE: readonly string[] = [
-  'ActionListener',
   'Actions',
-  'Autocomplete',
   'CallbackShortcuts',
-  'ConstraintsTransformBox',
-  'CupertinoSegmentedControl',
-  'CupertinoSlidingSegmentedControl',
-  'FutureBuilder',
-  'MatrixTransition',
-  'PhysicalShape',
   'PlatformViewLink',
-  'RawAutocomplete',
   'RenderObjectToWidgetAdapter',
   'RepeatingAnimationBuilder',
-  'SearchAnchor',
   'ShaderMask',
   'Shortcuts',
-  'StreamBuilder',
-  'WidgetInspector',
+  'UndoHistory',
 ];
+
+/** Widgets a hook writes: `useAsync` and `useStream` generate these. */
+const WRITTEN_BY_A_HOOK: readonly string[] = ['FutureBuilder', 'StreamBuilder'];
 
 describe('the boundary of what TSX writes', () => {
   test('every placeholder says why it is one', () => {
@@ -73,6 +65,24 @@ describe('the boundary of what TSX writes', () => {
 
     // Shrinking this list is the work; growing it is a regression.
     expect(waiting).toEqual([...NOT_YET_EXPRESSIBLE]);
+  });
+
+  test('the widgets a hook writes are named as such', () => {
+    // `useAsync` and `useStream` generate these builders; a developer never
+    // hands them a Future or a Stream by hand.
+    const byHook = [
+      ...new Set(
+        page.widgets
+          .filter((widget) =>
+            widget.example.unwritable.some(
+              (entry) => entry.reason === 'written-by-a-hook',
+            ),
+          )
+          .map((widget) => widget.name),
+      ),
+    ].sort();
+
+    expect(byHook).toEqual([...WRITTEN_BY_A_HOOK]);
   });
 
   test('a value Flutter supplies is never claimed to be writable', () => {

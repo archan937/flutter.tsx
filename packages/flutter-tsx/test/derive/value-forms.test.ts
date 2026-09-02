@@ -54,6 +54,7 @@ const classEntity = (
   kind: 'class',
   disposable: false,
   typeParams: [],
+  supertypeBindings: {},
   name,
   library: 'painting',
   doc: '',

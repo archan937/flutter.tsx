@@ -20,6 +20,24 @@ export const valueFormTsType = (
     const value = `${unwrapped.name}Value`;
     return node.kind === 'nullable' ? `${value} | null` : value;
   }
+  // What a collection holds is written the same way a prop is: a map of
+  // shortcut activators to intents accepts the same shorthands.
+  if (unwrapped.kind === 'map') {
+    const key = valueFormTsType(unwrapped.key, formNames);
+    const held = valueFormTsType(unwrapped.value, formNames);
+    const map =
+      unwrapped.key.kind === 'scalar' && unwrapped.key.name === 'String'
+        ? `Record<string, ${held}>`
+        : unwrapped.key.kind === 'scalar' && unwrapped.key.name !== 'bool'
+          ? `Record<number, ${held}>`
+          : `Map<${key}, ${held}>`;
+    return node.kind === 'nullable' ? `${map} | null` : map;
+  }
+  if (unwrapped.kind === 'list' || unwrapped.kind === 'set') {
+    const item = valueFormTsType(unwrapped.item, formNames);
+    const list = item.includes('|') ? `(${item})[]` : `${item}[]`;
+    return node.kind === 'nullable' ? `${list} | null` : list;
+  }
   return tsTypeOf(node);
 };
 

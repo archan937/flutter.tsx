@@ -39,6 +39,7 @@ void main() {
           constants: const [],
           disposable: false,
           typeParams: const [],
+          supertypeBindings: const {},
           fields: const [
             FieldModel(
               name: 'maxWidth',

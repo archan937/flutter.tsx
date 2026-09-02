@@ -113,6 +113,15 @@ const entityToJson = (entity: Entity): Record<string, unknown> => {
           ...(entity.typeParams.length > 0
             ? { typeParams: entity.typeParams }
             : {}),
+          ...(Object.keys(entity.supertypeBindings).length > 0
+            ? {
+                supertypeBindings: Object.fromEntries(
+                  Object.entries(entity.supertypeBindings).map(
+                    ([name, args]) => [name, args.map(typeNodeToJson)],
+                  ),
+                ),
+              }
+            : {}),
         }
       : {}),
   };
