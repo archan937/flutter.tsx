@@ -13,9 +13,13 @@ export const EDGE_INSETS_TYPES: ReadonlySet<string> = new Set([
 
 export const HEX_COLOR_TYPE = 'Color';
 
+/** Dart's top type: a prop asking for one takes whatever it is given. */
+export const ANY_VALUE_TYPE = 'Object';
+
 export const hasValueForms = (name: string, forms: ValueForms): boolean =>
   EDGE_INSETS_TYPES.has(name) ||
   name === HEX_COLOR_TYPE ||
+  name === ANY_VALUE_TYPE ||
   DATE_FORMS.has(name) ||
   forms.constantMembers.has(name) ||
   forms.constructibles.has(name);

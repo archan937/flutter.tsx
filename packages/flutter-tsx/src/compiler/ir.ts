@@ -35,7 +35,13 @@ export type IrValue =
     }
   // A closure whose body is one expression, kept as a value so the printer
   // can wrap it: `(context) => showDialog(…)`.
-  | { kind: 'closureValue'; params: string[]; value: IrValue }
+  | {
+      kind: 'closureValue';
+      params: string[];
+      /** `async` when the value is what its Future carries. */
+      isAsync?: boolean;
+      value: IrValue;
+    }
   | {
       kind: 'conditional';
       condition: IrValue;
@@ -59,7 +65,12 @@ export type IrValue =
   | { kind: 'widget'; widget: IrWidget }
   | { kind: 'widgetList'; items: IrChild[] }
   /// `[a, b, c]` of ordinary values — a list of models, strings or numbers.
-  | { kind: 'listValue'; items: IrValue[] }
+  | {
+      kind: 'listValue';
+      items: IrValue[];
+      /** Written in braces, as Dart writes a set. */
+      set?: { itemType: string | null };
+    }
   | {
       kind: 'builder';
       params: string[];

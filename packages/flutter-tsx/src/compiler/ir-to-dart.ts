@@ -143,6 +143,7 @@ const valueToDart = (
       return {
         kind: 'closure',
         params: value.params,
+        ...(value.isAsync === true ? { isAsync: true } : {}),
         body: {
           kind: 'value',
           value: valueToDart(value.value, naming, insideConst),
@@ -179,6 +180,7 @@ const valueToDart = (
       return {
         kind: 'list',
         isConst,
+        ...(value.set === undefined ? {} : { set: value.set }),
         items: value.items.map((item) => ({
           kind: 'element' as const,
           value: valueToDart(item, naming, insideConst || isConst),

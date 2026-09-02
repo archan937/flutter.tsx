@@ -23,6 +23,7 @@ const param = (
 const context: SynthesisContext = {
   enumValues: { TestAlign: 'start' },
   ownedValues: new Set(['TestController']),
+  widgetExamples: new Map([['Badge', '<Badge label="example" />']]),
   construction: new Map([
     [
       'Ink',
@@ -170,6 +171,67 @@ describe('synthesizeTsx', () => {
       tsx: '<Radio value="example" />',
       bindings: [],
       complete: true,
+    });
+  });
+
+  test('a widget asked for by name is written as its own example', () => {
+    expect(
+      synthesizeTsx({
+        widgetName: 'Shell',
+        params: [param('badge', { kind: 'named', name: 'Badge' })],
+        slots: noSlots,
+        context,
+      }),
+    ).toEqual({
+      tsx: '<Shell badge={<Badge label="example" />} />',
+      bindings: [],
+      complete: true,
+    });
+  });
+
+  test('a value that cannot be written leaves the example incomplete', () => {
+    // An animation over a type nothing can express has no tween to show,
+    // and a class asking for one cannot be built either. Both say so rather
+    // than showing something that would not compile.
+    const params = [
+      param('alignment', {
+        kind: 'named',
+        name: 'Animation',
+        args: [{ kind: 'named', name: 'Unwritable' }],
+      }),
+    ];
+
+    expect(
+      synthesizeTsx({ widgetName: 'Drift', params, slots: noSlots, context }),
+    ).toEqual({
+      tsx: '<Drift alignment={…} />',
+      bindings: [],
+      complete: false,
+    });
+
+    expect(
+      synthesizeTsx({
+        widgetName: 'Splash',
+        params: [param('ink', { kind: 'named', name: 'Ink' })],
+        slots: noSlots,
+        context: {
+          ...context,
+          construction: new Map([
+            [
+              'Ink',
+              {
+                name: 'InkSplash',
+                typeParams: [],
+                params: [param('shade', { kind: 'named', name: 'Unwritable' })],
+              },
+            ],
+          ]),
+        },
+      }),
+    ).toEqual({
+      tsx: '<Splash ink={…} />',
+      bindings: [],
+      complete: false,
     });
   });
 

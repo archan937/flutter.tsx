@@ -18,7 +18,13 @@ export type DartExpr =
       whenTrue: DartExpr;
       whenFalse: DartExpr;
     }
-  | { kind: 'list'; isConst: boolean; items: DartListItem[] }
+  | {
+      kind: 'list';
+      isConst: boolean;
+      items: DartListItem[];
+      /** A set is written in braces, and an empty one names what it holds. */
+      set?: { itemType: string | null };
+    }
   | {
       kind: 'builder';
       params: string[];

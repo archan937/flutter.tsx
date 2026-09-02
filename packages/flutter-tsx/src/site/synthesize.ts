@@ -23,6 +23,8 @@ export interface SynthesisContext {
    * an `ImageProvider` is written as an `AssetImage`.
    */
   construction: ReadonlyMap<string, Constructible>;
+  /** Widgets asked for by name, and the tag that writes each one. */
+  widgetExamples: ReadonlyMap<string, string>;
 }
 
 /**
@@ -100,10 +102,10 @@ const builtValue = (
   const built = context.construction.get(type.name);
   // A type asked for with arguments is only satisfied by a class generic
   // over them: an `Animatable<Object>` is not a tween of one fixed type.
-  if (
-    built === undefined ||
-    built.typeParams.length < (type.args ?? []).length
-  ) {
+  const wantedArgs = (type.args ?? []).filter(
+    (arg) => !(arg.kind === 'named' && arg.name === ANY_VALUE),
+  );
+  if (built === undefined || built.typeParams.length < wantedArgs.length) {
     return null;
   }
   // `ValueNotifier<int>` builds with an int: what the class is generic over
@@ -182,6 +184,9 @@ const ANIMATION_TYPES: ReadonlySet<string> = new Set([
   'ValueListenable',
 ]);
 
+// Dart's top type: a prop asking for one takes whatever it is given.
+const ANY_VALUE = 'Object';
+
 // A key is written as the text or number that tells one item from another;
 // the compiler makes the Key itself.
 const KEY_TYPES: ReadonlySet<string> = new Set([
@@ -232,8 +237,14 @@ const attrValue = (
         : literal(`"${value}"`);
     }
     case 'named': {
-      if (KEY_TYPES.has(type.name)) {
+      if (KEY_TYPES.has(type.name) || type.name === ANY_VALUE) {
         return literal('"example"');
+      }
+      // A widget asked for by name is written as itself: `CupertinoTabBar`
+      // is a tag, not a value to construct.
+      const asWidget = context.widgetExamples.get(type.name);
+      if (asWidget !== undefined) {
+        return literal(`{${asWidget}}`);
       }
       if (ANIMATION_TYPES.has(type.name)) {
         return animationValue(type, context);
@@ -263,7 +274,13 @@ const attrValue = (
       return ownedValue(type.name, context) ?? builtValue(type, context);
     }
     case 'function': {
-      if (type.returnType.kind === 'void') {
+      // What a callback answers with is the same whether or not it may be
+      // null, and a Future is that value awaited.
+      const answers =
+        type.returnType.kind === 'nullable'
+          ? type.returnType.inner
+          : type.returnType;
+      if (answers.kind === 'void') {
         return literal('{() => {}}');
       }
       // A typedef that takes named parameters is not satisfied by the
@@ -271,26 +288,35 @@ const attrValue = (
       if (type.params.some((param) => param.named)) {
         return null;
       }
-      if (type.returnType.kind === 'widget') {
+      if (answers.kind === 'widget') {
         return literal('{() => <Text>Content</Text>}');
       }
       // Any other callback answers with a value, and a value is exactly what
       // this function knows how to make: the callback is written around it.
-      const answer = attrValue(type.returnType, context, 'expression');
-      return answer === null
-        ? null
-        : {
-            value: `{() => ${braced(answer.value)}}`,
-            ...(answer.binding === undefined
-              ? {}
-              : { binding: answer.binding }),
-          };
+      const awaited = answers.kind === 'future' ? answers.item : answers;
+      // A Future that carries nothing is awaited for what it does, so the
+      // callback that answers with one has nothing to write in its body.
+      if (awaited.kind === 'void') {
+        return literal('{async () => {}}');
+      }
+      const answer = attrValue(awaited, context, 'expression');
+      if (answer === null) {
+        return null;
+      }
+      const body = answers.kind === 'future' ? 'async () => ' : '() => ';
+      return {
+        value: `{${body}${braced(answer.value)}}`,
+        ...(answer.binding === undefined ? {} : { binding: answer.binding }),
+      };
     }
     // A generic value is whatever the example makes it: the widget's own
-    // type parameter follows what it is given.
+    // type parameter follows what it is given, and so does `Object`.
     case 'unknown':
+    case 'typeVar':
       return literal('"example"');
+    // A Dart set is written as the collection it is, the same as a list.
     case 'list':
+    case 'set':
       return literal('{[]}');
     case 'map':
       return type.key.kind === 'scalar' && type.key.name !== 'bool'

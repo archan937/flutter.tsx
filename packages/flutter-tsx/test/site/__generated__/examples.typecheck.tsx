@@ -33,15 +33,18 @@ import {
   AnimatedSlide,
   AnimatedSwitcher,
   AnimatedTheme,
+  AnnotatedRegion,
   AppBar,
   AppBarTheme,
   AppKitView,
   AspectRatio,
+  AssetImage,
   AutocompleteHighlightedOption,
   AutofillGroup,
   AutomaticKeepAlive,
   BackButton,
   BackButtonIcon,
+  BackButtonListener,
   BackdropGroup,
   Badge,
   BadgeTheme,
@@ -123,6 +126,7 @@ import {
   CupertinoPicker,
   CupertinoPickerDefaultSelectionOverlay,
   CupertinoPopupSurface,
+  CupertinoRadio,
   CupertinoScrollbar,
   CupertinoSearchTextField,
   CupertinoSheetTransition,
@@ -196,6 +200,7 @@ import {
   EnableWidgetInspectorScope,
   EndDrawerButton,
   EndDrawerButtonIcon,
+  ErrorWidget,
   ExcludeFocus,
   ExcludeFocusTraversal,
   ExcludeSemantics,
@@ -206,6 +211,7 @@ import {
   ExpansionPanelList,
   ExpansionTile,
   ExpansionTileTheme,
+  FadeInImage,
   FadeTransition,
   FilledButton,
   FilledButtonTheme,
@@ -234,6 +240,7 @@ import {
   GridTile,
   GridTileBar,
   GridView,
+  Hero,
   HeroController,
   HeroControllerScope,
   HeroMode,
@@ -244,6 +251,8 @@ import {
   IconTheme,
   IgnoreBaseline,
   IgnorePointer,
+  Image,
+  ImageIcon,
   IndexedSemantics,
   IndexedStack,
   Ink,
@@ -261,6 +270,7 @@ import {
   KeyedSubtree,
   LayerLink,
   LayoutBuilder,
+  LayoutId,
   LexicalFocusOrder,
   LicensePage,
   LimitedBox,
@@ -269,7 +279,9 @@ import {
   ListTile,
   ListTileTheme,
   ListView,
+  ListWheelChildBuilderDelegate,
   ListWheelScrollView,
+  ListWheelViewport,
   ListenableBuilder,
   Listener,
   Locale,
@@ -346,7 +358,10 @@ import {
   PreferredSize,
   PrimaryScrollController,
   ProgressIndicatorTheme,
+  Radio,
   RadioGroup,
+  RadioListTile,
+  RadioMenuButton,
   RadioTheme,
   RangeSlider,
   RangeValues,
@@ -360,6 +375,7 @@ import {
   RawMenuAnchorGroup,
   RawScrollbar,
   RawTooltip,
+  RefreshIndicator,
   RefreshProgressIndicator,
   RelativePositionedTransition,
   RenderAbsorbPointer,
@@ -392,6 +408,7 @@ import {
   SearchBar,
   SearchBarTheme,
   SearchViewTheme,
+  SegmentedButton,
   SegmentedButtonTheme,
   SelectableRegion,
   SelectableRegionState,
@@ -421,16 +438,21 @@ import {
   SliverAnimatedList,
   SliverAnimatedOpacity,
   SliverAppBar,
+  SliverChildBuilderDelegate,
   SliverConstrainedCrossAxis,
   SliverCrossAxisExpanded,
   SliverCrossAxisGroup,
   SliverEnsureSemantics,
   SliverFadeTransition,
   SliverFillRemaining,
+  SliverFillViewport,
+  SliverFixedExtentList,
   SliverFloatingHeader,
+  SliverGrid,
   SliverGridDelegateWithFixedCrossAxisCount,
   SliverIgnorePointer,
   SliverLayoutBuilder,
+  SliverList,
   SliverMainAxisGroup,
   SliverOffstage,
   SliverOpacity,
@@ -438,11 +460,13 @@ import {
   SliverOverlapAbsorberHandle,
   SliverOverlapInjector,
   SliverPadding,
+  SliverPrototypeExtentList,
   SliverReorderableList,
   SliverResizingHeader,
   SliverSafeArea,
   SliverSemantics,
   SliverToBoxAdapter,
+  SliverVariedExtentList,
   SliverVisibility,
   SnackBar,
   SnackBarAction,
@@ -505,8 +529,10 @@ import {
   TwoDimensionalScrollable,
   UiKitView,
   UnconstrainedBox,
+  UndoHistory,
   UnmanagedRestorationScope,
   UserAccountsDrawerHeader,
+  ValueListenableBuilder,
   ValueNotifier,
   VerticalDivider,
   ViewAnchor,
@@ -515,6 +541,7 @@ import {
   Visibility,
   WidgetToRenderBoxAdapter,
   WidgetsApp,
+  WillPopScope,
   Wrap,
   YearPicker,
   tween,
@@ -730,6 +757,12 @@ export const AnimatedThemeExample = () => {
   );
 };
 
+export const AnnotatedRegionExample = () => (
+  <AnnotatedRegion value="example">
+    <Text>Content</Text>
+  </AnnotatedRegion>
+);
+
 export const AppBarExample = () => <AppBar />;
 
 export const AppBarThemeExample = () => (
@@ -767,6 +800,12 @@ export const AutomaticKeepAliveExample = () => (
 export const BackButtonExample = () => <BackButton />;
 
 export const BackButtonIconExample = () => <BackButtonIcon />;
+
+export const BackButtonListenerExample = () => (
+  <BackButtonListener onBackButtonPressed={async () => true}>
+    <Text>Content</Text>
+  </BackButtonListener>
+);
 
 export const BackdropGroupExample = () => (
   <BackdropGroup>
@@ -1215,6 +1254,8 @@ export const CupertinoPopupSurfaceExample = () => (
   </CupertinoPopupSurface>
 );
 
+export const CupertinoRadioExample = () => <CupertinoRadio value="example" />;
+
 export const CupertinoScrollbarExample = () => (
   <CupertinoScrollbar>
     <Text>Content</Text>
@@ -1628,6 +1669,8 @@ export const EndDrawerButtonExample = () => <EndDrawerButton />;
 
 export const EndDrawerButtonIconExample = () => <EndDrawerButtonIcon />;
 
+export const ErrorWidgetExample = () => <ErrorWidget exception="example" />;
+
 export const ExcludeFocusExample = () => (
   <ExcludeFocus>
     <Text>Content</Text>
@@ -1679,6 +1722,13 @@ export const ExpansionTileThemeExample = () => (
   <ExpansionTileTheme data={{}}>
     <Text>Content</Text>
   </ExpansionTileTheme>
+);
+
+export const FadeInImageExample = () => (
+  <FadeInImage
+    placeholder={new AssetImage('example')}
+    image={new AssetImage('example')}
+  />
 );
 
 export const FadeTransitionExample = () => {
@@ -1842,6 +1892,12 @@ export const GridViewExample = () => (
   </GridView>
 );
 
+export const HeroExample = () => (
+  <Hero tag="example">
+    <Text>Content</Text>
+  </Hero>
+);
+
 export const HeroControllerScopeExample = () => {
   const heroController = new HeroController();
 
@@ -1890,6 +1946,12 @@ export const IgnorePointerExample = () => (
   <IgnorePointer>
     <Text>Content</Text>
   </IgnorePointer>
+);
+
+export const ImageExample = () => <Image image={new AssetImage('example')} />;
+
+export const ImageIconExample = () => (
+  <ImageIcon image={new AssetImage('example')} />
 );
 
 export const IndexedSemanticsExample = () => (
@@ -1987,6 +2049,12 @@ export const LayoutBuilderExample = () => (
   <LayoutBuilder builder={() => <Text>Content</Text>} />
 );
 
+export const LayoutIdExample = () => (
+  <LayoutId id="example">
+    <Text>Content</Text>
+  </LayoutId>
+);
+
 export const LicensePageExample = () => <LicensePage />;
 
 export const LimitedBoxExample = () => (
@@ -2024,6 +2092,21 @@ export const ListWheelScrollViewExample = () => (
     <Text>Item 1</Text>
     <Text>Item 2</Text>
   </ListWheelScrollView>
+);
+
+export const ListWheelViewportExample = () => (
+  <ListWheelViewport
+    itemExtent={1}
+    offset={
+      new ScrollPositionWithSingleContext({
+        physics: {},
+        context: new ScrollableState(),
+      })
+    }
+    childDelegate={
+      new ListWheelChildBuilderDelegate({ builder: () => <Text>Content</Text> })
+    }
+  />
 );
 
 export const ListenableBuilderExample = () => {
@@ -2431,10 +2514,20 @@ export const ProgressIndicatorThemeExample = () => (
   </ProgressIndicatorTheme>
 );
 
+export const RadioExample = () => <Radio value="example" />;
+
 export const RadioGroupExample = () => (
   <RadioGroup onChanged={() => {}}>
     <Text>Content</Text>
   </RadioGroup>
+);
+
+export const RadioListTileExample = () => <RadioListTile value="example" />;
+
+export const RadioMenuButtonExample = () => (
+  <RadioMenuButton value="example" groupValue="example" onChanged={() => {}}>
+    <Text>Content</Text>
+  </RadioMenuButton>
 );
 
 export const RadioThemeExample = () => (
@@ -2515,6 +2608,12 @@ export const RawTooltipExample = () => (
   >
     <Text>Content</Text>
   </RawTooltip>
+);
+
+export const RefreshIndicatorExample = () => (
+  <RefreshIndicator onRefresh={async () => {}}>
+    <Text>Content</Text>
+  </RefreshIndicator>
 );
 
 export const RefreshProgressIndicatorExample = () => (
@@ -2674,6 +2773,10 @@ export const SearchViewThemeExample = () => (
   <SearchViewTheme data={{}}>
     <Text>Content</Text>
   </SearchViewTheme>
+);
+
+export const SegmentedButtonExample = () => (
+  <SegmentedButton segments={[]} selected={[]} />
 );
 
 export const SegmentedButtonThemeExample = () => (
@@ -2877,16 +2980,44 @@ export const SliverFillRemainingExample = () => (
   </SliverFillRemaining>
 );
 
+export const SliverFillViewportExample = () => (
+  <SliverFillViewport
+    delegate={new SliverChildBuilderDelegate(() => <Text>Content</Text>)}
+  />
+);
+
+export const SliverFixedExtentListExample = () => (
+  <SliverFixedExtentList
+    delegate={new SliverChildBuilderDelegate(() => <Text>Content</Text>)}
+    itemExtent={1}
+  />
+);
+
 export const SliverFloatingHeaderExample = () => (
   <SliverFloatingHeader>
     <Text>Content</Text>
   </SliverFloatingHeader>
 );
 
+export const SliverGridExample = () => (
+  <SliverGrid
+    delegate={new SliverChildBuilderDelegate(() => <Text>Content</Text>)}
+    gridDelegate={
+      new SliverGridDelegateWithFixedCrossAxisCount({ crossAxisCount: 8 })
+    }
+  />
+);
+
 export const SliverIgnorePointerExample = () => <SliverIgnorePointer />;
 
 export const SliverLayoutBuilderExample = () => (
   <SliverLayoutBuilder builder={() => <Text>Content</Text>} />
+);
+
+export const SliverListExample = () => (
+  <SliverList
+    delegate={new SliverChildBuilderDelegate(() => <Text>Content</Text>)}
+  />
 );
 
 export const SliverMainAxisGroupExample = () => (
@@ -2910,6 +3041,13 @@ export const SliverOverlapInjectorExample = () => {
 };
 
 export const SliverPaddingExample = () => <SliverPadding padding="infinity" />;
+
+export const SliverPrototypeExtentListExample = () => (
+  <SliverPrototypeExtentList
+    delegate={new SliverChildBuilderDelegate(() => <Text>Content</Text>)}
+    prototypeItem={<Text>Content</Text>}
+  />
+);
 
 export const SliverReorderableListExample = () => (
   <SliverReorderableList
@@ -2936,6 +3074,13 @@ export const SliverToBoxAdapterExample = () => (
   <SliverToBoxAdapter>
     <Text>Content</Text>
   </SliverToBoxAdapter>
+);
+
+export const SliverVariedExtentListExample = () => (
+  <SliverVariedExtentList
+    delegate={new SliverChildBuilderDelegate(() => <Text>Content</Text>)}
+    itemExtentBuilder={() => 1}
+  />
 );
 
 export const SliverVisibilityExample = () => (
@@ -3230,6 +3375,20 @@ export const UnconstrainedBoxExample = () => (
   </UnconstrainedBox>
 );
 
+export const UndoHistoryExample = () => {
+  const focusNode = new FocusNode();
+
+  return (
+    <UndoHistory
+      value={new ValueNotifier('example')}
+      onTriggered={() => {}}
+      focusNode={focusNode}
+    >
+      <Text>Content</Text>
+    </UndoHistory>
+  );
+};
+
 export const UnmanagedRestorationScopeExample = () => (
   <UnmanagedRestorationScope>
     <Text>Content</Text>
@@ -3242,6 +3401,19 @@ export const UserAccountsDrawerHeaderExample = () => (
     accountEmail={<Text>Content</Text>}
   />
 );
+
+export const ValueListenableBuilderExample = () => {
+  const animation = useAnimation({ duration: 600 });
+
+  return (
+    <ValueListenableBuilder
+      valueListenable={tween(animation, { from: 'example', to: 'example' })}
+      builder={() => <Text>Content</Text>}
+    >
+      <Text>Content</Text>
+    </ValueListenableBuilder>
+  );
+};
 
 export const VerticalDividerExample = () => <VerticalDivider />;
 
@@ -3276,6 +3448,12 @@ export const WidgetToRenderBoxAdapterExample = () => (
 
 export const WidgetsAppExample = () => (
   <WidgetsApp color="activeBlue" builder={() => <Text>Content</Text>} />
+);
+
+export const WillPopScopeExample = () => (
+  <WillPopScope onWillPop={async () => true}>
+    <Text>Content</Text>
+  </WillPopScope>
 );
 
 export const WrapExample = () => (

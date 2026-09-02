@@ -3259,7 +3259,7 @@ export declare const AssetImage: new (
 
 export interface AsyncSnapshot {
   readonly __fsxBrand?: { readonly AsyncSnapshot: true };
-  readonly error: Object;
+  readonly error: ObjectValue;
   readonly hasData: boolean;
   readonly hasError: boolean;
   readonly stackTrace: StackTrace;
@@ -4459,7 +4459,7 @@ export interface CupertinoPage {
     readonly RouteSettings: true;
   };
   readonly allowSnapshotting: boolean;
-  readonly arguments: Object;
+  readonly arguments: ObjectValue;
   readonly canPop: boolean;
   readonly fullscreenDialog: boolean;
   readonly key: LocalKey;
@@ -4479,7 +4479,7 @@ export declare const CupertinoPage: new (options: {
   onPopInvoked?: (didPop: boolean, result: unknown | null) => void;
   key?: LocalKey;
   name?: string;
-  arguments?: Object;
+  arguments?: ObjectValue;
   restorationId?: string;
 }) => CupertinoPage;
 
@@ -4911,7 +4911,7 @@ export declare const DatePickerThemeData: new (options?: {
   rangeSelectionBackgroundColor?: ColorValue;
   rangeSelectionOverlayColor?: WidgetStatePropertyValue;
   dividerColor?: ColorValue;
-  inputDecorationTheme?: Object;
+  inputDecorationTheme?: ObjectValue;
   cancelButtonStyle?: ButtonStyleValue;
   confirmButtonStyle?: ButtonStyleValue;
   locale?: Locale;
@@ -5004,7 +5004,7 @@ export interface DelayedMultiDragGestureRecognizer {
 
 export declare const DelayedMultiDragGestureRecognizer: new (options?: {
   delay?: DurationValue;
-  debugOwner?: Object;
+  debugOwner?: ObjectValue;
   supportedDevices?: PointerDeviceKind[];
   allowedButtonsFilter?: (buttons: number) => boolean;
 }) => DelayedMultiDragGestureRecognizer;
@@ -5327,7 +5327,7 @@ export interface DoubleTapGestureRecognizer {
 }
 
 export declare const DoubleTapGestureRecognizer: new (options?: {
-  debugOwner?: Object;
+  debugOwner?: ObjectValue;
   supportedDevices?: PointerDeviceKind[];
   allowedButtonsFilter?: (buttons: number) => boolean;
 }) => DoubleTapGestureRecognizer;
@@ -5546,7 +5546,7 @@ export interface DropdownMenuThemeData {
 
 export declare const DropdownMenuThemeData: new (options?: {
   textStyle?: TextStyleValue;
-  inputDecorationTheme?: Object;
+  inputDecorationTheme?: ObjectValue;
   menuStyle?: MenuStyleValue;
   disabledColor?: ColorValue;
 }) => DropdownMenuThemeData;
@@ -5810,7 +5810,7 @@ export interface ExpansionPanelRadio {
 }
 
 export declare const ExpansionPanelRadio: new (options: {
-  value: Object;
+  value: ObjectValue;
   headerBuilder: (context: BuildContext, isExpanded: boolean) => FlutterElement;
   body: FlutterElement;
   canTapOnHeader?: boolean;
@@ -6409,7 +6409,7 @@ export declare const ForcePressGestureRecognizer: new (options?: {
     pressureMax: number,
     pressure: number,
   ) => number;
-  debugOwner?: Object;
+  debugOwner?: ObjectValue;
   supportedDevices?: PointerDeviceKind[];
   allowedButtonsFilter?: (buttons: number) => boolean;
 }) => ForcePressGestureRecognizer;
@@ -6541,10 +6541,12 @@ export interface GlobalObjectKey {
     readonly Key: true;
   };
   readonly currentContext: BuildContext;
-  readonly value: Object;
+  readonly value: ObjectValue;
 }
 
-export declare const GlobalObjectKey: new (value: Object) => GlobalObjectKey;
+export declare const GlobalObjectKey: new (
+  value: ObjectValue,
+) => GlobalObjectKey;
 
 export interface Gradient {
   readonly __fsxBrand?: { readonly Gradient: true; readonly Shader: true };
@@ -6640,7 +6642,7 @@ export interface HorizontalDragGestureRecognizer {
 }
 
 export declare const HorizontalDragGestureRecognizer: new (options?: {
-  debugOwner?: Object;
+  debugOwner?: ObjectValue;
   supportedDevices?: PointerDeviceKind[];
   allowedButtonsFilter?: (buttons: number) => boolean;
 }) => HorizontalDragGestureRecognizer;
@@ -6658,7 +6660,7 @@ export interface HorizontalMultiDragGestureRecognizer {
 }
 
 export declare const HorizontalMultiDragGestureRecognizer: new (options?: {
-  debugOwner?: Object;
+  debugOwner?: ObjectValue;
   supportedDevices?: PointerDeviceKind[];
   allowedButtonsFilter?: (buttons: number) => boolean;
 }) => HorizontalMultiDragGestureRecognizer;
@@ -6789,7 +6791,7 @@ export interface ImmediateMultiDragGestureRecognizer {
 }
 
 export declare const ImmediateMultiDragGestureRecognizer: new (options?: {
-  debugOwner?: Object;
+  debugOwner?: ObjectValue;
   supportedDevices?: PointerDeviceKind[];
   allowedButtonsFilter?: (buttons: number) => boolean;
 }) => ImmediateMultiDragGestureRecognizer;
@@ -6811,7 +6813,7 @@ export interface InheritedElement {
   readonly dirty: boolean;
   readonly mounted: boolean;
   readonly size: SizeValue;
-  readonly slot: Object;
+  readonly slot: ObjectValue;
 }
 
 export declare const InheritedElement: new (
@@ -6847,7 +6849,7 @@ export interface InheritedModelElement {
   readonly dirty: boolean;
   readonly mounted: boolean;
   readonly size: SizeValue;
-  readonly slot: Object;
+  readonly slot: ObjectValue;
 }
 
 export declare const InheritedModelElement: new (
@@ -7220,7 +7222,7 @@ export interface LeafRenderObjectElement {
   readonly dirty: boolean;
   readonly mounted: boolean;
   readonly size: SizeValue;
-  readonly slot: Object;
+  readonly slot: ObjectValue;
 }
 
 export declare const LeafRenderObjectElement: new (
@@ -7396,7 +7398,7 @@ export interface ListWheelElement {
   readonly mounted: boolean;
   readonly renderObject: RenderListWheelViewport;
   readonly size: SizeValue;
-  readonly slot: Object;
+  readonly slot: ObjectValue;
 }
 
 export declare const ListWheelElement: new (
@@ -7563,7 +7565,7 @@ export declare const LongPressGestureRecognizer: new (options?: {
   duration?: DurationValue;
   postAcceptSlopTolerance?: number;
   supportedDevices?: PointerDeviceKind[];
-  debugOwner?: Object;
+  debugOwner?: ObjectValue;
   allowedButtonsFilter?: (buttons: number) => boolean;
 }) => LongPressGestureRecognizer;
 
@@ -7706,7 +7708,7 @@ export interface MaterialPage {
     readonly RouteSettings: true;
   };
   readonly allowSnapshotting: boolean;
-  readonly arguments: Object;
+  readonly arguments: ObjectValue;
   readonly canPop: boolean;
   readonly fullscreenDialog: boolean;
   readonly key: LocalKey;
@@ -7724,7 +7726,7 @@ export declare const MaterialPage: new (options: {
   canPop?: boolean;
   onPopInvoked?: (didPop: boolean, result: unknown | null) => void;
   name?: string;
-  arguments?: Object;
+  arguments?: ObjectValue;
   restorationId?: string;
 }) => MaterialPage;
 
@@ -8203,7 +8205,7 @@ export interface MultiChildRenderObjectElement {
   readonly dirty: boolean;
   readonly mounted: boolean;
   readonly size: SizeValue;
-  readonly slot: Object;
+  readonly slot: ObjectValue;
 }
 
 export declare const MultiChildRenderObjectElement: new (
@@ -8233,7 +8235,7 @@ export interface MultiTapGestureRecognizer {
 
 export declare const MultiTapGestureRecognizer: new (options?: {
   longTapDelay?: DurationValue;
-  debugOwner?: Object;
+  debugOwner?: ObjectValue;
   supportedDevices?: PointerDeviceKind[];
   allowedButtonsFilter?: (buttons: number) => boolean;
 }) => MultiTapGestureRecognizer;
@@ -8444,10 +8446,10 @@ export interface ObjectKey {
     readonly LocalKey: true;
     readonly ObjectKey: true;
   };
-  readonly value: Object;
+  readonly value: ObjectValue;
 }
 
-export declare const ObjectKey: new (value: Object) => ObjectKey;
+export declare const ObjectKey: new (value: ObjectValue) => ObjectKey;
 
 export interface ObstructingPreferredSizeWidget {
   readonly __fsxBrand?: {
@@ -8860,7 +8862,7 @@ export interface PanGestureRecognizer {
 }
 
 export declare const PanGestureRecognizer: new (options?: {
-  debugOwner?: Object;
+  debugOwner?: ObjectValue;
   supportedDevices?: PointerDeviceKind[];
   allowedButtonsFilter?: (buttons: number) => boolean;
 }) => PanGestureRecognizer;
@@ -8883,7 +8885,7 @@ export interface ParentDataElement {
   readonly dirty: boolean;
   readonly mounted: boolean;
   readonly size: SizeValue;
-  readonly slot: Object;
+  readonly slot: ObjectValue;
 }
 
 export declare const ParentDataElement: new (
@@ -10347,13 +10349,13 @@ export interface RawMenuOverlayInfo {
   readonly anchorRect: RectValue;
   readonly overlaySize: SizeValue;
   readonly position: OffsetValue;
-  readonly tapRegionGroupId: Object;
+  readonly tapRegionGroupId: ObjectValue;
 }
 
 export declare const RawMenuOverlayInfo: new (options: {
   anchorRect: RectValue;
   overlaySize: SizeValue;
-  tapRegionGroupId: Object;
+  tapRegionGroupId: ObjectValue;
   position?: OffsetValue;
 }) => RawMenuOverlayInfo;
 
@@ -11642,7 +11644,7 @@ export interface RenderObjectToWidgetElement {
   readonly mounted: boolean;
   readonly renderObject: RenderObjectWithChildMixin;
   readonly size: SizeValue;
-  readonly slot: Object;
+  readonly slot: ObjectValue;
 }
 
 export declare const RenderObjectToWidgetElement: new (
@@ -12532,7 +12534,7 @@ export declare const RenderTapRegion: new (options?: {
   onTapUpOutside?: (event: PointerUpEvent) => void;
   onTapUpInside?: (event: PointerUpEvent) => void;
   behavior?: HitTestBehavior;
-  groupId?: Object;
+  groupId?: ObjectValue;
   debugLabel?: string;
 }) => RenderTapRegion;
 
@@ -13100,7 +13102,7 @@ export interface RootElement {
   readonly dirty: boolean;
   readonly mounted: boolean;
   readonly size: SizeValue;
-  readonly slot: Object;
+  readonly slot: ObjectValue;
 }
 
 export declare const RootElement: new (widget: RootWidget) => RootElement;
@@ -13250,7 +13252,7 @@ export interface RouteInformation {
 export declare const RouteInformation: new (options?: {
   location?: string;
   uri?: Uri;
-  state?: Object;
+  state?: ObjectValue;
 }) => RouteInformation;
 
 export interface RouteInformationParser {
@@ -13276,13 +13278,13 @@ export declare const RouteObserver: new () => RouteObserver;
 
 export interface RouteSettings {
   readonly __fsxBrand?: { readonly RouteSettings: true };
-  readonly arguments: Object;
+  readonly arguments: ObjectValue;
   readonly name: string;
 }
 
 export declare const RouteSettings: new (options?: {
   name?: string;
-  arguments?: Object;
+  arguments?: ObjectValue;
 }) => RouteSettings;
 
 export interface RouterDelegate {
@@ -13357,7 +13359,7 @@ export interface ScaleGestureRecognizer {
 }
 
 export declare const ScaleGestureRecognizer: new (options?: {
-  debugOwner?: Object;
+  debugOwner?: ObjectValue;
   supportedDevices?: PointerDeviceKind[];
   allowedButtonsFilter?: (buttons: number) => boolean;
   dragStartBehavior?: DragStartBehavior;
@@ -13965,8 +13967,8 @@ export declare const SemanticsProperties: new (options?: {
   maxValueLength?: number;
   currentValueLength?: number;
   identifier?: string;
-  traversalParentIdentifier?: Object;
-  traversalChildIdentifier?: Object;
+  traversalParentIdentifier?: ObjectValue;
+  traversalChildIdentifier?: ObjectValue;
   label?: string;
   attributedLabel?: AttributedString;
   value?: string;
@@ -14045,7 +14047,7 @@ export interface SerialTapGestureRecognizer {
 }
 
 export declare const SerialTapGestureRecognizer: new (options?: {
-  debugOwner?: Object;
+  debugOwner?: ObjectValue;
   supportedDevices?: PointerDeviceKind[];
   allowedButtonsFilter?: (buttons: number) => boolean;
 }) => SerialTapGestureRecognizer;
@@ -14193,7 +14195,7 @@ export interface SingleChildRenderObjectElement {
   readonly dirty: boolean;
   readonly mounted: boolean;
   readonly size: SizeValue;
-  readonly slot: Object;
+  readonly slot: ObjectValue;
 }
 
 export declare const SingleChildRenderObjectElement: new (
@@ -14512,7 +14514,7 @@ export interface SliverMultiBoxAdaptorElement {
   readonly estimatedChildCount: number;
   readonly mounted: boolean;
   readonly size: SizeValue;
-  readonly slot: Object;
+  readonly slot: ObjectValue;
 }
 
 export declare const SliverMultiBoxAdaptorElement: new (
@@ -14583,7 +14585,7 @@ export interface SlottedRenderObjectElement {
   readonly dirty: boolean;
   readonly mounted: boolean;
   readonly size: SizeValue;
-  readonly slot: Object;
+  readonly slot: ObjectValue;
 }
 
 export declare const SlottedRenderObjectElement: new (
@@ -14785,7 +14787,7 @@ export interface StatefulElement {
   readonly dirty: boolean;
   readonly mounted: boolean;
   readonly size: SizeValue;
-  readonly slot: Object;
+  readonly slot: ObjectValue;
 }
 
 export declare const StatefulElement: new (
@@ -14817,7 +14819,7 @@ export interface StatelessElement {
   readonly dirty: boolean;
   readonly mounted: boolean;
   readonly size: SizeValue;
-  readonly slot: Object;
+  readonly slot: ObjectValue;
 }
 
 export declare const StatelessElement: new (
@@ -15093,7 +15095,7 @@ export interface TapAndDragGestureRecognizer {
 }
 
 export declare const TapAndDragGestureRecognizer: new (options?: {
-  debugOwner?: Object;
+  debugOwner?: ObjectValue;
   supportedDevices?: PointerDeviceKind[];
 }) => TapAndDragGestureRecognizer;
 
@@ -15111,7 +15113,7 @@ export interface TapAndHorizontalDragGestureRecognizer {
 }
 
 export declare const TapAndHorizontalDragGestureRecognizer: new (options?: {
-  debugOwner?: Object;
+  debugOwner?: ObjectValue;
   supportedDevices?: PointerDeviceKind[];
 }) => TapAndHorizontalDragGestureRecognizer;
 
@@ -15129,7 +15131,7 @@ export interface TapAndPanGestureRecognizer {
 }
 
 export declare const TapAndPanGestureRecognizer: new (options?: {
-  debugOwner?: Object;
+  debugOwner?: ObjectValue;
   supportedDevices?: PointerDeviceKind[];
 }) => TapAndPanGestureRecognizer;
 
@@ -15274,7 +15276,7 @@ export interface TapGestureRecognizer {
 }
 
 export declare const TapGestureRecognizer: new (options?: {
-  debugOwner?: Object;
+  debugOwner?: ObjectValue;
   supportedDevices?: PointerDeviceKind[];
   allowedButtonsFilter?: (buttons: number) => boolean;
   preAcceptSlopTolerance?: number;
@@ -15610,7 +15612,7 @@ export declare const ThemeData: new (options?: {
   applyElevationOverlayColor?: boolean;
   cupertinoOverrideTheme?: NoDefaultCupertinoThemeData;
   extensions?: ThemeExtension[];
-  inputDecorationTheme?: Object;
+  inputDecorationTheme?: ObjectValue;
   materialTapTargetSize?: MaterialTapTargetSize;
   pageTransitionsTheme?: PageTransitionsTheme;
   platform?: TargetPlatform;
@@ -15648,7 +15650,7 @@ export declare const ThemeData: new (options?: {
   textTheme?: TextTheme;
   typography?: Typography;
   actionIconTheme?: ActionIconThemeDataValue;
-  appBarTheme?: Object;
+  appBarTheme?: ObjectValue;
   badgeTheme?: BadgeThemeDataValue;
   bannerTheme?: MaterialBannerThemeDataValue;
   bottomAppBarTheme?: BottomAppBarThemeDataValue;
@@ -15790,7 +15792,7 @@ export declare const TimePickerThemeData: new (options?: {
   hourMinuteShape?: ShapeBorderValue;
   hourMinuteTextColor?: ColorValue;
   hourMinuteTextStyle?: TextStyleValue;
-  inputDecorationTheme?: Object;
+  inputDecorationTheme?: ObjectValue;
   padding?: EdgeInsetsGeometryValue;
   shape?: ShapeBorderValue;
   timeSelectorSeparatorColor?: WidgetStatePropertyValue;
@@ -16277,7 +16279,7 @@ export interface VerticalDragGestureRecognizer {
 }
 
 export declare const VerticalDragGestureRecognizer: new (options?: {
-  debugOwner?: Object;
+  debugOwner?: ObjectValue;
   supportedDevices?: PointerDeviceKind[];
   allowedButtonsFilter?: (buttons: number) => boolean;
 }) => VerticalDragGestureRecognizer;
@@ -16295,7 +16297,7 @@ export interface VerticalMultiDragGestureRecognizer {
 }
 
 export declare const VerticalMultiDragGestureRecognizer: new (options?: {
-  debugOwner?: Object;
+  debugOwner?: ObjectValue;
   supportedDevices?: PointerDeviceKind[];
   allowedButtonsFilter?: (buttons: number) => boolean;
 }) => VerticalMultiDragGestureRecognizer;
@@ -18420,7 +18422,7 @@ export interface DatePickerThemeDataObject {
    * and vertical divider when the dialog is in landscape orientation.
    */
   dividerColor?: ColorValue;
-  inputDecorationTheme?: Object;
+  inputDecorationTheme?: ObjectValue;
   /**
    * Overrides the default style of the cancel button of a [DatePickerDialog].
    */
@@ -18611,7 +18613,7 @@ export interface DropdownMenuThemeDataObject {
    * Overrides the default value for [DropdownMenu.textStyle].
    */
   textStyle?: TextStyleValue;
-  inputDecorationTheme?: Object;
+  inputDecorationTheme?: ObjectValue;
   /**
    * Overrides the menu's default style in a [DropdownMenu].
    *
@@ -31508,6 +31510,8 @@ export interface NavigationRailThemeDataObject {
 export type NavigationRailThemeDataValue =
   NavigationRailThemeData | NavigationRailThemeDataObject;
 
+export type ObjectValue = Object | string | number | boolean;
+
 export type OffsetValue = Offset | 'infinite' | 'zero';
 
 export type OutlinedBorderValue = OutlinedBorder | 'none';
@@ -33254,7 +33258,7 @@ export interface RouteSettingsObject {
    *
    * May be used when building the route, e.g. in [Navigator.onGenerateRoute].
    */
-  arguments?: Object;
+  arguments?: ObjectValue;
 }
 
 export type RouteSettingsValue = RouteSettings | RouteSettingsObject;
@@ -35102,7 +35106,7 @@ export interface TimePickerThemeDataObject {
    * defaults to the overall theme's [TextTheme.displayMedium].
    */
   hourMinuteTextStyle?: TextStyleValue;
-  inputDecorationTheme?: Object;
+  inputDecorationTheme?: ObjectValue;
   /**
    * The padding around the time picker dialog when the entry mode is
    * [TimePickerEntryMode.dial] or [TimePickerEntryMode.dialOnly].
@@ -52964,7 +52968,7 @@ export interface CupertinoNavigationBarProps extends GestureProps {
    * To disable Hero transitions for this navigation bar, set
    * [transitionBetweenRoutes] to false.
    */
-  heroTag?: Object;
+  heroTag?: ObjectValue;
   /**
    * A widget to place at the bottom of the navigation bar.
    *
@@ -55139,7 +55143,7 @@ export interface CupertinoSliverNavigationBarProps extends GestureProps {
   brightness?: Brightness;
   padding?: EdgeInsetsDirectionalValue;
   transitionBetweenRoutes?: boolean;
-  heroTag?: Object;
+  heroTag?: ObjectValue;
   /**
    * Whether the nav bar should stretch to fill the over-scroll area.
    *
@@ -56383,7 +56387,7 @@ export const CupertinoTabView: FlutterComponent<CupertinoTabViewProps> =
  *  * <https://developer.apple.com/design/human-interface-guidelines/ios/controls/text-fields/>
  */
 export interface CupertinoTextFieldProps extends Omit<GestureProps, 'onClick'> {
-  groupId?: Object;
+  groupId?: ObjectValue;
   /**
    * Controls the text being edited.
    *
@@ -63306,7 +63310,7 @@ export interface DropdownMenuProps extends GestureProps {
    * Defaults to [TextAlign.start].
    */
   textAlign?: TextAlign;
-  inputDecorationTheme?: Object;
+  inputDecorationTheme?: ObjectValue;
   /**
    * The builder function used to create the [InputDecoration] passed to the text field.
    *
@@ -63683,7 +63687,7 @@ export interface DropdownMenuFormFieldProps extends GestureProps {
   keyboardType?: TextInputTypeValue;
   textStyle?: TextStyleValue;
   textAlign?: TextAlign;
-  inputDecorationTheme?: Object;
+  inputDecorationTheme?: ObjectValue;
   decorationBuilder?: (
     context: BuildContext,
     controller: MenuController,
@@ -64702,7 +64706,7 @@ export interface EditableTextProps extends GestureProps {
    *  * [TextFieldTapRegion], to give a [groupId] to a widget that is to be
    *    included in a [EditableText]'s tap region that has [groupId] set.
    */
-  groupId?: Object;
+  groupId?: ObjectValue;
   /**
    * Called for each tap down that occurs outside of the [TextFieldTapRegion]
    * group when the text field is focused.
@@ -65820,7 +65824,7 @@ export const EndDrawerButtonIcon: FlutterComponent<EndDrawerButtonIconProps> =
  *    handling in Flutter.
  */
 export interface ErrorWidgetProps extends GestureProps {
-  exception: Object;
+  exception: ObjectValue;
 }
 
 /**
@@ -68481,7 +68485,7 @@ export interface FloatingActionButtonProps extends Omit<
    * same tag). The Material Design specification recommends only using one
    * floating action button per screen.
    */
-  heroTag?: Object;
+  heroTag?: ObjectValue;
   /**
    * The z-coordinate at which to place this button relative to its parent.
    *
@@ -72412,7 +72416,7 @@ export interface HeroProps extends GestureProps {
    * the tag of a hero on a [PageRoute] that we're navigating to or from, then
    * a hero animation will be triggered.
    */
-  tag: Object;
+  tag: ObjectValue;
   /**
    * Defines how the destination hero's bounds change as it flies from the starting
    * route to the destination route.
@@ -72964,7 +72968,7 @@ export interface HtmlElementViewProps extends GestureProps {
   /**
    * Passed as the 2nd argument (i.e. `params`) of the registered view factory.
    */
-  creationParams?: Object;
+  creationParams?: ObjectValue;
   hitTestBehavior?: PlatformViewHitTestBehavior;
 }
 
@@ -77652,7 +77656,7 @@ export interface LayoutIdProps extends GestureProps {
    * The [id] needs to be unique among the children that the
    * [CustomMultiChildLayout] manages.
    */
-  id: Object;
+  id: ObjectValue;
 }
 
 /**
@@ -101411,8 +101415,8 @@ export interface SemanticsProps extends Omit<
   maxValueLength?: number;
   currentValueLength?: number;
   identifier?: string;
-  traversalParentIdentifier?: Object;
-  traversalChildIdentifier?: Object;
+  traversalParentIdentifier?: ObjectValue;
+  traversalChildIdentifier?: ObjectValue;
   label?: string;
   attributedLabel?: AttributedString;
   value?: string;
@@ -106525,8 +106529,8 @@ export interface SliverSemanticsProps extends Omit<
   maxValueLength?: number;
   currentValueLength?: number;
   identifier?: string;
-  traversalParentIdentifier?: Object;
-  traversalChildIdentifier?: Object;
+  traversalParentIdentifier?: ObjectValue;
+  traversalChildIdentifier?: ObjectValue;
   label?: string;
   attributedLabel?: AttributedString;
   value?: string;
@@ -111066,7 +111070,7 @@ export interface TapRegionProps extends GestureProps {
    *
    * If the group id is null, then only this region is hit tested.
    */
-  groupId?: Object;
+  groupId?: ObjectValue;
   /**
    * If true, then the group that this region belongs to will stop the
    * propagation of all events in the gesture arena.
@@ -111944,7 +111948,7 @@ export const TextButtonTheme: FlutterComponent<TextButtonThemeProps> =
  *  * Cookbook: [Focus and text fields](https://docs.flutter.dev/cookbook/forms/focus)
  */
 export interface TextFieldProps extends Omit<GestureProps, 'onClick'> {
-  groupId?: Object;
+  groupId?: ObjectValue;
   /**
    * Controls the text being edited.
    *
@@ -112659,7 +112663,7 @@ export interface TextFieldTapRegionProps extends GestureProps {
    *
    * If the group id is null, then only this region is hit tested.
    */
-  groupId?: Object;
+  groupId?: ObjectValue;
 }
 
 /**
@@ -112767,7 +112771,7 @@ export const TextFieldTapRegion: FlutterComponent<TextFieldTapRegionProps> =
  *  * Learn how to use a [TextEditingController] in one of our [cookbook recipes](https://docs.flutter.dev/cookbook/forms/text-field-changes#2-use-a-texteditingcontroller).
  */
 export interface TextFormFieldProps extends Omit<GestureProps, 'onClick'> {
-  groupId?: Object;
+  groupId?: ObjectValue;
   /**
    * Controls the text being edited.
    *

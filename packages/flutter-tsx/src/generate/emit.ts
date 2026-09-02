@@ -10,6 +10,7 @@ import type {
 import { DATE_FORMS } from '../derive/date-forms';
 import type { ChildrenSlot, SlotMap, WidgetSlots } from '../derive/slots';
 import {
+  ANY_VALUE_TYPE,
   deriveValueForms,
   EDGE_INSETS_TYPES,
   HEX_COLOR_TYPE,
@@ -413,6 +414,9 @@ const valueAliasBlock = (name: string, forms: ValueForms): string => {
   }
   if (name === HEX_COLOR_TYPE) {
     arms.push('`#${string}`');
+  }
+  if (name === ANY_VALUE_TYPE) {
+    arms.push('string', 'number', 'boolean');
   }
   const members = forms.constantMembers.get(name);
   if (members !== undefined) {

@@ -128,6 +128,7 @@ const constructionMap = (snapshot: ApiSnapshot): Map<string, Constructible> => {
 const synthesisContext = (
   snapshot: ApiSnapshot,
   forms: ValueForms,
+  widgetExamples: ReadonlyMap<string, string> = new Map(),
 ): SynthesisContext => {
   const enumValues: Record<string, string> = {};
   for (const entity of snapshot.entities) {
@@ -145,6 +146,7 @@ const synthesisContext = (
       snapshot.entities.filter(isOwnedValue).map((entity) => entity.name),
     ),
     construction: constructionMap(snapshot),
+    widgetExamples,
   };
 };
 
@@ -191,14 +193,52 @@ export interface SiteSections {
   generatedFiles: string[];
 }
 
+/** Each widget whose example is one self-contained tag, as that tag. */
+const widgetTags = (
+  snapshot: ApiSnapshot,
+  slots: SlotMap,
+  context: SynthesisContext,
+): Map<string, string> => {
+  const tags = new Map<string, string>();
+  for (const entity of snapshot.entities) {
+    const constructor =
+      entity.kind === 'widget'
+        ? entity.constructors.find((candidate) => candidate.name === '')
+        : undefined;
+    if (entity.kind !== 'widget' || constructor === undefined) {
+      continue;
+    }
+    const example = synthesizeTsx({
+      widgetName: entity.name,
+      params: constructor.params,
+      slots: slots[entity.name] ?? EMPTY_SLOTS,
+      context,
+      requiredOneOf: constructor.requiredOneOf,
+    });
+    // Only one that stands alone can be quoted inside another example: one
+    // with a binding needs a component around it, and there is none here.
+    if (example.complete && example.bindings.length === 0) {
+      tags.set(entity.name, example.tsx.replaceAll('\n', ' ').trim());
+    }
+  }
+  return tags;
+};
+
 export const buildSitePage = (
   snapshot: ApiSnapshot,
   slots: SlotMap,
   sections: SiteSections,
 ): SitePage => {
   const forms = deriveValueForms(snapshot);
-  const context = synthesisContext(snapshot, forms);
   const formNames = reachableValueFormNames(snapshot, forms);
+  // A prop may ask for a widget by name — `CupertinoTabScaffold` wants a
+  // `CupertinoTabBar` — and the way to write one is that widget's own
+  // example. They are synthesized once to be quoted by the second pass.
+  const context = synthesisContext(
+    snapshot,
+    forms,
+    widgetTags(snapshot, slots, synthesisContext(snapshot, forms)),
+  );
   const widgets: SiteWidget[] = [];
   const incompleteExamples: string[] = [];
 

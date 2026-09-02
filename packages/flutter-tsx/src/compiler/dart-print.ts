@@ -76,9 +76,15 @@ const inlineExpr = (expr: DartExpr): string => {
       );
     case 'list': {
       const constPrefix = expr.isConst ? 'const ' : '';
-      return expr.items.length === 0
-        ? `${constPrefix}[]`
-        : `${constPrefix}[${expr.items.map(inlineListItem).join(', ')}]`;
+      const [open, close] = expr.set === undefined ? ['[', ']'] : ['{', '}'];
+      if (expr.items.length === 0) {
+        // `{}` alone is a map, so an empty set says what it holds.
+        const held = expr.set?.itemType;
+        const typed = held === null || held === undefined ? '' : `<${held}>`;
+        return `${constPrefix}${typed}${open}${close}`;
+      }
+      const items = expr.items.map(inlineListItem).join(', ');
+      return `${constPrefix}${open}${items}${close}`;
     }
     // Never inline: the newlines force every enclosing call tall, which is
     // what dart format does with a block-bodied closure argument.
@@ -168,7 +174,8 @@ const printListTall = (
     return `${pad(childIndent)}${prefix}${value},`;
   });
   const constPrefix = expr.isConst ? 'const ' : '';
-  return `${constPrefix}[\n${lines.join('\n')}\n${pad(site.indent)}]`;
+  const [open, close] = expr.set === undefined ? ['[', ']'] : ['{', '}'];
+  return `${constPrefix}${open}\n${lines.join('\n')}\n${pad(site.indent)}${close}`;
 };
 
 const printBuilder = (

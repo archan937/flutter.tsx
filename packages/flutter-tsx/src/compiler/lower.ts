@@ -11,6 +11,7 @@ import { dartTypeOf as bareDartTypeOf } from '../derive/dart-types';
 import { DATE_FORMS, dateFormDart } from '../derive/date-forms';
 import type { SlotMap, WidgetSlots } from '../derive/slots';
 import {
+  ANY_VALUE_TYPE,
   deriveValueForms,
   EDGE_INSETS_TYPES,
   HEX_COLOR_TYPE,
@@ -814,7 +815,8 @@ const lowerString = (text: string, site: ValueSite): IrValue => {
   const { type, node, context } = site;
   if (
     type.kind === 'unknown' ||
-    (type.kind === 'scalar' && type.name === 'String')
+    (type.kind === 'scalar' && type.name === 'String') ||
+    (type.kind === 'named' && type.name === ANY_VALUE_TYPE)
   ) {
     return { kind: 'string', value: text };
   }
@@ -872,7 +874,8 @@ const lowerNumber = (text: string, site: ValueSite): IrValue => {
   const { type, node, context } = site;
   if (
     type.kind === 'unknown' ||
-    (type.kind === 'scalar' && NUMBER_SCALARS.has(type.name))
+    (type.kind === 'scalar' && NUMBER_SCALARS.has(type.name)) ||
+    (type.kind === 'named' && type.name === ANY_VALUE_TYPE)
   ) {
     return { kind: 'number', value: text };
   }
@@ -904,7 +907,8 @@ const lowerBoolean = (value: boolean, site: ValueSite): IrValue => {
   const { type, node, context } = site;
   if (
     type.kind === 'unknown' ||
-    (type.kind === 'scalar' && type.name === 'bool')
+    (type.kind === 'scalar' && type.name === 'bool') ||
+    (type.kind === 'named' && type.name === ANY_VALUE_TYPE)
   ) {
     return { kind: 'boolean', value };
   }
@@ -1254,25 +1258,29 @@ const lowerArrowFunction = (
     };
   }
   // `itemExtentBuilder={(index) => 48}` — a callback that answers with a
-  // value is that value, lowered against the type the callback declares.
-  if (!ts.isBlock(body) && type.returnType.kind !== 'void') {
+  // value is that value, lowered against the type the callback declares. An
+  // async one answers with what its Future carries, which is what the body
+  // is written as.
+  const isAsync =
+    arrow.modifiers?.some(
+      (modifier) => modifier.kind === ts.SyntaxKind.AsyncKeyword,
+    ) ?? false;
+  const answers =
+    isAsync && type.returnType.kind === 'future'
+      ? type.returnType.item
+      : type.returnType;
+  if (!ts.isBlock(body) && answers.kind !== 'void') {
     return {
       kind: 'closureValue',
       params,
-      value: lowerExpression(
-        unwrapParenthesized(body),
-        type.returnType,
-        scoped,
-      ),
+      isAsync,
+      value: lowerExpression(unwrapParenthesized(body), answers, scoped),
     };
   }
   return {
     kind: 'closure',
     params,
-    isAsync:
-      arrow.modifiers?.some(
-        (modifier) => modifier.kind === ts.SyntaxKind.AsyncKeyword,
-      ) ?? false,
+    isAsync,
     statements: lowerBodyStatements(body, scoped, true),
   };
 };
@@ -1466,9 +1474,17 @@ const lowerExpression = (
   if (ts.isObjectLiteralExpression(expression)) {
     return lowerObjectLiteral(expression, type, context);
   }
-  if (ts.isArrayLiteralExpression(expression) && type.kind === 'list') {
+  if (
+    ts.isArrayLiteralExpression(expression) &&
+    (type.kind === 'list' || type.kind === 'set')
+  ) {
     return {
       kind: 'listValue',
+      // A Dart set is written in braces, and an empty one has to say what it
+      // holds or it would be a map.
+      ...(type.kind === 'set'
+        ? { set: { itemType: bareDartTypeOf(type.item) } }
+        : {}),
       items: expression.elements.map((element) =>
         lowerExpression(element, type.item, context),
       ),
