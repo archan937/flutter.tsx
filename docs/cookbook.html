@@ -161,7 +161,7 @@ main p { margin-bottom: 12px; }
     <a href="https://github.com/archan937/flutter.tsx" target="_blank" rel="noopener">GitHub ↗</a>
   </nav>
   <input id="search" type="search" placeholder="Search recipes…" autocomplete="off" spellcheck="false">
-  <div class="meta-info">54 recipes · Flutter 3.47.1</div>
+  <div class="meta-info">55 recipes · Flutter 3.47.1</div>
   <nav id="sidebar-nav">
 <details open>
 <summary>Start here<span class="nav-count">7</span></summary>
@@ -176,7 +176,7 @@ main p { margin-bottom: 12px; }
 </ul>
 </details>
 <details>
-<summary>State and effects<span class="nav-count">9</span></summary>
+<summary>State and effects<span class="nav-count">10</span></summary>
 <ul>
 <li data-name="Running code on mount"><a href="#06-mount-effect">Running code on mount</a></li>
 <li data-name="State shared across screens"><a href="#19-store-counter">State shared across screens</a></li>
@@ -187,6 +187,7 @@ main p { margin-bottom: 12px; }
 <li data-name="Reading what a callback is handed"><a href="#40-layout-builder">Reading what a callback is handed</a></li>
 <li data-name="A label made of text and a value"><a href="#52-mixed-label">A label made of text and a value</a></li>
 <li data-name="A controller the component owns"><a href="#53-owned-controller">A controller the component owns</a></li>
+<li data-name="Clearing a busy flag whatever happens"><a href="#55-try-finally">Clearing a busy flag whatever happens</a></li>
 </ul>
 </details>
 <details>
@@ -1218,6 +1219,109 @@ export const TaskBoard = () =&gt; {
             controller: _scroll,
             children: <span class="tok-kw">const</span> [<span class="tok-typ">Text</span>(<span class="tok-str">'Result'</span>)],
           ),
+        ),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section class="recipe" id="55-try-finally" data-name="Clearing a busy flag whatever happens">
+<h3>Clearing a busy flag whatever happens</h3>
+<p class="blurb">A <code>finally</code> clause compiles to Dart’s <code>finally</code>, so the flag a button reads is cleared on the failing path as well as the passing one.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/SavedGreeting.tsx" role="tab" aria-selected="true">src/SavedGreeting.tsx</button>
+<button class="tab-btn" data-tab="saved_greeting.dart" role="tab" aria-selected="false">saved_greeting.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/SavedGreeting.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span>, <span class="tok-typ">Text</span>, useState } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+<span class="tok-kw">import</span> { useSharedPreferences } <span class="tok-kw">from</span> <span class="tok-str">'plugin:shared_preferences'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">SavedGreeting</span> = () =&gt; {
+  <span class="tok-kw">const</span> prefs = <span class="tok-fn">useSharedPreferences</span>();
+  <span class="tok-kw">const</span> [message, setMessage] = <span class="tok-fn">useState</span>(<span class="tok-str">'nothing loaded'</span>);
+  <span class="tok-kw">const</span> [busy, setBusy] = <span class="tok-fn">useState</span>(<span class="tok-kw">false</span>);
+
+  <span class="tok-kw">const</span> load = <span class="tok-kw">async</span> () =&gt; {
+    <span class="tok-fn">setBusy</span>(<span class="tok-kw">true</span>);
+    <span class="tok-kw">try</span> {
+      <span class="tok-kw">await</span> prefs?.<span class="tok-fn">reload</span>();
+      <span class="tok-fn">setMessage</span>(prefs?.<span class="tok-fn">getString</span>(<span class="tok-str">'greeting'</span>) ?? <span class="tok-str">'nothing saved'</span>);
+    } <span class="tok-kw">catch</span> (error) {
+      <span class="tok-fn">setMessage</span>(<span class="tok-typ">String</span>(error));
+    } <span class="tok-kw">finally</span> {
+      <span class="tok-fn">setBusy</span>(<span class="tok-kw">false</span>);
+    }
+  };
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;{message}&lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={load}&gt;
+        {busy ? <span class="tok-str">'Loading…'</span> : <span class="tok-str">'Load'</span>}
+      &lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
+  );
+};</code></pre></div>
+<div class="tab-panel" data-panel="saved_greeting.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+<span class="tok-kw">import</span> <span class="tok-str">'package:shared_preferences/shared_preferences.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">SavedGreeting</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">SavedGreeting</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">SavedGreeting</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_SavedGreetingState</span>();
+}
+
+<span class="tok-kw">class</span> _SavedGreetingState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">SavedGreeting</span>&gt; {
+  <span class="tok-typ">SharedPreferences</span>? _prefs;
+  <span class="tok-typ">String</span> _message = <span class="tok-str">'nothing loaded'</span>;
+  bool _busy = <span class="tok-kw">false</span>;
+
+  @override
+  <span class="tok-kw">void</span> <span class="tok-fn">initState</span>() {
+    <span class="tok-kw">super</span>.<span class="tok-fn">initState</span>();
+    <span class="tok-fn">_initPrefs</span>();
+  }
+
+  <span class="tok-typ">Future</span>&lt;<span class="tok-kw">void</span>&gt; <span class="tok-fn">_initPrefs</span>() <span class="tok-kw">async</span> {
+    <span class="tok-kw">final</span> instance = <span class="tok-kw">await</span> <span class="tok-typ">SharedPreferences</span>.<span class="tok-fn">getInstance</span>();
+    <span class="tok-kw">if</span> (!mounted) {
+      <span class="tok-kw">return</span>;
+    }
+    <span class="tok-fn">setState</span>(() {
+      _prefs = instance;
+    });
+  }
+
+  <span class="tok-typ">Future</span>&lt;<span class="tok-kw">void</span>&gt; <span class="tok-fn">_load</span>() <span class="tok-kw">async</span> {
+    <span class="tok-fn">setState</span>(() {
+      _busy = <span class="tok-kw">true</span>;
+    });
+    <span class="tok-kw">try</span> {
+      <span class="tok-kw">await</span> _prefs?.<span class="tok-fn">reload</span>();
+      <span class="tok-fn">setState</span>(() {
+        _message = _prefs?.<span class="tok-fn">getString</span>(<span class="tok-str">'greeting'</span>) ?? <span class="tok-str">'nothing saved'</span>;
+      });
+    } <span class="tok-kw">catch</span> (error) {
+      <span class="tok-fn">setState</span>(() {
+        _message = error.<span class="tok-fn">toString</span>();
+      });
+    } <span class="tok-kw">finally</span> {
+      <span class="tok-fn">setState</span>(() {
+        _busy = <span class="tok-kw">false</span>;
+      });
+    }
+  }
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+      children: [
+        <span class="tok-typ">Text</span>(_message),
+        <span class="tok-typ">ElevatedButton</span>(
+          onPressed: _load,
+          child: _busy ? <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Loading…'</span>) : <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Load'</span>),
         ),
       ],
     );

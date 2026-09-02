@@ -331,6 +331,12 @@ export const FIXTURE_APPS: FixtureApp[] = [
     deps: ['camera'],
   },
   {
+    id: '55-try-finally',
+    component: 'SavedGreeting',
+    dartFile: 'saved_greeting.dart',
+    deps: ['shared_preferences'],
+  },
+  {
     id: '54-typed-error',
     component: 'Shoot',
     dartFile: 'shoot.dart',

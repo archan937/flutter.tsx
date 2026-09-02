@@ -72,6 +72,7 @@ describe('committed golden expected.dart files', () => {
       '52-mixed-label',
       '53-owned-controller',
       '54-typed-error',
+      '55-try-finally',
     ]);
   });
 

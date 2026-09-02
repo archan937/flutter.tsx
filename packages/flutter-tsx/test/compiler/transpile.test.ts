@@ -1250,6 +1250,41 @@ describe('transpileComponent — controllers a component owns', () => {
   });
 });
 
+describe('transpileComponent — a value a plugin answers with', () => {
+  const source = (body: string): string =>
+    "import { Text } from 'flutter-tsx';\n" +
+    "import { useSharedPreferences } from 'plugin:shared_preferences';\n" +
+    'export const Probe = () => {\n' +
+    '  const prefs = useSharedPreferences();\n' +
+    `  return ${body};\n` +
+    '};\n';
+
+  test('a call that answers at once stands where a value stands', async () => {
+    // Not every plugin call is a Future: a preference is read there and then,
+    // and a read that has to be named first is a value the compiler refuses
+    // to treat as one.
+    const dart = await transpileComponent({
+      source: source("<Text>{prefs?.getString('name') ?? 'guest'}</Text>"),
+      filePath: 'probe.tsx',
+    });
+
+    // The read is already a String, so it is passed as one rather than
+    // interpolated into `'${…}'`.
+    expect(dart).toContain(
+      "    return Text(_prefs?.getString('name') ?? 'guest');",
+    );
+  });
+
+  test('a value that is not a String is interpolated', async () => {
+    const dart = await transpileComponent({
+      source: source("<Text>{prefs?.getInt('visits')}</Text>"),
+      filePath: 'probe.tsx',
+    });
+
+    expect(dart).toContain("    return Text('${_prefs?.getInt('visits')}');");
+  });
+});
+
 describe('transpileComponent — failures with a type', () => {
   const probe = (body: string): Promise<string> =>
     transpileComponent({
@@ -1756,6 +1791,21 @@ class Loud extends StatelessWidget {
 `);
   });
 
+  test('a call a helper cannot make is a numbered error', () => {
+    // A helper stands outside a component, where no plugin handle is in
+    // scope: a call it cannot make is refused rather than printed as Dart
+    // that names something the file does not have.
+    expect(
+      transpileComponent({
+        source: `const stamp = (value: string): string => structuredClone(value);
+
+export const Stamped = () => <Text>{stamp('a')}</Text>;
+`,
+        filePath: '/tmp/Stamped.tsx',
+      }),
+    ).rejects.toThrow(/TSX0305 .* `structuredClone\(value\)`/);
+  });
+
   test('a helper taking and returning a list', async () => {
     const dart = await transpileComponent({
       source: `const kept = (values: string[]): string[] =>
@@ -1952,16 +2002,18 @@ ${body}
 `);
   });
 
-  test('a try with no catch is refused', () => {
-    expect(
-      transpileComponent({
-        source: handler(
-          '    try {\n      setCount(1);\n    } finally {\n      setCount(2);\n    }',
-        ),
-        filePath: '/tmp/Loop.tsx',
-      }),
-    ).rejects.toThrow(
-      /TSX0337 .* a `try` needs a `catch`: `finally` on its own is not compiled\./,
+  test('a try with only a finally compiles to the same in Dart', async () => {
+    const dart = await transpileComponent({
+      source: handler(
+        '    try {\n      setCount(1);\n    } finally {\n      setCount(2);\n    }',
+      ),
+      filePath: '/tmp/Loop.tsx',
+    });
+
+    expect(dart).toContain(
+      '    try {\n      setState(() {\n        _count = 1;\n      });\n' +
+        '    } finally {\n      setState(() {\n        _count = 2;\n' +
+        '      });\n    }',
     );
   });
 

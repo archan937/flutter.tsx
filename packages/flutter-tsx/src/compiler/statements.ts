@@ -66,8 +66,22 @@ const statementLines = (
         return [
           'try {',
           ...indent(statementLines(statement.body, naming, wrapSetState)),
-          `} catch (${statement.error}) {`,
-          ...indent(statementLines(statement.onError, naming, wrapSetState)),
+          ...(statement.onError === null
+            ? []
+            : [
+                `} catch (${statement.onError.error}) {`,
+                ...indent(
+                  statementLines(statement.onError.body, naming, wrapSetState),
+                ),
+              ]),
+          ...(statement.onFinally === null
+            ? []
+            : [
+                '} finally {',
+                ...indent(
+                  statementLines(statement.onFinally, naming, wrapSetState),
+                ),
+              ]),
           '}',
         ];
       case 'forOf':

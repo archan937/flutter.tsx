@@ -397,8 +397,23 @@ const analyzeProps = (
   });
 };
 
+// TypeScript's own library files are the same on every compile and cost more
+// to parse than the component does. Watch mode recompiles on every save, so
+// they are parsed once and shared by every program after the first.
+const libraryFiles = new Map<string, ts.SourceFile | undefined>();
+
 const createProgramFor = (source: string, filePath: string): ts.Program => {
   const host = ts.createCompilerHost(COMPILER_OPTIONS);
+  const defaultGetSourceFile = host.getSourceFile.bind(host);
+  host.getSourceFile = (fileName, ...rest): ts.SourceFile | undefined => {
+    if (fileName === filePath) {
+      return defaultGetSourceFile(fileName, ...rest);
+    }
+    if (!libraryFiles.has(fileName)) {
+      libraryFiles.set(fileName, defaultGetSourceFile(fileName, ...rest));
+    }
+    return libraryFiles.get(fileName);
+  };
   const defaultReadFile = host.readFile.bind(host);
   const defaultFileExists = host.fileExists.bind(host);
   host.readFile = (fileName): string | undefined =>

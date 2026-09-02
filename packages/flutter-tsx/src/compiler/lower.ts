@@ -404,6 +404,10 @@ const memberReadOf = (receiver: string, model: IrModel): MemberReadInfo => ({
   fields: modelFieldTypes(model),
 });
 
+// A helper and a module constant stand outside every component, so no plugin
+// handle is in scope for either: a call there is never a plugin's.
+const noPluginValues = (): null => null;
+
 const modelClassFields = (
   compile: CompileContext,
 ): Map<string, Map<string, TypeNode>> =>
@@ -449,6 +453,7 @@ const constantContext = (
     sourceFile,
     nullableHandles: new Map(),
     narrowed: new Set(),
+    pluginValueCall: noPluginValues,
     controllerNames: new Set<string>(),
     pluginConstructibles: compile.pluginConstructibles,
     pluginConstructors: compile.pluginConstructors,
@@ -483,6 +488,7 @@ export const lowerHelper = (
     sourceFile: helper.body.getSourceFile(),
     nullableHandles: new Map(),
     narrowed: new Set(),
+    pluginValueCall: noPluginValues,
     controllerNames: new Set<string>(),
     pluginConstructibles: compile.pluginConstructibles,
     pluginConstructors: compile.pluginConstructors,
@@ -1723,6 +1729,23 @@ const dartTypeOfArgument = (
   return null;
 };
 
+/** What a plugin call answers with, unwrapped; null when it is not one. */
+const pluginCallReturn = (
+  expression: ts.Expression,
+  context: LowerContext,
+): TypeNode | null => {
+  if (!ts.isCallExpression(expression)) {
+    return null;
+  }
+  const resolved = resolvePluginCall(expression, context, expression);
+  if (resolved === null) {
+    return null;
+  }
+  return resolved.returnType.kind === 'nullable'
+    ? resolved.returnType.inner
+    : resolved.returnType;
+};
+
 const isStringExpression = (
   expression: ts.Expression,
   context: LowerContext,
@@ -1746,6 +1769,12 @@ const isStringExpression = (
   if (ts.isPropertyAccessExpression(expression)) {
     const field = readFieldType(expression, context.translate);
     return field?.kind === 'scalar' && field.name === 'String';
+  }
+  // A plugin says what its calls answer with, so a String from one needs no
+  // interpolating to be a String.
+  const answered = pluginCallReturn(expression, context);
+  if (answered !== null) {
+    return answered.kind === 'scalar' && answered.name === 'String';
   }
   if (
     ts.isCallExpression(expression) &&
@@ -2543,15 +2572,8 @@ const lowerControlFlow = (
 ): IrStatement[] | null => {
   if (ts.isTryStatement(statement)) {
     const clause = statement.catchClause;
-    if (clause === undefined) {
-      throw tsxErrorAt(
-        'TSX0337',
-        'a `try` needs a `catch`: `finally` on its own is not compiled.',
-        { sourceFile: context.sourceFile, node: statement },
-      );
-    }
-    const declaration = clause.variableDeclaration;
     // `} catch { … }` names nothing, which is Dart's `catch (_)`.
+    const declaration = clause?.variableDeclaration;
     const error =
       declaration !== undefined && ts.isIdentifier(declaration.name)
         ? declaration.name.text
@@ -2564,8 +2586,27 @@ const lowerControlFlow = (
           context,
           allowPluginCalls,
         ),
-        error,
-        onError: lowerBodyStatements(clause.block, context, allowPluginCalls),
+        onError:
+          clause === undefined
+            ? null
+            : {
+                error,
+                body: lowerBodyStatements(
+                  clause.block,
+                  context,
+                  allowPluginCalls,
+                ),
+              },
+        // A `finally` runs whether or not the body threw: the place a busy
+        // flag is cleared, and a clause Dart has too.
+        onFinally:
+          statement.finallyBlock === undefined
+            ? null
+            : lowerBodyStatements(
+                statement.finallyBlock,
+                context,
+                allowPluginCalls,
+              ),
       },
     ];
   }
@@ -3939,6 +3980,19 @@ export const lowerComponent = (
       ),
       pluginConstructibles: compile.pluginConstructibles,
       pluginConstructors: compile.pluginConstructors,
+      // A call that answers immediately is a value like any other, so it may
+      // stand wherever a value stands rather than only in a statement.
+      pluginValueCall: (call: ts.CallExpression): string | null => {
+        const resolved = resolvePluginCall(call, context, call);
+        if (
+          resolved === null ||
+          resolved.returnType.kind === 'future' ||
+          resolved.returnType.kind === 'stream'
+        ) {
+          return null;
+        }
+        return `${resolved.invocation}(${resolved.args.join(', ')})`;
+      },
       useDartImport: (uri: string, prefix?: string): void => {
         if (prefix === undefined) {
           context.usedDartImports.add(uri);

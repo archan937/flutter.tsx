@@ -164,7 +164,14 @@ export interface IrField {
 
 export type IrStatement =
   | { kind: 'setState'; assignments: string[] }
-  | { kind: 'try'; body: IrStatement[]; error: string; onError: IrStatement[] }
+  // Dart's try takes a catch, a finally, or both — exactly the shapes
+  // TypeScript's does, so each clause is carried as written.
+  | {
+      kind: 'try';
+      body: IrStatement[];
+      onError: { error: string; body: IrStatement[] } | null;
+      onFinally: IrStatement[] | null;
+    }
   | { kind: 'forOf'; itemName: string; iterable: string; body: IrStatement[] }
   | { kind: 'while'; condition: string; body: IrStatement[] }
   | {

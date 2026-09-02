@@ -263,6 +263,12 @@ export const CATALOGUE: Readonly<Record<string, CatalogueEntry>> = {
       '`error instanceof CameraException` is Dart’s `is`, and the branch reads the exception’s own `code`. Error paths are typed the same way the happy path is.',
     category: 'Native plugins',
   },
+  '55-try-finally': {
+    title: 'Clearing a busy flag whatever happens',
+    blurb:
+      'A `finally` clause compiles to Dart’s `finally`, so the flag a button reads is cleared on the failing path as well as the passing one.',
+    category: 'State and effects',
+  },
   '10-camera-options': {
     title: 'Choosing a camera resolution',
     blurb:

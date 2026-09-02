@@ -63,6 +63,13 @@ export interface TranslateContext {
   /** Every plugin class `new` can call, and the parameters it declares. */
   pluginConstructors: ReadonlyMap<string, readonly ParamModel[]>;
   /**
+   * A plugin call that hands back a value there and then, printed where it
+   * is used — `prefs?.getString('name') ?? 'guest'`. Null for anything else,
+   * including a call that returns a Future: that one is awaited, and an
+   * await belongs to a statement rather than to the value it produces.
+   */
+  pluginValueCall: (call: ts.CallExpression) => string | null;
+  /**
    * Names an early return has proven non-null at this point.
    *
    * `if (!info) return …;` excludes null for everything after it. Dart cannot
@@ -1032,6 +1039,12 @@ export const translateExpression = (
     const left = translateExpression(expression.left, context);
     const right = translateExpression(expression.right, context);
     return `${left} ${operator} ${right}`;
+  }
+  if (ts.isCallExpression(expression)) {
+    const pluginValue = context.pluginValueCall(expression);
+    if (pluginValue !== null) {
+      return pluginValue;
+    }
   }
   return notYetCompiled(expression, context);
 };
