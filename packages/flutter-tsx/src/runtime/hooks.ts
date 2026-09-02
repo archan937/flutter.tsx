@@ -1,7 +1,11 @@
 // Compile targets: the transpiler rewrites hook calls from the AST; at
 // TypeScript runtime they only need to be inert and deterministic.
 
-import type { Animation, AnimationController } from '../generated/widgets';
+import type {
+  Animation,
+  AnimationController,
+  BuildContext,
+} from '../generated/widgets';
 import type { FlutterElement } from './types';
 
 export type StateSetter<TValue> = (value: TValue) => void;
@@ -37,6 +41,18 @@ export const useStream: <TValue>(
   options: AsyncOptions,
 ) => Promise<TValue> = () =>
   Promise.reject(new Error('useStream is compile-time'));
+
+/**
+ * The context a widget is built in.
+ *
+ * Flutter hands values over through it — `MediaQuery.of(context)`,
+ * `View.of(context)` — and this is how a component names it. Compile
+ * target: the transpiler reads the call from the AST and uses the
+ * `BuildContext` the build already has.
+ */
+export const useBuildContext: () => BuildContext = () => {
+  throw new Error('useBuildContext is compile-time');
+};
 
 /**
  * An animation a component drives itself, where `Animated` is not enough:

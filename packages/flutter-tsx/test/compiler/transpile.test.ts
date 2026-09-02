@@ -1436,6 +1436,32 @@ describe('transpileComponent — maps, types and named parameters', () => {
     );
   });
 
+  test('a static with named arguments is named before it is used', () => {
+    // Dart wraps such a call over several lines, and only a value the
+    // printer lays out can be wrapped — so it is bound to a name first.
+    expect(
+      transpileComponent({
+        source:
+          "import { Column, Divider, Text, useBuildContext, useState } from 'flutter-tsx';\n" +
+          'export const Probe = () => {\n' +
+          '  const ctx = useBuildContext();\n' +
+          "  const [label, setLabel] = useState('none');\n" +
+          '  const measure = () => {\n' +
+          '    setLabel(String(Divider.createBorderSide(ctx, { width: 2 })));\n' +
+          '  };\n' +
+          '  return (\n' +
+          '    <Column>\n' +
+          '      <Text onClick={measure}>{label}</Text>\n' +
+          '    </Column>\n' +
+          '  );\n' +
+          '};\n',
+        filePath: 'probe.tsx',
+      }),
+    ).rejects.toThrow(
+      /TSX0359 .* name what `Divider\.createBorderSide` answers with first/,
+    );
+  });
+
   test('a Type value names a class the SDK really declares', () => {
     expect(
       transpileComponent({

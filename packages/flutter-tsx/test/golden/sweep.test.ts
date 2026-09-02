@@ -23,7 +23,7 @@ const probesDir = join(sweepPackageDir, 'probes');
 // regression fails here loudly. Examples whose values the compiler cannot
 // express yet are marked incomplete (visible {…} placeholders in the docs),
 // never silently included.
-describe('543-widget analyze sweep', () => {
+describe('every-widget analyze sweep', () => {
   // The timeout is generous because coverage instrumentation makes the fresh
   // ts.Programs slow; the sweep must never fail on time alone.
   test('every complete synthesized example transpiles and analyzes clean', async () => {

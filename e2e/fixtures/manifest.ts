@@ -331,6 +331,30 @@ export const FIXTURE_APPS: FixtureApp[] = [
     deps: ['camera'],
   },
   {
+    id: '61-static-in-handler',
+    component: 'Measure',
+    dartFile: 'measure.dart',
+    deps: [],
+  },
+  {
+    id: '60-button-style',
+    component: 'Styled',
+    dartFile: 'styled.dart',
+    deps: [],
+  },
+  {
+    id: '59-widget-local',
+    component: 'Header',
+    dartFile: 'header.dart',
+    deps: [],
+  },
+  {
+    id: '58-build-context',
+    component: 'ScreenSize',
+    dartFile: 'screen_size.dart',
+    deps: [],
+  },
+  {
     id: '57-tween',
     component: 'Drifter',
     dartFile: 'drifter.dart',

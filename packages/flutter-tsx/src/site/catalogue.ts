@@ -23,6 +23,7 @@ export interface CatalogueEntry {
 export const CATEGORIES: readonly string[] = [
   'Start here',
   'State and effects',
+  'Layout and styling',
   'Lists and data',
   'Loading data',
   'Native plugins',
@@ -279,6 +280,30 @@ export const CATALOGUE: Readonly<Record<string, CatalogueEntry>> = {
     title: 'An animation over values that are not numbers',
     blurb:
       "`tween(drift, { from: 'topLeft', to: 'bottomRight' })` drives a transition between two values of the type the animation carries — Flutter’s own `controller.drive(Tween(…))`.",
+    category: 'State and effects',
+  },
+  '58-build-context': {
+    title: 'Reading what the framework knows',
+    blurb:
+      '`MediaQuery.widthOf(useBuildContext())` — the statics Flutter hands values through are callable, so what the tree knows is readable without a controller or a plugin.',
+    category: 'State and effects',
+  },
+  '59-widget-local': {
+    title: 'A widget held by a name',
+    blurb:
+      '`const title = <Text>…</Text>` is a widget a name holds, and `{title}` renders it — not text about it.',
+    category: 'State and effects',
+  },
+  '60-button-style': {
+    title: 'Styling a button the way Flutter does',
+    blurb:
+      "`ElevatedButton.styleFrom({ backgroundColor: 'indigo' })` is a static the SDK offers, and calling it is how a style is made.",
+    category: 'Layout and styling',
+  },
+  '61-static-in-handler': {
+    title: 'Measuring the screen when a button is pressed',
+    blurb:
+      '`MediaQuery.of(useBuildContext())` inside a handler reads what the tree knows, and what it hands back is readable — `data.accessibleNavigation` and all.',
     category: 'State and effects',
   },
   '10-camera-options': {

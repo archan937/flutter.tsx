@@ -29,17 +29,24 @@ void main() {
   group('entity selection', () {
     test('extracts exactly the public entities, classified', () {
       expect(entities.map((entity) => '${entity.kind} ${entity.name}'), [
+        // An abstract class is a type the surface needs — `Action`, a sliver
+        // delegate — but never a component: nothing can build one.
+        'class AbstractWidget',
         'class GuardedList',
         'class NotAWidget',
+        'class PreferredSizeLike',
+        'class StatelessWidget',
         'enum TestAlignment',
         'class TestBox',
         'class TestController',
         'class TestHolder',
         'class TestLink',
         'class TestPalette',
+        'class TestScope',
         'class TestSorter',
         'class TestVault',
         'widget TestWidget',
+        'class Widget',
         'widget Wrapper',
       ]);
     });
@@ -60,6 +67,40 @@ void main() {
         });
       },
     );
+
+    test('records the statics a class offers, methods and getters alike', () {
+      // `MediaQuery.of(context)` is how half of Flutter is read; a value
+      // with no constructor is still reachable through one of these.
+      final scope = entities.whereType<ClassEntity>().singleWhere(
+        (entity) => entity.name == 'TestScope',
+      );
+
+      expect(scope.statics.map((method) => method.name), ['of']);
+      expect(scope.statics.single.params.map((param) => param.name), [
+        'context',
+      ]);
+      expect(scope.statics.single.returnType.toJson(), {
+        'kind': 'named',
+        'name': 'TestScope',
+      });
+      expect(scope.staticGetters.map((getter) => getter.name), ['fallback']);
+    });
+
+    test('records that an abstract class cannot be built', () {
+      // Nothing constructs an abstract class; only a concrete subclass of it
+      // can be written, and the compiler has to know which is which.
+      final abstractWidget = entities.whereType<ClassEntity>().singleWhere(
+        (entity) => entity.name == 'AbstractWidget',
+      );
+      final concrete = entities.whereType<ClassEntity>().singleWhere(
+        (entity) => entity.name == 'TestController',
+      );
+
+      expect(abstractWidget.isAbstract, isTrue);
+      expect(abstractWidget.toJson()['abstract'], isTrue);
+      expect(concrete.isAbstract, isFalse);
+      expect(concrete.toJson().containsKey('abstract'), isFalse);
+    });
 
     test('records whether a value has to be disposed', () {
       // A component owning one of these has to release it; the compiler
@@ -241,6 +282,7 @@ void main() {
         'TestHolder': <String>[],
         'TestLink': <String>[],
         'TestPalette': <String>[],
+        'TestScope': <String>[],
         'TestSorter': ['Comparable'],
         'TestVault': <String>[],
         'TestWidget': ['StatelessWidget', 'Widget'],

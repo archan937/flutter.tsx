@@ -81,6 +81,16 @@ const constantToJson = (constant: ConstantModel): Record<string, unknown> => ({
   doc: constant.doc,
 });
 
+const fieldToJson = (field: {
+  name: string;
+  doc: string;
+  type: TypeNode;
+}): Record<string, unknown> => ({
+  name: field.name,
+  doc: field.doc,
+  type: typeNodeToJson(field.type),
+});
+
 const entityToJson = (entity: Entity): Record<string, unknown> => {
   if (entity.kind === 'enum') {
     return {
@@ -102,14 +112,25 @@ const entityToJson = (entity: Entity): Record<string, unknown> => {
     supertypes: entity.supertypes,
     constructors: entity.constructors.map(constructorToJson),
     constants: entity.constants.map(constantToJson),
-    fields: entity.fields.map((field) => ({
-      name: field.name,
-      doc: field.doc,
-      type: typeNodeToJson(field.type),
-    })),
+    fields: entity.fields.map(fieldToJson),
+    ...(entity.statics.length > 0
+      ? {
+          statics: entity.statics.map((method) => ({
+            name: method.name,
+            doc: method.doc,
+            static: true,
+            returnType: typeNodeToJson(method.returnType),
+            params: method.params.map(paramToJson),
+          })),
+        }
+      : {}),
+    ...(entity.staticGetters.length > 0
+      ? { staticGetters: entity.staticGetters.map(fieldToJson) }
+      : {}),
     ...(entity.kind === 'class'
       ? {
           disposable: entity.disposable,
+          ...(entity.isAbstract ? { abstract: true } : {}),
           ...(entity.typeParams.length > 0
             ? { typeParams: entity.typeParams }
             : {}),

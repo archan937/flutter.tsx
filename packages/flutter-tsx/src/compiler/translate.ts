@@ -70,6 +70,11 @@ export interface TranslateContext {
    */
   pluginValueCall: (call: ts.CallExpression) => string | null;
   /**
+   * `MediaQuery.of(context)` — a static the SDK declares, printed where it
+   * is written. Null for anything else.
+   */
+  sdkStaticCall: (call: ts.CallExpression) => string | null;
+  /**
    * Names an early return has proven non-null at this point.
    *
    * `if (!info) return …;` excludes null for everything after it. Dart cannot
@@ -803,6 +808,12 @@ export const translateExpression = (
   const asString = stringConversion(expression, context);
   if (asString !== null) {
     return asString;
+  }
+  if (ts.isCallExpression(expression)) {
+    const fromStatic = context.sdkStaticCall(expression);
+    if (fromStatic !== null) {
+      return fromStatic;
+    }
   }
   if (expression.kind === ts.SyntaxKind.NullKeyword) {
     return 'null';

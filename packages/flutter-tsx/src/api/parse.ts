@@ -10,6 +10,7 @@ import {
   type ParamModel,
   SCALAR_NAMES,
   type ScalarName,
+  type StaticMethod,
   type TypeNode,
 } from './model';
 
@@ -201,6 +202,18 @@ const parseSupertypeBindings = (
   return bindings;
 };
 
+const parseStatic = (value: unknown, path: string): StaticMethod => {
+  const record = asObject(value, path);
+  return {
+    name: asString(record.name, `${path}.name`),
+    doc: asString(record.doc, `${path}.doc`),
+    returnType: parseTypeNode(record.returnType, `${path}.returnType`),
+    params: asArray(record.params, `${path}.params`).map((param, index) =>
+      parseParam(param, `${path}.params[${index}]`),
+    ),
+  };
+};
+
 const parseEntity = (value: unknown, path: string): Entity => {
   const record = asObject(value, path);
   const kind = asString(record.kind, `${path}.kind`);
@@ -217,6 +230,8 @@ const parseEntity = (value: unknown, path: string): Entity => {
     constructors: ConstructorModel[];
     constants: ConstantModel[];
     fields: FieldModel[];
+    statics: StaticMethod[];
+    staticGetters: FieldModel[];
   } => ({
     supertypes: asArray(record.supertypes, `${path}.supertypes`).map(
       (supertype, index) => asString(supertype, `${path}.supertypes[${index}]`),
@@ -232,6 +247,19 @@ const parseEntity = (value: unknown, path: string): Entity => {
     fields: asArray(record.fields, `${path}.fields`).map((field, index) =>
       parseField(field, `${path}.fields[${index}]`),
     ),
+    statics:
+      record.statics === undefined
+        ? []
+        : asArray(record.statics, `${path}.statics`).map((method, index) =>
+            parseStatic(method, `${path}.statics[${index}]`),
+          ),
+    staticGetters:
+      record.staticGetters === undefined
+        ? []
+        : asArray(record.staticGetters, `${path}.staticGetters`).map(
+            (getter, index) =>
+              parseField(getter, `${path}.staticGetters[${index}]`),
+          ),
   });
 
   switch (kind) {
@@ -245,6 +273,7 @@ const parseEntity = (value: unknown, path: string): Entity => {
         ...base,
         ...constructed(),
         disposable: asBoolean(record.disposable, `${path}.disposable`),
+        isAbstract: record.abstract === true,
         typeParams:
           record.typeParams === undefined
             ? []

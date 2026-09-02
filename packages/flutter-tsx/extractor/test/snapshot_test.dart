@@ -40,6 +40,9 @@ void main() {
           disposable: false,
           typeParams: const [],
           supertypeBindings: const {},
+          statics: const [],
+          staticGetters: const [],
+          isAbstract: false,
           fields: const [
             FieldModel(
               name: 'maxWidth',

@@ -27,6 +27,7 @@ const context: SynthesisContext = {
   valueOnlyNames: new Set(['Icons']),
   formNames: new Set(['IconData', 'Ornament']),
   declaredTypes: new Set(['IconData', 'Ornament', 'Intent']),
+  suppliers: new Map([['TestScope', { owner: 'TestScope', method: 'of' }]]),
   construction: new Map([
     [
       'Ink',

@@ -81,6 +81,7 @@ const translate = (
     sourceFile,
     stateNames: new Set(['count', 'label']),
     pluginValueCall: (): null => null,
+    sdkStaticCall: (): null => null,
     renames: new Map<string, string>(),
     handlerNames: new Set(['tick']),
     widgetProps: new Set<string>(),

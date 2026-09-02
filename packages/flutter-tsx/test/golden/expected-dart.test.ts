@@ -75,6 +75,10 @@ describe('committed golden expected.dart files', () => {
       '55-try-finally',
       '56-animation',
       '57-tween',
+      '58-build-context',
+      '59-widget-local',
+      '60-button-style',
+      '61-static-in-handler',
     ]);
   });
 

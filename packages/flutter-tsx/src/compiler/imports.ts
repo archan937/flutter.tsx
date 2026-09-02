@@ -1,4 +1,4 @@
-import type { IrComponent, IrValue, IrWidget } from './ir';
+import type { IrComponent, IrStatement, IrValue, IrWidget } from './ir';
 import type { CompileContext } from './lower';
 
 /**
@@ -113,6 +113,54 @@ const collectValue = (
   }
 };
 
+/**
+ * Every class a body of statements names.
+ *
+ * A `dart` line is text the compiler already wrote and names nothing new;
+ * everything else carries values, and a value may name a class.
+ */
+const collectStatements = (
+  statements: readonly IrStatement[],
+  context: CompileContext,
+  names: Set<string>,
+): void => {
+  for (const statement of statements) {
+    switch (statement.kind) {
+      case 'local':
+        collectValue(statement.value, context, names);
+        break;
+      case 'expr':
+        collectValue(statement.value, context, names);
+        break;
+      // A setState carries assignments the compiler already wrote as text,
+      // so it names nothing new.
+      case 'setState':
+        break;
+      case 'if':
+        collectStatements(statement.then, context, names);
+        collectStatements(statement.otherwise, context, names);
+        break;
+      case 'while':
+      case 'forOf':
+        collectStatements(statement.body, context, names);
+        break;
+      case 'try':
+        collectStatements(statement.body, context, names);
+        collectStatements(statement.onError?.body ?? [], context, names);
+        collectStatements(statement.onFinally ?? [], context, names);
+        break;
+      case 'switch':
+        for (const branch of statement.cases) {
+          collectStatements(branch.body, context, names);
+        }
+        collectStatements(statement.fallback ?? [], context, names);
+        break;
+      case 'dart':
+        break;
+    }
+  }
+};
+
 const collectWidget = (
   widget: IrWidget,
   context: CompileContext,
@@ -203,6 +251,16 @@ export const importsForComponents = (
   const names = new Set<string>(alsoNamed);
   for (const component of components) {
     collectWidget(component.body, context, names);
+    // A class may be named outside the tree — a static called in a handler,
+    // a value a field holds — and each still needs its import.
+    for (const bind of component.buildLocals) {
+      collectValue(bind.value, context, names);
+    }
+    for (const method of component.methods) {
+      collectStatements(method.statements, context, names);
+    }
+    collectStatements(component.initStatements, context, names);
+    collectStatements(component.disposeStatements, context, names);
   }
 
   // Components declared in sibling files need their own file imported.

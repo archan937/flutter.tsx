@@ -16,9 +16,6 @@ EntityModel? mapClass(
   }
 
   final constants = _mapConstants(classElement);
-  if (classElement.isAbstract && constants.isEmpty) {
-    return null;
-  }
 
   final constructors = _mapConstructors(classElement, asserts);
   final supertypes = publicSupertypeNames(classElement);
@@ -28,7 +25,14 @@ EntityModel? mapClass(
   // only compilable because the field is known here.
   final fields = _mapInstanceFields(classElement);
 
-  if (supertypes.contains('Widget')) {
+  // How the framework hands over values nothing constructs.
+  final statics = _mapStaticMethods(classElement);
+  final staticGetters = _mapStaticGetters(classElement);
+
+  // An abstract class is part of the surface as a type — `Action`, a sliver
+  // delegate, `Shader` — but never as a component: nothing can build one, so
+  // nothing can write it as a tag.
+  if (supertypes.contains('Widget') && !classElement.isAbstract) {
     return WidgetEntity(
       name: name,
       library: libraryLabel,
@@ -37,6 +41,8 @@ EntityModel? mapClass(
       constructors: constructors,
       constants: constants,
       fields: fields,
+      statics: statics,
+      staticGetters: staticGetters,
     );
   }
   return ClassEntity(
@@ -48,13 +54,68 @@ EntityModel? mapClass(
     constructors: constructors,
     constants: constants,
     fields: fields,
+    statics: statics,
+    staticGetters: staticGetters,
     disposable: _hasPublicDispose(classElement),
+    isAbstract: classElement.isAbstract,
     typeParams: classElement.typeParameters
         .map((parameter) => parameter.name ?? '')
         .where((name) => name.isNotEmpty)
         .toList(),
   );
 }
+
+/// The static methods a class offers, which is how a value with no
+/// constructor is still reached: `MediaQuery.of(context)`.
+List<MethodModel> _mapStaticMethods(ClassElement classElement) =>
+    classElement.methods
+        .where(
+          (method) =>
+              method.isStatic &&
+              method.isPublic &&
+              (method.name ?? '') != '' &&
+              // A member Flutter marks for tests or for subclasses is not
+              // part of the API an app writes against.
+              !method.metadata.hasVisibleForTesting &&
+              !method.metadata.hasProtected,
+        )
+        .map(
+          (method) => MethodModel(
+            name: method.name ?? '',
+            doc: method.documentationComment ?? '',
+            isStatic: true,
+            returnType: encodeType(method.returnType),
+            params: method.formalParameters
+                .map((param) => _mapParam(classElement, param))
+                .toList(),
+          ),
+        )
+        .toList()
+      ..sort((first, second) => first.name.compareTo(second.name));
+
+/// Static getters, which hand over a value without being asked anything.
+List<FieldModel> _mapStaticGetters(ClassElement classElement) =>
+    classElement.getters
+        .where(
+          (getter) =>
+              getter.isStatic &&
+              getter.isPublic &&
+              (getter.name ?? '') != '' &&
+              !_objectMemberNames.contains(getter.name) &&
+              !getter.metadata.hasVisibleForTesting &&
+              !getter.metadata.hasProtected &&
+              // A `static const` is already a constant of this class.
+              !getter.variable.isConst,
+        )
+        .map(
+          (getter) => FieldModel(
+            name: getter.name ?? '',
+            doc: getter.documentationComment ?? '',
+            type: encodeType(getter.returnType),
+          ),
+        )
+        .toList()
+      ..sort((first, second) => first.name.compareTo(second.name));
 
 /// Whether the class, or anything it inherits from, offers `dispose()`.
 bool _hasPublicDispose(ClassElement classElement) {

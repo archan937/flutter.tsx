@@ -6,6 +6,7 @@ import type {
   FunctionParam,
   ParamModel,
   ScalarName,
+  StaticMethod,
   TypeNode,
 } from '../api/model';
 import { dartTypeOf as bareDartTypeOf } from '../derive/dart-types';
@@ -137,6 +138,10 @@ export interface CompileContext {
   >;
   /** `Rect.fromLTRB(…)` — every constructor a class declares by name. */
   sdkNamedConstructors: Map<string, Map<string, ConstructorModel>>;
+  /** `MediaQuery.of(context)` — every static a class or widget declares. */
+  sdkStatics: Map<string, Map<string, StaticMethod>>;
+  /** `Foo.bar` — every static getter one declares. */
+  sdkStaticGetters: Map<string, Set<string>>;
   /** Plugin classes an object literal can construct, by name. */
   pluginConstructibles: Map<string, ParamModel[]>;
   /** Every plugin class with a constructor, and what it takes. */
@@ -239,9 +244,25 @@ export const buildCompileContext = (
     { params: ParamModel[]; isConst: boolean; typeParams: string[] }
   >();
   const sdkNamedConstructors = new Map<string, Map<string, ConstructorModel>>();
+  const sdkStatics = new Map<string, Map<string, StaticMethod>>();
+  const sdkStaticGetters = new Map<string, Set<string>>();
 
   for (const entity of snapshot.entities) {
     libraries.set(entity.name, entity.library);
+    if (entity.kind !== 'enum') {
+      if (entity.statics.length > 0) {
+        sdkStatics.set(
+          entity.name,
+          new Map(entity.statics.map((method) => [method.name, method])),
+        );
+      }
+      if (entity.staticGetters.length > 0) {
+        sdkStaticGetters.set(
+          entity.name,
+          new Set(entity.staticGetters.map((getter) => getter.name)),
+        );
+      }
+    }
     if (entity.kind === 'enum') {
       enums.set(entity.name, new Set(entity.values.map((value) => value.name)));
       continue;
@@ -274,9 +295,9 @@ export const buildCompileContext = (
           new Map(byName.map((candidate) => [candidate.name, candidate])),
         );
       }
-      const constructor = entity.constructors.find(
-        (candidate) => candidate.name === '',
-      );
+      const constructor = entity.isAbstract
+        ? undefined
+        : entity.constructors.find((candidate) => candidate.name === '');
       if (constructor !== undefined) {
         sdkConstructors.set(entity.name, {
           params: constructor.params,
@@ -313,6 +334,8 @@ export const buildCompileContext = (
     ownedValues,
     sdkConstructors,
     sdkNamedConstructors,
+    sdkStatics,
+    sdkStaticGetters,
     constants: new Map(),
     pluginConstructibles: new Map(),
     pluginConstructors: new Map(),
@@ -503,6 +526,7 @@ const constantContext = (
     narrowed: new Set(),
     renames: new Map(),
     pluginValueCall: noPluginValues,
+    sdkStaticCall: noPluginValues,
     controllerNames: new Set<string>(),
     pluginConstructibles: compile.pluginConstructibles,
     pluginConstructors: compile.pluginConstructors,
@@ -539,6 +563,7 @@ export const lowerHelper = (
     narrowed: new Set(),
     renames: new Map(),
     pluginValueCall: noPluginValues,
+    sdkStaticCall: noPluginValues,
     controllerNames: new Set<string>(),
     pluginConstructibles: compile.pluginConstructibles,
     pluginConstructors: compile.pluginConstructors,
@@ -623,6 +648,7 @@ const helperContext = (
   tabState: null,
   settersToStates: new Map(),
   animationNames: new Set<string>(),
+  widgetLocals: new Set<string>(),
   localDartTypes: translate.localDartTypes,
   returnsValue: true,
   translate,
@@ -678,6 +704,8 @@ interface LowerContext {
   settersToStates: Map<string, string>;
   /** Names bound by `useAnimation`, whose calls are controller calls. */
   animationNames: ReadonlySet<string>;
+  /** Locals that hold a widget, which render as one rather than as text. */
+  widgetLocals: ReadonlySet<string>;
   /** Whether `return <value>;` belongs here: a helper's body, not a handler. */
   returnsValue: boolean;
   /// Dart types of this component's props and state, by name.
@@ -1466,6 +1494,52 @@ const lowerTween = (
   };
 };
 
+/** An IR value as the Dart text of one argument. */
+const irArgumentText = (value: IrValue): string =>
+  printExpr(irValueToDart(value, { privateMembers: true }), {
+    indent: 2,
+    used: 2,
+    trailing: 1,
+  });
+
+/**
+ * `MediaQuery.of(context)` — a static the SDK declares.
+ *
+ * This is how Flutter hands over what nothing constructs: the view a widget
+ * is shown in, the bundle its assets come from, the media query around it.
+ */
+const lowerStaticCall = (
+  expression: ts.Expression,
+  context: LowerContext,
+): { value: IrValue; returns: TypeNode } | null => {
+  if (
+    !ts.isCallExpression(expression) ||
+    !ts.isPropertyAccessExpression(expression.expression) ||
+    !ts.isIdentifier(expression.expression.expression)
+  ) {
+    return null;
+  }
+  const className = expression.expression.expression.text;
+  const method = context.compile.sdkStatics
+    .get(className)
+    ?.get(expression.expression.name.text);
+  if (method === undefined) {
+    return null;
+  }
+  return {
+    value: constructionValue(
+      {
+        className,
+        constructorName: method.name,
+        constructor: { params: method.params },
+      },
+      [...expression.arguments],
+      context,
+    ),
+    returns: method.returnType,
+  };
+};
+
 /**
  * `Rect.fromLTRB(0, 0, 1, 1)` — a constructor the class declares by name.
  *
@@ -1683,6 +1757,10 @@ const lowerExpression = (
   if (byName !== null) {
     return byName;
   }
+  const fromStatic = lowerStaticCall(expression, context);
+  if (fromStatic !== null) {
+    return fromStatic.value;
+  }
   const constructed = lowerSdkConstruction(expression, type, context);
   if (constructed !== null) {
     return constructed;
@@ -1895,6 +1973,14 @@ const lowerChildValue = (
   const guarded = guardedChildValue(expression, context);
   if (guarded !== null) {
     return guarded;
+  }
+  // `const header = <Text/>` then `{header}` — a name that holds a widget is
+  // that widget, not text about it.
+  if (
+    ts.isIdentifier(expression) &&
+    context.widgetLocals.has(expression.text)
+  ) {
+    return { kind: 'dartExpr', dart: expression.text };
   }
   return lowerScalarChild(expression, context);
 };
@@ -3225,7 +3311,43 @@ const lowerLocalDeclaration = (
       : null;
 
   if (resolved === null) {
-    const line = `final ${name} = ${translateExpression(initializer, context.translate)};`;
+    // A value the SDK builds or hands over is printed through the printer,
+    // so a long one wraps exactly where `dart format` wraps it.
+    const fromStatic = lowerStaticCall(initializer, context);
+    const structured =
+      fromStatic?.value ??
+      lowerNamedConstruction(initializer, context) ??
+      lowerSdkConstruction(initializer, { kind: 'unknown' }, context);
+    // The fallback is only written when nothing structured was found: it
+    // translates the expression, which may refuse what the structured path
+    // handles.
+    const statement: IrStatement =
+      structured === null
+        ? {
+            kind: 'dart',
+            line: `final ${name} = ${translateExpression(initializer, context.translate)};`,
+          }
+        : { kind: 'local', name, value: structured };
+    // `const data = MediaQuery.of(ctx)` — what a static hands over is read,
+    // so the name it is bound to is readable for that type's members.
+    if (fromStatic !== null) {
+      return {
+        statement,
+        context: withScopedParams(
+          [
+            {
+              name,
+              type: fromStatic.returns,
+              fieldsOf: (
+                className: string,
+              ): Map<string, TypeNode> | undefined =>
+                context.compile.sdkClassFields.get(className),
+            },
+          ],
+          context,
+        ),
+      };
+    }
     // `const type = new MediaType(…)` — a value the developer made is as
     // readable as one the plugin handed over.
     const constructed =
@@ -3236,10 +3358,10 @@ const lowerLocalDeclaration = (
       constructed === null ||
       !context.compile.pluginClassFields.has(constructed)
     ) {
-      return { statement: { kind: 'dart', line }, context };
+      return { statement, context };
     }
     return {
-      statement: { kind: 'dart', line },
+      statement,
       context: withScopedParams(
         [
           {
@@ -3847,6 +3969,22 @@ const localBind = (
   const decoded = jsonLocalBind(local, context);
   if (decoded !== null) {
     return decoded;
+  }
+  const expression = unwrapParenthesized(local.expression);
+  if (ts.isJsxElement(expression) || ts.isJsxSelfClosingElement(expression)) {
+    return {
+      name: local.name,
+      value: { kind: 'widget', widget: lowerJsxElement(expression, context) },
+    };
+  }
+  // A value the SDK builds or hands over is kept as a value, so the printer
+  // wraps a long one exactly where `dart format` wraps it.
+  const structured =
+    lowerStaticCall(expression, context)?.value ??
+    lowerNamedConstruction(expression, context) ??
+    lowerSdkConstruction(expression, { kind: 'unknown' }, context);
+  if (structured !== null) {
+    return { name: local.name, value: structured };
   }
   return {
     name: local.name,
@@ -4462,6 +4600,14 @@ export const lowerComponent = (
     animationNames: new Set(
       component.animations.map((animation) => animation.name),
     ),
+    widgetLocals: new Set(
+      component.locals
+        .filter((local) => {
+          const value = unwrapParenthesized(local.expression);
+          return ts.isJsxElement(value) || ts.isJsxSelfClosingElement(value);
+        })
+        .map((local) => local.name),
+    ),
     translate: {
       sourceFile: component.sourceFile,
       stateNames,
@@ -4492,11 +4638,36 @@ export const lowerComponent = (
         ...component.controllers.map((controller) => controller.name),
         ...component.animations.map((animation) => animation.name),
       ]),
-      renames: new Map(),
+      // `const ctx = useBuildContext()` names the context the build has.
+      renames: new Map(
+        component.contexts.map((name): [string, string] => [name, 'context']),
+      ),
       pluginConstructibles: compile.pluginConstructibles,
       pluginConstructors: compile.pluginConstructors,
       // A call that answers immediately is a value like any other, so it may
       // stand wherever a value stands rather than only in a statement.
+      // A static is written where it is called: `MediaQuery.of(context)`.
+      sdkStaticCall: (call: ts.CallExpression): string | null => {
+        const value = lowerStaticCall(call, context)?.value;
+        if (value?.kind !== 'construct') {
+          return null;
+        }
+        const written = `${value.className}.${value.constructorName}`;
+        // A call with named arguments is the one Dart wraps over several
+        // lines, and only a value the printer lays out can be wrapped — so
+        // it is named first, where the printer does exactly that.
+        if (value.args.some((argument) => !argument.positional)) {
+          throw tsxErrorAt(
+            'TSX0359',
+            `name what \`${written}\` answers with first: ` +
+              `\`const value = ${written}({ … });\`.`,
+            { sourceFile: context.sourceFile, node: call },
+          );
+        }
+        return `${written}(${value.args
+          .map((argument) => irArgumentText(argument.value))
+          .join(', ')})`;
+      },
       pluginValueCall: (call: ts.CallExpression): string | null => {
         const resolved = resolvePluginCall(call, context, call);
         if (

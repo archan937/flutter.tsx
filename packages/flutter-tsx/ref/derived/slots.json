@@ -2255,10 +2255,6 @@
       },
       "slots": []
     },
-    "InspectorButton": {
-      "children": null,
-      "slots": []
-    },
     "InteractiveViewer": {
       "children": {
         "param": "child",

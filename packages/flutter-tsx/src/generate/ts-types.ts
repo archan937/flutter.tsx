@@ -1,4 +1,5 @@
 import type { FunctionParam, TypeNode } from '../api/model';
+import { writtenParamName } from './signature';
 
 const SCALAR_TS_TYPES: Record<string, string> = {
   String: 'string',
@@ -17,7 +18,7 @@ const wrapped = (node: TypeNode): string => {
 };
 
 const functionParam = (param: FunctionParam, index: number): string => {
-  const name = param.name === '' ? `arg${index}` : param.name;
+  const name = writtenParamName(param.name === '' ? `arg${index}` : param.name);
   const optional = param.required ? '' : '?';
   return `${name}${optional}: ${tsTypeOf(param.type)}`;
 };

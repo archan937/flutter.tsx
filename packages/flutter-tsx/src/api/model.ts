@@ -76,12 +76,24 @@ interface EntityBase {
   doc: string;
 }
 
+/** A method a class offers without an instance: `MediaQuery.of(context)`. */
+export interface StaticMethod {
+  name: string;
+  doc: string;
+  returnType: TypeNode;
+  params: ParamModel[];
+}
+
 export interface WidgetEntity extends EntityBase {
   kind: 'widget';
   supertypes: string[];
   constructors: ConstructorModel[];
   constants: ConstantModel[];
   fields: FieldModel[];
+  /** How the framework hands over values nothing constructs. */
+  statics: StaticMethod[];
+  /** The same, without arguments: `SystemMouseCursors.basic`-style getters. */
+  staticGetters: FieldModel[];
 }
 
 export interface ClassEntity extends EntityBase {
@@ -90,8 +102,12 @@ export interface ClassEntity extends EntityBase {
   constructors: ConstructorModel[];
   constants: ConstantModel[];
   fields: FieldModel[];
+  statics: StaticMethod[];
+  staticGetters: FieldModel[];
   /** Whether a component owning one of these has to release it. */
   disposable: boolean;
+  /** Whether nothing can build one: only a concrete subclass can be. */
+  isAbstract: boolean;
   /** The names this class is generic over: the `T` of a `ValueNotifier<T>`. */
   typeParams: string[];
   /**

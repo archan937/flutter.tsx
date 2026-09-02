@@ -2897,7 +2897,17 @@ export interface Action {
     readonly Action: true;
     readonly Diagnosticable: true;
   };
+  readonly callingAction: Action;
+  readonly intentType: TypeValue;
+  readonly isActionEnabled: boolean;
 }
+
+export declare const Action: {
+  readonly overridable: (options: {
+    defaultAction: Action;
+    context: BuildContext;
+  }) => Action;
+};
 
 export interface ActionDispatcher {
   readonly __fsxBrand?: {
@@ -2913,6 +2923,12 @@ export interface ActionIconThemeData {
     readonly ActionIconThemeData: true;
     readonly Diagnosticable: true;
   };
+  readonly backButtonIconBuilder: (context: BuildContext) => FlutterElement;
+  readonly closeButtonIconBuilder: (context: BuildContext) => FlutterElement;
+  readonly drawerButtonIconBuilder: (context: BuildContext) => FlutterElement;
+  readonly endDrawerButtonIconBuilder: (
+    context: BuildContext,
+  ) => FlutterElement;
 }
 
 export declare const ActionIconThemeData: new (options?: {
@@ -2938,11 +2954,22 @@ export interface Adaptation {
 
 export declare const Adaptation: new () => Adaptation;
 
+export interface AggregatedTimings {
+  readonly __fsxBrand?: { readonly AggregatedTimings: true };
+  readonly timedBlocks: TimedBlock[];
+}
+
+export declare const AggregatedTimings: new (
+  timedBlocks: TimedBlock[],
+) => AggregatedTimings;
+
 export interface Alignment {
   readonly __fsxBrand?: {
     readonly Alignment: true;
     readonly AlignmentGeometry: true;
   };
+  readonly x: number;
+  readonly y: number;
 }
 
 export interface AlignmentDirectional {
@@ -2950,6 +2977,8 @@ export interface AlignmentDirectional {
     readonly AlignmentDirectional: true;
     readonly AlignmentGeometry: true;
   };
+  readonly start: number;
+  readonly y: number;
 }
 
 export interface AlignmentGeometry {
@@ -3034,6 +3063,10 @@ export interface Animatable {
   readonly __fsxBrand?: { readonly Animatable: true };
 }
 
+export declare const Animatable: {
+  readonly fromCallback: (callback: (value: number) => unknown) => Animatable;
+};
+
 export interface AnimatedGridState {
   readonly __fsxBrand?: {
     readonly AnimatedGridState: true;
@@ -3042,6 +3075,9 @@ export interface AnimatedGridState {
     readonly TickerProvider: true;
     readonly TickerProviderStateMixin: true;
   };
+  readonly context: BuildContext;
+  readonly mounted: boolean;
+  readonly widget: unknown;
 }
 
 export declare const AnimatedGridState: new () => AnimatedGridState;
@@ -3062,6 +3098,9 @@ export interface AnimatedListState {
     readonly TickerProvider: true;
     readonly TickerProviderStateMixin: true;
   };
+  readonly context: BuildContext;
+  readonly mounted: boolean;
+  readonly widget: unknown;
 }
 
 export declare const AnimatedListState: new () => AnimatedListState;
@@ -3072,7 +3111,20 @@ export interface Animation {
     readonly Listenable: true;
     readonly ValueListenable: true;
   };
+  readonly isAnimating: boolean;
+  readonly isCompleted: boolean;
+  readonly isDismissed: boolean;
+  readonly isForwardOrCompleted: boolean;
+  readonly status: AnimationStatus;
+  readonly value: unknown;
 }
+
+export declare const Animation: {
+  readonly fromValueListenable: (
+    listenable: ValueListenable,
+    options?: { transformer?: (arg0: unknown) => unknown },
+  ) => Animation;
+};
 
 export interface AnimationController {
   readonly __fsxBrand?: {
@@ -3213,11 +3265,76 @@ export interface AnimationStyle {
   readonly reverseDuration: DurationValue;
 }
 
+export interface AnnotatedRegionLayer {
+  readonly __fsxBrand?: {
+    readonly AnnotatedRegionLayer: true;
+    readonly ContainerLayer: true;
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DiagnosticableTreeMixin: true;
+    readonly Layer: true;
+  };
+}
+
+export declare const AnnotatedRegionLayer: new (
+  value: unknown,
+  options?: { size?: SizeValue; offset?: OffsetValue; opaque?: boolean },
+) => AnnotatedRegionLayer;
+
+export interface AppBarTheme {
+  readonly __fsxBrand?: {
+    readonly AppBarTheme: true;
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly InheritedTheme: true;
+    readonly InheritedWidget: true;
+    readonly ProxyWidget: true;
+    readonly Widget: true;
+  };
+  readonly actionsIconTheme: IconThemeDataValue;
+  readonly actionsPadding: EdgeInsetsGeometryValue;
+  readonly backgroundColor: ColorValue;
+  readonly centerTitle: boolean;
+  readonly child: FlutterElement;
+  readonly data: AppBarThemeDataValue;
+  readonly elevation: number;
+  readonly foregroundColor: ColorValue;
+  readonly iconTheme: IconThemeDataValue;
+  readonly key: Key;
+  readonly leadingWidth: number;
+  readonly scrolledUnderElevation: number;
+  readonly shadowColor: ColorValue;
+  readonly shape: ShapeBorderValue;
+  readonly surfaceTintColor: ColorValue;
+  readonly systemOverlayStyle: SystemUiOverlayStyleValue;
+  readonly titleSpacing: number;
+  readonly titleTextStyle: TextStyleValue;
+  readonly toolbarHeight: number;
+  readonly toolbarTextStyle: TextStyleValue;
+}
+
 export interface AppBarThemeData {
   readonly __fsxBrand?: {
     readonly AppBarThemeData: true;
     readonly Diagnosticable: true;
   };
+  readonly actionsIconTheme: IconThemeDataValue;
+  readonly actionsPadding: EdgeInsetsGeometryValue;
+  readonly backgroundColor: ColorValue;
+  readonly centerTitle: boolean;
+  readonly elevation: number;
+  readonly foregroundColor: ColorValue;
+  readonly iconTheme: IconThemeDataValue;
+  readonly leadingWidth: number;
+  readonly scrolledUnderElevation: number;
+  readonly shadowColor: ColorValue;
+  readonly shape: ShapeBorderValue;
+  readonly surfaceTintColor: ColorValue;
+  readonly systemOverlayStyle: SystemUiOverlayStyleValue;
+  readonly titleSpacing: number;
+  readonly titleTextStyle: TextStyleValue;
+  readonly toolbarHeight: number;
+  readonly toolbarTextStyle: TextStyleValue;
 }
 
 export declare const AppBarThemeData: new (options?: {
@@ -3246,7 +3363,17 @@ export interface AppKitViewController {
     readonly AppKitViewController: true;
     readonly DarwinPlatformViewController: true;
   };
+  readonly id: number;
 }
+
+export interface ApplicationSwitcherDescription {
+  readonly __fsxBrand?: { readonly ApplicationSwitcherDescription: true };
+}
+
+export declare const ApplicationSwitcherDescription: new (options?: {
+  label?: string;
+  primaryColor?: number;
+}) => ApplicationSwitcherDescription;
 
 export interface AssetBundle {
   readonly __fsxBrand?: { readonly AssetBundle: true };
@@ -3258,12 +3385,20 @@ export interface AssetImage {
     readonly AssetImage: true;
     readonly ImageProvider: true;
   };
+  readonly assetName: string;
+  readonly bundle: AssetBundle;
+  readonly keyName: string;
+  readonly package: string;
 }
 
 export declare const AssetImage: new (
   assetName: string,
   options?: { bundle?: AssetBundle; package?: string },
 ) => AssetImage;
+
+export interface AssetManifest {
+  readonly __fsxBrand?: { readonly AssetManifest: true };
+}
 
 export interface AsyncSnapshot {
   readonly __fsxBrand?: { readonly AsyncSnapshot: true };
@@ -3288,6 +3423,47 @@ export declare const AttributedString: new (
   string: string,
   options?: { attributes?: StringAttribute[] },
 ) => AttributedString;
+
+export interface AttributedStringProperty {
+  readonly __fsxBrand?: {
+    readonly AttributedStringProperty: true;
+    readonly DiagnosticsNode: true;
+    readonly DiagnosticsProperty: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly defaultValue: ObjectValue;
+  readonly emptyBodyDescription: string;
+  readonly exception: ObjectValue;
+  readonly expandableValue: boolean;
+  readonly ifEmpty: string;
+  readonly ifNull: string;
+  readonly isInteresting: boolean;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly missingIfNull: boolean;
+  readonly name: string;
+  readonly propertyType: TypeValue;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly showWhenEmpty: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly tooltip: string;
+  readonly value: unknown;
+}
+
+export declare const AttributedStringProperty: new (
+  name: string,
+  value: AttributedString,
+  options?: {
+    showName?: boolean;
+    showWhenEmpty?: boolean;
+    defaultValue?: ObjectValue;
+    level?: DiagnosticLevel;
+    description?: string;
+  },
+) => AttributedStringProperty;
 
 export interface AutocompleteFirstOptionIntent {
   readonly __fsxBrand?: {
@@ -3357,6 +3533,22 @@ export interface AutofillConfiguration {
   readonly __fsxBrand?: { readonly AutofillConfiguration: true };
 }
 
+export interface AutofillGroupState {
+  readonly __fsxBrand?: {
+    readonly AutofillGroupState: true;
+    readonly AutofillScope: true;
+    readonly AutofillScopeMixin: true;
+    readonly Diagnosticable: true;
+    readonly State: true;
+  };
+  readonly autofillClients: AutofillClient[];
+  readonly context: BuildContext;
+  readonly mounted: boolean;
+  readonly widget: unknown;
+}
+
+export declare const AutofillGroupState: new () => AutofillGroupState;
+
 export interface AutofillHints {
   readonly __fsxBrand?: { readonly AutofillHints: true };
 }
@@ -3377,6 +3569,36 @@ export interface BackButtonDispatcher {
   readonly __fsxBrand?: { readonly BackButtonDispatcher: true };
 }
 
+export interface BackdropFilterLayer {
+  readonly __fsxBrand?: {
+    readonly BackdropFilterLayer: true;
+    readonly ContainerLayer: true;
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DiagnosticableTreeMixin: true;
+    readonly Layer: true;
+  };
+}
+
+export declare const BackdropFilterLayer: new (options?: {
+  filter?: ImageFilter;
+  blendMode?: BlendMode;
+}) => BackdropFilterLayer;
+
+export interface BackdropGroup {
+  readonly __fsxBrand?: {
+    readonly BackdropGroup: true;
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly InheritedWidget: true;
+    readonly ProxyWidget: true;
+    readonly Widget: true;
+  };
+  readonly backdropKey: BackdropKey;
+  readonly child: FlutterElement;
+  readonly key: Key;
+}
+
 export interface BackdropKey {
   readonly __fsxBrand?: { readonly BackdropKey: true };
 }
@@ -3388,6 +3610,14 @@ export interface BadgeThemeData {
     readonly BadgeThemeData: true;
     readonly Diagnosticable: true;
   };
+  readonly alignment: AlignmentGeometryValue;
+  readonly backgroundColor: ColorValue;
+  readonly largeSize: number;
+  readonly offset: OffsetValue;
+  readonly padding: EdgeInsetsGeometryValue;
+  readonly smallSize: number;
+  readonly textColor: ColorValue;
+  readonly textStyle: TextStyleValue;
 }
 
 export declare const BadgeThemeData: new (options?: {
@@ -3435,6 +3665,10 @@ export interface BeveledRectangleBorder {
     readonly OutlinedBorder: true;
     readonly ShapeBorder: true;
   };
+  readonly borderRadius: BorderRadiusGeometryValue;
+  readonly dimensions: EdgeInsetsGeometryValue;
+  readonly preferPaintInterior: boolean;
+  readonly side: BorderSideValue;
 }
 
 export declare const BeveledRectangleBorder: new (options?: {
@@ -3461,6 +3695,13 @@ export interface Border {
     readonly BoxBorder: true;
     readonly ShapeBorder: true;
   };
+  readonly bottom: BorderSideValue;
+  readonly dimensions: EdgeInsetsGeometryValue;
+  readonly isUniform: boolean;
+  readonly left: BorderSideValue;
+  readonly preferPaintInterior: boolean;
+  readonly right: BorderSideValue;
+  readonly top: BorderSideValue;
 }
 
 export declare const Border: new (options?: {
@@ -3488,6 +3729,13 @@ export interface BorderDirectional {
     readonly BoxBorder: true;
     readonly ShapeBorder: true;
   };
+  readonly bottom: BorderSideValue;
+  readonly dimensions: EdgeInsetsGeometryValue;
+  readonly end: BorderSideValue;
+  readonly isUniform: boolean;
+  readonly preferPaintInterior: boolean;
+  readonly start: BorderSideValue;
+  readonly top: BorderSideValue;
 }
 
 export declare const BorderDirectional: new (options?: {
@@ -3502,6 +3750,10 @@ export interface BorderRadius {
     readonly BorderRadius: true;
     readonly BorderRadiusGeometry: true;
   };
+  readonly bottomLeft: RadiusValue;
+  readonly bottomRight: RadiusValue;
+  readonly topLeft: RadiusValue;
+  readonly topRight: RadiusValue;
 }
 
 export interface BorderRadiusDirectional {
@@ -3509,6 +3761,10 @@ export interface BorderRadiusDirectional {
     readonly BorderRadiusDirectional: true;
     readonly BorderRadiusGeometry: true;
   };
+  readonly bottomEnd: RadiusValue;
+  readonly bottomStart: RadiusValue;
+  readonly topEnd: RadiusValue;
+  readonly topStart: RadiusValue;
 }
 
 export interface BorderRadiusGeometry {
@@ -3533,6 +3789,13 @@ export interface BorderSide {
     readonly BorderSide: true;
     readonly Diagnosticable: true;
   };
+  readonly color: ColorValue;
+  readonly strokeAlign: number;
+  readonly strokeInset: number;
+  readonly strokeOffset: number;
+  readonly strokeOutset: number;
+  readonly style: BorderStyle;
+  readonly width: number;
 }
 
 export interface BorderTween {
@@ -3548,11 +3811,40 @@ export declare const BorderTween: new (options?: {
   end?: BorderValue;
 }) => BorderTween;
 
+export interface BottomAppBarTheme {
+  readonly __fsxBrand?: {
+    readonly BottomAppBarTheme: true;
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly InheritedTheme: true;
+    readonly InheritedWidget: true;
+    readonly ProxyWidget: true;
+    readonly Widget: true;
+  };
+  readonly child: FlutterElement;
+  readonly color: ColorValue;
+  readonly data: BottomAppBarThemeDataValue;
+  readonly elevation: number;
+  readonly height: number;
+  readonly key: Key;
+  readonly padding: EdgeInsetsGeometryValue;
+  readonly shadowColor: ColorValue;
+  readonly shape: NotchedShape;
+  readonly surfaceTintColor: ColorValue;
+}
+
 export interface BottomAppBarThemeData {
   readonly __fsxBrand?: {
     readonly BottomAppBarThemeData: true;
     readonly Diagnosticable: true;
   };
+  readonly color: ColorValue;
+  readonly elevation: number;
+  readonly height: number;
+  readonly padding: EdgeInsetsGeometryValue;
+  readonly shadowColor: ColorValue;
+  readonly shape: NotchedShape;
+  readonly surfaceTintColor: ColorValue;
 }
 
 export declare const BottomAppBarThemeData: new (options?: {
@@ -3584,6 +3876,20 @@ export interface BottomNavigationBarThemeData {
     readonly BottomNavigationBarThemeData: true;
     readonly Diagnosticable: true;
   };
+  readonly backgroundColor: ColorValue;
+  readonly elevation: number;
+  readonly enableFeedback: boolean;
+  readonly landscapeLayout: BottomNavigationBarLandscapeLayout;
+  readonly mouseCursor: WidgetStatePropertyValue;
+  readonly selectedIconTheme: IconThemeDataValue;
+  readonly selectedItemColor: ColorValue;
+  readonly selectedLabelStyle: TextStyleValue;
+  readonly showSelectedLabels: boolean;
+  readonly showUnselectedLabels: boolean;
+  readonly type: BottomNavigationBarType;
+  readonly unselectedIconTheme: IconThemeDataValue;
+  readonly unselectedItemColor: ColorValue;
+  readonly unselectedLabelStyle: TextStyleValue;
 }
 
 export declare const BottomNavigationBarThemeData: new (options?: {
@@ -3608,6 +3914,19 @@ export interface BottomSheetThemeData {
     readonly BottomSheetThemeData: true;
     readonly Diagnosticable: true;
   };
+  readonly backgroundColor: ColorValue;
+  readonly clipBehavior: Clip;
+  readonly constraints: BoxConstraintsValue;
+  readonly dragHandleColor: ColorValue;
+  readonly dragHandleSize: SizeValue;
+  readonly elevation: number;
+  readonly modalBackgroundColor: ColorValue;
+  readonly modalBarrierColor: ColorValue;
+  readonly modalElevation: number;
+  readonly shadowColor: ColorValue;
+  readonly shape: ShapeBorderValue;
+  readonly showDragHandle: boolean;
+  readonly surfaceTintColor: ColorValue;
 }
 
 export declare const BottomSheetThemeData: new (options?: {
@@ -3650,7 +3969,38 @@ export interface BoxBorder {
     readonly BoxBorder: true;
     readonly ShapeBorder: true;
   };
+  readonly bottom: BorderSideValue;
+  readonly dimensions: EdgeInsetsGeometryValue;
+  readonly isUniform: boolean;
+  readonly preferPaintInterior: boolean;
+  readonly top: BorderSideValue;
 }
+
+export declare const BoxBorder: {
+  readonly all: (options?: {
+    color?: ColorValue;
+    width?: number;
+    style?: BorderStyle;
+    strokeAlign?: number;
+  }) => BoxBorder;
+  readonly fromBorderSide: (side: BorderSideValue) => BoxBorder;
+  readonly fromLTRB: (options?: {
+    top?: BorderSideValue;
+    right?: BorderSideValue;
+    bottom?: BorderSideValue;
+    left?: BorderSideValue;
+  }) => BoxBorder;
+  readonly fromSTEB: (options?: {
+    top?: BorderSideValue;
+    start?: BorderSideValue;
+    end?: BorderSideValue;
+    bottom?: BorderSideValue;
+  }) => BoxBorder;
+  readonly symmetric: (options?: {
+    vertical?: BorderSideValue;
+    horizontal?: BorderSideValue;
+  }) => BoxBorder;
+};
 
 export interface BoxConstraints {
   readonly __fsxBrand?: {
@@ -3715,6 +4065,16 @@ export interface BoxDecoration {
     readonly Decoration: true;
     readonly Diagnosticable: true;
   };
+  readonly backgroundBlendMode: BlendMode;
+  readonly border: BoxBorder;
+  readonly borderRadius: BorderRadiusGeometryValue;
+  readonly boxShadow: BoxShadowValue[];
+  readonly color: ColorValue;
+  readonly gradient: Gradient;
+  readonly image: DecorationImage;
+  readonly isComplex: boolean;
+  readonly padding: EdgeInsetsGeometryValue;
+  readonly shape: BoxShape;
 }
 
 export declare const BoxDecoration: new (options?: {
@@ -3727,6 +4087,18 @@ export declare const BoxDecoration: new (options?: {
   backgroundBlendMode?: BlendMode;
   shape?: BoxShape;
 }) => BoxDecoration;
+
+export interface BoxHitTestEntry {
+  readonly __fsxBrand?: {
+    readonly BoxHitTestEntry: true;
+    readonly HitTestEntry: true;
+  };
+}
+
+export declare const BoxHitTestEntry: new (
+  target: RenderBox,
+  localPosition: OffsetValue,
+) => BoxHitTestEntry;
 
 export interface BoxHitTestResult {
   readonly __fsxBrand?: {
@@ -3741,6 +4113,12 @@ export declare const BoxHitTestResult: new () => BoxHitTestResult & {
 
 export interface BoxShadow {
   readonly __fsxBrand?: { readonly BoxShadow: true; readonly Shadow: true };
+  readonly blurRadius: number;
+  readonly blurSigma: number;
+  readonly blurStyle: BlurStyle;
+  readonly color: ColorValue;
+  readonly offset: OffsetValue;
+  readonly spreadRadius: number;
 }
 
 export declare const BoxShadow: new (options?: {
@@ -3753,6 +4131,10 @@ export declare const BoxShadow: new (options?: {
 
 export interface BuildContext {
   readonly __fsxBrand?: { readonly BuildContext: true };
+  readonly debugDoingBuild: boolean;
+  readonly mounted: boolean;
+  readonly size: SizeValue;
+  readonly widget: FlutterElement;
 }
 
 export interface ButtonActivateIntent {
@@ -3770,6 +4152,15 @@ export interface ButtonBarThemeData {
     readonly ButtonBarThemeData: true;
     readonly Diagnosticable: true;
   };
+  readonly alignment: MainAxisAlignment;
+  readonly buttonAlignedDropdown: boolean;
+  readonly buttonHeight: number;
+  readonly buttonMinWidth: number;
+  readonly buttonPadding: EdgeInsetsGeometryValue;
+  readonly buttonTextTheme: ButtonTextTheme;
+  readonly layoutBehavior: ButtonBarLayoutBehavior;
+  readonly mainAxisSize: MainAxisSize;
+  readonly overflowDirection: VerticalDirection;
 }
 
 export declare const ButtonBarThemeData: new (options?: {
@@ -3801,6 +4192,39 @@ export interface ButtonStyle {
     readonly ButtonStyle: true;
     readonly Diagnosticable: true;
   };
+  readonly alignment: AlignmentGeometryValue;
+  readonly animationDuration: DurationValue;
+  readonly backgroundBuilder: (
+    context: BuildContext,
+    states: WidgetState[],
+    child: FlutterElement | null,
+  ) => FlutterElement;
+  readonly backgroundColor: WidgetStatePropertyValue;
+  readonly elevation: WidgetStatePropertyValue;
+  readonly enableFeedback: boolean;
+  readonly fixedSize: WidgetStatePropertyValue;
+  readonly foregroundBuilder: (
+    context: BuildContext,
+    states: WidgetState[],
+    child: FlutterElement | null,
+  ) => FlutterElement;
+  readonly foregroundColor: WidgetStatePropertyValue;
+  readonly iconAlignment: IconAlignment;
+  readonly iconColor: WidgetStatePropertyValue;
+  readonly iconSize: WidgetStatePropertyValue;
+  readonly maximumSize: WidgetStatePropertyValue;
+  readonly minimumSize: WidgetStatePropertyValue;
+  readonly mouseCursor: WidgetStatePropertyValue;
+  readonly overlayColor: WidgetStatePropertyValue;
+  readonly padding: WidgetStatePropertyValue;
+  readonly shadowColor: WidgetStatePropertyValue;
+  readonly shape: WidgetStatePropertyValue;
+  readonly side: WidgetStatePropertyValue;
+  readonly splashFactory: InteractiveInkFeatureFactoryValue;
+  readonly surfaceTintColor: WidgetStatePropertyValue;
+  readonly tapTargetSize: MaterialTapTargetSize;
+  readonly textStyle: WidgetStatePropertyValue;
+  readonly visualDensity: VisualDensityValue;
 }
 
 export declare const ButtonStyle: new (options?: {
@@ -3844,6 +4268,15 @@ export interface ButtonThemeData {
     readonly ButtonThemeData: true;
     readonly Diagnosticable: true;
   };
+  readonly alignedDropdown: boolean;
+  readonly colorScheme: ColorScheme;
+  readonly constraints: BoxConstraintsValue;
+  readonly height: number;
+  readonly layoutBehavior: ButtonBarLayoutBehavior;
+  readonly minWidth: number;
+  readonly padding: EdgeInsetsGeometryValue;
+  readonly shape: ShapeBorderValue;
+  readonly textTheme: ButtonTextTheme;
 }
 
 export declare const ButtonThemeData: new (options?: {
@@ -3884,8 +4317,42 @@ export declare const CallbackAction: new (options: {
   onInvoke: (intent: unknown) => Object | null;
 }) => CallbackAction;
 
+export interface CallbackHandle {
+  readonly __fsxBrand?: { readonly CallbackHandle: true };
+}
+
+export interface Canvas {
+  readonly __fsxBrand?: { readonly Canvas: true };
+}
+
+export declare const Canvas: new (
+  recorder: PictureRecorder,
+  cullRect?: RectValue,
+) => Canvas;
+
 export interface CapturedThemes {
   readonly __fsxBrand?: { readonly CapturedThemes: true };
+}
+
+export interface CardTheme {
+  readonly __fsxBrand?: {
+    readonly CardTheme: true;
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly InheritedWidget: true;
+    readonly ProxyWidget: true;
+    readonly Widget: true;
+  };
+  readonly child: FlutterElement;
+  readonly clipBehavior: Clip;
+  readonly color: ColorValue;
+  readonly data: CardThemeDataValue;
+  readonly elevation: number;
+  readonly key: Key;
+  readonly margin: EdgeInsetsGeometryValue;
+  readonly shadowColor: ColorValue;
+  readonly shape: ShapeBorderValue;
+  readonly surfaceTintColor: ColorValue;
 }
 
 export interface CardThemeData {
@@ -3893,6 +4360,13 @@ export interface CardThemeData {
     readonly CardThemeData: true;
     readonly Diagnosticable: true;
   };
+  readonly clipBehavior: Clip;
+  readonly color: ColorValue;
+  readonly elevation: number;
+  readonly margin: EdgeInsetsGeometryValue;
+  readonly shadowColor: ColorValue;
+  readonly shape: ShapeBorderValue;
+  readonly surfaceTintColor: ColorValue;
 }
 
 export declare const CardThemeData: new (options?: {
@@ -3946,6 +4420,12 @@ export interface CarouselViewThemeData {
     readonly CarouselViewThemeData: true;
     readonly Diagnosticable: true;
   };
+  readonly backgroundColor: ColorValue;
+  readonly elevation: number;
+  readonly itemClipBehavior: Clip;
+  readonly overlayColor: WidgetStatePropertyValue;
+  readonly padding: EdgeInsetsValue;
+  readonly shape: OutlinedBorderValue;
 }
 
 export declare const CarouselViewThemeData: new (options?: {
@@ -4016,6 +4496,15 @@ export interface CheckboxThemeData {
     readonly CheckboxThemeData: true;
     readonly Diagnosticable: true;
   };
+  readonly checkColor: WidgetStatePropertyValue;
+  readonly fillColor: WidgetStatePropertyValue;
+  readonly materialTapTargetSize: MaterialTapTargetSize;
+  readonly mouseCursor: WidgetStatePropertyValue;
+  readonly overlayColor: WidgetStatePropertyValue;
+  readonly shape: OutlinedBorderValue;
+  readonly side: BorderSideValue;
+  readonly splashRadius: number;
+  readonly visualDensity: VisualDensityValue;
 }
 
 export declare const CheckboxThemeData: new (options?: {
@@ -4064,6 +4553,29 @@ export interface ChipThemeData {
     readonly ChipThemeData: true;
     readonly Diagnosticable: true;
   };
+  readonly avatarBoxConstraints: BoxConstraintsValue;
+  readonly backgroundColor: ColorValue;
+  readonly brightness: Brightness;
+  readonly checkmarkColor: ColorValue;
+  readonly color: WidgetStatePropertyValue;
+  readonly deleteIconBoxConstraints: BoxConstraintsValue;
+  readonly deleteIconColor: ColorValue;
+  readonly disabledColor: ColorValue;
+  readonly elevation: number;
+  readonly iconTheme: IconThemeDataValue;
+  readonly labelPadding: EdgeInsetsGeometryValue;
+  readonly labelStyle: TextStyleValue;
+  readonly padding: EdgeInsetsGeometryValue;
+  readonly pressElevation: number;
+  readonly secondaryLabelStyle: TextStyleValue;
+  readonly secondarySelectedColor: ColorValue;
+  readonly selectedColor: ColorValue;
+  readonly selectedShadowColor: ColorValue;
+  readonly shadowColor: ColorValue;
+  readonly shape: OutlinedBorderValue;
+  readonly showCheckmark: boolean;
+  readonly side: BorderSideValue;
+  readonly surfaceTintColor: ColorValue;
 }
 
 export declare const ChipThemeData: new (options?: {
@@ -4105,6 +4617,10 @@ export interface CircleBorder {
     readonly OutlinedBorder: true;
     readonly ShapeBorder: true;
   };
+  readonly dimensions: EdgeInsetsGeometryValue;
+  readonly eccentricity: number;
+  readonly preferPaintInterior: boolean;
+  readonly side: BorderSideValue;
 }
 
 export declare const CircleBorder: new (options?: {
@@ -4134,9 +4650,82 @@ export declare const ClampingScrollPhysics: new (options?: {
   parent?: ScrollPhysicsValue;
 }) => ClampingScrollPhysics;
 
+export interface ClipPathLayer {
+  readonly __fsxBrand?: {
+    readonly ClipPathLayer: true;
+    readonly ContainerLayer: true;
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DiagnosticableTreeMixin: true;
+    readonly Layer: true;
+  };
+}
+
+export declare const ClipPathLayer: new (options?: {
+  clipPath?: Path;
+  clipBehavior?: Clip;
+}) => ClipPathLayer;
+
+export interface ClipRRectLayer {
+  readonly __fsxBrand?: {
+    readonly ClipRRectLayer: true;
+    readonly ContainerLayer: true;
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DiagnosticableTreeMixin: true;
+    readonly Layer: true;
+  };
+}
+
+export declare const ClipRRectLayer: new (options?: {
+  clipRRect?: RRect;
+  clipBehavior?: Clip;
+}) => ClipRRectLayer;
+
+export interface ClipRSuperellipseLayer {
+  readonly __fsxBrand?: {
+    readonly ClipRSuperellipseLayer: true;
+    readonly ContainerLayer: true;
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DiagnosticableTreeMixin: true;
+    readonly Layer: true;
+  };
+}
+
+export declare const ClipRSuperellipseLayer: new (options?: {
+  clipRSuperellipse?: RSuperellipse;
+  clipBehavior?: Clip;
+}) => ClipRSuperellipseLayer;
+
+export interface ClipRectLayer {
+  readonly __fsxBrand?: {
+    readonly ClipRectLayer: true;
+    readonly ContainerLayer: true;
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DiagnosticableTreeMixin: true;
+    readonly Layer: true;
+  };
+}
+
+export declare const ClipRectLayer: new (options?: {
+  clipRect?: RectValue;
+  clipBehavior?: Clip;
+}) => ClipRectLayer;
+
 export interface Clipboard {
   readonly __fsxBrand?: { readonly Clipboard: true };
 }
+
+export interface ClipboardData {
+  readonly __fsxBrand?: { readonly ClipboardData: true };
+  readonly text: string;
+}
+
+export declare const ClipboardData: new (options: {
+  text: string;
+}) => ClipboardData;
 
 export interface ClipboardStatusNotifier {
   readonly __fsxBrand?: {
@@ -4147,6 +4736,8 @@ export interface ClipboardStatusNotifier {
     readonly ValueNotifier: true;
     readonly WidgetsBindingObserver: true;
   };
+  readonly hasListeners: boolean;
+  readonly value: unknown;
 }
 
 export declare const ClipboardStatusNotifier: new (options?: {
@@ -4155,6 +4746,16 @@ export declare const ClipboardStatusNotifier: new (options?: {
 
 export interface Color {
   readonly __fsxBrand?: { readonly Color: true };
+  readonly a: number;
+  readonly alpha: number;
+  readonly b: number;
+  readonly blue: number;
+  readonly g: number;
+  readonly green: number;
+  readonly opacity: number;
+  readonly r: number;
+  readonly red: number;
+  readonly value: number;
 }
 
 export declare const Color: new (value: number) => Color & {
@@ -4182,11 +4783,115 @@ export declare const ColorFilter: {
   readonly srgbToLinearGamma: () => ColorFilter;
 };
 
+export interface ColorFilterLayer {
+  readonly __fsxBrand?: {
+    readonly ColorFilterLayer: true;
+    readonly ContainerLayer: true;
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DiagnosticableTreeMixin: true;
+    readonly Layer: true;
+  };
+}
+
+export declare const ColorFilterLayer: new (options?: {
+  colorFilter?: ColorFilter;
+}) => ColorFilterLayer;
+
+export interface ColorProperty {
+  readonly __fsxBrand?: {
+    readonly ColorProperty: true;
+    readonly DiagnosticsNode: true;
+    readonly DiagnosticsProperty: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly defaultValue: ObjectValue;
+  readonly emptyBodyDescription: string;
+  readonly exception: ObjectValue;
+  readonly expandableValue: boolean;
+  readonly ifEmpty: string;
+  readonly ifNull: string;
+  readonly isInteresting: boolean;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly missingIfNull: boolean;
+  readonly name: string;
+  readonly propertyType: TypeValue;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly tooltip: string;
+  readonly value: unknown;
+}
+
+export declare const ColorProperty: new (
+  name: string,
+  value: ColorValue,
+  options?: {
+    showName?: boolean;
+    defaultValue?: ObjectValue;
+    style?: DiagnosticsTreeStyle;
+    level?: DiagnosticLevel;
+  },
+) => ColorProperty;
+
 export interface ColorScheme {
   readonly __fsxBrand?: {
     readonly ColorScheme: true;
     readonly Diagnosticable: true;
   };
+  readonly background: ColorValue;
+  readonly brightness: Brightness;
+  readonly error: ColorValue;
+  readonly errorContainer: ColorValue;
+  readonly inversePrimary: ColorValue;
+  readonly inverseSurface: ColorValue;
+  readonly onBackground: ColorValue;
+  readonly onError: ColorValue;
+  readonly onErrorContainer: ColorValue;
+  readonly onInverseSurface: ColorValue;
+  readonly onPrimary: ColorValue;
+  readonly onPrimaryContainer: ColorValue;
+  readonly onPrimaryFixed: ColorValue;
+  readonly onPrimaryFixedVariant: ColorValue;
+  readonly onSecondary: ColorValue;
+  readonly onSecondaryContainer: ColorValue;
+  readonly onSecondaryFixed: ColorValue;
+  readonly onSecondaryFixedVariant: ColorValue;
+  readonly onSurface: ColorValue;
+  readonly onSurfaceVariant: ColorValue;
+  readonly onTertiary: ColorValue;
+  readonly onTertiaryContainer: ColorValue;
+  readonly onTertiaryFixed: ColorValue;
+  readonly onTertiaryFixedVariant: ColorValue;
+  readonly outline: ColorValue;
+  readonly outlineVariant: ColorValue;
+  readonly primary: ColorValue;
+  readonly primaryContainer: ColorValue;
+  readonly primaryFixed: ColorValue;
+  readonly primaryFixedDim: ColorValue;
+  readonly scrim: ColorValue;
+  readonly secondary: ColorValue;
+  readonly secondaryContainer: ColorValue;
+  readonly secondaryFixed: ColorValue;
+  readonly secondaryFixedDim: ColorValue;
+  readonly shadow: ColorValue;
+  readonly surface: ColorValue;
+  readonly surfaceBright: ColorValue;
+  readonly surfaceContainer: ColorValue;
+  readonly surfaceContainerHigh: ColorValue;
+  readonly surfaceContainerHighest: ColorValue;
+  readonly surfaceContainerLow: ColorValue;
+  readonly surfaceContainerLowest: ColorValue;
+  readonly surfaceDim: ColorValue;
+  readonly surfaceTint: ColorValue;
+  readonly surfaceVariant: ColorValue;
+  readonly tertiary: ColorValue;
+  readonly tertiaryContainer: ColorValue;
+  readonly tertiaryFixed: ColorValue;
+  readonly tertiaryFixedDim: ColorValue;
 }
 
 export declare const ColorScheme: new (options: {
@@ -4288,6 +4993,61 @@ export declare const ColorScheme: new (options: {
     inverseSurface?: ColorValue;
     onInverseSurface?: ColorValue;
     inversePrimary?: ColorValue;
+    surfaceTint?: ColorValue;
+    background?: ColorValue;
+    onBackground?: ColorValue;
+    surfaceVariant?: ColorValue;
+  }) => ColorScheme;
+  readonly fromSeed: (options: {
+    seedColor: ColorValue;
+    brightness?: Brightness;
+    dynamicSchemeVariant?: DynamicSchemeVariant;
+    contrastLevel?: number;
+    primary?: ColorValue;
+    onPrimary?: ColorValue;
+    primaryContainer?: ColorValue;
+    onPrimaryContainer?: ColorValue;
+    primaryFixed?: ColorValue;
+    primaryFixedDim?: ColorValue;
+    onPrimaryFixed?: ColorValue;
+    onPrimaryFixedVariant?: ColorValue;
+    secondary?: ColorValue;
+    onSecondary?: ColorValue;
+    secondaryContainer?: ColorValue;
+    onSecondaryContainer?: ColorValue;
+    secondaryFixed?: ColorValue;
+    secondaryFixedDim?: ColorValue;
+    onSecondaryFixed?: ColorValue;
+    onSecondaryFixedVariant?: ColorValue;
+    tertiary?: ColorValue;
+    onTertiary?: ColorValue;
+    tertiaryContainer?: ColorValue;
+    onTertiaryContainer?: ColorValue;
+    tertiaryFixed?: ColorValue;
+    tertiaryFixedDim?: ColorValue;
+    onTertiaryFixed?: ColorValue;
+    onTertiaryFixedVariant?: ColorValue;
+    error?: ColorValue;
+    onError?: ColorValue;
+    errorContainer?: ColorValue;
+    onErrorContainer?: ColorValue;
+    outline?: ColorValue;
+    outlineVariant?: ColorValue;
+    surface?: ColorValue;
+    onSurface?: ColorValue;
+    surfaceDim?: ColorValue;
+    surfaceBright?: ColorValue;
+    surfaceContainerLowest?: ColorValue;
+    surfaceContainerLow?: ColorValue;
+    surfaceContainer?: ColorValue;
+    surfaceContainerHigh?: ColorValue;
+    surfaceContainerHighest?: ColorValue;
+    onSurfaceVariant?: ColorValue;
+    inverseSurface?: ColorValue;
+    onInverseSurface?: ColorValue;
+    inversePrimary?: ColorValue;
+    shadow?: ColorValue;
+    scrim?: ColorValue;
     surfaceTint?: ColorValue;
     background?: ColorValue;
     onBackground?: ColorValue;
@@ -4461,6 +5221,17 @@ export declare const ColorScheme: new (options: {
 
 export interface ColorSwatch {
   readonly __fsxBrand?: { readonly Color: true; readonly ColorSwatch: true };
+  readonly a: number;
+  readonly alpha: number;
+  readonly b: number;
+  readonly blue: number;
+  readonly g: number;
+  readonly green: number;
+  readonly keys: unknown[];
+  readonly opacity: number;
+  readonly r: number;
+  readonly red: number;
+  readonly value: number;
 }
 
 export declare const ColorSwatch: new (
@@ -4495,6 +5266,18 @@ export interface ConstantTween {
 
 export declare const ConstantTween: new (value: unknown) => ConstantTween;
 
+export interface ContainerLayer {
+  readonly __fsxBrand?: {
+    readonly ContainerLayer: true;
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DiagnosticableTreeMixin: true;
+    readonly Layer: true;
+  };
+}
+
+export declare const ContainerLayer: new () => ContainerLayer;
+
 export interface ContentInsertionConfiguration {
   readonly __fsxBrand?: { readonly ContentInsertionConfiguration: true };
 }
@@ -4506,6 +5289,9 @@ export declare const ContentInsertionConfiguration: new (options: {
 
 export interface ContextMenuButtonItem {
   readonly __fsxBrand?: { readonly ContextMenuButtonItem: true };
+  readonly label: string;
+  readonly onPressed: () => void;
+  readonly type: ContextMenuButtonType;
 }
 
 export declare const ContextMenuButtonItem: new (options: {
@@ -4520,6 +5306,10 @@ export interface ContinuousRectangleBorder {
     readonly OutlinedBorder: true;
     readonly ShapeBorder: true;
   };
+  readonly borderRadius: BorderRadiusGeometryValue;
+  readonly dimensions: EdgeInsetsGeometryValue;
+  readonly preferPaintInterior: boolean;
+  readonly side: BorderSideValue;
 }
 
 export declare const ContinuousRectangleBorder: new (options?: {
@@ -4625,6 +5415,7 @@ export interface CupertinoDialogRoute {
   readonly offstage: boolean;
   readonly opaque: boolean;
   readonly overlayEntries: OverlayEntry[];
+  readonly popDisposition: RoutePopDisposition;
   readonly popGestureEnabled: boolean;
   readonly popGestureInProgress: boolean;
   readonly popped: Promise<unknown | null>;
@@ -4678,6 +5469,24 @@ export interface CupertinoDynamicColor {
     readonly CupertinoDynamicColor: true;
     readonly Diagnosticable: true;
   };
+  readonly a: number;
+  readonly alpha: number;
+  readonly b: number;
+  readonly blue: number;
+  readonly color: ColorValue;
+  readonly darkColor: ColorValue;
+  readonly darkElevatedColor: ColorValue;
+  readonly darkHighContrastColor: ColorValue;
+  readonly darkHighContrastElevatedColor: ColorValue;
+  readonly elevatedColor: ColorValue;
+  readonly g: number;
+  readonly green: number;
+  readonly highContrastColor: ColorValue;
+  readonly highContrastElevatedColor: ColorValue;
+  readonly opacity: number;
+  readonly r: number;
+  readonly red: number;
+  readonly value: number;
 }
 
 export declare const CupertinoDynamicColor: new (options: {
@@ -4711,6 +5520,16 @@ export interface CupertinoIconThemeData {
     readonly Diagnosticable: true;
     readonly IconThemeData: true;
   };
+  readonly applyTextScaling: boolean;
+  readonly color: ColorValue;
+  readonly fill: number;
+  readonly grade: number;
+  readonly isConcrete: boolean;
+  readonly opacity: number;
+  readonly opticalSize: number;
+  readonly shadows: ShadowValue[];
+  readonly size: number;
+  readonly weight: number;
 }
 
 export declare const CupertinoIconThemeData: new (options?: {
@@ -4727,6 +5546,38 @@ export declare const CupertinoIconThemeData: new (options?: {
 
 export interface CupertinoIcons {
   readonly __fsxBrand?: { readonly CupertinoIcons: true };
+}
+
+export interface CupertinoLocalizations {
+  readonly __fsxBrand?: { readonly CupertinoLocalizations: true };
+  readonly alertDialogLabel: string;
+  readonly anteMeridiemAbbreviation: string;
+  readonly backButtonLabel: string;
+  readonly cancelButtonLabel: string;
+  readonly clearButtonLabel: string;
+  readonly collapsedHint: string;
+  readonly copyButtonLabel: string;
+  readonly cutButtonLabel: string;
+  readonly datePickerDateOrder: DatePickerDateOrder;
+  readonly expandedHint: string;
+  readonly expansionTileCollapsedHint: string;
+  readonly expansionTileCollapsedTapHint: string;
+  readonly expansionTileExpandedHint: string;
+  readonly expansionTileExpandedTapHint: string;
+  readonly lookUpButtonLabel: string;
+  readonly menuDismissLabel: string;
+  readonly modalBarrierDismissLabel: string;
+  readonly noSpellCheckReplacementsLabel: string;
+  readonly pasteButtonLabel: string;
+  readonly postMeridiemAbbreviation: string;
+  readonly searchTextFieldPlaceholderLabel: string;
+  readonly searchWebButtonLabel: string;
+  readonly selectAllButtonLabel: string;
+  readonly shareButtonLabel: string;
+  readonly timerPickerHourLabels: string[];
+  readonly timerPickerMinuteLabels: string[];
+  readonly timerPickerSecondLabels: string[];
+  readonly todayLabel: string;
 }
 
 export interface CupertinoModalPopupRoute {
@@ -4775,6 +5626,7 @@ export interface CupertinoModalPopupRoute {
   readonly offstage: boolean;
   readonly opaque: boolean;
   readonly overlayEntries: OverlayEntry[];
+  readonly popDisposition: RoutePopDisposition;
   readonly popGestureEnabled: boolean;
   readonly popGestureInProgress: boolean;
   readonly popped: Promise<unknown | null>;
@@ -4889,6 +5741,7 @@ export interface CupertinoPageRoute {
   readonly offstage: boolean;
   readonly opaque: boolean;
   readonly overlayEntries: OverlayEntry[];
+  readonly popDisposition: RoutePopDisposition;
   readonly popGestureEnabled: boolean;
   readonly popGestureInProgress: boolean;
   readonly popped: Promise<unknown | null>;
@@ -4939,6 +5792,8 @@ export interface CupertinoScrollBehavior {
     readonly CupertinoScrollBehavior: true;
     readonly ScrollBehavior: true;
   };
+  readonly dragDevices: PointerDeviceKind[];
+  readonly pointerAxisModifiers: LogicalKeyboardKey[];
 }
 
 export declare const CupertinoScrollBehavior: new () => CupertinoScrollBehavior;
@@ -4989,6 +5844,7 @@ export interface CupertinoSheetRoute {
   readonly offstage: boolean;
   readonly opaque: boolean;
   readonly overlayEntries: OverlayEntry[];
+  readonly popDisposition: RoutePopDisposition;
   readonly popGestureEnabled: boolean;
   readonly popGestureInProgress: boolean;
   readonly popped: Promise<unknown | null>;
@@ -5109,6 +5965,14 @@ export interface CupertinoThemeData {
     readonly Diagnosticable: true;
     readonly NoDefaultCupertinoThemeData: true;
   };
+  readonly applyThemeToAll: boolean;
+  readonly barBackgroundColor: ColorValue;
+  readonly brightness: Brightness;
+  readonly primaryColor: ColorValue;
+  readonly primaryContrastingColor: ColorValue;
+  readonly scaffoldBackgroundColor: ColorValue;
+  readonly selectionHandleColor: ColorValue;
+  readonly textTheme: CupertinoTextThemeDataValue;
 }
 
 export declare const CupertinoThemeData: new (options?: {
@@ -5201,6 +6065,9 @@ export interface CustomPainter {
 
 export interface CustomSemanticsAction {
   readonly __fsxBrand?: { readonly CustomSemanticsAction: true };
+  readonly action: SemanticsAction;
+  readonly hint: string;
+  readonly label: string;
 }
 
 export declare const CustomSemanticsAction: new (options: {
@@ -5269,6 +6136,22 @@ export interface DataTableThemeData {
     readonly DataTableThemeData: true;
     readonly Diagnosticable: true;
   };
+  readonly checkboxHorizontalMargin: number;
+  readonly columnSpacing: number;
+  readonly dataRowColor: WidgetStatePropertyValue;
+  readonly dataRowCursor: WidgetStatePropertyValue;
+  readonly dataRowHeight: number;
+  readonly dataRowMaxHeight: number;
+  readonly dataRowMinHeight: number;
+  readonly dataTextStyle: TextStyleValue;
+  readonly decoration: Decoration;
+  readonly dividerThickness: number;
+  readonly headingCellCursor: WidgetStatePropertyValue;
+  readonly headingRowAlignment: MainAxisAlignment;
+  readonly headingRowColor: WidgetStatePropertyValue;
+  readonly headingRowHeight: number;
+  readonly headingTextStyle: TextStyleValue;
+  readonly horizontalMargin: number;
 }
 
 export declare const DataTableThemeData: new (options?: {
@@ -5295,6 +6178,47 @@ export interface DatePickerThemeData {
     readonly DatePickerThemeData: true;
     readonly Diagnosticable: true;
   };
+  readonly backgroundColor: ColorValue;
+  readonly cancelButtonStyle: ButtonStyleValue;
+  readonly confirmButtonStyle: ButtonStyleValue;
+  readonly dayBackgroundColor: WidgetStatePropertyValue;
+  readonly dayForegroundColor: WidgetStatePropertyValue;
+  readonly dayOverlayColor: WidgetStatePropertyValue;
+  readonly dayShape: WidgetStatePropertyValue;
+  readonly dayStyle: TextStyleValue;
+  readonly dividerColor: ColorValue;
+  readonly elevation: number;
+  readonly headerBackgroundColor: ColorValue;
+  readonly headerForegroundColor: ColorValue;
+  readonly headerHeadlineStyle: TextStyleValue;
+  readonly headerHelpStyle: TextStyleValue;
+  readonly inputDecorationTheme: InputDecorationThemeDataValue;
+  readonly locale: Locale;
+  readonly rangePickerBackgroundColor: ColorValue;
+  readonly rangePickerElevation: number;
+  readonly rangePickerHeaderBackgroundColor: ColorValue;
+  readonly rangePickerHeaderForegroundColor: ColorValue;
+  readonly rangePickerHeaderHeadlineStyle: TextStyleValue;
+  readonly rangePickerHeaderHelpStyle: TextStyleValue;
+  readonly rangePickerShadowColor: ColorValue;
+  readonly rangePickerShape: ShapeBorderValue;
+  readonly rangePickerSurfaceTintColor: ColorValue;
+  readonly rangeSelectionBackgroundColor: ColorValue;
+  readonly rangeSelectionOverlayColor: WidgetStatePropertyValue;
+  readonly shadowColor: ColorValue;
+  readonly shape: ShapeBorderValue;
+  readonly subHeaderForegroundColor: ColorValue;
+  readonly surfaceTintColor: ColorValue;
+  readonly todayBackgroundColor: WidgetStatePropertyValue;
+  readonly todayBorder: BorderSideValue;
+  readonly todayForegroundColor: WidgetStatePropertyValue;
+  readonly toggleButtonTextStyle: TextStyleValue;
+  readonly weekdayStyle: TextStyleValue;
+  readonly yearBackgroundColor: WidgetStatePropertyValue;
+  readonly yearForegroundColor: WidgetStatePropertyValue;
+  readonly yearOverlayColor: WidgetStatePropertyValue;
+  readonly yearShape: WidgetStatePropertyValue;
+  readonly yearStyle: TextStyleValue;
 }
 
 export declare const DatePickerThemeData: new (options?: {
@@ -5347,6 +6271,9 @@ export interface DateTime {
 
 export interface DateTimeRange {
   readonly __fsxBrand?: { readonly DateTimeRange: true };
+  readonly duration: DurationValue;
+  readonly end: unknown;
+  readonly start: unknown;
 }
 
 export declare const DateTimeRange: new (options: {
@@ -5359,10 +6286,25 @@ export interface Decoration {
     readonly Decoration: true;
     readonly Diagnosticable: true;
   };
+  readonly isComplex: boolean;
+  readonly padding: EdgeInsetsGeometryValue;
 }
 
 export interface DecorationImage {
   readonly __fsxBrand?: { readonly DecorationImage: true };
+  readonly alignment: AlignmentGeometryValue;
+  readonly centerSlice: RectValue;
+  readonly colorFilter: ColorFilter;
+  readonly filterQuality: FilterQuality;
+  readonly fit: BoxFit;
+  readonly image: ImageProvider;
+  readonly invertColors: boolean;
+  readonly isAntiAlias: boolean;
+  readonly matchTextDirection: boolean;
+  readonly onError: (exception: Object, stackTrace: StackTrace | null) => void;
+  readonly opacity: number;
+  readonly repeat: ImageRepeat;
+  readonly scale: number;
 }
 
 export declare const DecorationImage: new (options: {
@@ -5399,6 +6341,34 @@ export interface DefaultCupertinoLocalizations {
     readonly CupertinoLocalizations: true;
     readonly DefaultCupertinoLocalizations: true;
   };
+  readonly alertDialogLabel: string;
+  readonly anteMeridiemAbbreviation: string;
+  readonly backButtonLabel: string;
+  readonly cancelButtonLabel: string;
+  readonly clearButtonLabel: string;
+  readonly collapsedHint: string;
+  readonly copyButtonLabel: string;
+  readonly cutButtonLabel: string;
+  readonly datePickerDateOrder: DatePickerDateOrder;
+  readonly expandedHint: string;
+  readonly expansionTileCollapsedHint: string;
+  readonly expansionTileCollapsedTapHint: string;
+  readonly expansionTileExpandedHint: string;
+  readonly expansionTileExpandedTapHint: string;
+  readonly lookUpButtonLabel: string;
+  readonly menuDismissLabel: string;
+  readonly modalBarrierDismissLabel: string;
+  readonly noSpellCheckReplacementsLabel: string;
+  readonly pasteButtonLabel: string;
+  readonly postMeridiemAbbreviation: string;
+  readonly searchTextFieldPlaceholderLabel: string;
+  readonly searchWebButtonLabel: string;
+  readonly selectAllButtonLabel: string;
+  readonly shareButtonLabel: string;
+  readonly timerPickerHourLabels: string[];
+  readonly timerPickerMinuteLabels: string[];
+  readonly timerPickerSecondLabels: string[];
+  readonly todayLabel: string;
 }
 
 export interface DefaultMaterialLocalizations {
@@ -5406,6 +6376,168 @@ export interface DefaultMaterialLocalizations {
     readonly DefaultMaterialLocalizations: true;
     readonly MaterialLocalizations: true;
   };
+  readonly alertDialogLabel: string;
+  readonly anteMeridiemAbbreviation: string;
+  readonly backButtonTooltip: string;
+  readonly bottomSheetLabel: string;
+  readonly calendarModeButtonLabel: string;
+  readonly cancelButtonLabel: string;
+  readonly clearButtonTooltip: string;
+  readonly closeButtonLabel: string;
+  readonly closeButtonTooltip: string;
+  readonly collapsedHint: string;
+  readonly collapsedIconTapHint: string;
+  readonly continueButtonLabel: string;
+  readonly copyButtonLabel: string;
+  readonly currentDateLabel: string;
+  readonly cutButtonLabel: string;
+  readonly dateHelpText: string;
+  readonly dateInputLabel: string;
+  readonly dateOutOfRangeLabel: string;
+  readonly datePickerHelpText: string;
+  readonly dateRangeEndLabel: string;
+  readonly dateRangePickerHelpText: string;
+  readonly dateRangeStartLabel: string;
+  readonly dateSeparator: string;
+  readonly deleteButtonTooltip: string;
+  readonly dialModeButtonLabel: string;
+  readonly dialogLabel: string;
+  readonly drawerLabel: string;
+  readonly expandedHint: string;
+  readonly expandedIconTapHint: string;
+  readonly expansionTileCollapsedHint: string;
+  readonly expansionTileCollapsedTapHint: string;
+  readonly expansionTileExpandedHint: string;
+  readonly expansionTileExpandedTapHint: string;
+  readonly firstDayOfWeekIndex: number;
+  readonly firstPageTooltip: string;
+  readonly hideAccountsLabel: string;
+  readonly inputDateModeButtonLabel: string;
+  readonly inputTimeModeButtonLabel: string;
+  readonly invalidDateFormatLabel: string;
+  readonly invalidDateRangeLabel: string;
+  readonly invalidTimeLabel: string;
+  readonly keyboardKeyAlt: string;
+  readonly keyboardKeyAltGraph: string;
+  readonly keyboardKeyBackspace: string;
+  readonly keyboardKeyCapsLock: string;
+  readonly keyboardKeyChannelDown: string;
+  readonly keyboardKeyChannelUp: string;
+  readonly keyboardKeyControl: string;
+  readonly keyboardKeyDelete: string;
+  readonly keyboardKeyEject: string;
+  readonly keyboardKeyEnd: string;
+  readonly keyboardKeyEscape: string;
+  readonly keyboardKeyFn: string;
+  readonly keyboardKeyHome: string;
+  readonly keyboardKeyInsert: string;
+  readonly keyboardKeyMeta: string;
+  readonly keyboardKeyMetaMacOs: string;
+  readonly keyboardKeyMetaWindows: string;
+  readonly keyboardKeyNumLock: string;
+  readonly keyboardKeyNumpad0: string;
+  readonly keyboardKeyNumpad1: string;
+  readonly keyboardKeyNumpad2: string;
+  readonly keyboardKeyNumpad3: string;
+  readonly keyboardKeyNumpad4: string;
+  readonly keyboardKeyNumpad5: string;
+  readonly keyboardKeyNumpad6: string;
+  readonly keyboardKeyNumpad7: string;
+  readonly keyboardKeyNumpad8: string;
+  readonly keyboardKeyNumpad9: string;
+  readonly keyboardKeyNumpadAdd: string;
+  readonly keyboardKeyNumpadComma: string;
+  readonly keyboardKeyNumpadDecimal: string;
+  readonly keyboardKeyNumpadDivide: string;
+  readonly keyboardKeyNumpadEnter: string;
+  readonly keyboardKeyNumpadEqual: string;
+  readonly keyboardKeyNumpadMultiply: string;
+  readonly keyboardKeyNumpadParenLeft: string;
+  readonly keyboardKeyNumpadParenRight: string;
+  readonly keyboardKeyNumpadSubtract: string;
+  readonly keyboardKeyPageDown: string;
+  readonly keyboardKeyPageUp: string;
+  readonly keyboardKeyPower: string;
+  readonly keyboardKeyPowerOff: string;
+  readonly keyboardKeyPrintScreen: string;
+  readonly keyboardKeyScrollLock: string;
+  readonly keyboardKeySelect: string;
+  readonly keyboardKeyShift: string;
+  readonly keyboardKeySpace: string;
+  readonly lastPageTooltip: string;
+  readonly licensesPageTitle: string;
+  readonly lookUpButtonLabel: string;
+  readonly menuBarMenuLabel: string;
+  readonly menuDismissLabel: string;
+  readonly modalBarrierDismissLabel: string;
+  readonly moreButtonTooltip: string;
+  readonly narrowWeekdays: string[];
+  readonly nextMonthTooltip: string;
+  readonly nextPageTooltip: string;
+  readonly okButtonLabel: string;
+  readonly openAppDrawerTooltip: string;
+  readonly pasteButtonLabel: string;
+  readonly popupMenuLabel: string;
+  readonly postMeridiemAbbreviation: string;
+  readonly previousMonthTooltip: string;
+  readonly previousPageTooltip: string;
+  readonly refreshIndicatorSemanticLabel: string;
+  readonly reorderItemDown: string;
+  readonly reorderItemLeft: string;
+  readonly reorderItemRight: string;
+  readonly reorderItemToEnd: string;
+  readonly reorderItemToStart: string;
+  readonly reorderItemUp: string;
+  readonly rowsPerPageTitle: string;
+  readonly saveButtonLabel: string;
+  readonly scanTextButtonLabel: string;
+  readonly scrimLabel: string;
+  readonly searchFieldLabel: string;
+  readonly searchWebButtonLabel: string;
+  readonly selectAllButtonLabel: string;
+  readonly selectYearSemanticsLabel: string;
+  readonly selectedDateLabel: string;
+  readonly shareButtonLabel: string;
+  readonly showAccountsLabel: string;
+  readonly showMenuTooltip: string;
+  readonly signedInLabel: string;
+  readonly timePickerDialHelpText: string;
+  readonly timePickerHourLabel: string;
+  readonly timePickerHourModeAnnouncement: string;
+  readonly timePickerInputHelpText: string;
+  readonly timePickerMinuteLabel: string;
+  readonly timePickerMinuteModeAnnouncement: string;
+  readonly unspecifiedDate: string;
+  readonly unspecifiedDateRange: string;
+  readonly viewLicensesButtonLabel: string;
+}
+
+export interface DefaultPlatformMenuDelegate {
+  readonly __fsxBrand?: {
+    readonly DefaultPlatformMenuDelegate: true;
+    readonly PlatformMenuDelegate: true;
+  };
+}
+
+export declare const DefaultPlatformMenuDelegate: new (options?: {
+  channel?: MethodChannel;
+}) => DefaultPlatformMenuDelegate;
+
+export interface DefaultSelectionStyle {
+  readonly __fsxBrand?: {
+    readonly DefaultSelectionStyle: true;
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly InheritedTheme: true;
+    readonly InheritedWidget: true;
+    readonly ProxyWidget: true;
+    readonly Widget: true;
+  };
+  readonly child: FlutterElement;
+  readonly cursorColor: ColorValue;
+  readonly key: Key;
+  readonly mouseCursor: MouseCursorValue;
+  readonly selectionColor: ColorValue;
 }
 
 export interface DefaultSpellCheckService {
@@ -5416,6 +6548,27 @@ export interface DefaultSpellCheckService {
 }
 
 export declare const DefaultSpellCheckService: new () => DefaultSpellCheckService;
+
+export interface DefaultTextStyle {
+  readonly __fsxBrand?: {
+    readonly DefaultTextStyle: true;
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly InheritedTheme: true;
+    readonly InheritedWidget: true;
+    readonly ProxyWidget: true;
+    readonly Widget: true;
+  };
+  readonly child: FlutterElement;
+  readonly key: Key;
+  readonly maxLines: number;
+  readonly overflow: TextOverflow;
+  readonly softWrap: boolean;
+  readonly style: TextStyleValue;
+  readonly textAlign: TextAlign;
+  readonly textHeightBehavior: TextHeightBehaviorValue;
+  readonly textWidthBasis: TextWidthBasis;
+}
 
 export interface DefaultTransitionDelegate {
   readonly __fsxBrand?: {
@@ -5431,6 +6584,23 @@ export interface DefaultWidgetsLocalizations {
     readonly DefaultWidgetsLocalizations: true;
     readonly WidgetsLocalizations: true;
   };
+  readonly copyButtonLabel: string;
+  readonly cutButtonLabel: string;
+  readonly lookUpButtonLabel: string;
+  readonly noResultsFound: string;
+  readonly pasteButtonLabel: string;
+  readonly radioButtonUnselectedLabel: string;
+  readonly reorderItemDown: string;
+  readonly reorderItemLeft: string;
+  readonly reorderItemRight: string;
+  readonly reorderItemToEnd: string;
+  readonly reorderItemToStart: string;
+  readonly reorderItemUp: string;
+  readonly searchResultsFound: string;
+  readonly searchWebButtonLabel: string;
+  readonly selectAllButtonLabel: string;
+  readonly shareButtonLabel: string;
+  readonly textDirection: TextDirection;
 }
 
 export interface DelayedMultiDragGestureRecognizer {
@@ -5511,14 +6681,305 @@ export declare const DesktopTextSelectionToolbarLayoutDelegate: new (options: {
   anchor: OffsetValue;
 }) => DesktopTextSelectionToolbarLayoutDelegate;
 
+export interface DevToolsDeepLinkProperty {
+  readonly __fsxBrand?: {
+    readonly DevToolsDeepLinkProperty: true;
+    readonly DiagnosticsNode: true;
+    readonly DiagnosticsProperty: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly defaultValue: ObjectValue;
+  readonly emptyBodyDescription: string;
+  readonly exception: ObjectValue;
+  readonly expandableValue: boolean;
+  readonly ifEmpty: string;
+  readonly ifNull: string;
+  readonly isInteresting: boolean;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly missingIfNull: boolean;
+  readonly name: string;
+  readonly propertyType: TypeValue;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly tooltip: string;
+  readonly value: unknown;
+}
+
+export declare const DevToolsDeepLinkProperty: new (
+  description: string,
+  url: string,
+) => DevToolsDeepLinkProperty;
+
 export interface DeviceGestureSettings {
   readonly __fsxBrand?: { readonly DeviceGestureSettings: true };
+  readonly panSlop: number;
+  readonly touchSlop: number;
 }
 
 export declare const DeviceGestureSettings: new (options?: {
   touchSlop?: number;
 }) => DeviceGestureSettings & {
   readonly fromView: (view: FlutterView) => DeviceGestureSettings;
+};
+
+export interface DiagnosticableNode {
+  readonly __fsxBrand?: {
+    readonly DiagnosticableNode: true;
+    readonly DiagnosticsNode: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly emptyBodyDescription: string;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly name: string;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly value: unknown;
+}
+
+export declare const DiagnosticableNode: new (options: {
+  name?: string;
+  value: unknown;
+  style: DiagnosticsTreeStyle;
+}) => DiagnosticableNode;
+
+export interface DiagnosticableTree {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+  };
+}
+
+export interface DiagnosticableTreeNode {
+  readonly __fsxBrand?: {
+    readonly DiagnosticableNode: true;
+    readonly DiagnosticableTreeNode: true;
+    readonly DiagnosticsNode: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly emptyBodyDescription: string;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly name: string;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly value: unknown;
+}
+
+export declare const DiagnosticableTreeNode: new (options: {
+  name?: string;
+  value: DiagnosticableTree;
+  style: DiagnosticsTreeStyle;
+}) => DiagnosticableTreeNode;
+
+export interface DiagnosticsBlock {
+  readonly __fsxBrand?: {
+    readonly DiagnosticsBlock: true;
+    readonly DiagnosticsNode: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly emptyBodyDescription: string;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly name: string;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly value: ObjectValue;
+}
+
+export declare const DiagnosticsBlock: new (options?: {
+  name?: string;
+  style?: DiagnosticsTreeStyle;
+  showName?: boolean;
+  showSeparator?: boolean;
+  linePrefix?: string;
+  value?: ObjectValue;
+  description?: string;
+  level?: DiagnosticLevel;
+  allowTruncate?: boolean;
+  children?: DiagnosticsNode[];
+  properties?: DiagnosticsNode[];
+}) => DiagnosticsBlock;
+
+export interface DiagnosticsDebugCreator {
+  readonly __fsxBrand?: {
+    readonly DiagnosticsDebugCreator: true;
+    readonly DiagnosticsNode: true;
+    readonly DiagnosticsProperty: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly defaultValue: ObjectValue;
+  readonly emptyBodyDescription: string;
+  readonly exception: ObjectValue;
+  readonly expandableValue: boolean;
+  readonly ifEmpty: string;
+  readonly ifNull: string;
+  readonly isInteresting: boolean;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly missingIfNull: boolean;
+  readonly name: string;
+  readonly propertyType: TypeValue;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly tooltip: string;
+  readonly value: unknown;
+}
+
+export declare const DiagnosticsDebugCreator: new (
+  value: ObjectValue,
+) => DiagnosticsDebugCreator;
+
+export interface DiagnosticsNode {
+  readonly __fsxBrand?: { readonly DiagnosticsNode: true };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly emptyBodyDescription: string;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly name: string;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly value: ObjectValue;
+}
+
+export declare const DiagnosticsNode: {
+  readonly message: (
+    message: string,
+    options?: {
+      style?: DiagnosticsTreeStyle;
+      level?: DiagnosticLevel;
+      allowWrap?: boolean;
+    },
+  ) => DiagnosticsNode;
+};
+
+export interface DiagnosticsProperty {
+  readonly __fsxBrand?: {
+    readonly DiagnosticsNode: true;
+    readonly DiagnosticsProperty: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly defaultValue: ObjectValue;
+  readonly emptyBodyDescription: string;
+  readonly exception: ObjectValue;
+  readonly expandableValue: boolean;
+  readonly ifEmpty: string;
+  readonly ifNull: string;
+  readonly isInteresting: boolean;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly missingIfNull: boolean;
+  readonly name: string;
+  readonly propertyType: TypeValue;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly tooltip: string;
+  readonly value: unknown;
+}
+
+export declare const DiagnosticsProperty: new (
+  name: string,
+  value: unknown,
+  options?: {
+    description?: string;
+    ifNull?: string;
+    ifEmpty?: string;
+    showName?: boolean;
+    showSeparator?: boolean;
+    defaultValue?: ObjectValue;
+    tooltip?: string;
+    missingIfNull?: boolean;
+    linePrefix?: string;
+    expandableValue?: boolean;
+    allowWrap?: boolean;
+    allowNameWrap?: boolean;
+    style?: DiagnosticsTreeStyle;
+    level?: DiagnosticLevel;
+  },
+) => DiagnosticsProperty & {
+  readonly lazy: (
+    name: string,
+    computeValue: () => unknown | null,
+    options?: {
+      description?: string;
+      ifNull?: string;
+      ifEmpty?: string;
+      showName?: boolean;
+      showSeparator?: boolean;
+      defaultValue?: ObjectValue;
+      tooltip?: string;
+      missingIfNull?: boolean;
+      expandableValue?: boolean;
+      allowWrap?: boolean;
+      allowNameWrap?: boolean;
+      style?: DiagnosticsTreeStyle;
+      level?: DiagnosticLevel;
+    },
+  ) => DiagnosticsProperty;
+};
+
+export interface DiagnosticsSerializationDelegate {
+  readonly __fsxBrand?: { readonly DiagnosticsSerializationDelegate: true };
+}
+
+export declare const DiagnosticsSerializationDelegate: new (options?: {
+  subtreeDepth?: number;
+  includeProperties?: boolean;
+}) => DiagnosticsSerializationDelegate;
+
+export interface DiagnosticsStackTrace {
+  readonly __fsxBrand?: {
+    readonly DiagnosticsBlock: true;
+    readonly DiagnosticsNode: true;
+    readonly DiagnosticsStackTrace: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly emptyBodyDescription: string;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly name: string;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly value: ObjectValue;
+}
+
+export declare const DiagnosticsStackTrace: new (
+  name: string,
+  stack: StackTrace,
+  options?: {
+    stackFilter?: (input: string[]) => string[];
+    showSeparator?: boolean;
+  },
+) => DiagnosticsStackTrace & {
+  readonly singleFrame: (
+    name: string,
+    options: { frame: string; showSeparator?: boolean },
+  ) => DiagnosticsStackTrace;
 };
 
 export interface DialogRoute {
@@ -5567,6 +7028,7 @@ export interface DialogRoute {
   readonly offstage: boolean;
   readonly opaque: boolean;
   readonly overlayEntries: OverlayEntry[];
+  readonly popDisposition: RoutePopDisposition;
   readonly popGestureEnabled: boolean;
   readonly popGestureInProgress: boolean;
   readonly popped: Promise<unknown | null>;
@@ -5606,11 +7068,53 @@ export declare const DialogRoute: new (options: {
   animationStyle?: AnimationStyleValue;
 }) => DialogRoute;
 
+export interface DialogTheme {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DialogTheme: true;
+    readonly InheritedTheme: true;
+    readonly InheritedWidget: true;
+    readonly ProxyWidget: true;
+    readonly Widget: true;
+  };
+  readonly actionsPadding: EdgeInsetsGeometryValue;
+  readonly alignment: AlignmentGeometryValue;
+  readonly backgroundColor: ColorValue;
+  readonly barrierColor: ColorValue;
+  readonly child: FlutterElement;
+  readonly clipBehavior: Clip;
+  readonly contentTextStyle: TextStyleValue;
+  readonly data: DialogThemeDataValue;
+  readonly elevation: number;
+  readonly iconColor: ColorValue;
+  readonly insetPadding: EdgeInsetsValue;
+  readonly key: Key;
+  readonly shadowColor: ColorValue;
+  readonly shape: ShapeBorderValue;
+  readonly surfaceTintColor: ColorValue;
+  readonly titleTextStyle: TextStyleValue;
+}
+
 export interface DialogThemeData {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
     readonly DialogThemeData: true;
   };
+  readonly actionsPadding: EdgeInsetsGeometryValue;
+  readonly alignment: AlignmentGeometryValue;
+  readonly backgroundColor: ColorValue;
+  readonly barrierColor: ColorValue;
+  readonly clipBehavior: Clip;
+  readonly constraints: BoxConstraintsValue;
+  readonly contentTextStyle: TextStyleValue;
+  readonly elevation: number;
+  readonly iconColor: ColorValue;
+  readonly insetPadding: EdgeInsetsValue;
+  readonly shadowColor: ColorValue;
+  readonly shape: ShapeBorderValue;
+  readonly surfaceTintColor: ColorValue;
+  readonly titleTextStyle: TextStyleValue;
 }
 
 export declare const DialogThemeData: new (options?: {
@@ -5702,6 +7206,9 @@ export declare const DismissUpdateDetails: new (options?: {
 
 export interface DisplayFeature {
   readonly __fsxBrand?: { readonly DisplayFeature: true };
+  readonly bounds: RectValue;
+  readonly state: DisplayFeatureState;
+  readonly type: DisplayFeatureType;
 }
 
 export interface DisposableBuildContext {
@@ -5717,6 +7224,12 @@ export interface DividerThemeData {
     readonly Diagnosticable: true;
     readonly DividerThemeData: true;
   };
+  readonly color: ColorValue;
+  readonly endIndent: number;
+  readonly indent: number;
+  readonly radius: BorderRadiusGeometryValue;
+  readonly space: number;
+  readonly thickness: number;
 }
 
 export declare const DividerThemeData: new (options?: {
@@ -5772,6 +7285,62 @@ export interface DoNothingIntent {
 }
 
 export declare const DoNothingIntent: new () => DoNothingIntent;
+
+export interface DoubleProperty {
+  readonly __fsxBrand?: {
+    readonly DiagnosticsNode: true;
+    readonly DiagnosticsProperty: true;
+    readonly DoubleProperty: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly defaultValue: ObjectValue;
+  readonly emptyBodyDescription: string;
+  readonly exception: ObjectValue;
+  readonly expandableValue: boolean;
+  readonly ifEmpty: string;
+  readonly ifNull: string;
+  readonly isInteresting: boolean;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly missingIfNull: boolean;
+  readonly name: string;
+  readonly propertyType: TypeValue;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly tooltip: string;
+  readonly unit: string;
+  readonly value: unknown;
+}
+
+export declare const DoubleProperty: new (
+  name: string,
+  value: number,
+  options?: {
+    ifNull?: string;
+    unit?: string;
+    tooltip?: string;
+    defaultValue?: ObjectValue;
+    showName?: boolean;
+    style?: DiagnosticsTreeStyle;
+    level?: DiagnosticLevel;
+  },
+) => DoubleProperty & {
+  readonly lazy: (
+    name: string,
+    computeValue: () => number | null,
+    options?: {
+      ifNull?: string;
+      showName?: boolean;
+      unit?: string;
+      tooltip?: string;
+      defaultValue?: ObjectValue;
+      level?: DiagnosticLevel;
+    },
+  ) => DoubleProperty;
+};
 
 export interface DoubleTapGestureRecognizer {
   readonly __fsxBrand?: {
@@ -5938,6 +7507,26 @@ export interface DraggableScrollableController {
 
 export declare const DraggableScrollableController: new () => DraggableScrollableController;
 
+export interface DrawerController {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DrawerController: true;
+    readonly StatefulWidget: true;
+    readonly Widget: true;
+  };
+  readonly alignment: DrawerAlignment;
+  readonly child: FlutterElement;
+  readonly dragStartBehavior: DragStartBehavior;
+  readonly drawerBarrierDismissible: boolean;
+  readonly drawerCallback: (isOpened: boolean) => void;
+  readonly edgeDragWidth: number;
+  readonly enableOpenDragGesture: boolean;
+  readonly isDrawerOpen: boolean;
+  readonly key: Key;
+  readonly scrimColor: ColorValue;
+}
+
 export interface DrawerControllerState {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -5955,6 +7544,15 @@ export interface DrawerThemeData {
     readonly Diagnosticable: true;
     readonly DrawerThemeData: true;
   };
+  readonly backgroundColor: ColorValue;
+  readonly clipBehavior: Clip;
+  readonly elevation: number;
+  readonly endShape: ShapeBorderValue;
+  readonly scrimColor: ColorValue;
+  readonly shadowColor: ColorValue;
+  readonly shape: ShapeBorderValue;
+  readonly surfaceTintColor: ColorValue;
+  readonly width: number;
 }
 
 export declare const DrawerThemeData: new (options?: {
@@ -6016,6 +7614,10 @@ export interface DropdownMenuThemeData {
     readonly Diagnosticable: true;
     readonly DropdownMenuThemeData: true;
   };
+  readonly disabledColor: ColorValue;
+  readonly inputDecorationTheme: InputDecorationThemeDataValue;
+  readonly menuStyle: MenuStyleValue;
+  readonly textStyle: TextStyleValue;
 }
 
 export declare const DropdownMenuThemeData: new (options?: {
@@ -6059,6 +7661,19 @@ export interface EdgeInsets {
     readonly EdgeInsets: true;
     readonly EdgeInsetsGeometry: true;
   };
+  readonly bottom: number;
+  readonly bottomLeft: OffsetValue;
+  readonly bottomRight: OffsetValue;
+  readonly collapsedSize: SizeValue;
+  readonly flipped: EdgeInsetsValue;
+  readonly horizontal: number;
+  readonly isNonNegative: boolean;
+  readonly left: number;
+  readonly right: number;
+  readonly top: number;
+  readonly topLeft: OffsetValue;
+  readonly topRight: OffsetValue;
+  readonly vertical: number;
 }
 
 export interface EdgeInsetsDirectional {
@@ -6066,10 +7681,24 @@ export interface EdgeInsetsDirectional {
     readonly EdgeInsetsDirectional: true;
     readonly EdgeInsetsGeometry: true;
   };
+  readonly bottom: number;
+  readonly collapsedSize: SizeValue;
+  readonly end: number;
+  readonly flipped: EdgeInsetsDirectionalValue;
+  readonly horizontal: number;
+  readonly isNonNegative: boolean;
+  readonly start: number;
+  readonly top: number;
+  readonly vertical: number;
 }
 
 export interface EdgeInsetsGeometry {
   readonly __fsxBrand?: { readonly EdgeInsetsGeometry: true };
+  readonly collapsedSize: SizeValue;
+  readonly flipped: EdgeInsetsGeometryValue;
+  readonly horizontal: number;
+  readonly isNonNegative: boolean;
+  readonly vertical: number;
 }
 
 export interface EdgeInsetsGeometryTween {
@@ -6132,6 +7761,7 @@ export interface EditableTextState {
   readonly spellCheckConfiguration: SpellCheckConfigurationValue;
   readonly spellCheckEnabled: boolean;
   readonly textEditingValue: TextEditingValueValue;
+  readonly textInputConfiguration: TextInputConfiguration;
   readonly wantKeepAlive: boolean;
   readonly widget: unknown;
 }
@@ -6196,11 +7826,32 @@ export interface ElasticOutCurve {
 
 export declare const ElasticOutCurve: new (period?: number) => ElasticOutCurve;
 
+export interface Element {
+  readonly __fsxBrand?: {
+    readonly BuildContext: true;
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly Element: true;
+  };
+  readonly debugDoingBuild: boolean;
+  readonly debugIsActive: boolean;
+  readonly debugIsDefunct: boolean;
+  readonly depth: number;
+  readonly dirty: boolean;
+  readonly mounted: boolean;
+  readonly renderObject: RenderObject;
+  readonly renderObjectAttachingChild: Element;
+  readonly size: SizeValue;
+  readonly slot: ObjectValue;
+  readonly widget: FlutterElement;
+}
+
 export interface ElevatedButtonThemeData {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
     readonly ElevatedButtonThemeData: true;
   };
+  readonly style: ButtonStyleValue;
 }
 
 export declare const ElevatedButtonThemeData: new (options?: {
@@ -6220,12 +7871,173 @@ export interface Endian {
   readonly __fsxBrand?: { readonly Endian: true };
 }
 
+export interface EnumProperty {
+  readonly __fsxBrand?: {
+    readonly DiagnosticsNode: true;
+    readonly DiagnosticsProperty: true;
+    readonly EnumProperty: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly defaultValue: ObjectValue;
+  readonly emptyBodyDescription: string;
+  readonly exception: ObjectValue;
+  readonly expandableValue: boolean;
+  readonly ifEmpty: string;
+  readonly ifNull: string;
+  readonly isInteresting: boolean;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly missingIfNull: boolean;
+  readonly name: string;
+  readonly propertyType: TypeValue;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly tooltip: string;
+  readonly value: unknown;
+}
+
+export declare const EnumProperty: new (
+  name: string,
+  value: unknown,
+  options?: { defaultValue?: ObjectValue; level?: DiagnosticLevel },
+) => EnumProperty;
+
+export interface ErrorDescription {
+  readonly __fsxBrand?: {
+    readonly DiagnosticsNode: true;
+    readonly DiagnosticsProperty: true;
+    readonly ErrorDescription: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly defaultValue: ObjectValue;
+  readonly emptyBodyDescription: string;
+  readonly exception: ObjectValue;
+  readonly expandableValue: boolean;
+  readonly ifEmpty: string;
+  readonly ifNull: string;
+  readonly isInteresting: boolean;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly missingIfNull: boolean;
+  readonly name: string;
+  readonly propertyType: TypeValue;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly tooltip: string;
+  readonly value: ObjectValue[];
+}
+
+export declare const ErrorDescription: new (
+  message: string,
+) => ErrorDescription;
+
+export interface ErrorHint {
+  readonly __fsxBrand?: {
+    readonly DiagnosticsNode: true;
+    readonly DiagnosticsProperty: true;
+    readonly ErrorHint: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly defaultValue: ObjectValue;
+  readonly emptyBodyDescription: string;
+  readonly exception: ObjectValue;
+  readonly expandableValue: boolean;
+  readonly ifEmpty: string;
+  readonly ifNull: string;
+  readonly isInteresting: boolean;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly missingIfNull: boolean;
+  readonly name: string;
+  readonly propertyType: TypeValue;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly tooltip: string;
+  readonly value: ObjectValue[];
+}
+
+export declare const ErrorHint: new (message: string) => ErrorHint;
+
+export interface ErrorSpacer {
+  readonly __fsxBrand?: {
+    readonly DiagnosticsNode: true;
+    readonly DiagnosticsProperty: true;
+    readonly ErrorSpacer: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly defaultValue: ObjectValue;
+  readonly emptyBodyDescription: string;
+  readonly exception: ObjectValue;
+  readonly expandableValue: boolean;
+  readonly ifEmpty: string;
+  readonly ifNull: string;
+  readonly isInteresting: boolean;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly missingIfNull: boolean;
+  readonly name: string;
+  readonly propertyType: TypeValue;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly tooltip: string;
+  readonly value: unknown;
+}
+
+export declare const ErrorSpacer: new () => ErrorSpacer;
+
+export interface ErrorSummary {
+  readonly __fsxBrand?: {
+    readonly DiagnosticsNode: true;
+    readonly DiagnosticsProperty: true;
+    readonly ErrorSummary: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly defaultValue: ObjectValue;
+  readonly emptyBodyDescription: string;
+  readonly exception: ObjectValue;
+  readonly expandableValue: boolean;
+  readonly ifEmpty: string;
+  readonly ifNull: string;
+  readonly isInteresting: boolean;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly missingIfNull: boolean;
+  readonly name: string;
+  readonly propertyType: TypeValue;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly tooltip: string;
+  readonly value: ObjectValue[];
+}
+
+export declare const ErrorSummary: new (message: string) => ErrorSummary;
+
 export interface ExactAssetImage {
   readonly __fsxBrand?: {
     readonly AssetBundleImageProvider: true;
     readonly ExactAssetImage: true;
     readonly ImageProvider: true;
   };
+  readonly assetName: string;
+  readonly bundle: AssetBundle;
+  readonly keyName: string;
+  readonly package: string;
+  readonly scale: number;
 }
 
 export declare const ExactAssetImage: new (
@@ -6267,6 +8079,8 @@ export interface ExpansibleController {
     readonly ExpansibleController: true;
     readonly Listenable: true;
   };
+  readonly hasListeners: boolean;
+  readonly isExpanded: boolean;
 }
 
 export declare const ExpansibleController: new () => ExpansibleController;
@@ -6307,6 +8121,19 @@ export interface ExpansionTileThemeData {
     readonly Diagnosticable: true;
     readonly ExpansionTileThemeData: true;
   };
+  readonly backgroundColor: ColorValue;
+  readonly childrenPadding: EdgeInsetsGeometryValue;
+  readonly clipBehavior: Clip;
+  readonly collapsedBackgroundColor: ColorValue;
+  readonly collapsedIconColor: ColorValue;
+  readonly collapsedShape: ShapeBorderValue;
+  readonly collapsedTextColor: ColorValue;
+  readonly expandedAlignment: AlignmentGeometryValue;
+  readonly expansionAnimationStyle: AnimationStyleValue;
+  readonly iconColor: ColorValue;
+  readonly shape: ShapeBorderValue;
+  readonly textColor: ColorValue;
+  readonly tilePadding: EdgeInsetsGeometryValue;
 }
 
 export declare const ExpansionTileThemeData: new (options?: {
@@ -6324,6 +8151,21 @@ export declare const ExpansionTileThemeData: new (options?: {
   clipBehavior?: Clip;
   expansionAnimationStyle?: AnimationStyleValue;
 }) => ExpansionTileThemeData;
+
+export interface ExpensiveAndroidViewController {
+  readonly __fsxBrand?: {
+    readonly AndroidViewController: true;
+    readonly ExpensiveAndroidViewController: true;
+    readonly PlatformViewController: true;
+  };
+  readonly awaitingCreation: boolean;
+  readonly createdCallbacks: (id: number) => void[];
+  readonly isCreated: boolean;
+  readonly pointTransformer: (position: Offset) => Offset;
+  readonly requiresViewComposition: boolean;
+  readonly textureId: number;
+  readonly viewId: number;
+}
 
 export interface ExtendSelectionByCharacterIntent {
   readonly __fsxBrand?: {
@@ -6491,6 +8333,8 @@ export interface FileImage {
     readonly FileImage: true;
     readonly ImageProvider: true;
   };
+  readonly file: File;
+  readonly scale: number;
 }
 
 export declare const FileImage: new (
@@ -6503,6 +8347,7 @@ export interface FilledButtonThemeData {
     readonly Diagnosticable: true;
     readonly FilledButtonThemeData: true;
   };
+  readonly style: ButtonStyleValue;
 }
 
 export declare const FilledButtonThemeData: new (options?: {
@@ -6514,6 +8359,9 @@ export interface FilteringTextInputFormatter {
     readonly FilteringTextInputFormatter: true;
     readonly TextInputFormatter: true;
   };
+  readonly allow: boolean;
+  readonly filterPattern: Pattern;
+  readonly replacementString: string;
 }
 
 export declare const FilteringTextInputFormatter: new (
@@ -6613,6 +8461,87 @@ export declare const FixedScrollMetrics: new (options: {
   devicePixelRatio: number;
 }) => FixedScrollMetrics;
 
+export interface FlagProperty {
+  readonly __fsxBrand?: {
+    readonly DiagnosticsNode: true;
+    readonly DiagnosticsProperty: true;
+    readonly FlagProperty: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly defaultValue: ObjectValue;
+  readonly emptyBodyDescription: string;
+  readonly exception: ObjectValue;
+  readonly expandableValue: boolean;
+  readonly ifEmpty: string;
+  readonly ifFalse: string;
+  readonly ifNull: string;
+  readonly ifTrue: string;
+  readonly isInteresting: boolean;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly missingIfNull: boolean;
+  readonly name: string;
+  readonly propertyType: TypeValue;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly tooltip: string;
+  readonly value: unknown;
+}
+
+export declare const FlagProperty: new (
+  name: string,
+  options: {
+    value: boolean;
+    ifTrue?: string;
+    ifFalse?: string;
+    showName?: boolean;
+    defaultValue?: ObjectValue;
+    level?: DiagnosticLevel;
+  },
+) => FlagProperty;
+
+export interface FlagsSummary {
+  readonly __fsxBrand?: {
+    readonly DiagnosticsNode: true;
+    readonly DiagnosticsProperty: true;
+    readonly FlagsSummary: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly defaultValue: ObjectValue;
+  readonly emptyBodyDescription: string;
+  readonly exception: ObjectValue;
+  readonly expandableValue: boolean;
+  readonly ifEmpty: string;
+  readonly ifNull: string;
+  readonly isInteresting: boolean;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly missingIfNull: boolean;
+  readonly name: string;
+  readonly propertyType: TypeValue;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly tooltip: string;
+  readonly value: Record<string, unknown | null>;
+}
+
+export declare const FlagsSummary: new (
+  name: string,
+  value: Record<string, unknown | null>,
+  options?: {
+    ifEmpty?: string;
+    showName?: boolean;
+    showSeparator?: boolean;
+    level?: DiagnosticLevel;
+  },
+) => FlagsSummary;
+
 export interface FlexColumnWidth {
   readonly __fsxBrand?: {
     readonly FlexColumnWidth: true;
@@ -6681,6 +8610,27 @@ export interface FloatingActionButtonThemeData {
     readonly Diagnosticable: true;
     readonly FloatingActionButtonThemeData: true;
   };
+  readonly backgroundColor: ColorValue;
+  readonly disabledElevation: number;
+  readonly elevation: number;
+  readonly enableFeedback: boolean;
+  readonly extendedIconLabelSpacing: number;
+  readonly extendedPadding: EdgeInsetsGeometryValue;
+  readonly extendedSizeConstraints: BoxConstraintsValue;
+  readonly extendedTextStyle: TextStyleValue;
+  readonly focusColor: ColorValue;
+  readonly focusElevation: number;
+  readonly foregroundColor: ColorValue;
+  readonly highlightElevation: number;
+  readonly hoverColor: ColorValue;
+  readonly hoverElevation: number;
+  readonly iconSize: number;
+  readonly largeSizeConstraints: BoxConstraintsValue;
+  readonly mouseCursor: WidgetStatePropertyValue;
+  readonly shape: ShapeBorderValue;
+  readonly sizeConstraints: BoxConstraintsValue;
+  readonly smallSizeConstraints: BoxConstraintsValue;
+  readonly splashColor: ColorValue;
 }
 
 export declare const FloatingActionButtonThemeData: new (options?: {
@@ -6711,6 +8661,17 @@ export interface FloatingLabelAlignment {
   readonly __fsxBrand?: { readonly FloatingLabelAlignment: true };
 }
 
+export interface Flow {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly Flow: true;
+    readonly MultiChildRenderObjectWidget: true;
+    readonly RenderObjectWidget: true;
+    readonly Widget: true;
+  };
+}
+
 export interface FlowDelegate {
   readonly __fsxBrand?: { readonly FlowDelegate: true };
 }
@@ -6726,12 +8687,53 @@ export interface FlutterError {
   };
 }
 
+export interface FlutterErrorDetails {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly FlutterErrorDetails: true;
+  };
+}
+
+export declare const FlutterErrorDetails: new (options: {
+  exception: ObjectValue;
+  stack?: StackTrace;
+  library?: string;
+  context?: DiagnosticsNode;
+  stackFilter?: (input: string[]) => string[];
+  informationCollector?: () => DiagnosticsNode[];
+  silent?: boolean;
+}) => FlutterErrorDetails;
+
+export interface FlutterErrorDetailsForPointerEventDispatcher {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly FlutterErrorDetails: true;
+    readonly FlutterErrorDetailsForPointerEventDispatcher: true;
+  };
+}
+
+export declare const FlutterErrorDetailsForPointerEventDispatcher: new (options: {
+  exception: ObjectValue;
+  stack?: StackTrace;
+  library?: string;
+  context?: DiagnosticsNode;
+  event?: PointerEvent;
+  hitTestEntry?: HitTestEntry;
+  informationCollector?: () => DiagnosticsNode[];
+  silent?: boolean;
+}) => FlutterErrorDetailsForPointerEventDispatcher;
+
 export interface FlutterLogoDecoration {
   readonly __fsxBrand?: {
     readonly Decoration: true;
     readonly Diagnosticable: true;
     readonly FlutterLogoDecoration: true;
   };
+  readonly isComplex: boolean;
+  readonly margin: EdgeInsetsValue;
+  readonly padding: EdgeInsetsGeometryValue;
+  readonly style: FlutterLogoStyle;
+  readonly textColor: ColorValue;
 }
 
 export declare const FlutterLogoDecoration: new (options?: {
@@ -6740,12 +8742,26 @@ export declare const FlutterLogoDecoration: new (options?: {
   margin?: EdgeInsetsValue;
 }) => FlutterLogoDecoration;
 
+export interface FlutterMemoryAllocations {
+  readonly __fsxBrand?: { readonly FlutterMemoryAllocations: true };
+  readonly hasListeners: boolean;
+}
+
 export interface FlutterVersion {
   readonly __fsxBrand?: { readonly FlutterVersion: true };
 }
 
 export interface FlutterView {
   readonly __fsxBrand?: { readonly FlutterView: true };
+  readonly devicePixelRatio: number;
+  readonly displayFeatures: DisplayFeature[];
+  readonly padding: ViewPadding;
+  readonly physicalSize: SizeValue;
+  readonly platformDispatcher: PlatformDispatcher;
+  readonly systemGestureInsets: ViewPadding;
+  readonly viewId: number;
+  readonly viewInsets: ViewPadding;
+  readonly viewPadding: ViewPadding;
 }
 
 export interface FocusManager {
@@ -6757,6 +8773,9 @@ export interface FocusManager {
     readonly FocusManager: true;
     readonly Listenable: true;
   };
+  readonly hasListeners: boolean;
+  readonly primaryFocus: FocusNode;
+  readonly rootScope: FocusScopeNode;
 }
 
 export declare const FocusManager: new () => FocusManager;
@@ -6865,7 +8884,32 @@ export interface FocusTraversalPolicy {
     readonly Diagnosticable: true;
     readonly FocusTraversalPolicy: true;
   };
+  readonly requestFocusCallback: (
+    node: FocusNode,
+    alignment?: number | null,
+    alignmentPolicy?: ScrollPositionAlignmentPolicy | null,
+    curve?: Curve | null,
+    duration?: Duration | null,
+  ) => void;
 }
+
+export interface FollowerLayer {
+  readonly __fsxBrand?: {
+    readonly ContainerLayer: true;
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DiagnosticableTreeMixin: true;
+    readonly FollowerLayer: true;
+    readonly Layer: true;
+  };
+}
+
+export declare const FollowerLayer: new (options: {
+  link: LayerLink;
+  showWhenUnlinked?: boolean;
+  unlinkedOffset?: OffsetValue;
+  linkedOffset?: OffsetValue;
+}) => FollowerLayer;
 
 export interface FontFeature {
   readonly __fsxBrand?: { readonly FontFeature: true };
@@ -6906,6 +8950,8 @@ export declare const FontFeature: new (
 
 export interface FontVariation {
   readonly __fsxBrand?: { readonly FontVariation: true };
+  readonly axis: string;
+  readonly value: number;
 }
 
 export declare const FontVariation: new (
@@ -6921,6 +8967,8 @@ export declare const FontVariation: new (
 
 export interface FontWeight {
   readonly __fsxBrand?: { readonly FontWeight: true };
+  readonly index: number;
+  readonly value: number;
 }
 
 export interface ForcePressDetails {
@@ -6987,6 +9035,20 @@ export interface FormFieldState {
 
 export declare const FormFieldState: new () => FormFieldState;
 
+export interface FormState {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly FormState: true;
+    readonly State: true;
+  };
+  readonly context: BuildContext;
+  readonly fields: FormFieldState[];
+  readonly mounted: boolean;
+  readonly widget: unknown;
+}
+
+export declare const FormState: new () => FormState;
+
 export interface FractionColumnWidth {
   readonly __fsxBrand?: {
     readonly FractionColumnWidth: true;
@@ -7004,6 +9066,10 @@ export interface FractionalOffset {
     readonly AlignmentGeometry: true;
     readonly FractionalOffset: true;
   };
+  readonly dx: number;
+  readonly dy: number;
+  readonly x: number;
+  readonly y: number;
 }
 
 export interface FractionalOffsetTween {
@@ -7018,6 +9084,14 @@ export declare const FractionalOffsetTween: new (options?: {
   begin?: FractionalOffset;
   end?: FractionalOffset;
 }) => FractionalOffsetTween;
+
+export interface FragmentProgram {
+  readonly __fsxBrand?: { readonly FragmentProgram: true };
+}
+
+export interface Function {
+  readonly __fsxBrand?: { readonly Function: true };
+}
 
 export interface FutureOr {
   readonly __fsxBrand?: { readonly FutureOr: true };
@@ -7078,7 +9152,14 @@ export declare const GestureRecognizerFactoryWithHandlers: new (
 
 export interface GlobalKey {
   readonly __fsxBrand?: { readonly GlobalKey: true; readonly Key: true };
+  readonly currentContext: BuildContext;
+  readonly currentState: unknown;
+  readonly currentWidget: FlutterElement;
 }
+
+export declare const GlobalKey: new (options?: {
+  debugLabel?: string;
+}) => GlobalKey;
 
 export interface GlobalObjectKey {
   readonly __fsxBrand?: {
@@ -7097,7 +9178,10 @@ export declare const GlobalObjectKey: new (
 ) => GlobalObjectKey;
 
 export interface Gradient {
-  readonly __fsxBrand?: { readonly Gradient: true; readonly Shader: true };
+  readonly __fsxBrand?: { readonly Gradient: true };
+  readonly colors: ColorValue[];
+  readonly stops: number[];
+  readonly transform: GradientTransform;
 }
 
 export interface GradientRotation {
@@ -7131,6 +9215,42 @@ export interface GtkKeyHelper {
   };
 }
 
+export interface HSLColor {
+  readonly __fsxBrand?: { readonly HSLColor: true };
+  readonly alpha: number;
+  readonly hue: number;
+  readonly lightness: number;
+  readonly saturation: number;
+}
+
+export declare const HSLColor: {
+  readonly fromAHSL: (
+    alpha: number,
+    hue: number,
+    saturation: number,
+    lightness: number,
+  ) => HSLColor;
+  readonly fromColor: (color: ColorValue) => HSLColor;
+};
+
+export interface HSVColor {
+  readonly __fsxBrand?: { readonly HSVColor: true };
+  readonly alpha: number;
+  readonly hue: number;
+  readonly saturation: number;
+  readonly value: number;
+}
+
+export declare const HSVColor: {
+  readonly fromAHSV: (
+    alpha: number,
+    hue: number,
+    saturation: number,
+    value: number,
+  ) => HSVColor;
+  readonly fromColor: (color: ColorValue) => HSVColor;
+};
+
 export interface HandleRangeSliderThumbShape {
   readonly __fsxBrand?: {
     readonly HandleRangeSliderThumbShape: true;
@@ -7149,16 +9269,36 @@ export interface HandleThumbShape {
 
 export declare const HandleThumbShape: new () => HandleThumbShape;
 
+export interface HardwareKeyboard {
+  readonly __fsxBrand?: { readonly HardwareKeyboard: true };
+  readonly isAltPressed: boolean;
+  readonly isControlPressed: boolean;
+  readonly isMetaPressed: boolean;
+  readonly isShiftPressed: boolean;
+  readonly logicalKeysPressed: LogicalKeyboardKey[];
+  readonly physicalKeysPressed: PhysicalKeyboardKey[];
+}
+
+export declare const HardwareKeyboard: new () => HardwareKeyboard;
+
 export interface HeroController {
   readonly __fsxBrand?: {
     readonly HeroController: true;
     readonly NavigatorObserver: true;
   };
+  readonly createRectTween: (begin: Rect | null, end: Rect | null) => Tween;
+  readonly navigator: NavigatorState;
 }
 
 export declare const HeroController: new (options?: {
   createRectTween?: (begin: Rect | null, end: Rect | null) => Tween;
 }) => HeroController;
+
+export interface HitTestEntry {
+  readonly __fsxBrand?: { readonly HitTestEntry: true };
+}
+
+export declare const HitTestEntry: new (target: unknown) => HitTestEntry;
 
 export interface HitTestResponse {
   readonly __fsxBrand?: { readonly HitTestResponse: true };
@@ -7209,6 +9349,130 @@ export declare const HorizontalMultiDragGestureRecognizer: new (options?: {
   allowedButtonsFilter?: (buttons: number) => boolean;
 }) => HorizontalMultiDragGestureRecognizer;
 
+export interface HybridAndroidViewController {
+  readonly __fsxBrand?: {
+    readonly AndroidViewController: true;
+    readonly HybridAndroidViewController: true;
+    readonly PlatformViewController: true;
+  };
+  readonly awaitingCreation: boolean;
+  readonly createdCallbacks: (id: number) => void[];
+  readonly isCreated: boolean;
+  readonly pointTransformer: (position: Offset) => Offset;
+  readonly requiresViewComposition: boolean;
+  readonly textureId: number;
+  readonly viewId: number;
+}
+
+export interface IOSSystemContextMenuItem {
+  readonly __fsxBrand?: { readonly IOSSystemContextMenuItem: true };
+  readonly title: string;
+}
+
+export interface IOSSystemContextMenuItemCopy {
+  readonly __fsxBrand?: {
+    readonly IOSSystemContextMenuItem: true;
+    readonly IOSSystemContextMenuItemCopy: true;
+  };
+  readonly title: string;
+}
+
+export declare const IOSSystemContextMenuItemCopy: new () => IOSSystemContextMenuItemCopy;
+
+export interface IOSSystemContextMenuItemCustom {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly IOSSystemContextMenuItem: true;
+    readonly IOSSystemContextMenuItemCustom: true;
+  };
+  readonly onPressed: () => void;
+  readonly title: string;
+}
+
+export declare const IOSSystemContextMenuItemCustom: new (options: {
+  title: string;
+  onPressed: () => void;
+}) => IOSSystemContextMenuItemCustom;
+
+export interface IOSSystemContextMenuItemCut {
+  readonly __fsxBrand?: {
+    readonly IOSSystemContextMenuItem: true;
+    readonly IOSSystemContextMenuItemCut: true;
+  };
+  readonly title: string;
+}
+
+export declare const IOSSystemContextMenuItemCut: new () => IOSSystemContextMenuItemCut;
+
+export interface IOSSystemContextMenuItemLiveText {
+  readonly __fsxBrand?: {
+    readonly IOSSystemContextMenuItem: true;
+    readonly IOSSystemContextMenuItemLiveText: true;
+  };
+  readonly title: string;
+}
+
+export declare const IOSSystemContextMenuItemLiveText: new () => IOSSystemContextMenuItemLiveText;
+
+export interface IOSSystemContextMenuItemLookUp {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly IOSSystemContextMenuItem: true;
+    readonly IOSSystemContextMenuItemLookUp: true;
+  };
+  readonly title: string;
+}
+
+export declare const IOSSystemContextMenuItemLookUp: new (options?: {
+  title?: string;
+}) => IOSSystemContextMenuItemLookUp;
+
+export interface IOSSystemContextMenuItemPaste {
+  readonly __fsxBrand?: {
+    readonly IOSSystemContextMenuItem: true;
+    readonly IOSSystemContextMenuItemPaste: true;
+  };
+  readonly title: string;
+}
+
+export declare const IOSSystemContextMenuItemPaste: new () => IOSSystemContextMenuItemPaste;
+
+export interface IOSSystemContextMenuItemSearchWeb {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly IOSSystemContextMenuItem: true;
+    readonly IOSSystemContextMenuItemSearchWeb: true;
+  };
+  readonly title: string;
+}
+
+export declare const IOSSystemContextMenuItemSearchWeb: new (options?: {
+  title?: string;
+}) => IOSSystemContextMenuItemSearchWeb;
+
+export interface IOSSystemContextMenuItemSelectAll {
+  readonly __fsxBrand?: {
+    readonly IOSSystemContextMenuItem: true;
+    readonly IOSSystemContextMenuItemSelectAll: true;
+  };
+  readonly title: string;
+}
+
+export declare const IOSSystemContextMenuItemSelectAll: new () => IOSSystemContextMenuItemSelectAll;
+
+export interface IOSSystemContextMenuItemShare {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly IOSSystemContextMenuItem: true;
+    readonly IOSSystemContextMenuItemShare: true;
+  };
+  readonly title: string;
+}
+
+export declare const IOSSystemContextMenuItemShare: new (options?: {
+  title?: string;
+}) => IOSSystemContextMenuItemShare;
+
 export interface Icon {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -7224,6 +9488,7 @@ export interface IconButtonThemeData {
     readonly Diagnosticable: true;
     readonly IconButtonThemeData: true;
   };
+  readonly style: ButtonStyleValue;
 }
 
 export declare const IconButtonThemeData: new (options?: {
@@ -7244,11 +9509,60 @@ export declare const IconData: new (
   },
 ) => IconData;
 
+export interface IconDataProperty {
+  readonly __fsxBrand?: {
+    readonly DiagnosticsNode: true;
+    readonly DiagnosticsProperty: true;
+    readonly IconDataProperty: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly defaultValue: ObjectValue;
+  readonly emptyBodyDescription: string;
+  readonly exception: ObjectValue;
+  readonly expandableValue: boolean;
+  readonly ifEmpty: string;
+  readonly ifNull: string;
+  readonly isInteresting: boolean;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly missingIfNull: boolean;
+  readonly name: string;
+  readonly propertyType: TypeValue;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly tooltip: string;
+  readonly value: unknown;
+}
+
+export declare const IconDataProperty: new (
+  name: string,
+  value: IconDataValue,
+  options?: {
+    ifNull?: string;
+    showName?: boolean;
+    style?: DiagnosticsTreeStyle;
+    level?: DiagnosticLevel;
+  },
+) => IconDataProperty;
+
 export interface IconThemeData {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
     readonly IconThemeData: true;
   };
+  readonly applyTextScaling: boolean;
+  readonly color: ColorValue;
+  readonly fill: number;
+  readonly grade: number;
+  readonly isConcrete: boolean;
+  readonly opacity: number;
+  readonly opticalSize: number;
+  readonly shadows: ShadowValue[];
+  readonly size: number;
+  readonly weight: number;
 }
 
 export declare const IconThemeData: new (options?: {
@@ -7295,6 +9609,13 @@ export interface ImageConfiguration {
   readonly __fsxBrand?: { readonly ImageConfiguration: true };
 }
 
+export interface ImageDescriptor {
+  readonly __fsxBrand?: { readonly ImageDescriptor: true };
+  readonly bytesPerPixel: number;
+  readonly height: number;
+  readonly width: number;
+}
+
 export interface ImageFilter {
   readonly __fsxBrand?: { readonly ImageFilter: true };
 }
@@ -7302,6 +9623,38 @@ export interface ImageFilter {
 export interface ImageFilterConfig {
   readonly __fsxBrand?: { readonly ImageFilterConfig: true };
 }
+
+export declare const ImageFilterConfig: new (
+  filter: ImageFilter,
+) => ImageFilterConfig & {
+  readonly blur: (options?: {
+    sigmaX?: number;
+    sigmaY?: number;
+    tileMode?: TileMode;
+    bounded?: boolean;
+  }) => ImageFilterConfig;
+  readonly compose: (options: {
+    outer: ImageFilterConfig;
+    inner: ImageFilterConfig;
+  }) => ImageFilterConfig;
+};
+
+export interface ImageFilterLayer {
+  readonly __fsxBrand?: {
+    readonly ContainerLayer: true;
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DiagnosticableTreeMixin: true;
+    readonly ImageFilterLayer: true;
+    readonly Layer: true;
+    readonly OffsetLayer: true;
+  };
+}
+
+export declare const ImageFilterLayer: new (options?: {
+  imageFilter?: ImageFilter;
+  offset?: OffsetValue;
+}) => ImageFilterLayer;
 
 export interface ImageProvider {
   readonly __fsxBrand?: { readonly ImageProvider: true };
@@ -7337,6 +9690,12 @@ export declare const ImmediateMultiDragGestureRecognizer: new (options?: {
   allowedButtonsFilter?: (buttons: number) => boolean;
 }) => ImmediateMultiDragGestureRecognizer;
 
+export interface ImmutableBuffer {
+  readonly __fsxBrand?: { readonly ImmutableBuffer: true };
+  readonly debugDisposed: boolean;
+  readonly length: number;
+}
+
 export interface InheritedElement {
   readonly __fsxBrand?: {
     readonly BuildContext: true;
@@ -7353,6 +9712,8 @@ export interface InheritedElement {
   readonly depth: number;
   readonly dirty: boolean;
   readonly mounted: boolean;
+  readonly renderObject: RenderObject;
+  readonly renderObjectAttachingChild: Element;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
   readonly widget: FlutterElement;
@@ -7390,6 +9751,8 @@ export interface InheritedModelElement {
   readonly depth: number;
   readonly dirty: boolean;
   readonly mounted: boolean;
+  readonly renderObject: RenderObject;
+  readonly renderObjectAttachingChild: Element;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
   readonly widget: FlutterElement;
@@ -7450,6 +9813,10 @@ export interface InputBorder {
     readonly InputBorder: true;
     readonly ShapeBorder: true;
   };
+  readonly borderSide: BorderSideValue;
+  readonly dimensions: EdgeInsetsGeometryValue;
+  readonly isOutline: boolean;
+  readonly preferPaintInterior: boolean;
 }
 
 export interface InputDecoration {
@@ -7543,6 +9910,43 @@ export interface InputDecorationThemeData {
     readonly Diagnosticable: true;
     readonly InputDecorationThemeData: true;
   };
+  readonly activeIndicatorBorder: BorderSideValue;
+  readonly alignLabelWithHint: boolean;
+  readonly border: InputBorderValue;
+  readonly constraints: BoxConstraintsValue;
+  readonly contentPadding: EdgeInsetsGeometryValue;
+  readonly counterStyle: TextStyleValue;
+  readonly disabledBorder: InputBorderValue;
+  readonly enabledBorder: InputBorderValue;
+  readonly errorBorder: InputBorderValue;
+  readonly errorMaxLines: number;
+  readonly errorStyle: TextStyleValue;
+  readonly fillColor: ColorValue;
+  readonly filled: boolean;
+  readonly floatingLabelAlignment: FloatingLabelAlignmentValue;
+  readonly floatingLabelBehavior: FloatingLabelBehavior;
+  readonly floatingLabelStyle: TextStyleValue;
+  readonly focusColor: ColorValue;
+  readonly focusedBorder: InputBorderValue;
+  readonly focusedErrorBorder: InputBorderValue;
+  readonly helperMaxLines: number;
+  readonly helperStyle: TextStyleValue;
+  readonly hintFadeDuration: DurationValue;
+  readonly hintMaxLines: number;
+  readonly hintStyle: TextStyleValue;
+  readonly hoverColor: ColorValue;
+  readonly iconColor: ColorValue;
+  readonly isCollapsed: boolean;
+  readonly isDense: boolean;
+  readonly labelStyle: TextStyleValue;
+  readonly outlineBorder: BorderSideValue;
+  readonly prefixIconColor: ColorValue;
+  readonly prefixIconConstraints: BoxConstraintsValue;
+  readonly prefixStyle: TextStyleValue;
+  readonly suffixIconColor: ColorValue;
+  readonly suffixIconConstraints: BoxConstraintsValue;
+  readonly suffixStyle: TextStyleValue;
+  readonly visualDensity: VisualDensityValue;
 }
 
 export declare const InputDecorationThemeData: new (options?: {
@@ -7585,6 +9989,16 @@ export declare const InputDecorationThemeData: new (options?: {
   visualDensity?: VisualDensityValue;
 }) => InputDecorationThemeData;
 
+export interface InspectorButton {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly InspectorButton: true;
+    readonly StatelessWidget: true;
+    readonly Widget: true;
+  };
+}
+
 export interface InspectorSelection {
   readonly __fsxBrand?: {
     readonly ChangeNotifier: true;
@@ -7594,6 +10008,28 @@ export interface InspectorSelection {
 }
 
 export declare const InspectorSelection: new () => InspectorSelection;
+
+export interface InspectorSerializationDelegate {
+  readonly __fsxBrand?: {
+    readonly DiagnosticsSerializationDelegate: true;
+    readonly InspectorSerializationDelegate: true;
+  };
+}
+
+export declare const InspectorSerializationDelegate: new (options: {
+  groupName?: string;
+  summaryTree?: boolean;
+  maxDescendantsTruncatableNode?: number;
+  expandPropertyValues?: boolean;
+  subtreeDepth?: number;
+  includeProperties?: boolean;
+  service: WidgetInspectorService;
+  addAdditionalPropertiesCallback?: (
+    arg0: DiagnosticsNode,
+    arg1: InspectorSerializationDelegate,
+  ) => Record<string, Object> | null;
+  inDisableWidgetInspectorScope?: boolean;
+}) => InspectorSerializationDelegate;
 
 export interface Int32List {
   readonly __fsxBrand?: {
@@ -7618,6 +10054,48 @@ export interface Int64List {
     readonly TypedDataList: true;
   };
 }
+
+export interface IntProperty {
+  readonly __fsxBrand?: {
+    readonly DiagnosticsNode: true;
+    readonly DiagnosticsProperty: true;
+    readonly IntProperty: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly defaultValue: ObjectValue;
+  readonly emptyBodyDescription: string;
+  readonly exception: ObjectValue;
+  readonly expandableValue: boolean;
+  readonly ifEmpty: string;
+  readonly ifNull: string;
+  readonly isInteresting: boolean;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly missingIfNull: boolean;
+  readonly name: string;
+  readonly propertyType: TypeValue;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly tooltip: string;
+  readonly unit: string;
+  readonly value: unknown;
+}
+
+export declare const IntProperty: new (
+  name: string,
+  value: number,
+  options?: {
+    ifNull?: string;
+    showName?: boolean;
+    unit?: string;
+    defaultValue?: ObjectValue;
+    style?: DiagnosticsTreeStyle;
+    level?: DiagnosticLevel;
+  },
+) => IntProperty;
 
 export interface IntTween {
   readonly __fsxBrand?: {
@@ -7668,6 +10146,48 @@ export declare const IntrinsicColumnWidth: new (options?: {
   flex?: number;
 }) => IntrinsicColumnWidth;
 
+export interface IterableProperty {
+  readonly __fsxBrand?: {
+    readonly DiagnosticsNode: true;
+    readonly DiagnosticsProperty: true;
+    readonly IterableProperty: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly defaultValue: ObjectValue;
+  readonly emptyBodyDescription: string;
+  readonly exception: ObjectValue;
+  readonly expandableValue: boolean;
+  readonly ifEmpty: string;
+  readonly ifNull: string;
+  readonly isInteresting: boolean;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly missingIfNull: boolean;
+  readonly name: string;
+  readonly propertyType: TypeValue;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly tooltip: string;
+  readonly value: unknown;
+}
+
+export declare const IterableProperty: new (
+  name: string,
+  value: unknown[],
+  options?: {
+    defaultValue?: ObjectValue;
+    ifNull?: string;
+    ifEmpty?: string;
+    style?: DiagnosticsTreeStyle;
+    showName?: boolean;
+    showSeparator?: boolean;
+    level?: DiagnosticLevel;
+  },
+) => IterableProperty;
+
 export interface JSONMessageCodec {
   readonly __fsxBrand?: {
     readonly JSONMessageCodec: true;
@@ -7700,6 +10220,8 @@ export interface Key {
   readonly __fsxBrand?: { readonly Key: true };
 }
 
+export declare const Key: new (value: string) => Key;
+
 export interface KeyDownEvent {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -7728,11 +10250,19 @@ export interface KeyEvent {
     readonly Diagnosticable: true;
     readonly KeyEvent: true;
   };
+  readonly character: string;
+  readonly deviceType: KeyEventDeviceType;
+  readonly logicalKey: LogicalKeyboardKey;
+  readonly physicalKey: PhysicalKeyboardKey;
+  readonly synthesized: boolean;
+  readonly timeStamp: DurationValue;
 }
 
 export interface KeyHelper {
   readonly __fsxBrand?: { readonly KeyHelper: true };
 }
+
+export declare const KeyHelper: new (toolkit: string) => KeyHelper;
 
 export interface KeyRepeatEvent {
   readonly __fsxBrand?: {
@@ -7813,6 +10343,22 @@ export interface LayerLink {
 
 export declare const LayerLink: new () => LayerLink;
 
+export interface LeaderLayer {
+  readonly __fsxBrand?: {
+    readonly ContainerLayer: true;
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DiagnosticableTreeMixin: true;
+    readonly Layer: true;
+    readonly LeaderLayer: true;
+  };
+}
+
+export declare const LeaderLayer: new (options: {
+  link: LayerLink;
+  offset?: OffsetValue;
+}) => LeaderLayer;
+
 export interface LeafRenderObjectElement {
   readonly __fsxBrand?: {
     readonly BuildContext: true;
@@ -7828,6 +10374,8 @@ export interface LeafRenderObjectElement {
   readonly depth: number;
   readonly dirty: boolean;
   readonly mounted: boolean;
+  readonly renderObject: RenderObject;
+  readonly renderObjectAttachingChild: Element;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
   readonly widget: FlutterElement;
@@ -7852,6 +10400,8 @@ export interface LengthLimitingTextInputFormatter {
     readonly LengthLimitingTextInputFormatter: true;
     readonly TextInputFormatter: true;
   };
+  readonly maxLength: number;
+  readonly maxLengthEnforcement: MaxLengthEnforcement;
 }
 
 export declare const LengthLimitingTextInputFormatter: new (
@@ -7866,6 +10416,7 @@ export interface LexicalFocusOrder {
     readonly FocusOrder: true;
     readonly LexicalFocusOrder: true;
   };
+  readonly order: string;
 }
 
 export declare const LexicalFocusOrder: new (
@@ -7882,10 +10433,19 @@ export interface LinearBorder {
     readonly OutlinedBorder: true;
     readonly ShapeBorder: true;
   };
+  readonly bottom: LinearBorderEdge;
+  readonly dimensions: EdgeInsetsGeometryValue;
+  readonly end: LinearBorderEdge;
+  readonly preferPaintInterior: boolean;
+  readonly side: BorderSideValue;
+  readonly start: LinearBorderEdge;
+  readonly top: LinearBorderEdge;
 }
 
 export interface LinearBorderEdge {
   readonly __fsxBrand?: { readonly LinearBorderEdge: true };
+  readonly alignment: number;
+  readonly size: number;
 }
 
 export declare const LinearBorderEdge: new (options?: {
@@ -7898,6 +10458,12 @@ export interface LinearGradient {
     readonly Gradient: true;
     readonly LinearGradient: true;
   };
+  readonly begin: AlignmentGeometryValue;
+  readonly colors: ColorValue[];
+  readonly end: AlignmentGeometryValue;
+  readonly stops: number[];
+  readonly tileMode: TileMode;
+  readonly transform: GradientTransform;
 }
 
 export declare const LinearGradient: new (options: {
@@ -7914,6 +10480,28 @@ export interface ListTileThemeData {
     readonly Diagnosticable: true;
     readonly ListTileThemeData: true;
   };
+  readonly contentPadding: EdgeInsetsGeometryValue;
+  readonly controlAffinity: ListTileControlAffinity;
+  readonly dense: boolean;
+  readonly enableFeedback: boolean;
+  readonly horizontalTitleGap: number;
+  readonly iconColor: ColorValue;
+  readonly isThreeLine: boolean;
+  readonly leadingAndTrailingTextStyle: TextStyleValue;
+  readonly minLeadingWidth: number;
+  readonly minTileHeight: number;
+  readonly minVerticalPadding: number;
+  readonly mouseCursor: WidgetStatePropertyValue;
+  readonly selectedColor: ColorValue;
+  readonly selectedTileColor: ColorValue;
+  readonly shape: ShapeBorderValue;
+  readonly style: ListTileStyle;
+  readonly subtitleTextStyle: TextStyleValue;
+  readonly textColor: ColorValue;
+  readonly tileColor: ColorValue;
+  readonly titleAlignment: ListTileTitleAlignment;
+  readonly titleTextStyle: TextStyleValue;
+  readonly visualDensity: VisualDensityValue;
 }
 
 export declare const ListTileThemeData: new (options?: {
@@ -8001,6 +10589,7 @@ export interface ListWheelElement {
   readonly dirty: boolean;
   readonly mounted: boolean;
   readonly renderObject: RenderListWheelViewport;
+  readonly renderObjectAttachingChild: Element;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
   readonly widget: FlutterElement;
@@ -8024,6 +10613,10 @@ export interface Listenable {
   readonly __fsxBrand?: { readonly Listenable: true };
 }
 
+export declare const Listenable: {
+  readonly merge: (listenables: (Listenable | null)[]) => Listenable;
+};
+
 export interface LiveTextInputStatusNotifier {
   readonly __fsxBrand?: {
     readonly ChangeNotifier: true;
@@ -8033,6 +10626,8 @@ export interface LiveTextInputStatusNotifier {
     readonly ValueNotifier: true;
     readonly WidgetsBindingObserver: true;
   };
+  readonly hasListeners: boolean;
+  readonly value: unknown;
 }
 
 export declare const LiveTextInputStatusNotifier: new (options?: {
@@ -8045,6 +10640,9 @@ export interface LocalKey {
 
 export interface Locale {
   readonly __fsxBrand?: { readonly Locale: true };
+  readonly countryCode: string;
+  readonly languageCode: string;
+  readonly scriptCode: string;
 }
 
 export declare const Locale: new (
@@ -8121,6 +10719,11 @@ export interface LogicalKeyboardKey {
     readonly KeyboardKey: true;
     readonly LogicalKeyboardKey: true;
   };
+  readonly debugName: string;
+  readonly isAutogenerated: boolean;
+  readonly keyId: number;
+  readonly keyLabel: string;
+  readonly synonyms: LogicalKeyboardKey[];
 }
 
 export interface LongPressDownDetails {
@@ -8240,6 +10843,21 @@ export interface MaterialAccentColor {
     readonly ColorSwatch: true;
     readonly MaterialAccentColor: true;
   };
+  readonly a: number;
+  readonly alpha: number;
+  readonly b: number;
+  readonly blue: number;
+  readonly g: number;
+  readonly green: number;
+  readonly keys: unknown[];
+  readonly opacity: number;
+  readonly r: number;
+  readonly red: number;
+  readonly shade100: ColorValue;
+  readonly shade200: ColorValue;
+  readonly shade400: ColorValue;
+  readonly shade700: ColorValue;
+  readonly value: number;
 }
 
 export declare const MaterialAccentColor: new (
@@ -8252,6 +10870,14 @@ export interface MaterialBannerThemeData {
     readonly Diagnosticable: true;
     readonly MaterialBannerThemeData: true;
   };
+  readonly backgroundColor: ColorValue;
+  readonly contentTextStyle: TextStyleValue;
+  readonly dividerColor: ColorValue;
+  readonly elevation: number;
+  readonly leadingPadding: EdgeInsetsGeometryValue;
+  readonly padding: EdgeInsetsGeometryValue;
+  readonly shadowColor: ColorValue;
+  readonly surfaceTintColor: ColorValue;
 }
 
 export declare const MaterialBannerThemeData: new (options?: {
@@ -8272,6 +10898,14 @@ export interface MaterialBasedCupertinoThemeData {
     readonly MaterialBasedCupertinoThemeData: true;
     readonly NoDefaultCupertinoThemeData: true;
   };
+  readonly applyThemeToAll: boolean;
+  readonly barBackgroundColor: ColorValue;
+  readonly brightness: Brightness;
+  readonly primaryColor: ColorValue;
+  readonly primaryContrastingColor: ColorValue;
+  readonly scaffoldBackgroundColor: ColorValue;
+  readonly selectionHandleColor: ColorValue;
+  readonly textTheme: CupertinoTextThemeDataValue;
 }
 
 export declare const MaterialBasedCupertinoThemeData: new (options: {
@@ -8284,6 +10918,27 @@ export interface MaterialColor {
     readonly ColorSwatch: true;
     readonly MaterialColor: true;
   };
+  readonly a: number;
+  readonly alpha: number;
+  readonly b: number;
+  readonly blue: number;
+  readonly g: number;
+  readonly green: number;
+  readonly keys: unknown[];
+  readonly opacity: number;
+  readonly r: number;
+  readonly red: number;
+  readonly shade100: ColorValue;
+  readonly shade200: ColorValue;
+  readonly shade300: ColorValue;
+  readonly shade400: ColorValue;
+  readonly shade50: ColorValue;
+  readonly shade500: ColorValue;
+  readonly shade600: ColorValue;
+  readonly shade700: ColorValue;
+  readonly shade800: ColorValue;
+  readonly shade900: ColorValue;
+  readonly value: number;
 }
 
 export declare const MaterialColor: new (
@@ -8305,6 +10960,146 @@ export declare const MaterialGap: new (options: {
 
 export interface MaterialInkController {
   readonly __fsxBrand?: { readonly MaterialInkController: true };
+  readonly color: ColorValue;
+  readonly vsync: TickerProvider;
+}
+
+export interface MaterialLocalizations {
+  readonly __fsxBrand?: { readonly MaterialLocalizations: true };
+  readonly alertDialogLabel: string;
+  readonly anteMeridiemAbbreviation: string;
+  readonly backButtonTooltip: string;
+  readonly bottomSheetLabel: string;
+  readonly calendarModeButtonLabel: string;
+  readonly cancelButtonLabel: string;
+  readonly clearButtonTooltip: string;
+  readonly closeButtonLabel: string;
+  readonly closeButtonTooltip: string;
+  readonly collapsedHint: string;
+  readonly collapsedIconTapHint: string;
+  readonly continueButtonLabel: string;
+  readonly copyButtonLabel: string;
+  readonly currentDateLabel: string;
+  readonly cutButtonLabel: string;
+  readonly dateHelpText: string;
+  readonly dateInputLabel: string;
+  readonly dateOutOfRangeLabel: string;
+  readonly datePickerHelpText: string;
+  readonly dateRangeEndLabel: string;
+  readonly dateRangePickerHelpText: string;
+  readonly dateRangeStartLabel: string;
+  readonly dateSeparator: string;
+  readonly deleteButtonTooltip: string;
+  readonly dialModeButtonLabel: string;
+  readonly dialogLabel: string;
+  readonly drawerLabel: string;
+  readonly expandedHint: string;
+  readonly expandedIconTapHint: string;
+  readonly expansionTileCollapsedHint: string;
+  readonly expansionTileCollapsedTapHint: string;
+  readonly expansionTileExpandedHint: string;
+  readonly expansionTileExpandedTapHint: string;
+  readonly firstDayOfWeekIndex: number;
+  readonly firstPageTooltip: string;
+  readonly hideAccountsLabel: string;
+  readonly inputDateModeButtonLabel: string;
+  readonly inputTimeModeButtonLabel: string;
+  readonly invalidDateFormatLabel: string;
+  readonly invalidDateRangeLabel: string;
+  readonly invalidTimeLabel: string;
+  readonly keyboardKeyAlt: string;
+  readonly keyboardKeyAltGraph: string;
+  readonly keyboardKeyBackspace: string;
+  readonly keyboardKeyCapsLock: string;
+  readonly keyboardKeyChannelDown: string;
+  readonly keyboardKeyChannelUp: string;
+  readonly keyboardKeyControl: string;
+  readonly keyboardKeyDelete: string;
+  readonly keyboardKeyEject: string;
+  readonly keyboardKeyEnd: string;
+  readonly keyboardKeyEscape: string;
+  readonly keyboardKeyFn: string;
+  readonly keyboardKeyHome: string;
+  readonly keyboardKeyInsert: string;
+  readonly keyboardKeyMeta: string;
+  readonly keyboardKeyMetaMacOs: string;
+  readonly keyboardKeyMetaWindows: string;
+  readonly keyboardKeyNumLock: string;
+  readonly keyboardKeyNumpad0: string;
+  readonly keyboardKeyNumpad1: string;
+  readonly keyboardKeyNumpad2: string;
+  readonly keyboardKeyNumpad3: string;
+  readonly keyboardKeyNumpad4: string;
+  readonly keyboardKeyNumpad5: string;
+  readonly keyboardKeyNumpad6: string;
+  readonly keyboardKeyNumpad7: string;
+  readonly keyboardKeyNumpad8: string;
+  readonly keyboardKeyNumpad9: string;
+  readonly keyboardKeyNumpadAdd: string;
+  readonly keyboardKeyNumpadComma: string;
+  readonly keyboardKeyNumpadDecimal: string;
+  readonly keyboardKeyNumpadDivide: string;
+  readonly keyboardKeyNumpadEnter: string;
+  readonly keyboardKeyNumpadEqual: string;
+  readonly keyboardKeyNumpadMultiply: string;
+  readonly keyboardKeyNumpadParenLeft: string;
+  readonly keyboardKeyNumpadParenRight: string;
+  readonly keyboardKeyNumpadSubtract: string;
+  readonly keyboardKeyPageDown: string;
+  readonly keyboardKeyPageUp: string;
+  readonly keyboardKeyPower: string;
+  readonly keyboardKeyPowerOff: string;
+  readonly keyboardKeyPrintScreen: string;
+  readonly keyboardKeyScrollLock: string;
+  readonly keyboardKeySelect: string;
+  readonly keyboardKeyShift: string;
+  readonly keyboardKeySpace: string;
+  readonly lastPageTooltip: string;
+  readonly licensesPageTitle: string;
+  readonly lookUpButtonLabel: string;
+  readonly menuBarMenuLabel: string;
+  readonly menuDismissLabel: string;
+  readonly modalBarrierDismissLabel: string;
+  readonly moreButtonTooltip: string;
+  readonly narrowWeekdays: string[];
+  readonly nextMonthTooltip: string;
+  readonly nextPageTooltip: string;
+  readonly okButtonLabel: string;
+  readonly openAppDrawerTooltip: string;
+  readonly pasteButtonLabel: string;
+  readonly popupMenuLabel: string;
+  readonly postMeridiemAbbreviation: string;
+  readonly previousMonthTooltip: string;
+  readonly previousPageTooltip: string;
+  readonly refreshIndicatorSemanticLabel: string;
+  readonly reorderItemDown: string;
+  readonly reorderItemLeft: string;
+  readonly reorderItemRight: string;
+  readonly reorderItemToEnd: string;
+  readonly reorderItemToStart: string;
+  readonly reorderItemUp: string;
+  readonly rowsPerPageTitle: string;
+  readonly saveButtonLabel: string;
+  readonly scanTextButtonLabel: string;
+  readonly scrimLabel: string;
+  readonly searchFieldLabel: string;
+  readonly searchWebButtonLabel: string;
+  readonly selectAllButtonLabel: string;
+  readonly selectYearSemanticsLabel: string;
+  readonly selectedDateLabel: string;
+  readonly shareButtonLabel: string;
+  readonly showAccountsLabel: string;
+  readonly showMenuTooltip: string;
+  readonly signedInLabel: string;
+  readonly timePickerDialHelpText: string;
+  readonly timePickerHourLabel: string;
+  readonly timePickerHourModeAnnouncement: string;
+  readonly timePickerInputHelpText: string;
+  readonly timePickerMinuteLabel: string;
+  readonly timePickerMinuteModeAnnouncement: string;
+  readonly unspecifiedDate: string;
+  readonly unspecifiedDateRange: string;
+  readonly viewLicensesButtonLabel: string;
 }
 
 export interface MaterialPage {
@@ -8384,6 +11179,7 @@ export interface MaterialPageRoute {
   readonly offstage: boolean;
   readonly opaque: boolean;
   readonly overlayEntries: OverlayEntry[];
+  readonly popDisposition: RoutePopDisposition;
   readonly popGestureEnabled: boolean;
   readonly popGestureInProgress: boolean;
   readonly popped: Promise<unknown | null>;
@@ -8465,6 +11261,8 @@ export interface MaterialScrollBehavior {
     readonly MaterialScrollBehavior: true;
     readonly ScrollBehavior: true;
   };
+  readonly dragDevices: PointerDeviceKind[];
+  readonly pointerAxisModifiers: LogicalKeyboardKey[];
 }
 
 export declare const MaterialScrollBehavior: new () => MaterialScrollBehavior;
@@ -8504,6 +11302,15 @@ export declare const MaterialTextSelectionHandleControls: new () => MaterialText
 
 export interface Matrix4 {
   readonly __fsxBrand?: { readonly Matrix4: true };
+  readonly dimension: number;
+  readonly forward: Vector3;
+  readonly right: Vector3;
+  readonly row0: Vector4;
+  readonly row1: Vector4;
+  readonly row2: Vector4;
+  readonly row3: Vector4;
+  readonly storage: Float64List;
+  readonly up: Vector3;
 }
 
 export declare const Matrix4: new (
@@ -8524,18 +11331,27 @@ export declare const Matrix4: new (
   arg14: number,
   arg15: number,
 ) => Matrix4 & {
+  readonly columns: (
+    arg0: Vector4,
+    arg1: Vector4,
+    arg2: Vector4,
+    arg3: Vector4,
+  ) => Matrix4;
   readonly copy: (other: Matrix4) => Matrix4;
+  readonly diagonal3: (scale: Vector3) => Matrix4;
   readonly diagonal3Values: (x: number, y: number, z: number) => Matrix4;
   readonly fromFloat64List: (_m4storage: Float64List) => Matrix4;
   readonly fromList: (values: number[]) => Matrix4;
   readonly identity: () => Matrix4;
   readonly inverted: (other: Matrix4) => Matrix4;
+  readonly outer: (u: Vector4, v: Vector4) => Matrix4;
   readonly rotationX: (radians: number) => Matrix4;
   readonly rotationY: (radians: number) => Matrix4;
   readonly rotationZ: (radians: number) => Matrix4;
   readonly skew: (alpha: number, beta: number) => Matrix4;
   readonly skewX: (alpha: number) => Matrix4;
   readonly skewY: (beta: number) => Matrix4;
+  readonly translation: (translation: Vector3) => Matrix4;
   readonly translationValues: (x: number, y: number, z: number) => Matrix4;
   readonly zero: () => Matrix4;
 };
@@ -8567,6 +11383,33 @@ export declare const MaxColumnWidth: new (
 
 export interface MediaQueryData {
   readonly __fsxBrand?: { readonly MediaQueryData: true };
+  readonly accessibleNavigation: boolean;
+  readonly alwaysUse24HourFormat: boolean;
+  readonly boldText: boolean;
+  readonly devicePixelRatio: number;
+  readonly disableAnimations: boolean;
+  readonly displayCornerRadii: BorderRadiusValue;
+  readonly displayFeatures: DisplayFeature[];
+  readonly gestureSettings: DeviceGestureSettingsValue;
+  readonly highContrast: boolean;
+  readonly invertColors: boolean;
+  readonly letterSpacingOverride: number;
+  readonly lineHeightScaleFactorOverride: number;
+  readonly navigationMode: NavigationMode;
+  readonly onOffSwitchLabels: boolean;
+  readonly orientation: Orientation;
+  readonly padding: EdgeInsetsValue;
+  readonly paragraphSpacingOverride: number;
+  readonly platformBrightness: Brightness;
+  readonly size: SizeValue;
+  readonly supportsAnnounce: boolean;
+  readonly supportsShowingSystemContextMenu: boolean;
+  readonly systemGestureInsets: EdgeInsetsValue;
+  readonly textScaleFactor: number;
+  readonly textScaler: TextScalerValue;
+  readonly viewInsets: EdgeInsetsValue;
+  readonly viewPadding: EdgeInsetsValue;
+  readonly wordSpacingOverride: number;
 }
 
 export declare const MediaQueryData: new (options?: {
@@ -8609,6 +11452,8 @@ export interface MemoryImage {
     readonly ImageProvider: true;
     readonly MemoryImage: true;
   };
+  readonly bytes: Uint8List;
+  readonly scale: number;
 }
 
 export declare const MemoryImage: new (
@@ -8616,12 +11461,29 @@ export declare const MemoryImage: new (
   options?: { scale?: number },
 ) => MemoryImage;
 
+export interface MenuAcceleratorCallbackBinding {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly InheritedWidget: true;
+    readonly MenuAcceleratorCallbackBinding: true;
+    readonly ProxyWidget: true;
+    readonly Widget: true;
+  };
+  readonly child: FlutterElement;
+  readonly hasSubmenu: boolean;
+  readonly key: Key;
+  readonly onInvoke: () => void;
+}
+
 export interface MenuBarThemeData {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
     readonly MenuBarThemeData: true;
     readonly MenuThemeData: true;
   };
+  readonly style: MenuStyleValue;
+  readonly submenuIcon: WidgetStatePropertyValue;
 }
 
 export declare const MenuBarThemeData: new (options?: {
@@ -8633,6 +11495,7 @@ export interface MenuButtonThemeData {
     readonly Diagnosticable: true;
     readonly MenuButtonThemeData: true;
   };
+  readonly style: ButtonStyleValue;
 }
 
 export declare const MenuButtonThemeData: new (options?: {
@@ -8658,6 +11521,19 @@ export interface MenuStyle {
     readonly Diagnosticable: true;
     readonly MenuStyle: true;
   };
+  readonly alignment: AlignmentGeometryValue;
+  readonly backgroundColor: WidgetStatePropertyValue;
+  readonly elevation: WidgetStatePropertyValue;
+  readonly fixedSize: WidgetStatePropertyValue;
+  readonly maximumSize: WidgetStatePropertyValue;
+  readonly minimumSize: WidgetStatePropertyValue;
+  readonly mouseCursor: WidgetStatePropertyValue;
+  readonly padding: WidgetStatePropertyValue;
+  readonly shadowColor: WidgetStatePropertyValue;
+  readonly shape: WidgetStatePropertyValue;
+  readonly side: WidgetStatePropertyValue;
+  readonly surfaceTintColor: WidgetStatePropertyValue;
+  readonly visualDensity: VisualDensityValue;
 }
 
 export declare const MenuStyle: new (options?: {
@@ -8681,6 +11557,8 @@ export interface MenuThemeData {
     readonly Diagnosticable: true;
     readonly MenuThemeData: true;
   };
+  readonly style: MenuStyleValue;
+  readonly submenuIcon: WidgetStatePropertyValue;
 }
 
 export declare const MenuThemeData: new (options?: {
@@ -8695,6 +11573,40 @@ export interface MergeableMaterialItem {
 export interface MessageCodec {
   readonly __fsxBrand?: { readonly MessageCodec: true };
 }
+
+export interface MessageProperty {
+  readonly __fsxBrand?: {
+    readonly DiagnosticsNode: true;
+    readonly DiagnosticsProperty: true;
+    readonly MessageProperty: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly defaultValue: ObjectValue;
+  readonly emptyBodyDescription: string;
+  readonly exception: ObjectValue;
+  readonly expandableValue: boolean;
+  readonly ifEmpty: string;
+  readonly ifNull: string;
+  readonly isInteresting: boolean;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly missingIfNull: boolean;
+  readonly name: string;
+  readonly propertyType: TypeValue;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly tooltip: string;
+  readonly value: unknown;
+}
+
+export declare const MessageProperty: new (
+  name: string,
+  message: string,
+  options?: { style?: DiagnosticsTreeStyle; level?: DiagnosticLevel },
+) => MessageProperty;
 
 export interface MethodChannel {
   readonly __fsxBrand?: { readonly MethodChannel: true };
@@ -8778,6 +11690,7 @@ export interface ModalBottomSheetRoute {
   readonly offstage: boolean;
   readonly opaque: boolean;
   readonly overlayEntries: OverlayEntry[];
+  readonly popDisposition: RoutePopDisposition;
   readonly popGestureEnabled: boolean;
   readonly popGestureInProgress: boolean;
   readonly popped: Promise<unknown | null>;
@@ -8831,6 +11744,72 @@ export declare const ModalBottomSheetRoute: new (options: {
   sheetAnimationStyle?: AnimationStyleValue;
 }) => ModalBottomSheetRoute;
 
+export interface ModalRoute {
+  readonly __fsxBrand?: {
+    readonly LocalHistoryRoute: true;
+    readonly ModalRoute: true;
+    readonly OverlayRoute: true;
+    readonly PredictiveBackRoute: true;
+    readonly Route: true;
+    readonly TransitionRoute: true;
+  };
+  readonly allowSnapshotting: boolean;
+  readonly animation: Animation;
+  readonly barrierColor: ColorValue;
+  readonly barrierCurve: CurveValue;
+  readonly barrierDismissible: boolean;
+  readonly barrierLabel: string;
+  readonly canPop: boolean;
+  readonly completed: Promise<unknown | null>;
+  readonly controller: AnimationController;
+  readonly currentResult: unknown;
+  readonly debugLabel: string;
+  readonly delegatedTransition: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    allowSnapshotting: boolean,
+    child: FlutterElement | null,
+  ) => FlutterElement | null;
+  readonly directionalTraversalEdgeBehavior: TraversalEdgeBehavior;
+  readonly filter: ImageFilter;
+  readonly finishedWhenPopped: boolean;
+  readonly fullscreenDialog: boolean;
+  readonly hasActiveRouteBelow: boolean;
+  readonly hasScopedWillPopCallback: boolean;
+  readonly impliesAppBarDismissal: boolean;
+  readonly isActive: boolean;
+  readonly isCurrent: boolean;
+  readonly isFirst: boolean;
+  readonly maintainState: boolean;
+  readonly navigator: NavigatorState;
+  readonly offstage: boolean;
+  readonly opaque: boolean;
+  readonly overlayEntries: OverlayEntry[];
+  readonly popDisposition: RoutePopDisposition;
+  readonly popGestureEnabled: boolean;
+  readonly popGestureInProgress: boolean;
+  readonly popped: Promise<unknown | null>;
+  readonly receivedTransition: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    allowSnapshotting: boolean,
+    child: FlutterElement | null,
+  ) => FlutterElement | null;
+  readonly requestFocus: boolean;
+  readonly restorationScopeId: ValueListenable;
+  readonly reverseTransitionDuration: DurationValue;
+  readonly secondaryAnimation: Animation;
+  readonly semanticsDismissible: boolean;
+  readonly settings: RouteSettingsValue;
+  readonly subtreeContext: BuildContext;
+  readonly transitionDuration: DurationValue;
+  readonly traversalEdgeBehavior: TraversalEdgeBehavior;
+  readonly willDisposeAnimationController: boolean;
+  readonly willHandlePopInternally: boolean;
+}
+
 export interface MouseCursor {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -8863,12 +11842,14 @@ export interface MultiChildRenderObjectElement {
     readonly MultiChildRenderObjectElement: true;
     readonly RenderObjectElement: true;
   };
+  readonly children: Element[];
   readonly debugDoingBuild: boolean;
   readonly debugIsActive: boolean;
   readonly debugIsDefunct: boolean;
   readonly depth: number;
   readonly dirty: boolean;
   readonly mounted: boolean;
+  readonly renderObjectAttachingChild: Element;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
   readonly widget: FlutterElement;
@@ -8911,6 +11892,18 @@ export interface NavigationBarThemeData {
     readonly Diagnosticable: true;
     readonly NavigationBarThemeData: true;
   };
+  readonly backgroundColor: ColorValue;
+  readonly elevation: number;
+  readonly height: number;
+  readonly iconTheme: WidgetStatePropertyValue;
+  readonly indicatorColor: ColorValue;
+  readonly indicatorShape: ShapeBorderValue;
+  readonly labelBehavior: NavigationDestinationLabelBehavior;
+  readonly labelPadding: EdgeInsetsGeometryValue;
+  readonly labelTextStyle: WidgetStatePropertyValue;
+  readonly overlayColor: WidgetStatePropertyValue;
+  readonly shadowColor: ColorValue;
+  readonly surfaceTintColor: ColorValue;
 }
 
 export declare const NavigationBarThemeData: new (options?: {
@@ -8933,6 +11926,16 @@ export interface NavigationDrawerThemeData {
     readonly Diagnosticable: true;
     readonly NavigationDrawerThemeData: true;
   };
+  readonly backgroundColor: ColorValue;
+  readonly elevation: number;
+  readonly iconTheme: WidgetStatePropertyValue;
+  readonly indicatorColor: ColorValue;
+  readonly indicatorShape: ShapeBorderValue;
+  readonly indicatorSize: SizeValue;
+  readonly labelTextStyle: WidgetStatePropertyValue;
+  readonly shadowColor: ColorValue;
+  readonly surfaceTintColor: ColorValue;
+  readonly tileHeight: number;
 }
 
 export declare const NavigationDrawerThemeData: new (options?: {
@@ -8979,6 +11982,19 @@ export interface NavigationRailThemeData {
     readonly Diagnosticable: true;
     readonly NavigationRailThemeData: true;
   };
+  readonly backgroundColor: ColorValue;
+  readonly elevation: number;
+  readonly groupAlignment: number;
+  readonly indicatorColor: ColorValue;
+  readonly indicatorShape: ShapeBorderValue;
+  readonly labelType: NavigationRailLabelType;
+  readonly minExtendedWidth: number;
+  readonly minWidth: number;
+  readonly selectedIconTheme: IconThemeDataValue;
+  readonly selectedLabelTextStyle: TextStyleValue;
+  readonly unselectedIconTheme: IconThemeDataValue;
+  readonly unselectedLabelTextStyle: TextStyleValue;
+  readonly useIndicator: boolean;
 }
 
 export declare const NavigationRailThemeData: new (options?: {
@@ -9036,6 +12052,26 @@ export interface NetworkAssetBundle {
 export declare const NetworkAssetBundle: new (
   baseUrl: Uri,
 ) => NetworkAssetBundle;
+
+export interface NetworkImage {
+  readonly __fsxBrand?: {
+    readonly ImageProvider: true;
+    readonly NetworkImage: true;
+  };
+  readonly headers: Record<string, string>;
+  readonly scale: number;
+  readonly url: string;
+  readonly webHtmlElementStrategy: WebHtmlElementStrategy;
+}
+
+export declare const NetworkImage: new (
+  url: string,
+  options?: {
+    scale?: number;
+    headers?: Record<string, string>;
+    webHtmlElementStrategy?: WebHtmlElementStrategy;
+  },
+) => NetworkImage;
 
 export interface NeverScrollableScrollPhysics {
   readonly __fsxBrand?: {
@@ -9105,6 +12141,7 @@ export interface NumericFocusOrder {
     readonly FocusOrder: true;
     readonly NumericFocusOrder: true;
   };
+  readonly order: number;
 }
 
 export declare const NumericFocusOrder: new (
@@ -9114,6 +12151,52 @@ export declare const NumericFocusOrder: new (
 export interface Object {
   readonly __fsxBrand?: { readonly Object: true };
 }
+
+export interface ObjectFlagProperty {
+  readonly __fsxBrand?: {
+    readonly DiagnosticsNode: true;
+    readonly DiagnosticsProperty: true;
+    readonly ObjectFlagProperty: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly defaultValue: ObjectValue;
+  readonly emptyBodyDescription: string;
+  readonly exception: ObjectValue;
+  readonly expandableValue: boolean;
+  readonly ifEmpty: string;
+  readonly ifNull: string;
+  readonly ifPresent: string;
+  readonly isInteresting: boolean;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly missingIfNull: boolean;
+  readonly name: string;
+  readonly propertyType: TypeValue;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly tooltip: string;
+  readonly value: unknown;
+}
+
+export declare const ObjectFlagProperty: new (
+  name: string,
+  value: unknown,
+  options?: {
+    ifPresent?: string;
+    ifNull?: string;
+    showName?: boolean;
+    level?: DiagnosticLevel;
+  },
+) => ObjectFlagProperty & {
+  readonly has: (
+    name: string,
+    value: unknown,
+    options?: { level?: DiagnosticLevel },
+  ) => ObjectFlagProperty;
+};
 
 export interface ObjectKey {
   readonly __fsxBrand?: {
@@ -9147,9 +12230,41 @@ export interface Offset {
   readonly isInfinite: boolean;
 }
 
+export interface OffsetLayer {
+  readonly __fsxBrand?: {
+    readonly ContainerLayer: true;
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DiagnosticableTreeMixin: true;
+    readonly Layer: true;
+    readonly OffsetLayer: true;
+  };
+}
+
+export declare const OffsetLayer: new (options?: {
+  offset?: OffsetValue;
+}) => OffsetLayer;
+
 export interface OffsetPair {
   readonly __fsxBrand?: { readonly OffsetPair: true };
 }
+
+export interface OpacityLayer {
+  readonly __fsxBrand?: {
+    readonly ContainerLayer: true;
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DiagnosticableTreeMixin: true;
+    readonly Layer: true;
+    readonly OffsetLayer: true;
+    readonly OpacityLayer: true;
+  };
+}
+
+export declare const OpacityLayer: new (options?: {
+  alpha?: number;
+  offset?: OffsetValue;
+}) => OpacityLayer;
 
 export interface OpenUpwardsPageTransitionsBuilder {
   readonly __fsxBrand?: {
@@ -9180,6 +12295,14 @@ export interface OrderedTraversalPolicy {
     readonly FocusTraversalPolicy: true;
     readonly OrderedTraversalPolicy: true;
   };
+  readonly requestFocusCallback: (
+    node: FocusNode,
+    alignment?: number | null,
+    alignmentPolicy?: ScrollPositionAlignmentPolicy | null,
+    curve?: Curve | null,
+    duration?: Duration | null,
+  ) => void;
+  readonly secondary: FocusTraversalPolicy;
 }
 
 export declare const OrderedTraversalPolicy: new (options?: {
@@ -9213,6 +12336,12 @@ export interface OutlineInputBorder {
     readonly OutlineInputBorder: true;
     readonly ShapeBorder: true;
   };
+  readonly borderRadius: BorderRadiusValue;
+  readonly borderSide: BorderSideValue;
+  readonly dimensions: EdgeInsetsGeometryValue;
+  readonly gapPadding: number;
+  readonly isOutline: boolean;
+  readonly preferPaintInterior: boolean;
 }
 
 export declare const OutlineInputBorder: new (options?: {
@@ -9226,6 +12355,9 @@ export interface OutlinedBorder {
     readonly OutlinedBorder: true;
     readonly ShapeBorder: true;
   };
+  readonly dimensions: EdgeInsetsGeometryValue;
+  readonly preferPaintInterior: boolean;
+  readonly side: BorderSideValue;
 }
 
 export interface OutlinedButtonThemeData {
@@ -9233,6 +12365,7 @@ export interface OutlinedButtonThemeData {
     readonly Diagnosticable: true;
     readonly OutlinedButtonThemeData: true;
   };
+  readonly style: ButtonStyleValue;
 }
 
 export declare const OutlinedButtonThemeData: new (options?: {
@@ -9246,6 +12379,10 @@ export interface OvalBorder {
     readonly OvalBorder: true;
     readonly ShapeBorder: true;
   };
+  readonly dimensions: EdgeInsetsGeometryValue;
+  readonly eccentricity: number;
+  readonly preferPaintInterior: boolean;
+  readonly side: BorderSideValue;
 }
 
 export declare const OvalBorder: new (options?: {
@@ -9283,6 +12420,9 @@ export interface OverlayState {
     readonly TickerProvider: true;
     readonly TickerProviderStateMixin: true;
   };
+  readonly context: BuildContext;
+  readonly mounted: boolean;
+  readonly widget: unknown;
 }
 
 export declare const OverlayState: new () => OverlayState;
@@ -9331,6 +12471,12 @@ export declare const PaddleSliderValueIndicatorShape: new () => PaddleSliderValu
 
 export interface Page {
   readonly __fsxBrand?: { readonly Page: true; readonly RouteSettings: true };
+  readonly arguments: ObjectValue;
+  readonly canPop: boolean;
+  readonly key: LocalKey;
+  readonly name: string;
+  readonly onPopInvoked: (didPop: boolean, result: unknown | null) => void;
+  readonly restorationId: string;
 }
 
 export interface PageController {
@@ -9392,6 +12538,61 @@ export interface PageRoute {
     readonly Route: true;
     readonly TransitionRoute: true;
   };
+  readonly allowSnapshotting: boolean;
+  readonly animation: Animation;
+  readonly barrierColor: ColorValue;
+  readonly barrierCurve: CurveValue;
+  readonly barrierDismissible: boolean;
+  readonly barrierLabel: string;
+  readonly canPop: boolean;
+  readonly completed: Promise<unknown | null>;
+  readonly controller: AnimationController;
+  readonly currentResult: unknown;
+  readonly debugLabel: string;
+  readonly delegatedTransition: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    allowSnapshotting: boolean,
+    child: FlutterElement | null,
+  ) => FlutterElement | null;
+  readonly directionalTraversalEdgeBehavior: TraversalEdgeBehavior;
+  readonly filter: ImageFilter;
+  readonly finishedWhenPopped: boolean;
+  readonly fullscreenDialog: boolean;
+  readonly hasActiveRouteBelow: boolean;
+  readonly hasScopedWillPopCallback: boolean;
+  readonly impliesAppBarDismissal: boolean;
+  readonly isActive: boolean;
+  readonly isCurrent: boolean;
+  readonly isFirst: boolean;
+  readonly maintainState: boolean;
+  readonly navigator: NavigatorState;
+  readonly offstage: boolean;
+  readonly opaque: boolean;
+  readonly overlayEntries: OverlayEntry[];
+  readonly popDisposition: RoutePopDisposition;
+  readonly popGestureEnabled: boolean;
+  readonly popGestureInProgress: boolean;
+  readonly popped: Promise<unknown | null>;
+  readonly receivedTransition: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    allowSnapshotting: boolean,
+    child: FlutterElement | null,
+  ) => FlutterElement | null;
+  readonly requestFocus: boolean;
+  readonly restorationScopeId: ValueListenable;
+  readonly reverseTransitionDuration: DurationValue;
+  readonly secondaryAnimation: Animation;
+  readonly semanticsDismissible: boolean;
+  readonly settings: RouteSettingsValue;
+  readonly subtreeContext: BuildContext;
+  readonly transitionDuration: DurationValue;
+  readonly traversalEdgeBehavior: TraversalEdgeBehavior;
+  readonly willDisposeAnimationController: boolean;
+  readonly willHandlePopInternally: boolean;
 }
 
 export interface PageRouteBuilder {
@@ -9443,6 +12644,7 @@ export interface PageRouteBuilder {
     animation: Animation,
     secondaryAnimation: Animation,
   ) => FlutterElement;
+  readonly popDisposition: RoutePopDisposition;
   readonly popGestureEnabled: boolean;
   readonly popGestureInProgress: boolean;
   readonly popped: Promise<unknown | null>;
@@ -9549,6 +12751,18 @@ export declare const Paint: new () => Paint & {
   readonly from: (other: Paint) => Paint;
 };
 
+export interface PaintingContext {
+  readonly __fsxBrand?: {
+    readonly ClipContext: true;
+    readonly PaintingContext: true;
+  };
+}
+
+export declare const PaintingContext: new (
+  _containerLayer: ContainerLayer,
+  estimatedBounds: RectValue,
+) => PaintingContext;
+
 export interface PanGestureRecognizer {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -9568,6 +12782,10 @@ export declare const PanGestureRecognizer: new (options?: {
   allowedButtonsFilter?: (buttons: number) => boolean;
 }) => PanGestureRecognizer;
 
+export interface ParagraphStyle {
+  readonly __fsxBrand?: { readonly ParagraphStyle: true };
+}
+
 export interface ParentDataElement {
   readonly __fsxBrand?: {
     readonly BuildContext: true;
@@ -9585,6 +12803,8 @@ export interface ParentDataElement {
   readonly depth: number;
   readonly dirty: boolean;
   readonly mounted: boolean;
+  readonly renderObject: RenderObject;
+  readonly renderObjectAttachingChild: Element;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
   readonly widget: FlutterElement;
@@ -9620,9 +12840,74 @@ export declare const PasteTextIntent: new (
   cause: SelectionChangedCause,
 ) => PasteTextIntent;
 
+export interface Path {
+  readonly __fsxBrand?: { readonly Path: true };
+}
+
+export declare const Path: new () => Path & {
+  readonly from: (source: Path) => Path;
+};
+
 export interface Pattern {
   readonly __fsxBrand?: { readonly Pattern: true };
 }
+
+export interface PercentProperty {
+  readonly __fsxBrand?: {
+    readonly DiagnosticsNode: true;
+    readonly DiagnosticsProperty: true;
+    readonly DoubleProperty: true;
+    readonly PercentProperty: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly defaultValue: ObjectValue;
+  readonly emptyBodyDescription: string;
+  readonly exception: ObjectValue;
+  readonly expandableValue: boolean;
+  readonly ifEmpty: string;
+  readonly ifNull: string;
+  readonly isInteresting: boolean;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly missingIfNull: boolean;
+  readonly name: string;
+  readonly propertyType: TypeValue;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly tooltip: string;
+  readonly unit: string;
+  readonly value: unknown;
+}
+
+export declare const PercentProperty: new (
+  name: string,
+  fraction: number,
+  options?: {
+    ifNull?: string;
+    showName?: boolean;
+    tooltip?: string;
+    unit?: string;
+    level?: DiagnosticLevel;
+  },
+) => PercentProperty;
+
+export interface PerformanceOverlayLayer {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DiagnosticableTreeMixin: true;
+    readonly Layer: true;
+    readonly PerformanceOverlayLayer: true;
+  };
+}
+
+export declare const PerformanceOverlayLayer: new (options: {
+  overlayRect: RectValue;
+  optionsMask: number;
+}) => PerformanceOverlayLayer;
 
 export interface PhysicalKeyboardKey {
   readonly __fsxBrand?: {
@@ -9630,6 +12915,30 @@ export interface PhysicalKeyboardKey {
     readonly KeyboardKey: true;
     readonly PhysicalKeyboardKey: true;
   };
+  readonly debugName: string;
+  readonly usbHidUsage: number;
+}
+
+export interface Picture {
+  readonly __fsxBrand?: { readonly Picture: true };
+}
+
+export interface PictureLayer {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DiagnosticableTreeMixin: true;
+    readonly Layer: true;
+    readonly PictureLayer: true;
+  };
+}
+
+export declare const PictureLayer: new (
+  canvasBounds: RectValue,
+) => PictureLayer;
+
+export interface PictureRecorder {
+  readonly __fsxBrand?: { readonly PictureRecorder: true };
 }
 
 export interface PipelineOwner {
@@ -9639,6 +12948,17 @@ export interface PipelineOwner {
     readonly DiagnosticableTreeMixin: true;
     readonly PipelineOwner: true;
   };
+  readonly debugDoingLayout: boolean;
+  readonly debugDoingPaint: boolean;
+  readonly debugOutstandingSemanticsHandles: number;
+  readonly nodesNeedingLayout: RenderObject[];
+  readonly nodesNeedingPaint: RenderObject[];
+  readonly onNeedVisualUpdate: () => void;
+  readonly onSemanticsOwnerCreated: () => void;
+  readonly onSemanticsOwnerDisposed: () => void;
+  readonly onSemanticsUpdate: (update: SemanticsUpdate) => void;
+  readonly rootNode: RenderObject;
+  readonly semanticsOwner: SemanticsOwner;
 }
 
 export declare const PipelineOwner: new (options?: {
@@ -9672,6 +12992,33 @@ export declare const PlaceholderSpanIndexSemanticsTag: new (
   index: number,
 ) => PlaceholderSpanIndexSemanticsTag;
 
+export interface PlatformAdaptiveIcons {
+  readonly __fsxBrand?: {
+    readonly Icons: true;
+    readonly PlatformAdaptiveIcons: true;
+  };
+  readonly arrow_back: IconDataValue;
+  readonly arrow_back_outlined: IconDataValue;
+  readonly arrow_back_rounded: IconDataValue;
+  readonly arrow_back_sharp: IconDataValue;
+  readonly arrow_forward: IconDataValue;
+  readonly arrow_forward_outlined: IconDataValue;
+  readonly arrow_forward_rounded: IconDataValue;
+  readonly arrow_forward_sharp: IconDataValue;
+  readonly flip_camera: IconDataValue;
+  readonly flip_camera_outlined: IconDataValue;
+  readonly flip_camera_rounded: IconDataValue;
+  readonly flip_camera_sharp: IconDataValue;
+  readonly more: IconDataValue;
+  readonly more_outlined: IconDataValue;
+  readonly more_rounded: IconDataValue;
+  readonly more_sharp: IconDataValue;
+  readonly share: IconDataValue;
+  readonly share_outlined: IconDataValue;
+  readonly share_rounded: IconDataValue;
+  readonly share_sharp: IconDataValue;
+}
+
 export interface PlatformAssetBundle {
   readonly __fsxBrand?: {
     readonly AssetBundle: true;
@@ -9682,6 +13029,41 @@ export interface PlatformAssetBundle {
 
 export declare const PlatformAssetBundle: new () => PlatformAssetBundle;
 
+export interface PlatformDispatcher {
+  readonly __fsxBrand?: { readonly PlatformDispatcher: true };
+  readonly alwaysUse24HourFormat: boolean;
+  readonly brieflyShowPassword: boolean;
+  readonly defaultRouteName: string;
+  readonly engineId: number;
+  readonly implicitView: FlutterView;
+  readonly initialLifecycleState: string;
+  readonly letterSpacingOverride: number;
+  readonly lineHeightScaleFactorOverride: number;
+  readonly locale: Locale;
+  readonly locales: Locale[];
+  readonly nativeSpellCheckServiceDefined: boolean;
+  readonly onAccessibilityFeaturesChanged: () => void;
+  readonly onBeginFrame: (duration: Duration) => void;
+  readonly onDrawFrame: () => void;
+  readonly onError: (exception: Object, stackTrace: StackTrace) => boolean;
+  readonly onFrameDataChanged: () => void;
+  readonly onLocaleChanged: () => void;
+  readonly onMetricsChanged: () => void;
+  readonly onPlatformBrightnessChanged: () => void;
+  readonly onPlatformConfigurationChanged: () => void;
+  readonly onSemanticsEnabledChanged: () => void;
+  readonly onSystemFontFamilyChanged: () => void;
+  readonly onTextScaleFactorChanged: () => void;
+  readonly paragraphSpacingOverride: number;
+  readonly platformBrightness: Brightness;
+  readonly semanticsEnabled: boolean;
+  readonly supportsShowingSystemContextMenu: boolean;
+  readonly systemFontFamily: string;
+  readonly textScaleFactor: number;
+  readonly views: FlutterView[];
+  readonly wordSpacingOverride: number;
+}
+
 export interface PlatformMenu {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -9690,6 +13072,16 @@ export interface PlatformMenu {
     readonly PlatformMenu: true;
     readonly PlatformMenuItem: true;
   };
+  readonly descendants: PlatformMenuItem[];
+  readonly label: string;
+  readonly members: PlatformMenuItem[];
+  readonly menus: PlatformMenuItem[];
+  readonly onClose: () => void;
+  readonly onOpen: () => void;
+  readonly onSelected: () => void;
+  readonly onSelectedIntent: IntentValue;
+  readonly shortcut: MenuSerializableShortcut;
+  readonly tooltip: string;
 }
 
 export declare const PlatformMenu: new (options: {
@@ -9700,11 +13092,24 @@ export declare const PlatformMenu: new (options: {
   menus: PlatformMenuItem[];
 }) => PlatformMenu;
 
+export interface PlatformMenuDelegate {
+  readonly __fsxBrand?: { readonly PlatformMenuDelegate: true };
+}
+
 export interface PlatformMenuItem {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
     readonly PlatformMenuItem: true;
   };
+  readonly descendants: PlatformMenuItem[];
+  readonly label: string;
+  readonly members: PlatformMenuItem[];
+  readonly onClose: () => void;
+  readonly onOpen: () => void;
+  readonly onSelected: () => void;
+  readonly onSelectedIntent: IntentValue;
+  readonly shortcut: MenuSerializableShortcut;
+  readonly tooltip: string;
 }
 
 export declare const PlatformMenuItem: new (options: {
@@ -9721,6 +13126,15 @@ export interface PlatformMenuItemGroup {
     readonly PlatformMenuItem: true;
     readonly PlatformMenuItemGroup: true;
   };
+  readonly descendants: PlatformMenuItem[];
+  readonly label: string;
+  readonly members: PlatformMenuItem[];
+  readonly onClose: () => void;
+  readonly onOpen: () => void;
+  readonly onSelected: () => void;
+  readonly onSelectedIntent: IntentValue;
+  readonly shortcut: MenuSerializableShortcut;
+  readonly tooltip: string;
 }
 
 export declare const PlatformMenuItemGroup: new (options: {
@@ -9733,6 +13147,17 @@ export interface PlatformProvidedMenuItem {
     readonly PlatformMenuItem: true;
     readonly PlatformProvidedMenuItem: true;
   };
+  readonly descendants: PlatformMenuItem[];
+  readonly enabled: boolean;
+  readonly label: string;
+  readonly members: PlatformMenuItem[];
+  readonly onClose: () => void;
+  readonly onOpen: () => void;
+  readonly onSelected: () => void;
+  readonly onSelectedIntent: IntentValue;
+  readonly shortcut: MenuSerializableShortcut;
+  readonly tooltip: string;
+  readonly type: PlatformProvidedMenuItemType;
 }
 
 export declare const PlatformProvidedMenuItem: new (options: {
@@ -9749,6 +13174,8 @@ export interface PlatformRouteInformationProvider {
     readonly ValueListenable: true;
     readonly WidgetsBindingObserver: true;
   };
+  readonly hasListeners: boolean;
+  readonly value: RouteInformation;
 }
 
 export declare const PlatformRouteInformationProvider: new (options: {
@@ -9757,6 +13184,8 @@ export declare const PlatformRouteInformationProvider: new (options: {
 
 export interface PlatformViewController {
   readonly __fsxBrand?: { readonly PlatformViewController: true };
+  readonly awaitingCreation: boolean;
+  readonly viewId: number;
 }
 
 export interface PlatformViewCreationParams {
@@ -9766,6 +13195,21 @@ export interface PlatformViewCreationParams {
   readonly onPlatformViewCreated: (id: number) => void;
   readonly viewType: string;
 }
+
+export interface PlatformViewLayer {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DiagnosticableTreeMixin: true;
+    readonly Layer: true;
+    readonly PlatformViewLayer: true;
+  };
+}
+
+export declare const PlatformViewLayer: new (options: {
+  rect: RectValue;
+  viewId: number;
+}) => PlatformViewLayer;
 
 export interface PlatformViewRenderBox {
   readonly __fsxBrand?: {
@@ -9778,6 +13222,39 @@ export interface PlatformViewRenderBox {
     readonly RenderBox: true;
     readonly RenderObject: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly constraints: BoxConstraintsValue;
+  readonly controller: PlatformViewController;
+  readonly cursor: MouseCursorValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly onEnter: (event: PointerEnterEvent) => void;
+  readonly onExit: (event: PointerExitEvent) => void;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly validForMouseTracker: boolean;
 }
 
 export declare const PlatformViewRenderBox: new (options: {
@@ -9785,6 +13262,63 @@ export declare const PlatformViewRenderBox: new (options: {
   hitTestBehavior: PlatformViewHitTestBehavior;
   gestureRecognizers: Factory[];
 }) => PlatformViewRenderBox;
+
+export interface PointerAddedEvent {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly PointerAddedEvent: true;
+    readonly PointerEvent: true;
+  };
+  readonly buttons: number;
+  readonly delta: OffsetValue;
+  readonly device: number;
+  readonly distance: number;
+  readonly distanceMax: number;
+  readonly distanceMin: number;
+  readonly down: boolean;
+  readonly embedderId: number;
+  readonly kind: PointerDeviceKind;
+  readonly localDelta: OffsetValue;
+  readonly localPosition: OffsetValue;
+  readonly obscured: boolean;
+  readonly orientation: number;
+  readonly original: PointerEvent;
+  readonly platformData: number;
+  readonly pointer: number;
+  readonly position: OffsetValue;
+  readonly pressure: number;
+  readonly pressureMax: number;
+  readonly pressureMin: number;
+  readonly radiusMajor: number;
+  readonly radiusMax: number;
+  readonly radiusMin: number;
+  readonly radiusMinor: number;
+  readonly size: number;
+  readonly synthesized: boolean;
+  readonly tilt: number;
+  readonly timeStamp: DurationValue;
+  readonly transform: Matrix4;
+  readonly viewId: number;
+}
+
+export declare const PointerAddedEvent: new (options?: {
+  viewId?: number;
+  timeStamp?: DurationValue;
+  pointer?: number;
+  kind?: PointerDeviceKind;
+  device?: number;
+  position?: OffsetValue;
+  obscured?: boolean;
+  pressureMin?: number;
+  pressureMax?: number;
+  distance?: number;
+  distanceMax?: number;
+  radiusMin?: number;
+  radiusMax?: number;
+  orientation?: number;
+  tilt?: number;
+  embedderId?: number;
+}) => PointerAddedEvent;
 
 export interface PointerCancelEvent {
   readonly __fsxBrand?: {
@@ -9805,6 +13339,7 @@ export interface PointerCancelEvent {
   readonly localPosition: OffsetValue;
   readonly obscured: boolean;
   readonly orientation: number;
+  readonly original: PointerEvent;
   readonly platformData: number;
   readonly pointer: number;
   readonly position: OffsetValue;
@@ -9846,6 +13381,50 @@ export declare const PointerCancelEvent: new (options?: {
   embedderId?: number;
 }) => PointerCancelEvent;
 
+export interface PointerData {
+  readonly __fsxBrand?: { readonly PointerData: true };
+}
+
+export declare const PointerData: new (options?: {
+  viewId?: number;
+  embedderId?: number;
+  timeStamp?: DurationValue;
+  change?: PointerChange;
+  kind?: PointerDeviceKind;
+  signalKind?: PointerSignalKind;
+  device?: number;
+  pointerIdentifier?: number;
+  physicalX?: number;
+  physicalY?: number;
+  physicalDeltaX?: number;
+  physicalDeltaY?: number;
+  buttons?: number;
+  obscured?: boolean;
+  synthesized?: boolean;
+  pressure?: number;
+  pressureMin?: number;
+  pressureMax?: number;
+  distance?: number;
+  distanceMax?: number;
+  size?: number;
+  radiusMajor?: number;
+  radiusMinor?: number;
+  radiusMin?: number;
+  radiusMax?: number;
+  orientation?: number;
+  tilt?: number;
+  platformData?: number;
+  scrollDeltaX?: number;
+  scrollDeltaY?: number;
+  panX?: number;
+  panY?: number;
+  panDeltaX?: number;
+  panDeltaY?: number;
+  scale?: number;
+  rotation?: number;
+  onRespond?: (allowPlatformDefault?: boolean) => void;
+}) => PointerData;
+
 export interface PointerDownEvent {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -9865,6 +13444,7 @@ export interface PointerDownEvent {
   readonly localPosition: OffsetValue;
   readonly obscured: boolean;
   readonly orientation: number;
+  readonly original: PointerEvent;
   readonly platformData: number;
   readonly pointer: number;
   readonly position: OffsetValue;
@@ -9925,6 +13505,7 @@ export interface PointerEnterEvent {
   readonly localPosition: OffsetValue;
   readonly obscured: boolean;
   readonly orientation: number;
+  readonly original: PointerEvent;
   readonly platformData: number;
   readonly pointer: number;
   readonly position: OffsetValue;
@@ -9967,7 +13548,46 @@ export declare const PointerEnterEvent: new (options?: {
   down?: boolean;
   synthesized?: boolean;
   embedderId?: number;
-}) => PointerEnterEvent;
+}) => PointerEnterEvent & {
+  readonly fromMouseEvent: (event: PointerEvent) => PointerEnterEvent;
+};
+
+export interface PointerEvent {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly PointerEvent: true;
+  };
+  readonly buttons: number;
+  readonly delta: OffsetValue;
+  readonly device: number;
+  readonly distance: number;
+  readonly distanceMax: number;
+  readonly distanceMin: number;
+  readonly down: boolean;
+  readonly embedderId: number;
+  readonly kind: PointerDeviceKind;
+  readonly localDelta: OffsetValue;
+  readonly localPosition: OffsetValue;
+  readonly obscured: boolean;
+  readonly orientation: number;
+  readonly original: PointerEvent;
+  readonly platformData: number;
+  readonly pointer: number;
+  readonly position: OffsetValue;
+  readonly pressure: number;
+  readonly pressureMax: number;
+  readonly pressureMin: number;
+  readonly radiusMajor: number;
+  readonly radiusMax: number;
+  readonly radiusMin: number;
+  readonly radiusMinor: number;
+  readonly size: number;
+  readonly synthesized: boolean;
+  readonly tilt: number;
+  readonly timeStamp: DurationValue;
+  readonly transform: Matrix4;
+  readonly viewId: number;
+}
 
 export interface PointerExitEvent {
   readonly __fsxBrand?: {
@@ -9988,6 +13608,7 @@ export interface PointerExitEvent {
   readonly localPosition: OffsetValue;
   readonly obscured: boolean;
   readonly orientation: number;
+  readonly original: PointerEvent;
   readonly platformData: number;
   readonly pointer: number;
   readonly position: OffsetValue;
@@ -10030,7 +13651,9 @@ export declare const PointerExitEvent: new (options?: {
   down?: boolean;
   synthesized?: boolean;
   embedderId?: number;
-}) => PointerExitEvent;
+}) => PointerExitEvent & {
+  readonly fromMouseEvent: (event: PointerEvent) => PointerExitEvent;
+};
 
 export interface PointerHoverEvent {
   readonly __fsxBrand?: {
@@ -10051,6 +13674,7 @@ export interface PointerHoverEvent {
   readonly localPosition: OffsetValue;
   readonly obscured: boolean;
   readonly orientation: number;
+  readonly original: PointerEvent;
   readonly platformData: number;
   readonly pointer: number;
   readonly position: OffsetValue;
@@ -10113,6 +13737,7 @@ export interface PointerMoveEvent {
   readonly localPosition: OffsetValue;
   readonly obscured: boolean;
   readonly orientation: number;
+  readonly original: PointerEvent;
   readonly platformData: number;
   readonly pointer: number;
   readonly position: OffsetValue;
@@ -10176,6 +13801,7 @@ export interface PointerPanZoomEndEvent {
   readonly localPosition: OffsetValue;
   readonly obscured: boolean;
   readonly orientation: number;
+  readonly original: PointerEvent;
   readonly platformData: number;
   readonly pointer: number;
   readonly position: OffsetValue;
@@ -10223,6 +13849,7 @@ export interface PointerPanZoomStartEvent {
   readonly localPosition: OffsetValue;
   readonly obscured: boolean;
   readonly orientation: number;
+  readonly original: PointerEvent;
   readonly platformData: number;
   readonly pointer: number;
   readonly position: OffsetValue;
@@ -10272,6 +13899,7 @@ export interface PointerPanZoomUpdateEvent {
   readonly localPosition: OffsetValue;
   readonly obscured: boolean;
   readonly orientation: number;
+  readonly original: PointerEvent;
   readonly pan: OffsetValue;
   readonly panDelta: OffsetValue;
   readonly platformData: number;
@@ -10308,6 +13936,61 @@ export declare const PointerPanZoomUpdateEvent: new (options?: {
   synthesized?: boolean;
 }) => PointerPanZoomUpdateEvent;
 
+export interface PointerRemovedEvent {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly PointerEvent: true;
+    readonly PointerRemovedEvent: true;
+  };
+  readonly buttons: number;
+  readonly delta: OffsetValue;
+  readonly device: number;
+  readonly distance: number;
+  readonly distanceMax: number;
+  readonly distanceMin: number;
+  readonly down: boolean;
+  readonly embedderId: number;
+  readonly kind: PointerDeviceKind;
+  readonly localDelta: OffsetValue;
+  readonly localPosition: OffsetValue;
+  readonly obscured: boolean;
+  readonly orientation: number;
+  readonly original: PointerEvent;
+  readonly platformData: number;
+  readonly pointer: number;
+  readonly position: OffsetValue;
+  readonly pressure: number;
+  readonly pressureMax: number;
+  readonly pressureMin: number;
+  readonly radiusMajor: number;
+  readonly radiusMax: number;
+  readonly radiusMin: number;
+  readonly radiusMinor: number;
+  readonly size: number;
+  readonly synthesized: boolean;
+  readonly tilt: number;
+  readonly timeStamp: DurationValue;
+  readonly transform: Matrix4;
+  readonly viewId: number;
+}
+
+export declare const PointerRemovedEvent: new (options?: {
+  viewId?: number;
+  timeStamp?: DurationValue;
+  pointer?: number;
+  kind?: PointerDeviceKind;
+  device?: number;
+  position?: OffsetValue;
+  obscured?: boolean;
+  pressureMin?: number;
+  pressureMax?: number;
+  distanceMax?: number;
+  radiusMin?: number;
+  radiusMax?: number;
+  original?: PointerRemovedEvent;
+  embedderId?: number;
+}) => PointerRemovedEvent;
+
 export interface PointerScaleEvent {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -10328,6 +14011,7 @@ export interface PointerScaleEvent {
   readonly localPosition: OffsetValue;
   readonly obscured: boolean;
   readonly orientation: number;
+  readonly original: PointerEvent;
   readonly platformData: number;
   readonly pointer: number;
   readonly position: OffsetValue;
@@ -10377,6 +14061,7 @@ export interface PointerScrollEvent {
   readonly localPosition: OffsetValue;
   readonly obscured: boolean;
   readonly orientation: number;
+  readonly original: PointerEvent;
   readonly platformData: number;
   readonly pointer: number;
   readonly position: OffsetValue;
@@ -10427,6 +14112,7 @@ export interface PointerScrollInertiaCancelEvent {
   readonly localPosition: OffsetValue;
   readonly obscured: boolean;
   readonly orientation: number;
+  readonly original: PointerEvent;
   readonly platformData: number;
   readonly pointer: number;
   readonly position: OffsetValue;
@@ -10460,6 +14146,36 @@ export interface PointerSignalEvent {
     readonly PointerEvent: true;
     readonly PointerSignalEvent: true;
   };
+  readonly buttons: number;
+  readonly delta: OffsetValue;
+  readonly device: number;
+  readonly distance: number;
+  readonly distanceMax: number;
+  readonly distanceMin: number;
+  readonly down: boolean;
+  readonly embedderId: number;
+  readonly kind: PointerDeviceKind;
+  readonly localDelta: OffsetValue;
+  readonly localPosition: OffsetValue;
+  readonly obscured: boolean;
+  readonly orientation: number;
+  readonly original: PointerEvent;
+  readonly platformData: number;
+  readonly pointer: number;
+  readonly position: OffsetValue;
+  readonly pressure: number;
+  readonly pressureMax: number;
+  readonly pressureMin: number;
+  readonly radiusMajor: number;
+  readonly radiusMax: number;
+  readonly radiusMin: number;
+  readonly radiusMinor: number;
+  readonly size: number;
+  readonly synthesized: boolean;
+  readonly tilt: number;
+  readonly timeStamp: DurationValue;
+  readonly transform: Matrix4;
+  readonly viewId: number;
 }
 
 export interface PointerUpEvent {
@@ -10481,6 +14197,7 @@ export interface PointerUpEvent {
   readonly localPosition: OffsetValue;
   readonly obscured: boolean;
   readonly orientation: number;
+  readonly original: PointerEvent;
   readonly platformData: number;
   readonly pointer: number;
   readonly position: OffsetValue;
@@ -10538,6 +14255,19 @@ export interface PopupMenuThemeData {
     readonly Diagnosticable: true;
     readonly PopupMenuThemeData: true;
   };
+  readonly color: ColorValue;
+  readonly elevation: number;
+  readonly enableFeedback: boolean;
+  readonly iconColor: ColorValue;
+  readonly iconSize: number;
+  readonly labelTextStyle: WidgetStatePropertyValue;
+  readonly menuPadding: EdgeInsetsGeometryValue;
+  readonly mouseCursor: WidgetStatePropertyValue;
+  readonly position: PopupMenuPosition;
+  readonly shadowColor: ColorValue;
+  readonly shape: ShapeBorderValue;
+  readonly surfaceTintColor: ColorValue;
+  readonly textStyle: TextStyleValue;
 }
 
 export declare const PopupMenuThemeData: new (options?: {
@@ -10645,6 +14375,22 @@ export interface ProgressIndicatorThemeData {
     readonly Diagnosticable: true;
     readonly ProgressIndicatorThemeData: true;
   };
+  readonly borderRadius: BorderRadiusGeometryValue;
+  readonly circularTrackColor: ColorValue;
+  readonly circularTrackPadding: EdgeInsetsGeometryValue;
+  readonly color: ColorValue;
+  readonly constraints: BoxConstraintsValue;
+  readonly controller: AnimationController;
+  readonly linearMinHeight: number;
+  readonly linearTrackColor: ColorValue;
+  readonly refreshBackgroundColor: ColorValue;
+  readonly stopIndicatorColor: ColorValue;
+  readonly stopIndicatorRadius: number;
+  readonly strokeAlign: number;
+  readonly strokeCap: StrokeCap;
+  readonly strokeWidth: number;
+  readonly trackGap: number;
+  readonly year2023: boolean;
 }
 
 export declare const ProgressIndicatorThemeData: new (options?: {
@@ -10692,10 +14438,76 @@ export declare const ProxyAnimation: new (
 
 export interface RRect {
   readonly __fsxBrand?: { readonly RRect: true };
+  readonly blRadius: RadiusValue;
+  readonly blRadiusX: number;
+  readonly blRadiusY: number;
+  readonly bottom: number;
+  readonly brRadius: RadiusValue;
+  readonly brRadiusX: number;
+  readonly brRadiusY: number;
+  readonly center: OffsetValue;
+  readonly hasNaN: boolean;
+  readonly height: number;
+  readonly isCircle: boolean;
+  readonly isEllipse: boolean;
+  readonly isEmpty: boolean;
+  readonly isFinite: boolean;
+  readonly isRect: boolean;
+  readonly isStadium: boolean;
+  readonly left: number;
+  readonly longestSide: number;
+  readonly middleRect: RectValue;
+  readonly outerRect: RectValue;
+  readonly right: number;
+  readonly safeInnerRect: RectValue;
+  readonly shortestSide: number;
+  readonly tallMiddleRect: RectValue;
+  readonly tlRadius: RadiusValue;
+  readonly tlRadiusX: number;
+  readonly tlRadiusY: number;
+  readonly top: number;
+  readonly trRadius: RadiusValue;
+  readonly trRadiusX: number;
+  readonly trRadiusY: number;
+  readonly wideMiddleRect: RectValue;
+  readonly width: number;
 }
 
 export interface RSuperellipse {
   readonly __fsxBrand?: { readonly RSuperellipse: true };
+  readonly blRadius: RadiusValue;
+  readonly blRadiusX: number;
+  readonly blRadiusY: number;
+  readonly bottom: number;
+  readonly brRadius: RadiusValue;
+  readonly brRadiusX: number;
+  readonly brRadiusY: number;
+  readonly center: OffsetValue;
+  readonly hasNaN: boolean;
+  readonly height: number;
+  readonly isCircle: boolean;
+  readonly isEllipse: boolean;
+  readonly isEmpty: boolean;
+  readonly isFinite: boolean;
+  readonly isRect: boolean;
+  readonly isStadium: boolean;
+  readonly left: number;
+  readonly longestSide: number;
+  readonly middleRect: RectValue;
+  readonly outerRect: RectValue;
+  readonly right: number;
+  readonly safeInnerRect: RectValue;
+  readonly shortestSide: number;
+  readonly tallMiddleRect: RectValue;
+  readonly tlRadius: RadiusValue;
+  readonly tlRadiusX: number;
+  readonly tlRadiusY: number;
+  readonly top: number;
+  readonly trRadius: RadiusValue;
+  readonly trRadiusX: number;
+  readonly trRadiusY: number;
+  readonly wideMiddleRect: RectValue;
+  readonly width: number;
 }
 
 export interface RadialGradient {
@@ -10703,6 +14515,14 @@ export interface RadialGradient {
     readonly Gradient: true;
     readonly RadialGradient: true;
   };
+  readonly center: AlignmentGeometryValue;
+  readonly colors: ColorValue[];
+  readonly focal: AlignmentGeometryValue;
+  readonly focalRadius: number;
+  readonly radius: number;
+  readonly stops: number[];
+  readonly tileMode: TileMode;
+  readonly transform: GradientTransform;
 }
 
 export declare const RadialGradient: new (options: {
@@ -10718,6 +14538,8 @@ export declare const RadialGradient: new (options: {
 
 export interface RadioGroupRegistry {
   readonly __fsxBrand?: { readonly RadioGroupRegistry: true };
+  readonly groupValue: unknown;
+  readonly onChanged: (value: unknown | null) => void;
 }
 
 export interface RadioThemeData {
@@ -10725,6 +14547,15 @@ export interface RadioThemeData {
     readonly Diagnosticable: true;
     readonly RadioThemeData: true;
   };
+  readonly backgroundColor: WidgetStatePropertyValue;
+  readonly fillColor: WidgetStatePropertyValue;
+  readonly innerRadius: WidgetStatePropertyValue;
+  readonly materialTapTargetSize: MaterialTapTargetSize;
+  readonly mouseCursor: WidgetStatePropertyValue;
+  readonly overlayColor: WidgetStatePropertyValue;
+  readonly side: BorderSideValue;
+  readonly splashRadius: number;
+  readonly visualDensity: VisualDensityValue;
 }
 
 export declare const RadioThemeData: new (options?: {
@@ -10741,6 +14572,8 @@ export declare const RadioThemeData: new (options?: {
 
 export interface Radius {
   readonly __fsxBrand?: { readonly Radius: true };
+  readonly x: number;
+  readonly y: number;
 }
 
 export interface RangeLabels {
@@ -10835,6 +14668,7 @@ export interface RawDialogRoute {
   readonly offstage: boolean;
   readonly opaque: boolean;
   readonly overlayEntries: OverlayEntry[];
+  readonly popDisposition: RoutePopDisposition;
   readonly popGestureEnabled: boolean;
   readonly popGestureInProgress: boolean;
   readonly popped: Promise<unknown | null>;
@@ -10910,7 +14744,22 @@ export interface RawKeyEvent {
     readonly Diagnosticable: true;
     readonly RawKeyEvent: true;
   };
+  readonly character: string;
+  readonly data: RawKeyEventData;
+  readonly isAltPressed: boolean;
+  readonly isControlPressed: boolean;
+  readonly isMetaPressed: boolean;
+  readonly isShiftPressed: boolean;
+  readonly logicalKey: LogicalKeyboardKey;
+  readonly physicalKey: PhysicalKeyboardKey;
+  readonly repeat: boolean;
 }
+
+export declare const RawKeyEvent: {
+  readonly fromMessage: (
+    message: Record<string, ObjectValue | null>,
+  ) => RawKeyEvent;
+};
 
 export interface RawKeyEventData {
   readonly __fsxBrand?: {
@@ -11007,6 +14856,13 @@ export declare const RawKeyUpEvent: new (options: {
   character?: string;
 }) => RawKeyUpEvent;
 
+export interface RawKeyboard {
+  readonly __fsxBrand?: { readonly RawKeyboard: true };
+  readonly keyEventHandler: (event: RawKeyEvent) => boolean;
+  readonly keysPressed: LogicalKeyboardKey[];
+  readonly physicalKeysPressed: PhysicalKeyboardKey[];
+}
+
 export interface RawMenuOverlayInfo {
   readonly __fsxBrand?: { readonly RawMenuOverlayInfo: true };
   readonly anchorRect: RectValue;
@@ -11053,6 +14909,13 @@ export interface ReadingOrderTraversalPolicy {
     readonly FocusTraversalPolicy: true;
     readonly ReadingOrderTraversalPolicy: true;
   };
+  readonly requestFocusCallback: (
+    node: FocusNode,
+    alignment?: number | null,
+    alignmentPolicy?: ScrollPositionAlignmentPolicy | null,
+    curve?: Curve | null,
+    duration?: Duration | null,
+  ) => void;
 }
 
 export declare const ReadingOrderTraversalPolicy: new (options?: {
@@ -11168,6 +15031,11 @@ export declare const RefreshIndicatorState: new () => RefreshIndicatorState;
 
 export interface RelativeRect {
   readonly __fsxBrand?: { readonly RelativeRect: true };
+  readonly bottom: number;
+  readonly hasInsets: boolean;
+  readonly left: number;
+  readonly right: number;
+  readonly top: number;
 }
 
 export interface RelativeRectTween {
@@ -11196,6 +15064,37 @@ export interface RenderAbsorbPointer {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly absorbing: boolean;
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly ignoringSemantics: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderAbsorbPointer: new (options?: {
@@ -11213,6 +15112,31 @@ export interface RenderAbstractViewport {
     readonly RenderAbstractViewport: true;
     readonly RenderObject: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly sizedByParent: boolean;
 }
 
 export interface RenderAndroidView {
@@ -11227,6 +15151,40 @@ export interface RenderAndroidView {
     readonly RenderBox: true;
     readonly RenderObject: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly clipBehavior: Clip;
+  readonly constraints: BoxConstraintsValue;
+  readonly controller: AndroidViewController;
+  readonly cursor: MouseCursorValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly onEnter: (event: PointerEnterEvent) => void;
+  readonly onExit: (event: PointerExitEvent) => void;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly validForMouseTracker: boolean;
 }
 
 export declare const RenderAndroidView: new (options: {
@@ -11250,6 +15208,37 @@ export interface RenderAnimatedOpacity {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysIncludeSemantics: boolean;
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly opacity: Animation;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderAnimatedOpacity: new (options: {
@@ -11271,6 +15260,47 @@ export interface RenderAnimatedSize {
     readonly RenderObjectWithChildMixin: true;
     readonly RenderShiftedBox: true;
   };
+  readonly alignment: AlignmentGeometryValue;
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly clipBehavior: Clip;
+  readonly constraints: BoxConstraintsValue;
+  readonly curve: CurveValue;
+  readonly debugAnimation: CurvedAnimation;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugController: AnimationController;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly duration: DurationValue;
+  readonly hasSize: boolean;
+  readonly isAnimating: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly onEnd: () => void;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly resolvedAlignment: AlignmentValue;
+  readonly reverseDuration: DurationValue;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly textDirection: TextDirection;
+  readonly vsync: TickerProvider;
 }
 
 export declare const RenderAnimatedSize: new (options: {
@@ -11298,6 +15328,37 @@ export interface RenderAnnotatedRegion {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sized: boolean;
+  readonly sizedByParent: boolean;
+  readonly value: unknown;
 }
 
 export declare const RenderAnnotatedRegion: new (options: {
@@ -11317,6 +15378,36 @@ export interface RenderAppKitView {
     readonly RenderDarwinPlatformView: true;
     readonly RenderObject: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly hitTestBehavior: PlatformViewHitTestBehavior;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly viewController: unknown;
 }
 
 export declare const RenderAppKitView: new (options: {
@@ -11338,6 +15429,36 @@ export interface RenderAspectRatio {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly aspectRatio: number;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderAspectRatio: new (options: {
@@ -11358,6 +15479,40 @@ export interface RenderBackdropFilter {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly backdropKey: BackdropKey;
+  readonly blendMode: BlendMode;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly enabled: boolean;
+  readonly filter: ImageFilter;
+  readonly filterConfig: ImageFilterConfig;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: BackdropFilterLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderBackdropFilter: new (options?: {
@@ -11381,6 +15536,37 @@ export interface RenderBaseline {
     readonly RenderObjectWithChildMixin: true;
     readonly RenderShiftedBox: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly baseline: number;
+  readonly baselineType: TextBaseline;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderBaseline: new (options: {
@@ -11402,6 +15588,36 @@ export interface RenderBlockSemantics {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly blocking: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderBlockSemantics: new (options?: {
@@ -11418,6 +15634,34 @@ export interface RenderBox {
     readonly RenderBox: true;
     readonly RenderObject: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export interface RenderClipOval {
@@ -11433,6 +15677,37 @@ export interface RenderClipOval {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly clipBehavior: Clip;
+  readonly clipper: CustomClipper;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderClipOval: new (options?: {
@@ -11454,6 +15729,37 @@ export interface RenderClipPath {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly clipBehavior: Clip;
+  readonly clipper: CustomClipper;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderClipPath: new (options?: {
@@ -11475,6 +15781,39 @@ export interface RenderClipRRect {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly borderRadius: BorderRadiusGeometryValue;
+  readonly child: unknown;
+  readonly clipBehavior: Clip;
+  readonly clipper: CustomClipper;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly textDirection: TextDirection;
 }
 
 export declare const RenderClipRRect: new (options?: {
@@ -11498,6 +15837,39 @@ export interface RenderClipRSuperellipse {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly borderRadius: BorderRadiusGeometryValue;
+  readonly child: unknown;
+  readonly clipBehavior: Clip;
+  readonly clipper: CustomClipper;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly textDirection: TextDirection;
 }
 
 export declare const RenderClipRSuperellipse: new (options?: {
@@ -11521,6 +15893,37 @@ export interface RenderClipRect {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly clipBehavior: Clip;
+  readonly clipper: CustomClipper;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderClipRect: new (options?: {
@@ -11542,6 +15945,36 @@ export interface RenderConstrainedBox {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly additionalConstraints: BoxConstraintsValue;
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderConstrainedBox: new (options: {
@@ -11562,6 +15995,43 @@ export interface RenderConstrainedOverflowBox {
     readonly RenderObjectWithChildMixin: true;
     readonly RenderShiftedBox: true;
   };
+  readonly alignment: AlignmentGeometryValue;
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly fit: OverflowBoxFit;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly maxHeight: number;
+  readonly maxWidth: number;
+  readonly minHeight: number;
+  readonly minWidth: number;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly resolvedAlignment: AlignmentValue;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly textDirection: TextDirection;
 }
 
 export declare const RenderConstrainedOverflowBox: new (options?: {
@@ -11589,6 +16059,42 @@ export interface RenderConstraintsTransformBox {
     readonly RenderObjectWithChildMixin: true;
     readonly RenderShiftedBox: true;
   };
+  readonly alignment: AlignmentGeometryValue;
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly clipBehavior: Clip;
+  readonly constraints: BoxConstraintsValue;
+  readonly constraintsTransform: (
+    constraints: BoxConstraints,
+  ) => BoxConstraints;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly resolvedAlignment: AlignmentValue;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly textDirection: TextDirection;
 }
 
 export declare const RenderConstraintsTransformBox: new (options: {
@@ -11611,6 +16117,38 @@ export interface RenderCustomMultiChildLayoutBox {
     readonly RenderCustomMultiChildLayoutBox: true;
     readonly RenderObject: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly childCount: number;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly delegate: MultiChildLayoutDelegate;
+  readonly depth: number;
+  readonly firstChild: unknown;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly lastChild: unknown;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderCustomMultiChildLayoutBox: new (options: {
@@ -11631,6 +16169,40 @@ export interface RenderCustomPaint {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly foregroundPainter: CustomPainter;
+  readonly hasSize: boolean;
+  readonly isComplex: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly painter: CustomPainter;
+  readonly parent: RenderObject;
+  readonly preferredSize: SizeValue;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly willChange: boolean;
 }
 
 export declare const RenderCustomPaint: new (options?: {
@@ -11654,6 +16226,36 @@ export interface RenderCustomSingleChildLayoutBox {
     readonly RenderObjectWithChildMixin: true;
     readonly RenderShiftedBox: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly delegate: SingleChildLayoutDelegate;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderCustomSingleChildLayoutBox: new (options: {
@@ -11674,6 +16276,38 @@ export interface RenderDecoratedBox {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly configuration: ImageConfiguration;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly decoration: Decoration;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly position: DecorationPosition;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderDecoratedBox: new (options: {
@@ -11695,6 +16329,39 @@ export interface RenderDecoratedSliver {
     readonly RenderProxySliver: true;
     readonly RenderSliver: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly centerOffsetAdjustment: number;
+  readonly child: unknown;
+  readonly configuration: ImageConfiguration;
+  readonly constraints: SliverConstraints;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly decoration: Decoration;
+  readonly depth: number;
+  readonly ensureSemantics: boolean;
+  readonly geometry: SliverGeometry;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly position: DecorationPosition;
+  readonly semanticBounds: RectValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderDecoratedSliver: new (options: {
@@ -11717,6 +16384,86 @@ export interface RenderEditable {
     readonly RenderObject: true;
     readonly TextLayoutMetrics: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly backgroundCursorColor: ColorValue;
+  readonly childCount: number;
+  readonly clipBehavior: Clip;
+  readonly constraints: BoxConstraintsValue;
+  readonly cursorColor: ColorValue;
+  readonly cursorHeight: number;
+  readonly cursorOffset: OffsetValue;
+  readonly cursorRadius: RadiusValue;
+  readonly cursorWidth: number;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly devicePixelRatio: number;
+  readonly enableInteractiveSelection: boolean;
+  readonly endHandleLayerLink: LayerLink;
+  readonly expands: boolean;
+  readonly firstChild: unknown;
+  readonly floatingCursorAddedMargin: EdgeInsetsValue;
+  readonly floatingCursorOn: boolean;
+  readonly forceLine: boolean;
+  readonly foregroundPainter: RenderEditablePainter;
+  readonly hasFocus: boolean;
+  readonly hasSize: boolean;
+  readonly ignorePointer: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly lastChild: unknown;
+  readonly lastSecondaryTapDownPosition: OffsetValue;
+  readonly layer: ContainerLayer;
+  readonly locale: Locale;
+  readonly maxLines: number;
+  readonly maxScrollExtent: number;
+  readonly minLines: number;
+  readonly needsCompositing: boolean;
+  readonly obscureText: boolean;
+  readonly obscuringCharacter: string;
+  readonly offset: ViewportOffset;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly paintCursorAboveText: boolean;
+  readonly painter: RenderEditablePainter;
+  readonly parent: RenderObject;
+  readonly plainText: string;
+  readonly preferredLineHeight: number;
+  readonly promptRectColor: ColorValue;
+  readonly readOnly: boolean;
+  readonly selection: TextSelection;
+  readonly selectionColor: ColorValue;
+  readonly selectionEnabled: boolean;
+  readonly selectionEndInViewport: ValueListenable;
+  readonly selectionHeightStyle: BoxHeightStyle;
+  readonly selectionStartInViewport: ValueListenable;
+  readonly selectionWidthStyle: BoxWidthStyle;
+  readonly semanticBounds: RectValue;
+  readonly showCursor: ValueNotifier;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly startHandleLayerLink: LayerLink;
+  readonly strutStyle: StrutStyleValue;
+  readonly text: InlineSpan;
+  readonly textAlign: TextAlign;
+  readonly textDirection: TextDirection;
+  readonly textHeightBehavior: TextHeightBehaviorValue;
+  readonly textScaleFactor: number;
+  readonly textScaler: TextScalerValue;
+  readonly textSelectionDelegate: TextSelectionDelegate;
+  readonly textWidthBasis: TextWidthBasis;
 }
 
 export declare const RenderEditable: new (options: {
@@ -11783,6 +16530,35 @@ export interface RenderErrorBox {
     readonly RenderErrorBox: true;
     readonly RenderObject: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly message: string;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderErrorBox: new (message?: string) => RenderErrorBox;
@@ -11800,6 +16576,36 @@ export interface RenderExcludeSemantics {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly excluding: boolean;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderExcludeSemantics: new (options?: {
@@ -11820,6 +16626,39 @@ export interface RenderFittedBox {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alignment: AlignmentGeometryValue;
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly clipBehavior: Clip;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly fit: BoxFit;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly textDirection: TextDirection;
 }
 
 export declare const RenderFittedBox: new (options?: {
@@ -11843,6 +16682,46 @@ export interface RenderFlex {
     readonly RenderFlex: true;
     readonly RenderObject: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly childCount: number;
+  readonly clipBehavior: Clip;
+  readonly constraints: BoxConstraintsValue;
+  readonly crossAxisAlignment: CrossAxisAlignment;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly direction: Axis;
+  readonly firstChild: unknown;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly lastChild: unknown;
+  readonly layer: ContainerLayer;
+  readonly mainAxisAlignment: MainAxisAlignment;
+  readonly mainAxisSize: MainAxisSize;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly spacing: number;
+  readonly textBaseline: TextBaseline;
+  readonly textDirection: TextDirection;
+  readonly verticalDirection: VerticalDirection;
 }
 
 export declare const RenderFlex: new (options?: {
@@ -11871,6 +16750,39 @@ export interface RenderFlow {
     readonly RenderFlow: true;
     readonly RenderObject: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly childCount: number;
+  readonly clipBehavior: Clip;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly delegate: FlowDelegate;
+  readonly depth: number;
+  readonly firstChild: unknown;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly lastChild: unknown;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderFlow: new (options: {
@@ -11892,6 +16804,40 @@ export interface RenderFollowerLayer {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly followerAnchor: AlignmentValue;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: FollowerLayer;
+  readonly leaderAnchor: AlignmentValue;
+  readonly link: LayerLink;
+  readonly needsCompositing: boolean;
+  readonly offset: OffsetValue;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly showWhenUnlinked: boolean;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderFollowerLayer: new (options: {
@@ -11916,6 +16862,37 @@ export interface RenderFractionalTranslation {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly transformHitTests: boolean;
+  readonly translation: OffsetValue;
 }
 
 export declare const RenderFractionalTranslation: new (options: {
@@ -11937,6 +16914,40 @@ export interface RenderFractionallySizedOverflowBox {
     readonly RenderObjectWithChildMixin: true;
     readonly RenderShiftedBox: true;
   };
+  readonly alignment: AlignmentGeometryValue;
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly heightFactor: number;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly resolvedAlignment: AlignmentValue;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly textDirection: TextDirection;
+  readonly widthFactor: number;
 }
 
 export declare const RenderFractionallySizedOverflowBox: new (options?: {
@@ -11960,6 +16971,35 @@ export interface RenderIgnoreBaseline {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderIgnoreBaseline: new (options?: {
@@ -11979,6 +17019,37 @@ export interface RenderIgnorePointer {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly ignoring: boolean;
+  readonly ignoringSemantics: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderIgnorePointer: new (options?: {
@@ -11997,6 +17068,51 @@ export interface RenderImage {
     readonly RenderImage: true;
     readonly RenderObject: true;
   };
+  readonly alignment: AlignmentGeometryValue;
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly centerSlice: RectValue;
+  readonly color: ColorValue;
+  readonly colorBlendMode: BlendMode;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugImageLabel: string;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly filterQuality: FilterQuality;
+  readonly fit: BoxFit;
+  readonly hasSize: boolean;
+  readonly height: number;
+  readonly image: Image;
+  readonly invertColors: boolean;
+  readonly isAntiAlias: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly matchTextDirection: boolean;
+  readonly needsCompositing: boolean;
+  readonly opacity: Animation;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly repeat: ImageRepeat;
+  readonly scale: number;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly textDirection: TextDirection;
+  readonly width: number;
 }
 
 export declare const RenderImage: new (options?: {
@@ -12032,6 +17148,36 @@ export interface RenderIndexedSemantics {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly index: number;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderIndexedSemantics: new (options: {
@@ -12052,6 +17198,42 @@ export interface RenderIndexedStack {
     readonly RenderObject: true;
     readonly RenderStack: true;
   };
+  readonly alignment: AlignmentGeometryValue;
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly childCount: number;
+  readonly clipBehavior: Clip;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly firstChild: unknown;
+  readonly fit: StackFit;
+  readonly hasSize: boolean;
+  readonly index: number;
+  readonly isRepaintBoundary: boolean;
+  readonly lastChild: unknown;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly textDirection: TextDirection;
 }
 
 export declare const RenderIndexedStack: new (options?: {
@@ -12076,6 +17258,35 @@ export interface RenderIntrinsicHeight {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderIntrinsicHeight: new (options?: {
@@ -12095,6 +17306,37 @@ export interface RenderIntrinsicWidth {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly stepHeight: number;
+  readonly stepWidth: number;
 }
 
 export declare const RenderIntrinsicWidth: new (options?: {
@@ -12116,6 +17358,36 @@ export interface RenderLeaderLayer {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly link: LayerLink;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderLeaderLayer: new (options: {
@@ -12136,6 +17408,37 @@ export interface RenderLimitedBox {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly maxHeight: number;
+  readonly maxWidth: number;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderLimitedBox: new (options?: {
@@ -12156,6 +17459,39 @@ export interface RenderListBody {
     readonly RenderListBody: true;
     readonly RenderObject: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly axisDirection: AxisDirection;
+  readonly childCount: number;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly firstChild: unknown;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly lastChild: unknown;
+  readonly layer: ContainerLayer;
+  readonly mainAxis: Axis;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderListBody: new (options?: {
@@ -12175,6 +17511,49 @@ export interface RenderListWheelViewport {
     readonly RenderListWheelViewport: true;
     readonly RenderObject: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly childCount: number;
+  readonly childManager: ListWheelChildManager;
+  readonly clipBehavior: Clip;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly diameterRatio: number;
+  readonly firstChild: unknown;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly itemExtent: number;
+  readonly lastChild: unknown;
+  readonly layer: ContainerLayer;
+  readonly magnification: number;
+  readonly needsCompositing: boolean;
+  readonly offAxisFraction: number;
+  readonly offset: ViewportOffset;
+  readonly overAndUnderCenterOpacity: number;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly perspective: number;
+  readonly renderChildrenOutsideViewport: boolean;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly squeeze: number;
+  readonly useMagnifier: boolean;
 }
 
 export interface RenderMergeSemantics {
@@ -12190,6 +17569,35 @@ export interface RenderMergeSemantics {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderMergeSemantics: new (options?: {
@@ -12210,6 +17618,37 @@ export interface RenderMetaData {
     readonly RenderProxyBoxMixin: true;
     readonly RenderProxyBoxWithHitTestBehavior: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly behavior: HitTestBehavior;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly metaData: unknown;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderMetaData: new (options?: {
@@ -12233,6 +17672,43 @@ export interface RenderMouseRegion {
     readonly RenderProxyBoxMixin: true;
     readonly RenderProxyBoxWithHitTestBehavior: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly behavior: HitTestBehavior;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly cursor: MouseCursorValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly hitTestBehavior: HitTestBehavior;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly onEnter: (event: PointerEnterEvent) => void;
+  readonly onExit: (event: PointerExitEvent) => void;
+  readonly onHover: (event: PointerHoverEvent) => void;
+  readonly opaque: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly validForMouseTracker: boolean;
 }
 
 export declare const RenderMouseRegion: new (options?: {
@@ -12260,6 +17736,53 @@ export interface RenderNestedScrollViewViewport {
     readonly RenderViewport: true;
     readonly RenderViewportBase: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly anchor: number;
+  readonly attached: boolean;
+  readonly axis: Axis;
+  readonly axisDirection: AxisDirection;
+  readonly cacheExtent: number;
+  readonly cacheExtentStyle: CacheExtentStyle;
+  readonly center: RenderSliver;
+  readonly childCount: number;
+  readonly childrenInHitTestOrder: RenderSliver[];
+  readonly childrenInPaintOrder: RenderSliver[];
+  readonly clipBehavior: Clip;
+  readonly constraints: BoxConstraintsValue;
+  readonly crossAxisDirection: AxisDirection;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly firstChild: unknown;
+  readonly handle: SliverOverlapAbsorberHandle;
+  readonly hasSize: boolean;
+  readonly hasVisualOverflow: boolean;
+  readonly indexOfFirstChild: number;
+  readonly isRepaintBoundary: boolean;
+  readonly lastChild: unknown;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly offset: ViewportOffset;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly paintOrder: SliverPaintOrder;
+  readonly parent: RenderObject;
+  readonly scrollCacheExtent: ScrollCacheExtent;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderNestedScrollViewViewport: new (options: {
@@ -12272,6 +17795,41 @@ export declare const RenderNestedScrollViewViewport: new (options: {
   handle: SliverOverlapAbsorberHandle;
   clipBehavior?: Clip;
 }) => RenderNestedScrollViewViewport;
+
+export interface RenderObject {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DiagnosticableTreeMixin: true;
+    readonly HitTestTarget: true;
+    readonly RenderObject: true;
+  };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly sizedByParent: boolean;
+}
 
 export interface RenderObjectToWidgetAdapter {
   readonly __fsxBrand?: {
@@ -12301,6 +17859,7 @@ export interface RenderObjectToWidgetElement {
   readonly dirty: boolean;
   readonly mounted: boolean;
   readonly renderObject: RenderObjectWithChildMixin;
+  readonly renderObjectAttachingChild: Element;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
   readonly widget: FlutterElement;
@@ -12334,6 +17893,36 @@ export interface RenderOffstage {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly offstage: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderOffstage: new (options?: {
@@ -12354,6 +17943,37 @@ export interface RenderOpacity {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysIncludeSemantics: boolean;
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly opacity: number;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderOpacity: new (options?: {
@@ -12374,6 +17994,37 @@ export interface RenderPadding {
     readonly RenderPadding: true;
     readonly RenderShiftedBox: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly padding: EdgeInsetsGeometryValue;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly textDirection: TextDirection;
 }
 
 export declare const RenderPadding: new (options: {
@@ -12395,6 +18046,57 @@ export interface RenderParagraph {
     readonly RenderObject: true;
     readonly RenderParagraph: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly childCount: number;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugHasOverflowShader: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly devicePixelRatio: number;
+  readonly didExceedMaxLines: boolean;
+  readonly firstChild: unknown;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly lastChild: unknown;
+  readonly layer: ContainerLayer;
+  readonly locale: Locale;
+  readonly maxLines: number;
+  readonly needsCompositing: boolean;
+  readonly overflow: TextOverflow;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly preferredLineHeight: number;
+  readonly registrar: SelectionRegistrar;
+  readonly selectionColor: ColorValue;
+  readonly selections: TextSelection[];
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly softWrap: boolean;
+  readonly strutStyle: StrutStyleValue;
+  readonly text: InlineSpan;
+  readonly textAlign: TextAlign;
+  readonly textDirection: TextDirection;
+  readonly textHeightBehavior: TextHeightBehaviorValue;
+  readonly textScaleFactor: number;
+  readonly textScaler: TextScalerValue;
+  readonly textSize: SizeValue;
+  readonly textWidthBasis: TextWidthBasis;
 }
 
 export declare const RenderParagraph: new (
@@ -12428,6 +18130,35 @@ export interface RenderPerformanceOverlay {
     readonly RenderObject: true;
     readonly RenderPerformanceOverlay: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly optionsMask: number;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderPerformanceOverlay: new (options?: {
@@ -12447,6 +18178,42 @@ export interface RenderPhysicalModel {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly borderRadius: BorderRadiusValue;
+  readonly child: unknown;
+  readonly clipBehavior: Clip;
+  readonly clipper: CustomClipper;
+  readonly color: ColorValue;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly elevation: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly shadowColor: ColorValue;
+  readonly shape: BoxShape;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderPhysicalModel: new (options: {
@@ -12472,6 +18239,40 @@ export interface RenderPhysicalShape {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly clipBehavior: Clip;
+  readonly clipper: CustomClipper;
+  readonly color: ColorValue;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly elevation: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly shadowColor: ColorValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderPhysicalShape: new (options: {
@@ -12497,6 +18298,45 @@ export interface RenderPointerListener {
     readonly RenderProxyBoxMixin: true;
     readonly RenderProxyBoxWithHitTestBehavior: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly behavior: HitTestBehavior;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly onPointerCancel: (event: PointerCancelEvent) => void;
+  readonly onPointerDown: (event: PointerDownEvent) => void;
+  readonly onPointerHover: (event: PointerHoverEvent) => void;
+  readonly onPointerMove: (event: PointerMoveEvent) => void;
+  readonly onPointerPanZoomEnd: (event: PointerPanZoomEndEvent) => void;
+  readonly onPointerPanZoomStart: (event: PointerPanZoomStartEvent) => void;
+  readonly onPointerPanZoomUpdate: (event: PointerPanZoomUpdateEvent) => void;
+  readonly onPointerSignal: (event: PointerSignalEvent) => void;
+  readonly onPointerUp: (event: PointerUpEvent) => void;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderPointerListener: new (options?: {
@@ -12526,6 +18366,40 @@ export interface RenderPositionedBox {
     readonly RenderPositionedBox: true;
     readonly RenderShiftedBox: true;
   };
+  readonly alignment: AlignmentGeometryValue;
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly heightFactor: number;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly resolvedAlignment: AlignmentValue;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly textDirection: TextDirection;
+  readonly widthFactor: number;
 }
 
 export declare const RenderPositionedBox: new (options?: {
@@ -12548,6 +18422,35 @@ export interface RenderProxyBox {
     readonly RenderProxyBox: true;
     readonly RenderProxyBoxMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderProxyBox: new (child?: RenderBox) => RenderProxyBox;
@@ -12565,6 +18468,37 @@ export interface RenderRepaintBoundary {
     readonly RenderProxyBoxMixin: true;
     readonly RenderRepaintBoundary: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugAsymmetricPaintCount: number;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly debugSymmetricPaintCount: number;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderRepaintBoundary: new (options?: {
@@ -12582,6 +18516,36 @@ export interface RenderRotatedBox {
     readonly RenderObjectWithChildMixin: true;
     readonly RenderRotatedBox: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly quarterTurns: number;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderRotatedBox: new (options: {
@@ -12603,6 +18567,42 @@ export interface RenderSemanticsAnnotations {
     readonly RenderSemanticsAnnotations: true;
     readonly SemanticsAnnotationsMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly blockUserActions: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly container: boolean;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly excludeSemantics: boolean;
+  readonly explicitChildNodes: boolean;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly localeForSubtree: Locale;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly properties: SemanticsProperties;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly textDirection: TextDirection;
 }
 
 export declare const RenderSemanticsAnnotations: new (options: {
@@ -12630,6 +18630,42 @@ export interface RenderSemanticsGestureHandler {
     readonly RenderProxyBoxWithHitTestBehavior: true;
     readonly RenderSemanticsGestureHandler: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly behavior: HitTestBehavior;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly onHorizontalDragUpdate: (details: DragUpdateDetails) => void;
+  readonly onLongPress: () => void;
+  readonly onTap: () => void;
+  readonly onVerticalDragUpdate: (details: DragUpdateDetails) => void;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly scrollFactor: number;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly validActions: SemanticsAction[];
 }
 
 export declare const RenderSemanticsGestureHandler: new (options?: {
@@ -12655,6 +18691,37 @@ export interface RenderShaderMask {
     readonly RenderProxyBoxMixin: true;
     readonly RenderShaderMask: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly blendMode: BlendMode;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ShaderMaskLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly shaderCallback: (bounds: Rect) => Shader;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderShaderMask: new (options: {
@@ -12676,6 +18743,50 @@ export interface RenderShrinkWrappingViewport {
     readonly RenderShrinkWrappingViewport: true;
     readonly RenderViewportBase: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly axis: Axis;
+  readonly axisDirection: AxisDirection;
+  readonly cacheExtent: number;
+  readonly cacheExtentStyle: CacheExtentStyle;
+  readonly childCount: number;
+  readonly childrenInHitTestOrder: RenderSliver[];
+  readonly childrenInPaintOrder: RenderSliver[];
+  readonly clipBehavior: Clip;
+  readonly constraints: BoxConstraintsValue;
+  readonly crossAxisDirection: AxisDirection;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly firstChild: unknown;
+  readonly hasSize: boolean;
+  readonly hasVisualOverflow: boolean;
+  readonly indexOfFirstChild: number;
+  readonly isRepaintBoundary: boolean;
+  readonly lastChild: unknown;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly offset: ViewportOffset;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly paintOrder: SliverPaintOrder;
+  readonly parent: RenderObject;
+  readonly scrollCacheExtent: ScrollCacheExtent;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderShrinkWrappingViewport: new (options: {
@@ -12701,6 +18812,39 @@ export interface RenderSizedOverflowBox {
     readonly RenderShiftedBox: true;
     readonly RenderSizedOverflowBox: true;
   };
+  readonly alignment: AlignmentGeometryValue;
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly requestedSize: SizeValue;
+  readonly resolvedAlignment: AlignmentValue;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly textDirection: TextDirection;
 }
 
 export declare const RenderSizedOverflowBox: new (options: {
@@ -12719,6 +18863,35 @@ export interface RenderSliver {
     readonly RenderObject: true;
     readonly RenderSliver: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly centerOffsetAdjustment: number;
+  readonly constraints: SliverConstraints;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly ensureSemantics: boolean;
+  readonly geometry: SliverGeometry;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly sizedByParent: boolean;
 }
 
 export interface RenderSliverAnimatedOpacity {
@@ -12734,6 +18907,38 @@ export interface RenderSliverAnimatedOpacity {
     readonly RenderSliver: true;
     readonly RenderSliverAnimatedOpacity: true;
   };
+  readonly alwaysIncludeSemantics: boolean;
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly centerOffsetAdjustment: number;
+  readonly child: unknown;
+  readonly constraints: SliverConstraints;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly ensureSemantics: boolean;
+  readonly geometry: SliverGeometry;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly opacity: Animation;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderSliverAnimatedOpacity: new (options: {
@@ -12758,6 +18963,37 @@ export interface RenderSliverConstrainedCrossAxis {
     readonly RenderSliver: true;
     readonly RenderSliverConstrainedCrossAxis: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly centerOffsetAdjustment: number;
+  readonly child: unknown;
+  readonly constraints: SliverConstraints;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly ensureSemantics: boolean;
+  readonly geometry: SliverGeometry;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly maxExtent: number;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderSliverConstrainedCrossAxis: new (options: {
@@ -12775,6 +19011,38 @@ export interface RenderSliverCrossAxisGroup {
     readonly RenderSliver: true;
     readonly RenderSliverCrossAxisGroup: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly centerOffsetAdjustment: number;
+  readonly childCount: number;
+  readonly constraints: SliverConstraints;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly ensureSemantics: boolean;
+  readonly firstChild: unknown;
+  readonly geometry: SliverGeometry;
+  readonly isRepaintBoundary: boolean;
+  readonly lastChild: unknown;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderSliverCrossAxisGroup: new () => RenderSliverCrossAxisGroup;
@@ -12792,6 +19060,36 @@ export interface RenderSliverFillRemaining {
     readonly RenderSliverHelpers: true;
     readonly RenderSliverSingleBoxAdapter: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly centerOffsetAdjustment: number;
+  readonly child: unknown;
+  readonly constraints: SliverConstraints;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly ensureSemantics: boolean;
+  readonly geometry: SliverGeometry;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderSliverFillRemaining: new (options?: {
@@ -12811,6 +19109,36 @@ export interface RenderSliverFillRemainingAndOverscroll {
     readonly RenderSliverHelpers: true;
     readonly RenderSliverSingleBoxAdapter: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly centerOffsetAdjustment: number;
+  readonly child: unknown;
+  readonly constraints: SliverConstraints;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly ensureSemantics: boolean;
+  readonly geometry: SliverGeometry;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderSliverFillRemainingAndOverscroll: new (options?: {
@@ -12830,6 +19158,36 @@ export interface RenderSliverFillRemainingWithScrollable {
     readonly RenderSliverHelpers: true;
     readonly RenderSliverSingleBoxAdapter: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly centerOffsetAdjustment: number;
+  readonly child: unknown;
+  readonly constraints: SliverConstraints;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly ensureSemantics: boolean;
+  readonly geometry: SliverGeometry;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderSliverFillRemainingWithScrollable: new (options?: {
@@ -12851,6 +19209,48 @@ export interface RenderSliverFillViewport {
     readonly RenderSliverMultiBoxAdaptor: true;
     readonly RenderSliverWithKeepAliveMixin: true;
   };
+  readonly allowImplicitScrolling: boolean;
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly centerOffsetAdjustment: number;
+  readonly childCount: number;
+  readonly childManager: RenderSliverBoxChildManager;
+  readonly constraints: SliverConstraints;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugChildIntegrityEnabled: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly ensureSemantics: boolean;
+  readonly firstChild: unknown;
+  readonly geometry: SliverGeometry;
+  readonly isRepaintBoundary: boolean;
+  readonly itemExtent: number;
+  readonly itemExtentBuilder: (
+    index: number,
+    dimensions: SliverLayoutDimensions,
+  ) => number | null;
+  readonly lastChild: unknown;
+  readonly layer: ContainerLayer;
+  readonly layoutDimensions: SliverLayoutDimensions;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly sizedByParent: boolean;
+  readonly viewportFraction: number;
 }
 
 export declare const RenderSliverFillViewport: new (options: {
@@ -12874,6 +19274,46 @@ export interface RenderSliverFixedExtentList {
     readonly RenderSliverMultiBoxAdaptor: true;
     readonly RenderSliverWithKeepAliveMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly centerOffsetAdjustment: number;
+  readonly childCount: number;
+  readonly childManager: RenderSliverBoxChildManager;
+  readonly constraints: SliverConstraints;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugChildIntegrityEnabled: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly ensureSemantics: boolean;
+  readonly firstChild: unknown;
+  readonly geometry: SliverGeometry;
+  readonly isRepaintBoundary: boolean;
+  readonly itemExtent: number;
+  readonly itemExtentBuilder: (
+    index: number,
+    dimensions: SliverLayoutDimensions,
+  ) => number | null;
+  readonly lastChild: unknown;
+  readonly layer: ContainerLayer;
+  readonly layoutDimensions: SliverLayoutDimensions;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderSliverFixedExtentList: new (options: {
@@ -12895,6 +19335,41 @@ export interface RenderSliverGrid {
     readonly RenderSliverMultiBoxAdaptor: true;
     readonly RenderSliverWithKeepAliveMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly centerOffsetAdjustment: number;
+  readonly childCount: number;
+  readonly childManager: RenderSliverBoxChildManager;
+  readonly constraints: SliverConstraints;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugChildIntegrityEnabled: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly ensureSemantics: boolean;
+  readonly firstChild: unknown;
+  readonly geometry: SliverGeometry;
+  readonly gridDelegate: SliverGridDelegate;
+  readonly isRepaintBoundary: boolean;
+  readonly lastChild: unknown;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderSliverGrid: new (options: {
@@ -12914,6 +19389,38 @@ export interface RenderSliverIgnorePointer {
     readonly RenderSliver: true;
     readonly RenderSliverIgnorePointer: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly centerOffsetAdjustment: number;
+  readonly child: unknown;
+  readonly constraints: SliverConstraints;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly ensureSemantics: boolean;
+  readonly geometry: SliverGeometry;
+  readonly ignoring: boolean;
+  readonly ignoringSemantics: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderSliverIgnorePointer: new (options?: {
@@ -12936,6 +19443,40 @@ export interface RenderSliverList {
     readonly RenderSliverMultiBoxAdaptor: true;
     readonly RenderSliverWithKeepAliveMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly centerOffsetAdjustment: number;
+  readonly childCount: number;
+  readonly childManager: RenderSliverBoxChildManager;
+  readonly constraints: SliverConstraints;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugChildIntegrityEnabled: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly ensureSemantics: boolean;
+  readonly firstChild: unknown;
+  readonly geometry: SliverGeometry;
+  readonly isRepaintBoundary: boolean;
+  readonly lastChild: unknown;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderSliverList: new (options: {
@@ -12953,6 +19494,38 @@ export interface RenderSliverMainAxisGroup {
     readonly RenderSliver: true;
     readonly RenderSliverMainAxisGroup: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly centerOffsetAdjustment: number;
+  readonly childCount: number;
+  readonly constraints: SliverConstraints;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly ensureSemantics: boolean;
+  readonly firstChild: unknown;
+  readonly geometry: SliverGeometry;
+  readonly isRepaintBoundary: boolean;
+  readonly lastChild: unknown;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderSliverMainAxisGroup: new () => RenderSliverMainAxisGroup;
@@ -12969,6 +19542,37 @@ export interface RenderSliverOffstage {
     readonly RenderSliver: true;
     readonly RenderSliverOffstage: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly centerOffsetAdjustment: number;
+  readonly child: unknown;
+  readonly constraints: SliverConstraints;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly ensureSemantics: boolean;
+  readonly geometry: SliverGeometry;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly offstage: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderSliverOffstage: new (options?: {
@@ -12988,6 +19592,38 @@ export interface RenderSliverOpacity {
     readonly RenderSliver: true;
     readonly RenderSliverOpacity: true;
   };
+  readonly alwaysIncludeSemantics: boolean;
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly centerOffsetAdjustment: number;
+  readonly child: unknown;
+  readonly constraints: SliverConstraints;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly ensureSemantics: boolean;
+  readonly geometry: SliverGeometry;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly opacity: number;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderSliverOpacity: new (options?: {
@@ -13007,6 +19643,37 @@ export interface RenderSliverOverlapAbsorber {
     readonly RenderSliver: true;
     readonly RenderSliverOverlapAbsorber: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly centerOffsetAdjustment: number;
+  readonly child: unknown;
+  readonly constraints: SliverConstraints;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly ensureSemantics: boolean;
+  readonly geometry: SliverGeometry;
+  readonly handle: SliverOverlapAbsorberHandle;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderSliverOverlapAbsorber: new (options: {
@@ -13024,6 +19691,36 @@ export interface RenderSliverOverlapInjector {
     readonly RenderSliver: true;
     readonly RenderSliverOverlapInjector: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly centerOffsetAdjustment: number;
+  readonly constraints: SliverConstraints;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly ensureSemantics: boolean;
+  readonly geometry: SliverGeometry;
+  readonly handle: SliverOverlapAbsorberHandle;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderSliverOverlapInjector: new (options: {
@@ -13042,6 +19739,43 @@ export interface RenderSliverPadding {
     readonly RenderSliverEdgeInsetsPadding: true;
     readonly RenderSliverPadding: true;
   };
+  readonly afterPadding: number;
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly beforePadding: number;
+  readonly centerOffsetAdjustment: number;
+  readonly child: unknown;
+  readonly constraints: SliverConstraints;
+  readonly crossAxisPadding: number;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly ensureSemantics: boolean;
+  readonly geometry: SliverGeometry;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly mainAxisPadding: number;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly padding: EdgeInsetsGeometryValue;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly resolvedPadding: EdgeInsetsValue;
+  readonly semanticBounds: RectValue;
+  readonly sizedByParent: boolean;
+  readonly textDirection: TextDirection;
 }
 
 export declare const RenderSliverPadding: new (options: {
@@ -13063,6 +19797,43 @@ export interface RenderSliverSemanticsAnnotations {
     readonly RenderSliverSemanticsAnnotations: true;
     readonly SemanticsAnnotationsMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly blockUserActions: boolean;
+  readonly centerOffsetAdjustment: number;
+  readonly child: unknown;
+  readonly constraints: SliverConstraints;
+  readonly container: boolean;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly ensureSemantics: boolean;
+  readonly excludeSemantics: boolean;
+  readonly explicitChildNodes: boolean;
+  readonly geometry: SliverGeometry;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly localeForSubtree: Locale;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly properties: SemanticsProperties;
+  readonly semanticBounds: RectValue;
+  readonly sizedByParent: boolean;
+  readonly textDirection: TextDirection;
 }
 
 export declare const RenderSliverSemanticsAnnotations: new (options: {
@@ -13089,6 +19860,36 @@ export interface RenderSliverToBoxAdapter {
     readonly RenderSliverSingleBoxAdapter: true;
     readonly RenderSliverToBoxAdapter: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly centerOffsetAdjustment: number;
+  readonly child: unknown;
+  readonly constraints: SliverConstraints;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly ensureSemantics: boolean;
+  readonly geometry: SliverGeometry;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderSliverToBoxAdapter: new (options?: {
@@ -13110,6 +19911,46 @@ export interface RenderSliverVariedExtentList {
     readonly RenderSliverVariedExtentList: true;
     readonly RenderSliverWithKeepAliveMixin: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly centerOffsetAdjustment: number;
+  readonly childCount: number;
+  readonly childManager: RenderSliverBoxChildManager;
+  readonly constraints: SliverConstraints;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugChildIntegrityEnabled: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly ensureSemantics: boolean;
+  readonly firstChild: unknown;
+  readonly geometry: SliverGeometry;
+  readonly isRepaintBoundary: boolean;
+  readonly itemExtent: number;
+  readonly itemExtentBuilder: (
+    index: number,
+    dimensions: SliverLayoutDimensions,
+  ) => number | null;
+  readonly lastChild: unknown;
+  readonly layer: ContainerLayer;
+  readonly layoutDimensions: SliverLayoutDimensions;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderSliverVariedExtentList: new (options: {
@@ -13132,6 +19973,41 @@ export interface RenderStack {
     readonly RenderObject: true;
     readonly RenderStack: true;
   };
+  readonly alignment: AlignmentGeometryValue;
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly childCount: number;
+  readonly clipBehavior: Clip;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly firstChild: unknown;
+  readonly fit: StackFit;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly lastChild: unknown;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly textDirection: TextDirection;
 }
 
 export declare const RenderStack: new (options?: {
@@ -13152,6 +20028,44 @@ export interface RenderTable {
     readonly RenderObject: true;
     readonly RenderTable: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly border: TableBorderValue;
+  readonly columnWidths: Record<number, TableColumnWidth>;
+  readonly columns: number;
+  readonly configuration: ImageConfiguration;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly defaultColumnWidth: TableColumnWidth;
+  readonly defaultVerticalAlignment: TableCellVerticalAlignment;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly rowDecorations: (Decoration | null)[];
+  readonly rows: number;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly textBaseline: TextBaseline;
+  readonly textDirection: TextDirection;
 }
 
 export declare const RenderTable: new (options: {
@@ -13182,6 +20096,45 @@ export interface RenderTapRegion {
     readonly RenderProxyBoxWithHitTestBehavior: true;
     readonly RenderTapRegion: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly behavior: HitTestBehavior;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly consumeOutsideTaps: boolean;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLabel: string;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly enabled: boolean;
+  readonly groupId: ObjectValue;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly onTapInside: (event: PointerDownEvent) => void;
+  readonly onTapOutside: (event: PointerDownEvent) => void;
+  readonly onTapUpInside: (event: PointerUpEvent) => void;
+  readonly onTapUpOutside: (event: PointerUpEvent) => void;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly registry: TapRegionRegistry;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderTapRegion: new (options?: {
@@ -13212,6 +20165,36 @@ export interface RenderTapRegionSurface {
     readonly RenderTapRegionSurface: true;
     readonly TapRegionRegistry: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly behavior: HitTestBehavior;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderTapRegionSurface: new () => RenderTapRegionSurface;
@@ -13229,6 +20212,40 @@ export interface RenderTransform {
     readonly RenderProxyBoxMixin: true;
     readonly RenderTransform: true;
   };
+  readonly alignment: AlignmentGeometryValue;
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly child: unknown;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly filterQuality: FilterQuality;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly origin: OffsetValue;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly textDirection: TextDirection;
+  readonly transformHitTests: boolean;
 }
 
 export declare const RenderTransform: new (options: {
@@ -13257,6 +20274,48 @@ export interface RenderTreeSliver {
     readonly RenderSliverWithKeepAliveMixin: true;
     readonly RenderTreeSliver: true;
   };
+  readonly activeAnimations: Map<UniqueKey, unknown>;
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly centerOffsetAdjustment: number;
+  readonly childCount: number;
+  readonly childManager: RenderSliverBoxChildManager;
+  readonly constraints: SliverConstraints;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugChildIntegrityEnabled: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly ensureSemantics: boolean;
+  readonly firstChild: unknown;
+  readonly geometry: SliverGeometry;
+  readonly indentation: number;
+  readonly isRepaintBoundary: boolean;
+  readonly itemExtent: number;
+  readonly itemExtentBuilder: (
+    index: number,
+    dimensions: SliverLayoutDimensions,
+  ) => number | null;
+  readonly lastChild: unknown;
+  readonly layer: ContainerLayer;
+  readonly layoutDimensions: SliverLayoutDimensions;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderTreeSliver: new (options: {
@@ -13268,6 +20327,61 @@ export declare const RenderTreeSliver: new (options: {
   activeAnimations: Map<UniqueKey, unknown>;
   indentation: number;
 }) => RenderTreeSliver;
+
+export interface RenderTwoDimensionalViewport {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DiagnosticableTreeMixin: true;
+    readonly HitTestTarget: true;
+    readonly RenderAbstractViewport: true;
+    readonly RenderBox: true;
+    readonly RenderObject: true;
+    readonly RenderTwoDimensionalViewport: true;
+  };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly cacheExtent: number;
+  readonly cacheExtentStyle: CacheExtentStyle;
+  readonly clipBehavior: Clip;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly didResize: boolean;
+  readonly firstChild: RenderBox;
+  readonly hasSize: boolean;
+  readonly horizontalAxisDirection: AxisDirection;
+  readonly horizontalOffset: ViewportOffset;
+  readonly isRepaintBoundary: boolean;
+  readonly lastChild: RenderBox;
+  readonly layer: ContainerLayer;
+  readonly mainAxis: Axis;
+  readonly needsCompositing: boolean;
+  readonly needsDelegateRebuild: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly scrollCacheExtent: ScrollCacheExtent;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly verticalAxisDirection: AxisDirection;
+  readonly verticalOffset: ViewportOffset;
+  readonly viewportDimension: SizeValue;
+}
 
 export interface RenderUiKitView {
   readonly __fsxBrand?: {
@@ -13281,6 +20395,36 @@ export interface RenderUiKitView {
     readonly RenderObject: true;
     readonly RenderUiKitView: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly hasSize: boolean;
+  readonly hitTestBehavior: PlatformViewHitTestBehavior;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly viewController: unknown;
 }
 
 export declare const RenderUiKitView: new (options: {
@@ -13299,6 +20443,38 @@ export interface RenderView {
     readonly RenderObjectWithChildMixin: true;
     readonly RenderView: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly automaticSystemUiAdjustment: boolean;
+  readonly child: unknown;
+  readonly configuration: ViewConfiguration;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly flutterView: FlutterView;
+  readonly hasConfiguration: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export declare const RenderView: new (options: {
@@ -13320,6 +20496,52 @@ export interface RenderViewport {
     readonly RenderViewport: true;
     readonly RenderViewportBase: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly anchor: number;
+  readonly attached: boolean;
+  readonly axis: Axis;
+  readonly axisDirection: AxisDirection;
+  readonly cacheExtent: number;
+  readonly cacheExtentStyle: CacheExtentStyle;
+  readonly center: RenderSliver;
+  readonly childCount: number;
+  readonly childrenInHitTestOrder: RenderSliver[];
+  readonly childrenInPaintOrder: RenderSliver[];
+  readonly clipBehavior: Clip;
+  readonly constraints: BoxConstraintsValue;
+  readonly crossAxisDirection: AxisDirection;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly firstChild: unknown;
+  readonly hasSize: boolean;
+  readonly hasVisualOverflow: boolean;
+  readonly indexOfFirstChild: number;
+  readonly isRepaintBoundary: boolean;
+  readonly lastChild: unknown;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly offset: ViewportOffset;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly paintOrder: SliverPaintOrder;
+  readonly parent: RenderObject;
+  readonly scrollCacheExtent: ScrollCacheExtent;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
 }
 
 export interface RenderWrap {
@@ -13334,6 +20556,46 @@ export interface RenderWrap {
     readonly RenderObject: true;
     readonly RenderWrap: true;
   };
+  readonly alignment: WrapAlignment;
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly childCount: number;
+  readonly clipBehavior: Clip;
+  readonly constraints: BoxConstraintsValue;
+  readonly crossAxisAlignment: WrapCrossAlignment;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly direction: Axis;
+  readonly firstChild: unknown;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly lastChild: unknown;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly runAlignment: WrapAlignment;
+  readonly runSpacing: number;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly spacing: number;
+  readonly textDirection: TextDirection;
+  readonly verticalDirection: VerticalDirection;
 }
 
 export declare const RenderWrap: new (options?: {
@@ -13348,6 +20610,102 @@ export declare const RenderWrap: new (options?: {
   verticalDirection?: VerticalDirection;
   clipBehavior?: Clip;
 }) => RenderWrap;
+
+export interface RendererBinding {
+  readonly __fsxBrand?: {
+    readonly BindingBase: true;
+    readonly GestureBinding: true;
+    readonly HitTestDispatcher: true;
+    readonly HitTestTarget: true;
+    readonly HitTestable: true;
+    readonly RendererBinding: true;
+    readonly SchedulerBinding: true;
+    readonly SemanticsBinding: true;
+    readonly ServicesBinding: true;
+  };
+}
+
+export interface RenderingFlutterBinding {
+  readonly __fsxBrand?: {
+    readonly BindingBase: true;
+    readonly GestureBinding: true;
+    readonly HitTestDispatcher: true;
+    readonly HitTestTarget: true;
+    readonly HitTestable: true;
+    readonly PaintingBinding: true;
+    readonly RendererBinding: true;
+    readonly RenderingFlutterBinding: true;
+    readonly SchedulerBinding: true;
+    readonly SemanticsBinding: true;
+    readonly ServicesBinding: true;
+  };
+  readonly accessibilityFocus: ValueNotifier;
+  readonly channelBuffers: ChannelBuffers;
+  readonly currentFrameTimeStamp: DurationValue;
+  readonly currentSystemFrameTimeStamp: DurationValue;
+  readonly debugOutstandingSemanticsHandles: number;
+  readonly defaultBinaryMessenger: BinaryMessenger;
+  readonly disableAnimations: boolean;
+  readonly endOfFrame: Promise<void>;
+  readonly framesEnabled: boolean;
+  readonly hasScheduledFrame: boolean;
+  readonly keyboard: HardwareKeyboard;
+  readonly lifecycleState: AppLifecycleState;
+  readonly locked: boolean;
+  readonly mouseTracker: MouseTracker;
+  readonly pipelineOwner: PipelineOwner;
+  readonly platformDispatcher: PlatformDispatcher;
+  readonly renderView: RenderView;
+  readonly renderViews: RenderView[];
+  readonly resamplingEnabled: boolean;
+  readonly restorationManager: RestorationManager;
+  readonly rootPipelineOwner: PipelineOwner;
+  readonly samplingOffset: DurationValue;
+  readonly semanticsEnabled: boolean;
+  readonly sendFramesToEngine: boolean;
+  readonly systemFonts: Listenable;
+  readonly transientCallbackCount: number;
+}
+
+export declare const RenderingFlutterBinding: new () => RenderingFlutterBinding;
+
+export interface ReorderableListState {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly ReorderableListState: true;
+    readonly State: true;
+  };
+  readonly context: BuildContext;
+  readonly mounted: boolean;
+  readonly widget: unknown;
+}
+
+export declare const ReorderableListState: new () => ReorderableListState;
+
+export interface RepaintBoundary {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly RenderObjectWidget: true;
+    readonly RepaintBoundary: true;
+    readonly SingleChildRenderObjectWidget: true;
+    readonly Widget: true;
+  };
+  readonly child: FlutterElement;
+  readonly key: Key;
+}
+
+export interface RepetitiveStackFrameFilter {
+  readonly __fsxBrand?: {
+    readonly RepetitiveStackFrameFilter: true;
+    readonly StackFilter: true;
+  };
+}
+
+export declare const RepetitiveStackFrameFilter: new (options: {
+  frames: PartialStackFrame[];
+  replacement: string;
+}) => RepetitiveStackFrameFilter;
 
 export interface ReplaceTextIntent {
   readonly __fsxBrand?: {
@@ -13403,6 +20761,11 @@ export interface ResizeImage {
     readonly ImageProvider: true;
     readonly ResizeImage: true;
   };
+  readonly allowUpscaling: boolean;
+  readonly height: number;
+  readonly imageProvider: ImageProvider;
+  readonly policy: ResizeImagePolicy;
+  readonly width: number;
 }
 
 export declare const ResizeImage: new (
@@ -13613,7 +20976,7 @@ export interface RestorableRouteFuture {
 
 export declare const RestorableRouteFuture: new (options: {
   navigatorFinder?: (context: BuildContext) => NavigatorState;
-  onPresent: (navigator: NavigatorState, arguments: Object | null) => string;
+  onPresent: (navigator: NavigatorState, arguments_: Object | null) => string;
   onComplete?: (result: unknown) => void;
 }) => RestorableRouteFuture;
 
@@ -13680,6 +21043,9 @@ export declare const RestorableTimeOfDay: new (
 
 export interface RestorationBucket {
   readonly __fsxBrand?: { readonly RestorationBucket: true };
+  readonly debugOwner: ObjectValue;
+  readonly isReplacing: boolean;
+  readonly restorationId: string;
 }
 
 export declare const RestorationBucket: {
@@ -13707,6 +21073,17 @@ export interface RestorationManager {
 }
 
 export declare const RestorationManager: new () => RestorationManager;
+
+export interface RevealedOffset {
+  readonly __fsxBrand?: { readonly RevealedOffset: true };
+  readonly offset: number;
+  readonly rect: RectValue;
+}
+
+export declare const RevealedOffset: new (options: {
+  offset: number;
+  rect: RectValue;
+}) => RevealedOffset;
 
 export interface ReverseAnimation {
   readonly __fsxBrand?: {
@@ -13766,12 +21143,18 @@ export interface RootElement {
   readonly depth: number;
   readonly dirty: boolean;
   readonly mounted: boolean;
+  readonly renderObject: RenderObject;
+  readonly renderObjectAttachingChild: Element;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
   readonly widget: FlutterElement;
 }
 
 export declare const RootElement: new (widget: RootWidget) => RootElement;
+
+export interface RootIsolateToken {
+  readonly __fsxBrand?: { readonly RootIsolateToken: true };
+}
 
 export interface RootWidget {
   readonly __fsxBrand?: {
@@ -13812,6 +21195,7 @@ export interface RoundSliderOverlayShape {
     readonly RoundSliderOverlayShape: true;
     readonly SliderComponentShape: true;
   };
+  readonly overlayRadius: number;
 }
 
 export declare const RoundSliderOverlayShape: new (options?: {
@@ -13823,6 +21207,10 @@ export interface RoundSliderThumbShape {
     readonly RoundSliderThumbShape: true;
     readonly SliderComponentShape: true;
   };
+  readonly disabledThumbRadius: number;
+  readonly elevation: number;
+  readonly enabledThumbRadius: number;
+  readonly pressedElevation: number;
 }
 
 export declare const RoundSliderThumbShape: new (options?: {
@@ -13837,6 +21225,7 @@ export interface RoundSliderTickMarkShape {
     readonly RoundSliderTickMarkShape: true;
     readonly SliderTickMarkShape: true;
   };
+  readonly tickMarkRadius: number;
 }
 
 export declare const RoundSliderTickMarkShape: new (options?: {
@@ -13887,6 +21276,10 @@ export interface RoundedRectangleBorder {
     readonly RoundedRectangleBorder: true;
     readonly ShapeBorder: true;
   };
+  readonly borderRadius: BorderRadiusGeometryValue;
+  readonly dimensions: EdgeInsetsGeometryValue;
+  readonly preferPaintInterior: boolean;
+  readonly side: BorderSideValue;
 }
 
 export declare const RoundedRectangleBorder: new (options?: {
@@ -13900,6 +21293,10 @@ export interface RoundedSuperellipseBorder {
     readonly RoundedSuperellipseBorder: true;
     readonly ShapeBorder: true;
   };
+  readonly borderRadius: BorderRadiusGeometryValue;
+  readonly dimensions: EdgeInsetsGeometryValue;
+  readonly preferPaintInterior: boolean;
+  readonly side: BorderSideValue;
 }
 
 export declare const RoundedSuperellipseBorder: new (options?: {
@@ -13909,6 +21306,19 @@ export declare const RoundedSuperellipseBorder: new (options?: {
 
 export interface Route {
   readonly __fsxBrand?: { readonly Route: true };
+  readonly currentResult: unknown;
+  readonly hasActiveRouteBelow: boolean;
+  readonly isActive: boolean;
+  readonly isCurrent: boolean;
+  readonly isFirst: boolean;
+  readonly navigator: NavigatorState;
+  readonly overlayEntries: OverlayEntry[];
+  readonly popDisposition: RoutePopDisposition;
+  readonly popped: Promise<unknown | null>;
+  readonly requestFocus: boolean;
+  readonly restorationScopeId: ValueListenable;
+  readonly settings: RouteSettingsValue;
+  readonly willHandlePopInternally: boolean;
 }
 
 export interface RouteInformation {
@@ -13931,6 +21341,7 @@ export interface RouteInformationProvider {
     readonly RouteInformationProvider: true;
     readonly ValueListenable: true;
   };
+  readonly value: unknown;
 }
 
 export interface RouteObserver {
@@ -13952,6 +21363,22 @@ export declare const RouteSettings: new (options?: {
   name?: string;
   arguments?: ObjectValue;
 }) => RouteSettings;
+
+export interface Router {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly Router: true;
+    readonly StatefulWidget: true;
+    readonly Widget: true;
+  };
+  readonly backButtonDispatcher: BackButtonDispatcher;
+  readonly key: Key;
+  readonly restorationScopeId: string;
+  readonly routeInformationParser: RouteInformationParser;
+  readonly routeInformationProvider: RouteInformationProvider;
+  readonly routerDelegate: RouterDelegate;
+}
 
 export interface RouterDelegate {
   readonly __fsxBrand?: {
@@ -13978,6 +21405,9 @@ export interface ScaffoldMessengerState {
     readonly TickerProvider: true;
     readonly TickerProviderStateMixin: true;
   };
+  readonly context: BuildContext;
+  readonly mounted: boolean;
+  readonly widget: unknown;
 }
 
 export declare const ScaffoldMessengerState: new () => ScaffoldMessengerState;
@@ -13992,6 +21422,20 @@ export interface ScaffoldState {
     readonly TickerProviderStateMixin: true;
     readonly WidgetsBindingObserver: true;
   };
+  readonly appBarMaxHeight: number;
+  readonly bucket: RestorationBucket;
+  readonly context: BuildContext;
+  readonly hasAppBar: boolean;
+  readonly hasDrawer: boolean;
+  readonly hasEndDrawer: boolean;
+  readonly hasFloatingActionButton: boolean;
+  readonly isDrawerBarrierDismissible: boolean;
+  readonly isDrawerOpen: boolean;
+  readonly isEndDrawerOpen: boolean;
+  readonly mounted: boolean;
+  readonly restorationId: string;
+  readonly restorePending: boolean;
+  readonly widget: unknown;
 }
 
 export declare const ScaffoldState: new () => ScaffoldState;
@@ -14081,6 +21525,10 @@ export declare const ScaleUpdateDetails: new (options?: {
   sourceTimeStamp?: DurationValue;
 }) => ScaleUpdateDetails;
 
+export interface ScribbleClient {
+  readonly __fsxBrand?: { readonly ScribbleClient: true };
+}
+
 export interface ScrollAction {
   readonly __fsxBrand?: {
     readonly Action: true;
@@ -14104,6 +21552,8 @@ export interface ScrollAwareImageProvider {
     readonly ImageProvider: true;
     readonly ScrollAwareImageProvider: true;
   };
+  readonly context: DisposableBuildContext;
+  readonly imageProvider: ImageProvider;
 }
 
 export declare const ScrollAwareImageProvider: new (options: {
@@ -14113,6 +21563,8 @@ export declare const ScrollAwareImageProvider: new (options: {
 
 export interface ScrollBehavior {
   readonly __fsxBrand?: { readonly ScrollBehavior: true };
+  readonly dragDevices: PointerDeviceKind[];
+  readonly pointerAxisModifiers: LogicalKeyboardKey[];
 }
 
 export declare const ScrollBehavior: new () => ScrollBehavior;
@@ -14120,6 +21572,11 @@ export declare const ScrollBehavior: new () => ScrollBehavior;
 export interface ScrollCacheExtent {
   readonly __fsxBrand?: { readonly ScrollCacheExtent: true };
 }
+
+export declare const ScrollCacheExtent: {
+  readonly pixels: (pixels: number) => ScrollCacheExtent;
+  readonly viewport: (value: number) => ScrollCacheExtent;
+};
 
 export interface ScrollContext {
   readonly __fsxBrand?: { readonly ScrollContext: true };
@@ -14213,7 +21670,23 @@ export interface ScrollNotification {
     readonly ScrollNotification: true;
     readonly ViewportNotificationMixin: true;
   };
+  readonly context: BuildContext;
+  readonly depth: number;
+  readonly metrics: ScrollMetrics;
 }
+
+export interface ScrollNotificationObserverState {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly ScrollNotificationObserverState: true;
+    readonly State: true;
+  };
+  readonly context: BuildContext;
+  readonly mounted: boolean;
+  readonly widget: unknown;
+}
+
+export declare const ScrollNotificationObserverState: new () => ScrollNotificationObserverState;
 
 export interface ScrollPhysics {
   readonly __fsxBrand?: { readonly ScrollPhysics: true };
@@ -14231,6 +21704,32 @@ export interface ScrollPosition {
     readonly ScrollPosition: true;
     readonly ViewportOffset: true;
   };
+  readonly allowImplicitScrolling: boolean;
+  readonly atEdge: boolean;
+  readonly axis: Axis;
+  readonly axisDirection: AxisDirection;
+  readonly context: ScrollContext;
+  readonly debugLabel: string;
+  readonly devicePixelRatio: number;
+  readonly extentAfter: number;
+  readonly extentBefore: number;
+  readonly extentInside: number;
+  readonly extentTotal: number;
+  readonly hasContentDimensions: boolean;
+  readonly hasListeners: boolean;
+  readonly hasPixels: boolean;
+  readonly hasViewportDimension: boolean;
+  readonly haveDimensions: boolean;
+  readonly isScrollingNotifier: ValueNotifier;
+  readonly keepScrollOffset: boolean;
+  readonly maxScrollExtent: number;
+  readonly minScrollExtent: number;
+  readonly outOfRange: boolean;
+  readonly physics: ScrollPhysicsValue;
+  readonly pixels: number;
+  readonly shouldIgnorePointer: boolean;
+  readonly userScrollDirection: ScrollDirection;
+  readonly viewportDimension: number;
 }
 
 export interface ScrollPositionWithSingleContext {
@@ -14371,6 +21870,20 @@ export interface ScrollableState {
     readonly TickerProvider: true;
     readonly TickerProviderStateMixin: true;
   };
+  readonly axisDirection: AxisDirection;
+  readonly bucket: RestorationBucket;
+  readonly context: BuildContext;
+  readonly deltaToScrollOrigin: OffsetValue;
+  readonly devicePixelRatio: number;
+  readonly mounted: boolean;
+  readonly notificationContext: BuildContext;
+  readonly position: ScrollPosition;
+  readonly resolvedPhysics: ScrollPhysicsValue;
+  readonly restorationId: string;
+  readonly restorePending: boolean;
+  readonly storageContext: BuildContext;
+  readonly vsync: TickerProvider;
+  readonly widget: unknown;
 }
 
 export declare const ScrollableState: new () => ScrollableState;
@@ -14408,6 +21921,17 @@ export interface ScrollbarThemeData {
     readonly Diagnosticable: true;
     readonly ScrollbarThemeData: true;
   };
+  readonly crossAxisMargin: number;
+  readonly interactive: boolean;
+  readonly mainAxisMargin: number;
+  readonly minThumbLength: number;
+  readonly radius: RadiusValue;
+  readonly thickness: WidgetStatePropertyValue;
+  readonly thumbColor: WidgetStatePropertyValue;
+  readonly thumbVisibility: WidgetStatePropertyValue;
+  readonly trackBorderColor: WidgetStatePropertyValue;
+  readonly trackColor: WidgetStatePropertyValue;
+  readonly trackVisibility: WidgetStatePropertyValue;
 }
 
 export declare const ScrollbarThemeData: new (options?: {
@@ -14429,6 +21953,18 @@ export interface SearchBarThemeData {
     readonly Diagnosticable: true;
     readonly SearchBarThemeData: true;
   };
+  readonly backgroundColor: WidgetStatePropertyValue;
+  readonly constraints: BoxConstraintsValue;
+  readonly elevation: WidgetStatePropertyValue;
+  readonly hintStyle: WidgetStatePropertyValue;
+  readonly overlayColor: WidgetStatePropertyValue;
+  readonly padding: WidgetStatePropertyValue;
+  readonly shadowColor: WidgetStatePropertyValue;
+  readonly shape: WidgetStatePropertyValue;
+  readonly side: WidgetStatePropertyValue;
+  readonly surfaceTintColor: WidgetStatePropertyValue;
+  readonly textCapitalization: TextCapitalization;
+  readonly textStyle: WidgetStatePropertyValue;
 }
 
 export declare const SearchBarThemeData: new (options?: {
@@ -14470,6 +22006,19 @@ export interface SearchViewThemeData {
     readonly Diagnosticable: true;
     readonly SearchViewThemeData: true;
   };
+  readonly backgroundColor: ColorValue;
+  readonly barPadding: EdgeInsetsGeometryValue;
+  readonly constraints: BoxConstraintsValue;
+  readonly dividerColor: ColorValue;
+  readonly elevation: number;
+  readonly headerHeight: number;
+  readonly headerHintStyle: TextStyleValue;
+  readonly headerTextStyle: TextStyleValue;
+  readonly padding: EdgeInsetsGeometryValue;
+  readonly shape: OutlinedBorderValue;
+  readonly shrinkWrap: boolean;
+  readonly side: BorderSideValue;
+  readonly surfaceTintColor: ColorValue;
 }
 
 export declare const SearchViewThemeData: new (options?: {
@@ -14493,6 +22042,8 @@ export interface SegmentedButtonThemeData {
     readonly Diagnosticable: true;
     readonly SegmentedButtonThemeData: true;
   };
+  readonly selectedIcon: FlutterElement;
+  readonly style: ButtonStyleValue;
 }
 
 export declare const SegmentedButtonThemeData: new (options?: {
@@ -14571,7 +22122,26 @@ export interface SelectionContainerDelegate {
     readonly SelectionRegistrar: true;
     readonly ValueListenable: true;
   };
+  readonly containerSize: SizeValue;
+  readonly contentLength: number;
+  readonly hasSize: boolean;
+  readonly value: unknown;
 }
+
+export interface SelectionGeometry {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly SelectionGeometry: true;
+  };
+}
+
+export declare const SelectionGeometry: new (options: {
+  startSelectionPoint?: SelectionPoint;
+  endSelectionPoint?: SelectionPoint;
+  selectionRects?: RectValue[];
+  status: SelectionStatus;
+  hasContent: boolean;
+}) => SelectionGeometry;
 
 export interface SelectionListenerNotifier {
   readonly __fsxBrand?: {
@@ -14587,17 +22157,89 @@ export interface SelectionOverlay {
   readonly __fsxBrand?: { readonly SelectionOverlay: true };
 }
 
+export interface SelectionPoint {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly SelectionPoint: true;
+  };
+}
+
+export declare const SelectionPoint: new (options: {
+  localPosition: OffsetValue;
+  lineHeight: number;
+  handleType: TextSelectionHandleType;
+}) => SelectionPoint;
+
 export interface SelectionRegistrar {
   readonly __fsxBrand?: { readonly SelectionRegistrar: true };
 }
 
 export interface SemanticsAction {
   readonly __fsxBrand?: { readonly SemanticsAction: true };
+  readonly index: number;
+  readonly name: string;
 }
 
 export interface SemanticsFlag {
   readonly __fsxBrand?: { readonly SemanticsFlag: true };
+  readonly index: number;
+  readonly name: string;
 }
+
+export interface SemanticsFlags {
+  readonly __fsxBrand?: { readonly SemanticsFlags: true };
+  readonly hasImplicitScrolling: boolean;
+  readonly isAccessibilityFocusBlocked: boolean;
+  readonly isButton: boolean;
+  readonly isChecked: CheckedState;
+  readonly isEnabled: Tristate;
+  readonly isExpanded: Tristate;
+  readonly isFocused: Tristate;
+  readonly isHeader: boolean;
+  readonly isHidden: boolean;
+  readonly isImage: boolean;
+  readonly isInMutuallyExclusiveGroup: boolean;
+  readonly isKeyboardKey: boolean;
+  readonly isLink: boolean;
+  readonly isLiveRegion: boolean;
+  readonly isMultiline: boolean;
+  readonly isObscured: boolean;
+  readonly isReadOnly: boolean;
+  readonly isRequired: Tristate;
+  readonly isSelected: Tristate;
+  readonly isSlider: boolean;
+  readonly isTextField: boolean;
+  readonly isToggled: Tristate;
+  readonly namesRoute: boolean;
+  readonly scopesRoute: boolean;
+}
+
+export declare const SemanticsFlags: new (options?: {
+  isChecked?: CheckedState;
+  isSelected?: Tristate;
+  isEnabled?: Tristate;
+  isToggled?: Tristate;
+  isExpanded?: Tristate;
+  isRequired?: Tristate;
+  isFocused?: Tristate;
+  isButton?: boolean;
+  isTextField?: boolean;
+  isInMutuallyExclusiveGroup?: boolean;
+  isHeader?: boolean;
+  isObscured?: boolean;
+  scopesRoute?: boolean;
+  namesRoute?: boolean;
+  isHidden?: boolean;
+  isImage?: boolean;
+  isLiveRegion?: boolean;
+  hasImplicitScrolling?: boolean;
+  isMultiline?: boolean;
+  isReadOnly?: boolean;
+  isLink?: boolean;
+  isSlider?: boolean;
+  isKeyboardKey?: boolean;
+  isAccessibilityFocusBlocked?: boolean;
+}) => SemanticsFlags;
 
 export interface SemanticsGestureDelegate {
   readonly __fsxBrand?: { readonly SemanticsGestureDelegate: true };
@@ -14615,6 +22257,26 @@ export declare const SemanticsHintOverrides: new (options?: {
   onTapHint?: string;
   onLongPressHint?: string;
 }) => SemanticsHintOverrides;
+
+export interface SemanticsNode {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DiagnosticableTreeMixin: true;
+    readonly SemanticsNode: true;
+  };
+}
+
+export declare const SemanticsNode: new (options?: {
+  key?: Key;
+  showOnScreen?: () => void;
+}) => SemanticsNode & {
+  readonly root: (options: {
+    key?: Key;
+    showOnScreen?: () => void;
+    owner: SemanticsOwner;
+  }) => SemanticsNode;
+};
 
 export interface SemanticsOwner {
   readonly __fsxBrand?: {
@@ -14735,6 +22397,15 @@ export interface SemanticsUpdate {
   readonly __fsxBrand?: { readonly SemanticsUpdate: true };
 }
 
+export interface SendPort {
+  readonly __fsxBrand?: { readonly SendPort: true };
+}
+
+export interface SensitiveContentHost {
+  readonly __fsxBrand?: { readonly SensitiveContentHost: true };
+  readonly calculatedContentSensitivity: ContentSensitivity;
+}
+
 export interface SerialTapGestureRecognizer {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -14756,8 +22427,29 @@ export interface Shader {
   readonly __fsxBrand?: { readonly Shader: true };
 }
 
+export interface ShaderMaskLayer {
+  readonly __fsxBrand?: {
+    readonly ContainerLayer: true;
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DiagnosticableTreeMixin: true;
+    readonly Layer: true;
+    readonly ShaderMaskLayer: true;
+  };
+}
+
+export declare const ShaderMaskLayer: new (options?: {
+  shader?: Shader;
+  maskRect?: RectValue;
+  blendMode?: BlendMode;
+}) => ShaderMaskLayer;
+
 export interface Shadow {
   readonly __fsxBrand?: { readonly Shadow: true };
+  readonly blurRadius: number;
+  readonly blurSigma: number;
+  readonly color: ColorValue;
+  readonly offset: OffsetValue;
 }
 
 export declare const Shadow: new (options?: {
@@ -14768,6 +22460,8 @@ export declare const Shadow: new (options?: {
 
 export interface ShapeBorder {
   readonly __fsxBrand?: { readonly ShapeBorder: true };
+  readonly dimensions: EdgeInsetsGeometryValue;
+  readonly preferPaintInterior: boolean;
 }
 
 export interface ShapeBorderClipper {
@@ -14802,6 +22496,13 @@ export interface ShapeDecoration {
     readonly Diagnosticable: true;
     readonly ShapeDecoration: true;
   };
+  readonly color: ColorValue;
+  readonly gradient: Gradient;
+  readonly image: DecorationImage;
+  readonly isComplex: boolean;
+  readonly padding: EdgeInsetsGeometryValue;
+  readonly shadows: BoxShadowValue[];
+  readonly shape: ShapeBorderValue;
 }
 
 export declare const ShapeDecoration: new (options: {
@@ -14820,6 +22521,12 @@ export interface ShapedInputBorder {
     readonly ShapeBorder: true;
     readonly ShapedInputBorder: true;
   };
+  readonly borderSide: BorderSideValue;
+  readonly dimensions: EdgeInsetsGeometryValue;
+  readonly gapPadding: number;
+  readonly isOutline: boolean;
+  readonly preferPaintInterior: boolean;
+  readonly shape: ShapeBorderValue;
 }
 
 export declare const ShapedInputBorder: new (options: {
@@ -14846,12 +22553,53 @@ export declare const ShortcutManager: new (options?: {
   modal?: boolean;
 }) => ShortcutManager;
 
+export interface ShortcutMapProperty {
+  readonly __fsxBrand?: {
+    readonly DiagnosticsNode: true;
+    readonly DiagnosticsProperty: true;
+    readonly ShortcutMapProperty: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly defaultValue: ObjectValue;
+  readonly emptyBodyDescription: string;
+  readonly exception: ObjectValue;
+  readonly expandableValue: boolean;
+  readonly ifEmpty: string;
+  readonly ifNull: string;
+  readonly isInteresting: boolean;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly missingIfNull: boolean;
+  readonly name: string;
+  readonly propertyType: TypeValue;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly tooltip: string;
+  readonly value: Map<ShortcutActivator, IntentValue>;
+}
+
+export declare const ShortcutMapProperty: new (
+  name: string,
+  value: Map<ShortcutActivator, IntentValue>,
+  options?: {
+    showName?: boolean;
+    defaultValue?: ObjectValue;
+    level?: DiagnosticLevel;
+    description?: string;
+  },
+) => ShortcutMapProperty;
+
 export interface ShortcutRegistry {
   readonly __fsxBrand?: {
     readonly ChangeNotifier: true;
     readonly Listenable: true;
     readonly ShortcutRegistry: true;
   };
+  readonly hasListeners: boolean;
+  readonly shortcuts: Map<ShortcutActivator, IntentValue>;
 }
 
 export declare const ShortcutRegistry: new () => ShortcutRegistry;
@@ -14896,6 +22644,8 @@ export interface SingleChildRenderObjectElement {
   readonly depth: number;
   readonly dirty: boolean;
   readonly mounted: boolean;
+  readonly renderObject: RenderObject;
+  readonly renderObjectAttachingChild: Element;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
   readonly widget: FlutterElement;
@@ -14950,6 +22700,49 @@ export interface SliderThemeData {
     readonly Diagnosticable: true;
     readonly SliderThemeData: true;
   };
+  readonly activeTickMarkColor: ColorValue;
+  readonly activeTrackColor: ColorValue;
+  readonly allowedInteraction: SliderInteraction;
+  readonly disabledActiveTickMarkColor: ColorValue;
+  readonly disabledActiveTrackColor: ColorValue;
+  readonly disabledInactiveTickMarkColor: ColorValue;
+  readonly disabledInactiveTrackColor: ColorValue;
+  readonly disabledSecondaryActiveTrackColor: ColorValue;
+  readonly disabledThumbColor: ColorValue;
+  readonly inactiveTickMarkColor: ColorValue;
+  readonly inactiveTrackColor: ColorValue;
+  readonly minThumbSeparation: number;
+  readonly mouseCursor: WidgetStatePropertyValue;
+  readonly overlappingShapeStrokeColor: ColorValue;
+  readonly overlayColor: ColorValue;
+  readonly overlayShape: SliderComponentShape;
+  readonly padding: EdgeInsetsGeometryValue;
+  readonly rangeThumbShape: RangeSliderThumbShape;
+  readonly rangeTickMarkShape: RangeSliderTickMarkShape;
+  readonly rangeTrackShape: RangeSliderTrackShape;
+  readonly rangeValueIndicatorShape: RangeSliderValueIndicatorShape;
+  readonly secondaryActiveTrackColor: ColorValue;
+  readonly showValueIndicator: ShowValueIndicator;
+  readonly thumbColor: ColorValue;
+  readonly thumbSelector: (
+    textDirection: TextDirection,
+    values: RangeValues,
+    tapValue: number,
+    thumbSize: Size,
+    trackSize: Size,
+    dx: number,
+  ) => Thumb | null;
+  readonly thumbShape: SliderComponentShape;
+  readonly thumbSize: WidgetStatePropertyValue;
+  readonly tickMarkShape: SliderTickMarkShape;
+  readonly trackGap: number;
+  readonly trackHeight: number;
+  readonly trackShape: SliderTrackShape;
+  readonly valueIndicatorColor: ColorValue;
+  readonly valueIndicatorShape: SliderComponentShape;
+  readonly valueIndicatorStrokeColor: ColorValue;
+  readonly valueIndicatorTextStyle: TextStyleValue;
+  readonly year2023: boolean;
 }
 
 export declare const SliderThemeData: new (options?: {
@@ -15021,6 +22814,9 @@ export interface SliverAnimatedGridState {
     readonly TickerProvider: true;
     readonly TickerProviderStateMixin: true;
   };
+  readonly context: BuildContext;
+  readonly mounted: boolean;
+  readonly widget: unknown;
 }
 
 export declare const SliverAnimatedGridState: new () => SliverAnimatedGridState;
@@ -15033,6 +22829,9 @@ export interface SliverAnimatedListState {
     readonly TickerProvider: true;
     readonly TickerProviderStateMixin: true;
   };
+  readonly context: BuildContext;
+  readonly mounted: boolean;
+  readonly widget: unknown;
 }
 
 export declare const SliverAnimatedListState: new () => SliverAnimatedListState;
@@ -15178,6 +22977,18 @@ export declare const SliverGridDelegateWithMaxCrossAxisExtent: new (options: {
   mainAxisExtent?: number;
 }) => SliverGridDelegateWithMaxCrossAxisExtent;
 
+export interface SliverHitTestEntry {
+  readonly __fsxBrand?: {
+    readonly HitTestEntry: true;
+    readonly SliverHitTestEntry: true;
+  };
+}
+
+export declare const SliverHitTestEntry: new (
+  target: RenderSliver,
+  options: { mainAxisPosition: number; crossAxisPosition: number },
+) => SliverHitTestEntry;
+
 export interface SliverHitTestResult {
   readonly __fsxBrand?: {
     readonly HitTestResult: true;
@@ -15222,6 +23033,7 @@ export interface SliverMultiBoxAdaptorElement {
   readonly dirty: boolean;
   readonly estimatedChildCount: number;
   readonly mounted: boolean;
+  readonly renderObjectAttachingChild: Element;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
   readonly widget: FlutterElement;
@@ -15249,6 +23061,9 @@ export interface SliverOverlapAbsorberHandle {
     readonly Listenable: true;
     readonly SliverOverlapAbsorberHandle: true;
   };
+  readonly hasListeners: boolean;
+  readonly layoutExtent: number;
+  readonly scrollExtent: number;
 }
 
 export declare const SliverOverlapAbsorberHandle: new () => SliverOverlapAbsorberHandle;
@@ -15265,6 +23080,9 @@ export interface SliverReorderableListState {
     readonly TickerProvider: true;
     readonly TickerProviderStateMixin: true;
   };
+  readonly context: BuildContext;
+  readonly mounted: boolean;
+  readonly widget: unknown;
 }
 
 export declare const SliverReorderableListState: new () => SliverReorderableListState;
@@ -15294,6 +23112,7 @@ export interface SlottedRenderObjectElement {
   readonly depth: number;
   readonly dirty: boolean;
   readonly mounted: boolean;
+  readonly renderObjectAttachingChild: Element;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
   readonly widget: FlutterElement;
@@ -15318,6 +23137,21 @@ export interface SnackBarThemeData {
     readonly Diagnosticable: true;
     readonly SnackBarThemeData: true;
   };
+  readonly actionBackgroundColor: ColorValue;
+  readonly actionOverflowThreshold: number;
+  readonly actionTextColor: ColorValue;
+  readonly backgroundColor: ColorValue;
+  readonly behavior: SnackBarBehavior;
+  readonly closeIconColor: ColorValue;
+  readonly contentTextStyle: TextStyleValue;
+  readonly disabledActionBackgroundColor: ColorValue;
+  readonly disabledActionTextColor: ColorValue;
+  readonly dismissDirection: DismissDirection;
+  readonly elevation: number;
+  readonly insetPadding: EdgeInsetsValue;
+  readonly shape: ShapeBorderValue;
+  readonly showCloseIcon: boolean;
+  readonly width: number;
 }
 
 export declare const SnackBarThemeData: new (options?: {
@@ -15360,6 +23194,14 @@ export interface SnapshotPainter {
 
 export interface SpellCheckConfiguration {
   readonly __fsxBrand?: { readonly SpellCheckConfiguration: true };
+  readonly misspelledSelectionColor: ColorValue;
+  readonly misspelledTextStyle: TextStyleValue;
+  readonly spellCheckEnabled: boolean;
+  readonly spellCheckService: SpellCheckService;
+  readonly spellCheckSuggestionsToolbarBuilder: (
+    context: BuildContext,
+    editableTextState: EditableTextState,
+  ) => FlutterElement;
 }
 
 export declare const SpellCheckConfiguration: new (options?: {
@@ -15433,9 +23275,35 @@ export declare const SpringDescription: new (options: {
   }) => SpringDescription;
 };
 
+export interface StackFilter {
+  readonly __fsxBrand?: { readonly StackFilter: true };
+}
+
 export interface StackFrame {
   readonly __fsxBrand?: { readonly StackFrame: true };
+  readonly className: string;
+  readonly column: number;
+  readonly isConstructor: boolean;
+  readonly line: number;
+  readonly method: string;
+  readonly number: number;
+  readonly package: string;
+  readonly packagePath: string;
+  readonly packageScheme: string;
+  readonly source: string;
 }
+
+export interface StackParentData {
+  readonly __fsxBrand?: {
+    readonly BoxParentData: true;
+    readonly ContainerBoxParentData: true;
+    readonly ContainerParentDataMixin: true;
+    readonly ParentData: true;
+    readonly StackParentData: true;
+  };
+}
+
+export declare const StackParentData: new () => StackParentData;
 
 export interface StackTrace {
   readonly __fsxBrand?: { readonly StackTrace: true };
@@ -15447,6 +23315,9 @@ export interface StadiumBorder {
     readonly ShapeBorder: true;
     readonly StadiumBorder: true;
   };
+  readonly dimensions: EdgeInsetsGeometryValue;
+  readonly preferPaintInterior: boolean;
+  readonly side: BorderSideValue;
 }
 
 export declare const StadiumBorder: new (options?: {
@@ -15479,6 +23350,15 @@ export interface StarBorder {
     readonly ShapeBorder: true;
     readonly StarBorder: true;
   };
+  readonly dimensions: EdgeInsetsGeometryValue;
+  readonly innerRadiusRatio: number;
+  readonly pointRounding: number;
+  readonly points: number;
+  readonly preferPaintInterior: boolean;
+  readonly rotation: number;
+  readonly side: BorderSideValue;
+  readonly squash: number;
+  readonly valleyRounding: number;
 }
 
 export declare const StarBorder: new (options?: {
@@ -15514,6 +23394,8 @@ export interface StatefulElement {
   readonly depth: number;
   readonly dirty: boolean;
   readonly mounted: boolean;
+  readonly renderObject: RenderObject;
+  readonly renderObjectAttachingChild: Element;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
   readonly widget: FlutterElement;
@@ -15547,6 +23429,8 @@ export interface StatelessElement {
   readonly depth: number;
   readonly dirty: boolean;
   readonly mounted: boolean;
+  readonly renderObject: RenderObject;
+  readonly renderObjectAttachingChild: Element;
   readonly size: SizeValue;
   readonly slot: ObjectValue;
   readonly widget: FlutterElement;
@@ -15576,6 +23460,13 @@ export interface StaticSelectionContainerDelegate {
     readonly StaticSelectionContainerDelegate: true;
     readonly ValueListenable: true;
   };
+  readonly containerSize: SizeValue;
+  readonly contentLength: number;
+  readonly currentSelectionEndIndex: number;
+  readonly currentSelectionStartIndex: number;
+  readonly hasListeners: boolean;
+  readonly hasSize: boolean;
+  readonly value: SelectionGeometry;
 }
 
 export declare const StaticSelectionContainerDelegate: new () => StaticSelectionContainerDelegate;
@@ -15638,6 +23529,50 @@ export interface StringCodec {
 
 export declare const StringCodec: new () => StringCodec;
 
+export interface StringProperty {
+  readonly __fsxBrand?: {
+    readonly DiagnosticsNode: true;
+    readonly DiagnosticsProperty: true;
+    readonly StringProperty: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly defaultValue: ObjectValue;
+  readonly emptyBodyDescription: string;
+  readonly exception: ObjectValue;
+  readonly expandableValue: boolean;
+  readonly ifEmpty: string;
+  readonly ifNull: string;
+  readonly isInteresting: boolean;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly missingIfNull: boolean;
+  readonly name: string;
+  readonly propertyType: TypeValue;
+  readonly quoted: boolean;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly tooltip: string;
+  readonly value: unknown;
+}
+
+export declare const StringProperty: new (
+  name: string,
+  value: string,
+  options?: {
+    description?: string;
+    tooltip?: string;
+    showName?: boolean;
+    defaultValue?: ObjectValue;
+    quoted?: boolean;
+    ifEmpty?: string;
+    style?: DiagnosticsTreeStyle;
+    level?: DiagnosticLevel;
+  },
+) => StringProperty;
+
 export interface StrutStyle {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -15645,11 +23580,44 @@ export interface StrutStyle {
   };
 }
 
+export interface SuggestionSpan {
+  readonly __fsxBrand?: { readonly SuggestionSpan: true };
+  readonly range: TextRangeValue;
+  readonly suggestions: string[];
+}
+
+export declare const SuggestionSpan: new (
+  range: TextRangeValue,
+  suggestions: string[],
+) => SuggestionSpan;
+
+export interface SurfaceAndroidViewController {
+  readonly __fsxBrand?: {
+    readonly AndroidViewController: true;
+    readonly PlatformViewController: true;
+    readonly SurfaceAndroidViewController: true;
+  };
+  readonly awaitingCreation: boolean;
+  readonly createdCallbacks: (id: number) => void[];
+  readonly isCreated: boolean;
+  readonly pointTransformer: (position: Offset) => Offset;
+  readonly requiresViewComposition: boolean;
+  readonly textureId: number;
+  readonly viewId: number;
+}
+
 export interface SweepGradient {
   readonly __fsxBrand?: {
     readonly Gradient: true;
     readonly SweepGradient: true;
   };
+  readonly center: AlignmentGeometryValue;
+  readonly colors: ColorValue[];
+  readonly endAngle: number;
+  readonly startAngle: number;
+  readonly stops: number[];
+  readonly tileMode: TileMode;
+  readonly transform: GradientTransform;
 }
 
 export declare const SweepGradient: new (options: {
@@ -15667,6 +23635,16 @@ export interface SwitchThemeData {
     readonly Diagnosticable: true;
     readonly SwitchThemeData: true;
   };
+  readonly materialTapTargetSize: MaterialTapTargetSize;
+  readonly mouseCursor: WidgetStatePropertyValue;
+  readonly overlayColor: WidgetStatePropertyValue;
+  readonly padding: EdgeInsetsGeometryValue;
+  readonly splashRadius: number;
+  readonly thumbColor: WidgetStatePropertyValue;
+  readonly thumbIcon: WidgetStatePropertyValue;
+  readonly trackColor: WidgetStatePropertyValue;
+  readonly trackOutlineColor: WidgetStatePropertyValue;
+  readonly trackOutlineWidth: WidgetStatePropertyValue;
 }
 
 export declare const SwitchThemeData: new (options?: {
@@ -15684,6 +23662,11 @@ export declare const SwitchThemeData: new (options?: {
 
 export interface SystemChannels {
   readonly __fsxBrand?: { readonly SystemChannels: true };
+}
+
+export interface SystemColorPalette {
+  readonly __fsxBrand?: { readonly SystemColorPalette: true };
+  readonly brightness: Brightness;
 }
 
 export interface SystemMouseCursor {
@@ -15726,11 +23709,59 @@ export interface TabBarScrollController {
 
 export declare const TabBarScrollController: new () => TabBarScrollController;
 
+export interface TabBarTheme {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly InheritedTheme: true;
+    readonly InheritedWidget: true;
+    readonly ProxyWidget: true;
+    readonly TabBarTheme: true;
+    readonly Widget: true;
+  };
+  readonly child: FlutterElement;
+  readonly data: TabBarThemeDataValue;
+  readonly dividerColor: ColorValue;
+  readonly dividerHeight: number;
+  readonly indicator: Decoration;
+  readonly indicatorAnimation: TabIndicatorAnimation;
+  readonly indicatorColor: ColorValue;
+  readonly indicatorSize: TabBarIndicatorSize;
+  readonly key: Key;
+  readonly labelColor: ColorValue;
+  readonly labelPadding: EdgeInsetsGeometryValue;
+  readonly labelStyle: TextStyleValue;
+  readonly mouseCursor: WidgetStatePropertyValue;
+  readonly overlayColor: WidgetStatePropertyValue;
+  readonly splashFactory: InteractiveInkFeatureFactoryValue;
+  readonly tabAlignment: TabAlignment;
+  readonly textScaler: TextScalerValue;
+  readonly unselectedLabelColor: ColorValue;
+  readonly unselectedLabelStyle: TextStyleValue;
+}
+
 export interface TabBarThemeData {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
     readonly TabBarThemeData: true;
   };
+  readonly dividerColor: ColorValue;
+  readonly dividerHeight: number;
+  readonly indicator: Decoration;
+  readonly indicatorAnimation: TabIndicatorAnimation;
+  readonly indicatorColor: ColorValue;
+  readonly indicatorSize: TabBarIndicatorSize;
+  readonly labelColor: ColorValue;
+  readonly labelPadding: EdgeInsetsGeometryValue;
+  readonly labelStyle: TextStyleValue;
+  readonly mouseCursor: WidgetStatePropertyValue;
+  readonly overlayColor: WidgetStatePropertyValue;
+  readonly splashBorderRadius: BorderRadiusValue;
+  readonly splashFactory: InteractiveInkFeatureFactoryValue;
+  readonly tabAlignment: TabAlignment;
+  readonly textScaler: TextScalerValue;
+  readonly unselectedLabelColor: ColorValue;
+  readonly unselectedLabelStyle: TextStyleValue;
 }
 
 export declare const TabBarThemeData: new (options?: {
@@ -15759,6 +23790,14 @@ export interface TabController {
     readonly Listenable: true;
     readonly TabController: true;
   };
+  readonly animation: Animation;
+  readonly animationDuration: DurationValue;
+  readonly hasListeners: boolean;
+  readonly index: number;
+  readonly indexIsChanging: boolean;
+  readonly length: number;
+  readonly offset: number;
+  readonly previousIndex: number;
 }
 
 export declare const TabController: new (options: {
@@ -15770,6 +23809,15 @@ export declare const TabController: new (options: {
 
 export interface TableBorder {
   readonly __fsxBrand?: { readonly TableBorder: true };
+  readonly borderRadius: BorderRadiusValue;
+  readonly bottom: BorderSideValue;
+  readonly dimensions: EdgeInsetsValue;
+  readonly horizontalInside: BorderSideValue;
+  readonly isUniform: boolean;
+  readonly left: BorderSideValue;
+  readonly right: BorderSideValue;
+  readonly top: BorderSideValue;
+  readonly verticalInside: BorderSideValue;
 }
 
 export declare const TableBorder: new (options?: {
@@ -16055,6 +24103,7 @@ export interface TextButtonThemeData {
     readonly Diagnosticable: true;
     readonly TextButtonThemeData: true;
   };
+  readonly style: ButtonStyleValue;
 }
 
 export declare const TextButtonThemeData: new (options?: {
@@ -16095,6 +24144,9 @@ export interface TextEditingValue {
 
 export interface TextHeightBehavior {
   readonly __fsxBrand?: { readonly TextHeightBehavior: true };
+  readonly applyHeightToFirstAscent: boolean;
+  readonly applyHeightToLastDescent: boolean;
+  readonly leadingDistribution: TextLeadingDistribution;
 }
 
 export declare const TextHeightBehavior: new (options?: {
@@ -16103,9 +24155,58 @@ export declare const TextHeightBehavior: new (options?: {
   leadingDistribution?: TextLeadingDistribution;
 }) => TextHeightBehavior;
 
+export interface TextInputClient {
+  readonly __fsxBrand?: { readonly TextInputClient: true };
+}
+
+export interface TextInputConfiguration {
+  readonly __fsxBrand?: { readonly TextInputConfiguration: true };
+}
+
+export declare const TextInputConfiguration: new (options?: {
+  viewId?: number;
+  inputType?: TextInputTypeValue;
+  readOnly?: boolean;
+  obscureText?: boolean;
+  autocorrect?: boolean;
+  smartDashesType?: SmartDashesType;
+  smartQuotesType?: SmartQuotesType;
+  enableSuggestions?: boolean;
+  enableInteractiveSelection?: boolean;
+  actionLabel?: string;
+  inputAction?: TextInputAction;
+  keyboardAppearance?: Brightness;
+  textCapitalization?: TextCapitalization;
+  autofillConfiguration?: AutofillConfiguration;
+  enableIMEPersonalizedLearning?: boolean;
+  allowedMimeTypes?: string[];
+  enableDeltaModel?: boolean;
+  hintLocales?: Locale[];
+  enableInlinePrediction?: boolean;
+}) => TextInputConfiguration;
+
+export interface TextInputConnection {
+  readonly __fsxBrand?: { readonly TextInputConnection: true };
+  readonly attached: boolean;
+  readonly scribbleInProgress: boolean;
+}
+
+export interface TextInputControl {
+  readonly __fsxBrand?: { readonly TextInputControl: true };
+}
+
 export interface TextInputFormatter {
   readonly __fsxBrand?: { readonly TextInputFormatter: true };
 }
+
+export declare const TextInputFormatter: {
+  readonly withFunction: (
+    formatFunction: (
+      oldValue: TextEditingValue,
+      newValue: TextEditingValue,
+    ) => TextEditingValue,
+  ) => TextInputFormatter;
+};
 
 export interface TextInputType {
   readonly __fsxBrand?: { readonly TextInputType: true };
@@ -16113,6 +24214,12 @@ export interface TextInputType {
 
 export interface TextMagnifierConfiguration {
   readonly __fsxBrand?: { readonly TextMagnifierConfiguration: true };
+  readonly magnifierBuilder: (
+    context: BuildContext,
+    controller: MagnifierController,
+    magnifierInfo: ValueNotifier,
+  ) => FlutterElement | null;
+  readonly shouldDisplayHandlesInMagnifier: boolean;
 }
 
 export interface TextRange {
@@ -16121,6 +24228,7 @@ export interface TextRange {
 
 export interface TextScaler {
   readonly __fsxBrand?: { readonly TextScaler: true };
+  readonly textScaleFactor: number;
 }
 
 export interface TextSelection {
@@ -16173,6 +24281,9 @@ export interface TextSelectionThemeData {
     readonly Diagnosticable: true;
     readonly TextSelectionThemeData: true;
   };
+  readonly cursorColor: ColorValue;
+  readonly selectionColor: ColorValue;
+  readonly selectionHandleColor: ColorValue;
 }
 
 export declare const TextSelectionThemeData: new (options?: {
@@ -16240,6 +24351,31 @@ export interface TextStyle {
     readonly Diagnosticable: true;
     readonly TextStyle: true;
   };
+  readonly background: Paint;
+  readonly backgroundColor: ColorValue;
+  readonly color: ColorValue;
+  readonly debugLabel: string;
+  readonly decoration: TextDecorationValue;
+  readonly decorationColor: ColorValue;
+  readonly decorationStyle: TextDecorationStyle;
+  readonly decorationThickness: number;
+  readonly fontFamily: string;
+  readonly fontFamilyFallback: string[];
+  readonly fontFeatures: FontFeature[];
+  readonly fontSize: number;
+  readonly fontStyle: FontStyle;
+  readonly fontVariations: FontVariation[];
+  readonly fontWeight: FontWeightValue;
+  readonly foreground: Paint;
+  readonly height: number;
+  readonly inherit: boolean;
+  readonly leadingDistribution: TextLeadingDistribution;
+  readonly letterSpacing: number;
+  readonly locale: Locale;
+  readonly overflow: TextOverflow;
+  readonly shadows: ShadowValue[];
+  readonly textBaseline: TextBaseline;
+  readonly wordSpacing: number;
 }
 
 export declare const TextStyle: new (options?: {
@@ -16289,6 +24425,21 @@ export interface TextTheme {
     readonly Diagnosticable: true;
     readonly TextTheme: true;
   };
+  readonly bodyLarge: TextStyleValue;
+  readonly bodyMedium: TextStyleValue;
+  readonly bodySmall: TextStyleValue;
+  readonly displayLarge: TextStyleValue;
+  readonly displayMedium: TextStyleValue;
+  readonly displaySmall: TextStyleValue;
+  readonly headlineLarge: TextStyleValue;
+  readonly headlineMedium: TextStyleValue;
+  readonly headlineSmall: TextStyleValue;
+  readonly labelLarge: TextStyleValue;
+  readonly labelMedium: TextStyleValue;
+  readonly labelSmall: TextStyleValue;
+  readonly titleLarge: TextStyleValue;
+  readonly titleMedium: TextStyleValue;
+  readonly titleSmall: TextStyleValue;
 }
 
 export declare const TextTheme: new (options?: {
@@ -16319,6 +24470,37 @@ export interface TextureBox {
     readonly RenderObject: true;
     readonly TextureBox: true;
   };
+  readonly alwaysNeedsCompositing: boolean;
+  readonly attached: boolean;
+  readonly constraints: BoxConstraintsValue;
+  readonly debugCanParentUseSize: boolean;
+  readonly debugCreator: ObjectValue;
+  readonly debugDisposed: boolean;
+  readonly debugDoingThisLayout: boolean;
+  readonly debugDoingThisLayoutWithCallback: boolean;
+  readonly debugDoingThisPaint: boolean;
+  readonly debugDoingThisResize: boolean;
+  readonly debugLayer: ContainerLayer;
+  readonly debugLayoutParent: RenderObject;
+  readonly debugNeedsCompositedLayerUpdate: boolean;
+  readonly debugNeedsLayout: boolean;
+  readonly debugNeedsPaint: boolean;
+  readonly debugNeedsSemanticsUpdate: boolean;
+  readonly debugSemantics: SemanticsNode;
+  readonly depth: number;
+  readonly filterQuality: FilterQuality;
+  readonly freeze: boolean;
+  readonly hasSize: boolean;
+  readonly isRepaintBoundary: boolean;
+  readonly layer: ContainerLayer;
+  readonly needsCompositing: boolean;
+  readonly owner: PipelineOwner;
+  readonly paintBounds: RectValue;
+  readonly parent: RenderObject;
+  readonly semanticBounds: RectValue;
+  readonly size: SizeValue;
+  readonly sizedByParent: boolean;
+  readonly textureId: number;
 }
 
 export declare const TextureBox: new (options: {
@@ -16327,11 +24509,112 @@ export declare const TextureBox: new (options: {
   filterQuality?: FilterQuality;
 }) => TextureBox;
 
+export interface TextureLayer {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DiagnosticableTreeMixin: true;
+    readonly Layer: true;
+    readonly TextureLayer: true;
+  };
+}
+
+export declare const TextureLayer: new (options: {
+  rect: RectValue;
+  textureId: number;
+  freeze?: boolean;
+  filterQuality?: FilterQuality;
+}) => TextureLayer;
+
 export interface ThemeData {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
     readonly ThemeData: true;
   };
+  readonly actionIconTheme: ActionIconThemeDataValue;
+  readonly adaptationMap: Map<TypeValue, Adaptation>;
+  readonly appBarTheme: AppBarThemeDataValue;
+  readonly applyElevationOverlayColor: boolean;
+  readonly badgeTheme: BadgeThemeDataValue;
+  readonly bannerTheme: MaterialBannerThemeDataValue;
+  readonly bottomAppBarTheme: BottomAppBarThemeDataValue;
+  readonly bottomNavigationBarTheme: BottomNavigationBarThemeDataValue;
+  readonly bottomSheetTheme: BottomSheetThemeData;
+  readonly brightness: Brightness;
+  readonly buttonBarTheme: ButtonBarThemeDataValue;
+  readonly buttonTheme: ButtonThemeData;
+  readonly canvasColor: ColorValue;
+  readonly cardColor: ColorValue;
+  readonly cardTheme: CardThemeDataValue;
+  readonly carouselViewTheme: CarouselViewThemeDataValue;
+  readonly checkboxTheme: CheckboxThemeDataValue;
+  readonly chipTheme: ChipThemeDataValue;
+  readonly colorScheme: ColorScheme;
+  readonly cupertinoOverrideTheme: NoDefaultCupertinoThemeData;
+  readonly dataTableTheme: DataTableThemeDataValue;
+  readonly datePickerTheme: DatePickerThemeDataValue;
+  readonly dialogBackgroundColor: ColorValue;
+  readonly dialogTheme: DialogThemeDataValue;
+  readonly disabledColor: ColorValue;
+  readonly dividerColor: ColorValue;
+  readonly dividerTheme: DividerThemeDataValue;
+  readonly drawerTheme: DrawerThemeDataValue;
+  readonly dropdownMenuTheme: DropdownMenuThemeDataValue;
+  readonly elevatedButtonTheme: ElevatedButtonThemeDataValue;
+  readonly expansionTileTheme: ExpansionTileThemeDataValue;
+  readonly extensions: Map<ObjectValue, ThemeExtension>;
+  readonly filledButtonTheme: FilledButtonThemeDataValue;
+  readonly floatingActionButtonTheme: FloatingActionButtonThemeDataValue;
+  readonly focusColor: ColorValue;
+  readonly highlightColor: ColorValue;
+  readonly hintColor: ColorValue;
+  readonly hoverColor: ColorValue;
+  readonly iconButtonTheme: IconButtonThemeDataValue;
+  readonly iconTheme: IconThemeDataValue;
+  readonly indicatorColor: ColorValue;
+  readonly inputDecorationTheme: InputDecorationThemeDataValue;
+  readonly listTileTheme: ListTileThemeDataValue;
+  readonly materialTapTargetSize: MaterialTapTargetSize;
+  readonly menuBarTheme: MenuBarThemeDataValue;
+  readonly menuButtonTheme: MenuButtonThemeDataValue;
+  readonly menuTheme: MenuThemeDataValue;
+  readonly navigationBarTheme: NavigationBarThemeDataValue;
+  readonly navigationDrawerTheme: NavigationDrawerThemeDataValue;
+  readonly navigationRailTheme: NavigationRailThemeDataValue;
+  readonly outlinedButtonTheme: OutlinedButtonThemeDataValue;
+  readonly pageTransitionsTheme: PageTransitionsTheme;
+  readonly platform: TargetPlatform;
+  readonly popupMenuTheme: PopupMenuThemeDataValue;
+  readonly primaryColor: ColorValue;
+  readonly primaryColorDark: ColorValue;
+  readonly primaryColorLight: ColorValue;
+  readonly primaryIconTheme: IconThemeDataValue;
+  readonly primaryTextTheme: TextTheme;
+  readonly progressIndicatorTheme: ProgressIndicatorThemeDataValue;
+  readonly radioTheme: RadioThemeDataValue;
+  readonly scaffoldBackgroundColor: ColorValue;
+  readonly scrollbarTheme: ScrollbarThemeDataValue;
+  readonly searchBarTheme: SearchBarThemeDataValue;
+  readonly searchViewTheme: SearchViewThemeDataValue;
+  readonly secondaryHeaderColor: ColorValue;
+  readonly segmentedButtonTheme: SegmentedButtonThemeDataValue;
+  readonly shadowColor: ColorValue;
+  readonly sliderTheme: SliderThemeDataValue;
+  readonly snackBarTheme: SnackBarThemeDataValue;
+  readonly splashColor: ColorValue;
+  readonly splashFactory: InteractiveInkFeatureFactoryValue;
+  readonly switchTheme: SwitchThemeDataValue;
+  readonly tabBarTheme: TabBarThemeDataValue;
+  readonly textButtonTheme: TextButtonThemeDataValue;
+  readonly textSelectionTheme: TextSelectionThemeDataValue;
+  readonly textTheme: TextTheme;
+  readonly timePickerTheme: TimePickerThemeDataValue;
+  readonly toggleButtonsTheme: ToggleButtonsThemeDataValue;
+  readonly tooltipTheme: TooltipThemeDataValue;
+  readonly typography: Typography;
+  readonly unselectedWidgetColor: ColorValue;
+  readonly useMaterial3: boolean;
+  readonly visualDensity: VisualDensityValue;
 }
 
 export declare const ThemeData: new (options?: {
@@ -16566,6 +24849,8 @@ export declare const Threshold: new (threshold: number) => Threshold;
 
 export interface TickerModeData {
   readonly __fsxBrand?: { readonly TickerModeData: true };
+  readonly enabled: boolean;
+  readonly forceFrames: boolean;
 }
 
 export interface TickerProvider {
@@ -16581,6 +24866,30 @@ export interface TimePickerThemeData {
     readonly Diagnosticable: true;
     readonly TimePickerThemeData: true;
   };
+  readonly backgroundColor: ColorValue;
+  readonly cancelButtonStyle: ButtonStyleValue;
+  readonly confirmButtonStyle: ButtonStyleValue;
+  readonly dayPeriodBorderSide: BorderSideValue;
+  readonly dayPeriodColor: ColorValue;
+  readonly dayPeriodShape: OutlinedBorderValue;
+  readonly dayPeriodTextColor: ColorValue;
+  readonly dayPeriodTextStyle: TextStyleValue;
+  readonly dialBackgroundColor: ColorValue;
+  readonly dialHandColor: ColorValue;
+  readonly dialTextColor: ColorValue;
+  readonly dialTextStyle: TextStyleValue;
+  readonly elevation: number;
+  readonly entryModeIconColor: ColorValue;
+  readonly helpTextStyle: TextStyleValue;
+  readonly hourMinuteColor: ColorValue;
+  readonly hourMinuteShape: ShapeBorderValue;
+  readonly hourMinuteTextColor: ColorValue;
+  readonly hourMinuteTextStyle: TextStyleValue;
+  readonly inputDecorationTheme: InputDecorationThemeDataValue;
+  readonly padding: EdgeInsetsGeometryValue;
+  readonly shape: ShapeBorderValue;
+  readonly timeSelectorSeparatorColor: WidgetStatePropertyValue;
+  readonly timeSelectorSeparatorTextStyle: WidgetStatePropertyValue;
 }
 
 export declare const TimePickerThemeData: new (options?: {
@@ -16610,11 +24919,36 @@ export declare const TimePickerThemeData: new (options?: {
   timeSelectorSeparatorTextStyle?: WidgetStatePropertyValue;
 }) => TimePickerThemeData;
 
+export interface TimedBlock {
+  readonly __fsxBrand?: { readonly TimedBlock: true };
+}
+
+export declare const TimedBlock: new (options: {
+  name: string;
+  start: number;
+  end: number;
+}) => TimedBlock;
+
 export interface ToggleButtonsThemeData {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
     readonly ToggleButtonsThemeData: true;
   };
+  readonly borderColor: ColorValue;
+  readonly borderRadius: BorderRadiusValue;
+  readonly borderWidth: number;
+  readonly color: ColorValue;
+  readonly constraints: BoxConstraintsValue;
+  readonly disabledBorderColor: ColorValue;
+  readonly disabledColor: ColorValue;
+  readonly fillColor: ColorValue;
+  readonly focusColor: ColorValue;
+  readonly highlightColor: ColorValue;
+  readonly hoverColor: ColorValue;
+  readonly selectedBorderColor: ColorValue;
+  readonly selectedColor: ColorValue;
+  readonly splashColor: ColorValue;
+  readonly textStyle: TextStyleValue;
 }
 
 export declare const ToggleButtonsThemeData: new (options?: {
@@ -16689,6 +25023,21 @@ export interface TooltipThemeData {
     readonly Diagnosticable: true;
     readonly TooltipThemeData: true;
   };
+  readonly constraints: BoxConstraintsValue;
+  readonly decoration: Decoration;
+  readonly enableFeedback: boolean;
+  readonly excludeFromSemantics: boolean;
+  readonly exitDuration: DurationValue;
+  readonly height: number;
+  readonly margin: EdgeInsetsGeometryValue;
+  readonly padding: EdgeInsetsGeometryValue;
+  readonly preferBelow: boolean;
+  readonly showDuration: DurationValue;
+  readonly textAlign: TextAlign;
+  readonly textStyle: TextStyleValue;
+  readonly triggerMode: TooltipTriggerMode;
+  readonly verticalOffset: number;
+  readonly waitDuration: DurationValue;
 }
 
 export declare const TooltipThemeData: new (options?: {
@@ -16763,6 +25112,61 @@ export declare const TrainHoppingAnimation: new (
   options?: { onSwitchedTrain?: () => void },
 ) => TrainHoppingAnimation;
 
+export interface TransformLayer {
+  readonly __fsxBrand?: {
+    readonly ContainerLayer: true;
+    readonly Diagnosticable: true;
+    readonly DiagnosticableTree: true;
+    readonly DiagnosticableTreeMixin: true;
+    readonly Layer: true;
+    readonly OffsetLayer: true;
+    readonly TransformLayer: true;
+  };
+}
+
+export declare const TransformLayer: new (options?: {
+  transform?: Matrix4;
+  offset?: OffsetValue;
+}) => TransformLayer;
+
+export interface TransformProperty {
+  readonly __fsxBrand?: {
+    readonly DiagnosticsNode: true;
+    readonly DiagnosticsProperty: true;
+    readonly TransformProperty: true;
+  };
+  readonly allowNameWrap: boolean;
+  readonly allowTruncate: boolean;
+  readonly allowWrap: boolean;
+  readonly defaultValue: ObjectValue;
+  readonly emptyBodyDescription: string;
+  readonly exception: ObjectValue;
+  readonly expandableValue: boolean;
+  readonly ifEmpty: string;
+  readonly ifNull: string;
+  readonly isInteresting: boolean;
+  readonly level: DiagnosticLevel;
+  readonly linePrefix: string;
+  readonly missingIfNull: boolean;
+  readonly name: string;
+  readonly propertyType: TypeValue;
+  readonly showName: boolean;
+  readonly showSeparator: boolean;
+  readonly style: DiagnosticsTreeStyle;
+  readonly tooltip: string;
+  readonly value: unknown;
+}
+
+export declare const TransformProperty: new (
+  name: string,
+  value: Matrix4,
+  options?: {
+    showName?: boolean;
+    defaultValue?: ObjectValue;
+    level?: DiagnosticLevel;
+  },
+) => TransformProperty;
+
 export interface TransformationController {
   readonly __fsxBrand?: {
     readonly ChangeNotifier: true;
@@ -16771,6 +25175,8 @@ export interface TransformationController {
     readonly ValueListenable: true;
     readonly ValueNotifier: true;
   };
+  readonly hasListeners: boolean;
+  readonly value: unknown;
 }
 
 export declare const TransformationController: new (
@@ -16799,6 +25205,7 @@ export declare const TreeSliverController: new () => TreeSliverController;
 
 export interface TreeSliverIndentationType {
   readonly __fsxBrand?: { readonly TreeSliverIndentationType: true };
+  readonly value: number;
 }
 
 export interface TreeSliverNode {
@@ -16879,6 +25286,21 @@ export declare const TwoDimensionalChildListDelegate: new (options: {
   children: FlutterElement[][];
 }) => TwoDimensionalChildListDelegate;
 
+export interface TwoDimensionalScrollableState {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly State: true;
+    readonly TwoDimensionalScrollableState: true;
+  };
+  readonly context: BuildContext;
+  readonly horizontalScrollable: ScrollableState;
+  readonly mounted: boolean;
+  readonly verticalScrollable: ScrollableState;
+  readonly widget: unknown;
+}
+
+export declare const TwoDimensionalScrollableState: new () => TwoDimensionalScrollableState;
+
 export interface Type {
   readonly __fsxBrand?: { readonly Type: true };
 }
@@ -16888,6 +25310,11 @@ export interface Typography {
     readonly Diagnosticable: true;
     readonly Typography: true;
   };
+  readonly black: TextTheme;
+  readonly dense: TextTheme;
+  readonly englishLike: TextTheme;
+  readonly tall: TextTheme;
+  readonly white: TextTheme;
 }
 
 export interface UiKitViewController {
@@ -16895,6 +25322,7 @@ export interface UiKitViewController {
     readonly DarwinPlatformViewController: true;
     readonly UiKitViewController: true;
   };
+  readonly id: number;
 }
 
 export interface Uint8List {
@@ -16915,6 +25343,11 @@ export interface UnderlineInputBorder {
     readonly ShapeBorder: true;
     readonly UnderlineInputBorder: true;
   };
+  readonly borderRadius: BorderRadiusValue;
+  readonly borderSide: BorderSideValue;
+  readonly dimensions: EdgeInsetsGeometryValue;
+  readonly isOutline: boolean;
+  readonly preferPaintInterior: boolean;
 }
 
 export declare const UnderlineInputBorder: new (options?: {
@@ -16928,6 +25361,11 @@ export interface UnderlineTabIndicator {
     readonly Diagnosticable: true;
     readonly UnderlineTabIndicator: true;
   };
+  readonly borderRadius: BorderRadiusValue;
+  readonly borderSide: BorderSideValue;
+  readonly insets: EdgeInsetsGeometryValue;
+  readonly isComplex: boolean;
+  readonly padding: EdgeInsetsGeometryValue;
 }
 
 export declare const UnderlineTabIndicator: new (options?: {
@@ -16944,14 +25382,38 @@ export interface UndoHistoryController {
     readonly ValueListenable: true;
     readonly ValueNotifier: true;
   };
+  readonly hasListeners: boolean;
+  readonly onRedo: ChangeNotifier;
+  readonly onUndo: ChangeNotifier;
+  readonly value: unknown;
 }
 
 export declare const UndoHistoryController: new (options?: {
   value?: UndoHistoryValue;
 }) => UndoHistoryController;
 
+export interface UndoHistoryState {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly State: true;
+    readonly UndoHistoryState: true;
+    readonly UndoManagerClient: true;
+  };
+  readonly canRedo: boolean;
+  readonly canUndo: boolean;
+  readonly context: BuildContext;
+  readonly mounted: boolean;
+  readonly widget: unknown;
+}
+
+export declare const UndoHistoryState: new () => UndoHistoryState;
+
 export interface UndoHistoryValue {
   readonly __fsxBrand?: { readonly UndoHistoryValue: true };
+}
+
+export interface UndoManagerClient {
+  readonly __fsxBrand?: { readonly UndoManagerClient: true };
 }
 
 export interface UndoTextIntent {
@@ -17034,6 +25496,7 @@ export interface ValueListenable {
     readonly Listenable: true;
     readonly ValueListenable: true;
   };
+  readonly value: unknown;
 }
 
 export interface ValueNotifier {
@@ -17043,9 +25506,23 @@ export interface ValueNotifier {
     readonly ValueListenable: true;
     readonly ValueNotifier: true;
   };
+  readonly hasListeners: boolean;
+  readonly value: unknown;
 }
 
 export declare const ValueNotifier: new (_value: unknown) => ValueNotifier;
+
+export interface Vector2 {
+  readonly __fsxBrand?: { readonly Vector2: true };
+}
+
+export interface Vector3 {
+  readonly __fsxBrand?: { readonly Vector3: true };
+}
+
+export interface Vector4 {
+  readonly __fsxBrand?: { readonly Vector4: true };
+}
 
 export interface Velocity {
   readonly __fsxBrand?: { readonly Velocity: true };
@@ -17111,13 +25588,26 @@ export interface ViewportOffset {
     readonly Listenable: true;
     readonly ViewportOffset: true;
   };
+  readonly allowImplicitScrolling: boolean;
+  readonly hasListeners: boolean;
+  readonly hasPixels: boolean;
+  readonly pixels: number;
+  readonly userScrollDirection: ScrollDirection;
 }
+
+export declare const ViewportOffset: {
+  readonly fixed: (value: number) => ViewportOffset;
+  readonly zero: () => ViewportOffset;
+};
 
 export interface VisualDensity {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
     readonly VisualDensity: true;
   };
+  readonly baseSizeAdjustment: OffsetValue;
+  readonly horizontal: number;
+  readonly vertical: number;
 }
 
 export interface VoidCallbackAction {
@@ -17145,6 +25635,10 @@ export declare const VoidCallbackIntent: new (
   callback: () => void,
 ) => VoidCallbackIntent;
 
+export interface WidgetInspectorService {
+  readonly __fsxBrand?: { readonly WidgetInspectorService: true };
+}
+
 export interface WidgetOrderTraversalPolicy {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -17152,6 +25646,13 @@ export interface WidgetOrderTraversalPolicy {
     readonly FocusTraversalPolicy: true;
     readonly WidgetOrderTraversalPolicy: true;
   };
+  readonly requestFocusCallback: (
+    node: FocusNode,
+    alignment?: number | null,
+    alignmentPolicy?: ScrollPositionAlignmentPolicy | null,
+    curve?: Curve | null,
+    duration?: Duration | null,
+  ) => void;
 }
 
 export declare const WidgetOrderTraversalPolicy: new (options?: {
@@ -17187,6 +25688,16 @@ export interface WidgetStateColor {
     readonly WidgetStateColor: true;
     readonly WidgetStateProperty: true;
   };
+  readonly a: number;
+  readonly alpha: number;
+  readonly b: number;
+  readonly blue: number;
+  readonly g: number;
+  readonly green: number;
+  readonly opacity: number;
+  readonly r: number;
+  readonly red: number;
+  readonly value: number;
 }
 
 export interface WidgetStateMapper {
@@ -17208,17 +25719,25 @@ export interface WidgetStateMouseCursor {
     readonly WidgetStateMouseCursor: true;
     readonly WidgetStateProperty: true;
   };
+  readonly debugDescription: string;
 }
 
 export interface WidgetStateProperty {
   readonly __fsxBrand?: { readonly WidgetStateProperty: true };
 }
 
+export declare const WidgetStateProperty: {
+  readonly fromMap: (
+    map: Map<WidgetStatesConstraint, unknown>,
+  ) => WidgetStateProperty;
+};
+
 export interface WidgetStatePropertyAll {
   readonly __fsxBrand?: {
     readonly WidgetStateProperty: true;
     readonly WidgetStatePropertyAll: true;
   };
+  readonly value: unknown;
 }
 
 export declare const WidgetStatePropertyAll: new (
@@ -17237,11 +25756,107 @@ export interface WidgetStatesController {
     readonly ValueNotifier: true;
     readonly WidgetStatesController: true;
   };
+  readonly hasListeners: boolean;
+  readonly value: unknown;
 }
 
 export declare const WidgetStatesController: new (
   value?: WidgetState[],
 ) => WidgetStatesController;
+
+export interface WidgetsBinding {
+  readonly __fsxBrand?: {
+    readonly BindingBase: true;
+    readonly GestureBinding: true;
+    readonly HitTestDispatcher: true;
+    readonly HitTestTarget: true;
+    readonly HitTestable: true;
+    readonly RendererBinding: true;
+    readonly SchedulerBinding: true;
+    readonly SemanticsBinding: true;
+    readonly ServicesBinding: true;
+    readonly WidgetsBinding: true;
+  };
+}
+
+export interface WidgetsFlutterBinding {
+  readonly __fsxBrand?: {
+    readonly BindingBase: true;
+    readonly GestureBinding: true;
+    readonly HitTestDispatcher: true;
+    readonly HitTestTarget: true;
+    readonly HitTestable: true;
+    readonly PaintingBinding: true;
+    readonly RendererBinding: true;
+    readonly SchedulerBinding: true;
+    readonly SemanticsBinding: true;
+    readonly ServicesBinding: true;
+    readonly WidgetsBinding: true;
+    readonly WidgetsFlutterBinding: true;
+  };
+  readonly accessibilityFocus: ValueNotifier;
+  readonly channelBuffers: ChannelBuffers;
+  readonly currentFrameTimeStamp: DurationValue;
+  readonly currentSystemFrameTimeStamp: DurationValue;
+  readonly debugBuildingDirtyElements: boolean;
+  readonly debugDidSendFirstFrameEvent: boolean;
+  readonly debugExcludeRootWidgetInspector: boolean;
+  readonly debugOutstandingSemanticsHandles: number;
+  readonly debugShowWidgetInspectorOverride: boolean;
+  readonly debugShowWidgetInspectorOverrideNotifier: ValueNotifier;
+  readonly debugWidgetInspectorSelectionOnTapEnabled: ValueNotifier;
+  readonly defaultBinaryMessenger: BinaryMessenger;
+  readonly disableAnimations: boolean;
+  readonly endOfFrame: Promise<void>;
+  readonly firstFrameRasterized: boolean;
+  readonly focusManager: FocusManager;
+  readonly framesEnabled: boolean;
+  readonly hasScheduledFrame: boolean;
+  readonly isRootWidgetAttached: boolean;
+  readonly keyboard: HardwareKeyboard;
+  readonly lifecycleState: AppLifecycleState;
+  readonly locked: boolean;
+  readonly mouseTracker: MouseTracker;
+  readonly pipelineOwner: PipelineOwner;
+  readonly platformDispatcher: PlatformDispatcher;
+  readonly platformMenuDelegate: PlatformMenuDelegate;
+  readonly renderView: RenderView;
+  readonly renderViewElement: Element;
+  readonly renderViews: RenderView[];
+  readonly resamplingEnabled: boolean;
+  readonly restorationManager: RestorationManager;
+  readonly rootElement: Element;
+  readonly rootPipelineOwner: PipelineOwner;
+  readonly samplingOffset: DurationValue;
+  readonly semanticsEnabled: boolean;
+  readonly sendFramesToEngine: boolean;
+  readonly systemFonts: Listenable;
+  readonly transientCallbackCount: number;
+  readonly waitUntilFirstFrameRasterized: Promise<void>;
+}
+
+export declare const WidgetsFlutterBinding: new () => WidgetsFlutterBinding;
+
+export interface WidgetsLocalizations {
+  readonly __fsxBrand?: { readonly WidgetsLocalizations: true };
+  readonly copyButtonLabel: string;
+  readonly cutButtonLabel: string;
+  readonly lookUpButtonLabel: string;
+  readonly noResultsFound: string;
+  readonly pasteButtonLabel: string;
+  readonly radioButtonUnselectedLabel: string;
+  readonly reorderItemDown: string;
+  readonly reorderItemLeft: string;
+  readonly reorderItemRight: string;
+  readonly reorderItemToEnd: string;
+  readonly reorderItemToStart: string;
+  readonly reorderItemUp: string;
+  readonly searchResultsFound: string;
+  readonly searchWebButtonLabel: string;
+  readonly selectAllButtonLabel: string;
+  readonly shareButtonLabel: string;
+  readonly textDirection: TextDirection;
+}
 
 export interface ZoomPageTransitionsBuilder {
   readonly __fsxBrand?: {
@@ -37432,8 +46047,12 @@ export interface ActionIconThemeProps extends GestureProps {
  *
  * ** See code in examples/api/lib/material/action_buttons/action_icon_theme.0.dart **
  */
-export const ActionIconTheme: FlutterComponent<ActionIconThemeProps> =
-  declareWidget<ActionIconThemeProps>('ActionIconTheme');
+export const ActionIconTheme = Object.assign(
+  declareWidget<ActionIconThemeProps>('ActionIconTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => ActionIconThemeData | null;
+  },
+);
 
 /**
  * A helper widget for making sure that listeners on an action are removed properly.
@@ -37578,8 +46197,29 @@ export interface ActionsProps extends GestureProps {
  *    action.
  *  * [ActionDispatcher], the object that this widget uses to manage actions.
  */
-export const Actions: FlutterComponent<ActionsProps> =
-  declareWidget<ActionsProps>('Actions');
+export const Actions = Object.assign(
+  declareWidget<ActionsProps>('Actions'),
+  {} as {
+    readonly find: (
+      context: BuildContext,
+      options?: { intent?: unknown },
+    ) => Action;
+    readonly handler: (
+      context: BuildContext,
+      intent: unknown,
+    ) => (() => void) | null;
+    readonly invoke: (context: BuildContext, intent: unknown) => Object | null;
+    readonly maybeFind: (
+      context: BuildContext,
+      options?: { intent?: unknown },
+    ) => Action | null;
+    readonly maybeInvoke: (
+      context: BuildContext,
+      intent: unknown,
+    ) => Object | null;
+    readonly of: (context: BuildContext) => ActionDispatcher;
+  },
+);
 
 /**
  * The default context menu for text selection for the current platform.
@@ -37644,10 +46284,21 @@ export interface AdaptiveTextSelectionToolbarProps extends GestureProps {
  * * [CupertinoTextSelectionToolbar], the default toolbar for iOS.
  * * [CupertinoDesktopTextSelectionToolbar], the default toolbar for MacOS.
  */
-export const AdaptiveTextSelectionToolbar: FlutterComponent<AdaptiveTextSelectionToolbarProps> =
+export const AdaptiveTextSelectionToolbar = Object.assign(
   declareWidget<AdaptiveTextSelectionToolbarProps>(
     'AdaptiveTextSelectionToolbar',
-  );
+  ),
+  {} as {
+    readonly getAdaptiveButtons: (
+      context: BuildContext,
+      buttonItems: ContextMenuButtonItem[],
+    ) => FlutterElement[];
+    readonly getButtonLabel: (
+      context: BuildContext,
+      buttonItem: ContextMenuButtonItem,
+    ) => string;
+  },
+);
 
 /**
  * A Material Design alert dialog.
@@ -39291,8 +47942,17 @@ export interface AnimatedCrossFadeProps extends GestureProps {
  *  * [AnimatedSize], the lower-level widget which [AnimatedCrossFade] uses to
  *    automatically change size.
  */
-export const AnimatedCrossFade: FlutterComponent<AnimatedCrossFadeProps> =
-  declareWidget<AnimatedCrossFadeProps>('AnimatedCrossFade');
+export const AnimatedCrossFade = Object.assign(
+  declareWidget<AnimatedCrossFadeProps>('AnimatedCrossFade'),
+  {} as {
+    readonly defaultLayoutBuilder: (
+      topChild: FlutterElement,
+      topChildKey: Key,
+      bottomChild: FlutterElement,
+      bottomChildKey: Key,
+    ) => FlutterElement;
+  },
+);
 
 /**
  * Animated version of [DefaultTextStyle] which automatically transitions the
@@ -39694,8 +48354,13 @@ export interface AnimatedGridProps extends GestureProps {
  * * [AnimatedList], which animates items added and removed from a list instead
  *   of a grid.
  */
-export const AnimatedGrid: FlutterComponent<AnimatedGridProps> =
-  declareWidget<AnimatedGridProps>('AnimatedGrid');
+export const AnimatedGrid = Object.assign(
+  declareWidget<AnimatedGridProps>('AnimatedGrid'),
+  {} as {
+    readonly maybeOf: (context: BuildContext) => AnimatedGridState | null;
+    readonly of: (context: BuildContext) => AnimatedGridState;
+  },
+);
 
 /**
  * Shows an animated icon at a given animation [progress].
@@ -40003,8 +48668,13 @@ export interface AnimatedListProps extends GestureProps {
  *  * [AnimatedGrid], a non-sliver scrolling container that animates items when
  *    they are inserted or removed in a grid.
  */
-export const AnimatedList: FlutterComponent<AnimatedListProps> =
-  declareWidget<AnimatedListProps>('AnimatedList');
+export const AnimatedList = Object.assign(
+  declareWidget<AnimatedListProps>('AnimatedList'),
+  {} as {
+    readonly maybeOf: (context: BuildContext) => AnimatedListState | null;
+    readonly of: (context: BuildContext) => AnimatedListState;
+  },
+);
 
 /**
  * A widget that prevents the user from interacting with widgets behind itself,
@@ -41321,8 +49991,19 @@ export interface AnimatedSwitcherProps extends GestureProps {
  *    a given child by fading the child in and out.
  *  * [FadeTransition], which [AnimatedSwitcher] uses to perform the transition.
  */
-export const AnimatedSwitcher: FlutterComponent<AnimatedSwitcherProps> =
-  declareWidget<AnimatedSwitcherProps>('AnimatedSwitcher');
+export const AnimatedSwitcher = Object.assign(
+  declareWidget<AnimatedSwitcherProps>('AnimatedSwitcher'),
+  {} as {
+    readonly defaultLayoutBuilder: (
+      currentChild: FlutterElement,
+      previousChildren: FlutterElement[],
+    ) => FlutterElement;
+    readonly defaultTransitionBuilder: (
+      child: FlutterElement,
+      animation: Animation,
+    ) => FlutterElement;
+  },
+);
 
 /**
  * Animated version of [Theme] which automatically transitions the colors,
@@ -42140,8 +50821,15 @@ export interface AppBarProps extends GestureProps {
  *  * <https://m3.material.io/components/top-app-bar>
  *  * Cookbook: [Place a floating app bar above a list](https://docs.flutter.dev/cookbook/lists/floating-app-bar)
  */
-export const AppBar: FlutterComponent<AppBarProps> =
-  declareWidget<AppBarProps>('AppBar');
+export const AppBar = Object.assign(
+  declareWidget<AppBarProps>('AppBar'),
+  {} as {
+    readonly preferredHeightFor: (
+      context: BuildContext,
+      preferredSize: SizeValue,
+    ) => number;
+  },
+);
 
 /**
  * Defines default property values for descendant [AppBar] widgets.
@@ -42210,8 +50898,13 @@ export interface AppBarThemeProps extends GestureProps {
  *  * [ThemeData], which describes the overall theme information for the
  *    application.
  */
-export const AppBarTheme: FlutterComponent<AppBarThemeProps> =
-  declareWidget<AppBarThemeProps>('AppBarTheme');
+export const AppBarTheme = Object.assign(
+  declareWidget<AppBarThemeProps>('AppBarTheme'),
+  {} as {
+    readonly lerp: (a: AppBarTheme, b: AppBarTheme, t: number) => AppBarTheme;
+    readonly of: (context: BuildContext) => AppBarThemeData;
+  },
+);
 
 /**
  * Widget that contains a macOS AppKit view.
@@ -42652,10 +51345,14 @@ export interface AutocompleteHighlightedOptionProps extends GestureProps {
  * which can then be used to tell which option should be given a visual
  * indication that will be the option selected with the keyboard.
  */
-export const AutocompleteHighlightedOption: FlutterComponent<AutocompleteHighlightedOptionProps> =
+export const AutocompleteHighlightedOption = Object.assign(
   declareWidget<AutocompleteHighlightedOptionProps>(
     'AutocompleteHighlightedOption',
-  );
+  ),
+  {} as {
+    readonly of: (context: BuildContext) => number;
+  },
+);
 
 /**
  * An [AutofillScope] widget that groups [AutofillClient]s together.
@@ -42745,8 +51442,13 @@ export interface AutofillGroupProps extends GestureProps {
  * * [AutofillContextAction], an enum that contains predefined autofill context
  *   clean up actions to be run when a topmost [AutofillGroup] is disposed.
  */
-export const AutofillGroup: FlutterComponent<AutofillGroupProps> =
-  declareWidget<AutofillGroupProps>('AutofillGroup');
+export const AutofillGroup = Object.assign(
+  declareWidget<AutofillGroupProps>('AutofillGroup'),
+  {} as {
+    readonly maybeOf: (context: BuildContext) => AutofillGroupState | null;
+    readonly of: (context: BuildContext) => AutofillGroupState;
+  },
+);
 
 /**
  * Allows subtrees to request to be kept alive in lazy lists.
@@ -43419,8 +52121,12 @@ export interface BackdropGroupProps extends GestureProps {
  * backdrop filters. To opt into using a shared [BackdropGroup], the special
  * [BackdropFilter.grouped] constructor must be used.
  */
-export const BackdropGroup: FlutterComponent<BackdropGroupProps> =
-  declareWidget<BackdropGroupProps>('BackdropGroup');
+export const BackdropGroup = Object.assign(
+  declareWidget<BackdropGroupProps>('BackdropGroup'),
+  {} as {
+    readonly of: (context: BuildContext) => BackdropGroup | null;
+  },
+);
 
 /**
  * A Material Design "badge".
@@ -43599,8 +52305,12 @@ export interface BadgeThemeProps extends GestureProps {
  * Values specified here override the defaults for [Badge] properties which
  * are not given an explicit non-null value.
  */
-export const BadgeTheme: FlutterComponent<BadgeThemeProps> =
-  declareWidget<BadgeThemeProps>('BadgeTheme');
+export const BadgeTheme = Object.assign(
+  declareWidget<BadgeThemeProps>('BadgeTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => BadgeThemeData;
+  },
+);
 
 /**
  * Displays a diagonal message above the corner of another widget.
@@ -44005,8 +52715,17 @@ export interface BottomAppBarThemeProps extends GestureProps {
  *  * [ThemeData], which describes the overall theme information for the
  *    application.
  */
-export const BottomAppBarTheme: FlutterComponent<BottomAppBarThemeProps> =
-  declareWidget<BottomAppBarThemeProps>('BottomAppBarTheme');
+export const BottomAppBarTheme = Object.assign(
+  declareWidget<BottomAppBarThemeProps>('BottomAppBarTheme'),
+  {} as {
+    readonly lerp: (
+      a: BottomAppBarTheme,
+      b: BottomAppBarTheme,
+      t: number,
+    ) => BottomAppBarTheme;
+    readonly of: (context: BuildContext) => BottomAppBarThemeData;
+  },
+);
 
 /**
  * A material widget that's displayed at the bottom of an app for selecting
@@ -44478,8 +53197,12 @@ export interface BottomNavigationBarThemeProps extends GestureProps {
  *  * [BottomNavigationBarThemeData], which describes the actual configuration
  *    of a bottom navigation bar theme.
  */
-export const BottomNavigationBarTheme: FlutterComponent<BottomNavigationBarThemeProps> =
-  declareWidget<BottomNavigationBarThemeProps>('BottomNavigationBarTheme');
+export const BottomNavigationBarTheme = Object.assign(
+  declareWidget<BottomNavigationBarThemeProps>('BottomNavigationBarTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => BottomNavigationBarThemeData;
+  },
+);
 
 /**
  * A Material Design bottom sheet.
@@ -44696,8 +53419,15 @@ export interface BottomSheetProps extends GestureProps {
  *  * The Material 2 spec at <https://m2.material.io/components/sheets-bottom>.
  *  * The Material 3 spec at <https://m3.material.io/components/bottom-sheets/overview>.
  */
-export const BottomSheet: FlutterComponent<BottomSheetProps> =
-  declareWidget<BottomSheetProps>('BottomSheet');
+export const BottomSheet = Object.assign(
+  declareWidget<BottomSheetProps>('BottomSheet'),
+  {} as {
+    readonly createAnimationController: (
+      vsync: TickerProvider,
+      options?: { sheetAnimationStyle?: AnimationStyleValue },
+    ) => AnimationController;
+  },
+);
 
 /**
  * A stateless utility widget whose [build] method uses its
@@ -45199,8 +53929,12 @@ export interface ButtonBarThemeProps extends GestureProps {
  *  * [ButtonBarThemeData], which describes the actual configuration of a button
  *    bar theme.
  */
-export const ButtonBarTheme: FlutterComponent<ButtonBarThemeProps> =
-  declareWidget<ButtonBarThemeProps>('ButtonBarTheme');
+export const ButtonBarTheme = Object.assign(
+  declareWidget<ButtonBarThemeProps>('ButtonBarTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => ButtonBarThemeData;
+  },
+);
 
 /**
  * Used with [ButtonThemeData] to configure the color and geometry of buttons.
@@ -45274,8 +54008,12 @@ export interface ButtonThemeProps extends GestureProps {
  *  * [RawMaterialButton], which can be used to configure a button that doesn't
  *    depend on any inherited themes.
  */
-export const ButtonTheme: FlutterComponent<ButtonThemeProps> =
-  declareWidget<ButtonThemeProps>('ButtonTheme');
+export const ButtonTheme = Object.assign(
+  declareWidget<ButtonThemeProps>('ButtonTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => ButtonThemeData;
+  },
+);
 
 /**
  * Displays a grid of days for a given month and allows the user to select a
@@ -45724,8 +54462,13 @@ export interface CardThemeProps extends GestureProps {
  *  * [ThemeData], which describes the overall theme information for the
  *    application.
  */
-export const CardTheme: FlutterComponent<CardThemeProps> =
-  declareWidget<CardThemeProps>('CardTheme');
+export const CardTheme = Object.assign(
+  declareWidget<CardThemeProps>('CardTheme'),
+  {} as {
+    readonly lerp: (a: CardTheme, b: CardTheme, t: number) => CardTheme;
+    readonly of: (context: BuildContext) => CardThemeData;
+  },
+);
 
 /**
  * A Material Design carousel widget.
@@ -46153,8 +54896,12 @@ export interface CarouselViewThemeProps extends GestureProps {
  *    theme.
  *  * [Theme], which controls the overall theme inheritance.
  */
-export const CarouselViewTheme: FlutterComponent<CarouselViewThemeProps> =
-  declareWidget<CarouselViewThemeProps>('CarouselViewTheme');
+export const CarouselViewTheme = Object.assign(
+  declareWidget<CarouselViewThemeProps>('CarouselViewTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => CarouselViewThemeData;
+  },
+);
 
 /**
  * A widget that centers its child within itself.
@@ -47225,8 +55972,12 @@ export interface CheckboxThemeProps extends GestureProps {
  *  * [CheckboxThemeData], which describes the actual configuration of a
  *  checkbox theme.
  */
-export const CheckboxTheme: FlutterComponent<CheckboxThemeProps> =
-  declareWidget<CheckboxThemeProps>('CheckboxTheme');
+export const CheckboxTheme = Object.assign(
+  declareWidget<CheckboxThemeProps>('CheckboxTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => CheckboxThemeData;
+  },
+);
 
 /**
  * Displays a [Banner] saying "DEBUG" when running in debug mode.
@@ -47647,8 +56398,12 @@ export interface ChipThemeProps extends GestureProps {
  *  * [ThemeData], which describes the overall theme information for the
  *    application.
  */
-export const ChipTheme: FlutterComponent<ChipThemeProps> =
-  declareWidget<ChipThemeProps>('ChipTheme');
+export const ChipTheme = Object.assign(
+  declareWidget<ChipThemeProps>('ChipTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => ChipThemeData;
+  },
+);
 
 /**
  * A Material Design choice chip.
@@ -48415,8 +57170,17 @@ export interface ClipPathProps extends GestureProps {
  * [ClipPath.shape] static method or the [ShapeBorderClipper] custom clipper
  * class.
  */
-export const ClipPath: FlutterComponent<ClipPathProps> =
-  declareWidget<ClipPathProps>('ClipPath');
+export const ClipPath = Object.assign(
+  declareWidget<ClipPathProps>('ClipPath'),
+  {} as {
+    readonly shape: (options: {
+      key?: Key;
+      shape: ShapeBorderValue;
+      clipBehavior?: Clip;
+      child?: FlutterElement;
+    }) => FlutterElement;
+  },
+);
 
 /**
  * A widget that clips its child using a rounded rectangle.
@@ -49843,8 +58607,30 @@ export interface ConstraintsTransformBoxProps extends GestureProps {
  *  * [UnconstrainedBox] which allows its children to render themselves
  *    unconstrained and expands to fit them.
  */
-export const ConstraintsTransformBox: FlutterComponent<ConstraintsTransformBoxProps> =
-  declareWidget<ConstraintsTransformBoxProps>('ConstraintsTransformBox');
+export const ConstraintsTransformBox = Object.assign(
+  declareWidget<ConstraintsTransformBoxProps>('ConstraintsTransformBox'),
+  {} as {
+    readonly heightUnconstrained: (
+      constraints: BoxConstraintsValue,
+    ) => BoxConstraints;
+    readonly maxHeightUnconstrained: (
+      constraints: BoxConstraintsValue,
+    ) => BoxConstraints;
+    readonly maxUnconstrained: (
+      constraints: BoxConstraintsValue,
+    ) => BoxConstraints;
+    readonly maxWidthUnconstrained: (
+      constraints: BoxConstraintsValue,
+    ) => BoxConstraints;
+    readonly unconstrained: (
+      constraints: BoxConstraintsValue,
+    ) => BoxConstraints;
+    readonly unmodified: (constraints: BoxConstraintsValue) => BoxConstraints;
+    readonly widthUnconstrained: (
+      constraints: BoxConstraintsValue,
+    ) => BoxConstraints;
+  },
+);
 
 /**
  * A convenience widget that combines common painting, positioning, and sizing
@@ -50502,10 +59288,17 @@ export interface CupertinoAdaptiveTextSelectionToolbarProps extends GestureProps
  *   the Cupertino button Widgets for the current platform given
  *   [ContextMenuButtonItem]s.
  */
-export const CupertinoAdaptiveTextSelectionToolbar: FlutterComponent<CupertinoAdaptiveTextSelectionToolbarProps> =
+export const CupertinoAdaptiveTextSelectionToolbar = Object.assign(
   declareWidget<CupertinoAdaptiveTextSelectionToolbarProps>(
     'CupertinoAdaptiveTextSelectionToolbar',
-  );
+  ),
+  {} as {
+    readonly getAdaptiveButtons: (
+      context: BuildContext,
+      buttonItems: ContextMenuButtonItem[],
+    ) => FlutterElement[];
+  },
+);
 
 /**
  * An iOS-style alert dialog.
@@ -51014,8 +59807,12 @@ export interface CupertinoAppProps extends GestureProps {
  *  * [WidgetsApp], which defines the basic app elements but does not depend
  *    on the Cupertino library.
  */
-export const CupertinoApp: FlutterComponent<CupertinoAppProps> =
-  declareWidget<CupertinoAppProps>('CupertinoApp');
+export const CupertinoApp = Object.assign(
+  declareWidget<CupertinoAppProps>('CupertinoApp'),
+  {} as {
+    readonly createCupertinoHeroController: () => HeroController;
+  },
+);
 
 /**
  * An iOS-style button.
@@ -51204,8 +60001,12 @@ export interface CupertinoButtonProps extends Omit<
  *
  *  * <https://developer.apple.com/design/human-interface-guidelines/buttons/>
  */
-export const CupertinoButton: FlutterComponent<CupertinoButtonProps> =
-  declareWidget<CupertinoButtonProps>('CupertinoButton');
+export const CupertinoButton = Object.assign(
+  declareWidget<CupertinoButtonProps>('CupertinoButton'),
+  {} as {
+    readonly tapMoveSlop: () => number;
+  },
+);
 
 /**
  * A macOS style checkbox.
@@ -51656,6 +60457,9 @@ export const CupertinoContextMenu = Object.assign(
      */
     readonly kOpenBorderRadius: number;
   }>('CupertinoContextMenu'),
+  {} as {
+    readonly animationOpensAt: number;
+  },
 );
 
 /**
@@ -53229,8 +62033,12 @@ export interface CupertinoMenuAnchorProps extends GestureProps {
  * * [CupertinoMenuEntry], an interface that can be implemented to customize
  *   the appearance of menu items in a [CupertinoMenuAnchor].
  */
-export const CupertinoMenuAnchor: FlutterComponent<CupertinoMenuAnchorProps> =
-  declareWidget<CupertinoMenuAnchorProps>('CupertinoMenuAnchor');
+export const CupertinoMenuAnchor = Object.assign(
+  declareWidget<CupertinoMenuAnchorProps>('CupertinoMenuAnchor'),
+  {} as {
+    readonly maybeHasLeadingOf: (context: BuildContext) => boolean | null;
+  },
+);
 
 /**
  * A large horizontal divider that is used to separate [CupertinoMenuItem]s in
@@ -54039,10 +62847,14 @@ export interface CupertinoPageScaffoldBackgroundColorProps extends GestureProps 
  * This is used by the [CupertinoNavigationBar] and the [CupertinoSliverNavigationBar] widgets
  * to paint themselves with the parent page scaffold color when no content is scrolled under.
  */
-export const CupertinoPageScaffoldBackgroundColor: FlutterComponent<CupertinoPageScaffoldBackgroundColorProps> =
+export const CupertinoPageScaffoldBackgroundColor = Object.assign(
   declareWidget<CupertinoPageScaffoldBackgroundColorProps>(
     'CupertinoPageScaffoldBackgroundColor',
-  );
+  ),
+  {} as {
+    readonly maybeOf: (context: BuildContext) => Color | null;
+  },
+);
 
 /**
  * Provides an iOS-style page transition animation.
@@ -54078,8 +62890,18 @@ export interface CupertinoPageTransitionProps extends GestureProps {
  * The page slides in from the right and exits in reverse. It also shifts to the left in
  * a parallax motion when another page enters to cover it.
  */
-export const CupertinoPageTransition: FlutterComponent<CupertinoPageTransitionProps> =
-  declareWidget<CupertinoPageTransitionProps>('CupertinoPageTransition');
+export const CupertinoPageTransition = Object.assign(
+  declareWidget<CupertinoPageTransitionProps>('CupertinoPageTransition'),
+  {} as {
+    readonly delegatedTransition: (
+      context: BuildContext,
+      animation: Animation,
+      secondaryAnimation: Animation,
+      allowSnapshotting: boolean,
+      child: FlutterElement,
+    ) => FlutterElement | null;
+  },
+);
 
 /**
  * An iOS-styled picker.
@@ -54397,6 +63219,9 @@ export const CupertinoPopupSurface = Object.assign(
      */
     readonly defaultBlurSigma: number;
   }>('CupertinoPopupSurface'),
+  {} as {
+    readonly debugIsVibrancePainted: boolean;
+  },
 );
 
 /**
@@ -55365,8 +64190,18 @@ export interface CupertinoSheetTransitionProps extends GestureProps {
  * another sheet view, it will slide slightly up and scale down to appear
  * stacked behind the new sheet.
  */
-export const CupertinoSheetTransition: FlutterComponent<CupertinoSheetTransitionProps> =
-  declareWidget<CupertinoSheetTransitionProps>('CupertinoSheetTransition');
+export const CupertinoSheetTransition = Object.assign(
+  declareWidget<CupertinoSheetTransitionProps>('CupertinoSheetTransition'),
+  {} as {
+    readonly delegateTransition: (
+      context: BuildContext,
+      animation: Animation,
+      secondaryAnimation: Animation,
+      allowSnapshotting: boolean,
+      child: FlutterElement,
+    ) => FlutterElement;
+  },
+);
 
 /**
  * An iOS-style slider.
@@ -56211,10 +65046,20 @@ export interface CupertinoSliverRefreshControlProps extends GestureProps {
  *    [CupertinoSliverRefreshControl] is part of the scrollable and actively occupies
  *    scrollable space.
  */
-export const CupertinoSliverRefreshControl: FlutterComponent<CupertinoSliverRefreshControlProps> =
+export const CupertinoSliverRefreshControl = Object.assign(
   declareWidget<CupertinoSliverRefreshControlProps>(
     'CupertinoSliverRefreshControl',
-  );
+  ),
+  {} as {
+    readonly buildRefreshIndicator: (
+      context: BuildContext,
+      refreshState: RefreshIndicatorMode,
+      pulledExtent: number,
+      refreshTriggerPullDistance: number,
+      refreshIndicatorExtent: number,
+    ) => FlutterElement;
+  },
+);
 
 /**
  * The default spell check suggestions toolbar for iOS.
@@ -56259,10 +65104,16 @@ export interface CupertinoSpellCheckSuggestionsToolbarProps extends GestureProps
  *  * [SpellCheckSuggestionsToolbar], which is similar but for both the
  *    Material and Cupertino libraries.
  */
-export const CupertinoSpellCheckSuggestionsToolbar: FlutterComponent<CupertinoSpellCheckSuggestionsToolbarProps> =
+export const CupertinoSpellCheckSuggestionsToolbar = Object.assign(
   declareWidget<CupertinoSpellCheckSuggestionsToolbarProps>(
     'CupertinoSpellCheckSuggestionsToolbar',
-  );
+  ),
+  {} as {
+    readonly buildButtonItems: (
+      editableTextState: EditableTextState,
+    ) => ContextMenuButtonItem[] | null;
+  },
+);
 
 /**
  * An iOS-style switch.
@@ -57529,6 +66380,11 @@ export const CupertinoTextField = Object.assign(
      */
     readonly kMisspelledSelectionColor: Color;
   }>('CupertinoTextField'),
+  {} as {
+    readonly inferIOSSpellCheckConfiguration: (
+      configuration: SpellCheckConfigurationValue,
+    ) => SpellCheckConfiguration;
+  },
 );
 
 /**
@@ -57994,10 +66850,17 @@ export interface CupertinoTextSelectionToolbarButtonProps extends Omit<
 /**
  * A button in the style of the iOS text selection toolbar buttons.
  */
-export const CupertinoTextSelectionToolbarButton: FlutterComponent<CupertinoTextSelectionToolbarButtonProps> =
+export const CupertinoTextSelectionToolbarButton = Object.assign(
   declareWidget<CupertinoTextSelectionToolbarButtonProps>(
     'CupertinoTextSelectionToolbarButton',
-  );
+  ),
+  {} as {
+    readonly getButtonLabel: (
+      context: BuildContext,
+      buttonItem: ContextMenuButtonItem,
+    ) => string;
+  },
+);
 
 /**
  * Applies a visual styling theme to descendant Cupertino widgets.
@@ -58052,8 +66915,14 @@ export interface CupertinoThemeProps extends GestureProps {
  *  * [Theme], a Material theme which will automatically add a [CupertinoTheme]
  *    with a [CupertinoThemeData] derived from the Material [ThemeData].
  */
-export const CupertinoTheme: FlutterComponent<CupertinoThemeProps> =
-  declareWidget<CupertinoThemeProps>('CupertinoTheme');
+export const CupertinoTheme = Object.assign(
+  declareWidget<CupertinoThemeProps>('CupertinoTheme'),
+  {} as {
+    readonly brightnessOf: (context: BuildContext) => Brightness;
+    readonly maybeBrightnessOf: (context: BuildContext) => Brightness | null;
+    readonly of: (context: BuildContext) => CupertinoThemeData;
+  },
+);
 
 /**
  * A countdown timer picker in iOS style.
@@ -58255,10 +67124,17 @@ export interface CupertinoUserInterfaceLevelProps extends GestureProps {
  *  * [CupertinoUserInterfaceLevelData], specifies the visual level for the content
  *    in the subtree [CupertinoUserInterfaceLevel] established.
  */
-export const CupertinoUserInterfaceLevel: FlutterComponent<CupertinoUserInterfaceLevelProps> =
+export const CupertinoUserInterfaceLevel = Object.assign(
   declareWidget<CupertinoUserInterfaceLevelProps>(
     'CupertinoUserInterfaceLevel',
-  );
+  ),
+  {} as {
+    readonly maybeOf: (
+      context: BuildContext,
+    ) => CupertinoUserInterfaceLevelData | null;
+    readonly of: (context: BuildContext) => CupertinoUserInterfaceLevelData;
+  },
+);
 
 /**
  * A widget that uses a delegate to size and position multiple children.
@@ -59603,8 +68479,12 @@ export interface DataTableThemeProps extends GestureProps {
  *  * [DataTableThemeData], which describes the actual configuration
  *    of a data table theme.
  */
-export const DataTableTheme: FlutterComponent<DataTableThemeProps> =
-  declareWidget<DataTableThemeProps>('DataTableTheme');
+export const DataTableTheme = Object.assign(
+  declareWidget<DataTableThemeProps>('DataTableTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => DataTableThemeData;
+  },
+);
 
 /**
  * A Material-style date picker dialog.
@@ -59778,8 +68658,14 @@ export interface DatePickerThemeProps extends GestureProps {
  * Values specified here are used for [DatePickerDialog] properties that are not
  * given an explicit non-null value.
  */
-export const DatePickerTheme: FlutterComponent<DatePickerThemeProps> =
-  declareWidget<DatePickerThemeProps>('DatePickerTheme');
+export const DatePickerTheme = Object.assign(
+  declareWidget<DatePickerThemeProps>('DatePickerTheme'),
+  {} as {
+    readonly defaults: (context: BuildContext) => DatePickerThemeData;
+    readonly maybeOf: (context: BuildContext) => DatePickerThemeData | null;
+    readonly of: (context: BuildContext) => DatePickerThemeData;
+  },
+);
 
 /**
  * A Material-style date range picker dialog.
@@ -60313,8 +69199,12 @@ export interface DefaultAssetBundleProps extends GestureProps {
  *  * [AssetBundle], the interface for asset bundles.
  *  * [rootBundle], the default asset bundle.
  */
-export const DefaultAssetBundle: FlutterComponent<DefaultAssetBundleProps> =
-  declareWidget<DefaultAssetBundleProps>('DefaultAssetBundle');
+export const DefaultAssetBundle = Object.assign(
+  declareWidget<DefaultAssetBundleProps>('DefaultAssetBundle'),
+  {} as {
+    readonly of: (context: BuildContext) => AssetBundle;
+  },
+);
 
 /**
  * The selection style to apply to descendant [EditableText] widgets which
@@ -60375,6 +69265,16 @@ export const DefaultSelectionStyle = Object.assign(
      */
     readonly defaultColor: Color;
   }>('DefaultSelectionStyle'),
+  {} as {
+    readonly merge: (options: {
+      key?: Key;
+      cursorColor?: ColorValue;
+      selectionColor?: ColorValue;
+      mouseCursor?: MouseCursorValue;
+      child: FlutterElement;
+    }) => FlutterElement;
+    readonly of: (context: BuildContext) => DefaultSelectionStyle;
+  },
 );
 
 /**
@@ -60501,8 +69401,13 @@ export interface DefaultTabControllerProps extends GestureProps {
  * }
  * ```
  */
-export const DefaultTabController: FlutterComponent<DefaultTabControllerProps> =
-  declareWidget<DefaultTabControllerProps>('DefaultTabController');
+export const DefaultTabController = Object.assign(
+  declareWidget<DefaultTabControllerProps>('DefaultTabController'),
+  {} as {
+    readonly maybeOf: (context: BuildContext) => TabController | null;
+    readonly of: (context: BuildContext) => TabController;
+  },
+);
 
 /**
  * A widget with the shortcuts used for the default text editing behavior.
@@ -60831,8 +69736,13 @@ export interface DefaultTextHeightBehaviorProps extends GestureProps {
  *  * [DefaultTextStyle], which defines a [TextStyle] to apply to descendant
  *    [Text] widgets.
  */
-export const DefaultTextHeightBehavior: FlutterComponent<DefaultTextHeightBehaviorProps> =
-  declareWidget<DefaultTextHeightBehaviorProps>('DefaultTextHeightBehavior');
+export const DefaultTextHeightBehavior = Object.assign(
+  declareWidget<DefaultTextHeightBehaviorProps>('DefaultTextHeightBehavior'),
+  {} as {
+    readonly maybeOf: (context: BuildContext) => TextHeightBehavior | null;
+    readonly of: (context: BuildContext) => TextHeightBehavior;
+  },
+);
 
 /**
  * The text style to apply to descendant [Text] widgets which don't have an
@@ -60934,8 +69844,23 @@ export interface DefaultTextStyleProps extends GestureProps {
  *  * [DefaultTextStyleTransition], which takes a provided [Animation] to
  *    animate changes in text style smoothly over time.
  */
-export const DefaultTextStyle: FlutterComponent<DefaultTextStyleProps> =
-  declareWidget<DefaultTextStyleProps>('DefaultTextStyle');
+export const DefaultTextStyle = Object.assign(
+  declareWidget<DefaultTextStyleProps>('DefaultTextStyle'),
+  {} as {
+    readonly merge: (options: {
+      key?: Key;
+      style?: TextStyleValue;
+      textAlign?: TextAlign;
+      softWrap?: boolean;
+      overflow?: TextOverflow;
+      maxLines?: number;
+      textWidthBasis?: TextWidthBasis;
+      textHeightBehavior?: TextHeightBehaviorValue;
+      child: FlutterElement;
+    }) => FlutterElement;
+    readonly of: (context: BuildContext) => DefaultTextStyle;
+  },
+);
 
 /**
  * Animated version of a [DefaultTextStyle] that animates the different properties
@@ -61424,8 +70349,13 @@ export interface DialogThemeProps extends GestureProps {
  *  * [ThemeData], which describes the overall theme information for the
  *    application.
  */
-export const DialogTheme: FlutterComponent<DialogThemeProps> =
-  declareWidget<DialogThemeProps>('DialogTheme');
+export const DialogTheme = Object.assign(
+  declareWidget<DialogThemeProps>('DialogTheme'),
+  {} as {
+    readonly lerp: (a: DialogTheme, b: DialogTheme, t: number) => DialogTheme;
+    readonly of: (context: BuildContext) => DialogThemeData;
+  },
+);
 
 /**
  * A widget that determines the ambient directionality of text and
@@ -61484,8 +70414,13 @@ export interface DirectionalityProps extends GestureProps {
  * )
  * ```
  */
-export const Directionality: FlutterComponent<DirectionalityProps> =
-  declareWidget<DirectionalityProps>('Directionality');
+export const Directionality = Object.assign(
+  declareWidget<DirectionalityProps>('Directionality'),
+  {} as {
+    readonly maybeOf: (context: BuildContext) => TextDirection | null;
+    readonly of: (context: BuildContext) => TextDirection;
+  },
+);
 
 /**
  * Disables the Flutter DevTools Widget Inspector for a [Widget] subtree.
@@ -61805,8 +70740,16 @@ export interface DisplayFeatureSubScreenProps extends GestureProps {
  *  * [showDialog], which is a way to display a [DialogRoute].
  *  * [showCupertinoDialog], which displays an iOS-style dialog.
  */
-export const DisplayFeatureSubScreen: FlutterComponent<DisplayFeatureSubScreenProps> =
-  declareWidget<DisplayFeatureSubScreenProps>('DisplayFeatureSubScreen');
+export const DisplayFeatureSubScreen = Object.assign(
+  declareWidget<DisplayFeatureSubScreenProps>('DisplayFeatureSubScreen'),
+  {} as {
+    readonly avoidBounds: (mediaQuery: MediaQueryDataValue) => Rect[];
+    readonly subScreensInBounds: (
+      wantedBounds: RectValue,
+      avoidBounds: RectValue[],
+    ) => Rect[];
+  },
+);
 
 /**
  * A thin horizontal line, with padding on either side.
@@ -61934,8 +70877,15 @@ export interface DividerProps extends GestureProps {
  *  * [VerticalDivider], which is the vertical analog of this widget.
  *  * <https://material.io/design/components/dividers.html>
  */
-export const Divider: FlutterComponent<DividerProps> =
-  declareWidget<DividerProps>('Divider');
+export const Divider = Object.assign(
+  declareWidget<DividerProps>('Divider'),
+  {} as {
+    readonly createBorderSide: (
+      context: BuildContext,
+      options?: { color?: ColorValue; width?: number },
+    ) => BorderSide;
+  },
+);
 
 /**
  * An inherited widget that defines the configuration for
@@ -61963,8 +70913,12 @@ export interface DividerThemeProps extends GestureProps {
  * [Divider]s, [VerticalDivider]s, dividers between [ListTile]s, and dividers
  * between rows in [DataTable]s in this widget's subtree.
  */
-export const DividerTheme: FlutterComponent<DividerThemeProps> =
-  declareWidget<DividerThemeProps>('DividerTheme');
+export const DividerTheme = Object.assign(
+  declareWidget<DividerThemeProps>('DividerTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => DividerThemeData;
+  },
+);
 
 /**
  * Provides a [DragBoundaryDelegate] for its descendants whose bounds are those defined by this widget.
@@ -61997,8 +70951,19 @@ export interface DragBoundaryProps extends GestureProps {
  *
  * ** See code in examples/api/lib/widgets/gesture_detector/gesture_detector.3.dart **
  */
-export const DragBoundary: FlutterComponent<DragBoundaryProps> =
-  declareWidget<DragBoundaryProps>('DragBoundary');
+export const DragBoundary = Object.assign(
+  declareWidget<DragBoundaryProps>('DragBoundary'),
+  {} as {
+    readonly forRectMaybeOf: (
+      context: BuildContext,
+      options?: { useGlobalPosition?: boolean },
+    ) => DragBoundaryDelegate | null;
+    readonly forRectOf: (
+      context: BuildContext,
+      options?: { useGlobalPosition?: boolean },
+    ) => DragBoundaryDelegate;
+  },
+);
 
 /**
  * A widget that receives data when a [Draggable] widget is dropped.
@@ -62433,10 +71398,14 @@ export interface DraggableScrollableActuatorProps extends GestureProps {
  * directly by creating a controller and passing the controller to the sheet in
  * its constructor (see [DraggableScrollableSheet.controller]).
  */
-export const DraggableScrollableActuator: FlutterComponent<DraggableScrollableActuatorProps> =
+export const DraggableScrollableActuator = Object.assign(
   declareWidget<DraggableScrollableActuatorProps>(
     'DraggableScrollableActuator',
-  );
+  ),
+  {} as {
+    readonly reset: (context: BuildContext) => boolean;
+  },
+);
 
 /**
  * A container for a [Scrollable] that responds to drag gestures by resizing
@@ -63127,8 +72096,13 @@ export interface DrawerControllerProps extends GestureProps {
  *  * [Drawer], a container with the default width of a drawer.
  *  * [Scaffold.drawer], the [Scaffold] slot for showing a drawer.
  */
-export const DrawerController: FlutterComponent<DrawerControllerProps> =
-  declareWidget<DrawerControllerProps>('DrawerController');
+export const DrawerController = Object.assign(
+  declareWidget<DrawerControllerProps>('DrawerController'),
+  {} as {
+    readonly maybeOf: (context: BuildContext) => DrawerController | null;
+    readonly of: (context: BuildContext) => DrawerController;
+  },
+);
 
 /**
  * The top-most region of a Material Design drawer. The header's [child]
@@ -63239,8 +72213,12 @@ export interface DrawerThemeProps extends GestureProps {
  *
  * Using this would allow you to override the [ThemeData.drawerTheme].
  */
-export const DrawerTheme: FlutterComponent<DrawerThemeProps> =
-  declareWidget<DrawerThemeProps>('DrawerTheme');
+export const DrawerTheme = Object.assign(
+  declareWidget<DrawerThemeProps>('DrawerTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => DrawerThemeData;
+  },
+);
 
 /**
  * A Material Design button for selecting from a list of items.
@@ -63898,10 +72876,14 @@ export interface DropdownButtonHideUnderlineProps extends GestureProps {
  * [DropdownButton] widgets placed within material data tables, as
  * required by the Material Design specification.
  */
-export const DropdownButtonHideUnderline: FlutterComponent<DropdownButtonHideUnderlineProps> =
+export const DropdownButtonHideUnderline = Object.assign(
   declareWidget<DropdownButtonHideUnderlineProps>(
     'DropdownButtonHideUnderline',
-  );
+  ),
+  {} as {
+    readonly at: (context: BuildContext) => boolean;
+  },
+);
 
 /**
  * A dropdown menu that can be opened from a [TextField]. The selected
@@ -64707,8 +73689,13 @@ export interface DropdownMenuThemeProps extends GestureProps {
  * Values specified here are used for [DropdownMenu] properties that are not
  * given an explicit non-null value.
  */
-export const DropdownMenuTheme: FlutterComponent<DropdownMenuThemeProps> =
-  declareWidget<DropdownMenuThemeProps>('DropdownMenuTheme');
+export const DropdownMenuTheme = Object.assign(
+  declareWidget<DropdownMenuThemeProps>('DropdownMenuTheme'),
+  {} as {
+    readonly maybeOf: (context: BuildContext) => DropdownMenuThemeData | null;
+    readonly of: (context: BuildContext) => DropdownMenuThemeData;
+  },
+);
 
 /**
  * A transition builder that animates its [child] based on the
@@ -66235,6 +75222,22 @@ export const EditableText = Object.assign(
      */
     readonly defaultStylusHandwritingEnabled: boolean;
   }>('EditableText'),
+  {} as {
+    readonly getEditableButtonItems: (options: {
+      clipboardStatus: ClipboardStatus;
+      onCopy: () => void;
+      onCut: () => void;
+      onPaste: () => void;
+      onSelectAll: () => void;
+      onLookUp: () => void;
+      onSearchWeb: () => void;
+      onShare: () => void;
+      onLiveTextInput: () => void;
+    }) => ContextMenuButtonItem[];
+    readonly debugDeterministicCursor: boolean;
+    readonly defaultSelectionHeightStyle: BoxHeightStyle;
+    readonly defaultSelectionWidthStyle: BoxWidthStyle;
+  },
 );
 
 /**
@@ -66384,8 +75387,50 @@ export interface ElevatedButtonProps extends Omit<
  *  * <https://material.io/design/components/buttons.html>
  *  * <https://m3.material.io/components/buttons>
  */
-export const ElevatedButton: FlutterComponent<ElevatedButtonProps> =
-  declareWidget<ElevatedButtonProps>('ElevatedButton');
+export const ElevatedButton = Object.assign(
+  declareWidget<ElevatedButtonProps>('ElevatedButton'),
+  {} as {
+    readonly styleFrom: (options?: {
+      foregroundColor?: ColorValue;
+      backgroundColor?: ColorValue;
+      disabledForegroundColor?: ColorValue;
+      disabledBackgroundColor?: ColorValue;
+      shadowColor?: ColorValue;
+      surfaceTintColor?: ColorValue;
+      iconColor?: ColorValue;
+      iconSize?: number;
+      iconAlignment?: IconAlignment;
+      disabledIconColor?: ColorValue;
+      overlayColor?: ColorValue;
+      elevation?: number;
+      textStyle?: TextStyleValue;
+      padding?: EdgeInsetsGeometryValue;
+      minimumSize?: SizeValue;
+      fixedSize?: SizeValue;
+      maximumSize?: SizeValue;
+      side?: BorderSideValue;
+      shape?: OutlinedBorderValue;
+      enabledMouseCursor?: MouseCursorValue;
+      disabledMouseCursor?: MouseCursorValue;
+      visualDensity?: VisualDensityValue;
+      tapTargetSize?: MaterialTapTargetSize;
+      animationDuration?: DurationValue;
+      enableFeedback?: boolean;
+      alignment?: AlignmentGeometryValue;
+      splashFactory?: InteractiveInkFeatureFactoryValue;
+      backgroundBuilder?: (
+        context: BuildContext,
+        states: WidgetState[],
+        child: FlutterElement | null,
+      ) => FlutterElement;
+      foregroundBuilder?: (
+        context: BuildContext,
+        states: WidgetState[],
+        child: FlutterElement | null,
+      ) => FlutterElement;
+    }) => ButtonStyle;
+  },
+);
 
 /**
  * Overrides the default [ButtonStyle] of its [ElevatedButton] descendants.
@@ -66428,8 +75473,12 @@ export interface ElevatedButtonThemeProps extends GestureProps {
  *  * [ThemeData.elevatedButtonTheme], which can be used to override the default
  *    [ButtonStyle] for [ElevatedButton]s below the overall [Theme].
  */
-export const ElevatedButtonTheme: FlutterComponent<ElevatedButtonThemeProps> =
-  declareWidget<ElevatedButtonThemeProps>('ElevatedButtonTheme');
+export const ElevatedButtonTheme = Object.assign(
+  declareWidget<ElevatedButtonThemeProps>('ElevatedButtonTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => ElevatedButtonThemeData;
+  },
+);
 
 /**
  * Enables the Flutter DevTools Widget Inspector for a [Widget] subtree.
@@ -66639,8 +75688,12 @@ export interface ErrorWidgetProps extends GestureProps {
  *  * <https://docs.flutter.dev/testing/errors>, more information about error
  *    handling in Flutter.
  */
-export const ErrorWidget: FlutterComponent<ErrorWidgetProps> =
-  declareWidget<ErrorWidgetProps>('ErrorWidget');
+export const ErrorWidget = Object.assign(
+  declareWidget<ErrorWidgetProps>('ErrorWidget'),
+  {} as {
+    readonly builder: (details: FlutterErrorDetails) => FlutterElement;
+  },
+);
 
 /**
  * A widget that controls whether or not the descendants of this widget are
@@ -67760,8 +76813,12 @@ export interface ExpansionTileThemeProps extends GestureProps {
  *  * [ThemeData.expansionTileTheme], which can be used to override the default
  *    [ExpansionTileTheme] for [ExpansionTile]s below the overall [Theme].
  */
-export const ExpansionTileTheme: FlutterComponent<ExpansionTileThemeProps> =
-  declareWidget<ExpansionTileThemeProps>('ExpansionTileTheme');
+export const ExpansionTileTheme = Object.assign(
+  declareWidget<ExpansionTileThemeProps>('ExpansionTileTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => ExpansionTileThemeData;
+  },
+);
 
 /**
  * An image that shows a [placeholder] image while the target [image] is
@@ -68332,8 +77389,50 @@ export interface FilledButtonProps extends Omit<
  *  * <https://material.io/design/components/buttons.html>
  *  * <https://m3.material.io/components/buttons>
  */
-export const FilledButton: FlutterComponent<FilledButtonProps> =
-  declareWidget<FilledButtonProps>('FilledButton');
+export const FilledButton = Object.assign(
+  declareWidget<FilledButtonProps>('FilledButton'),
+  {} as {
+    readonly styleFrom: (options?: {
+      foregroundColor?: ColorValue;
+      backgroundColor?: ColorValue;
+      disabledForegroundColor?: ColorValue;
+      disabledBackgroundColor?: ColorValue;
+      shadowColor?: ColorValue;
+      surfaceTintColor?: ColorValue;
+      iconColor?: ColorValue;
+      iconSize?: number;
+      iconAlignment?: IconAlignment;
+      disabledIconColor?: ColorValue;
+      overlayColor?: ColorValue;
+      elevation?: number;
+      textStyle?: TextStyleValue;
+      padding?: EdgeInsetsGeometryValue;
+      minimumSize?: SizeValue;
+      fixedSize?: SizeValue;
+      maximumSize?: SizeValue;
+      side?: BorderSideValue;
+      shape?: OutlinedBorderValue;
+      enabledMouseCursor?: MouseCursorValue;
+      disabledMouseCursor?: MouseCursorValue;
+      visualDensity?: VisualDensityValue;
+      tapTargetSize?: MaterialTapTargetSize;
+      animationDuration?: DurationValue;
+      enableFeedback?: boolean;
+      alignment?: AlignmentGeometryValue;
+      splashFactory?: InteractiveInkFeatureFactoryValue;
+      backgroundBuilder?: (
+        context: BuildContext,
+        states: WidgetState[],
+        child: FlutterElement | null,
+      ) => FlutterElement;
+      foregroundBuilder?: (
+        context: BuildContext,
+        states: WidgetState[],
+        child: FlutterElement | null,
+      ) => FlutterElement;
+    }) => ButtonStyle;
+  },
+);
 
 /**
  * Overrides the default [ButtonStyle] of its [FilledButton] descendants.
@@ -68376,8 +77475,12 @@ export interface FilledButtonThemeProps extends GestureProps {
  *  * [ThemeData.filledButtonTheme], which can be used to override the default
  *    [ButtonStyle] for [FilledButton]s below the overall [Theme].
  */
-export const FilledButtonTheme: FlutterComponent<FilledButtonThemeProps> =
-  declareWidget<FilledButtonThemeProps>('FilledButtonTheme');
+export const FilledButtonTheme = Object.assign(
+  declareWidget<FilledButtonThemeProps>('FilledButtonTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => FilledButtonThemeData;
+  },
+);
 
 /**
  * A Material Design filter chip.
@@ -69083,8 +78186,20 @@ export interface FlexibleSpaceBarProps extends GestureProps {
  *  * [AppBar], which is used by [SliverAppBar].
  *  * <https://material.io/design/components/app-bars-top.html#behavior>
  */
-export const FlexibleSpaceBar: FlutterComponent<FlexibleSpaceBarProps> =
-  declareWidget<FlexibleSpaceBarProps>('FlexibleSpaceBar');
+export const FlexibleSpaceBar = Object.assign(
+  declareWidget<FlexibleSpaceBarProps>('FlexibleSpaceBar'),
+  {} as {
+    readonly createSettings: (options: {
+      toolbarOpacity?: number;
+      minExtent?: number;
+      maxExtent?: number;
+      isScrolledUnder?: boolean;
+      hasLeading?: boolean;
+      currentExtent: number;
+      child: FlutterElement;
+    }) => FlutterElement;
+  },
+);
 
 /**
  * Provides sizing and opacity information to a [FlexibleSpaceBar].
@@ -69500,8 +78615,12 @@ export interface FloatingActionButtonThemeProps extends GestureProps {
  * Values specified here are used for [FloatingActionButton] properties that are not
  * given an explicit non-null value.
  */
-export const FloatingActionButtonTheme: FlutterComponent<FloatingActionButtonThemeProps> =
-  declareWidget<FloatingActionButtonThemeProps>('FloatingActionButtonTheme');
+export const FloatingActionButtonTheme = Object.assign(
+  declareWidget<FloatingActionButtonThemeProps>('FloatingActionButtonTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => FloatingActionButtonThemeData;
+  },
+);
 
 /**
  * A widget that sizes and positions children efficiently, according to the
@@ -70034,8 +79153,20 @@ export interface FocusProps extends GestureProps {
  *  * [FocusTraversalGroup], a widget that groups together and imposes a
  *    traversal policy on the [Focus] nodes below it in the widget hierarchy.
  */
-export const Focus: FlutterComponent<FocusProps> =
-  declareWidget<FocusProps>('Focus');
+export const Focus = Object.assign(
+  declareWidget<FocusProps>('Focus'),
+  {} as {
+    readonly isAt: (context: BuildContext) => boolean;
+    readonly maybeOf: (
+      context: BuildContext,
+      options?: { scopeOk?: boolean; createDependency?: boolean },
+    ) => FocusNode | null;
+    readonly of: (
+      context: BuildContext,
+      options?: { scopeOk?: boolean; createDependency?: boolean },
+    ) => FocusNode;
+  },
+);
 
 /**
  * A [FocusScope] is similar to a [Focus], but also serves as a scope for its
@@ -70220,8 +79351,15 @@ export interface FocusScopeProps extends GestureProps {
  *  * [FocusTraversalGroup], a widget used to configure the focus traversal
  *    policy for a widget subtree.
  */
-export const FocusScope: FlutterComponent<FocusScopeProps> =
-  declareWidget<FocusScopeProps>('FocusScope');
+export const FocusScope = Object.assign(
+  declareWidget<FocusScopeProps>('FocusScope'),
+  {} as {
+    readonly of: (
+      context: BuildContext,
+      options?: { createDependency?: boolean },
+    ) => FocusScopeNode;
+  },
+);
 
 /**
  * A widget that describes the inherited focus policy for focus traversal for
@@ -70340,8 +79478,14 @@ export interface FocusTraversalGroupProps extends GestureProps {
  *  * [DirectionalFocusTraversalPolicyMixin] a mixin class that implements
  *    focus traversal in a direction.
  */
-export const FocusTraversalGroup: FlutterComponent<FocusTraversalGroupProps> =
-  declareWidget<FocusTraversalGroupProps>('FocusTraversalGroup');
+export const FocusTraversalGroup = Object.assign(
+  declareWidget<FocusTraversalGroupProps>('FocusTraversalGroup'),
+  {} as {
+    readonly maybeOf: (context: BuildContext) => FocusTraversalPolicy | null;
+    readonly maybeOfNode: (node: FocusNode) => FocusTraversalPolicy | null;
+    readonly of: (context: BuildContext) => FocusTraversalPolicy;
+  },
+);
 
 /**
  * An inherited widget that describes the order in which its child subtree
@@ -70374,8 +79518,13 @@ export interface FocusTraversalOrderProps extends GestureProps {
  * The order for a widget is determined by the [FocusOrder] returned by
  * [FocusTraversalOrder.of] for a particular context.
  */
-export const FocusTraversalOrder: FlutterComponent<FocusTraversalOrderProps> =
-  declareWidget<FocusTraversalOrderProps>('FocusTraversalOrder');
+export const FocusTraversalOrder = Object.assign(
+  declareWidget<FocusTraversalOrderProps>('FocusTraversalOrder'),
+  {} as {
+    readonly maybeOf: (context: BuildContext) => FocusOrder | null;
+    readonly of: (context: BuildContext) => FocusOrder;
+  },
+);
 
 /**
  * A widget that combines the functionality of [Actions], [Shortcuts],
@@ -70612,8 +79761,13 @@ export interface FormProps extends GestureProps {
  *  * [FormField], a single form field widget that maintains the current state.
  *  * [TextFormField], a convenience widget that wraps a [TextField] widget in a [FormField].
  */
-export const Form: FlutterComponent<FormProps> =
-  declareWidget<FormProps>('Form');
+export const Form = Object.assign(
+  declareWidget<FormProps>('Form'),
+  {} as {
+    readonly maybeOf: (context: BuildContext) => FormState | null;
+    readonly of: (context: BuildContext) => FormState;
+  },
+);
 
 /**
  * A single form field.
@@ -71120,8 +80274,12 @@ export interface FutureBuilderProps extends GestureProps {
  *
  * ** See code in examples/api/lib/widgets/async/future_builder.0.dart **
  */
-export const FutureBuilder: FlutterComponent<FutureBuilderProps> =
-  declareWidget<FutureBuilderProps>('FutureBuilder');
+export const FutureBuilder = Object.assign(
+  declareWidget<FutureBuilderProps>('FutureBuilder'),
+  {} as {
+    readonly debugRethrowError: boolean;
+  },
+);
 
 /**
  * A widget that detects gestures.
@@ -73431,8 +82589,13 @@ export interface HeroControllerScopeProps extends GestureProps {
  * subscribes to more than one navigators. This can happen when there are
  * multiple navigators under the same [HeroControllerScope] in parallel.
  */
-export const HeroControllerScope: FlutterComponent<HeroControllerScopeProps> =
-  declareWidget<HeroControllerScopeProps>('HeroControllerScope');
+export const HeroControllerScope = Object.assign(
+  declareWidget<HeroControllerScopeProps>('HeroControllerScope'),
+  {} as {
+    readonly maybeOf: (context: BuildContext) => HeroController | null;
+    readonly of: (context: BuildContext) => HeroController;
+  },
+);
 
 /**
  * Enables or disables [Hero]es in the widget subtree.
@@ -74867,8 +84030,39 @@ export interface IconButtonProps extends Omit<
  *  * [TextButton], [ElevatedButton], [OutlinedButton], for buttons with text labels and an optional icon.
  *  * [InkResponse] and [InkWell], for the ink splash effect itself.
  */
-export const IconButton: FlutterComponent<IconButtonProps> =
-  declareWidget<IconButtonProps>('IconButton');
+export const IconButton = Object.assign(
+  declareWidget<IconButtonProps>('IconButton'),
+  {} as {
+    readonly styleFrom: (options?: {
+      foregroundColor?: ColorValue;
+      backgroundColor?: ColorValue;
+      disabledForegroundColor?: ColorValue;
+      disabledBackgroundColor?: ColorValue;
+      focusColor?: ColorValue;
+      hoverColor?: ColorValue;
+      highlightColor?: ColorValue;
+      shadowColor?: ColorValue;
+      surfaceTintColor?: ColorValue;
+      overlayColor?: ColorValue;
+      elevation?: number;
+      minimumSize?: SizeValue;
+      fixedSize?: SizeValue;
+      maximumSize?: SizeValue;
+      iconSize?: number;
+      side?: BorderSideValue;
+      shape?: OutlinedBorderValue;
+      padding?: EdgeInsetsGeometryValue;
+      enabledMouseCursor?: MouseCursorValue;
+      disabledMouseCursor?: MouseCursorValue;
+      visualDensity?: VisualDensityValue;
+      tapTargetSize?: MaterialTapTargetSize;
+      animationDuration?: DurationValue;
+      enableFeedback?: boolean;
+      alignment?: AlignmentGeometryValue;
+      splashFactory?: InteractiveInkFeatureFactoryValue;
+    }) => ButtonStyle;
+  },
+);
 
 /**
  * Overrides the default [ButtonStyle] of its [IconButton] descendants.
@@ -74907,8 +84101,12 @@ export interface IconButtonThemeProps extends GestureProps {
  *  * [ThemeData.iconButtonTheme], which can be used to override the default
  *    [ButtonStyle] for [IconButton]s below the overall [Theme].
  */
-export const IconButtonTheme: FlutterComponent<IconButtonThemeProps> =
-  declareWidget<IconButtonThemeProps>('IconButtonTheme');
+export const IconButtonTheme = Object.assign(
+  declareWidget<IconButtonThemeProps>('IconButtonTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => IconButtonThemeData;
+  },
+);
 
 /**
  * Controls the default properties of icons in a widget subtree.
@@ -74935,8 +84133,17 @@ export interface IconThemeProps extends GestureProps {
  *
  * The icon theme is honored by [Icon] and [ImageIcon] widgets.
  */
-export const IconTheme: FlutterComponent<IconThemeProps> =
-  declareWidget<IconThemeProps>('IconTheme');
+export const IconTheme = Object.assign(
+  declareWidget<IconThemeProps>('IconTheme'),
+  {} as {
+    readonly merge: (options: {
+      key?: Key;
+      data: IconThemeDataValue;
+      child: FlutterElement;
+    }) => FlutterElement;
+    readonly of: (context: BuildContext) => IconThemeData;
+  },
+);
 
 /**
  * A widget that causes the parent to ignore the [child] for the purposes
@@ -77546,8 +86753,12 @@ export interface InputDecorationThemeProps extends GestureProps {
  *  * [ThemeData.inputDecorationTheme], which specifies an input decoration theme as
  *    part of the overall Material theme.
  */
-export const InputDecorationTheme: FlutterComponent<InputDecorationThemeProps> =
-  declareWidget<InputDecorationThemeProps>('InputDecorationTheme');
+export const InputDecorationTheme = Object.assign(
+  declareWidget<InputDecorationThemeProps>('InputDecorationTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => InputDecorationThemeData;
+  },
+);
 
 /**
  * Defines the appearance of a Material Design text field.
@@ -77689,8 +86900,12 @@ export interface InputDecoratorProps extends GestureProps {
  *  * [Decoration] and [DecoratedBox], for drawing arbitrary decorations
  *    around other widgets.
  */
-export const InputDecorator: FlutterComponent<InputDecoratorProps> =
-  declareWidget<InputDecoratorProps>('InputDecorator');
+export const InputDecorator = Object.assign(
+  declareWidget<InputDecoratorProps>('InputDecorator'),
+  {} as {
+    readonly containerOf: (context: BuildContext) => RenderBox | null;
+  },
+);
 
 /**
  * A widget that enables pan and zoom interactions with its child.
@@ -78353,8 +87568,15 @@ export interface KeyedSubtreeProps extends GestureProps {
  *
  * Useful for attaching a key to an existing widget.
  */
-export const KeyedSubtree: FlutterComponent<KeyedSubtreeProps> =
-  declareWidget<KeyedSubtreeProps>('KeyedSubtree');
+export const KeyedSubtree = Object.assign(
+  declareWidget<KeyedSubtreeProps>('KeyedSubtree'),
+  {} as {
+    readonly ensureUniqueKeysForList: (
+      items: FlutterElement[],
+      options?: { baseIndex?: number },
+    ) => FlutterElement[];
+  },
+);
 
 /**
  * Builds a widget tree that can depend on the parent widget's size.
@@ -79705,8 +88927,16 @@ export interface ListTileProps extends Omit<
  *  * Cookbook: [Use lists](https://docs.flutter.dev/cookbook/lists/basic-list)
  *  * Cookbook: [Implement swipe to dismiss](https://docs.flutter.dev/cookbook/gestures/dismissible)
  */
-export const ListTile: FlutterComponent<ListTileProps> =
-  declareWidget<ListTileProps>('ListTile');
+export const ListTile = Object.assign(
+  declareWidget<ListTileProps>('ListTile'),
+  {} as {
+    readonly divideTiles: (options: {
+      context?: BuildContext;
+      tiles: FlutterElement[];
+      color?: ColorValue;
+    }) => FlutterElement[];
+  },
+);
 
 /**
  * An inherited widget that defines color and style parameters for [ListTile]s
@@ -79755,8 +88985,38 @@ export interface ListTileThemeProps extends GestureProps {
  * The [Drawer] widget specifies a tile theme for its children which sets
  * [style] to [ListTileStyle.drawer].
  */
-export const ListTileTheme: FlutterComponent<ListTileThemeProps> =
-  declareWidget<ListTileThemeProps>('ListTileTheme');
+export const ListTileTheme = Object.assign(
+  declareWidget<ListTileThemeProps>('ListTileTheme'),
+  {} as {
+    readonly merge: (options: {
+      key?: Key;
+      dense?: boolean;
+      shape?: ShapeBorderValue;
+      style?: ListTileStyle;
+      selectedColor?: ColorValue;
+      iconColor?: ColorValue;
+      textColor?: ColorValue;
+      titleTextStyle?: TextStyleValue;
+      subtitleTextStyle?: TextStyleValue;
+      leadingAndTrailingTextStyle?: TextStyleValue;
+      contentPadding?: EdgeInsetsGeometryValue;
+      tileColor?: ColorValue;
+      selectedTileColor?: ColorValue;
+      enableFeedback?: boolean;
+      horizontalTitleGap?: number;
+      minVerticalPadding?: number;
+      minLeadingWidth?: number;
+      minTileHeight?: number;
+      titleAlignment?: ListTileTitleAlignment;
+      mouseCursor?: WidgetStatePropertyValue;
+      visualDensity?: VisualDensityValue;
+      controlAffinity?: ListTileControlAffinity;
+      isThreeLine?: boolean;
+      child: FlutterElement;
+    }) => FlutterElement;
+    readonly of: (context: BuildContext) => ListTileThemeData;
+  },
+);
 
 /**
  * A scrollable list of widgets arranged linearly.
@@ -81345,8 +90605,14 @@ export interface LocalizationsProps extends GestureProps {
  * support the appropriate [Directionality.textDirection] of the localized
  * resources.
  */
-export const Localizations: FlutterComponent<LocalizationsProps> =
-  declareWidget<LocalizationsProps>('Localizations');
+export const Localizations = Object.assign(
+  declareWidget<LocalizationsProps>('Localizations'),
+  {} as {
+    readonly localeOf: (context: BuildContext) => Locale;
+    readonly maybeLocaleOf: (context: BuildContext) => Locale | null;
+    readonly of: (context: BuildContext, type: TypeValue) => unknown | null;
+  },
+);
 
 /**
  * Makes its child draggable starting from long press.
@@ -81679,8 +90945,49 @@ export interface LookupBoundaryProps extends GestureProps {
  * anomalies. Those subtrees are expected to introduce their own [Material]
  * widget that buttons there can utilize without crossing a lookup boundary.
  */
-export const LookupBoundary: FlutterComponent<LookupBoundaryProps> =
-  declareWidget<LookupBoundaryProps>('LookupBoundary');
+export const LookupBoundary = Object.assign(
+  declareWidget<LookupBoundaryProps>('LookupBoundary'),
+  {} as {
+    readonly debugIsHidingAncestorRenderObjectOfType: (
+      context: BuildContext,
+    ) => boolean;
+    readonly debugIsHidingAncestorStateOfType: (
+      context: BuildContext,
+    ) => boolean;
+    readonly debugIsHidingAncestorWidgetOfExactType: (
+      context: BuildContext,
+    ) => boolean;
+    readonly dependOnInheritedWidgetOfExactType: (
+      context: BuildContext,
+      options?: { aspect?: ObjectValue },
+    ) => unknown | null;
+    readonly findAncestorRenderObjectOfType: (
+      context: BuildContext,
+    ) => unknown | null;
+    readonly findAncestorStateOfType: (context: BuildContext) => unknown | null;
+    readonly findAncestorWidgetOfExactType: (
+      context: BuildContext,
+    ) => unknown | null;
+    readonly findRootAncestorStateOfType: (
+      context: BuildContext,
+    ) => unknown | null;
+    readonly getElementForInheritedWidgetOfExactType: (
+      context: BuildContext,
+    ) => InheritedElement | null;
+    readonly getInheritedWidgetOfExactType: (
+      context: BuildContext,
+      options?: { aspect?: ObjectValue },
+    ) => unknown | null;
+    readonly visitAncestorElements: (
+      context: BuildContext,
+      visitor: (element: Element) => boolean,
+    ) => void;
+    readonly visitChildElements: (
+      context: BuildContext,
+      visitor: (element: Element) => void,
+    ) => void;
+  },
+);
 
 /**
  * A Material-styled magnifying glass.
@@ -82117,6 +91424,10 @@ export const Material = Object.assign(
      */
     readonly defaultSplashRadius: number;
   }>('Material'),
+  {} as {
+    readonly maybeOf: (context: BuildContext) => MaterialInkController | null;
+    readonly of: (context: BuildContext) => MaterialInkController;
+  },
 );
 
 /**
@@ -82820,8 +92131,12 @@ export interface MaterialAppProps extends GestureProps {
  *  * The Flutter Internationalization Tutorial,
  *    <https://flutter.dev/to/internationalization/>.
  */
-export const MaterialApp: FlutterComponent<MaterialAppProps> =
-  declareWidget<MaterialAppProps>('MaterialApp');
+export const MaterialApp = Object.assign(
+  declareWidget<MaterialAppProps>('MaterialApp'),
+  {} as {
+    readonly createMaterialHeroController: () => HeroController;
+  },
+);
 
 /**
  * A Material Design banner.
@@ -83021,8 +92336,14 @@ export interface MaterialBannerProps extends GestureProps {
  *
  * This widget is unrelated to the widgets library [Banner] widget.
  */
-export const MaterialBanner: FlutterComponent<MaterialBannerProps> =
-  declareWidget<MaterialBannerProps>('MaterialBanner');
+export const MaterialBanner = Object.assign(
+  declareWidget<MaterialBannerProps>('MaterialBanner'),
+  {} as {
+    readonly createAnimationController: (options: {
+      vsync: TickerProvider;
+    }) => AnimationController;
+  },
+);
 
 /**
  * An inherited widget that defines the configuration for
@@ -83053,8 +92374,12 @@ export interface MaterialBannerThemeProps extends GestureProps {
  * Values specified here are used for [MaterialBanner] properties that are not
  * given an explicit non-null value.
  */
-export const MaterialBannerTheme: FlutterComponent<MaterialBannerThemeProps> =
-  declareWidget<MaterialBannerThemeProps>('MaterialBannerTheme');
+export const MaterialBannerTheme = Object.assign(
+  declareWidget<MaterialBannerThemeProps>('MaterialBannerTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => MaterialBannerThemeData;
+  },
+);
 
 /**
  * A utility class for building Material buttons that depend on the
@@ -83573,8 +92898,130 @@ export interface MediaQueryProps extends GestureProps {
  *    it up to date with the current screen metrics as they change.
  *  * [MediaQueryData], the data structure that represents the metrics.
  */
-export const MediaQuery: FlutterComponent<MediaQueryProps> =
-  declareWidget<MediaQueryProps>('MediaQuery');
+export const MediaQuery = Object.assign(
+  declareWidget<MediaQueryProps>('MediaQuery'),
+  {} as {
+    readonly accessibleNavigationOf: (context: BuildContext) => boolean;
+    readonly alwaysUse24HourFormatOf: (context: BuildContext) => boolean;
+    readonly applyTextStyleOverrides: (options: {
+      key?: Key;
+      lineHeightScaleFactorOverride: number;
+      letterSpacingOverride: number;
+      wordSpacingOverride: number;
+      paragraphSpacingOverride: number;
+      child: FlutterElement;
+    }) => FlutterElement;
+    readonly boldTextOf: (context: BuildContext) => boolean;
+    readonly devicePixelRatioOf: (context: BuildContext) => number;
+    readonly disableAnimationsOf: (context: BuildContext) => boolean;
+    readonly displayCornerRadiiOf: (
+      context: BuildContext,
+    ) => BorderRadius | null;
+    readonly displayFeaturesOf: (context: BuildContext) => DisplayFeature[];
+    readonly fromView: (options: {
+      key?: Key;
+      view: FlutterView;
+      child: FlutterElement;
+    }) => FlutterElement;
+    readonly fromWindow: (options: {
+      key?: Key;
+      child: FlutterElement;
+    }) => FlutterElement;
+    readonly gestureSettingsOf: (
+      context: BuildContext,
+    ) => DeviceGestureSettings;
+    readonly heightOf: (context: BuildContext) => number;
+    readonly highContrastOf: (context: BuildContext) => boolean;
+    readonly invertColorsOf: (context: BuildContext) => boolean;
+    readonly maybeAccessibleNavigationOf: (
+      context: BuildContext,
+    ) => boolean | null;
+    readonly maybeAlwaysUse24HourFormatOf: (
+      context: BuildContext,
+    ) => boolean | null;
+    readonly maybeBoldTextOf: (context: BuildContext) => boolean | null;
+    readonly maybeDevicePixelRatioOf: (context: BuildContext) => number | null;
+    readonly maybeDisableAnimationsOf: (
+      context: BuildContext,
+    ) => boolean | null;
+    readonly maybeDisplayCornerRadiiOf: (
+      context: BuildContext,
+    ) => BorderRadius | null;
+    readonly maybeDisplayFeaturesOf: (
+      context: BuildContext,
+    ) => DisplayFeature[] | null;
+    readonly maybeGestureSettingsOf: (
+      context: BuildContext,
+    ) => DeviceGestureSettings | null;
+    readonly maybeHeightOf: (context: BuildContext) => number | null;
+    readonly maybeHighContrastOf: (context: BuildContext) => boolean | null;
+    readonly maybeInvertColorsOf: (context: BuildContext) => boolean | null;
+    readonly maybeLetterSpacingOverrideOf: (
+      context: BuildContext,
+    ) => number | null;
+    readonly maybeLineHeightScaleFactorOverrideOf: (
+      context: BuildContext,
+    ) => number | null;
+    readonly maybeNavigationModeOf: (
+      context: BuildContext,
+    ) => NavigationMode | null;
+    readonly maybeOf: (context: BuildContext) => MediaQueryData | null;
+    readonly maybeOnOffSwitchLabelsOf: (
+      context: BuildContext,
+    ) => boolean | null;
+    readonly maybeOrientationOf: (context: BuildContext) => Orientation | null;
+    readonly maybePaddingOf: (context: BuildContext) => EdgeInsets | null;
+    readonly maybeParagraphSpacingOverrideOf: (
+      context: BuildContext,
+    ) => number | null;
+    readonly maybePlatformBrightnessOf: (
+      context: BuildContext,
+    ) => Brightness | null;
+    readonly maybeSizeOf: (context: BuildContext) => Size | null;
+    readonly maybeSupportsAnnounceOf: (context: BuildContext) => boolean | null;
+    readonly maybeSupportsShowingSystemContextMenu: (
+      context: BuildContext,
+    ) => boolean | null;
+    readonly maybeSystemGestureInsetsOf: (
+      context: BuildContext,
+    ) => EdgeInsets | null;
+    readonly maybeTextScaleFactorOf: (context: BuildContext) => number | null;
+    readonly maybeTextScalerOf: (context: BuildContext) => TextScaler | null;
+    readonly maybeViewInsetsOf: (context: BuildContext) => EdgeInsets | null;
+    readonly maybeViewPaddingOf: (context: BuildContext) => EdgeInsets | null;
+    readonly maybeWidthOf: (context: BuildContext) => number | null;
+    readonly maybeWordSpacingOverrideOf: (
+      context: BuildContext,
+    ) => number | null;
+    readonly navigationModeOf: (context: BuildContext) => NavigationMode;
+    readonly of: (context: BuildContext) => MediaQueryData;
+    readonly onOffSwitchLabelsOf: (context: BuildContext) => boolean;
+    readonly orientationOf: (context: BuildContext) => Orientation;
+    readonly paddingOf: (context: BuildContext) => EdgeInsets;
+    readonly platformBrightnessOf: (context: BuildContext) => Brightness;
+    readonly sizeOf: (context: BuildContext) => Size;
+    readonly supportsAnnounceOf: (context: BuildContext) => boolean;
+    readonly supportsShowingSystemContextMenu: (
+      context: BuildContext,
+    ) => boolean;
+    readonly systemGestureInsetsOf: (context: BuildContext) => EdgeInsets;
+    readonly textScaleFactorOf: (context: BuildContext) => number;
+    readonly textScalerOf: (context: BuildContext) => TextScaler;
+    readonly viewInsetsOf: (context: BuildContext) => EdgeInsets;
+    readonly viewPaddingOf: (context: BuildContext) => EdgeInsets;
+    readonly widthOf: (context: BuildContext) => number;
+    readonly withClampedTextScaling: (options: {
+      key?: Key;
+      minScaleFactor?: number;
+      maxScaleFactor?: number;
+      child: FlutterElement;
+    }) => FlutterElement;
+    readonly withNoTextScaling: (options: {
+      key?: Key;
+      child: FlutterElement;
+    }) => FlutterElement;
+  },
+);
 
 /**
  * An [InheritedWidget] that provides a descendant [MenuAcceleratorLabel] with
@@ -83618,10 +93065,17 @@ export interface MenuAcceleratorCallbackBindingProps extends GestureProps {
  * [MenuAnchor] or [MenuBar]. Provided menu items such as [MenuItemButton] and
  * [SubmenuButton] already supply this wrapper internally.
  */
-export const MenuAcceleratorCallbackBinding: FlutterComponent<MenuAcceleratorCallbackBindingProps> =
+export const MenuAcceleratorCallbackBinding = Object.assign(
   declareWidget<MenuAcceleratorCallbackBindingProps>(
     'MenuAcceleratorCallbackBinding',
-  );
+  ),
+  {} as {
+    readonly maybeOf: (
+      context: BuildContext,
+    ) => MenuAcceleratorCallbackBinding | null;
+    readonly of: (context: BuildContext) => MenuAcceleratorCallbackBinding;
+  },
+);
 
 /**
  * A widget that draws the label text for a menu item (typically a
@@ -83742,8 +93196,20 @@ export interface MenuAcceleratorLabelProps extends GestureProps {
  *
  * ** See code in examples/api/lib/material/menu_anchor/menu_accelerator_label.0.dart **
  */
-export const MenuAcceleratorLabel: FlutterComponent<MenuAcceleratorLabelProps> =
-  declareWidget<MenuAcceleratorLabelProps>('MenuAcceleratorLabel');
+export const MenuAcceleratorLabel = Object.assign(
+  declareWidget<MenuAcceleratorLabelProps>('MenuAcceleratorLabel'),
+  {} as {
+    readonly defaultLabelBuilder: (
+      context: BuildContext,
+      label: string,
+      index: number,
+    ) => FlutterElement;
+    readonly stripAcceleratorMarkers: (
+      label: string,
+      options?: { setIndex?: (index: number) => void },
+    ) => string;
+  },
+);
 
 /**
  * A widget used to mark the "anchor" for a set of submenus, defining the
@@ -84245,8 +93711,12 @@ export interface MenuBarThemeProps extends GestureProps {
  *   properties.
  * * [MenuBar], a widget that creates a menu bar that can use [SubmenuButton]s.
  */
-export const MenuBarTheme: FlutterComponent<MenuBarThemeProps> =
-  declareWidget<MenuBarThemeProps>('MenuBarTheme');
+export const MenuBarTheme = Object.assign(
+  declareWidget<MenuBarThemeProps>('MenuBarTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => MenuBarThemeData;
+  },
+);
 
 /**
  * Overrides the default [ButtonStyle] of its [MenuItemButton] and
@@ -84297,8 +93767,12 @@ export interface MenuButtonThemeProps extends GestureProps {
  *   [ButtonStyle] for [MenuItemButton]s and [SubmenuButton]s below the overall
  *   [Theme].
  */
-export const MenuButtonTheme: FlutterComponent<MenuButtonThemeProps> =
-  declareWidget<MenuButtonThemeProps>('MenuButtonTheme');
+export const MenuButtonTheme = Object.assign(
+  declareWidget<MenuButtonThemeProps>('MenuButtonTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => MenuButtonThemeData;
+  },
+);
 
 /**
  * A button for use in a [MenuBar], in a menu created with [MenuAnchor], or on
@@ -84455,8 +93929,39 @@ export interface MenuItemButtonProps extends Omit<GestureProps, 'onClick'> {
  * * [CallbackShortcuts] to define shortcuts that call a callback without
  *   involving [Actions].
  */
-export const MenuItemButton: FlutterComponent<MenuItemButtonProps> =
-  declareWidget<MenuItemButtonProps>('MenuItemButton');
+export const MenuItemButton = Object.assign(
+  declareWidget<MenuItemButtonProps>('MenuItemButton'),
+  {} as {
+    readonly styleFrom: (options?: {
+      foregroundColor?: ColorValue;
+      backgroundColor?: ColorValue;
+      disabledForegroundColor?: ColorValue;
+      disabledBackgroundColor?: ColorValue;
+      shadowColor?: ColorValue;
+      surfaceTintColor?: ColorValue;
+      iconColor?: ColorValue;
+      iconSize?: number;
+      disabledIconColor?: ColorValue;
+      textStyle?: TextStyleValue;
+      overlayColor?: ColorValue;
+      elevation?: number;
+      padding?: EdgeInsetsGeometryValue;
+      minimumSize?: SizeValue;
+      fixedSize?: SizeValue;
+      maximumSize?: SizeValue;
+      enabledMouseCursor?: MouseCursorValue;
+      disabledMouseCursor?: MouseCursorValue;
+      side?: BorderSideValue;
+      shape?: OutlinedBorderValue;
+      visualDensity?: VisualDensityValue;
+      tapTargetSize?: MaterialTapTargetSize;
+      animationDuration?: DurationValue;
+      enableFeedback?: boolean;
+      alignment?: AlignmentGeometryValue;
+      splashFactory?: InteractiveInkFeatureFactoryValue;
+    }) => ButtonStyle;
+  },
+);
 
 /**
  * An inherited widget that defines the configuration in this widget's
@@ -84512,8 +94017,12 @@ export interface MenuThemeProps extends GestureProps {
  * * [SubmenuButton], a widget that specifies an item with a cascading submenu
  *   in a [MenuBar] menu.
  */
-export const MenuTheme: FlutterComponent<MenuThemeProps> =
-  declareWidget<MenuThemeProps>('MenuTheme');
+export const MenuTheme = Object.assign(
+  declareWidget<MenuThemeProps>('MenuTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => MenuThemeData;
+  },
+);
 
 /**
  * A widget that merges the semantics of its descendants.
@@ -85354,8 +94863,12 @@ export interface NavigationBarThemeProps extends GestureProps {
  *  * [ThemeData.navigationBarTheme], which describes the
  *    [NavigationBarThemeData] in the overall theme for the application.
  */
-export const NavigationBarTheme: FlutterComponent<NavigationBarThemeProps> =
-  declareWidget<NavigationBarThemeProps>('NavigationBarTheme');
+export const NavigationBarTheme = Object.assign(
+  declareWidget<NavigationBarThemeProps>('NavigationBarTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => NavigationBarThemeData;
+  },
+);
 
 /**
  * A Material 3 [NavigationBar] destination.
@@ -85696,8 +95209,12 @@ export interface NavigationDrawerThemeProps extends GestureProps {
  *  * [ThemeData.navigationDrawerTheme], which describes the
  *    [NavigationDrawerThemeData] in the overall theme for the application.
  */
-export const NavigationDrawerTheme: FlutterComponent<NavigationDrawerThemeProps> =
-  declareWidget<NavigationDrawerThemeProps>('NavigationDrawerTheme');
+export const NavigationDrawerTheme = Object.assign(
+  declareWidget<NavigationDrawerThemeProps>('NavigationDrawerTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => NavigationDrawerThemeData;
+  },
+);
 
 /**
  * Selection Indicator for the Material 3 [NavigationBar] and [NavigationRail]
@@ -86122,8 +95639,12 @@ export interface NavigationRailProps extends GestureProps {
  *  * <https://material.io/components/navigation-rail/>
  *  * <https://m3.material.io/components/navigation-rail>
  */
-export const NavigationRail: FlutterComponent<NavigationRailProps> =
-  declareWidget<NavigationRailProps>('NavigationRail');
+export const NavigationRail = Object.assign(
+  declareWidget<NavigationRailProps>('NavigationRail'),
+  {} as {
+    readonly extendedAnimation: (context: BuildContext) => Animation;
+  },
+);
 
 /**
  * An inherited widget that defines visual properties for [NavigationRail]s and
@@ -86156,8 +95677,12 @@ export interface NavigationRailThemeProps extends GestureProps {
  * Values specified here are used for [NavigationRail] properties that are not
  * given an explicit non-null value.
  */
-export const NavigationRailTheme: FlutterComponent<NavigationRailThemeProps> =
-  declareWidget<NavigationRailThemeProps>('NavigationRailTheme');
+export const NavigationRailTheme = Object.assign(
+  declareWidget<NavigationRailThemeProps>('NavigationRailTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => NavigationRailThemeData;
+  },
+);
 
 /**
  * [NavigationToolbar] is a layout helper to position 3 widgets or groups of
@@ -87053,6 +96578,150 @@ export const Navigator = Object.assign(
      */
     readonly defaultRouteName: string;
   }>('Navigator'),
+  {} as {
+    readonly canPop: (context: BuildContext) => boolean;
+    readonly defaultGenerateInitialRoutes: (
+      navigator: NavigatorState,
+      initialRouteName: string,
+    ) => Route[];
+    readonly maybeOf: (
+      context: BuildContext,
+      options?: { rootNavigator?: boolean },
+    ) => NavigatorState | null;
+    readonly maybePop: (
+      context: BuildContext,
+      result?: unknown,
+    ) => Promise<boolean>;
+    readonly of: (
+      context: BuildContext,
+      options?: { rootNavigator?: boolean },
+    ) => NavigatorState;
+    readonly pop: (context: BuildContext, result?: unknown) => void;
+    readonly popAndPushNamed: (
+      context: BuildContext,
+      routeName: string,
+      options?: { result?: unknown; arguments?: ObjectValue },
+    ) => Promise<unknown | null>;
+    readonly popUntil: (
+      context: BuildContext,
+      predicate: (route: Route) => boolean,
+    ) => void;
+    readonly popUntilWithResult: (
+      context: BuildContext,
+      predicate: (route: Route) => boolean,
+      result: unknown,
+    ) => void;
+    readonly push: (
+      context: BuildContext,
+      route: Route,
+    ) => Promise<unknown | null>;
+    readonly pushAndRemoveUntil: (
+      context: BuildContext,
+      newRoute: Route,
+      predicate: (route: Route) => boolean,
+    ) => Promise<unknown | null>;
+    readonly pushNamed: (
+      context: BuildContext,
+      routeName: string,
+      options?: { arguments?: ObjectValue },
+    ) => Promise<unknown | null>;
+    readonly pushNamedAndRemoveUntil: (
+      context: BuildContext,
+      newRouteName: string,
+      predicate: (route: Route) => boolean,
+      options?: { arguments?: ObjectValue },
+    ) => Promise<unknown | null>;
+    readonly pushReplacement: (
+      context: BuildContext,
+      newRoute: Route,
+      options?: { result?: unknown },
+    ) => Promise<unknown | null>;
+    readonly pushReplacementNamed: (
+      context: BuildContext,
+      routeName: string,
+      options?: { result?: unknown; arguments?: ObjectValue },
+    ) => Promise<unknown | null>;
+    readonly removeRoute: (
+      context: BuildContext,
+      route: Route,
+      result?: unknown,
+    ) => void;
+    readonly removeRouteBelow: (
+      context: BuildContext,
+      anchorRoute: Route,
+      result?: unknown,
+    ) => void;
+    readonly replace: (
+      context: BuildContext,
+      options: { oldRoute: Route; newRoute: Route },
+    ) => void;
+    readonly replaceRouteBelow: (
+      context: BuildContext,
+      options: { anchorRoute: Route; newRoute: Route },
+    ) => void;
+    readonly restorablePopAndPushNamed: (
+      context: BuildContext,
+      routeName: string,
+      options?: { result?: unknown; arguments?: ObjectValue },
+    ) => string;
+    readonly restorablePush: (
+      context: BuildContext,
+      routeBuilder: (context: BuildContext, arguments_: Object | null) => Route,
+      options?: { arguments?: ObjectValue },
+    ) => string;
+    readonly restorablePushAndRemoveUntil: (
+      context: BuildContext,
+      newRouteBuilder: (
+        context: BuildContext,
+        arguments_: Object | null,
+      ) => Route,
+      predicate: (route: Route) => boolean,
+      options?: { arguments?: ObjectValue },
+    ) => string;
+    readonly restorablePushNamed: (
+      context: BuildContext,
+      routeName: string,
+      options?: { arguments?: ObjectValue },
+    ) => string;
+    readonly restorablePushNamedAndRemoveUntil: (
+      context: BuildContext,
+      newRouteName: string,
+      predicate: (route: Route) => boolean,
+      options?: { arguments?: ObjectValue },
+    ) => string;
+    readonly restorablePushReplacement: (
+      context: BuildContext,
+      routeBuilder: (context: BuildContext, arguments_: Object | null) => Route,
+      options?: { result?: unknown; arguments?: ObjectValue },
+    ) => string;
+    readonly restorablePushReplacementNamed: (
+      context: BuildContext,
+      routeName: string,
+      options?: { result?: unknown; arguments?: ObjectValue },
+    ) => string;
+    readonly restorableReplace: (
+      context: BuildContext,
+      options: {
+        oldRoute: Route;
+        newRouteBuilder: (
+          context: BuildContext,
+          arguments_: Object | null,
+        ) => Route;
+        arguments?: ObjectValue;
+      },
+    ) => string;
+    readonly restorableReplaceRouteBelow: (
+      context: BuildContext,
+      options: {
+        anchorRoute: Route;
+        newRouteBuilder: (
+          context: BuildContext,
+          arguments_: Object | null,
+        ) => Route;
+        arguments?: ObjectValue;
+      },
+    ) => string;
+  },
 );
 
 /**
@@ -87557,8 +97226,14 @@ export interface NestedScrollViewProps extends GestureProps {
  *  * [SliverOverlapInjector], a sliver that has a sliver geometry based on
  *    the values stored in a [SliverOverlapAbsorberHandle].
  */
-export const NestedScrollView: FlutterComponent<NestedScrollViewProps> =
-  declareWidget<NestedScrollViewProps>('NestedScrollView');
+export const NestedScrollView = Object.assign(
+  declareWidget<NestedScrollViewProps>('NestedScrollView'),
+  {} as {
+    readonly sliverOverlapAbsorberHandleFor: (
+      context: BuildContext,
+    ) => SliverOverlapAbsorberHandle;
+  },
+);
 
 /**
  * The [Viewport] variant used by [NestedScrollView].
@@ -88200,8 +97875,50 @@ export interface OutlinedButtonProps extends Omit<
  *  * <https://material.io/design/components/buttons.html>
  *  * <https://m3.material.io/components/buttons>
  */
-export const OutlinedButton: FlutterComponent<OutlinedButtonProps> =
-  declareWidget<OutlinedButtonProps>('OutlinedButton');
+export const OutlinedButton = Object.assign(
+  declareWidget<OutlinedButtonProps>('OutlinedButton'),
+  {} as {
+    readonly styleFrom: (options?: {
+      foregroundColor?: ColorValue;
+      backgroundColor?: ColorValue;
+      disabledForegroundColor?: ColorValue;
+      disabledBackgroundColor?: ColorValue;
+      shadowColor?: ColorValue;
+      surfaceTintColor?: ColorValue;
+      iconColor?: ColorValue;
+      iconSize?: number;
+      iconAlignment?: IconAlignment;
+      disabledIconColor?: ColorValue;
+      overlayColor?: ColorValue;
+      elevation?: number;
+      textStyle?: TextStyleValue;
+      padding?: EdgeInsetsGeometryValue;
+      minimumSize?: SizeValue;
+      fixedSize?: SizeValue;
+      maximumSize?: SizeValue;
+      side?: BorderSideValue;
+      shape?: OutlinedBorderValue;
+      enabledMouseCursor?: MouseCursorValue;
+      disabledMouseCursor?: MouseCursorValue;
+      visualDensity?: VisualDensityValue;
+      tapTargetSize?: MaterialTapTargetSize;
+      animationDuration?: DurationValue;
+      enableFeedback?: boolean;
+      alignment?: AlignmentGeometryValue;
+      splashFactory?: InteractiveInkFeatureFactoryValue;
+      backgroundBuilder?: (
+        context: BuildContext,
+        states: WidgetState[],
+        child: FlutterElement | null,
+      ) => FlutterElement;
+      foregroundBuilder?: (
+        context: BuildContext,
+        states: WidgetState[],
+        child: FlutterElement | null,
+      ) => FlutterElement;
+    }) => ButtonStyle;
+  },
+);
 
 /**
  * Overrides the default [ButtonStyle] of its [OutlinedButton] descendants.
@@ -88244,8 +97961,12 @@ export interface OutlinedButtonThemeProps extends GestureProps {
  *  * [ThemeData.outlinedButtonTheme], which can be used to override the default
  *    [ButtonStyle] for [OutlinedButton]s below the overall [Theme].
  */
-export const OutlinedButtonTheme: FlutterComponent<OutlinedButtonThemeProps> =
-  declareWidget<OutlinedButtonThemeProps>('OutlinedButtonTheme');
+export const OutlinedButtonTheme = Object.assign(
+  declareWidget<OutlinedButtonThemeProps>('OutlinedButtonTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => OutlinedButtonThemeData;
+  },
+);
 
 /**
  * A widget that lays out its [children] in a row unless they
@@ -88709,8 +98430,25 @@ export interface OverlayProps extends GestureProps {
  *  * [CupertinoApp], which inserts an [Overlay] widget indirectly via its [Navigator].
  *  * [Stack], which allows directly displaying a stack of widgets.
  */
-export const Overlay: FlutterComponent<OverlayProps> =
-  declareWidget<OverlayProps>('Overlay');
+export const Overlay = Object.assign(
+  declareWidget<OverlayProps>('Overlay'),
+  {} as {
+    readonly maybeOf: (
+      context: BuildContext,
+      options?: { rootOverlay?: boolean },
+    ) => OverlayState | null;
+    readonly of: (
+      context: BuildContext,
+      options?: { rootOverlay?: boolean; debugRequiredFor?: FlutterElement },
+    ) => OverlayState;
+    readonly wrap: (options: {
+      key?: Key;
+      clipBehavior?: Clip;
+      alwaysSizeToContent?: boolean;
+      child: FlutterElement;
+    }) => FlutterElement;
+  },
+);
 
 /**
  * A widget that renders its overlay child on an [Overlay].
@@ -89097,8 +98835,13 @@ export interface PageStorageProps extends GestureProps {
  *
  *  * [ModalRoute], which includes this class.
  */
-export const PageStorage: FlutterComponent<PageStorageProps> =
-  declareWidget<PageStorageProps>('PageStorage');
+export const PageStorage = Object.assign(
+  declareWidget<PageStorageProps>('PageStorage'),
+  {} as {
+    readonly maybeOf: (context: BuildContext) => PageStorageBucket | null;
+    readonly of: (context: BuildContext) => PageStorageBucket;
+  },
+);
 
 /**
  * A scrollable list that works page by page.
@@ -90044,10 +99787,22 @@ export interface PlatformSelectableRegionContextMenuProps extends GestureProps {
  * [PlatformSelectableRegionContextMenu] at a time. Use [attach] method to make
  * a [SelectionContainerDelegate] to be the active client.
  */
-export const PlatformSelectableRegionContextMenu: FlutterComponent<PlatformSelectableRegionContextMenuProps> =
+export const PlatformSelectableRegionContextMenu = Object.assign(
   declareWidget<PlatformSelectableRegionContextMenuProps>(
     'PlatformSelectableRegionContextMenu',
-  );
+  ),
+  {} as {
+    readonly attach: (client: SelectionContainerDelegate) => void;
+    readonly detach: (client: SelectionContainerDelegate) => void;
+    readonly debugOverrideRegisterViewFactory:
+      | ((
+          arg0: string,
+          arg1: (viewId: number) => Object,
+          isVisible?: boolean,
+        ) => void)
+      | null;
+  },
+);
 
 /**
  * Links a platform view with the Flutter framework.
@@ -91038,8 +100793,12 @@ export interface PopupMenuThemeProps extends GestureProps {
  * Values specified here are used for popup menu properties that are not
  * given an explicit non-null value.
  */
-export const PopupMenuTheme: FlutterComponent<PopupMenuThemeProps> =
-  declareWidget<PopupMenuThemeProps>('PopupMenuTheme');
+export const PopupMenuTheme = Object.assign(
+  declareWidget<PopupMenuThemeProps>('PopupMenuTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => PopupMenuThemeData;
+  },
+);
 
 /**
  * A widget that controls where a child of a [Stack] is positioned.
@@ -91560,8 +101319,17 @@ export interface PrimaryScrollControllerProps extends GestureProps {
  *     by its descendants when invoking an [Action] via a keyboard key
  *     combination that maps to an [Intent].
  */
-export const PrimaryScrollController: FlutterComponent<PrimaryScrollControllerProps> =
-  declareWidget<PrimaryScrollControllerProps>('PrimaryScrollController');
+export const PrimaryScrollController = Object.assign(
+  declareWidget<PrimaryScrollControllerProps>('PrimaryScrollController'),
+  {} as {
+    readonly maybeOf: (context: BuildContext) => ScrollController | null;
+    readonly of: (context: BuildContext) => ScrollController;
+    readonly shouldInherit: (
+      context: BuildContext,
+      scrollDirection: Axis,
+    ) => boolean;
+  },
+);
 
 /**
  * An inherited widget that defines the configuration for
@@ -91618,8 +101386,12 @@ export interface ProgressIndicatorThemeProps extends GestureProps {
  * )
  * ```
  */
-export const ProgressIndicatorTheme: FlutterComponent<ProgressIndicatorThemeProps> =
-  declareWidget<ProgressIndicatorThemeProps>('ProgressIndicatorTheme');
+export const ProgressIndicatorTheme = Object.assign(
+  declareWidget<ProgressIndicatorThemeProps>('ProgressIndicatorTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => ProgressIndicatorThemeData;
+  },
+);
 
 /**
  * A Material Design radio button.
@@ -92064,8 +101836,12 @@ export interface RadioGroupProps extends GestureProps {
  *
  * ** See code in examples/api/lib/widgets/radio_group/radio_group.0.dart **
  */
-export const RadioGroup: FlutterComponent<RadioGroupProps> =
-  declareWidget<RadioGroupProps>('RadioGroup');
+export const RadioGroup = Object.assign(
+  declareWidget<RadioGroupProps>('RadioGroup'),
+  {} as {
+    readonly maybeOf: (context: BuildContext) => RadioGroupRegistry | null;
+  },
+);
 
 /**
  * A [ListTile] with a [Radio]. In other words, a radio button with a label.
@@ -92786,8 +102562,12 @@ export interface RadioThemeProps extends GestureProps {
  *  * [RadioThemeData], which describes the actual configuration of a radio
  *    theme.
  */
-export const RadioTheme: FlutterComponent<RadioThemeProps> =
-  declareWidget<RadioThemeProps>('RadioTheme');
+export const RadioTheme = Object.assign(
+  declareWidget<RadioThemeProps>('RadioTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => RadioThemeData;
+  },
+);
 
 /**
  * A Material Design range slider.
@@ -93378,8 +103158,13 @@ export interface RawAutocompleteProps extends GestureProps {
  *  * [Autocomplete], which is a Material-styled implementation that is based
  * on RawAutocomplete.
  */
-export const RawAutocomplete: FlutterComponent<RawAutocompleteProps> =
-  declareWidget<RawAutocompleteProps>('RawAutocomplete');
+export const RawAutocomplete = Object.assign(
+  declareWidget<RawAutocompleteProps>('RawAutocomplete'),
+  {} as {
+    readonly defaultStringForOption: (option: ObjectValue) => string;
+    readonly onFieldSubmitted: (key: GlobalKey) => void;
+  },
+);
 
 /**
  * A raw Material Design chip.
@@ -95663,8 +105448,12 @@ export interface RawTooltipProps extends GestureProps {
  *
  * ** See code in examples/api/lib/widgets/raw_tooltip/raw_tooltip.0.dart **
  */
-export const RawTooltip: FlutterComponent<RawTooltipProps> =
-  declareWidget<RawTooltipProps>('RawTooltip');
+export const RawTooltip = Object.assign(
+  declareWidget<RawTooltipProps>('RawTooltip'),
+  {} as {
+    readonly dismissAllToolTips: () => boolean;
+  },
+);
 
 /**
  * The lower level workhorse widget for [View] that bootstraps a render tree
@@ -96562,8 +106351,13 @@ export interface ReorderableListProps extends GestureProps {
  *  * [ReorderableListView], a Material Design list that allows the user to
  *    reorder its items.
  */
-export const ReorderableList: FlutterComponent<ReorderableListProps> =
-  declareWidget<ReorderableListProps>('ReorderableList');
+export const ReorderableList = Object.assign(
+  declareWidget<ReorderableListProps>('ReorderableList'),
+  {} as {
+    readonly maybeOf: (context: BuildContext) => ReorderableListState | null;
+    readonly of: (context: BuildContext) => ReorderableListState;
+  },
+);
 
 /**
  * A list whose items the user can interactively reorder by dragging.
@@ -96864,8 +106658,12 @@ export interface RepaintBoundaryProps extends GestureProps {
  *  * [debugProfilePaintsEnabled], a debugging flag to show render tree
  *    repaints in Flutter DevTools' timeline view.
  */
-export const RepaintBoundary: FlutterComponent<RepaintBoundaryProps> =
-  declareWidget<RepaintBoundaryProps>('RepaintBoundary');
+export const RepaintBoundary = Object.assign(
+  declareWidget<RepaintBoundaryProps>('RepaintBoundary'),
+  {} as {
+    readonly wrapAll: (widgets: FlutterElement[]) => RepaintBoundary[];
+  },
+);
 
 /**
  * Widget that animates an [Animatable] value and repeats indefinitely.
@@ -97085,8 +106883,13 @@ export interface RestorationScopeProps extends GestureProps {
  *  * [RestorationManager], which describes the basic concepts of state
  *    restoration in Flutter.
  */
-export const RestorationScope: FlutterComponent<RestorationScopeProps> =
-  declareWidget<RestorationScopeProps>('RestorationScope');
+export const RestorationScope = Object.assign(
+  declareWidget<RestorationScopeProps>('RestorationScope'),
+  {} as {
+    readonly maybeOf: (context: BuildContext) => RestorationBucket | null;
+    readonly of: (context: BuildContext) => RestorationBucket;
+  },
+);
 
 /**
  * A paragraph of rich text.
@@ -98104,8 +107907,15 @@ export interface RouterProps extends GestureProps {
  * if a [restorationScopeId] is provided, a [routeInformationParser] must be
  * configured as well.
  */
-export const Router: FlutterComponent<RouterProps> =
-  declareWidget<RouterProps>('Router');
+export const Router = Object.assign(
+  declareWidget<RouterProps>('Router'),
+  {} as {
+    readonly maybeOf: (context: BuildContext) => Router | null;
+    readonly navigate: (context: BuildContext, callback: () => void) => void;
+    readonly neglect: (context: BuildContext, callback: () => void) => void;
+    readonly of: (context: BuildContext) => Router;
+  },
+);
 
 /**
  * A widget that displays its children in a horizontal array.
@@ -99341,8 +109151,18 @@ export interface ScaffoldProps extends GestureProps {
  *  * <https://material.io/design/layout/responsive-layout-grid.html>
  *  * Cookbook: [Add a Drawer to a screen](https://docs.flutter.dev/cookbook/design/drawer)
  */
-export const Scaffold: FlutterComponent<ScaffoldProps> =
-  declareWidget<ScaffoldProps>('Scaffold');
+export const Scaffold = Object.assign(
+  declareWidget<ScaffoldProps>('Scaffold'),
+  {} as {
+    readonly geometryOf: (context: BuildContext) => ValueListenable;
+    readonly hasDrawer: (
+      context: BuildContext,
+      options?: { registerForUpdates?: boolean },
+    ) => boolean;
+    readonly maybeOf: (context: BuildContext) => ScaffoldState | null;
+    readonly of: (context: BuildContext) => ScaffoldState;
+  },
+);
 
 /**
  * Manages [SnackBar]s and [MaterialBanner]s for descendant [Scaffold]s.
@@ -99415,8 +109235,13 @@ export interface ScaffoldMessengerProps extends GestureProps {
  *    has a [ScaffoldMessenger] ancestor.
  *  * Cookbook: [Display a SnackBar](https://docs.flutter.dev/cookbook/design/snackbars)
  */
-export const ScaffoldMessenger: FlutterComponent<ScaffoldMessengerProps> =
-  declareWidget<ScaffoldMessengerProps>('ScaffoldMessenger');
+export const ScaffoldMessenger = Object.assign(
+  declareWidget<ScaffoldMessengerProps>('ScaffoldMessenger'),
+  {} as {
+    readonly maybeOf: (context: BuildContext) => ScaffoldMessengerState | null;
+    readonly of: (context: BuildContext) => ScaffoldMessengerState;
+  },
+);
 
 /**
  * Animates the scale of a transformed widget.
@@ -99511,8 +109336,12 @@ export interface ScrollConfigurationProps extends GestureProps {
  * The scroll configuration determines the [ScrollPhysics] and viewport
  * decorations used by descendants of [child].
  */
-export const ScrollConfiguration: FlutterComponent<ScrollConfigurationProps> =
-  declareWidget<ScrollConfigurationProps>('ScrollConfiguration');
+export const ScrollConfiguration = Object.assign(
+  declareWidget<ScrollConfigurationProps>('ScrollConfiguration'),
+  {} as {
+    readonly of: (context: BuildContext) => ScrollBehavior;
+  },
+);
 
 /**
  * Notifies its listeners when a descendant scrolls.
@@ -99601,8 +109430,15 @@ export interface ScrollNotificationObserverProps extends GestureProps {
  *
  * ** See code in examples/api/lib/widgets/scroll_notification_observer/scroll_notification_observer.0.dart **
  */
-export const ScrollNotificationObserver: FlutterComponent<ScrollNotificationObserverProps> =
-  declareWidget<ScrollNotificationObserverProps>('ScrollNotificationObserver');
+export const ScrollNotificationObserver = Object.assign(
+  declareWidget<ScrollNotificationObserverProps>('ScrollNotificationObserver'),
+  {} as {
+    readonly maybeOf: (
+      context: BuildContext,
+    ) => ScrollNotificationObserverState | null;
+    readonly of: (context: BuildContext) => ScrollNotificationObserverState;
+  },
+);
 
 /**
  * A widget that manages scrolling in one dimension and informs the [Viewport]
@@ -99901,8 +109737,32 @@ export interface ScrollableProps extends GestureProps {
  *  * [ScrollNotification] and [NotificationListener], which can be used to watch
  *    the scroll position without using a [ScrollController].
  */
-export const Scrollable: FlutterComponent<ScrollableProps> =
-  declareWidget<ScrollableProps>('Scrollable');
+export const Scrollable = Object.assign(
+  declareWidget<ScrollableProps>('Scrollable'),
+  {} as {
+    readonly ensureVisible: (
+      context: BuildContext,
+      options?: {
+        alignment?: number;
+        duration?: DurationValue;
+        curve?: CurveValue;
+        alignmentPolicy?: ScrollPositionAlignmentPolicy;
+      },
+    ) => Promise<void>;
+    readonly maybeOf: (
+      context: BuildContext,
+      options?: { axis?: Axis },
+    ) => ScrollableState | null;
+    readonly of: (
+      context: BuildContext,
+      options?: { axis?: Axis },
+    ) => ScrollableState;
+    readonly recommendDeferredLoadingForContext: (
+      context: BuildContext,
+      options?: { axis?: Axis },
+    ) => boolean;
+  },
+);
 
 /**
  * A Material Design scrollbar.
@@ -100092,8 +109952,12 @@ export interface ScrollbarThemeProps extends GestureProps {
  *  * [ScrollbarThemeData], which describes the configuration of a
  *    scrollbar theme.
  */
-export const ScrollbarTheme: FlutterComponent<ScrollbarThemeProps> =
-  declareWidget<ScrollbarThemeProps>('ScrollbarTheme');
+export const ScrollbarTheme = Object.assign(
+  declareWidget<ScrollbarThemeProps>('ScrollbarTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => ScrollbarThemeData;
+  },
+);
 
 /**
  * Manages a "search view" route that allows the user to select one of the
@@ -100763,8 +110627,12 @@ export interface SearchBarThemeProps extends GestureProps {
  *  * [SearchBarThemeData], which describes the actual configuration of a search bar
  *    theme.
  */
-export const SearchBarTheme: FlutterComponent<SearchBarThemeProps> =
-  declareWidget<SearchBarThemeProps>('SearchBarTheme');
+export const SearchBarTheme = Object.assign(
+  declareWidget<SearchBarThemeProps>('SearchBarTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => SearchBarThemeData;
+  },
+);
 
 /**
  * An inherited widget that defines the configuration in this widget's
@@ -100805,8 +110673,12 @@ export interface SearchViewThemeProps extends GestureProps {
  *  * [SearchViewThemeData], which describes the actual configuration of a search view
  *    theme.
  */
-export const SearchViewTheme: FlutterComponent<SearchViewThemeProps> =
-  declareWidget<SearchViewThemeProps>('SearchViewTheme');
+export const SearchViewTheme = Object.assign(
+  declareWidget<SearchViewThemeProps>('SearchViewTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => SearchViewThemeData;
+  },
+);
 
 /**
  * A Material button that allows the user to select from limited set of options.
@@ -101054,8 +110926,41 @@ export interface SegmentedButtonProps extends GestureProps {
  *   * [Radio], an alternative way to present the user with a mutually exclusive set of options.
  *   * [FilterChip], [ChoiceChip], which can be used when you need to show more than five options.
  */
-export const SegmentedButton: FlutterComponent<SegmentedButtonProps> =
-  declareWidget<SegmentedButtonProps>('SegmentedButton');
+export const SegmentedButton = Object.assign(
+  declareWidget<SegmentedButtonProps>('SegmentedButton'),
+  {} as {
+    readonly styleFrom: (options?: {
+      foregroundColor?: ColorValue;
+      backgroundColor?: ColorValue;
+      selectedForegroundColor?: ColorValue;
+      selectedBackgroundColor?: ColorValue;
+      disabledForegroundColor?: ColorValue;
+      disabledBackgroundColor?: ColorValue;
+      shadowColor?: ColorValue;
+      surfaceTintColor?: ColorValue;
+      iconColor?: ColorValue;
+      iconSize?: number;
+      disabledIconColor?: ColorValue;
+      overlayColor?: ColorValue;
+      elevation?: number;
+      textStyle?: TextStyleValue;
+      padding?: EdgeInsetsGeometryValue;
+      minimumSize?: SizeValue;
+      fixedSize?: SizeValue;
+      maximumSize?: SizeValue;
+      side?: BorderSideValue;
+      shape?: OutlinedBorderValue;
+      enabledMouseCursor?: MouseCursorValue;
+      disabledMouseCursor?: MouseCursorValue;
+      visualDensity?: VisualDensityValue;
+      tapTargetSize?: MaterialTapTargetSize;
+      animationDuration?: DurationValue;
+      enableFeedback?: boolean;
+      alignment?: AlignmentGeometryValue;
+      splashFactory?: InteractiveInkFeatureFactoryValue;
+    }) => ButtonStyle;
+  },
+);
 
 /**
  * An inherited widget that defines the visual properties for
@@ -101087,8 +110992,15 @@ export interface SegmentedButtonThemeProps extends GestureProps {
  * Values specified here are used for [SegmentedButton] properties that are not
  * given an explicit non-null value.
  */
-export const SegmentedButtonTheme: FlutterComponent<SegmentedButtonThemeProps> =
-  declareWidget<SegmentedButtonThemeProps>('SegmentedButtonTheme');
+export const SegmentedButtonTheme = Object.assign(
+  declareWidget<SegmentedButtonThemeProps>('SegmentedButtonTheme'),
+  {} as {
+    readonly maybeOf: (
+      context: BuildContext,
+    ) => SegmentedButtonThemeData | null;
+    readonly of: (context: BuildContext) => SegmentedButtonThemeData;
+  },
+);
 
 /**
  * A widget that introduces an area for user selections.
@@ -101482,8 +111394,17 @@ export interface SelectableRegionProps extends GestureProps {
  *  * [SelectionListener], which enables accessing the [SelectionDetails] of
  *    the selectable subtree it wraps.
  */
-export const SelectableRegion: FlutterComponent<SelectableRegionProps> =
-  declareWidget<SelectableRegionProps>('SelectableRegion');
+export const SelectableRegion = Object.assign(
+  declareWidget<SelectableRegionProps>('SelectableRegion'),
+  {} as {
+    readonly getSelectableButtonItems: (options: {
+      selectionGeometry: SelectionGeometry;
+      onCopy: () => void;
+      onSelectAll: () => void;
+      onShare: () => void;
+    }) => ContextMenuButtonItem[];
+  },
+);
 
 /**
  * A run of selectable text with a single style.
@@ -101943,8 +111864,12 @@ export interface SelectionContainerProps extends GestureProps {
  *  * [SelectionContainer.disabled], which disable selection for a
  *    subtree.
  */
-export const SelectionContainer: FlutterComponent<SelectionContainerProps> =
-  declareWidget<SelectionContainerProps>('SelectionContainer');
+export const SelectionContainer = Object.assign(
+  declareWidget<SelectionContainerProps>('SelectionContainer'),
+  {} as {
+    readonly maybeOf: (context: BuildContext) => SelectionRegistrar | null;
+  },
+);
 
 /**
  * A [SelectionContainer] that allows the user to access the [SelectionDetails] and
@@ -102596,8 +112521,21 @@ export interface SharedAppDataProps extends GestureProps {
  *
  * ** See code in examples/api/lib/widgets/shared_app_data/shared_app_data.1.dart **
  */
-export const SharedAppData: FlutterComponent<SharedAppDataProps> =
-  declareWidget<SharedAppDataProps>('SharedAppData');
+export const SharedAppData = Object.assign(
+  declareWidget<SharedAppDataProps>('SharedAppData'),
+  {} as {
+    readonly getValue: (
+      context: BuildContext,
+      key: unknown,
+      init: () => unknown,
+    ) => unknown;
+    readonly setValue: (
+      context: BuildContext,
+      key: unknown,
+      value: unknown,
+    ) => void;
+  },
+);
 
 /**
  * A widget that holds a [ShortcutRegistry] which allows descendants to add,
@@ -104572,8 +114510,12 @@ export interface SliderThemeProps extends GestureProps {
  *  * [RangeSliderTickMarkShape], which can be used to create custom shapes for
  *    the [RangeSlider]'s tick marks.
  */
-export const SliderTheme: FlutterComponent<SliderThemeProps> =
-  declareWidget<SliderThemeProps>('SliderTheme');
+export const SliderTheme = Object.assign(
+  declareWidget<SliderThemeProps>('SliderTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => SliderThemeData;
+  },
+);
 
 /**
  * A [SliverGrid] that animates items when they are inserted or removed.
@@ -104632,8 +114574,13 @@ export interface SliverAnimatedGridProps extends GestureProps {
  *  * [SliverAnimatedList], which animates items added and removed from a list
  *    instead of a grid.
  */
-export const SliverAnimatedGrid: FlutterComponent<SliverAnimatedGridProps> =
-  declareWidget<SliverAnimatedGridProps>('SliverAnimatedGrid');
+export const SliverAnimatedGrid = Object.assign(
+  declareWidget<SliverAnimatedGridProps>('SliverAnimatedGrid'),
+  {} as {
+    readonly maybeOf: (context: BuildContext) => SliverAnimatedGridState | null;
+    readonly of: (context: BuildContext) => SliverAnimatedGridState;
+  },
+);
 
 /**
  * A [SliverList] that animates items when they are inserted or removed.
@@ -104693,8 +114640,13 @@ export interface SliverAnimatedListProps extends GestureProps {
  *  * [AnimatedGrid], a non-sliver scrolling container that animates items when
  *    they are inserted into or removed from a grid.
  */
-export const SliverAnimatedList: FlutterComponent<SliverAnimatedListProps> =
-  declareWidget<SliverAnimatedListProps>('SliverAnimatedList');
+export const SliverAnimatedList = Object.assign(
+  declareWidget<SliverAnimatedListProps>('SliverAnimatedList'),
+  {} as {
+    readonly maybeOf: (context: BuildContext) => SliverAnimatedListState | null;
+    readonly of: (context: BuildContext) => SliverAnimatedListState;
+  },
+);
 
 /**
  * Animated version of [SliverOpacity] which automatically transitions the
@@ -106996,8 +116948,15 @@ export interface SliverReorderableListProps extends GestureProps {
  *  * [ReorderableListView], a Material Design list that allows the user to
  *    reorder its items.
  */
-export const SliverReorderableList: FlutterComponent<SliverReorderableListProps> =
-  declareWidget<SliverReorderableListProps>('SliverReorderableList');
+export const SliverReorderableList = Object.assign(
+  declareWidget<SliverReorderableListProps>('SliverReorderableList'),
+  {} as {
+    readonly maybeOf: (
+      context: BuildContext,
+    ) => SliverReorderableListState | null;
+    readonly of: (context: BuildContext) => SliverReorderableListState;
+  },
+);
 
 /**
  * A sliver that is pinned to the start of its [CustomScrollView] and
@@ -108034,8 +117993,16 @@ export interface SnackBarProps extends GestureProps {
  *    [SnackBar] widgets.
  *  * <https://material.io/design/components/snackbars.html>
  */
-export const SnackBar: FlutterComponent<SnackBarProps> =
-  declareWidget<SnackBarProps>('SnackBar');
+export const SnackBar = Object.assign(
+  declareWidget<SnackBarProps>('SnackBar'),
+  {} as {
+    readonly createAnimationController: (options: {
+      vsync: TickerProvider;
+      duration?: DurationValue;
+      reverseDuration?: DurationValue;
+    }) => AnimationController;
+  },
+);
 
 /**
  * A button for a [SnackBar], known as an "action".
@@ -108140,8 +118107,12 @@ export interface SnackBarThemeProps extends GestureProps {
  * Values specified here are used for [SnackBar] properties that are not
  * given an explicit non-null value.
  */
-export const SnackBarTheme: FlutterComponent<SnackBarThemeProps> =
-  declareWidget<SnackBarThemeProps>('SnackBarTheme');
+export const SnackBarTheme = Object.assign(
+  declareWidget<SnackBarThemeProps>('SnackBarTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => SnackBarThemeData;
+  },
+);
 
 /**
  * A widget that can replace its child with a snapshotted version of the child.
@@ -108365,10 +118336,17 @@ export interface SpellCheckSuggestionsToolbarProps extends GestureProps {
  *  * [CupertinoSpellCheckSuggestionsToolbar], which is similar but builds an
  *    iOS-style spell check toolbar.
  */
-export const SpellCheckSuggestionsToolbar: FlutterComponent<SpellCheckSuggestionsToolbarProps> =
+export const SpellCheckSuggestionsToolbar = Object.assign(
   declareWidget<SpellCheckSuggestionsToolbarProps>(
     'SpellCheckSuggestionsToolbar',
-  );
+  ),
+  {} as {
+    readonly buildButtonItems: (
+      editableTextState: EditableTextState,
+    ) => ContextMenuButtonItem[] | null;
+    readonly getToolbarAnchor: (anchors: TextSelectionToolbarAnchors) => Offset;
+  },
+);
 
 /**
  * A widget that positions its children relative to the edges of its box.
@@ -109571,8 +119549,39 @@ export interface SubmenuButtonProps extends GestureProps {
  * * [PlatformMenuBar], a widget that renders similar menu bar items from a
  *   [PlatformMenuItem] using platform-native APIs instead of Flutter.
  */
-export const SubmenuButton: FlutterComponent<SubmenuButtonProps> =
-  declareWidget<SubmenuButtonProps>('SubmenuButton');
+export const SubmenuButton = Object.assign(
+  declareWidget<SubmenuButtonProps>('SubmenuButton'),
+  {} as {
+    readonly styleFrom: (options?: {
+      foregroundColor?: ColorValue;
+      backgroundColor?: ColorValue;
+      disabledForegroundColor?: ColorValue;
+      disabledBackgroundColor?: ColorValue;
+      shadowColor?: ColorValue;
+      surfaceTintColor?: ColorValue;
+      iconColor?: ColorValue;
+      iconSize?: number;
+      disabledIconColor?: ColorValue;
+      textStyle?: TextStyleValue;
+      overlayColor?: ColorValue;
+      elevation?: number;
+      padding?: EdgeInsetsGeometryValue;
+      minimumSize?: SizeValue;
+      fixedSize?: SizeValue;
+      maximumSize?: SizeValue;
+      enabledMouseCursor?: MouseCursorValue;
+      disabledMouseCursor?: MouseCursorValue;
+      side?: BorderSideValue;
+      shape?: OutlinedBorderValue;
+      visualDensity?: VisualDensityValue;
+      tapTargetSize?: MaterialTapTargetSize;
+      animationDuration?: DurationValue;
+      enableFeedback?: boolean;
+      alignment?: AlignmentGeometryValue;
+      splashFactory?: InteractiveInkFeatureFactoryValue;
+    }) => ButtonStyle;
+  },
+);
 
 /**
  * A Material Design switch.
@@ -110578,8 +120587,12 @@ export interface SwitchThemeProps extends GestureProps {
  *  * [SwitchThemeData], which describes the actual configuration of a switch
  *    theme.
  */
-export const SwitchTheme: FlutterComponent<SwitchThemeProps> =
-  declareWidget<SwitchThemeProps>('SwitchTheme');
+export const SwitchTheme = Object.assign(
+  declareWidget<SwitchThemeProps>('SwitchTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => SwitchThemeData;
+  },
+);
 
 /**
  * A Material Design [TabBar] tab.
@@ -111260,8 +121273,13 @@ export interface TabBarThemeProps extends GestureProps {
  *  * [TabBarThemeData], which describes the actual configuration of a tab
  *    bar theme.
  */
-export const TabBarTheme: FlutterComponent<TabBarThemeProps> =
-  declareWidget<TabBarThemeProps>('TabBarTheme');
+export const TabBarTheme = Object.assign(
+  declareWidget<TabBarThemeProps>('TabBarTheme'),
+  {} as {
+    readonly lerp: (a: TabBarTheme, b: TabBarTheme, t: number) => TabBarTheme;
+    readonly of: (context: BuildContext) => TabBarThemeData;
+  },
+);
 
 /**
  * A page view that displays the widget which corresponds to the currently
@@ -112572,8 +122590,50 @@ export interface TextButtonProps extends Omit<
  *  * <https://material.io/design/components/buttons.html>
  *  * <https://m3.material.io/components/buttons>
  */
-export const TextButton: FlutterComponent<TextButtonProps> =
-  declareWidget<TextButtonProps>('TextButton');
+export const TextButton = Object.assign(
+  declareWidget<TextButtonProps>('TextButton'),
+  {} as {
+    readonly styleFrom: (options?: {
+      foregroundColor?: ColorValue;
+      backgroundColor?: ColorValue;
+      disabledForegroundColor?: ColorValue;
+      disabledBackgroundColor?: ColorValue;
+      shadowColor?: ColorValue;
+      surfaceTintColor?: ColorValue;
+      iconColor?: ColorValue;
+      iconSize?: number;
+      iconAlignment?: IconAlignment;
+      disabledIconColor?: ColorValue;
+      overlayColor?: ColorValue;
+      elevation?: number;
+      textStyle?: TextStyleValue;
+      padding?: EdgeInsetsGeometryValue;
+      minimumSize?: SizeValue;
+      fixedSize?: SizeValue;
+      maximumSize?: SizeValue;
+      side?: BorderSideValue;
+      shape?: OutlinedBorderValue;
+      enabledMouseCursor?: MouseCursorValue;
+      disabledMouseCursor?: MouseCursorValue;
+      visualDensity?: VisualDensityValue;
+      tapTargetSize?: MaterialTapTargetSize;
+      animationDuration?: DurationValue;
+      enableFeedback?: boolean;
+      alignment?: AlignmentGeometryValue;
+      splashFactory?: InteractiveInkFeatureFactoryValue;
+      backgroundBuilder?: (
+        context: BuildContext,
+        states: WidgetState[],
+        child: FlutterElement | null,
+      ) => FlutterElement;
+      foregroundBuilder?: (
+        context: BuildContext,
+        states: WidgetState[],
+        child: FlutterElement | null,
+      ) => FlutterElement;
+    }) => ButtonStyle;
+  },
+);
 
 /**
  * Overrides the default [ButtonStyle] of its [TextButton] descendants.
@@ -112616,8 +122676,12 @@ export interface TextButtonThemeProps extends GestureProps {
  *  * [ThemeData.textButtonTheme], which can be used to override the default
  *    [ButtonStyle] for [TextButton]s below the overall [Theme].
  */
-export const TextButtonTheme: FlutterComponent<TextButtonThemeProps> =
-  declareWidget<TextButtonThemeProps>('TextButtonTheme');
+export const TextButtonTheme = Object.assign(
+  declareWidget<TextButtonThemeProps>('TextButtonTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => TextButtonThemeData;
+  },
+);
 
 /**
  * A Material Design text field.
@@ -113331,6 +123395,11 @@ export const TextField = Object.assign(
      */
     readonly noMaxLength: number;
   }>('TextField'),
+  {} as {
+    readonly inferAndroidSpellCheckConfiguration: (
+      configuration: SpellCheckConfigurationValue,
+    ) => SpellCheckConfiguration;
+  },
 );
 
 /**
@@ -113889,6 +123958,9 @@ export const TextMagnifier = Object.assign(
      */
     readonly jumpBetweenLinesAnimationDuration: Duration;
   }>('TextMagnifier'),
+  {} as {
+    readonly adaptiveMagnifierConfiguration: TextMagnifierConfiguration;
+  },
 );
 
 /**
@@ -114113,8 +124185,12 @@ export interface TextSelectionThemeProps extends GestureProps {
  * This widget also creates a [DefaultSelectionStyle] for its subtree with
  * [data].
  */
-export const TextSelectionTheme: FlutterComponent<TextSelectionThemeProps> =
-  declareWidget<TextSelectionThemeProps>('TextSelectionTheme');
+export const TextSelectionTheme = Object.assign(
+  declareWidget<TextSelectionThemeProps>('TextSelectionTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => TextSelectionThemeData;
+  },
+);
 
 /**
  * A fully-functional Material-style text selection toolbar.
@@ -114249,10 +124325,14 @@ export interface TextSelectionToolbarTextButtonProps extends Omit<
 /**
  * A button styled like a Material native Android text selection menu button.
  */
-export const TextSelectionToolbarTextButton: FlutterComponent<TextSelectionToolbarTextButtonProps> =
+export const TextSelectionToolbarTextButton = Object.assign(
   declareWidget<TextSelectionToolbarTextButtonProps>(
     'TextSelectionToolbarTextButton',
-  );
+  ),
+  {} as {
+    readonly getPadding: (index: number, total: number) => EdgeInsetsGeometry;
+  },
+);
 
 /**
  * A rectangle upon which a backend texture is mapped.
@@ -114404,8 +124484,14 @@ export interface ThemeProps extends GestureProps {
  *  * [MaterialApp], which includes an [AnimatedTheme] widget configured via
  *    the [MaterialApp.theme] argument.
  */
-export const Theme: FlutterComponent<ThemeProps> =
-  declareWidget<ThemeProps>('Theme');
+export const Theme = Object.assign(
+  declareWidget<ThemeProps>('Theme'),
+  {} as {
+    readonly brightnessOf: (context: BuildContext) => Brightness;
+    readonly maybeBrightnessOf: (context: BuildContext) => Brightness | null;
+    readonly of: (context: BuildContext) => ThemeData;
+  },
+);
 
 /**
  * Enables or disables tickers (and thus animation controllers) in the widget
@@ -114453,8 +124539,21 @@ export interface TickerModeProps extends GestureProps {
  * widget-aware ticker providers. For example, using a
  * [TickerProviderStateMixin] or a [SingleTickerProviderStateMixin].
  */
-export const TickerMode: FlutterComponent<TickerModeProps> =
-  declareWidget<TickerModeProps>('TickerMode');
+export const TickerMode = Object.assign(
+  declareWidget<TickerModeProps>('TickerMode'),
+  {} as {
+    readonly getNotifier: (context: BuildContext) => ValueListenable;
+    readonly getValuesNotifier: (context: BuildContext) => ValueListenable;
+    readonly merge: (options: {
+      key?: Key;
+      enabled?: boolean;
+      forceFrames?: boolean;
+      child: FlutterElement;
+    }) => FlutterElement;
+    readonly of: (context: BuildContext) => boolean;
+    readonly valuesOf: (context: BuildContext) => TickerModeData;
+  },
+);
 
 /**
  * A Material Design time picker designed to appear inside a popup dialog.
@@ -114589,8 +124688,12 @@ export interface TimePickerThemeProps extends GestureProps {
  * Values specified here are used for time picker properties that are not
  * given an explicit non-null value.
  */
-export const TimePickerTheme: FlutterComponent<TimePickerThemeProps> =
-  declareWidget<TimePickerThemeProps>('TimePickerTheme');
+export const TimePickerTheme = Object.assign(
+  declareWidget<TimePickerThemeProps>('TimePickerTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => TimePickerThemeData;
+  },
+);
 
 /**
  * A widget that describes this app in the operating system.
@@ -115217,8 +125320,12 @@ export interface ToggleButtonsThemeProps extends GestureProps {
  * Values specified here are used for [ToggleButtons] properties that are not
  * given an explicit non-null value.
  */
-export const ToggleButtonsTheme: FlutterComponent<ToggleButtonsThemeProps> =
-  declareWidget<ToggleButtonsThemeProps>('ToggleButtonsTheme');
+export const ToggleButtonsTheme = Object.assign(
+  declareWidget<ToggleButtonsThemeProps>('ToggleButtonsTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => ToggleButtonsThemeData;
+  },
+);
 
 /**
  * A Material Design tooltip.
@@ -115517,8 +125624,12 @@ export interface TooltipProps extends GestureProps {
  *  * [TooltipTheme] or [ThemeData.tooltipTheme]
  *  * [TooltipVisibility]
  */
-export const Tooltip: FlutterComponent<TooltipProps> =
-  declareWidget<TooltipProps>('Tooltip');
+export const Tooltip = Object.assign(
+  declareWidget<TooltipProps>('Tooltip'),
+  {} as {
+    readonly dismissAllToolTips: () => boolean;
+  },
+);
 
 /**
  * Applies a tooltip theme to descendant [Tooltip] widgets.
@@ -115611,8 +125722,12 @@ export interface TooltipThemeProps extends GestureProps {
  *    tooltip theme.
  *  * [TooltipVisibility], which can be used to visually disable descendant [Tooltip]s.
  */
-export const TooltipTheme: FlutterComponent<TooltipThemeProps> =
-  declareWidget<TooltipThemeProps>('TooltipTheme');
+export const TooltipTheme = Object.assign(
+  declareWidget<TooltipThemeProps>('TooltipTheme'),
+  {} as {
+    readonly of: (context: BuildContext) => TooltipThemeData;
+  },
+);
 
 /**
  * Overrides the visibility of descendant [Tooltip] widgets.
@@ -115644,8 +125759,12 @@ export interface TooltipVisibilityProps extends GestureProps {
  * `ensureTooltipVisible` is called. This only visually disables tooltips but
  * continues to provide any semantic information that is provided.
  */
-export const TooltipVisibility: FlutterComponent<TooltipVisibilityProps> =
-  declareWidget<TooltipVisibilityProps>('TooltipVisibility');
+export const TooltipVisibility = Object.assign(
+  declareWidget<TooltipVisibilityProps>('TooltipVisibility'),
+  {} as {
+    readonly of: (context: BuildContext) => boolean;
+  },
+);
 
 /**
  * A widget that applies a transformation before painting its child.
@@ -116016,6 +126135,22 @@ export const TreeSliver = Object.assign(
      */
     readonly defaultAnimationDuration: Duration;
   }>('TreeSliver'),
+  {} as {
+    readonly defaultTreeNodeBuilder: (
+      context: BuildContext,
+      node: TreeSliverNode,
+      toggleAnimationStyle: AnimationStyleValue,
+    ) => FlutterElement;
+    readonly defaultTreeRowExtentBuilder: (
+      node: TreeSliverNode,
+      dimensions: SliverLayoutDimensions,
+    ) => number;
+    readonly wrapChildToToggleNode: (options: {
+      node: TreeSliverNode;
+      child: FlutterElement;
+    }) => FlutterElement;
+    readonly defaultToggleAnimationStyle: AnimationStyle;
+  },
 );
 
 /**
@@ -116374,8 +126509,15 @@ export interface TwoDimensionalScrollableProps extends GestureProps {
  *  * [TwoDimensionalViewport], which can be used to customize the child layout
  *    model.
  */
-export const TwoDimensionalScrollable: FlutterComponent<TwoDimensionalScrollableProps> =
-  declareWidget<TwoDimensionalScrollableProps>('TwoDimensionalScrollable');
+export const TwoDimensionalScrollable = Object.assign(
+  declareWidget<TwoDimensionalScrollableProps>('TwoDimensionalScrollable'),
+  {} as {
+    readonly maybeOf: (
+      context: BuildContext,
+    ) => TwoDimensionalScrollableState | null;
+    readonly of: (context: BuildContext) => TwoDimensionalScrollableState;
+  },
+);
 
 /**
  * Embeds an iOS view in the Widget hierarchy.
@@ -117156,8 +127298,14 @@ export interface ViewProps extends GestureProps {
  * * [Element.debugExpectsRenderObjectForSlot], which defines whether a [View]
  *   widget is allowed in a given child slot.
  */
-export const View: FlutterComponent<ViewProps> =
-  declareWidget<ViewProps>('View');
+export const View = Object.assign(
+  declareWidget<ViewProps>('View'),
+  {} as {
+    readonly maybeOf: (context: BuildContext) => FlutterView | null;
+    readonly of: (context: BuildContext) => FlutterView;
+    readonly pipelineOwnerOf: (context: BuildContext) => PipelineOwner;
+  },
+);
 
 /**
  * Decorates a [child] widget with a side [View].
@@ -117422,8 +127570,15 @@ export interface ViewportProps extends GestureProps {
  *  * [ViewportElementMixin], which should be mixed in to the [Element] type used
  *    by viewport-like widgets to correctly handle scroll notifications.
  */
-export const Viewport: FlutterComponent<ViewportProps> =
-  declareWidget<ViewportProps>('Viewport');
+export const Viewport = Object.assign(
+  declareWidget<ViewportProps>('Viewport'),
+  {} as {
+    readonly getDefaultCrossAxisDirection: (
+      context: BuildContext,
+      axisDirection: AxisDirection,
+    ) => AxisDirection;
+  },
+);
 
 /**
  * Whether to show or hide a child.
@@ -117629,8 +127784,12 @@ export interface VisibilityProps extends GestureProps {
  *  * [AnimatedCrossFade], which can fade between two specific children.
  *  * [SliverVisibility], the sliver equivalent of this widget.
  */
-export const Visibility: FlutterComponent<VisibilityProps> =
-  declareWidget<VisibilityProps>('Visibility');
+export const Visibility = Object.assign(
+  declareWidget<VisibilityProps>('Visibility'),
+  {} as {
+    readonly of: (context: BuildContext) => boolean;
+  },
+);
 
 /**
  * A widget that enables inspecting the child widget's structure.
@@ -118504,8 +128663,16 @@ export interface WidgetsAppProps extends GestureProps {
  *    independently.
  *  * [SemanticsDebugger], a widget that visualizes the semantics for the child.
  */
-export const WidgetsApp: FlutterComponent<WidgetsAppProps> =
-  declareWidget<WidgetsAppProps>('WidgetsApp');
+export const WidgetsApp = Object.assign(
+  declareWidget<WidgetsAppProps>('WidgetsApp'),
+  {} as {
+    readonly debugAllowBannerOverride: boolean;
+    readonly debugShowWidgetInspectorOverride: boolean;
+    readonly defaultActions: Map<Type, Action>;
+    readonly defaultShortcuts: Map<ShortcutActivator, Intent>;
+    readonly showPerformanceOverlayOverride: boolean;
+  },
+);
 
 /**
  * Registers a callback to veto attempts by the user to dismiss the enclosing

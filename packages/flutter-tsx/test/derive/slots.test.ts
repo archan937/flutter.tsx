@@ -45,6 +45,8 @@ const widget = (name: string, params: ParamModel[]): WidgetEntity => ({
   ],
   constants: [],
   fields: [],
+  statics: [],
+  staticGetters: [],
 });
 
 const snapshotWith = (
@@ -299,7 +301,7 @@ describe('deriveSlots (real SDK snapshot, end to end)', () => {
   });
 
   test('every extracted widget is covered', async () => {
-    expect(Object.keys(await realSlots())).toHaveLength(543);
+    expect(Object.keys(await realSlots())).toHaveLength(542);
   });
 
   test('the committed ref/derived/slots.json is exactly the derived output', async () => {

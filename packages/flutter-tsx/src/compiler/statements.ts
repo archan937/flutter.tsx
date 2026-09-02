@@ -38,6 +38,17 @@ const statementLines = (
         return statement.line.split('\n');
       case 'expr':
         return exprLines(statement, naming);
+      case 'local': {
+        const prefix = `final ${statement.name} = `;
+        // Printed where it really sits, so a long value wraps exactly where
+        // `dart format` wraps it.
+        const value = printExpr(irValueToDart(statement.value, naming), {
+          indent: 0,
+          used: METHOD_BODY_INDENT + prefix.length,
+          trailing: 1,
+        });
+        return `${prefix}${value};`.split('\n');
+      }
       case 'if': {
         const branch = statementLines(statement.then, naming, wrapSetState);
         const lines = [

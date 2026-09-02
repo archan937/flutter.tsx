@@ -53,6 +53,7 @@ const classEntity = (
 ): Entity => ({
   kind: 'class',
   disposable: false,
+  isAbstract: false,
   typeParams: [],
   supertypeBindings: {},
   name,
@@ -62,6 +63,8 @@ const classEntity = (
   constructors: [],
   constants: [],
   fields: [],
+  statics: [],
+  staticGetters: [],
   ...overrides,
 });
 
@@ -92,6 +95,8 @@ describe('deriveValueForms — constant unions', () => {
               namedConstant('azure', 'Swatch'),
             ],
             fields: [],
+            statics: [],
+            staticGetters: [],
           }),
         ],
         { Swatch: ['Ink'] },
@@ -124,6 +129,8 @@ describe('deriveValueForms — constant unions', () => {
         classEntity('Anchor', {
           constants: [namedConstant('center', 'Anchor')],
           fields: [],
+          statics: [],
+          staticGetters: [],
         }),
         classEntity('Offsets', {
           constants: [
@@ -131,6 +138,8 @@ describe('deriveValueForms — constant unions', () => {
             namedConstant('edge', 'Anchor'),
           ],
           fields: [],
+          statics: [],
+          staticGetters: [],
         }),
       ]),
     );
@@ -153,6 +162,8 @@ describe('deriveValueForms — constant unions', () => {
             namedConstant('soft', 'Tone'),
           ],
           fields: [],
+          statics: [],
+          staticGetters: [],
         }),
         classEntity('Small', { constants: [namedConstant('loud', 'Tone')] }),
         classEntity('Aside', { constants: [namedConstant('quiet', 'Tone')] }),
@@ -214,6 +225,8 @@ describe('deriveValueForms — constructible value classes', () => {
         ],
         constants: [],
         fields: [],
+        statics: [],
+        staticGetters: [],
       },
       classEntity('Style', {
         constructors: [defaultConstructor([param('tint', 'Swatch')])],
@@ -223,6 +236,8 @@ describe('deriveValueForms — constructible value classes', () => {
       classEntity('Palette', {
         constants: [namedConstant('crimson', 'Swatch')],
         fields: [],
+        statics: [],
+        staticGetters: [],
       }),
       classEntity('Orphan', {
         constructors: [defaultConstructor([param('tint', 'Swatch')])],
@@ -251,6 +266,8 @@ describe('deriveValueForms — constructible value classes', () => {
         ],
         constants: [],
         fields: [],
+        statics: [],
+        staticGetters: [],
       },
     ]);
     const forms = deriveValueForms(snapshot);
@@ -272,6 +289,8 @@ describe('deriveValueForms — constructible value classes', () => {
           constructors: [defaultConstructor([param('spacing', 'Ink')])],
           constants: [],
           fields: [],
+          statics: [],
+          staticGetters: [],
         },
       ]),
     );

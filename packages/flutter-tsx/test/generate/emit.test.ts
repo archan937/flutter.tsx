@@ -156,6 +156,8 @@ const snapshot: ApiSnapshot = {
       ],
       constants: [],
       fields: [],
+      statics: [],
+      staticGetters: [],
     },
     {
       kind: 'widget',
@@ -206,10 +208,13 @@ const snapshot: ApiSnapshot = {
         },
       ],
       fields: [],
+      statics: [],
+      staticGetters: [],
     },
     {
       kind: 'class',
       disposable: false,
+      isAbstract: false,
       typeParams: [],
       supertypeBindings: {},
       name: 'Style',
@@ -255,10 +260,13 @@ const snapshot: ApiSnapshot = {
       ],
       constants: [],
       fields: [],
+      statics: [],
+      staticGetters: [],
     },
     {
       kind: 'class',
       disposable: false,
+      isAbstract: false,
       typeParams: [],
       supertypeBindings: {},
       name: 'TestPalette',
@@ -275,6 +283,8 @@ const snapshot: ApiSnapshot = {
         },
       ],
       fields: [],
+      statics: [],
+      staticGetters: [],
     },
     {
       kind: 'enum',
@@ -493,6 +503,7 @@ describe('emitWidgetsFile value-form guards', () => {
         {
           kind: 'class',
           disposable: false,
+          isAbstract: false,
           typeParams: [],
           supertypeBindings: {},
           name: 'ColorValue',
@@ -509,6 +520,8 @@ describe('emitWidgetsFile value-form guards', () => {
             },
           ],
           fields: [],
+          statics: [],
+          staticGetters: [],
         },
         {
           kind: 'widget',
@@ -542,6 +555,8 @@ describe('emitWidgetsFile value-form guards', () => {
           ],
           constants: [],
           fields: [],
+          statics: [],
+          staticGetters: [],
         },
       ],
     };
@@ -668,6 +683,8 @@ describe('emitWidgetsFile — gesture props', () => {
     ],
     constants: [],
     fields: [],
+    statics: [],
+    staticGetters: [],
   };
 
   const withDetector: ApiSnapshot = {
@@ -731,6 +748,8 @@ describe('emitWidgetsFile — gesture props', () => {
       ],
       constants: [],
       fields: [],
+      statics: [],
+      staticGetters: [],
     };
     const emitted = emitWidgetsFile(
       {
@@ -786,6 +805,7 @@ describe('emitConstantsFile — IconName', () => {
       {
         kind: 'class',
         disposable: false,
+        isAbstract: false,
         typeParams: [],
         supertypeBindings: {},
         name: 'Icons',
@@ -814,6 +834,8 @@ describe('emitConstantsFile — IconName', () => {
           },
         ],
         fields: [],
+        statics: [],
+        staticGetters: [],
       },
     ],
   };

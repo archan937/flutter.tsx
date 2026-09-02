@@ -156,6 +156,8 @@ export interface ComponentAnalysis {
   effects: ts.CallExpression[];
   controllers: ControllerBinding[];
   animations: AnimationBinding[];
+  /** Names bound by `useBuildContext()`, which are the build's context. */
+  contexts: string[];
   guards: GuardBinding[];
   returnJsx: ts.Expression;
   sourceFile: ts.SourceFile;
@@ -474,7 +476,9 @@ const dartTypeOfInitial = (
   sourceFile: ts.SourceFile,
 ): string => {
   if (ts.isNumericLiteral(initializer)) {
-    return initializer.text.includes('.') ? 'double' : 'int';
+    // `0.0` is a double and `0` an int, and only the source says which:
+    // TypeScript's own `text` normalises `0.0` to `0`.
+    return initializer.getText(sourceFile).includes('.') ? 'double' : 'int';
   }
   if (ts.isArrayLiteralExpression(initializer)) {
     const elementTypes = new Set(
@@ -701,6 +705,8 @@ const analyzeBodyStatement = (
       const module = context.hookModules.get(callee);
       if (callee === 'useState') {
         analyzeStateDeclaration(declaration, called, context);
+      } else if (callee === 'useBuildContext') {
+        context.analysis.contexts.push(declaration.name.getText());
       } else if (callee === 'useAnimation') {
         context.analysis.animations.push(
           animationBinding(declaration.name.getText(), called, context),
@@ -949,7 +955,9 @@ const storeFieldType = (
   sourceFile: ts.SourceFile,
 ): string => {
   if (ts.isNumericLiteral(initializer)) {
-    return initializer.text.includes('.') ? 'double' : 'int';
+    // `0.0` is a double and `0` an int, and only the source says which:
+    // TypeScript's own `text` normalises `0.0` to `0`.
+    return initializer.getText(sourceFile).includes('.') ? 'double' : 'int';
   }
   if (ts.isStringLiteral(initializer)) {
     return 'String';
@@ -1510,6 +1518,7 @@ const analyzeComponent = (
     effects: [],
     controllers: [],
     animations: [],
+    contexts: [],
     guards: [],
     returnJsx,
     sourceFile: context.sourceFile,

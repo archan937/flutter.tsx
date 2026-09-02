@@ -31,6 +31,9 @@ import { buildSiteTypes } from './types';
 
 const EMPTY_SLOTS: WidgetSlots = { children: null, slots: [] };
 
+/** The context Flutter hands values over through. */
+const BUILD_CONTEXT = 'BuildContext';
+
 const dartParamLine = (param: ParamModel): string => {
   const requiredPrefix = param.named && param.required ? 'required ' : '';
   const defaultSuffix =
@@ -85,8 +88,12 @@ const constructionMap = (
   const buildable = new Map<string, Constructible>();
   for (const entity of classes) {
     // A `dart:ui` class shares its name with a Flutter one, so the compiler
-    // refuses to construct it plainly and no example may show it.
-    if ((snapshot.exports[entity.name] ?? []).join() === 'ui') {
+    // refuses to construct it plainly and no example may show it. An
+    // abstract class cannot be built at all — only a subclass of it can.
+    if (
+      entity.isAbstract ||
+      (snapshot.exports[entity.name] ?? []).join() === 'ui'
+    ) {
       continue;
     }
     // An unnamed constructor is how a class is usually built; one that has
@@ -148,6 +155,47 @@ const constructionMap = (
   return construction;
 };
 
+/**
+ * Which static hands over each type the framework supplies.
+ *
+ * `View.of(context)` gives a `FlutterView`, `DefaultAssetBundle.of(context)`
+ * an `AssetBundle`. Only a static taking exactly the build context counts:
+ * anything else needs values of its own, which is a different question.
+ */
+const supplierMap = (
+  snapshot: ApiSnapshot,
+): Map<string, { owner: string; method: string }> => {
+  const suppliers = new Map<string, { owner: string; method: string }>();
+  for (const entity of snapshot.entities) {
+    if (entity.kind === 'enum') {
+      continue;
+    }
+    for (const method of entity.statics) {
+      const [only] = method.params;
+      const returned =
+        method.returnType.kind === 'nullable'
+          ? method.returnType.inner
+          : method.returnType;
+      if (
+        method.params.length !== 1 ||
+        only?.type.kind !== 'named' ||
+        only.type.name !== BUILD_CONTEXT ||
+        returned.kind !== 'named' ||
+        // A shorter name is the plainer accessor: `of` over `maybeOf`.
+        (suppliers.get(returned.name)?.method.length ?? Infinity) <=
+          method.name.length
+      ) {
+        continue;
+      }
+      suppliers.set(returned.name, {
+        owner: entity.name,
+        method: method.name,
+      });
+    }
+  }
+  return suppliers;
+};
+
 const synthesisContext = (
   snapshot: ApiSnapshot,
   forms: ValueForms,
@@ -172,6 +220,7 @@ const synthesisContext = (
     widgetExamples,
     formNames: reachableValueFormNames(snapshot, forms),
     declaredTypes: new Set(snapshot.entities.map((entity) => entity.name)),
+    suppliers: supplierMap(snapshot),
     valueOnlyNames: new Set(
       snapshot.entities
         .filter(

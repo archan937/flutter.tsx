@@ -28,7 +28,6 @@ const page = buildSitePage(
 /** Widgets whose examples wait on a shape the compiler does not write yet. */
 const NOT_YET_EXPRESSIBLE: readonly string[] = [
   'Actions',
-  'CallbackShortcuts',
   'PlatformViewLink',
   'RenderObjectToWidgetAdapter',
   'RepeatingAnimationBuilder',

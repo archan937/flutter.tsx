@@ -8,6 +8,7 @@ import {
   tween,
   useAnimation,
   useAsync,
+  useBuildContext,
   useEffect,
   useNavigation,
   useState,
@@ -67,6 +68,9 @@ describe('useStream (compile-target stub)', () => {
 
 describe('useAnimation and tween (compile-target stubs)', () => {
   test('throw at runtime: they only exist for the compiler to read', () => {
+    expect(useBuildContext).toThrow(
+      new Error('useBuildContext is compile-time'),
+    );
     expect(() => useAnimation({ duration: 600 })).toThrow(
       new Error('useAnimation is compile-time'),
     );

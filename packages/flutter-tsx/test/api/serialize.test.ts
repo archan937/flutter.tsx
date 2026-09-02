@@ -15,6 +15,7 @@ const snapshot: ApiSnapshot = {
     {
       kind: 'class',
       disposable: false,
+      isAbstract: false,
       typeParams: [],
       supertypeBindings: {},
       name: 'Alpha',
@@ -24,6 +25,8 @@ const snapshot: ApiSnapshot = {
       constructors: [],
       constants: [],
       fields: [],
+      statics: [],
+      staticGetters: [],
     },
     {
       kind: 'enum',

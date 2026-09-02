@@ -207,6 +207,8 @@ export type IrStatement =
       onError: { error: string; body: IrStatement[] } | null;
       onFinally: IrStatement[] | null;
     }
+  /// `final style = ElevatedButton.styleFrom(…);` — a name for a value.
+  | { kind: 'local'; name: string; value: IrValue }
   | { kind: 'forOf'; itemName: string; iterable: string; body: IrStatement[] }
   | { kind: 'while'; condition: string; body: IrStatement[] }
   | {

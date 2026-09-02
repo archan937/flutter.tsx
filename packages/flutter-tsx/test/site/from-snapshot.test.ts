@@ -125,6 +125,7 @@ describe('buildSitePage', () => {
       {
         kind: 'class',
         disposable: false,
+        isAbstract: false,
         typeParams: [],
         supertypeBindings: {},
         name: 'TestPalette',
@@ -141,6 +142,8 @@ describe('buildSitePage', () => {
           },
         ],
         fields: [],
+        statics: [],
+        staticGetters: [],
       },
       {
         kind: 'widget',
@@ -177,6 +180,8 @@ describe('buildSitePage', () => {
         ],
         constants: [],
         fields: [],
+        statics: [],
+        staticGetters: [],
       },
     ],
   };

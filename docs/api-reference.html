@@ -223,7 +223,7 @@ details details > ul { padding-left: 24px; }
 </ul>
 </details>
 <details>
-<summary>Hooks &amp; core APIs<span class="nav-count">27</span></summary>
+<summary>Hooks &amp; core APIs<span class="nav-count">28</span></summary>
 <ul>
 <li data-name="StateSetter"><a href="#core-StateSetter">StateSetter</a></li>
 <li data-name="useState"><a href="#core-useState">useState</a></li>
@@ -232,6 +232,7 @@ details details > ul { padding-left: 24px; }
 <li data-name="AsyncOptions"><a href="#core-AsyncOptions">AsyncOptions</a></li>
 <li data-name="useAsync"><a href="#core-useAsync">useAsync</a></li>
 <li data-name="useStream"><a href="#core-useStream">useStream</a></li>
+<li data-name="useBuildContext"><a href="#core-useBuildContext">useBuildContext</a></li>
 <li data-name="AnimationHandle"><a href="#core-AnimationHandle">AnimationHandle</a></li>
 <li data-name="AnimationOptions"><a href="#core-AnimationOptions">AnimationOptions</a></li>
 <li data-name="useAnimation"><a href="#core-useAnimation">useAnimation</a></li>
@@ -1866,7 +1867,7 @@ export const Shell = () =&gt; (
 }</code></pre>
 </div>
 </div>
-<p class="note">Used by <a href="./cookbook.html#01-camera-screen"><code>01-camera-screen</code></a>, <a href="./cookbook.html#05-counter"><code>05-counter</code></a>, <a href="./cookbook.html#06-mount-effect"><code>06-mount-effect</code></a>, <a href="./cookbook.html#07-list-rendering"><code>07-list-rendering</code></a>, <a href="./cookbook.html#09-typed-props"><code>09-typed-props</code></a>, <a href="./cookbook.html#10-camera-options"><code>10-camera-options</code></a>, <a href="./cookbook.html#11-preferences"><code>11-preferences</code></a>, <a href="./cookbook.html#12-secure-storage"><code>12-secure-storage</code></a>, <a href="./cookbook.html#13-open-link"><code>13-open-link</code></a>, <a href="./cookbook.html#15-front-camera"><code>15-front-camera</code></a>, <a href="./cookbook.html#16-tap-target"><code>16-tap-target</code></a>, <a href="./cookbook.html#21-modal"><code>21-modal</code></a>, <a href="./cookbook.html#22-mount-dialog"><code>22-mount-dialog</code></a>, <a href="./cookbook.html#24-animated"><code>24-animated</code></a>, <a href="./cookbook.html#29-branching-handler"><code>29-branching-handler</code></a>, <a href="./cookbook.html#33-control-flow"><code>33-control-flow</code></a>, <a href="./cookbook.html#38-effect-cleanup"><code>38-effect-cleanup</code></a>, <a href="./cookbook.html#39-builder-callback"><code>39-builder-callback</code></a>, <a href="./cookbook.html#43-tray-singleton"><code>43-tray-singleton</code></a>, <a href="./cookbook.html#44-tray-listener"><code>44-tray-listener</code></a>, <a href="./cookbook.html#45-camera-capture"><code>45-camera-capture</code></a>, <a href="./cookbook.html#47-guarded-handler"><code>47-guarded-handler</code></a>, <a href="./cookbook.html#48-number-types"><code>48-number-types</code></a>, <a href="./cookbook.html#51-plugin-values"><code>51-plugin-values</code></a>, <a href="./cookbook.html#52-mixed-label"><code>52-mixed-label</code></a>, <a href="./cookbook.html#53-owned-controller"><code>53-owned-controller</code></a>, <a href="./cookbook.html#54-typed-error"><code>54-typed-error</code></a>, <a href="./cookbook.html#55-try-finally"><code>55-try-finally</code></a></p>
+<p class="note">Used by <a href="./cookbook.html#01-camera-screen"><code>01-camera-screen</code></a>, <a href="./cookbook.html#05-counter"><code>05-counter</code></a>, <a href="./cookbook.html#06-mount-effect"><code>06-mount-effect</code></a>, <a href="./cookbook.html#07-list-rendering"><code>07-list-rendering</code></a>, <a href="./cookbook.html#09-typed-props"><code>09-typed-props</code></a>, <a href="./cookbook.html#10-camera-options"><code>10-camera-options</code></a>, <a href="./cookbook.html#11-preferences"><code>11-preferences</code></a>, <a href="./cookbook.html#12-secure-storage"><code>12-secure-storage</code></a>, <a href="./cookbook.html#13-open-link"><code>13-open-link</code></a>, <a href="./cookbook.html#15-front-camera"><code>15-front-camera</code></a>, <a href="./cookbook.html#16-tap-target"><code>16-tap-target</code></a>, <a href="./cookbook.html#21-modal"><code>21-modal</code></a>, <a href="./cookbook.html#22-mount-dialog"><code>22-mount-dialog</code></a>, <a href="./cookbook.html#24-animated"><code>24-animated</code></a>, <a href="./cookbook.html#29-branching-handler"><code>29-branching-handler</code></a>, <a href="./cookbook.html#33-control-flow"><code>33-control-flow</code></a>, <a href="./cookbook.html#38-effect-cleanup"><code>38-effect-cleanup</code></a>, <a href="./cookbook.html#39-builder-callback"><code>39-builder-callback</code></a>, <a href="./cookbook.html#43-tray-singleton"><code>43-tray-singleton</code></a>, <a href="./cookbook.html#44-tray-listener"><code>44-tray-listener</code></a>, <a href="./cookbook.html#45-camera-capture"><code>45-camera-capture</code></a>, <a href="./cookbook.html#47-guarded-handler"><code>47-guarded-handler</code></a>, <a href="./cookbook.html#48-number-types"><code>48-number-types</code></a>, <a href="./cookbook.html#51-plugin-values"><code>51-plugin-values</code></a>, <a href="./cookbook.html#52-mixed-label"><code>52-mixed-label</code></a>, <a href="./cookbook.html#53-owned-controller"><code>53-owned-controller</code></a>, <a href="./cookbook.html#54-typed-error"><code>54-typed-error</code></a>, <a href="./cookbook.html#55-try-finally"><code>55-try-finally</code></a>, <a href="./cookbook.html#61-static-in-handler"><code>61-static-in-handler</code></a></p>
 </article>
 <article class="widget" id="core-EffectCleanup" data-name="EffectCleanup">
 <h3>EffectCleanup<span class="badge badge-lib">type</span></h3>
@@ -2093,6 +2094,56 @@ export const Shell = () =&gt; (
 </div>
 </div>
 <p class="note">Used by <a href="./cookbook.html#18-connectivity-stream"><code>18-connectivity-stream</code></a></p>
+</article>
+<article class="widget" id="core-useBuildContext" data-name="useBuildContext">
+<h3>useBuildContext<span class="badge badge-lib">hook</span></h3>
+<p class="doc">The context a widget is built in.
+
+Flutter hands values over through it — `MediaQuery.of(context)`,
+`View.of(context)` — and this is how a component names it. Compile
+target: the transpiler reads the call from the AST and uses the
+`BuildContext` the build already has.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="Signature" role="tab" aria-selected="true">Signature</button>
+<button class="tab-btn" data-tab="TSX" role="tab" aria-selected="false">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+</div>
+<div class="tab-panel active" data-panel="Signature" role="tabpanel">
+<pre><code class="language-typescript">() =&gt; <span class="tok-typ">BuildContext</span></code></pre>
+</div>
+<div class="tab-panel" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">MediaQuery</span>, <span class="tok-typ">Text</span>, useBuildContext } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Header</span> = () =&gt; {
+  <span class="tok-kw">const</span> ctx = <span class="tok-fn">useBuildContext</span>();
+  <span class="tok-kw">const</span> title = &lt;<span class="tok-typ">Text</span>&gt;Flutter.tsx&lt;/<span class="tok-typ">Text</span>&gt;;
+  const width = MediaQuery.widthOf(ctx);
+
+  return (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      {title}
+      &lt;<span class="tok-typ">Text</span>&gt;Width: {width}&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
+  );
+};</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">Header</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Header</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">final</span> title = <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Flutter.tsx'</span>);
+    <span class="tok-kw">final</span> width = <span class="tok-typ">MediaQuery</span>.<span class="tok-fn">widthOf</span>(context);
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(children: [title, <span class="tok-typ">Text</span>(<span class="tok-str">'Width: $width'</span>)]);
+  }
+}</code></pre>
+</div>
+</div>
+<p class="note">Used by <a href="./cookbook.html#58-build-context"><code>58-build-context</code></a>, <a href="./cookbook.html#59-widget-local"><code>59-widget-local</code></a>, <a href="./cookbook.html#61-static-in-handler"><code>61-static-in-handler</code></a></p>
 </article>
 <article class="widget" id="core-AnimationHandle" data-name="AnimationHandle">
 <h3>AnimationHandle<span class="badge badge-lib">type</span></h3>
@@ -4601,7 +4652,7 @@ in the same semantic container.</p>
 </div>
 </article>
 <article class="widget" id="CallbackShortcuts" data-name="CallbackShortcuts">
-<h3>CallbackShortcuts<span class="badge badge-lib">widgets</span></h3>
+<h3>CallbackShortcuts<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that binds key combinations to specific callbacks.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -4610,14 +4661,14 @@ in the same semantic container.</p>
 <tr><td>bindings</td><td>Map&lt;ShortcutActivator, () =&gt; void&gt;</td><td>Map&lt;ShortcutActivator, void Function()&gt;</td><td class="req">✓</td></tr>
 </tbody>
 </table>
-<p class="note"><code>bindings</code> (Map&lt;ShortcutActivator, void Function()&gt;) — a shape the compiler does not write yet.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">CallbackShortcuts</span> bindings={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">CallbackShortcuts</span> bindings={<span class="tok-kw">new</span> <span class="tok-typ">Map</span>&lt;<span class="tok-typ">ShortcutActivator</span>, () =&gt; void&gt;([[new CharacterActivator(<span class="tok-str">&quot;example&quot;</span>), () =&gt; {}]])}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">CallbackShortcuts</span>&gt;</code></pre>
 </div>
@@ -10376,7 +10427,7 @@ on a keyboard.</p>
 </div>
 </article>
 <article class="widget" id="RawRadio" data-name="RawRadio">
-<h3>RawRadio<span class="badge badge-lib">widgets</span></h3>
+<h3>RawRadio<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A Radio button that provides basic radio functionalities.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -10391,7 +10442,7 @@ on a keyboard.</p>
 <tr><td>builder</td><td>(context: BuildContext, state: ToggleableStateMixin) =&gt; FlutterElement</td><td>Widget Function(BuildContext, ToggleableStateMixin&lt;StatefulWidget&gt;)</td><td class="req">✓</td></tr>
 </tbody>
 </table>
-<p class="note"><code>groupRegistry</code> (RadioGroupRegistry&lt;T&gt;?) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
@@ -10400,9 +10451,10 @@ on a keyboard.</p>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
 <pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">RawRadioExample</span> = () =&gt; {
   <span class="tok-kw">const</span> focusNode = <span class="tok-kw">new</span> <span class="tok-typ">FocusNode</span>();
+  <span class="tok-kw">const</span> ctx = <span class="tok-fn">useBuildContext</span>();
 
   <span class="tok-kw">return</span> (
-    &lt;<span class="tok-typ">RawRadio</span> value=<span class="tok-str">&quot;example&quot;</span> mouseCursor=<span class="tok-str">&quot;adaptiveClickable&quot;</span> toggleable={<span class="tok-kw">true</span>} focusNode={focusNode} autofocus={<span class="tok-kw">true</span>} groupRegistry={…} enabled={<span class="tok-kw">true</span>} builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;
+    &lt;<span class="tok-typ">RawRadio</span> value=<span class="tok-str">&quot;example&quot;</span> mouseCursor=<span class="tok-str">&quot;adaptiveClickable&quot;</span> toggleable={<span class="tok-kw">true</span>} focusNode={focusNode} autofocus={<span class="tok-kw">true</span>} groupRegistry={<span class="tok-typ">RadioGroup</span>.<span class="tok-fn">maybeOf</span>(ctx)} enabled={<span class="tok-kw">true</span>} builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;
   );
 };</code></pre>
 </div>
@@ -10545,7 +10597,7 @@ user interactions, such as hovering or long-pressing.</p>
 </div>
 </article>
 <article class="widget" id="RawView" data-name="RawView">
-<h3>RawView<span class="badge badge-lib">widgets</span></h3>
+<h3>RawView<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">The lower level workhorse widget for [View] that bootstraps a render tree
 for a view.</p>
 <table class="props">
@@ -10557,16 +10609,22 @@ for a view.</p>
 <tr><td>deprecatedDoNotUseWillBeRemovedWithoutNoticeRenderView</td><td>RenderView</td><td>RenderView?</td><td class="req"></td></tr>
 </tbody>
 </table>
-<p class="note"><code>view</code> (FlutterView) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">RawView</span> view={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">RawView</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">RawViewExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> ctx = <span class="tok-fn">useBuildContext</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">RawView</span> view={<span class="tok-typ">View</span>.<span class="tok-kw">of</span>(ctx)}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">RawView</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">RawView</span>({
@@ -14284,7 +14342,7 @@ available to descendants via [RestorationScope.of].</p>
 </div>
 </article>
 <article class="widget" id="View" data-name="View">
-<h3>View<span class="badge badge-lib">widgets</span></h3>
+<h3>View<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Bootstraps a render tree that is rendered into the provided [FlutterView].</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -14295,16 +14353,22 @@ available to descendants via [RestorationScope.of].</p>
 <tr><td>deprecatedDoNotUseWillBeRemovedWithoutNoticeRenderView</td><td>RenderView</td><td>RenderView?</td><td class="req"></td></tr>
 </tbody>
 </table>
-<p class="note"><code>view</code> (FlutterView) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">View</span> view={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">View</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">ViewExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> ctx = <span class="tok-fn">useBuildContext</span>();
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">View</span> view={<span class="tok-typ">View</span>.<span class="tok-kw">of</span>(ctx)}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">View</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">View</span>({
@@ -26438,7 +26502,7 @@ sheets.</p>
 </div>
 </article>
 <article class="widget" id="CupertinoTabScaffold" data-name="CupertinoTabScaffold">
-<h3>CupertinoTabScaffold<span class="badge badge-lib">cupertino</span></h3>
+<h3>CupertinoTabScaffold<span class="badge badge-lib">cupertino</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Implements a tabbed iOS application's root layout and behavior structure.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -26451,14 +26515,14 @@ sheets.</p>
 <tr><td>restorationId</td><td>string</td><td>String?</td><td class="req"></td></tr>
 </tbody>
 </table>
-<p class="note"><code>tabBar</code> (CupertinoTabBar) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">CupertinoTabScaffold</span> tabBar={…} tabBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">CupertinoTabScaffold</span> tabBar={&lt;<span class="tok-typ">CupertinoTabBar</span> items={[]} /&gt;} tabBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;<span class="tok-typ">Content</span>&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">CupertinoTabScaffold</span>({
@@ -27027,7 +27091,7 @@ can be used to apply style differences based on a widget's elevation.</p>
 </div>
 </article>
 <article class="widget" id="InheritedCupertinoTheme" data-name="InheritedCupertinoTheme">
-<h3>InheritedCupertinoTheme<span class="badge badge-lib">cupertino</span></h3>
+<h3>InheritedCupertinoTheme<span class="badge badge-lib">cupertino</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Provides a [CupertinoTheme] to all descendants.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -27036,14 +27100,14 @@ can be used to apply style differences based on a widget's elevation.</p>
 <tr><td>theme</td><td>FlutterChild</td><td>CupertinoTheme</td><td class="req">✓</td></tr>
 </tbody>
 </table>
-<p class="note"><code>theme</code> (CupertinoTheme) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">InheritedCupertinoTheme</span> theme={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">InheritedCupertinoTheme</span> theme={&lt;<span class="tok-typ">CupertinoTheme</span> data={{}}&gt;   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt; &lt;/<span class="tok-typ">CupertinoTheme</span>&gt;}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">InheritedCupertinoTheme</span>&gt;</code></pre>
 </div>

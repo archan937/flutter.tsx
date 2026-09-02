@@ -44,6 +44,11 @@ export interface SynthesisContext {
   formNames: ReadonlySet<string>;
   /** Types the surface declares, and so can be written as a type. */
   declaredTypes: ReadonlySet<string>;
+  /**
+   * Types the framework hands over, and the static that hands each one over:
+   * `FlutterView` by `View.of(context)`.
+   */
+  suppliers: ReadonlyMap<string, { owner: string; method: string }>;
 }
 
 /**
@@ -79,7 +84,9 @@ const INCOMPLETE_VALUE = '{…}';
 // each is a name the example has to import.
 const NAMESPACE_REFERENCE = /\b([A-Z][A-Za-z0-9_]*)\./g;
 // `new Map<ShortcutActivator, Intent>(…)` names the types it holds.
-const TYPE_ARGUMENT = /new Map<([^>]+)>\(/g;
+// A callback type inside the arguments carries a `>` of its own, so the
+// list runs to the `>(` that closes it.
+const TYPE_ARGUMENT = /new Map<([\s\S]+?)>\(/g;
 const CONSTRUCTED_CLASS = /\bnew ([A-Z][A-Za-z0-9_]*)\(/g;
 // A Map is JavaScript's own; the package exports nothing by that name.
 const BUILT_IN_CLASSES: ReadonlySet<string> = new Set(['Map']);
@@ -225,6 +232,29 @@ const satisfies = (
   );
 };
 
+/**
+ * `MediaQuery.of(context)` — a value the framework hands over.
+ *
+ * Nothing constructs a `FlutterView` or an `AssetBundle`: Flutter gives them
+ * to a widget through a static, so that call is how an example writes one.
+ */
+const suppliedValue = (
+  typeName: string,
+  context: SynthesisContext,
+): SynthesizedValue | null => {
+  const supplier = context.suppliers.get(typeName);
+  if (supplier === undefined) {
+    return null;
+  }
+  return {
+    value: `{${supplier.owner}.${supplier.method}(ctx)}`,
+    binding: {
+      line: 'const ctx = useBuildContext();',
+      imports: ['useBuildContext', supplier.owner],
+    },
+  };
+};
+
 /** `const focusNode = new FocusNode();` — a value the component makes. */
 const ownedValue = (
   typeName: string,
@@ -352,7 +382,11 @@ const attrValue = (
         // A bare expression is typed as the type itself, so there is no
         // union to shorten — but a value the component makes, and one the
         // SDK builds, are the values themselves.
-        return ownedValue(type.name, context) ?? builtValue(type, context);
+        return (
+          ownedValue(type.name, context) ??
+          builtValue(type, context) ??
+          suppliedValue(type.name, context)
+        );
       }
       const dateForm = DATE_FORMS.get(type.name);
       if (dateForm !== undefined) {
@@ -369,9 +403,13 @@ const attrValue = (
       if (context.forms.constructibles.has(type.name)) {
         return literal('{{}}');
       }
-      // A value the component makes and keeps: the example is the component,
-      // and the binding is the line that makes it.
-      return ownedValue(type.name, context) ?? builtValue(type, context);
+      // A value the component makes and keeps, one the SDK builds, or one
+      // the framework hands over — in that order of directness.
+      return (
+        ownedValue(type.name, context) ??
+        builtValue(type, context) ??
+        suppliedValue(type.name, context)
+      );
     }
     case 'function': {
       // What a callback answers with is the same whether or not it may be
@@ -486,11 +524,21 @@ const pickOneOfMember = (
   return first === undefined ? null : { param: first, value: null };
 };
 
-const slotValue = (slot: NamedSlot): SynthesizedValue | null => {
+const slotValue = (
+  slot: NamedSlot,
+  context: SynthesisContext,
+): SynthesizedValue | null => {
   if (slot.mode === 'multi') {
     return literal('{[]}');
   }
-  return slot.accepts === 'Widget' ? literal('{<Text>Content</Text>}') : null;
+  if (slot.accepts === 'Widget') {
+    return literal('{<Text>Content</Text>}');
+  }
+  // A slot may ask for one particular widget — a `CupertinoTabScaffold`
+  // wants a `CupertinoTabBar` — and that widget's own example is how one is
+  // written.
+  const tag = context.widgetExamples.get(slot.accepts);
+  return tag === undefined ? null : literal(`{${tag}}`);
 };
 
 const childrenBlock = (kind: 'widgetList' | 'widget' | 'text'): string => {
@@ -575,7 +623,9 @@ export const synthesizeTsx = (input: SynthesisInput): SynthesizedExample => {
 
     const slot = slots.slots.find((entry) => entry.param === candidate.name);
     const value =
-      slot !== undefined ? slotValue(slot) : attrValue(candidate.type, context);
+      slot !== undefined
+        ? slotValue(slot, context)
+        : attrValue(candidate.type, context);
     attrs.push(
       `${jsxPropName(candidate.name, takenNames)}=${record(value, candidate)}`,
     );

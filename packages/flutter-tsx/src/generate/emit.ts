@@ -174,10 +174,12 @@ interface WidgetScope {
   widgetSlots: WidgetSlots;
   formNames: ReadonlySet<string>;
   gestureJsxNames: string[];
+  /** What the surface can name, for the statics this widget offers. */
+  readable: ReadableTypes;
 }
 
 const widgetBlocks = (widget: WidgetEntity, scope: WidgetScope): string[] => {
-  const { widgetSlots, formNames, gestureJsxNames } = scope;
+  const { widgetSlots, formNames, gestureJsxNames, readable } = scope;
   const constructor = defaultConstructorOf(widget);
   if (constructor === undefined) {
     return [];
@@ -207,20 +209,74 @@ const widgetBlocks = (widget: WidgetEntity, scope: WidgetScope): string[] => {
     `${docPrefix}export interface ${widget.name}Props` +
     `${gestureClause(widget, ownJsxNames, gestureJsxNames)} {\n` +
     `${lines.join('\n')}\n}`;
+  // `MediaQuery.of(context)` and `Colors.red` are read off the component
+  // itself, so the value carries whatever the widget offers statically.
+  const carried = [
+    ...(widget.constants.length === 0
+      ? []
+      : [
+          `declareConstants<{\n${widget.constants
+            .map((constant) =>
+              indentBlock(constantMember(constant, EMPTY_NAMES)),
+            )
+            .join('\n')}\n  }>('${widget.name}')`,
+        ]),
+    ...staticSurface(widget, readable),
+  ];
   const component =
-    widget.constants.length === 0
+    carried.length === 0
       ? `${docPrefix}export const ${widget.name}: ` +
         `FlutterComponent<${widget.name}Props> =\n` +
         `  declareWidget<${widget.name}Props>('${widget.name}');`
       : `${docPrefix}export const ${widget.name} = Object.assign(\n` +
         `  declareWidget<${widget.name}Props>('${widget.name}'),\n` +
-        `  declareConstants<{\n` +
-        widget.constants
-          .map((constant) => indentBlock(constantMember(constant, EMPTY_NAMES)))
-          .join('\n') +
-        `\n  }>('${widget.name}'),\n` +
+        `${carried.map((part) => `  ${part},`).join('\n')}\n` +
         ');';
   return [propsInterface, component];
+};
+
+/**
+ * The statics a class or widget offers, as one declared value.
+ *
+ * `MediaQuery.of(context)` is how a Flutter app reads the tree, and a value
+ * nothing constructs — a `FlutterView`, an `AssetBundle` — is handed over by
+ * one of these. Only those whose whole signature the surface can name are
+ * declared: one asking for a type the editor never heard of could not be
+ * called anyway.
+ */
+const staticSurface = (
+  entity: WidgetEntity | ClassEntity,
+  readable: ReadableTypes,
+): string[] => {
+  const nameable = (node: TypeNode): boolean =>
+    isDeclaredType(node, readable.declared, readable.enums);
+  const methods = entity.statics.filter(
+    (method) =>
+      TS_IDENTIFIER.test(method.name) &&
+      nameable(method.returnType) &&
+      method.params.every((param) => nameable(param.type)),
+  );
+  const getters = entity.staticGetters.filter(
+    (getter) => TS_IDENTIFIER.test(getter.name) && nameable(getter.type),
+  );
+  if (methods.length === 0 && getters.length === 0) {
+    return [];
+  }
+  const members = [
+    ...methods.map((method) => {
+      const params = signatureParams(method.params, (param) =>
+        valueFormTsType(unwrapNullable(param.type), readable.forms),
+      );
+      return (
+        `    readonly ${method.name}: (${params}) => ` +
+        `${tsTypeOf(method.returnType)};`
+      );
+    }),
+    ...getters.map(
+      (getter) => `    readonly ${getter.name}: ${tsTypeOf(getter.type)};`,
+    ),
+  ];
+  return [`{} as {\n${members.join('\n')}\n  }`];
 };
 
 const isDeclaredType = (
@@ -283,6 +339,26 @@ const collectHandedTypes = (node: TypeNode, into: Set<string>): void => {
       break;
     default:
       break;
+  }
+};
+
+/**
+ * A value handed straight over, rather than through a callback.
+ *
+ * `MediaQuery.of(context)` returns a `MediaQueryData`, and the whole point
+ * of holding one is reading it — so its members belong to the surface.
+ */
+const handedValue = (node: TypeNode, into: Set<string>): void => {
+  if (node.kind === 'named') {
+    into.add(node.name);
+    return;
+  }
+  if (node.kind === 'nullable') {
+    handedValue(node.inner, into);
+    return;
+  }
+  if (node.kind === 'list' || node.kind === 'set' || node.kind === 'future') {
+    handedValue(node.item, into);
   }
 };
 
@@ -573,6 +649,24 @@ export const emitWidgetsFile = (
       collectHandedTypes(param.type, handed);
     }
   }
+  // A static hands a value over — `MediaQuery.of(context)` — and that value
+  // is read, so its members belong to the surface.
+  for (const entity of snapshot.entities) {
+    if (entity.kind === 'enum') {
+      continue;
+    }
+    for (const method of entity.statics) {
+      collectRefs(method.returnType, namedRefs, enumRefs);
+      handedValue(method.returnType, handed);
+      for (const param of method.params) {
+        collectRefs(param.type, namedRefs, enumRefs);
+      }
+    }
+    for (const getter of entity.staticGetters) {
+      collectRefs(getter.type, namedRefs, enumRefs);
+      handedValue(getter.type, handed);
+    }
+  }
   for (const name of formNames) {
     namedRefs.add(name);
     for (const param of forms.constructibles.get(name) ?? []) {
@@ -671,6 +765,14 @@ export const emitWidgetsFile = (
       blocks.push(enumBlock(entity));
     }
   }
+  const readable: ReadableTypes = {
+    handed,
+    declared: namedRefs,
+    enums: enumRefs,
+    forms: formNames,
+    namespaces: new Set(constantNamespaceEntities(snapshot)),
+    uiOnly: uiOnlyNames(snapshot),
+  };
   for (const name of [...namedRefs].sort()) {
     blocks.push(
       brandInterface(name, snapshot, {
@@ -695,6 +797,7 @@ export const emitWidgetsFile = (
         widgetSlots: slots[widget.name] ?? EMPTY_SLOTS,
         formNames,
         gestureJsxNames,
+        readable,
       }),
     );
   }

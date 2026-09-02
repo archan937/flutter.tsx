@@ -70,6 +70,17 @@ class TestHolder<T> {
   final T value;
 }
 
+/// Handed to a widget by the framework, and read back from the tree.
+class TestScope {
+  const TestScope._();
+
+  /// The scope the tree carries here.
+  static TestScope of(BuildContext context) => const TestScope._();
+
+  /// The one every app starts with.
+  static TestScope get fallback => const TestScope._();
+}
+
 /// Compares controllers, which is what it is built for.
 class TestSorter implements Comparable<TestController> {
   const TestSorter();

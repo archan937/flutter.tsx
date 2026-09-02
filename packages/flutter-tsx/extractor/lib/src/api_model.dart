@@ -311,6 +311,8 @@ abstract class ConstructedEntity extends EntityModel {
     required this.constructors,
     required this.constants,
     required this.fields,
+    required this.statics,
+    required this.staticGetters,
   });
 
   final List<String> supertypes;
@@ -319,6 +321,13 @@ abstract class ConstructedEntity extends EntityModel {
 
   /// Public instance fields and getters, so a value of this type can be read.
   final List<FieldModel> fields;
+
+  /// Static methods: `MediaQuery.of(context)`, `View.of(context)`. These are
+  /// how the framework hands over values nothing constructs.
+  final List<MethodModel> statics;
+
+  /// Static getters, which are the same thing without arguments.
+  final List<FieldModel> staticGetters;
 
   @override
   Map<String, Object?> toJson() => {
@@ -332,6 +341,10 @@ abstract class ConstructedEntity extends EntityModel {
         .toList(),
     'constants': constants.map((constant) => constant.toJson()).toList(),
     'fields': fields.map((field) => field.toJson()).toList(),
+    if (statics.isNotEmpty)
+      'statics': statics.map((method) => method.toJson()).toList(),
+    if (staticGetters.isNotEmpty)
+      'staticGetters': staticGetters.map((getter) => getter.toJson()).toList(),
   };
 }
 
@@ -344,6 +357,8 @@ class WidgetEntity extends ConstructedEntity {
     required super.constructors,
     required super.constants,
     required super.fields,
+    required super.statics,
+    required super.staticGetters,
   });
 
   @override
@@ -359,9 +374,12 @@ class ClassEntity extends ConstructedEntity {
     required super.constructors,
     required super.constants,
     required super.fields,
+    required super.statics,
+    required super.staticGetters,
     required this.disposable,
     required this.typeParams,
     required this.supertypeBindings,
+    required this.isAbstract,
   });
 
   /// Whether a public `dispose()` is part of this class's surface.
@@ -378,6 +396,10 @@ class ClassEntity extends ConstructedEntity {
   /// `ShapeBorderClipper`, which is what makes it usable as one.
   final Map<String, List<TypeNode>> supertypeBindings;
 
+  /// Whether the class is abstract, and so cannot be built at all: only a
+  /// concrete subclass of it can be.
+  final bool isAbstract;
+
   @override
   String get kind => 'class';
 
@@ -385,6 +407,7 @@ class ClassEntity extends ConstructedEntity {
   Map<String, Object?> toJson() => {
     ...super.toJson(),
     'disposable': disposable,
+    if (isAbstract) 'abstract': true,
     if (typeParams.isNotEmpty) 'typeParams': typeParams,
     if (supertypeBindings.isNotEmpty)
       'supertypeBindings': {

@@ -161,7 +161,7 @@ main p { margin-bottom: 12px; }
     <a href="https://github.com/archan937/flutter.tsx" target="_blank" rel="noopener">GitHub ↗</a>
   </nav>
   <input id="search" type="search" placeholder="Search recipes…" autocomplete="off" spellcheck="false">
-  <div class="meta-info">57 recipes · Flutter 3.47.1</div>
+  <div class="meta-info">61 recipes · Flutter 3.47.1</div>
   <nav id="sidebar-nav">
 <details open>
 <summary>Start here<span class="nav-count">7</span></summary>
@@ -176,7 +176,7 @@ main p { margin-bottom: 12px; }
 </ul>
 </details>
 <details>
-<summary>State and effects<span class="nav-count">12</span></summary>
+<summary>State and effects<span class="nav-count">15</span></summary>
 <ul>
 <li data-name="Running code on mount"><a href="#06-mount-effect">Running code on mount</a></li>
 <li data-name="State shared across screens"><a href="#19-store-counter">State shared across screens</a></li>
@@ -190,6 +190,15 @@ main p { margin-bottom: 12px; }
 <li data-name="Clearing a busy flag whatever happens"><a href="#55-try-finally">Clearing a busy flag whatever happens</a></li>
 <li data-name="An animation the component drives"><a href="#56-animation">An animation the component drives</a></li>
 <li data-name="An animation over values that are not numbers"><a href="#57-tween">An animation over values that are not numbers</a></li>
+<li data-name="Reading what the framework knows"><a href="#58-build-context">Reading what the framework knows</a></li>
+<li data-name="A widget held by a name"><a href="#59-widget-local">A widget held by a name</a></li>
+<li data-name="Measuring the screen when a button is pressed"><a href="#61-static-in-handler">Measuring the screen when a button is pressed</a></li>
+</ul>
+</details>
+<details>
+<summary>Layout and styling<span class="nav-count">1</span></summary>
+<ul>
+<li data-name="Styling a button the way Flutter does"><a href="#60-button-style">Styling a button the way Flutter does</a></li>
 </ul>
 </details>
 <details>
@@ -1484,6 +1493,197 @@ export const TaskBoard = () =&gt; {
           child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Drifts across'</span>),
         ),
         <span class="tok-typ">ElevatedButton</span>(onPressed: _run, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Run'</span>)),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section class="recipe" id="58-build-context" data-name="Reading what the framework knows">
+<h3>Reading what the framework knows</h3>
+<p class="blurb"><code>MediaQuery.widthOf(useBuildContext())</code> — the statics Flutter hands values through are callable, so what the tree knows is readable without a controller or a plugin.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/ScreenSize.tsx" role="tab" aria-selected="true">src/ScreenSize.tsx</button>
+<button class="tab-btn" data-tab="screen_size.dart" role="tab" aria-selected="false">screen_size.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/ScreenSize.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">MediaQuery</span>, <span class="tok-typ">Text</span>, useBuildContext } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">ScreenSize</span> = () =&gt; {
+  <span class="tok-kw">const</span> ctx = <span class="tok-fn">useBuildContext</span>();
+  <span class="tok-kw">const</span> width = <span class="tok-typ">MediaQuery</span>.<span class="tok-fn">widthOf</span>(ctx);
+  <span class="tok-kw">const</span> dark = <span class="tok-typ">MediaQuery</span>.<span class="tok-fn">platformBrightnessOf</span>(ctx);
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Width: {width}&lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Brightness: {dark}&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
+  );
+};</code></pre></div>
+<div class="tab-panel" data-panel="screen_size.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">ScreenSize</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">ScreenSize</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">final</span> width = <span class="tok-typ">MediaQuery</span>.<span class="tok-fn">widthOf</span>(context);
+    <span class="tok-kw">final</span> dark = <span class="tok-typ">MediaQuery</span>.<span class="tok-fn">platformBrightnessOf</span>(context);
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(children: [<span class="tok-typ">Text</span>(<span class="tok-str">'Width: $width'</span>), <span class="tok-typ">Text</span>(<span class="tok-str">'Brightness: $dark'</span>)]);
+  }
+}</code></pre></div>
+</div>
+</section>
+<section class="recipe" id="59-widget-local" data-name="A widget held by a name">
+<h3>A widget held by a name</h3>
+<p class="blurb"><code>const title = &lt;Text&gt;…&lt;/Text&gt;</code> is a widget a name holds, and <code>{title}</code> renders it — not text about it.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Header.tsx" role="tab" aria-selected="true">src/Header.tsx</button>
+<button class="tab-btn" data-tab="header.dart" role="tab" aria-selected="false">header.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Header.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">MediaQuery</span>, <span class="tok-typ">Text</span>, useBuildContext } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Header</span> = () =&gt; {
+  <span class="tok-kw">const</span> ctx = <span class="tok-fn">useBuildContext</span>();
+  <span class="tok-kw">const</span> title = &lt;<span class="tok-typ">Text</span>&gt;Flutter.tsx&lt;/<span class="tok-typ">Text</span>&gt;;
+  const width = MediaQuery.widthOf(ctx);
+
+  return (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      {title}
+      &lt;<span class="tok-typ">Text</span>&gt;Width: {width}&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
+  );
+};</code></pre></div>
+<div class="tab-panel" data-panel="header.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">Header</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Header</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">final</span> title = <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Flutter.tsx'</span>);
+    <span class="tok-kw">final</span> width = <span class="tok-typ">MediaQuery</span>.<span class="tok-fn">widthOf</span>(context);
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(children: [title, <span class="tok-typ">Text</span>(<span class="tok-str">'Width: $width'</span>)]);
+  }
+}</code></pre></div>
+</div>
+</section>
+<section class="recipe" id="61-static-in-handler" data-name="Measuring the screen when a button is pressed">
+<h3>Measuring the screen when a button is pressed</h3>
+<p class="blurb"><code>MediaQuery.of(useBuildContext())</code> inside a handler reads what the tree knows, and what it hands back is readable — <code>data.accessibleNavigation</code> and all.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Measure.tsx" role="tab" aria-selected="true">src/Measure.tsx</button>
+<button class="tab-btn" data-tab="measure.dart" role="tab" aria-selected="false">measure.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Measure.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> {
+  <span class="tok-typ">Column</span>,
+  <span class="tok-typ">ElevatedButton</span>,
+  <span class="tok-typ">MediaQuery</span>,
+  <span class="tok-typ">Text</span>,
+  useBuildContext,
+  useState,
+} <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Measure</span> = () =&gt; {
+  <span class="tok-kw">const</span> ctx = <span class="tok-fn">useBuildContext</span>();
+  <span class="tok-kw">const</span> [width, setWidth] = <span class="tok-fn">useState</span>(<span class="tok-num">0.0</span>);
+  <span class="tok-kw">const</span> [label, setLabel] = <span class="tok-fn">useState</span>(<span class="tok-str">'unmeasured'</span>);
+
+  <span class="tok-kw">const</span> measure = () =&gt; {
+    <span class="tok-kw">const</span> shortest = <span class="tok-typ">MediaQuery</span>.<span class="tok-kw">of</span>(ctx);
+    <span class="tok-fn">setWidth</span>(<span class="tok-typ">MediaQuery</span>.<span class="tok-fn">widthOf</span>(ctx));
+    <span class="tok-fn">setLabel</span>(shortest.accessibleNavigation ? <span class="tok-str">'accessible'</span> : <span class="tok-str">'standard'</span>);
+  };
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;
+        {label} at {width}
+      &lt;/<span class="tok-typ">Text</span>&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> onClick={measure}&gt;Measure&lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
+  );
+};</code></pre></div>
+<div class="tab-panel" data-panel="measure.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">Measure</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatefulWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Measure</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">State</span>&lt;<span class="tok-typ">Measure</span>&gt; <span class="tok-fn">createState</span>() =&gt; <span class="tok-fn">_MeasureState</span>();
+}
+
+<span class="tok-kw">class</span> _MeasureState <span class="tok-kw">extends</span> <span class="tok-typ">State</span>&lt;<span class="tok-typ">Measure</span>&gt; {
+  double _width = <span class="tok-num">0.0</span>;
+  <span class="tok-typ">String</span> _label = <span class="tok-str">'unmeasured'</span>;
+
+  <span class="tok-kw">void</span> <span class="tok-fn">_measure</span>() {
+    <span class="tok-kw">final</span> shortest = <span class="tok-typ">MediaQuery</span>.<span class="tok-kw">of</span>(context);
+    <span class="tok-fn">setState</span>(() {
+      _width = <span class="tok-typ">MediaQuery</span>.<span class="tok-fn">widthOf</span>(context);
+      _label = shortest.accessibleNavigation ? <span class="tok-str">'accessible'</span> : <span class="tok-str">'standard'</span>;
+    });
+  }
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+      children: [
+        <span class="tok-typ">Text</span>(<span class="tok-str">'$_label at $_width'</span>),
+        <span class="tok-typ">ElevatedButton</span>(onPressed: _measure, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Measure'</span>)),
+      ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<h2 id="layout-and-styling">Layout and styling</h2>
+<section class="recipe" id="60-button-style" data-name="Styling a button the way Flutter does">
+<h3>Styling a button the way Flutter does</h3>
+<p class="blurb"><code>ElevatedButton.styleFrom({ backgroundColor: 'indigo' })</code> is a static the SDK offers, and calling it is how a style is made.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Styled.tsx" role="tab" aria-selected="true">src/Styled.tsx</button>
+<button class="tab-btn" data-tab="styled.dart" role="tab" aria-selected="false">styled.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Styled.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Column</span>, <span class="tok-typ">ElevatedButton</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Styled</span> = () =&gt; {
+  <span class="tok-kw">const</span> style = <span class="tok-typ">ElevatedButton</span>.<span class="tok-fn">styleFrom</span>({
+    backgroundColor: <span class="tok-str">'indigo'</span>,
+    foregroundColor: <span class="tok-str">'white'</span>,
+  });
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">Column</span>&gt;
+      &lt;<span class="tok-typ">ElevatedButton</span> style={style} onClick={() =&gt; {}}&gt;
+        Save
+      &lt;/<span class="tok-typ">ElevatedButton</span>&gt;
+    &lt;/<span class="tok-typ">Column</span>&gt;
+  );
+};</code></pre></div>
+<div class="tab-panel" data-panel="styled.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-typ">Styled</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Styled</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">final</span> style = <span class="tok-typ">ElevatedButton</span>.<span class="tok-fn">styleFrom</span>(
+      backgroundColor: <span class="tok-typ">Colors</span>.indigo,
+      foregroundColor: <span class="tok-typ">Colors</span>.white,
+    );
+    <span class="tok-kw">return</span> <span class="tok-typ">Column</span>(
+      children: [
+        <span class="tok-typ">ElevatedButton</span>(
+          style: style,
+          onPressed: () {},
+          child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Save'</span>),
+        ),
       ],
     );
   }
