@@ -47,6 +47,10 @@ EntityModel? mapClass(
     constants: constants,
     fields: fields,
     disposable: _hasPublicDispose(classElement),
+    typeParams: classElement.typeParameters
+        .map((parameter) => parameter.name ?? '')
+        .where((name) => name.isNotEmpty)
+        .toList(),
   );
 }
 

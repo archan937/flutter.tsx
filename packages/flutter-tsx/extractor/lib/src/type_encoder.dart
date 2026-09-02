@@ -23,6 +23,10 @@ TypeNode _encodeNonNullable(DartType type) {
   if (type is InterfaceType) {
     return _encodeInterface(type);
   }
+  if (type is TypeParameterType) {
+    final name = type.element.name ?? '';
+    return name.isEmpty ? const UnknownTypeNode() : TypeVarTypeNode(name);
+  }
   return const UnknownTypeNode();
 }
 

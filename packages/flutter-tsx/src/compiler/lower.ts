@@ -127,6 +127,11 @@ export interface CompileContext {
    */
   /** Values a component can own, and whether owning means disposing. */
   ownedValues: Map<string, { disposable: boolean }>;
+  /** Every SDK class `new` can build, and the parameters it declares. */
+  sdkConstructors: Map<
+    string,
+    { params: ParamModel[]; isConst: boolean; typeParams: string[] }
+  >;
   /** Plugin classes an object literal can construct, by name. */
   pluginConstructibles: Map<string, ParamModel[]>;
   /** Every plugin class with a constructor, and what it takes. */
@@ -224,6 +229,10 @@ export const buildCompileContext = (
   // `constraints.maxWidth` — resolves to the Dart member it names.
   const sdkClassFields = new Map<string, Map<string, TypeNode>>();
   const ownedValues = new Map<string, { disposable: boolean }>();
+  const sdkConstructors = new Map<
+    string,
+    { params: ParamModel[]; isConst: boolean; typeParams: string[] }
+  >();
 
   for (const entity of snapshot.entities) {
     libraries.set(entity.name, entity.library);
@@ -246,6 +255,16 @@ export const buildCompileContext = (
     if (entity.kind !== 'widget') {
       if (isOwnedValue(entity)) {
         ownedValues.set(entity.name, { disposable: entity.disposable });
+      }
+      const constructor = entity.constructors.find(
+        (candidate) => candidate.name === '',
+      );
+      if (constructor !== undefined) {
+        sdkConstructors.set(entity.name, {
+          params: constructor.params,
+          isConst: constructor.isConst,
+          typeParams: entity.typeParams,
+        });
       }
       continue;
     }
@@ -274,6 +293,7 @@ export const buildCompileContext = (
     widgets,
     gestures: gestureWrapOf(widgets.get(GESTURE_WIDGET)),
     ownedValues,
+    sdkConstructors,
     constants: new Map(),
     pluginConstructibles: new Map(),
     pluginConstructors: new Map(),
@@ -649,8 +669,19 @@ const SIDE_INSETS_KEYS = new Set(['left', 'top', 'right', 'bottom']);
 const NUMBER_SCALARS = new Set(['int', 'double', 'num']);
 const HEX_COLOR_PATTERN = /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/;
 
-const unwrapType = (type: TypeNode): TypeNode =>
-  type.kind === 'nullable' ? type.inner : type;
+/**
+ * The type a value is written against.
+ *
+ * Nullability does not change what may be written, and neither does a type
+ * variable: `ValueNotifier<T>` is built with whatever it is built for, and
+ * Dart infers the rest — so both stand for the type underneath.
+ */
+const unwrapType = (type: TypeNode): TypeNode => {
+  if (type.kind === 'nullable') {
+    return unwrapType(type.inner);
+  }
+  return type.kind === 'typeVar' ? { kind: 'unknown' } : type;
+};
 
 const typeLabel = (type: TypeNode): string => {
   const label =
@@ -759,6 +790,26 @@ interface ValueSite {
   context: LowerContext;
 }
 
+/**
+ * Widgets are told apart by a key, and a key is made from a value.
+ *
+ * `key="row-3"` is the identity a developer means; `ValueKey` is what Dart
+ * calls it, and every key type a prop can ask for is satisfied by one.
+ */
+const KEY_TYPES: ReadonlySet<string> = new Set([
+  'Key',
+  'LocalKey',
+  'ValueKey',
+  'ObjectKey',
+]);
+
+const keyValue = (value: IrValue): IrValue => ({
+  kind: 'construct',
+  className: 'ValueKey',
+  constructorName: '',
+  args: [{ param: '', positional: true, value }],
+});
+
 const lowerString = (text: string, site: ValueSite): IrValue => {
   const { type, node, context } = site;
   if (
@@ -794,6 +845,9 @@ const lowerString = (text: string, site: ValueSite): IrValue => {
     if (owner !== undefined) {
       return { kind: 'constantRef', owner, member: text };
     }
+    if (KEY_TYPES.has(type.name)) {
+      return keyValue({ kind: 'string', value: text });
+    }
     const written = dateFormDart(type.name, text);
     if (written !== null) {
       return { kind: 'dartExpr', dart: written };
@@ -821,6 +875,9 @@ const lowerNumber = (text: string, site: ValueSite): IrValue => {
     (type.kind === 'scalar' && NUMBER_SCALARS.has(type.name))
   ) {
     return { kind: 'number', value: text };
+  }
+  if (type.kind === 'named' && KEY_TYPES.has(type.name)) {
+    return keyValue({ kind: 'number', value: text });
   }
   if (type.kind === 'named' && EDGE_INSETS_TYPES.has(type.name)) {
     return {
@@ -1275,6 +1332,89 @@ const lowerTween = (
   };
 };
 
+/**
+ * `new AssetImage('images/logo.png')` — a value the SDK builds.
+ *
+ * Dart's positional arguments stay positional and its named ones are the
+ * trailing object, which is the shape the typings declare, so what compiles
+ * is exactly what the editor accepted.
+ */
+const lowerSdkConstruction = (
+  expression: ts.Expression,
+  expected: TypeNode,
+  context: LowerContext,
+): IrValue | null => {
+  if (
+    !ts.isNewExpression(expression) ||
+    !ts.isIdentifier(expression.expression)
+  ) {
+    return null;
+  }
+  const className = expression.expression.text;
+  const constructor = context.compile.sdkConstructors.get(className);
+  if (constructor === undefined) {
+    return null;
+  }
+  // `new ValueNotifier(0)` where an `Animation<int>` is asked for builds an
+  // int, so what the class is generic over is bound to what the site wants.
+  const wanted = expected.kind === 'named' ? (expected.args ?? []) : [];
+  const bound = new Map(
+    constructor.typeParams.map((name, index): [string, TypeNode] => [
+      name,
+      wanted[index] ?? { kind: 'unknown' },
+    ]),
+  );
+  const asWritten = (param: ParamModel): ParamModel =>
+    param.type.kind === 'typeVar'
+      ? { ...param, type: bound.get(param.type.name) ?? param.type }
+      : param;
+  const positional = constructor.params
+    .filter((param) => !param.named)
+    .map(asWritten);
+  const named = constructor.params
+    .filter((param) => param.named)
+    .map(asWritten);
+  const args = [...(expression.arguments ?? [])];
+  const options = named.length > 0 ? args[positional.length] : undefined;
+  const construction: IrValue = {
+    kind: 'construct',
+    className,
+    constructorName: '',
+    constConstructor: constructor.isConst,
+    args: args.slice(0, positional.length).map((argument, index) => ({
+      param: positional[index]?.name ?? '',
+      positional: true,
+      value: lowerExpression(
+        argument,
+        positional[index]?.type ?? { kind: 'unknown' },
+        context,
+      ),
+    })),
+  };
+  if (options === undefined) {
+    return construction;
+  }
+  if (!ts.isObjectLiteralExpression(options)) {
+    throw tsxErrorAt(
+      'TSX0355',
+      `\`${className}\` takes its named arguments as one object: ` +
+        `\`new ${className}({ … })\`.`,
+      { sourceFile: context.sourceFile, node: options },
+    );
+  }
+  const fromOptions = lowerConstructibleObject(options, className, {
+    params: named,
+    context,
+  });
+  return {
+    ...construction,
+    args: [
+      ...construction.args,
+      ...(fromOptions.kind === 'construct' ? fromOptions.args : []),
+    ],
+  };
+};
+
 const lowerExpression = (
   parenthesized: ts.Expression,
   paramType: TypeNode,
@@ -1293,6 +1433,10 @@ const lowerExpression = (
   const tween = lowerTween(expression, type, context);
   if (tween !== null) {
     return tween;
+  }
+  const constructed = lowerSdkConstruction(expression, type, context);
+  if (constructed !== null) {
+    return constructed;
   }
   if (ts.isArrowFunction(expression)) {
     return lowerArrowFunction(expression, site);

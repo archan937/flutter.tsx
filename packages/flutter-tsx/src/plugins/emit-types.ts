@@ -1,5 +1,6 @@
 import type { ParamModel, TypeNode } from '../api/model';
 import { jsxPropName } from '../generate/renames';
+import { signatureParams as writtenParams } from '../generate/signature';
 import { tsTypeOf } from '../generate/ts-types';
 import type { PluginApi, PluginMethod } from './api';
 import {
@@ -205,29 +206,7 @@ const argumentType = (
 const signatureParams = (
   params: ParamModel[],
   buildable: ReadonlySet<string> = new Set(),
-): string => {
-  const positional = params
-    .filter((param) => !param.named)
-    .map((param) => {
-      const optional = param.required ? '' : '?';
-      return `${param.name}${optional}: ${argumentType(param, buildable)}`;
-    });
-  const named = params.filter((param) => param.named);
-  if (named.length === 0) {
-    return positional.join(', ');
-  }
-  const members = named
-    .map((param) => {
-      const optional = param.required ? '' : '?';
-      return `${param.name}${optional}: ${argumentType(param, buildable)}`;
-    })
-    .join('; ');
-  const allNamedOptional = named.every((param) => !param.required);
-  return [
-    ...positional,
-    `options${allNamedOptional ? '?' : ''}: { ${members} }`,
-  ].join(', ');
-};
+): string => writtenParams(params, (param) => argumentType(param, buildable));
 
 const methodLine = (
   method: PluginMethod,

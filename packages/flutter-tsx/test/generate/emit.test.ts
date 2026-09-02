@@ -210,6 +210,7 @@ const snapshot: ApiSnapshot = {
     {
       kind: 'class',
       disposable: false,
+      typeParams: [],
       name: 'Style',
       library: 'painting',
       doc: '/// How to paint a frame.',
@@ -257,6 +258,7 @@ const snapshot: ApiSnapshot = {
     {
       kind: 'class',
       disposable: false,
+      typeParams: [],
       name: 'TestPalette',
       library: 'material',
       doc: '/// Well-known colors.',
@@ -336,6 +338,8 @@ export interface MaterialColor {
 export interface Style {
   readonly __fsxBrand?: { readonly Style: true };
 }
+
+export declare const Style: new (options?: { tint?: ColorValue; size?: number }) => Style;
 
 export type ColorValue =
   | Color
@@ -483,6 +487,7 @@ describe('emitWidgetsFile value-form guards', () => {
         {
           kind: 'class',
           disposable: false,
+          typeParams: [],
           name: 'ColorValue',
           library: 'painting',
           doc: '',
@@ -770,6 +775,7 @@ describe('emitConstantsFile — IconName', () => {
       {
         kind: 'class',
         disposable: false,
+        typeParams: [],
         name: 'Icons',
         library: 'material',
         doc: '',

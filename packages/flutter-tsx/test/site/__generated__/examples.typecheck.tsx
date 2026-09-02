@@ -7,6 +7,7 @@ import {
   AbsorbPointer,
   ActionChip,
   ActionIconTheme,
+  AdaptiveTextSelectionToolbar,
   AlertDialog,
   Align,
   AlignTransition,
@@ -17,6 +18,7 @@ import {
   AnimatedCrossFade,
   AnimatedDefaultTextStyle,
   AnimatedFractionallySizedBox,
+  AnimatedGrid,
   AnimatedIcon,
   AnimatedList,
   AnimatedModalBarrier,
@@ -31,11 +33,11 @@ import {
   AnimatedSlide,
   AnimatedSwitcher,
   AnimatedTheme,
-  AnnotatedRegion,
   AppBar,
   AppBarTheme,
   AppKitView,
   AspectRatio,
+  AutocompleteHighlightedOption,
   AutofillGroup,
   AutomaticKeepAlive,
   BackButton,
@@ -51,6 +53,7 @@ import {
   BottomNavigationBar,
   BottomNavigationBarTheme,
   BottomSheet,
+  BoxDecoration,
   Builder,
   ButtonBar,
   ButtonBarTheme,
@@ -88,6 +91,7 @@ import {
   CupertinoActionSheet,
   CupertinoActionSheetAction,
   CupertinoActivityIndicator,
+  CupertinoAdaptiveTextSelectionToolbar,
   CupertinoAlertDialog,
   CupertinoApp,
   CupertinoButton,
@@ -95,6 +99,7 @@ import {
   CupertinoContextMenu,
   CupertinoContextMenuAction,
   CupertinoDatePicker,
+  CupertinoDesktopTextSelectionControls,
   CupertinoDesktopTextSelectionToolbar,
   CupertinoDesktopTextSelectionToolbarButton,
   CupertinoDialogAction,
@@ -118,18 +123,19 @@ import {
   CupertinoPicker,
   CupertinoPickerDefaultSelectionOverlay,
   CupertinoPopupSurface,
-  CupertinoRadio,
   CupertinoScrollbar,
   CupertinoSearchTextField,
   CupertinoSheetTransition,
   CupertinoSlider,
   CupertinoSliverNavigationBar,
   CupertinoSliverRefreshControl,
+  CupertinoSpellCheckSuggestionsToolbar,
   CupertinoSwitch,
   CupertinoTabBar,
   CupertinoTabView,
   CupertinoTextField,
   CupertinoTextFormFieldRow,
+  CupertinoTextMagnifier,
   CupertinoTextSelectionToolbar,
   CupertinoTextSelectionToolbarButton,
   CupertinoTheme,
@@ -137,11 +143,16 @@ import {
   CupertinoUserInterfaceLevel,
   CustomPaint,
   CustomScrollView,
+  CustomSingleChildLayout,
   DataTable,
   DataTableTheme,
   DatePickerDialog,
   DatePickerTheme,
   DateRangePickerDialog,
+  DecoratedBox,
+  DecoratedBoxTransition,
+  DecoratedSliver,
+  DefaultAssetBundle,
   DefaultSelectionStyle,
   DefaultTabController,
   DefaultTextEditingShortcuts,
@@ -150,11 +161,13 @@ import {
   DefaultTextStyleTransition,
   DesktopTextSelectionToolbar,
   DesktopTextSelectionToolbarButton,
+  DesktopTextSelectionToolbarLayoutDelegate,
   DeviceOrientationBuilder,
   Dialog,
   DialogTheme,
   Directionality,
   DisableWidgetInspectorScope,
+  Dismissible,
   DisplayFeatureSubScreen,
   Divider,
   DividerTheme,
@@ -209,6 +222,7 @@ import {
   FocusNode,
   FocusScope,
   FocusTraversalGroup,
+  FocusTraversalOrder,
   FocusableActionDetector,
   Form,
   FormField,
@@ -219,6 +233,7 @@ import {
   GridPaper,
   GridTile,
   GridTileBar,
+  GridView,
   HeroController,
   HeroControllerScope,
   HeroMode,
@@ -246,6 +261,7 @@ import {
   KeyedSubtree,
   LayerLink,
   LayoutBuilder,
+  LexicalFocusOrder,
   LicensePage,
   LimitedBox,
   LinearProgressIndicator,
@@ -256,14 +272,18 @@ import {
   ListWheelScrollView,
   ListenableBuilder,
   Listener,
+  Locale,
+  Localizations,
   LongPressDraggable,
   LookupBoundary,
   Magnifier,
+  MagnifierController,
   Material,
   MaterialApp,
   MaterialBanner,
   MaterialBannerTheme,
   MaterialButton,
+  Matrix4,
   MediaQuery,
   MenuAcceleratorCallbackBinding,
   MenuAcceleratorLabel,
@@ -292,6 +312,7 @@ import {
   Navigator,
   NavigatorPopHandler,
   NestedScrollView,
+  NestedScrollViewViewport,
   NotificationListener,
   Offstage,
   Opacity,
@@ -311,6 +332,7 @@ import {
   PhysicalModel,
   PinnedHeaderSliver,
   Placeholder,
+  PlatformAssetBundle,
   PlatformMenuBar,
   PlatformSelectableRegionContextMenu,
   PopScope,
@@ -324,11 +346,10 @@ import {
   PreferredSize,
   PrimaryScrollController,
   ProgressIndicatorTheme,
-  Radio,
   RadioGroup,
-  RadioListTile,
-  RadioMenuButton,
   RadioTheme,
+  RangeSlider,
+  RangeValues,
   RawChip,
   RawGestureDetector,
   RawImage,
@@ -341,12 +362,14 @@ import {
   RawTooltip,
   RefreshProgressIndicator,
   RelativePositionedTransition,
+  RenderAbsorbPointer,
   ReorderableDelayedDragStartListener,
   ReorderableDragStartListener,
   ReorderableList,
   ReorderableListView,
   RepaintBoundary,
   RestorationScope,
+  RichText,
   RootRestorationScope,
   RootWidget,
   RotatedBox,
@@ -356,24 +379,34 @@ import {
   Scaffold,
   ScaffoldMessenger,
   ScaleTransition,
+  ScrollBehavior,
+  ScrollConfiguration,
   ScrollController,
   ScrollNotificationObserver,
+  ScrollPositionWithSingleContext,
   Scrollable,
+  ScrollableDetails,
+  ScrollableState,
   Scrollbar,
   ScrollbarTheme,
   SearchBar,
   SearchBarTheme,
   SearchViewTheme,
   SegmentedButtonTheme,
+  SelectableRegion,
+  SelectableRegionState,
   SelectableText,
   SelectionArea,
+  SelectionContainer,
   SelectionListener,
   SelectionListenerNotifier,
+  SelectionRegistrarScope,
   Semantics,
   SemanticsDebugger,
   SensitiveContent,
   SharedAppData,
   ShortcutRegistrar,
+  ShrinkWrappingViewport,
   SimpleDialog,
   SimpleDialogOption,
   SingleChildScrollView,
@@ -384,6 +417,7 @@ import {
   SlideTransition,
   Slider,
   SliderTheme,
+  SliverAnimatedGrid,
   SliverAnimatedList,
   SliverAnimatedOpacity,
   SliverAppBar,
@@ -394,6 +428,7 @@ import {
   SliverFadeTransition,
   SliverFillRemaining,
   SliverFloatingHeader,
+  SliverGridDelegateWithFixedCrossAxisCount,
   SliverIgnorePointer,
   SliverLayoutBuilder,
   SliverMainAxisGroup,
@@ -418,6 +453,7 @@ import {
   SpellCheckSuggestionsToolbar,
   Stack,
   StatefulBuilder,
+  StaticSelectionContainerDelegate,
   Stepper,
   StretchEffect,
   StretchingOverscrollIndicator,
@@ -443,10 +479,13 @@ import {
   TextField,
   TextFieldTapRegion,
   TextFormField,
+  TextMagnifier,
   TextSelectionGestureDetector,
   TextSelectionTheme,
   TextSelectionToolbar,
+  TextSelectionToolbarAnchors,
   TextSelectionToolbarTextButton,
+  TextSpan,
   Texture,
   Theme,
   ThemeData,
@@ -459,18 +498,22 @@ import {
   Tooltip,
   TooltipTheme,
   TooltipVisibility,
+  Transform,
   TreeSliver,
   Tween,
   TweenAnimationBuilder,
+  TwoDimensionalScrollable,
   UiKitView,
   UnconstrainedBox,
   UnmanagedRestorationScope,
   UserAccountsDrawerHeader,
-  ValueListenableBuilder,
+  ValueNotifier,
   VerticalDivider,
   ViewAnchor,
   ViewCollection,
+  Viewport,
   Visibility,
+  WidgetToRenderBoxAdapter,
   WidgetsApp,
   Wrap,
   YearPicker,
@@ -505,6 +548,15 @@ export const ActionIconThemeExample = () => (
   <ActionIconTheme data={{}}>
     <Text>Content</Text>
   </ActionIconTheme>
+);
+
+export const AdaptiveTextSelectionToolbarExample = () => (
+  <AdaptiveTextSelectionToolbar
+    anchors={new TextSelectionToolbarAnchors({ primaryAnchor: 'infinite' })}
+  >
+    <Text>Item 1</Text>
+    <Text>Item 2</Text>
+  </AdaptiveTextSelectionToolbar>
 );
 
 export const AlertDialogExample = () => <AlertDialog />;
@@ -573,6 +625,15 @@ export const AnimatedFractionallySizedBoxExample = () => (
   <AnimatedFractionallySizedBox duration="defaultAnimationDuration">
     <Text>Content</Text>
   </AnimatedFractionallySizedBox>
+);
+
+export const AnimatedGridExample = () => (
+  <AnimatedGrid
+    itemBuilder={() => <Text>Content</Text>}
+    gridDelegate={
+      new SliverGridDelegateWithFixedCrossAxisCount({ crossAxisCount: 8 })
+    }
+  />
 );
 
 export const AnimatedIconExample = () => {
@@ -669,12 +730,6 @@ export const AnimatedThemeExample = () => {
   );
 };
 
-export const AnnotatedRegionExample = () => (
-  <AnnotatedRegion value="example">
-    <Text>Content</Text>
-  </AnnotatedRegion>
-);
-
 export const AppBarExample = () => <AppBar />;
 
 export const AppBarThemeExample = () => (
@@ -689,6 +744,12 @@ export const AspectRatioExample = () => (
   <AspectRatio aspectRatio={1}>
     <Text>Content</Text>
   </AspectRatio>
+);
+
+export const AutocompleteHighlightedOptionExample = () => (
+  <AutocompleteHighlightedOption highlightIndexNotifier={new ValueNotifier(8)}>
+    <Text>Content</Text>
+  </AutocompleteHighlightedOption>
 );
 
 export const AutofillGroupExample = () => (
@@ -979,6 +1040,15 @@ export const CupertinoActivityIndicatorExample = () => (
   <CupertinoActivityIndicator />
 );
 
+export const CupertinoAdaptiveTextSelectionToolbarExample = () => (
+  <CupertinoAdaptiveTextSelectionToolbar
+    anchors={new TextSelectionToolbarAnchors({ primaryAnchor: 'infinite' })}
+  >
+    <Text>Item 1</Text>
+    <Text>Item 2</Text>
+  </CupertinoAdaptiveTextSelectionToolbar>
+);
+
 export const CupertinoAlertDialogExample = () => <CupertinoAlertDialog />;
 
 export const CupertinoAppExample = () => <CupertinoApp />;
@@ -1145,8 +1215,6 @@ export const CupertinoPopupSurfaceExample = () => (
   </CupertinoPopupSurface>
 );
 
-export const CupertinoRadioExample = () => <CupertinoRadio value="example" />;
-
 export const CupertinoScrollbarExample = () => (
   <CupertinoScrollbar>
     <Text>Content</Text>
@@ -1183,6 +1251,13 @@ export const CupertinoSliverRefreshControlExample = () => (
   <CupertinoSliverRefreshControl />
 );
 
+export const CupertinoSpellCheckSuggestionsToolbarExample = () => (
+  <CupertinoSpellCheckSuggestionsToolbar
+    anchors={new TextSelectionToolbarAnchors({ primaryAnchor: 'infinite' })}
+    buttonItems={[]}
+  />
+);
+
 export const CupertinoSwitchExample = () => (
   <CupertinoSwitch value={true} onChanged={() => {}} />
 );
@@ -1196,6 +1271,17 @@ export const CupertinoTextFieldExample = () => <CupertinoTextField />;
 export const CupertinoTextFormFieldRowExample = () => (
   <CupertinoTextFormFieldRow />
 );
+
+export const CupertinoTextMagnifierExample = () => {
+  const magnifierController = new MagnifierController();
+
+  return (
+    <CupertinoTextMagnifier
+      controller={magnifierController}
+      magnifierInfo={new ValueNotifier('empty')}
+    />
+  );
+};
 
 export const CupertinoTextSelectionToolbarExample = () => (
   <CupertinoTextSelectionToolbar anchorAbove="infinite" anchorBelow="infinite">
@@ -1234,6 +1320,16 @@ export const CustomPaintExample = () => (
 
 export const CustomScrollViewExample = () => <CustomScrollView />;
 
+export const CustomSingleChildLayoutExample = () => (
+  <CustomSingleChildLayout
+    delegate={
+      new DesktopTextSelectionToolbarLayoutDelegate({ anchor: 'infinite' })
+    }
+  >
+    <Text>Content</Text>
+  </CustomSingleChildLayout>
+);
+
 export const DataTableExample = () => <DataTable columns={[]} rows={[]} />;
 
 export const DataTableThemeExample = () => (
@@ -1254,6 +1350,37 @@ export const DatePickerThemeExample = () => (
 
 export const DateRangePickerDialogExample = () => (
   <DateRangePickerDialog firstDate="2026-01-31" lastDate="2026-01-31" />
+);
+
+export const DecoratedBoxExample = () => (
+  <DecoratedBox decoration={new BoxDecoration()}>
+    <Text>Content</Text>
+  </DecoratedBox>
+);
+
+export const DecoratedBoxTransitionExample = () => {
+  const animation = useAnimation({ duration: 600 });
+
+  return (
+    <DecoratedBoxTransition
+      decoration={tween(animation, {
+        from: new BoxDecoration(),
+        to: new BoxDecoration(),
+      })}
+    >
+      <Text>Content</Text>
+    </DecoratedBoxTransition>
+  );
+};
+
+export const DecoratedSliverExample = () => (
+  <DecoratedSliver decoration={new BoxDecoration()} />
+);
+
+export const DefaultAssetBundleExample = () => (
+  <DefaultAssetBundle bundle={new PlatformAssetBundle()}>
+    <Text>Content</Text>
+  </DefaultAssetBundle>
 );
 
 export const DefaultSelectionStyleExample = () => (
@@ -1340,6 +1467,12 @@ export const DisableWidgetInspectorScopeExample = () => (
   <DisableWidgetInspectorScope>
     <Text>Content</Text>
   </DisableWidgetInspectorScope>
+);
+
+export const DismissibleExample = () => (
+  <Dismissible key="example">
+    <Text>Content</Text>
+  </Dismissible>
 );
 
 export const DisplayFeatureSubScreenExample = () => (
@@ -1638,6 +1771,12 @@ export const FocusTraversalGroupExample = () => (
   </FocusTraversalGroup>
 );
 
+export const FocusTraversalOrderExample = () => (
+  <FocusTraversalOrder order={new LexicalFocusOrder('example')}>
+    <Text>Content</Text>
+  </FocusTraversalOrder>
+);
+
 export const FocusableActionDetectorExample = () => (
   <FocusableActionDetector>
     <Text>Content</Text>
@@ -1691,6 +1830,17 @@ export const GridTileExample = () => (
 );
 
 export const GridTileBarExample = () => <GridTileBar />;
+
+export const GridViewExample = () => (
+  <GridView
+    gridDelegate={
+      new SliverGridDelegateWithFixedCrossAxisCount({ crossAxisCount: 8 })
+    }
+  >
+    <Text>Item 1</Text>
+    <Text>Item 2</Text>
+  </GridView>
+);
 
 export const HeroControllerScopeExample = () => {
   const heroController = new HeroController();
@@ -1895,6 +2045,12 @@ export const ListenerExample = () => (
   </Listener>
 );
 
+export const LocalizationsExample = () => (
+  <Localizations locale={new Locale('example')} delegates={[]}>
+    <Text>Content</Text>
+  </Localizations>
+);
+
 export const LongPressDraggableExample = () => (
   <LongPressDraggable feedback={<Text>Content</Text>}>
     <Text>Content</Text>
@@ -2071,6 +2227,22 @@ export const NestedScrollViewExample = () => (
     <Text>Content</Text>
   </NestedScrollView>
 );
+
+export const NestedScrollViewViewportExample = () => {
+  const sliverOverlapAbsorberHandle = new SliverOverlapAbsorberHandle();
+
+  return (
+    <NestedScrollViewViewport
+      offset={
+        new ScrollPositionWithSingleContext({
+          physics: {},
+          context: new ScrollableState(),
+        })
+      }
+      handle={sliverOverlapAbsorberHandle}
+    />
+  );
+};
 
 export const NotificationListenerExample = () => (
   <NotificationListener>
@@ -2259,26 +2431,20 @@ export const ProgressIndicatorThemeExample = () => (
   </ProgressIndicatorTheme>
 );
 
-export const RadioExample = () => <Radio value="example" />;
-
 export const RadioGroupExample = () => (
   <RadioGroup onChanged={() => {}}>
     <Text>Content</Text>
   </RadioGroup>
 );
 
-export const RadioListTileExample = () => <RadioListTile value="example" />;
-
-export const RadioMenuButtonExample = () => (
-  <RadioMenuButton value="example" groupValue="example" onChanged={() => {}}>
-    <Text>Content</Text>
-  </RadioMenuButton>
-);
-
 export const RadioThemeExample = () => (
   <RadioTheme data={{}}>
     <Text>Content</Text>
   </RadioTheme>
+);
+
+export const RangeSliderExample = () => (
+  <RangeSlider values={new RangeValues(1, 1)} onChanged={() => {}} />
 );
 
 export const RawChipExample = () => <RawChip label={<Text>Content</Text>} />;
@@ -2403,6 +2569,8 @@ export const RestorationScopeExample = () => (
   </RestorationScope>
 );
 
+export const RichTextExample = () => <RichText text={new TextSpan()} />;
+
 export const RootRestorationScopeExample = () => (
   <RootRestorationScope restorationId="example">
     <Text>Content</Text>
@@ -2466,6 +2634,12 @@ export const ScaleTransitionExample = () => {
   );
 };
 
+export const ScrollConfigurationExample = () => (
+  <ScrollConfiguration behavior={new ScrollBehavior()}>
+    <Text>Content</Text>
+  </ScrollConfiguration>
+);
+
 export const ScrollNotificationObserverExample = () => (
   <ScrollNotificationObserver>
     <Text>Content</Text>
@@ -2508,6 +2682,14 @@ export const SegmentedButtonThemeExample = () => (
   </SegmentedButtonTheme>
 );
 
+export const SelectableRegionExample = () => (
+  <SelectableRegion
+    selectionControls={new CupertinoDesktopTextSelectionControls()}
+  >
+    <Text>Content</Text>
+  </SelectableRegion>
+);
+
 export const SelectableTextExample = () => (
   <SelectableText>Hello world</SelectableText>
 );
@@ -2516,6 +2698,12 @@ export const SelectionAreaExample = () => (
   <SelectionArea>
     <Text>Content</Text>
   </SelectionArea>
+);
+
+export const SelectionContainerExample = () => (
+  <SelectionContainer delegate={new StaticSelectionContainerDelegate()}>
+    <Text>Content</Text>
+  </SelectionContainer>
 );
 
 export const SelectionListenerExample = () => {
@@ -2527,6 +2715,12 @@ export const SelectionListenerExample = () => {
     </SelectionListener>
   );
 };
+
+export const SelectionRegistrarScopeExample = () => (
+  <SelectionRegistrarScope registrar={new SelectableRegionState()}>
+    <Text>Content</Text>
+  </SelectionRegistrarScope>
+);
 
 export const SemanticsExample = () => (
   <Semantics>
@@ -2556,6 +2750,17 @@ export const ShortcutRegistrarExample = () => (
   <ShortcutRegistrar>
     <Text>Content</Text>
   </ShortcutRegistrar>
+);
+
+export const ShrinkWrappingViewportExample = () => (
+  <ShrinkWrappingViewport
+    offset={
+      new ScrollPositionWithSingleContext({
+        physics: {},
+        context: new ScrollableState(),
+      })
+    }
+  />
 );
 
 export const SimpleDialogExample = () => (
@@ -2623,6 +2828,15 @@ export const SliderThemeExample = () => (
   <SliderTheme data={{}}>
     <Text>Content</Text>
   </SliderTheme>
+);
+
+export const SliverAnimatedGridExample = () => (
+  <SliverAnimatedGrid
+    itemBuilder={() => <Text>Content</Text>}
+    gridDelegate={
+      new SliverGridDelegateWithFixedCrossAxisCount({ crossAxisCount: 8 })
+    }
+  />
 );
 
 export const SliverAnimatedListExample = () => (
@@ -2882,6 +3096,10 @@ export const TextFieldTapRegionExample = () => (
 
 export const TextFormFieldExample = () => <TextFormField />;
 
+export const TextMagnifierExample = () => (
+  <TextMagnifier magnifierInfo={new ValueNotifier('empty')} />
+);
+
 export const TextSelectionGestureDetectorExample = () => (
   <TextSelectionGestureDetector>
     <Text>Content</Text>
@@ -2972,6 +3190,14 @@ export const TooltipVisibilityExample = () => (
   </TooltipVisibility>
 );
 
+export const TransformExample = () => (
+  <Transform
+    transform={new Matrix4(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)}
+  >
+    <Text>Content</Text>
+  </Transform>
+);
+
 export const TreeSliverExample = () => <TreeSliver tree={[]} />;
 
 export const TweenAnimationBuilderExample = () => {
@@ -2987,6 +3213,14 @@ export const TweenAnimationBuilderExample = () => {
     </TweenAnimationBuilder>
   );
 };
+
+export const TwoDimensionalScrollableExample = () => (
+  <TwoDimensionalScrollable
+    horizontalDetails={new ScrollableDetails({ direction: 'up' })}
+    verticalDetails={new ScrollableDetails({ direction: 'up' })}
+    viewportBuilder={() => <Text>Content</Text>}
+  />
+);
 
 export const UiKitViewExample = () => <UiKitView viewType="example" />;
 
@@ -3009,19 +3243,6 @@ export const UserAccountsDrawerHeaderExample = () => (
   />
 );
 
-export const ValueListenableBuilderExample = () => {
-  const animation = useAnimation({ duration: 600 });
-
-  return (
-    <ValueListenableBuilder
-      valueListenable={tween(animation, { from: 'example', to: 'example' })}
-      builder={() => <Text>Content</Text>}
-    >
-      <Text>Content</Text>
-    </ValueListenableBuilder>
-  );
-};
-
 export const VerticalDividerExample = () => <VerticalDivider />;
 
 export const ViewAnchorExample = () => (
@@ -3032,10 +3253,25 @@ export const ViewAnchorExample = () => (
 
 export const ViewCollectionExample = () => <ViewCollection views={[]} />;
 
+export const ViewportExample = () => (
+  <Viewport
+    offset={
+      new ScrollPositionWithSingleContext({
+        physics: {},
+        context: new ScrollableState(),
+      })
+    }
+  />
+);
+
 export const VisibilityExample = () => (
   <Visibility>
     <Text>Content</Text>
   </Visibility>
+);
+
+export const WidgetToRenderBoxAdapterExample = () => (
+  <WidgetToRenderBoxAdapter renderBox={new RenderAbsorbPointer()} />
 );
 
 export const WidgetsAppExample = () => (

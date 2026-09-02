@@ -3605,7 +3605,7 @@ changes.</p>
 </div>
 </article>
 <article class="widget" id="AnimatedGrid" data-name="AnimatedGrid">
-<h3>AnimatedGrid<span class="badge badge-lib">widgets</span></h3>
+<h3>AnimatedGrid<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A scrolling container that animates items when they are inserted into or removed from a grid.
 in a grid.</p>
 <table class="props">
@@ -3630,7 +3630,7 @@ in a grid.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">AnimatedGrid</span> itemBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} gridDelegate={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">AnimatedGrid</span> itemBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} gridDelegate={<span class="tok-kw">new</span> <span class="tok-typ">SliverGridDelegateWithFixedCrossAxisCount</span>({ crossAxisCount: <span class="tok-num">8</span> })} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">AnimatedGrid</span>({
@@ -4152,7 +4152,7 @@ widget previously set on the [AnimatedSwitcher] as a child.</p>
 </div>
 </article>
 <article class="widget" id="AnnotatedRegion" data-name="AnnotatedRegion">
-<h3>AnnotatedRegion<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
+<h3>AnnotatedRegion<span class="badge badge-lib">widgets</span></h3>
 <p class="doc">Annotates a region of the layer tree with a value.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -4168,7 +4168,7 @@ widget previously set on the [AnimatedSwitcher] as a child.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">AnnotatedRegion</span> value=<span class="tok-str">&quot;example&quot;</span>&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">AnnotatedRegion</span> value={…}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">AnnotatedRegion</span>&gt;</code></pre>
 </div>
@@ -4249,7 +4249,7 @@ widget previously set on the [AnimatedSwitcher] as a child.</p>
 </div>
 </article>
 <article class="widget" id="AutocompleteHighlightedOption" data-name="AutocompleteHighlightedOption">
-<h3>AutocompleteHighlightedOption<span class="badge badge-lib">widgets</span></h3>
+<h3>AutocompleteHighlightedOption<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">An inherited widget used to indicate which autocomplete option should be
 highlighted for keyboard navigation.</p>
 <table class="props">
@@ -4265,7 +4265,7 @@ highlighted for keyboard navigation.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">AutocompleteHighlightedOption</span> highlightIndexNotifier={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">AutocompleteHighlightedOption</span> highlightIndexNotifier={<span class="tok-kw">new</span> <span class="tok-typ">ValueNotifier</span>(<span class="tok-num">8</span>)}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">AutocompleteHighlightedOption</span>&gt;</code></pre>
 </div>
@@ -5238,7 +5238,7 @@ widgets.</p>
 </div>
 </article>
 <article class="widget" id="CustomSingleChildLayout" data-name="CustomSingleChildLayout">
-<h3>CustomSingleChildLayout<span class="badge badge-lib">widgets</span></h3>
+<h3>CustomSingleChildLayout<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that defers the layout of its single child to a delegate.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -5253,7 +5253,7 @@ widgets.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">CustomSingleChildLayout</span> delegate={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">CustomSingleChildLayout</span> delegate={<span class="tok-kw">new</span> <span class="tok-typ">DesktopTextSelectionToolbarLayoutDelegate</span>({ anchor: <span class="tok-str">&quot;infinite&quot;</span> })}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">CustomSingleChildLayout</span>&gt;</code></pre>
 </div>
@@ -5267,7 +5267,7 @@ widgets.</p>
 </div>
 </article>
 <article class="widget" id="DecoratedBox" data-name="DecoratedBox">
-<h3>DecoratedBox<span class="badge badge-lib">widgets</span></h3>
+<h3>DecoratedBox<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that paints a [Decoration] either before or after its child paints.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -5283,7 +5283,7 @@ widgets.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">DecoratedBox</span> decoration={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">DecoratedBox</span> decoration={<span class="tok-kw">new</span> <span class="tok-typ">BoxDecoration</span>()}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">DecoratedBox</span>&gt;</code></pre>
 </div>
@@ -5298,7 +5298,7 @@ widgets.</p>
 </div>
 </article>
 <article class="widget" id="DecoratedBoxTransition" data-name="DecoratedBoxTransition">
-<h3>DecoratedBoxTransition<span class="badge badge-lib">widgets</span></h3>
+<h3>DecoratedBoxTransition<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Animated version of a [DecoratedBox] that animates the different properties
 of its [Decoration].</p>
 <table class="props">
@@ -5315,9 +5315,15 @@ of its [Decoration].</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">DecoratedBoxTransition</span> decoration={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">DecoratedBoxTransition</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">DecoratedBoxTransitionExample</span> = () =&gt; {
+  <span class="tok-kw">const</span> animation = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">600</span> });
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-typ">DecoratedBoxTransition</span> decoration={<span class="tok-fn">tween</span>(animation, { <span class="tok-kw">from</span>: <span class="tok-kw">new</span> <span class="tok-typ">BoxDecoration</span>(), to: <span class="tok-kw">new</span> <span class="tok-typ">BoxDecoration</span>() })}&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">DecoratedBoxTransition</span>&gt;
+  );
+};</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">DecoratedBoxTransition</span>({
@@ -5330,7 +5336,7 @@ of its [Decoration].</p>
 </div>
 </article>
 <article class="widget" id="DecoratedSliver" data-name="DecoratedSliver">
-<h3>DecoratedSliver<span class="badge badge-lib">widgets</span></h3>
+<h3>DecoratedSliver<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A sliver widget that paints a [Decoration] either before or after its child
 paints.</p>
 <table class="props">
@@ -5347,7 +5353,7 @@ paints.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">DecoratedSliver</span> decoration={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">DecoratedSliver</span> decoration={<span class="tok-kw">new</span> <span class="tok-typ">BoxDecoration</span>()} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">DecoratedSliver</span>({
@@ -5360,7 +5366,7 @@ paints.</p>
 </div>
 </article>
 <article class="widget" id="DefaultAssetBundle" data-name="DefaultAssetBundle">
-<h3>DefaultAssetBundle<span class="badge badge-lib">widgets</span></h3>
+<h3>DefaultAssetBundle<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that determines the default asset bundle for its descendants.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -5375,7 +5381,7 @@ paints.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">DefaultAssetBundle</span> bundle={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">DefaultAssetBundle</span> bundle={<span class="tok-kw">new</span> <span class="tok-typ">PlatformAssetBundle</span>()}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">DefaultAssetBundle</span>&gt;</code></pre>
 </div>
@@ -5648,7 +5654,7 @@ text-direction-sensitive render objects.</p>
 </div>
 </article>
 <article class="widget" id="Dismissible" data-name="Dismissible">
-<h3>Dismissible<span class="badge badge-lib">widgets</span></h3>
+<h3>Dismissible<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that can be dismissed by dragging in the indicated [direction].</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -5675,7 +5681,7 @@ text-direction-sensitive render objects.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">Dismissible</span> key={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">Dismissible</span> key=<span class="tok-str">&quot;example&quot;</span>&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">Dismissible</span>&gt;</code></pre>
 </div>
@@ -6797,7 +6803,7 @@ its descendants, grouping them into a separate traversal group.</p>
 </div>
 </article>
 <article class="widget" id="FocusTraversalOrder" data-name="FocusTraversalOrder">
-<h3>FocusTraversalOrder<span class="badge badge-lib">widgets</span></h3>
+<h3>FocusTraversalOrder<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">An inherited widget that describes the order in which its child subtree
 should be traversed.</p>
 <table class="props">
@@ -6813,7 +6819,7 @@ should be traversed.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">FocusTraversalOrder</span> order={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">FocusTraversalOrder</span> order={<span class="tok-kw">new</span> <span class="tok-typ">LexicalFocusOrder</span>(<span class="tok-str">&quot;example&quot;</span>)}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">FocusTraversalOrder</span>&gt;</code></pre>
 </div>
@@ -7287,7 +7293,7 @@ a [Future].</p>
 </div>
 </article>
 <article class="widget" id="GridView" data-name="GridView">
-<h3>GridView<span class="badge badge-lib">widgets</span></h3>
+<h3>GridView<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A scrollable, 2D array of widgets.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -7320,7 +7326,7 @@ a [Future].</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">GridView</span> gridDelegate={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">GridView</span> gridDelegate={<span class="tok-kw">new</span> <span class="tok-typ">SliverGridDelegateWithFixedCrossAxisCount</span>({ crossAxisCount: <span class="tok-num">8</span> })}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Item <span class="tok-num">1</span>&lt;/<span class="tok-typ">Text</span>&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Item <span class="tok-num">2</span>&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">GridView</span>&gt;</code></pre>
@@ -8313,7 +8319,7 @@ them to the dimension of the parent in the other axis.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">ListWheelViewport</span> itemExtent={<span class="tok-num">1</span>} offset={…} childDelegate={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">ListWheelViewport</span> itemExtent={<span class="tok-num">1</span>} offset={<span class="tok-kw">new</span> <span class="tok-typ">ScrollPositionWithSingleContext</span>({ physics: ({}), context: <span class="tok-kw">new</span> <span class="tok-typ">ScrollableState</span>() })} childDelegate={…} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">ListWheelViewport</span>({
@@ -8420,7 +8426,7 @@ changes.</p>
 </div>
 </article>
 <article class="widget" id="Localizations" data-name="Localizations">
-<h3>Localizations<span class="badge badge-lib">widgets</span></h3>
+<h3>Localizations<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Defines the [Locale] for its `child` and the localized resources that the
 child depends on.</p>
 <table class="props">
@@ -8438,7 +8444,7 @@ child depends on.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">Localizations</span> locale={…} delegates={[]}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">Localizations</span> locale={<span class="tok-kw">new</span> <span class="tok-typ">Locale</span>(<span class="tok-str">&quot;example&quot;</span>)} delegates={[]}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">Localizations</span>&gt;</code></pre>
 </div>
@@ -8922,7 +8928,7 @@ their scroll positions being intrinsically linked.</p>
 </div>
 </article>
 <article class="widget" id="NestedScrollViewViewport" data-name="NestedScrollViewViewport">
-<h3>NestedScrollViewViewport<span class="badge badge-lib">widgets</span></h3>
+<h3>NestedScrollViewViewport<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">The [Viewport] variant used by [NestedScrollView].</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -8947,7 +8953,7 @@ their scroll positions being intrinsically linked.</p>
   <span class="tok-kw">const</span> sliverOverlapAbsorberHandle = <span class="tok-kw">new</span> <span class="tok-typ">SliverOverlapAbsorberHandle</span>();
 
   <span class="tok-kw">return</span> (
-    &lt;<span class="tok-typ">NestedScrollViewViewport</span> offset={…} handle={sliverOverlapAbsorberHandle} /&gt;
+    &lt;<span class="tok-typ">NestedScrollViewViewport</span> offset={<span class="tok-kw">new</span> <span class="tok-typ">ScrollPositionWithSingleContext</span>({ physics: ({}), context: <span class="tok-kw">new</span> <span class="tok-typ">ScrollableState</span>() })} handle={sliverOverlapAbsorberHandle} /&gt;
   );
 };</code></pre>
 </div>
@@ -10209,7 +10215,7 @@ on a keyboard.</p>
   <span class="tok-kw">const</span> focusNode = <span class="tok-kw">new</span> <span class="tok-typ">FocusNode</span>();
 
   <span class="tok-kw">return</span> (
-    &lt;<span class="tok-typ">RawRadio</span> value=<span class="tok-str">&quot;example&quot;</span> mouseCursor=<span class="tok-str">&quot;adaptiveClickable&quot;</span> toggleable={<span class="tok-kw">true</span>} focusNode={focusNode} autofocus={<span class="tok-kw">true</span>} groupRegistry={…} enabled={<span class="tok-kw">true</span>} builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;
+    &lt;<span class="tok-typ">RawRadio</span> value={…} mouseCursor=<span class="tok-str">&quot;adaptiveClickable&quot;</span> toggleable={<span class="tok-kw">true</span>} focusNode={focusNode} autofocus={<span class="tok-kw">true</span>} groupRegistry={…} enabled={<span class="tok-kw">true</span>} builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;
   );
 };</code></pre>
 </div>
@@ -10691,7 +10697,7 @@ list items.</p>
 </div>
 </article>
 <article class="widget" id="RichText" data-name="RichText">
-<h3>RichText<span class="badge badge-lib">widgets</span></h3>
+<h3>RichText<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A paragraph of rich text.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -10718,7 +10724,7 @@ list items.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">RichText</span> text={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">RichText</span> text={<span class="tok-kw">new</span> <span class="tok-typ">TextSpan</span>()} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">RichText</span>({
@@ -11023,7 +11029,7 @@ by the operating system.</p>
 </div>
 </article>
 <article class="widget" id="ScrollConfiguration" data-name="ScrollConfiguration">
-<h3>ScrollConfiguration<span class="badge badge-lib">widgets</span></h3>
+<h3>ScrollConfiguration<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Controls how [Scrollable] widgets behave in a subtree.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -11038,7 +11044,7 @@ by the operating system.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">ScrollConfiguration</span> behavior={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">ScrollConfiguration</span> behavior={<span class="tok-kw">new</span> <span class="tok-typ">ScrollBehavior</span>()}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">ScrollConfiguration</span>&gt;</code></pre>
 </div>
@@ -11127,7 +11133,7 @@ through which the content is viewed.</p>
 </div>
 </article>
 <article class="widget" id="SelectableRegion" data-name="SelectableRegion">
-<h3>SelectableRegion<span class="badge badge-lib">widgets</span></h3>
+<h3>SelectableRegion<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that introduces an area for user selections.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -11146,7 +11152,7 @@ through which the content is viewed.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">SelectableRegion</span> selectionControls={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">SelectableRegion</span> selectionControls={<span class="tok-kw">new</span> <span class="tok-typ">CupertinoDesktopTextSelectionControls</span>()}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">SelectableRegion</span>&gt;</code></pre>
 </div>
@@ -11164,7 +11170,7 @@ through which the content is viewed.</p>
 </div>
 </article>
 <article class="widget" id="SelectionContainer" data-name="SelectionContainer">
-<h3>SelectionContainer<span class="badge badge-lib">widgets</span></h3>
+<h3>SelectionContainer<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A container that handles [SelectionEvent]s for the [Selectable]s in
 the subtree.</p>
 <table class="props">
@@ -11181,7 +11187,7 @@ the subtree.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">SelectionContainer</span> delegate={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">SelectionContainer</span> delegate={<span class="tok-kw">new</span> <span class="tok-typ">StaticSelectionContainerDelegate</span>()}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">SelectionContainer</span>&gt;</code></pre>
 </div>
@@ -11233,7 +11239,7 @@ or [SelectableRegion].</p>
 </div>
 </article>
 <article class="widget" id="SelectionRegistrarScope" data-name="SelectionRegistrarScope">
-<h3>SelectionRegistrarScope<span class="badge badge-lib">widgets</span></h3>
+<h3>SelectionRegistrarScope<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">An inherited widget to host a [SelectionRegistrar] for the subtree.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -11248,7 +11254,7 @@ or [SelectableRegion].</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">SelectionRegistrarScope</span> registrar={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">SelectionRegistrarScope</span> registrar={<span class="tok-kw">new</span> <span class="tok-typ">SelectableRegionState</span>()}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">SelectionRegistrarScope</span>&gt;</code></pre>
 </div>
@@ -11634,7 +11640,7 @@ descendants.</p>
 </div>
 </article>
 <article class="widget" id="ShrinkWrappingViewport" data-name="ShrinkWrappingViewport">
-<h3>ShrinkWrappingViewport<span class="badge badge-lib">widgets</span></h3>
+<h3>ShrinkWrappingViewport<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that is bigger on the inside and shrink wraps its children in the
 main axis.</p>
 <table class="props">
@@ -11657,7 +11663,7 @@ main axis.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">ShrinkWrappingViewport</span> offset={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">ShrinkWrappingViewport</span> offset={<span class="tok-kw">new</span> <span class="tok-typ">ScrollPositionWithSingleContext</span>({ physics: ({}), context: <span class="tok-kw">new</span> <span class="tok-typ">ScrollableState</span>() })} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">ShrinkWrappingViewport</span>({
@@ -11898,7 +11904,7 @@ through to its child, which may then overflow.</p>
 </div>
 </article>
 <article class="widget" id="SliverAnimatedGrid" data-name="SliverAnimatedGrid">
-<h3>SliverAnimatedGrid<span class="badge badge-lib">widgets</span></h3>
+<h3>SliverAnimatedGrid<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A [SliverGrid] that animates items when they are inserted or removed.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -11915,7 +11921,7 @@ through to its child, which may then overflow.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">SliverAnimatedGrid</span> itemBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} gridDelegate={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">SliverAnimatedGrid</span> itemBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} gridDelegate={<span class="tok-kw">new</span> <span class="tok-typ">SliverGridDelegateWithFixedCrossAxisCount</span>({ crossAxisCount: <span class="tok-num">8</span> })} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">SliverAnimatedGrid</span>({
@@ -12273,7 +12279,7 @@ when the user scrolls backwards.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">SliverGrid</span> delegate={…} gridDelegate={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">SliverGrid</span> delegate={…} gridDelegate={<span class="tok-kw">new</span> <span class="tok-typ">SliverGridDelegateWithFixedCrossAxisCount</span>({ crossAxisCount: <span class="tok-num">8</span> })} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">SliverGrid</span>({
@@ -13632,7 +13638,7 @@ subtree.</p>
 </div>
 </article>
 <article class="widget" id="Transform" data-name="Transform">
-<h3>Transform<span class="badge badge-lib">widgets</span></h3>
+<h3>Transform<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that applies a transformation before painting its child.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -13651,7 +13657,7 @@ subtree.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">Transform</span> transform={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">Transform</span> transform={<span class="tok-kw">new</span> <span class="tok-typ">Matrix4</span>(<span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>, <span class="tok-num">1</span>)}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">Transform</span>&gt;</code></pre>
 </div>
@@ -13763,7 +13769,7 @@ whenever the target value changes.</p>
 </div>
 </article>
 <article class="widget" id="TwoDimensionalScrollable" data-name="TwoDimensionalScrollable">
-<h3>TwoDimensionalScrollable<span class="badge badge-lib">widgets</span></h3>
+<h3>TwoDimensionalScrollable<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that manages scrolling in both the vertical and horizontal
 dimensions and informs the [TwoDimensionalViewport] through which the
 content is viewed.</p>
@@ -13787,7 +13793,7 @@ content is viewed.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">TwoDimensionalScrollable</span> horizontalDetails={…} verticalDetails={…} viewportBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">TwoDimensionalScrollable</span> horizontalDetails={<span class="tok-kw">new</span> <span class="tok-typ">ScrollableDetails</span>({ direction: <span class="tok-str">&quot;up&quot;</span> })} verticalDetails={<span class="tok-kw">new</span> <span class="tok-typ">ScrollableDetails</span>({ direction: <span class="tok-str">&quot;up&quot;</span> })} viewportBuilder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">TwoDimensionalScrollable</span>({
@@ -13956,7 +13962,7 @@ available to descendants via [RestorationScope.of].</p>
 </div>
 </article>
 <article class="widget" id="ValueListenableBuilder" data-name="ValueListenableBuilder">
-<h3>ValueListenableBuilder<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
+<h3>ValueListenableBuilder<span class="badge badge-lib">widgets</span></h3>
 <p class="doc">A widget whose content stays synced with a [ValueListenable].</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -13972,15 +13978,9 @@ available to descendants via [RestorationScope.of].</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx"><span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">ValueListenableBuilderExample</span> = () =&gt; {
-  <span class="tok-kw">const</span> animation = <span class="tok-fn">useAnimation</span>({ duration: <span class="tok-num">600</span> });
-
-  <span class="tok-kw">return</span> (
-    &lt;<span class="tok-typ">ValueListenableBuilder</span> valueListenable={<span class="tok-fn">tween</span>(animation, { <span class="tok-kw">from</span>: <span class="tok-str">&quot;example&quot;</span>, to: <span class="tok-str">&quot;example&quot;</span> })} builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
-      &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
-    &lt;/<span class="tok-typ">ValueListenableBuilder</span>&gt;
-  );
-};</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">ValueListenableBuilder</span> valueListenable={…} builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;}&gt;
+  &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
+&lt;/<span class="tok-typ">ValueListenableBuilder</span>&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">ValueListenableBuilder</span>({
@@ -14080,7 +14080,7 @@ available to descendants via [RestorationScope.of].</p>
 </div>
 </article>
 <article class="widget" id="Viewport" data-name="Viewport">
-<h3>Viewport<span class="badge badge-lib">widgets</span></h3>
+<h3>Viewport<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget through which a portion of larger content can be viewed, typically
 in combination with a [Scrollable].</p>
 <table class="props">
@@ -14105,7 +14105,7 @@ in combination with a [Scrollable].</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">Viewport</span> offset={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">Viewport</span> offset={<span class="tok-kw">new</span> <span class="tok-typ">ScrollPositionWithSingleContext</span>({ physics: ({}), context: <span class="tok-kw">new</span> <span class="tok-typ">ScrollableState</span>() })} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">Viewport</span>({
@@ -14202,7 +14202,7 @@ in combination with a [Scrollable].</p>
 </div>
 </article>
 <article class="widget" id="WidgetToRenderBoxAdapter" data-name="WidgetToRenderBoxAdapter">
-<h3>WidgetToRenderBoxAdapter<span class="badge badge-lib">widgets</span></h3>
+<h3>WidgetToRenderBoxAdapter<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">An adapter for placing a specific [RenderBox] in the widget tree.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -14218,7 +14218,7 @@ in combination with a [Scrollable].</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">WidgetToRenderBoxAdapter</span> renderBox={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">WidgetToRenderBoxAdapter</span> renderBox={<span class="tok-kw">new</span> <span class="tok-typ">RenderAbsorbPointer</span>()} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">WidgetToRenderBoxAdapter</span>({
@@ -14576,7 +14576,7 @@ widget's subtree.</p>
 </div>
 </article>
 <article class="widget" id="AdaptiveTextSelectionToolbar" data-name="AdaptiveTextSelectionToolbar">
-<h3>AdaptiveTextSelectionToolbar<span class="badge badge-lib">material</span></h3>
+<h3>AdaptiveTextSelectionToolbar<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">The default context menu for text selection for the current platform.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -14591,7 +14591,7 @@ widget's subtree.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">AdaptiveTextSelectionToolbar</span> anchors={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">AdaptiveTextSelectionToolbar</span> anchors={<span class="tok-kw">new</span> <span class="tok-typ">TextSelectionToolbarAnchors</span>({ primaryAnchor: <span class="tok-str">&quot;infinite&quot;</span> })}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Item <span class="tok-num">1</span>&lt;/<span class="tok-typ">Text</span>&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Item <span class="tok-num">2</span>&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">AdaptiveTextSelectionToolbar</span>&gt;</code></pre>
@@ -20569,7 +20569,7 @@ popup menus in this widget's subtree.</p>
 </div>
 </article>
 <article class="widget" id="Radio" data-name="Radio">
-<h3>Radio<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
+<h3>Radio<span class="badge badge-lib">material</span></h3>
 <p class="doc">A Material Design radio button.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -20602,7 +20602,7 @@ popup menus in this widget's subtree.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">Radio</span> value=<span class="tok-str">&quot;example&quot;</span> /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">Radio</span> value={…} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">Radio</span>({
@@ -20632,7 +20632,7 @@ popup menus in this widget's subtree.</p>
 </div>
 </article>
 <article class="widget" id="RadioListTile" data-name="RadioListTile">
-<h3>RadioListTile<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
+<h3>RadioListTile<span class="badge badge-lib">material</span></h3>
 <p class="doc">A [ListTile] with a [Radio]. In other words, a radio button with a label.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -20684,7 +20684,7 @@ popup menus in this widget's subtree.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">RadioListTile</span> value=<span class="tok-str">&quot;example&quot;</span> /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">RadioListTile</span> value={…} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">RadioListTile</span>({
@@ -20733,7 +20733,7 @@ popup menus in this widget's subtree.</p>
 </div>
 </article>
 <article class="widget" id="RadioMenuButton" data-name="RadioMenuButton">
-<h3>RadioMenuButton<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
+<h3>RadioMenuButton<span class="badge badge-lib">material</span></h3>
 <p class="doc">A menu item that combines a [Radio] widget with a [MenuItemButton].</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -20760,7 +20760,7 @@ popup menus in this widget's subtree.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">RadioMenuButton</span> value=<span class="tok-str">&quot;example&quot;</span> groupValue=<span class="tok-str">&quot;example&quot;</span> onChanged={() =&gt; {}}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">RadioMenuButton</span> value={…} groupValue={…} onChanged={() =&gt; {}}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">RadioMenuButton</span>&gt;</code></pre>
 </div>
@@ -20815,7 +20815,7 @@ popup menus in this widget's subtree.</p>
 </div>
 </article>
 <article class="widget" id="RangeSlider" data-name="RangeSlider">
-<h3>RangeSlider<span class="badge badge-lib">material</span></h3>
+<h3>RangeSlider<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A Material Design range slider.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -20843,7 +20843,7 @@ popup menus in this widget's subtree.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">RangeSlider</span> values={…} onChanged={() =&gt; {}} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">RangeSlider</span> values={<span class="tok-kw">new</span> <span class="tok-typ">RangeValues</span>(<span class="tok-num">1</span>, <span class="tok-num">1</span>)} onChanged={() =&gt; {}} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">RangeSlider</span>({
@@ -23365,7 +23365,7 @@ its ink splashes to the current table row of the nearest table.</p>
 </div>
 </article>
 <article class="widget" id="TextMagnifier" data-name="TextMagnifier">
-<h3>TextMagnifier<span class="badge badge-lib">material</span></h3>
+<h3>TextMagnifier<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A [Magnifier] positioned by rules dictated by the native Android magnifier.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -23379,7 +23379,7 @@ its ink splashes to the current table row of the nearest table.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">TextMagnifier</span> magnifierInfo={…} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">TextMagnifier</span> magnifierInfo={<span class="tok-kw">new</span> <span class="tok-typ">ValueNotifier</span>(<span class="tok-str">&quot;empty&quot;</span>)} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">TextMagnifier</span>({
@@ -24057,7 +24057,7 @@ displayed using [showTimePicker] in this widget's subtree.</p>
 </div>
 </article>
 <article class="widget" id="CupertinoAdaptiveTextSelectionToolbar" data-name="CupertinoAdaptiveTextSelectionToolbar">
-<h3>CupertinoAdaptiveTextSelectionToolbar<span class="badge badge-lib">cupertino</span></h3>
+<h3>CupertinoAdaptiveTextSelectionToolbar<span class="badge badge-lib">cupertino</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">The default Cupertino context menu for text selection for the current
 platform with the given children.</p>
 <table class="props">
@@ -24073,7 +24073,7 @@ platform with the given children.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">CupertinoAdaptiveTextSelectionToolbar</span> anchors={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">CupertinoAdaptiveTextSelectionToolbar</span> anchors={<span class="tok-kw">new</span> <span class="tok-typ">TextSelectionToolbarAnchors</span>({ primaryAnchor: <span class="tok-str">&quot;infinite&quot;</span> })}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Item <span class="tok-num">1</span>&lt;/<span class="tok-typ">Text</span>&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Item <span class="tok-num">2</span>&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">CupertinoAdaptiveTextSelectionToolbar</span>&gt;</code></pre>
@@ -25317,7 +25317,7 @@ sheets.</p>
 </div>
 </article>
 <article class="widget" id="CupertinoRadio" data-name="CupertinoRadio">
-<h3>CupertinoRadio<span class="badge badge-lib">cupertino</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
+<h3>CupertinoRadio<span class="badge badge-lib">cupertino</span></h3>
 <p class="doc">A widget that builds a [RawRadio] with a macOS-style UI.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -25344,7 +25344,7 @@ sheets.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">CupertinoRadio</span> value=<span class="tok-str">&quot;example&quot;</span> /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">CupertinoRadio</span> value={…} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">CupertinoRadio</span>({
@@ -25763,7 +25763,7 @@ sheets.</p>
 </div>
 </article>
 <article class="widget" id="CupertinoSpellCheckSuggestionsToolbar" data-name="CupertinoSpellCheckSuggestionsToolbar">
-<h3>CupertinoSpellCheckSuggestionsToolbar<span class="badge badge-lib">cupertino</span></h3>
+<h3>CupertinoSpellCheckSuggestionsToolbar<span class="badge badge-lib">cupertino</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">The default spell check suggestions toolbar for iOS.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -25778,7 +25778,7 @@ sheets.</p>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">CupertinoSpellCheckSuggestionsToolbar</span> anchors={…} buttonItems={[]} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">CupertinoSpellCheckSuggestionsToolbar</span> anchors={<span class="tok-kw">new</span> <span class="tok-typ">TextSelectionToolbarAnchors</span>({ primaryAnchor: <span class="tok-str">&quot;infinite&quot;</span> })} buttonItems={[]} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">CupertinoSpellCheckSuggestionsToolbar</span>({
@@ -26273,7 +26273,7 @@ a [CupertinoTextField].</p>
 </div>
 </article>
 <article class="widget" id="CupertinoTextMagnifier" data-name="CupertinoTextMagnifier">
-<h3>CupertinoTextMagnifier<span class="badge badge-lib">cupertino</span></h3>
+<h3>CupertinoTextMagnifier<span class="badge badge-lib">cupertino</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A [CupertinoMagnifier] used for magnifying text in cases where a user's
 finger may be blocking the point of interest, like a selection handle.</p>
 <table class="props">
@@ -26297,7 +26297,7 @@ finger may be blocking the point of interest, like a selection handle.</p>
   <span class="tok-kw">const</span> magnifierController = <span class="tok-kw">new</span> <span class="tok-typ">MagnifierController</span>();
 
   <span class="tok-kw">return</span> (
-    &lt;<span class="tok-typ">CupertinoTextMagnifier</span> controller={magnifierController} magnifierInfo={…} /&gt;
+    &lt;<span class="tok-typ">CupertinoTextMagnifier</span> controller={magnifierController} magnifierInfo={<span class="tok-kw">new</span> <span class="tok-typ">ValueNotifier</span>(<span class="tok-str">&quot;empty&quot;</span>)} /&gt;
   );
 };</code></pre>
 </div>

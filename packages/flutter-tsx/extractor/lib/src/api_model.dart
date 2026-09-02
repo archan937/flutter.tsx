@@ -360,6 +360,7 @@ class ClassEntity extends ConstructedEntity {
     required super.constants,
     required super.fields,
     required this.disposable,
+    required this.typeParams,
   });
 
   /// Whether a public `dispose()` is part of this class's surface.
@@ -369,6 +370,9 @@ class ClassEntity extends ConstructedEntity {
   /// has nothing to release.
   final bool disposable;
 
+  /// The names this class is generic over: the `T` of a `ValueNotifier<T>`.
+  final List<String> typeParams;
+
   @override
   String get kind => 'class';
 
@@ -376,6 +380,7 @@ class ClassEntity extends ConstructedEntity {
   Map<String, Object?> toJson() => {
     ...super.toJson(),
     'disposable': disposable,
+    if (typeParams.isNotEmpty) 'typeParams': typeParams,
   };
 }
 

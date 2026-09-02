@@ -23,6 +23,19 @@ const param = (
 const context: SynthesisContext = {
   enumValues: { TestAlign: 'start' },
   ownedValues: new Set(['TestController']),
+  construction: new Map([
+    [
+      'Ink',
+      {
+        name: 'InkSplash',
+        typeParams: [],
+        params: [
+          param('kind', { kind: 'scalar', name: 'String' }, { named: false }),
+          param('shade', { kind: 'scalar', name: 'String' }),
+        ],
+      },
+    ],
+  ]),
   forms: {
     constantMembers: new Map([['IconData', new Map([['add', 'Icons']])]]),
     constructibles: new Map([
@@ -83,6 +96,79 @@ describe('synthesizeTsx', () => {
           imports: ['TestController'],
         },
       ],
+      complete: true,
+    });
+  });
+
+  test('an abstract type is written as the class that makes one', () => {
+    // `Ink` cannot be built; `InkSplash` is one, so that is what an example
+    // of a prop asking for an Ink shows.
+    expect(
+      synthesizeTsx({
+        widgetName: 'Splash',
+        params: [param('ink', { kind: 'named', name: 'Ink' })],
+        slots: noSlots,
+        context,
+      }),
+    ).toEqual({
+      // Dart's positional arguments stay positional; its named ones are the
+      // trailing object, which is what the typings declare.
+      tsx: '<Splash ink={new InkSplash("example", { shade: "example" })} />',
+      bindings: [],
+      complete: true,
+    });
+  });
+
+  test('a generic value is built for what the prop asked for', () => {
+    const generic: SynthesisContext = {
+      ...context,
+      construction: new Map([
+        [
+          'Holder',
+          {
+            name: 'Holder',
+            typeParams: ['T'],
+            params: [
+              param('value', { kind: 'typeVar', name: 'T' }, { named: false }),
+            ],
+          },
+        ],
+      ]),
+    };
+
+    expect(
+      synthesizeTsx({
+        widgetName: 'Counter',
+        params: [
+          param('holder', {
+            kind: 'named',
+            name: 'Holder',
+            args: [{ kind: 'scalar', name: 'int' }],
+          }),
+        ],
+        slots: noSlots,
+        context: generic,
+      }),
+    ).toEqual({
+      tsx: '<Counter holder={new Holder(8)} />',
+      bindings: [],
+      complete: true,
+    });
+  });
+
+  test('a value of no particular type is written as one', () => {
+    // A widget generic over what it is given — a Radio's value — takes
+    // whatever the example gives it.
+    expect(
+      synthesizeTsx({
+        widgetName: 'Radio',
+        params: [param('value', { kind: 'unknown' })],
+        slots: noSlots,
+        context,
+      }),
+    ).toEqual({
+      tsx: '<Radio value="example" />',
+      bindings: [],
       complete: true,
     });
   });

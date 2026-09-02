@@ -32,6 +32,7 @@ void main() {
         'class GuardedList',
         'class NotAWidget',
         'enum TestAlignment',
+        'class TestBox',
         'class TestController',
         'class TestHolder',
         'class TestLink',
@@ -41,6 +42,23 @@ void main() {
         'widget Wrapper',
       ]);
     });
+
+    test(
+      'a class says what it is built for, and its parameters say so too',
+      () {
+        // `TestBox<String>` can bind T to String only because the class names
+        // its parameter and the constructor says `T`.
+        final box = entities.whereType<ClassEntity>().singleWhere(
+          (entity) => entity.name == 'TestBox',
+        );
+
+        expect(box.typeParams, ['T']);
+        expect(box.constructors.first.params.first.type.toJson(), {
+          'kind': 'typeVar',
+          'name': 'T',
+        });
+      },
+    );
 
     test('records whether a value has to be disposed', () {
       // A component owning one of these has to release it; the compiler
@@ -217,6 +235,7 @@ void main() {
         'PreferredSizeLike': ['Widget'],
         'StatelessWidget': ['Widget'],
         'Tappable': ['Widget'],
+        'TestBox': <String>[],
         'TestController': <String>[],
         'TestHolder': <String>[],
         'TestLink': <String>[],

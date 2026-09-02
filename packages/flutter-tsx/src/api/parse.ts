@@ -77,6 +77,8 @@ export const parseTypeNode = (value: unknown, path: string): TypeNode => {
     case 'scalar':
       return { kind, name: asScalarName(record.name, `${path}.name`) };
     case 'enum':
+    case 'typeVar':
+      return { kind, name: asString(record.name, `${path}.name`) };
     case 'named': {
       const args =
         record.args === undefined
@@ -226,6 +228,12 @@ const parseEntity = (value: unknown, path: string): Entity => {
         ...base,
         ...constructed(),
         disposable: asBoolean(record.disposable, `${path}.disposable`),
+        typeParams:
+          record.typeParams === undefined
+            ? []
+            : asArray(record.typeParams, `${path}.typeParams`).map(
+                (name, index) => asString(name, `${path}.typeParams[${index}]`),
+              ),
       };
     case 'enum':
       return {

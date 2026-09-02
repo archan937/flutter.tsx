@@ -12,6 +12,8 @@ export type TypeNode =
   | { kind: 'widget' }
   | { kind: 'void' }
   | { kind: 'unknown' }
+  // `T` — what a generic class is built for, named so it can be bound.
+  | { kind: 'typeVar'; name: string }
   | { kind: 'scalar'; name: ScalarName }
   | { kind: 'enum'; name: string }
   // `args` is what the type was written with: the `Color` of an
@@ -90,6 +92,8 @@ export interface ClassEntity extends EntityBase {
   fields: FieldModel[];
   /** Whether a component owning one of these has to release it. */
   disposable: boolean;
+  /** The names this class is generic over: the `T` of a `ValueNotifier<T>`. */
+  typeParams: string[];
 }
 
 export interface EnumValue {

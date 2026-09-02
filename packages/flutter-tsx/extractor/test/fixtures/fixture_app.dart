@@ -70,6 +70,13 @@ class TestHolder<T> {
   final T value;
 }
 
+/// Takes a value of the type it is built for.
+class TestBox<T> {
+  const TestBox({required this.item});
+
+  final T item;
+}
+
 class TestController {
   TestController({this.tick = 0});
 
@@ -121,12 +128,14 @@ class TestWidget extends StatelessWidget {
     this.extra,
     this.anything,
     this.holder,
+    this.box,
     @Deprecated('Use title instead.') this.legacyTitle,
   }) : assert(count >= 0, 'count must not be negative');
 
   /// A compact variant.
   const TestWidget.compact({required this.title})
-    : holder = null,
+    : box = null,
+      holder = null,
       count = 1,
       scale = null,
       enabled = true,
@@ -188,6 +197,9 @@ class TestWidget extends StatelessWidget {
 
   /// A value whose type argument is part of what it is.
   final TestHolder<TestController>? holder;
+
+  /// A value built for a type the class declares a parameter for.
+  final TestBox<String>? box;
 
   /// The old title.
   final String? legacyTitle;

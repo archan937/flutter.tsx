@@ -1316,6 +1316,50 @@ describe('transpileComponent — dates and times', () => {
   });
 });
 
+describe('transpileComponent — values the SDK builds', () => {
+  const probe = (body: string, imports: string): Promise<string> =>
+    transpileComponent({
+      source:
+        `import { ${imports} } from 'flutter-tsx';\n` +
+        `export const Probe = () => (\n  ${body}\n);\n`,
+      filePath: 'probe.tsx',
+    });
+
+  test('a key is the value that tells one widget from another', async () => {
+    const text = await probe(
+      '<Dismissible key="row-3" onDismissed={() => {}}><Text>Swipe</Text></Dismissible>',
+      'Dismissible, Text',
+    );
+    const number = await probe(
+      '<Dismissible key={7} onDismissed={() => {}}><Text>Swipe</Text></Dismissible>',
+      'Dismissible, Text',
+    );
+
+    expect(text).toContain("      key: const ValueKey('row-3'),");
+    expect(number).toContain('      key: const ValueKey(7),');
+  });
+
+  test('named arguments are written as the one object the typings declare', () => {
+    expect(
+      probe(
+        '<GridView gridDelegate={new SliverGridDelegateWithFixedCrossAxisCount(2)}>' +
+          '<Text>One</Text></GridView>',
+        'GridView, SliverGridDelegateWithFixedCrossAxisCount, Text',
+      ),
+    ).rejects.toThrow(
+      /TSX0355 .* `SliverGridDelegateWithFixedCrossAxisCount` takes its named arguments as one object/,
+    );
+  });
+
+  test('a class the SDK does not build is not built', () => {
+    // `Nothing` is no class at all, and a prop is where the SDK's own
+    // constructors are looked for — so this falls through every one of them.
+    expect(
+      probe('<Text style={new Nothing()}>Hi</Text>', 'Text'),
+    ).rejects.toThrow(/TSX0349 /);
+  });
+});
+
 describe('transpileComponent — failures with a type', () => {
   const probe = (body: string): Promise<string> =>
     transpileComponent({

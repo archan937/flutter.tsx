@@ -38,6 +38,7 @@ void main() {
           constructors: const [],
           constants: const [],
           disposable: false,
+          typeParams: const [],
           fields: const [
             FieldModel(
               name: 'maxWidth',

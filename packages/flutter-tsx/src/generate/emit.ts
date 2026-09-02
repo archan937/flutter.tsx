@@ -1,5 +1,6 @@
 import type {
   ApiSnapshot,
+  ClassEntity,
   ConstantModel,
   Entity,
   ParamModel,
@@ -18,6 +19,7 @@ import {
 import { dartdocToJsdoc } from './doc';
 import { CHILDREN_TS_TYPES, propTsType, valueFormTsType } from './prop-type';
 import { jsxPropName } from './renames';
+import { signatureParams } from './signature';
 import { tsTypeOf } from './ts-types';
 
 const EMPTY_SLOTS: WidgetSlots = { children: null, slots: [] };
@@ -62,9 +64,9 @@ const collectRefs = (
 };
 
 const defaultConstructorOf = (
-  widget: WidgetEntity,
+  entity: WidgetEntity | ClassEntity,
 ): WidgetEntity['constructors'][number] | undefined =>
-  widget.constructors.find((constructor) => constructor.name === '');
+  entity.constructors.find((constructor) => constructor.name === '');
 
 const docWithDeprecation = (param: ParamModel): string => {
   if (!param.deprecated) {
@@ -317,7 +319,7 @@ const brandInterface = (
     `  readonly __fsxBrand?: { ${brand} };`,
     ...fields,
     '}',
-    ...ownedConstructor(name, entity),
+    ...ownedConstructor(name, entity, readable),
   ].join('\n');
 };
 
@@ -333,11 +335,19 @@ const brandInterface = (
 const ownedConstructor = (
   name: string,
   entity: ApiSnapshot['entities'][number] | undefined,
+  readable: ReadableTypes,
 ): string[] => {
-  if (entity === undefined || !isOwnedValue(entity)) {
+  // A widget is written as a tag, never constructed: its name already
+  // belongs to the component the file declares.
+  const constructor =
+    entity?.kind === 'class' ? defaultConstructorOf(entity) : undefined;
+  if (constructor === undefined) {
     return [];
   }
-  return ['', `export declare const ${name}: new () => ${name};`];
+  const params = signatureParams(constructor.params, (param) =>
+    valueFormTsType(unwrapNullable(param.type), readable.forms),
+  );
+  return ['', `export declare const ${name}: new (${params}) => ${name};`];
 };
 
 /**
@@ -486,6 +496,33 @@ export const emitWidgetsFile = (
       }
     }
   }
+  // A type a prop asks for is often abstract — `ImageProvider`, a sliver
+  // delegate — and the way to satisfy it is one of its concrete subclasses.
+  // Those are values a developer writes, so they are declared too; so is
+  // whatever their constructors ask for, and whatever those ask for after
+  // that. The surface is closed under "can be written", not guessed at.
+  const classes = snapshot.entities.filter(
+    (entity): entity is ClassEntity => entity.kind === 'class',
+  );
+  for (let widened = true; widened;) {
+    widened = false;
+    for (const entity of classes) {
+      const reachable =
+        namedRefs.has(entity.name) ||
+        entity.supertypes.some((name) => namedRefs.has(name));
+      const constructor = defaultConstructorOf(entity);
+      if (!reachable || constructor === undefined) {
+        continue;
+      }
+      const before = namedRefs.size + enumRefs.size;
+      namedRefs.add(entity.name);
+      for (const param of constructor.params) {
+        collectRefs(param.type, namedRefs, enumRefs);
+      }
+      widened = widened || namedRefs.size + enumRefs.size > before;
+    }
+  }
+
   // A subtype must carry what its supertype exposes or it stops being
   // assignable to it — `MaterialColor` has to keep satisfying `Color`. The
   // extractor already merges inherited getters, so this is just a wider set.

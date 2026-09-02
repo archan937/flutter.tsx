@@ -53,6 +53,7 @@ const classEntity = (
 ): Entity => ({
   kind: 'class',
   disposable: false,
+  typeParams: [],
   name,
   library: 'painting',
   doc: '',

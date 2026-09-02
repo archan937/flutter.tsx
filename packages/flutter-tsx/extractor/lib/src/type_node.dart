@@ -59,6 +59,16 @@ class NamedTypeNode extends TypeNode {
   };
 }
 
+/// `T` — what a generic class is built for, named so it can be bound.
+class TypeVarTypeNode extends TypeNode {
+  const TypeVarTypeNode(this.name);
+
+  final String name;
+
+  @override
+  Map<String, Object?> toJson() => {'kind': 'typeVar', 'name': name};
+}
+
 class NullableTypeNode extends TypeNode {
   const NullableTypeNode(this.inner);
 

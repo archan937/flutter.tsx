@@ -125,6 +125,7 @@ describe('buildSitePage', () => {
       {
         kind: 'class',
         disposable: false,
+        typeParams: [],
         name: 'TestPalette',
         library: 'material',
         doc: '',

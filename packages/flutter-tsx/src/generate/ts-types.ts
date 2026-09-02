@@ -38,7 +38,10 @@ export const tsTypeOf = (node: TypeNode): string => {
       return 'FlutterElement';
     case 'void':
       return 'void';
+    // What a generic class is built for is only known where it is named, so
+    // at the declaration it is as open as the class is.
     case 'unknown':
+    case 'typeVar':
       return 'unknown';
     case 'scalar':
       return SCALAR_TS_TYPES[node.name] ?? 'unknown';

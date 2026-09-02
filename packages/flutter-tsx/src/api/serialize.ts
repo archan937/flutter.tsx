@@ -15,6 +15,7 @@ const typeNodeToJson = (node: TypeNode): Record<string, unknown> => {
       return { kind: node.kind };
     case 'scalar':
     case 'enum':
+    case 'typeVar':
       return { kind: node.kind, name: node.name };
     case 'named':
       return {
@@ -106,7 +107,14 @@ const entityToJson = (entity: Entity): Record<string, unknown> => {
       doc: field.doc,
       type: typeNodeToJson(field.type),
     })),
-    ...(entity.kind === 'class' ? { disposable: entity.disposable } : {}),
+    ...(entity.kind === 'class'
+      ? {
+          disposable: entity.disposable,
+          ...(entity.typeParams.length > 0
+            ? { typeParams: entity.typeParams }
+            : {}),
+        }
+      : {}),
   };
 };
 

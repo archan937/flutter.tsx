@@ -189,7 +189,8 @@
           "name": "value",
           "doc": "/// The current value stored in this notifier.\n///\n/// When the value is replaced with something that is not equal to the old\n/// value as evaluated by the equality operator ==, this class notifies its\n/// listeners.",
           "type": {
-            "kind": "unknown"
+            "kind": "typeVar",
+            "name": "T"
           }
         }
       ],
@@ -2214,7 +2215,8 @@
               "type": {
                 "kind": "nullable",
                 "inner": {
-                  "kind": "unknown"
+                  "kind": "typeVar",
+                  "name": "T"
                 }
               },
               "display": "T?",
@@ -2236,7 +2238,8 @@
             {
               "name": "value",
               "type": {
-                "kind": "unknown"
+                "kind": "typeVar",
+                "name": "T"
               },
               "display": "T",
               "named": false,
@@ -2253,7 +2256,8 @@
           "name": "first",
           "doc": "/// The first element.\n///\n/// Throws a [StateError] if `this` is empty.\n/// Otherwise returns the first element in the iteration order,\n/// equivalent to `this.elementAt(0)`.",
           "type": {
-            "kind": "unknown"
+            "kind": "typeVar",
+            "name": "E"
           }
         },
         {
@@ -2296,7 +2300,8 @@
             "name": "Iterator",
             "args": [
               {
-                "kind": "unknown"
+                "kind": "typeVar",
+                "name": "T"
               }
             ]
           }
@@ -2305,7 +2310,8 @@
           "name": "last",
           "doc": "/// The last element.\n///\n/// Throws a [StateError] if `this` is empty.\n/// Otherwise may iterate through the elements and returns the last one\n/// seen.\n/// Some iterables may have more efficient ways to find the last element\n/// (for example a list can directly access the last element,\n/// without iterating through the previous ones).",
           "type": {
-            "kind": "unknown"
+            "kind": "typeVar",
+            "name": "E"
           }
         },
         {
@@ -2322,7 +2328,8 @@
           "type": {
             "kind": "nullable",
             "inner": {
-              "kind": "unknown"
+              "kind": "typeVar",
+              "name": "T"
             }
           }
         },
@@ -2330,14 +2337,16 @@
           "name": "single",
           "doc": "/// Checks that this iterable has only one element, and returns that element.\n///\n/// Throws a [StateError] if `this` is empty or has more than one element.\n/// This operation will not iterate past the second element.",
           "type": {
-            "kind": "unknown"
+            "kind": "typeVar",
+            "name": "E"
           }
         },
         {
           "name": "value",
           "doc": "/// Gets the Optional value.\n///\n/// Throws [StateError] if [value] is null.",
           "type": {
-            "kind": "unknown"
+            "kind": "typeVar",
+            "name": "T"
           }
         }
       ],
@@ -2411,7 +2420,8 @@
                   {
                     "name": "value",
                     "type": {
-                      "kind": "unknown"
+                      "kind": "typeVar",
+                      "name": "T"
                     },
                     "named": false,
                     "required": true
@@ -2432,13 +2442,15 @@
           "doc": "/// Gets the Optional value with a default.\n///\n/// The default is returned if the Optional is [absent()].\n///\n/// Throws [ArgumentError] if [defaultValue] is null.",
           "static": false,
           "returnType": {
-            "kind": "unknown"
+            "kind": "typeVar",
+            "name": "T"
           },
           "params": [
             {
               "name": "defaultValue",
               "type": {
-                "kind": "unknown"
+                "kind": "typeVar",
+                "name": "T"
               },
               "display": "T",
               "named": false,
@@ -2468,7 +2480,8 @@
             "name": "Optional",
             "args": [
               {
-                "kind": "unknown"
+                "kind": "typeVar",
+                "name": "S"
               }
             ]
           },
@@ -2478,13 +2491,15 @@
               "type": {
                 "kind": "function",
                 "returnType": {
-                  "kind": "unknown"
+                  "kind": "typeVar",
+                  "name": "S"
                 },
                 "params": [
                   {
                     "name": "value",
                     "type": {
-                      "kind": "unknown"
+                      "kind": "typeVar",
+                      "name": "T"
                     },
                     "named": false,
                     "required": true
@@ -2509,7 +2524,8 @@
             "name": "Optional",
             "args": [
               {
-                "kind": "unknown"
+                "kind": "typeVar",
+                "name": "S"
               }
             ]
           },
@@ -2521,14 +2537,16 @@
                 "returnType": {
                   "kind": "nullable",
                   "inner": {
-                    "kind": "unknown"
+                    "kind": "typeVar",
+                    "name": "S"
                   }
                 },
                 "params": [
                   {
                     "name": "value",
                     "type": {
-                      "kind": "unknown"
+                      "kind": "typeVar",
+                      "name": "T"
                     },
                     "named": false,
                     "required": true

@@ -4,11 +4,25 @@ import type { NamedSlot, WidgetSlots } from '../derive/slots';
 import { EDGE_INSETS_TYPES, type ValueForms } from '../derive/value-forms';
 import { jsxPropName } from '../generate/renames';
 
+/** A class the SDK builds, and what its constructor asks for. */
+export interface Constructible {
+  name: string;
+  params: readonly ParamModel[];
+  /** The names it is generic over, in order, so arguments can be bound. */
+  typeParams: readonly string[];
+}
+
 export interface SynthesisContext {
   enumValues: Record<string, string>;
   forms: ValueForms;
   /** Types a component can make for itself, e.g. `new FocusNode()`. */
   ownedValues: ReadonlySet<string>;
+  /**
+   * How to make a value of a type: the class itself when it can be built,
+   * or the concrete subclass that is the way to satisfy an abstract one —
+   * an `ImageProvider` is written as an `AssetImage`.
+   */
+  construction: ReadonlyMap<string, Constructible>;
 }
 
 /**
@@ -37,8 +51,10 @@ interface SynthesizedValue {
 
 const INCOMPLETE_VALUE = '{…}';
 
-// `<Icon icon={Icons.add} />` — a namespaced value the example needs imported.
+// `<Icon icon={Icons.add} />` — a namespaced value the example needs
+// imported, and `new AssetImage(…)` is a class it names outright.
 const NAMESPACE_REFERENCE = /\{([A-Z][A-Za-z0-9_]*)\./g;
+const CONSTRUCTED_CLASS = /\bnew ([A-Z][A-Za-z0-9_]*)\(/g;
 
 const literal = (value: string): SynthesizedValue => ({ value });
 
@@ -68,6 +84,61 @@ const animationValue = (
       imports: [...ANIMATION_BINDING.imports, 'tween'],
     },
   };
+};
+
+/**
+ * `new AssetImage('images/logo.png')` — a value written where it is used.
+ *
+ * The class is the one the SDK offers for the type: `Image` asks for an
+ * `ImageProvider`, and an `AssetImage` is one. Null when the arguments it
+ * needs are not themselves expressible.
+ */
+const builtValue = (
+  type: TypeNode & { kind: 'named' },
+  context: SynthesisContext,
+): SynthesizedValue | null => {
+  const built = context.construction.get(type.name);
+  // A type asked for with arguments is only satisfied by a class generic
+  // over them: an `Animatable<Object>` is not a tween of one fixed type.
+  if (
+    built === undefined ||
+    built.typeParams.length < (type.args ?? []).length
+  ) {
+    return null;
+  }
+  // `ValueNotifier<int>` builds with an int: what the class is generic over
+  // is bound to what the prop asked for.
+  const bound = new Map(
+    built.typeParams.map((name, index): [string, TypeNode] => [
+      name,
+      type.args?.[index] ?? { kind: 'unknown' },
+    ]),
+  );
+  const substituted = (node: TypeNode): TypeNode =>
+    node.kind === 'typeVar' ? (bound.get(node.name) ?? node) : node;
+  const positional = built.params.filter(
+    (param) => !param.named && param.required,
+  );
+  const named = built.params.filter((param) => param.named && param.required);
+  const written = (param: ParamModel): string | null => {
+    const value = attrValue(substituted(param.type), context);
+    return value === null || value.binding !== undefined
+      ? null
+      : braced(value.value);
+  };
+  const positionalText = positional.map(written);
+  const namedText = named.map((param) => {
+    const value = written(param);
+    return value === null ? null : `${param.name}: ${value}`;
+  });
+  if ([...positionalText, ...namedText].some((value) => value === null)) {
+    return null;
+  }
+  const args = [
+    ...positionalText,
+    ...(namedText.length === 0 ? [] : [`{ ${namedText.join(', ')} }`]),
+  ];
+  return { value: `{new ${built.name}(${args.join(', ')})}` };
 };
 
 /** `const focusNode = new FocusNode();` — a value the component makes. */
@@ -111,6 +182,15 @@ const ANIMATION_TYPES: ReadonlySet<string> = new Set([
   'ValueListenable',
 ]);
 
+// A key is written as the text or number that tells one item from another;
+// the compiler makes the Key itself.
+const KEY_TYPES: ReadonlySet<string> = new Set([
+  'Key',
+  'LocalKey',
+  'ValueKey',
+  'ObjectKey',
+]);
+
 const ANIMATION_BINDING: ExampleBinding = {
   line: 'const animation = useAnimation({ duration: 600 });',
   imports: ['useAnimation'],
@@ -152,6 +232,9 @@ const attrValue = (
         : literal(`"${value}"`);
     }
     case 'named': {
+      if (KEY_TYPES.has(type.name)) {
+        return literal('"example"');
+      }
       if (ANIMATION_TYPES.has(type.name)) {
         return animationValue(type, context);
       }
@@ -177,7 +260,7 @@ const attrValue = (
       }
       // A value the component makes and keeps: the example is the component,
       // and the binding is the line that makes it.
-      return ownedValue(type.name, context);
+      return ownedValue(type.name, context) ?? builtValue(type, context);
     }
     case 'function': {
       if (type.returnType.kind === 'void') {
@@ -383,6 +466,9 @@ export const exampleImports = (
       'Text',
       ...example.bindings.flatMap((binding) => binding.imports),
       ...[...example.tsx.matchAll(NAMESPACE_REFERENCE)].map(
+        (match) => match[1] ?? '',
+      ),
+      ...[...example.tsx.matchAll(CONSTRUCTED_CLASS)].map(
         (match) => match[1] ?? '',
       ),
     ]),
