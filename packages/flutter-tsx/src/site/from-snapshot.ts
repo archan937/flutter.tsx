@@ -5,6 +5,7 @@ import type {
   ParamModel,
   WidgetEntity,
 } from '../api/model';
+import { deriveDelegates } from '../derive/delegates';
 import type { SlotMap, WidgetSlots } from '../derive/slots';
 import {
   deriveValueForms,
@@ -24,6 +25,8 @@ import type {
 } from './model';
 import {
   type Constructible,
+  FUTURE_ANSWER,
+  STREAM_ANSWER,
   type Supplier,
   type SynthesisContext,
   synthesizeTsx,
@@ -202,6 +205,60 @@ const supplierMap = (snapshot: ApiSnapshot): Map<string, Supplier[]> => {
   return suppliers;
 };
 
+/**
+ * Which method answers with each type, and on what.
+ *
+ * Nothing constructs a `Shader`; a gradient makes one. The owner has to be a
+ * value that can itself be written, which the caller checks.
+ */
+const answerMap = (snapshot: ApiSnapshot): Map<string, Supplier[]> => {
+  const answers = new Map<string, Supplier[]>();
+  for (const entity of snapshot.entities) {
+    if (entity.kind === 'enum') {
+      continue;
+    }
+    for (const method of entity.methods) {
+      const returned =
+        method.returnType.kind === 'nullable'
+          ? method.returnType.inner
+          : method.returnType;
+      // What something answers with is keyed by what it is: a named type by
+      // its name, and a Future or a Stream by which of the two it is —
+      // `FutureBuilder.future` takes any Future, whatever it carries.
+      const key =
+        returned.kind === 'named'
+          ? returned.name
+          : returned.kind === 'future'
+            ? FUTURE_ANSWER
+            : returned.kind === 'stream'
+              ? STREAM_ANSWER
+              : null;
+      // Nothing can be written for what a method answers with in terms of
+      // its own type parameter: there is no name to give it.
+      if (
+        key === null ||
+        ((returned.kind === 'future' || returned.kind === 'stream') &&
+          returned.item.kind === 'typeVar')
+      ) {
+        continue;
+      }
+      answers.set(key, [
+        ...(answers.get(key) ?? []),
+        { owner: entity.name, method: method.name, params: method.params },
+      ]);
+    }
+  }
+  for (const candidates of answers.values()) {
+    candidates.sort(
+      (first, second) =>
+        first.params.filter((param) => param.required).length -
+          second.params.filter((param) => param.required).length ||
+        first.owner.localeCompare(second.owner),
+    );
+  }
+  return answers;
+};
+
 const synthesisContext = (
   snapshot: ApiSnapshot,
   forms: ValueForms,
@@ -227,6 +284,11 @@ const synthesisContext = (
     formNames: reachableValueFormNames(snapshot, forms),
     declaredTypes: new Set(snapshot.entities.map((entity) => entity.name)),
     suppliers: supplierMap(snapshot),
+    answers: answerMap(snapshot),
+    visiting: new Set(),
+    delegates: new Map(
+      deriveDelegates(snapshot).map((delegate) => [delegate.name, delegate]),
+    ),
     valueOnlyNames: new Set(
       snapshot.entities
         .filter(

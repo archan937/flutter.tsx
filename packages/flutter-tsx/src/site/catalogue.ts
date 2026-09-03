@@ -312,6 +312,30 @@ export const CATALOGUE: Readonly<Record<string, CatalogueEntry>> = {
       '`scroll.jumpTo(0)` — a controller a component owns answers to everything the SDK says it does, so holding one is worth something.',
     category: 'State and effects',
   },
+  '63-layout-delegate': {
+    title: 'Writing a layout delegate',
+    blurb:
+      '`defineDelegate` writes the classes Flutter leaves to an app — here a `MultiChildLayoutDelegate`, whose members reach the superclass through `self`.',
+    category: 'Layout and styling',
+  },
+  '64-table-source': {
+    title: 'Paging a table from your own source',
+    blurb:
+      'A `DataTableSource` is written, not built: its getters and its `getRow` become a Dart subclass and the single instance the table is handed.',
+    category: 'Lists and data',
+  },
+  '65-header-delegate': {
+    title: 'A sliver header that shrinks',
+    blurb:
+      'The delegate a `SliverPersistentHeader` asks for is written in TSX, JSX body and all — `minExtent` and `maxExtent` become Dart getters.',
+    category: 'Layout and styling',
+  },
+  '66-router-delegate': {
+    title: 'Your own router delegate',
+    blurb:
+      'A `RouterDelegate` is a `Listenable`, so the written class mixes in `ChangeNotifier` — and an async member stays a `Future` in the Dart.',
+    category: 'Navigation and shell',
+  },
   '10-camera-options': {
     title: 'Choosing a camera resolution',
     blurb:

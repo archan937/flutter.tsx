@@ -161,7 +161,7 @@ main p { margin-bottom: 12px; }
     <a href="https://github.com/archan937/flutter.tsx" target="_blank" rel="noopener">GitHub ↗</a>
   </nav>
   <input id="search" type="search" placeholder="Search recipes…" autocomplete="off" spellcheck="false">
-  <div class="meta-info">62 recipes · Flutter 3.47.1</div>
+  <div class="meta-info">66 recipes · Flutter 3.47.1</div>
   <nav id="sidebar-nav">
 <details open>
 <summary>Start here<span class="nav-count">7</span></summary>
@@ -197,13 +197,15 @@ main p { margin-bottom: 12px; }
 </ul>
 </details>
 <details>
-<summary>Layout and styling<span class="nav-count">1</span></summary>
+<summary>Layout and styling<span class="nav-count">3</span></summary>
 <ul>
 <li data-name="Styling a button the way Flutter does"><a href="#60-button-style">Styling a button the way Flutter does</a></li>
+<li data-name="Writing a layout delegate"><a href="#63-layout-delegate">Writing a layout delegate</a></li>
+<li data-name="A sliver header that shrinks"><a href="#65-header-delegate">A sliver header that shrinks</a></li>
 </ul>
 </details>
 <details>
-<summary>Lists and data<span class="nav-count">12</span></summary>
+<summary>Lists and data<span class="nav-count">13</span></summary>
 <ul>
 <li data-name="Rendering a list"><a href="#07-list-rendering">Rendering a list</a></li>
 <li data-name="Taking a list as a prop"><a href="#30-list-prop">Taking a list as a prop</a></li>
@@ -217,6 +219,7 @@ main p { margin-bottom: 12px; }
 <li data-name="One number type, three Dart ones"><a href="#48-number-types">One number type, three Dart ones</a></li>
 <li data-name="A helper with a body"><a href="#49-helper-body">A helper with a body</a></li>
 <li data-name="Data the module declares"><a href="#50-module-data">Data the module declares</a></li>
+<li data-name="Paging a table from your own source"><a href="#64-table-source">Paging a table from your own source</a></li>
 </ul>
 </details>
 <details>
@@ -249,13 +252,14 @@ main p { margin-bottom: 12px; }
 </ul>
 </details>
 <details>
-<summary>Navigation and shell<span class="nav-count">5</span></summary>
+<summary>Navigation and shell<span class="nav-count">6</span></summary>
 <ul>
 <li data-name="Routing between screens"><a href="#20-router">Routing between screens</a></li>
 <li data-name="Dialogs and bottom sheets"><a href="#21-modal">Dialogs and bottom sheets</a></li>
 <li data-name="Showing a dialog on mount"><a href="#22-mount-dialog">Showing a dialog on mount</a></li>
 <li data-name="A tabbed app shell"><a href="#23-tabs">A tabbed app shell</a></li>
 <li data-name="Animating a change"><a href="#24-animated">Animating a change</a></li>
+<li data-name="Your own router delegate"><a href="#66-router-delegate">Your own router delegate</a></li>
 </ul>
 </details>
 <details>
@@ -1774,6 +1778,131 @@ export const TaskBoard = () =&gt; {
 }</code></pre></div>
 </div>
 </section>
+<section class="recipe" id="63-layout-delegate" data-name="Writing a layout delegate">
+<h3>Writing a layout delegate</h3>
+<p class="blurb"><code>defineDelegate</code> writes the classes Flutter leaves to an app — here a <code>MultiChildLayoutDelegate</code>, whose members reach the superclass through <code>self</code>.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Ribbon.tsx" role="tab" aria-selected="true">src/Ribbon.tsx</button>
+<button class="tab-btn" data-tab="ribbon.dart" role="tab" aria-selected="false">ribbon.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Ribbon.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> {
+  <span class="tok-typ">CustomMultiChildLayout</span>,
+  defineDelegate,
+  <span class="tok-typ">LayoutId</span>,
+  <span class="tok-typ">Offset</span>,
+  <span class="tok-typ">Text</span>,
+} <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-kw">const</span> layout = <span class="tok-fn">defineDelegate</span>(<span class="tok-str">'MultiChildLayoutDelegate'</span>, {
+  performLayout: (self, size) =&gt; {
+    <span class="tok-kw">const</span> label = self.<span class="tok-fn">layoutChild</span>(<span class="tok-str">'label'</span>, { maxWidth: size.width });
+    self.<span class="tok-fn">positionChild</span>(<span class="tok-str">'label'</span>, <span class="tok-kw">new</span> <span class="tok-typ">Offset</span>(<span class="tok-num">0</span>, size.height - label.height));
+  },
+  shouldRelayout: () =&gt; <span class="tok-kw">false</span>,
+});
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">Ribbon</span> = () =&gt; (
+  &lt;<span class="tok-typ">CustomMultiChildLayout</span> delegate={layout}&gt;
+    &lt;<span class="tok-typ">LayoutId</span> id=<span class="tok-str">&quot;label&quot;</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;New&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">LayoutId</span>&gt;
+  &lt;/<span class="tok-typ">CustomMultiChildLayout</span>&gt;
+);</code></pre></div>
+<div class="tab-panel" data-panel="ribbon.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">class</span> _Layout <span class="tok-kw">extends</span> <span class="tok-typ">MultiChildLayoutDelegate</span> {
+  @override
+  <span class="tok-kw">void</span> <span class="tok-fn">performLayout</span>(<span class="tok-typ">Size</span> size) {
+    <span class="tok-kw">final</span> label = <span class="tok-fn">layoutChild</span>(<span class="tok-str">'label'</span>, <span class="tok-typ">BoxConstraints</span>(maxWidth: size.width));
+    <span class="tok-fn">positionChild</span>(<span class="tok-str">'label'</span>, <span class="tok-typ">Offset</span>(<span class="tok-num">0</span>, size.height - label.height));
+  }
+
+  @override
+  bool <span class="tok-fn">shouldRelayout</span>(<span class="tok-typ">MultiChildLayoutDelegate</span> oldDelegate) =&gt; <span class="tok-kw">false</span>;
+}
+
+<span class="tok-kw">final</span> _Layout _layout = <span class="tok-fn">_Layout</span>();
+
+<span class="tok-kw">class</span> <span class="tok-typ">Ribbon</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Ribbon</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">CustomMultiChildLayout</span>(
+      delegate: _layout,
+      children: [<span class="tok-typ">LayoutId</span>(id: <span class="tok-str">'label'</span>, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'New'</span>))],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section class="recipe" id="65-header-delegate" data-name="A sliver header that shrinks">
+<h3>A sliver header that shrinks</h3>
+<p class="blurb">The delegate a <code>SliverPersistentHeader</code> asks for is written in TSX, JSX body and all — <code>minExtent</code> and <code>maxExtent</code> become Dart getters.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Feed.tsx" role="tab" aria-selected="true">src/Feed.tsx</button>
+<button class="tab-btn" data-tab="feed.dart" role="tab" aria-selected="false">feed.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Feed.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> {
+  <span class="tok-typ">Center</span>,
+  <span class="tok-typ">CustomScrollView</span>,
+  defineDelegate,
+  <span class="tok-typ">SliverPersistentHeader</span>,
+  <span class="tok-typ">Text</span>,
+} <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-kw">const</span> sticky = <span class="tok-fn">defineDelegate</span>(<span class="tok-str">'SliverPersistentHeaderDelegate'</span>, {
+  minExtent: () =&gt; <span class="tok-num">48</span>,
+  maxExtent: () =&gt; <span class="tok-num">96</span>,
+  shouldRebuild: () =&gt; <span class="tok-kw">false</span>,
+  build: (self, context, shrinkOffset) =&gt; (
+    &lt;<span class="tok-typ">Center</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;{<span class="tok-str">`Scrolled ${shrinkOffset}`</span>}&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">Center</span>&gt;
+  ),
+});
+
+export const Feed = () =&gt; (
+  &lt;<span class="tok-typ">CustomScrollView</span>
+    slivers={[&lt;<span class="tok-typ">SliverPersistentHeader</span> delegate={sticky} pinned /&gt;]}
+  /&gt;
+);</code></pre></div>
+<div class="tab-panel" data-panel="feed.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">class</span> _Sticky <span class="tok-kw">extends</span> <span class="tok-typ">SliverPersistentHeaderDelegate</span> {
+  @override
+  double <span class="tok-kw">get</span> minExtent =&gt; <span class="tok-num">48</span>;
+
+  @override
+  double <span class="tok-kw">get</span> maxExtent =&gt; <span class="tok-num">96</span>;
+
+  @override
+  bool <span class="tok-fn">shouldRebuild</span>(<span class="tok-typ">SliverPersistentHeaderDelegate</span> oldDelegate) =&gt; <span class="tok-kw">false</span>;
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(
+    <span class="tok-typ">BuildContext</span> context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) =&gt; <span class="tok-typ">Center</span>(child: <span class="tok-typ">Text</span>(<span class="tok-str">'Scrolled $shrinkOffset'</span>));
+}
+
+<span class="tok-kw">final</span> _Sticky _sticky = <span class="tok-fn">_Sticky</span>();
+
+<span class="tok-kw">class</span> <span class="tok-typ">Feed</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Feed</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">CustomScrollView</span>(
+      slivers: [<span class="tok-typ">SliverPersistentHeader</span>(delegate: _sticky, pinned: <span class="tok-kw">true</span>)],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
 <h2 id="lists-and-data">Lists and data</h2>
 <section class="recipe" id="07-list-rendering" data-name="Rendering a list">
 <h3>Rendering a list</h3>
@@ -2456,6 +2585,77 @@ export const Span = ({
         <span class="tok-typ">Text</span>(emptyLabel),
         <span class="tok-kw">for</span> (<span class="tok-kw">final</span> note <span class="tok-kw">in</span> notes) <span class="tok-typ">Text</span>(<span class="tok-str">'${note.title} by ${note.keeper.name}'</span>),
       ],
+    );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section class="recipe" id="64-table-source" data-name="Paging a table from your own source">
+<h3>Paging a table from your own source</h3>
+<p class="blurb">A <code>DataTableSource</code> is written, not built: its getters and its <code>getRow</code> become a Dart subclass and the single instance the table is handed.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/Backlog.tsx" role="tab" aria-selected="true">src/Backlog.tsx</button>
+<button class="tab-btn" data-tab="backlog.dart" role="tab" aria-selected="false">backlog.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/Backlog.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> {
+  <span class="tok-typ">DataCell</span>,
+  <span class="tok-typ">DataColumn</span>,
+  <span class="tok-typ">DataRow</span>,
+  defineDelegate,
+  <span class="tok-typ">PaginatedDataTable</span>,
+  <span class="tok-typ">Text</span>,
+} <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-kw">const</span> titles = [<span class="tok-str">'Ship step 21'</span>, <span class="tok-str">'Camera plugin'</span>, <span class="tok-str">'Write the docs'</span>];
+
+<span class="tok-kw">const</span> rows = <span class="tok-fn">defineDelegate</span>(<span class="tok-str">'DataTableSource'</span>, {
+  rowCount: () =&gt; titles.length,
+  isRowCountApproximate: () =&gt; <span class="tok-kw">false</span>,
+  selectedRowCount: () =&gt; <span class="tok-num">0</span>,
+  getRow: (self, index) =&gt;
+    <span class="tok-kw">new</span> <span class="tok-typ">DataRow</span>({
+      cells: [<span class="tok-kw">new</span> <span class="tok-typ">DataCell</span>(&lt;<span class="tok-typ">Text</span>&gt;{<span class="tok-str">`Step ${index + 1}`</span>}&lt;/<span class="tok-typ">Text</span>&gt;)],
+    }),
+});
+
+export const Backlog = () =&gt; (
+  &lt;<span class="tok-typ">PaginatedDataTable</span>
+    source={rows}
+    columns={[<span class="tok-kw">new</span> <span class="tok-typ">DataColumn</span>({ label: &lt;<span class="tok-typ">Text</span>&gt;Step&lt;/<span class="tok-typ">Text</span>&gt; })]}
+    rowsPerPage={<span class="tok-num">2</span>}
+  /&gt;
+);</code></pre></div>
+<div class="tab-panel" data-panel="backlog.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">const</span> <span class="tok-typ">List</span>&lt;<span class="tok-typ">String</span>&gt; titles = [<span class="tok-str">'Ship step 21'</span>, <span class="tok-str">'Camera plugin'</span>, <span class="tok-str">'Write the docs'</span>];
+
+<span class="tok-kw">class</span> _Rows <span class="tok-kw">extends</span> <span class="tok-typ">DataTableSource</span> {
+  @override
+  int <span class="tok-kw">get</span> rowCount =&gt; titles.length;
+
+  @override
+  bool <span class="tok-kw">get</span> isRowCountApproximate =&gt; <span class="tok-kw">false</span>;
+
+  @override
+  int <span class="tok-kw">get</span> selectedRowCount =&gt; <span class="tok-num">0</span>;
+
+  @override
+  <span class="tok-typ">DataRow</span>? <span class="tok-fn">getRow</span>(int index) =&gt;
+      <span class="tok-typ">DataRow</span>(cells: [<span class="tok-typ">DataCell</span>(<span class="tok-typ">Text</span>(<span class="tok-str">'Step ${index + 1}'</span>))]);
+}
+
+<span class="tok-kw">final</span> _Rows _rows = <span class="tok-fn">_Rows</span>();
+
+<span class="tok-kw">class</span> <span class="tok-typ">Backlog</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">Backlog</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">PaginatedDataTable</span>(
+      source: _rows,
+      columns: <span class="tok-kw">const</span> [<span class="tok-typ">DataColumn</span>(label: <span class="tok-typ">Text</span>(<span class="tok-str">'Step'</span>))],
+      rowsPerPage: <span class="tok-num">2</span>,
     );
   }
 }</code></pre></div>
@@ -4291,6 +4491,52 @@ export const Shell = () =&gt; (
         <span class="tok-typ">ElevatedButton</span>(onPressed: _toggle, child: <span class="tok-kw">const</span> <span class="tok-typ">Text</span>(<span class="tok-str">'Toggle'</span>)),
       ],
     );
+  }
+}</code></pre></div>
+</div>
+</section>
+<section class="recipe" id="66-router-delegate" data-name="Your own router delegate">
+<h3>Your own router delegate</h3>
+<p class="blurb">A <code>RouterDelegate</code> is a <code>Listenable</code>, so the written class mixes in <code>ChangeNotifier</code> — and an async member stays a <code>Future</code> in the Dart.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="src/AppRouter.tsx" role="tab" aria-selected="true">src/AppRouter.tsx</button>
+<button class="tab-btn" data-tab="app_router.dart" role="tab" aria-selected="false">app_router.dart</button>
+</div>
+<div class="tab-panel active" data-panel="src/AppRouter.tsx" role="tabpanel"><pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Center</span>, defineDelegate, <span class="tok-typ">Router</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-kw">const</span> routes = <span class="tok-fn">defineDelegate</span>(<span class="tok-str">'RouterDelegate'</span>, {
+  build: () =&gt; (
+    &lt;<span class="tok-typ">Center</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Home&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">Center</span>&gt;
+  ),
+  popRoute: async () =&gt; false,
+  setNewRoutePath: async () =&gt; {},
+});
+
+export const AppRouter = () =&gt; &lt;<span class="tok-typ">Router</span> routerDelegate={routes} /&gt;;</code></pre></div>
+<div class="tab-panel" data-panel="app_router.dart" role="tabpanel"><pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">class</span> _Routes <span class="tok-kw">extends</span> <span class="tok-typ">RouterDelegate</span>&lt;<span class="tok-typ">Object</span>&gt; <span class="tok-kw">with</span> <span class="tok-typ">ChangeNotifier</span> {
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) =&gt; <span class="tok-kw">const</span> <span class="tok-typ">Center</span>(child: <span class="tok-typ">Text</span>(<span class="tok-str">'Home'</span>));
+
+  @override
+  <span class="tok-typ">Future</span>&lt;bool&gt; <span class="tok-fn">popRoute</span>() <span class="tok-kw">async</span> =&gt; <span class="tok-kw">false</span>;
+
+  @override
+  <span class="tok-typ">Future</span>&lt;<span class="tok-kw">void</span>&gt; <span class="tok-fn">setNewRoutePath</span>(<span class="tok-typ">Object</span> configuration) <span class="tok-kw">async</span> {}
+}
+
+<span class="tok-kw">final</span> _Routes _routes = <span class="tok-fn">_Routes</span>();
+
+<span class="tok-kw">class</span> <span class="tok-typ">AppRouter</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">AppRouter</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Router</span>(routerDelegate: _routes);
   }
 }</code></pre></div>
 </div>

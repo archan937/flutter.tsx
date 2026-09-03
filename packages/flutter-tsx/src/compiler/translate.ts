@@ -652,6 +652,19 @@ const nestedReadDart = (
   return `${translateExpression(target, context)}.${expression.name.text}`;
 };
 
+/**
+ * How a read off a receiver is written.
+ *
+ * A member of the class being written has no receiver at all: inside a
+ * delegate, `minExtent` is `this.minExtent`, and Dart writes neither. An
+ * empty receiver is what that stands for.
+ */
+export const readOf = (
+  receiver: string,
+  member: string,
+  operator = '.',
+): string => (receiver === '' ? member : `${receiver}${operator}${member}`);
+
 const memberReadDart = (
   expression: ts.PropertyAccessExpression,
   info: MemberReadInfo,
@@ -668,18 +681,18 @@ const memberReadDart = (
     );
   }
   if (!info.nullable) {
-    return `${info.receiver}.${member}`;
+    return readOf(info.receiver, member);
   }
   // An access the source wrote as `?.` says the author handles null, so it
   // maps straight across and nothing is invented around it. Inside one the
   // checker reports the receiver as narrowed, which is true of the access and
   // not of the value, so narrowing is not consulted here either.
   if (expression.questionDotToken !== undefined) {
-    return `${info.receiver}?.${member}`;
+    return readOf(info.receiver, member, '?.');
   }
   // A guard above this read has already excluded null.
   if (context.narrowed.has(expression.expression.getText())) {
-    return `${info.receiver}!.${member}`;
+    return readOf(info.receiver, member, '!.');
   }
   const zero = zeroValueOf(field);
   if (zero === null) {
@@ -692,10 +705,21 @@ const memberReadDart = (
       { sourceFile: context.sourceFile, node: expression.name },
     );
   }
-  return `${info.receiver}?.${member} ?? ${zero}`;
+  return `${readOf(info.receiver, member, '?.')} ?? ${zero}`;
 };
 
 const notYetCompiled = (node: ts.Node, context: TranslateContext): never => {
+  // A read that got this far is a read of something with no Dart name,
+  // which is a more useful thing to be told than "some expression". Each
+  // message is its own raise so the limitation sweep can read both.
+  if (ts.isPropertyAccessExpression(node)) {
+    throw tsxErrorAt(
+      'TSX0305',
+      `\`${node.getText()}\` reads a member the compiler cannot resolve ` +
+        'to a Dart one.',
+      { sourceFile: context.sourceFile, node },
+    );
+  }
   throw tsxErrorAt(
     'TSX0305',
     `\`${node.getText()}\` is an expression form the compiler does not ` +
@@ -708,16 +732,18 @@ export const translateIdentifier = (
   name: string,
   context: TranslateContext,
 ): string => {
+  // A name the file itself declared under another one — a closure's
+  // parameter, the instance of a class this file writes — reads as that,
+  // whatever shape the name has: an explicit mapping wins over every rule
+  // below it.
+  const declared = context.renames.get(name);
+  if (declared !== undefined) {
+    return declared;
+  }
   // A read of a module constant uses the Dart name that declaration took.
   const constant = dartConstantName(name);
   if (constant !== name) {
     return constant;
-  }
-  // A closure over a typedef with named parameters declares them by the
-  // names Dart knows; whatever the author called them reads as those.
-  const declared = context.renames.get(name);
-  if (declared !== undefined) {
-    return declared;
   }
   const isMember =
     context.stateNames.has(name) ||

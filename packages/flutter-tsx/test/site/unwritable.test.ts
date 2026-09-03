@@ -6,17 +6,18 @@ import { buildSitePage } from '@src/site/from-snapshot';
 import { loadSiteSections } from '@src/site/sections';
 
 /**
- * The boundary of what TSX can write, stated rather than implied.
+ * The boundary of what TSX can write — which is now the whole surface.
  *
- * Every widget the reference documents either shows an example that really
- * compiles — the analyze sweep proves that — or names the values it could
- * not write and why. There is no third state: no placeholder without a
- * reason, and no widget quietly left out.
+ * Every widget the reference documents shows an example that really
+ * compiles: the analyze sweep proves each one against `flutter analyze`,
+ * and this says there are no exceptions left. A value nothing builds is
+ * handed over by a static, answered by another value, or written outright
+ * with `defineDelegate`; a Future or a Stream is answered by whatever the
+ * SDK answers with one.
  *
- * The two reasons are answered very differently. A value Flutter supplies is
- * a boundary of the framework: nothing in the SDK builds one, so nothing in
- * TSX could either. A shape not yet expressible is work, and the list of it
- * is committed here so it can only shrink — adding to it fails.
+ * This is a ratchet in its strictest form: a widget whose example cannot be
+ * written fails here, by name and with the reason. Flutter adding a shape
+ * TSX has no answer for is a red test, never a quiet placeholder.
  */
 const snapshot = await loadApiSnapshot();
 const page = buildSitePage(
@@ -25,67 +26,33 @@ const page = buildSitePage(
   await loadSiteSections(),
 );
 
-/** Widgets whose examples wait on a shape the compiler does not write yet. */
-const NOT_YET_EXPRESSIBLE: readonly string[] = ['ShaderMask'];
-
-/** Widgets a hook writes: `useAsync` and `useStream` generate these. */
-const WRITTEN_BY_A_HOOK: readonly string[] = ['FutureBuilder', 'StreamBuilder'];
-
 describe('the boundary of what TSX writes', () => {
-  test('every placeholder says why it is one', () => {
-    const unexplained = page.widgets
+  test('every widget example is complete', () => {
+    const incomplete = page.widgets
       .filter((widget) => !widget.example.complete)
-      .filter((widget) => widget.example.unwritable.length === 0)
       .map((widget) => widget.name);
 
-    expect(unexplained).toEqual([]);
+    expect(incomplete).toEqual([]);
+    expect(page.incompleteExamples).toEqual([]);
   });
 
-  test('nothing new is left unwritten', () => {
-    const waiting = [
-      ...new Set(
-        page.widgets
-          .filter((widget) =>
-            widget.example.unwritable.some(
-              (entry) => entry.reason === 'not-yet-expressible',
-            ),
-          )
-          .map((widget) => widget.name),
+  test('no prop of any widget is left unwritten, for any reason', () => {
+    const unwritten = page.widgets.flatMap((widget) =>
+      widget.example.unwritable.map(
+        (entry) => `${widget.name}.${entry.prop}: ${entry.reason}`,
       ),
-    ].sort();
-
-    // Shrinking this list is the work; growing it is a regression.
-    expect(waiting).toEqual([...NOT_YET_EXPRESSIBLE]);
-  });
-
-  test('the widgets a hook writes are named as such', () => {
-    // `useAsync` and `useStream` generate these builders; a developer never
-    // hands them a Future or a Stream by hand.
-    const byHook = [
-      ...new Set(
-        page.widgets
-          .filter((widget) =>
-            widget.example.unwritable.some(
-              (entry) => entry.reason === 'written-by-a-hook',
-            ),
-          )
-          .map((widget) => widget.name),
-      ),
-    ].sort();
-
-    expect(byHook).toEqual([...WRITTEN_BY_A_HOOK]);
-  });
-
-  test('a value Flutter supplies is never claimed to be writable', () => {
-    // Nothing in the SDK builds one of these, so the reference says so
-    // rather than showing a value that could not exist.
-    const supplied = page.widgets.flatMap((widget) =>
-      widget.example.unwritable
-        .filter((entry) => entry.reason === 'supplied-by-flutter')
-        .map((entry) => `${widget.name}.${entry.prop}`),
     );
 
-    expect(supplied.length).toBeGreaterThan(0);
-    expect(supplied.filter((name) => name.split('.').length !== 2)).toEqual([]);
+    expect(unwritten).toEqual([]);
+  });
+
+  test('every widget really has an example to show', () => {
+    // A complete example is not an empty one: each names its own tag.
+    const missing = page.widgets.filter(
+      (widget) => !widget.example.tsx.includes(`<${widget.name}`),
+    );
+
+    expect(missing.map((widget) => widget.name)).toEqual([]);
+    expect(page.widgets.length).toBeGreaterThan(500);
   });
 });

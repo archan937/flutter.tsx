@@ -217,7 +217,11 @@ const snapshot: ApiSnapshot = {
       kind: 'class',
       disposable: false,
       isAbstract: false,
+      abstractMethods: [],
+      abstractGetters: [],
+      mixin: null,
       typeParams: [],
+      typeParamBounds: [],
       supertypeBindings: {},
       name: 'Style',
       library: 'painting',
@@ -270,7 +274,11 @@ const snapshot: ApiSnapshot = {
       kind: 'class',
       disposable: false,
       isAbstract: false,
+      abstractMethods: [],
+      abstractGetters: [],
+      mixin: null,
       typeParams: [],
+      typeParamBounds: [],
       supertypeBindings: {},
       name: 'TestPalette',
       library: 'material',
@@ -508,7 +516,11 @@ describe('emitWidgetsFile value-form guards', () => {
           kind: 'class',
           disposable: false,
           isAbstract: false,
+          abstractMethods: [],
+          abstractGetters: [],
+          mixin: null,
           typeParams: [],
+          typeParamBounds: [],
           supertypeBindings: {},
           name: 'ColorValue',
           library: 'painting',
@@ -582,6 +594,8 @@ describe('emitGeneratedIndex', () => {
 // Flutter 3.47.1
 
 export * from './widgets';
+
+export * from './delegates';
 
 export { TestPalette } from './constants';
 `;
@@ -814,7 +828,11 @@ describe('emitConstantsFile — IconName', () => {
         kind: 'class',
         disposable: false,
         isAbstract: false,
+        abstractMethods: [],
+        abstractGetters: [],
+        mixin: null,
         typeParams: [],
+        typeParamBounds: [],
         supertypeBindings: {},
         name: 'Icons',
         library: 'material',

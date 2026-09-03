@@ -913,6 +913,23 @@ bun run test:extractor             # dart tests + 100% coverage gate
       `.github/workflows/pages.yml` after CI passes on master, so a page can
       never describe a build that did not; `enablement: true` provisions the
       Pages site on the first run.
+- [x] 30b. **`defineDelegate` — the classes Flutter leaves to an app.** The last
+      values the reference could not write were the five delegates a widget asks
+      for and nothing in the SDK builds (`MultiChildLayoutDelegate`,
+      `FlowDelegate`, `DataTableSource`, `SliverPersistentHeaderDelegate`,
+      `RouterDelegate`) and the two async builders. Both are closed:
+      `defineDelegate('FlowDelegate', { … })` writes a private Dart subclass —
+      `@override` per member, getters as getters, `async` members as `Future`s,
+      `with ChangeNotifier` when being the class means being a `Listenable`, and
+      the single instance beside it — with each member handed the value itself
+      first (`self`) so the superclass API stays in reach. The set is derived
+      from the SDK (abstract surface, type-parameter bounds, mixin) by
+      `src/derive/delegates.ts`, so a delegate Flutter adds is writable the day
+      the snapshot knows about it; a `Future` or `Stream` prop is answered by
+      whatever the SDK answers with one. **Every one of the 539 widget examples
+      now compiles and analyzes clean — nothing is left unwritten, and
+      `test/site/unwritable.test.ts` fails if that ever changes.**
+
 - [ ] 31. 1.0 publish (Paul triggers).
       **Paul (2026-08-25): the preserved v1 pages (docs/index.html, guide.md,
       config-mapping.md) stay frozen and unmarked until the step-30 refresh —

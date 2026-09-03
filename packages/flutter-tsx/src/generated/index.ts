@@ -3,6 +3,8 @@
 
 export * from './widgets';
 
+export * from './delegates';
+
 export {
   Alignment,
   AlignmentDirectional,

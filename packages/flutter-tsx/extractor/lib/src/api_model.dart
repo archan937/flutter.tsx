@@ -387,8 +387,12 @@ class ClassEntity extends ConstructedEntity {
     required super.methods,
     required this.disposable,
     required this.typeParams,
+    required this.typeParamBounds,
     required this.supertypeBindings,
     required this.isAbstract,
+    required this.abstractMethods,
+    required this.abstractGetters,
+    required this.mixin,
   });
 
   /// Whether a public `dispose()` is part of this class's surface.
@@ -397,6 +401,11 @@ class ClassEntity extends ConstructedEntity {
   /// name alone does not say: `FocusNode` has to be disposed, `LayerLink`
   /// has nothing to release.
   final bool disposable;
+
+  /// What each parameter is bounded by, in the same order, `Object` when a
+  /// parameter is unbounded: writing `SlottedMultiChildRenderObjectWidget`
+  /// means naming something that satisfies each bound.
+  final List<String> typeParamBounds;
 
   /// The names this class is generic over: the `T` of a `ValueNotifier<T>`.
   final List<String> typeParams;
@@ -409,6 +418,19 @@ class ClassEntity extends ConstructedEntity {
   /// concrete subclass of it can be.
   final bool isAbstract;
 
+  /// The methods an app has to write to be this class: the `performLayout`
+  /// of a layout delegate, the `getRow` of a table source. Empty for
+  /// everything an app builds or is handed instead of writing.
+  final List<MethodModel> abstractMethods;
+
+  /// The getters an app has to write: a header delegate's `minExtent`.
+  final List<FieldModel> abstractGetters;
+
+  /// The mixin the written class needs, when being this class means being
+  /// something Dart already has an answer for: a `Listenable` is written by
+  /// mixing in `ChangeNotifier`.
+  final String? mixin;
+
   @override
   String get kind => 'class';
 
@@ -417,7 +439,17 @@ class ClassEntity extends ConstructedEntity {
     ...super.toJson(),
     'disposable': disposable,
     if (isAbstract) 'abstract': true,
+    if (abstractMethods.isNotEmpty)
+      'abstractMethods': abstractMethods
+          .map((method) => method.toJson())
+          .toList(),
+    if (abstractGetters.isNotEmpty)
+      'abstractGetters': abstractGetters
+          .map((getter) => getter.toJson())
+          .toList(),
+    if (mixin != null) 'mixin': mixin,
     if (typeParams.isNotEmpty) 'typeParams': typeParams,
+    if (typeParamBounds.isNotEmpty) 'typeParamBounds': typeParamBounds,
     if (supertypeBindings.isNotEmpty)
       'supertypeBindings': {
         for (final entry in supertypeBindings.entries)

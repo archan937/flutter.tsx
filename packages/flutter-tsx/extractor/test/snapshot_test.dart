@@ -39,11 +39,15 @@ void main() {
           constants: const [],
           disposable: false,
           typeParams: const [],
+          typeParamBounds: const [],
           supertypeBindings: const {},
           statics: const [],
           staticGetters: const [],
           methods: const [],
           isAbstract: false,
+          abstractMethods: const [],
+          abstractGetters: const [],
+          mixin: null,
           fields: const [
             FieldModel(
               name: 'maxWidth',

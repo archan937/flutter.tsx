@@ -138,8 +138,22 @@ const entityToJson = (entity: Entity): Record<string, unknown> => {
       ? {
           disposable: entity.disposable,
           ...(entity.isAbstract ? { abstract: true } : {}),
+          ...(entity.abstractMethods.length > 0
+            ? {
+                abstractMethods: entity.abstractMethods.map((method) =>
+                  methodToJson(method, false),
+                ),
+              }
+            : {}),
+          ...(entity.abstractGetters.length > 0
+            ? { abstractGetters: entity.abstractGetters.map(fieldToJson) }
+            : {}),
+          ...(entity.mixin === null ? {} : { mixin: entity.mixin }),
           ...(entity.typeParams.length > 0
             ? { typeParams: entity.typeParams }
+            : {}),
+          ...(entity.typeParamBounds.length > 0
+            ? { typeParamBounds: entity.typeParamBounds }
             : {}),
           ...(Object.keys(entity.supertypeBindings).length > 0
             ? {

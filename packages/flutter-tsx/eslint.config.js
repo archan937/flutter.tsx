@@ -116,6 +116,10 @@ export default defineConfig(
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-empty-function': 'off',
       '@typescript-eslint/no-confusing-void-expression': 'off',
+      // `async` is what tells the compiler a member answers with a Future:
+      // `popRoute: async () => false` has to be marked to become
+      // `Future<bool> popRoute() async => false`, awaited or not.
+      '@typescript-eslint/require-await': 'off',
     },
   },
 );

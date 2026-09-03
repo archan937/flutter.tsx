@@ -1,7 +1,7 @@
 import type { DartExpr, DartListItem } from './dart-ast';
 import type { IrArgument, IrChild, IrValue, IrWidget } from './ir';
 import { closureBodyOf } from './statements';
-import { interpolate } from './translate';
+import { interpolate, readOf } from './translate';
 
 export interface DartNaming {
   privateMembers: boolean;
@@ -128,7 +128,9 @@ const valueToDart = (
     case 'invoke':
       return callToDart(
         {
-          target: `${value.receiver}.${value.method}`,
+          // A method of the class being written has no receiver: inside a
+          // delegate, `layoutChild(…)` is `this.layoutChild(…)`.
+          target: readOf(value.receiver, value.method),
           args: value.args,
           // A method call is never const, whatever it is called with.
           constable: false,

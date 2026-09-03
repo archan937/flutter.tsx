@@ -21,13 +21,14 @@ import {
 import { dartFileFor } from './dart-names';
 import { TsxError } from './diagnostics';
 import { emitDartFile } from './emit-component';
-import type { IrEnum } from './ir';
+import type { IrDelegate, IrEnum } from './ir';
 import {
   buildCompileContext,
   buildUserWidgets,
   type CompileContext,
   lowerComponent,
   lowerConstant,
+  lowerDelegate,
   lowerHelper,
   lowerModel,
   lowerRouter,
@@ -587,7 +588,9 @@ export const transpileFile = async (
     analysis.models.length === 0 &&
     analysis.stores.length === 0 &&
     analysis.enums.length === 0 &&
-    analysis.constants.length === 0 &&
+    // A file whose only data is private declares nothing anyone can use:
+    // nothing imports it, and no component here renders it.
+    !analysis.constants.some((constant) => constant.exported) &&
     analysis.router === null
   ) {
     throw new TsxError(
@@ -601,6 +604,9 @@ export const transpileFile = async (
   const plugins = await loadPlugins(analysis, input.pluginApiDirs ?? []);
   const fileContext = {
     ...context,
+    // The compile context is shared by every file; what this one writes is
+    // its own, so the classes it declares cannot leak into the next.
+    writtenDelegates: new Map<string, IrDelegate>(),
     constants: new Map([
       ...imported.constants,
       ...analysis.constants.map((constant): [string, string] => [
@@ -658,6 +664,18 @@ export const transpileFile = async (
     ]),
     ...plugins,
   };
+  // A written class is lowered before the components handed it: the
+  // instance each one names is declared beside it.
+  const delegateImports = new Map<string, string | null>();
+  const delegates = analysis.delegates.map((binding) => {
+    const delegate = lowerDelegate(binding, fileContext, (uri, prefix) =>
+      delegateImports.set(uri, prefix ?? null),
+    );
+    // Keyed by the name the TSX wrote, which is what a component reading it
+    // says; the Dart name is the private instance beside the class.
+    fileContext.writtenDelegates.set(binding.name, delegate);
+    return delegate;
+  });
   const components = analysis.components.map((component) =>
     lowerComponent(component, fileContext),
   );
@@ -682,9 +700,13 @@ export const transpileFile = async (
     })),
   }));
   const router = analysis.router === null ? null : lowerRouter(analysis.router);
+  for (const [uri, prefix] of delegateImports) {
+    helperImports.set(uri, prefix);
+  }
   const dart = emitDartFile(components, fileContext, {
     helpers,
     enums,
+    delegates,
     // Data can need a library too — `dart:math` for a computed constant — so
     // its imports join the file's, exactly as a helper's do.
     constants: analysis.constants.map((constant) =>

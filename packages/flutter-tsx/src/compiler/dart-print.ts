@@ -102,12 +102,20 @@ const blocksHug = (item: DartListItem): boolean =>
   item.value.kind === 'call' &&
   item.value.args.some((argument) => argument.name !== null);
 
-// A collection argument stays on its line when it fits there and no element
-// carries named arguments of its own — verified against dart format, which
-// collapses a hand-split collection in either a sole-argument or a
-// multi-argument call.
+/** A collection of one hugs its argument, however that one is written. */
+const HUGGABLE_ITEMS = 1;
+
+/**
+ * A collection argument, split the way `dart format` splits one.
+ *
+ * A collection of a single element stays on its line whenever it fits —
+ * `children: [Center(child: Text('…'))]` — and one of several splits, one
+ * element per line, as soon as any element carries named arguments of its
+ * own, however short the whole would be. Both halves are what `dart format`
+ * does to these shapes, written inline and split alike.
+ */
 const printArgumentValue = (expr: DartExpr, site: PrintSite): string => {
-  if (expr.kind !== 'list' || expr.items.length === 0) {
+  if (expr.kind !== 'list' || expr.items.length <= HUGGABLE_ITEMS) {
     return printExpr(expr, site);
   }
   return expr.items.some(blocksHug)

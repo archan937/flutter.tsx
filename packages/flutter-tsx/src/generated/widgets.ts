@@ -3052,6 +3052,28 @@ export interface Actions {
   toStringShort(): string;
 }
 
+export interface ActivateAction {
+  readonly __fsxBrand?: {
+    readonly Action: true;
+    readonly ActivateAction: true;
+    readonly Diagnosticable: true;
+  };
+  readonly callingAction: Action;
+  readonly intentType: TypeValue;
+  readonly isActionEnabled: boolean;
+  addActionListener(listener: (action: Action) => void): void;
+  consumesKey(intent: unknown): boolean;
+  isEnabled(intent: unknown): boolean;
+  removeActionListener(listener: (action: Action) => void): void;
+  toDiagnosticsNode(options?: {
+    name?: string;
+    style?: DiagnosticsTreeStyle;
+  }): DiagnosticsNode;
+  toKeyEventResult(intent: unknown, invokeResult: ObjectValue): KeyEventResult;
+  toString(options?: { minLevel?: DiagnosticLevel }): string;
+  toStringShort(): string;
+}
+
 export interface ActivateIntent {
   readonly __fsxBrand?: {
     readonly ActivateIntent: true;
@@ -4212,6 +4234,42 @@ export declare const AssetBundleImageKey: new (options: {
   name: string;
   scale: number;
 }) => AssetBundleImageKey;
+
+export interface AssetBundleImageProvider {
+  readonly __fsxBrand?: {
+    readonly AssetBundleImageProvider: true;
+    readonly ImageProvider: true;
+  };
+  evict(options?: {
+    cache?: ImageCache;
+    configuration?: ImageConfiguration;
+  }): Promise<boolean>;
+  loadBuffer(
+    key: AssetBundleImageKey,
+    decode: (
+      buffer: ImmutableBuffer,
+      allowUpscaling?: boolean,
+      cacheHeight?: number | null,
+      cacheWidth?: number | null,
+    ) => Promise<Codec>,
+  ): ImageStreamCompleter;
+  loadImage(
+    key: AssetBundleImageKey,
+    decode: (
+      buffer: ImmutableBuffer,
+      getTargetSize?:
+        | ((intrinsicWidth: number, intrinsicHeight: number) => TargetImageSize)
+        | null,
+    ) => Promise<Codec>,
+  ): ImageStreamCompleter;
+  obtainCacheStatus(options: {
+    configuration: ImageConfiguration;
+    handleError?: (exception: Object, stackTrace: StackTrace | null) => void;
+  }): Promise<ImageCacheStatus | null>;
+  obtainKey(configuration: ImageConfiguration): Promise<unknown>;
+  resolve(configuration: ImageConfiguration): ImageStream;
+  toString(): string;
+}
 
 export interface AssetImage {
   readonly __fsxBrand?: {
@@ -6401,6 +6459,27 @@ export interface ByteData {
   setUint32(byteOffset: number, value: number, endian?: Endian): void;
   setUint64(byteOffset: number, value: number, endian?: Endian): void;
   setUint8(byteOffset: number, value: number): void;
+}
+
+export interface CachingAssetBundle {
+  readonly __fsxBrand?: {
+    readonly AssetBundle: true;
+    readonly CachingAssetBundle: true;
+  };
+  clear(): void;
+  evict(key: string): void;
+  load(key: string): Promise<ByteData>;
+  loadBuffer(key: string): Promise<ImmutableBuffer>;
+  loadString(key: string, options?: { cache?: boolean }): Promise<string>;
+  loadStructuredBinaryData(
+    key: string,
+    parser: (data: ByteData) => unknown | Promise<unknown>,
+  ): Promise<unknown>;
+  loadStructuredData(
+    key: string,
+    parser: (value: string) => Promise<unknown>,
+  ): Promise<unknown>;
+  toString(): string;
 }
 
 export interface CalendarDelegate {
@@ -10560,6 +10639,13 @@ export interface DartPluginRegistrant {
   readonly __fsxBrand?: { readonly DartPluginRegistrant: true };
 }
 
+export interface DarwinPlatformViewController {
+  readonly __fsxBrand?: { readonly DarwinPlatformViewController: true };
+  acceptGesture(): Promise<void>;
+  rejectGesture(): Promise<void>;
+  setLayoutDirection(layoutDirection: TextDirection): Promise<void>;
+}
+
 export interface DataCell {
   readonly __fsxBrand?: { readonly DataCell: true };
 }
@@ -10618,6 +10704,10 @@ export interface DataTableSource {
     readonly DataTableSource: true;
     readonly Listenable: true;
   };
+  readonly hasListeners: boolean;
+  readonly isRowCountApproximate: boolean;
+  readonly rowCount: number;
+  readonly selectedRowCount: number;
   addListener(listener: () => void): void;
   getRow(index: number): DataRow | null;
   removeListener(listener: () => void): void;
@@ -11322,6 +11412,21 @@ export interface DefaultPlatformMenuDelegate {
 export declare const DefaultPlatformMenuDelegate: new (options?: {
   channel?: MethodChannel;
 }) => DefaultPlatformMenuDelegate;
+
+export interface DefaultProcessTextService {
+  readonly __fsxBrand?: {
+    readonly DefaultProcessTextService: true;
+    readonly ProcessTextService: true;
+  };
+  processTextAction(
+    id: string,
+    text: string,
+    readOnly: boolean,
+  ): Promise<string | null>;
+  queryTextActions(): Promise<ProcessTextAction[]>;
+}
+
+export declare const DefaultProcessTextService: new () => DefaultProcessTextService;
 
 export interface DefaultSelectionStyle {
   readonly __fsxBrand?: {
@@ -14722,6 +14827,17 @@ export interface ErrorWidget {
   toStringShort(): string;
 }
 
+export interface EventChannel {
+  readonly __fsxBrand?: { readonly EventChannel: true };
+  receiveBroadcastStream(arguments_?: unknown): AsyncIterable<unknown>;
+}
+
+export declare const EventChannel: new (
+  name: string,
+  codec?: MethodCodec,
+  binaryMessenger?: BinaryMessenger,
+) => EventChannel;
+
 export interface EventSink {
   readonly __fsxBrand?: { readonly EventSink: true };
 }
@@ -16187,6 +16303,8 @@ export interface FlowDelegate {
 
 export interface FlowPaintingContext {
   readonly __fsxBrand?: { readonly FlowPaintingContext: true };
+  readonly childCount: number;
+  readonly size: SizeValue;
   getChildSize(i: number): Size | null;
   paintChild(
     i: number,
@@ -16915,6 +17033,14 @@ export declare const FontFeature: new (
   readonly swash: (value?: number) => FontFeature;
   readonly tabularFigures: () => FontFeature;
 };
+
+export interface FontLoader {
+  readonly __fsxBrand?: { readonly FontLoader: true };
+  addFont(bytes: Promise<ByteData>): void;
+  load(): Promise<void>;
+}
+
+export declare const FontLoader: new (family: string) => FontLoader;
 
 export interface FontVariation {
   readonly __fsxBrand?: { readonly FontVariation: true };
@@ -20854,6 +20980,17 @@ export interface KeyEvent {
   toStringShort(): string;
 }
 
+export interface KeyEventManager {
+  readonly __fsxBrand?: { readonly KeyEventManager: true };
+  handleKeyData(data: KeyData): boolean;
+  handleRawKeyMessage(message: unknown): Promise<Record<string, unknown>>;
+}
+
+export declare const KeyEventManager: new (
+  _hardwareKeyboard: HardwareKeyboard,
+  _rawKeyboard: RawKeyboard,
+) => KeyEventManager;
+
 export interface KeyHelper {
   readonly __fsxBrand?: { readonly KeyHelper: true };
   getModifierSide(key: ModifierKey): KeyboardSide;
@@ -24351,6 +24488,12 @@ export interface MouseCursor {
   toStringShort(): string;
 }
 
+export interface MouseCursorSession {
+  readonly __fsxBrand?: { readonly MouseCursorSession: true };
+  readonly cursor: MouseCursorValue;
+  readonly device: number;
+}
+
 export interface MouseTracker {
   readonly __fsxBrand?: {
     readonly ChangeNotifier: true;
@@ -24584,6 +24727,12 @@ export declare const MultiFrameImageStreamCompleter: new (options: {
   chunkEvents?: AsyncIterable<ImageChunkEvent>;
   informationCollector?: () => DiagnosticsNode[];
 }) => MultiFrameImageStreamCompleter;
+
+export interface MultiPreview {
+  readonly __fsxBrand?: { readonly MultiPreview: true };
+  readonly previews: Preview[];
+  transform(): Preview[];
+}
 
 export interface MultiPreviewThemeData {
   readonly __fsxBrand?: {
@@ -26197,6 +26346,30 @@ export declare const OverlayPortalController: new (options?: {
   debugLabel?: string;
 }) => OverlayPortalController;
 
+export interface OverlayRoute {
+  readonly __fsxBrand?: { readonly OverlayRoute: true; readonly Route: true };
+  readonly currentResult: unknown;
+  readonly finishedWhenPopped: boolean;
+  readonly hasActiveRouteBelow: boolean;
+  readonly isActive: boolean;
+  readonly isCurrent: boolean;
+  readonly isFirst: boolean;
+  readonly navigator: NavigatorState;
+  readonly overlayEntries: OverlayEntry[];
+  readonly popDisposition: RoutePopDisposition;
+  readonly popped: Promise<unknown | null>;
+  readonly requestFocus: boolean;
+  readonly restorationScopeId: ValueListenable;
+  readonly settings: RouteSettingsValue;
+  readonly willHandlePopInternally: boolean;
+  createOverlayEntries(): OverlayEntry[];
+  didPop(result: unknown): boolean;
+  install(): void;
+  onPopInvoked(didPop: boolean): void;
+  onPopInvokedWithResult(didPop: boolean, result: unknown): void;
+  willPop(): Promise<RoutePopDisposition>;
+}
+
 export interface OverlayState {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -26905,6 +27078,9 @@ export interface PaintingContext {
     readonly ClipContext: true;
     readonly PaintingContext: true;
   };
+  readonly canvas: Canvas;
+  readonly estimatedBounds: RectValue;
+  readonly recorder: PictureRecorder;
   addCompositionCallback(callback: (layer: Layer) => void): () => void;
   addLayer(layer: Layer): void;
   clipPathAndPaint(
@@ -27632,6 +27808,7 @@ export interface PipelineManifold {
     readonly Listenable: true;
     readonly PipelineManifold: true;
   };
+  readonly semanticsEnabled: boolean;
   addListener(listener: () => void): void;
   removeListener(listener: () => void): void;
   requestVisualUpdate(): void;
@@ -29974,6 +30151,7 @@ export declare const PolynomialFit: new (degree: number) => PolynomialFit;
 
 export interface PopEntry {
   readonly __fsxBrand?: { readonly PopEntry: true };
+  readonly canPopNotifier: ValueListenable;
   onPopInvoked(didPop: boolean): void;
   onPopInvokedWithResult(didPop: boolean, result: unknown): void;
   toString(): string;
@@ -30143,6 +30321,115 @@ export declare const PopupMenuThemeData: new (options?: {
     t: number,
   ) => PopupMenuThemeData | null;
 };
+
+export interface PopupRoute {
+  readonly __fsxBrand?: {
+    readonly LocalHistoryRoute: true;
+    readonly ModalRoute: true;
+    readonly OverlayRoute: true;
+    readonly PopupRoute: true;
+    readonly PredictiveBackRoute: true;
+    readonly Route: true;
+    readonly TransitionRoute: true;
+  };
+  readonly allowSnapshotting: boolean;
+  readonly animation: Animation;
+  readonly barrierColor: ColorValue;
+  readonly barrierCurve: CurveValue;
+  readonly barrierDismissible: boolean;
+  readonly barrierLabel: string;
+  readonly canPop: boolean;
+  readonly completed: Promise<unknown | null>;
+  readonly controller: AnimationController;
+  readonly currentResult: unknown;
+  readonly debugLabel: string;
+  readonly delegatedTransition: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    allowSnapshotting: boolean,
+    child: FlutterElement | null,
+  ) => FlutterElement | null;
+  readonly directionalTraversalEdgeBehavior: TraversalEdgeBehavior;
+  readonly filter: ImageFilter;
+  readonly finishedWhenPopped: boolean;
+  readonly fullscreenDialog: boolean;
+  readonly hasActiveRouteBelow: boolean;
+  readonly hasScopedWillPopCallback: boolean;
+  readonly impliesAppBarDismissal: boolean;
+  readonly isActive: boolean;
+  readonly isCurrent: boolean;
+  readonly isFirst: boolean;
+  readonly maintainState: boolean;
+  readonly navigator: NavigatorState;
+  readonly offstage: boolean;
+  readonly opaque: boolean;
+  readonly overlayEntries: OverlayEntry[];
+  readonly popDisposition: RoutePopDisposition;
+  readonly popGestureEnabled: boolean;
+  readonly popGestureInProgress: boolean;
+  readonly popped: Promise<unknown | null>;
+  readonly receivedTransition: (
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    allowSnapshotting: boolean,
+    child: FlutterElement | null,
+  ) => FlutterElement | null;
+  readonly requestFocus: boolean;
+  readonly restorationScopeId: ValueListenable;
+  readonly reverseTransitionDuration: DurationValue;
+  readonly secondaryAnimation: Animation;
+  readonly semanticsDismissible: boolean;
+  readonly settings: RouteSettingsValue;
+  readonly subtreeContext: BuildContext;
+  readonly transitionDuration: DurationValue;
+  readonly traversalEdgeBehavior: TraversalEdgeBehavior;
+  readonly willDisposeAnimationController: boolean;
+  readonly willHandlePopInternally: boolean;
+  addLocalHistoryEntry(entry: LocalHistoryEntry): void;
+  addScopedWillPopCallback(callback: () => Promise<boolean>): void;
+  buildModalBarrier(): FlutterElement;
+  buildPage(
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+  ): FlutterElement;
+  buildTransitions(
+    context: BuildContext,
+    animation: Animation,
+    secondaryAnimation: Animation,
+    child: FlutterElement,
+  ): FlutterElement;
+  canTransitionFrom(previousRoute: TransitionRoute): boolean;
+  canTransitionTo(nextRoute: TransitionRoute): boolean;
+  changedExternalState(): void;
+  changedInternalState(): void;
+  createAnimation(): Animation;
+  createAnimationController(): AnimationController;
+  createOverlayEntries(): OverlayEntry[];
+  createSimulation(options: { forward: boolean }): Simulation | null;
+  didAdd(): void;
+  didChangeNext(nextRoute: Route): void;
+  didChangePrevious(previousRoute: Route): void;
+  didPop(result: unknown): boolean;
+  didPopNext(nextRoute: Route): void;
+  didPush(): TickerFuture;
+  didReplace(oldRoute: Route): void;
+  handleCancelBackGesture(): void;
+  handleCommitBackGesture(): void;
+  handleStartBackGesture(options?: { progress?: number }): void;
+  handleUpdateBackGestureProgress(options: { progress: number }): void;
+  install(): void;
+  onPopInvoked(didPop: boolean): void;
+  onPopInvokedWithResult(didPop: boolean, result: unknown): void;
+  registerPopEntry(popEntry: PopEntry): void;
+  removeLocalHistoryEntry(entry: LocalHistoryEntry): void;
+  removeScopedWillPopCallback(callback: () => Promise<boolean>): void;
+  toString(): string;
+  unregisterPopEntry(popEntry: PopEntry): void;
+  willPop(): Promise<RoutePopDisposition>;
+}
 
 export interface PredictiveBackEvent {
   readonly __fsxBrand?: { readonly PredictiveBackEvent: true };
@@ -30418,6 +30705,16 @@ export declare const ProcessTextAction: new (
   id: string,
   label: string,
 ) => ProcessTextAction;
+
+export interface ProcessTextService {
+  readonly __fsxBrand?: { readonly ProcessTextService: true };
+  processTextAction(
+    id: string,
+    text: string,
+    readOnly: boolean,
+  ): Promise<string | null>;
+  queryTextActions(): Promise<ProcessTextAction[]>;
+}
 
 export interface ProgressIndicatorTheme {
   readonly __fsxBrand?: {
@@ -36024,6 +36321,7 @@ export interface RenderEditablePainter {
     readonly Listenable: true;
     readonly RenderEditablePainter: true;
   };
+  readonly hasListeners: boolean;
   addListener(listener: () => void): void;
   paint(canvas: Canvas, size: SizeValue, renderEditable: RenderEditable): void;
   removeListener(listener: () => void): void;
@@ -48102,6 +48400,7 @@ export interface RenderingFlutterBinding {
   readonly framesEnabled: boolean;
   readonly hasScheduledFrame: boolean;
   readonly imageCache: ImageCache;
+  readonly keyEventManager: KeyEventManager;
   readonly keyboard: HardwareKeyboard;
   readonly lifecycleState: AppLifecycleState;
   readonly locked: boolean;
@@ -49654,6 +49953,7 @@ export interface RouterDelegate {
     readonly Listenable: true;
     readonly RouterDelegate: true;
   };
+  readonly currentConfiguration: unknown;
   addListener(listener: () => void): void;
   build(context: BuildContext): FlutterElement;
   popRoute(): Promise<boolean>;
@@ -49794,6 +50094,16 @@ export declare const ScaffoldMessengerState: new () => ScaffoldMessengerState;
 
 export interface ScaffoldPrelayoutGeometry {
   readonly __fsxBrand?: { readonly ScaffoldPrelayoutGeometry: true };
+  readonly bottomSheetSize: SizeValue;
+  readonly contentBottom: number;
+  readonly contentTop: number;
+  readonly floatingActionButtonSize: SizeValue;
+  readonly materialBannerSize: SizeValue;
+  readonly minInsets: EdgeInsetsValue;
+  readonly minViewPadding: EdgeInsetsValue;
+  readonly scaffoldSize: SizeValue;
+  readonly snackBarSize: SizeValue;
+  readonly textDirection: TextDirection;
 }
 
 export declare const ScaffoldPrelayoutGeometry: new (options: {
@@ -50101,6 +50411,8 @@ export interface SceneBuilder {
 
 export interface ScribbleClient {
   readonly __fsxBrand?: { readonly ScribbleClient: true };
+  readonly bounds: RectValue;
+  readonly elementIdentifier: string;
   isInScribbleRect(rect: RectValue): boolean;
   onScribbleFocus(offset: OffsetValue): void;
 }
@@ -51204,6 +51516,31 @@ export interface SearchController {
 
 export declare const SearchController: new () => SearchController;
 
+export interface SearchDelegate {
+  readonly __fsxBrand?: { readonly SearchDelegate: true };
+  readonly autocorrect: boolean;
+  readonly automaticallyImplyLeading: boolean;
+  readonly enableSuggestions: boolean;
+  readonly keyboardType: TextInputTypeValue;
+  readonly leadingWidth: number;
+  readonly query: string;
+  readonly searchFieldDecorationTheme: InputDecorationTheme;
+  readonly searchFieldLabel: string;
+  readonly searchFieldStyle: TextStyleValue;
+  readonly textInputAction: TextInputAction;
+  readonly transitionAnimation: Animation;
+  appBarTheme(context: BuildContext): ThemeData;
+  buildActions(context: BuildContext): FlutterElement[] | null;
+  buildBottom(context: BuildContext): PreferredSizeWidget | null;
+  buildFlexibleSpace(context: BuildContext): FlutterElement | null;
+  buildLeading(context: BuildContext): FlutterElement | null;
+  buildResults(context: BuildContext): FlutterElement;
+  buildSuggestions(context: BuildContext): FlutterElement;
+  close(context: BuildContext, result: unknown): void;
+  showResults(context: BuildContext): void;
+  showSuggestions(context: BuildContext): void;
+}
+
 export interface SearchViewTheme {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -51415,6 +51752,28 @@ export declare const SegmentedButtonThemeData: new (options?: {
     t: number,
   ) => SegmentedButtonThemeData;
 };
+
+export interface SelectAction {
+  readonly __fsxBrand?: {
+    readonly Action: true;
+    readonly Diagnosticable: true;
+    readonly SelectAction: true;
+  };
+  readonly callingAction: Action;
+  readonly intentType: TypeValue;
+  readonly isActionEnabled: boolean;
+  addActionListener(listener: (action: Action) => void): void;
+  consumesKey(intent: unknown): boolean;
+  isEnabled(intent: unknown): boolean;
+  removeActionListener(listener: (action: Action) => void): void;
+  toDiagnosticsNode(options?: {
+    name?: string;
+    style?: DiagnosticsTreeStyle;
+  }): DiagnosticsNode;
+  toKeyEventResult(intent: unknown, invokeResult: ObjectValue): KeyEventResult;
+  toString(options?: { minLevel?: DiagnosticLevel }): string;
+  toStringShort(): string;
+}
 
 export interface SelectAllSelectionEvent {
   readonly __fsxBrand?: {
@@ -51708,6 +52067,12 @@ export interface SelectionContainerDelegate {
   pushHandleLayers(startHandle: LayerLink, endHandle: LayerLink): void;
   remove(selectable: Selectable): void;
   removeListener(listener: () => void): void;
+}
+
+export interface SelectionDetails {
+  readonly __fsxBrand?: { readonly SelectionDetails: true };
+  readonly range: SelectedContentRange;
+  readonly status: SelectionStatus;
 }
 
 export interface SelectionEdgeUpdateEvent {
@@ -52611,6 +52976,15 @@ export declare const SensitiveContentHost: {
   readonly instance: SensitiveContentHost;
 };
 
+export interface SensitiveContentService {
+  readonly __fsxBrand?: { readonly SensitiveContentService: true };
+  getContentSensitivity(): Promise<ContentSensitivity>;
+  isSupported(): Promise<boolean>;
+  setContentSensitivity(contentSensitivity: ContentSensitivity): Promise<void>;
+}
+
+export declare const SensitiveContentService: new () => SensitiveContentService;
+
 export interface SerialTapGestureRecognizer {
   readonly __fsxBrand?: {
     readonly Diagnosticable: true;
@@ -52715,6 +53089,12 @@ export declare const ShaderMaskLayer: new (options?: {
   maskRect?: RectValue;
   blendMode?: BlendMode;
 }) => ShaderMaskLayer;
+
+export interface ShaderWarmUp {
+  readonly __fsxBrand?: { readonly ShaderWarmUp: true };
+  readonly size: SizeValue;
+  execute(): Promise<void>;
+}
 
 export interface Shadow {
   readonly __fsxBrand?: { readonly Shadow: true };
@@ -54235,6 +54615,9 @@ export declare const SliverOverlapAbsorberHandle: new () => SliverOverlapAbsorbe
 
 export interface SliverPersistentHeaderDelegate {
   readonly __fsxBrand?: { readonly SliverPersistentHeaderDelegate: true };
+  readonly maxExtent: number;
+  readonly minExtent: number;
+  readonly vsync: TickerProvider;
   build(
     context: BuildContext,
     shrinkOffset: number,
@@ -54618,6 +55001,7 @@ export interface SnapshotPainter {
     readonly Listenable: true;
     readonly SnapshotPainter: true;
   };
+  readonly hasListeners: boolean;
   addListener(listener: () => void): void;
   paint(
     context: PaintingContext,
@@ -54875,6 +55259,24 @@ export interface StadiumBorder {
 export declare const StadiumBorder: new (options?: {
   side?: BorderSideValue;
 }) => StadiumBorder;
+
+export interface StandardFabLocation {
+  readonly __fsxBrand?: {
+    readonly FloatingActionButtonLocation: true;
+    readonly StandardFabLocation: true;
+  };
+  getOffset(scaffoldGeometry: ScaffoldPrelayoutGeometry): Offset;
+  getOffsetX(
+    scaffoldGeometry: ScaffoldPrelayoutGeometry,
+    adjustment: number,
+  ): number;
+  getOffsetY(
+    scaffoldGeometry: ScaffoldPrelayoutGeometry,
+    adjustment: number,
+  ): number;
+  isMini(): boolean;
+  toString(): string;
+}
 
 export interface StandardMessageCodec {
   readonly __fsxBrand?: {
@@ -55751,6 +56153,32 @@ export interface SystemContextMenu {
   }): string;
   toStringShort(): string;
 }
+
+export interface SystemContextMenuController {
+  readonly __fsxBrand?: {
+    readonly Diagnosticable: true;
+    readonly SystemContextMenuClient: true;
+    readonly SystemContextMenuController: true;
+  };
+  handleCustomContextMenuAction(callbackId: string): void;
+  handleSystemHide(): void;
+  hide(): Promise<void>;
+  show(targetRect: RectValue): Promise<void>;
+  showWithItems(
+    targetRect: RectValue,
+    items: IOSSystemContextMenuItemData[],
+  ): Promise<void>;
+  toDiagnosticsNode(options?: {
+    name?: string;
+    style?: DiagnosticsTreeStyle;
+  }): DiagnosticsNode;
+  toString(options?: { minLevel?: DiagnosticLevel }): string;
+  toStringShort(): string;
+}
+
+export declare const SystemContextMenuController: new (options?: {
+  onSystemHide?: () => void;
+}) => SystemContextMenuController;
 
 export interface SystemMouseCursor {
   readonly __fsxBrand?: {
@@ -57146,6 +57574,15 @@ export interface TextSelectionDelegate {
   readonly __fsxBrand?: { readonly TextSelectionDelegate: true };
 }
 
+export interface TextSelectionGestureDetectorBuilderDelegate {
+  readonly __fsxBrand?: {
+    readonly TextSelectionGestureDetectorBuilderDelegate: true;
+  };
+  readonly editableTextKey: GlobalKey;
+  readonly forcePressEnabled: boolean;
+  readonly selectionEnabled: boolean;
+}
+
 export interface TextSelectionPoint {
   readonly __fsxBrand?: { readonly TextSelectionPoint: true };
   readonly direction: TextDirection;
@@ -57683,6 +58120,30 @@ export declare const TextTreeConfiguration: new (options: {
   suffixLineOne?: string;
   mandatoryFooter?: string;
 }) => TextTreeConfiguration;
+
+export interface TextureAndroidViewController {
+  readonly __fsxBrand?: {
+    readonly AndroidViewController: true;
+    readonly PlatformViewController: true;
+    readonly TextureAndroidViewController: true;
+  };
+  readonly awaitingCreation: boolean;
+  readonly createdCallbacks: (id: number) => void[];
+  readonly isCreated: boolean;
+  readonly pointTransformer: (position: Offset) => Offset;
+  readonly requiresViewComposition: boolean;
+  readonly textureId: number;
+  readonly viewId: number;
+  addOnPlatformViewCreatedListener(listener: (id: number) => void): void;
+  clearFocus(): Promise<void>;
+  create(options?: { size?: SizeValue; position?: OffsetValue }): Promise<void>;
+  dispatchPointerEvent(event: PointerEvent): Promise<void>;
+  removeOnPlatformViewCreatedListener(listener: (id: number) => void): void;
+  sendMotionEvent(event: AndroidMotionEvent): Promise<void>;
+  setLayoutDirection(layoutDirection: TextDirection): Promise<void>;
+  setOffset(off: OffsetValue): Promise<void>;
+  setSize(size: SizeValue): Promise<Size>;
+}
 
 export interface TextureBox {
   readonly __fsxBrand?: {
@@ -58680,6 +59141,43 @@ export declare const ToggleButtonsThemeData: new (options?: {
     t: number,
   ) => ToggleButtonsThemeData | null;
 };
+
+export interface ToggleablePainter {
+  readonly __fsxBrand?: {
+    readonly ChangeNotifier: true;
+    readonly CustomPainter: true;
+    readonly Listenable: true;
+    readonly ToggleablePainter: true;
+  };
+  readonly activeColor: ColorValue;
+  readonly downPosition: OffsetValue;
+  readonly focusColor: ColorValue;
+  readonly hasListeners: boolean;
+  readonly hoverColor: ColorValue;
+  readonly inactiveColor: ColorValue;
+  readonly inactiveReactionColor: ColorValue;
+  readonly isActive: boolean;
+  readonly isFocused: boolean;
+  readonly isHovered: boolean;
+  readonly position: Animation;
+  readonly reaction: Animation;
+  readonly reactionColor: ColorValue;
+  readonly reactionFocusFade: Animation;
+  readonly reactionHoverFade: Animation;
+  readonly splashRadius: number;
+  addListener(listener: () => void): void;
+  hitTest(position: OffsetValue): boolean | null;
+  paint(canvas: Canvas, size: SizeValue): void;
+  paintRadialReaction(options: {
+    canvas: Canvas;
+    offset?: OffsetValue;
+    origin: OffsetValue;
+  }): void;
+  removeListener(listener: () => void): void;
+  shouldRebuildSemantics(oldDelegate: CustomPainter): boolean;
+  shouldRepaint(oldDelegate: CustomPainter): boolean;
+  toString(): string;
+}
 
 export interface ToggleableStateMixin {
   readonly __fsxBrand?: {
@@ -60797,6 +61295,7 @@ export interface WidgetsFlutterBinding {
   readonly hasScheduledFrame: boolean;
   readonly imageCache: ImageCache;
   readonly isRootWidgetAttached: boolean;
+  readonly keyEventManager: KeyEventManager;
   readonly keyboard: HardwareKeyboard;
   readonly lifecycleState: AppLifecycleState;
   readonly locked: boolean;

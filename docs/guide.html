@@ -241,6 +241,33 @@ fsx init my-app --template=tray      # menu-bar companion: tray events, a live s
   &lt;/<span class="tok-typ">Column</span>&gt;
 );</code></pre>
 <p>Components in other files are imported the way you would expect, and the compiler emits the Dart import for you — including hiding a Flutter widget of the same name, so a component called <code>Card</code> or <code>Banner</code> is yours, not the SDK's.</p>
+<h3 id="writing-a-class-flutter-leaves-to-you">Writing a class Flutter leaves to you</h3>
+<p>A handful of Flutter's parameters take a class you write rather than a value you build: a <code>SliverPersistentHeader</code> wants a delegate, a <code>PaginatedDataTable</code> wants a source, a <code>Flow</code> wants a <code>FlowDelegate</code>. <code>defineDelegate</code> writes one, with the members typed from the SDK:</p>
+<pre><code class="language-tsx"><span class="tok-kw">import</span> {
+  <span class="tok-typ">Center</span>,
+  <span class="tok-typ">CustomScrollView</span>,
+  defineDelegate,
+  <span class="tok-typ">SliverPersistentHeader</span>,
+  <span class="tok-typ">Text</span>,
+} <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-kw">const</span> sticky = <span class="tok-fn">defineDelegate</span>(<span class="tok-str">'SliverPersistentHeaderDelegate'</span>, {
+  minExtent: () =&gt; <span class="tok-num">48</span>,
+  maxExtent: () =&gt; <span class="tok-num">96</span>,
+  shouldRebuild: () =&gt; <span class="tok-kw">false</span>,
+  build: (self, context, shrinkOffset) =&gt; (
+    &lt;<span class="tok-typ">Center</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;{<span class="tok-str">`Scrolled ${shrinkOffset}`</span>}&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">Center</span>&gt;
+  ),
+});
+
+export const Feed = () =&gt; (
+  &lt;<span class="tok-typ">CustomScrollView</span>
+    slivers={[&lt;<span class="tok-typ">SliverPersistentHeader</span> delegate={sticky} pinned /&gt;]}
+  /&gt;
+);</code></pre>
+<p>That emits a private Dart class extending <code>SliverPersistentHeaderDelegate</code>, with each member <code>@override</code>-annotated and the single instance every widget in the file is handed. Every member is given the value itself first — <code>self</code> — so what the class inherits stays in reach: <code>self.layoutChild(…)</code> inside a <code>MultiChildLayoutDelegate</code> is the superclass method of that name. A class that is a <code>Listenable</code>, such as a <code>RouterDelegate</code>, mixes in <code>ChangeNotifier</code> the way Flutter's own delegates do.</p>
 <h2 id="6-use-a-plugin">6. Use a plugin</h2>
 <p>Plugins are declared like npm dependencies, in <code>package.json</code>:</p>
 <pre><code class="language-jsonc">{

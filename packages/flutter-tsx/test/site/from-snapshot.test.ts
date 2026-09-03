@@ -126,7 +126,11 @@ describe('buildSitePage', () => {
         kind: 'class',
         disposable: false,
         isAbstract: false,
+        abstractMethods: [],
+        abstractGetters: [],
+        mixin: null,
         typeParams: [],
+        typeParamBounds: [],
         supertypeBindings: {},
         name: 'TestPalette',
         library: 'material',
@@ -268,5 +272,47 @@ describe('buildSitePage', () => {
       ],
       incompleteExamples: [],
     });
+  });
+
+  test('a widget whose value cannot be written is named as incomplete', () => {
+    // The reference has none today — the boundary test proves it — and the
+    // page still has to say which widget it is, by name, when it does.
+    const withUnwritable: ApiSnapshot = {
+      ...snapshot,
+      entities: [
+        ...snapshot.entities,
+        {
+          kind: 'widget',
+          name: 'Port',
+          library: 'widgets',
+          doc: '',
+          supertypes: ['StatelessWidget', 'Widget'],
+          constructors: [
+            {
+              name: '',
+              doc: '',
+              isConst: true,
+              paramMemberAsserts: false,
+              requiredOneOf: [],
+              params: [
+                param('view', 'FlutterView', {
+                  required: true,
+                  type: { kind: 'named', name: 'FlutterView' },
+                }),
+              ],
+            },
+          ],
+          constants: [],
+          fields: [],
+          statics: [],
+          staticGetters: [],
+          methods: [],
+        },
+      ],
+    };
+
+    const page = buildSitePage(withUnwritable, slots, sections);
+
+    expect(page.incompleteExamples).toEqual(['Port']);
   });
 });

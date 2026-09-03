@@ -111,8 +111,30 @@ export interface ClassEntity extends EntityBase {
   disposable: boolean;
   /** Whether nothing can build one: only a concrete subclass can be. */
   isAbstract: boolean;
+  /**
+   * The methods an app has to write to be this class.
+   *
+   * A `MultiChildLayoutDelegate` is written, not built: `performLayout` and
+   * `shouldRelayout` are what being one means. Empty for every class an app
+   * builds or is handed instead.
+   */
+  abstractMethods: StaticMethod[];
+  /** The getters an app has to write: a header delegate's `minExtent`. */
+  abstractGetters: FieldModel[];
+  /**
+   * The mixin the written class needs, when being this class means being
+   * something Dart already answers: a `Listenable` is written by mixing in
+   * `ChangeNotifier`.
+   */
+  mixin: string | null;
   /** The names this class is generic over: the `T` of a `ValueNotifier<T>`. */
   typeParams: string[];
+  /**
+   * What each parameter is bounded by, in the same order, `Object` when a
+   * parameter is unbounded: writing a class means naming something that
+   * satisfies each bound.
+   */
+  typeParamBounds: string[];
   /**
    * What it hands each generic supertype — `CustomClipper<Path>` for a
    * `ShapeBorderClipper` — which is what makes it usable as one.

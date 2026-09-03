@@ -48,6 +48,9 @@ EntityModel? mapClass(
       methods: methods,
     );
   }
+  // What an app writes itself, rather than builds or is handed.
+  final mixin = _mapMixin(classElement, supertypes.toSet());
+
   return ClassEntity(
     name: name,
     library: libraryLabel,
@@ -62,9 +65,16 @@ EntityModel? mapClass(
     methods: methods,
     disposable: _hasPublicDispose(classElement),
     isAbstract: classElement.isAbstract,
+    abstractMethods: _mapAbstractMethods(classElement, mixin),
+    abstractGetters: _mapAbstractGetters(classElement, mixin),
+    mixin: mixin,
     typeParams: classElement.typeParameters
         .map((parameter) => parameter.name ?? '')
         .where((name) => name.isNotEmpty)
+        .toList(),
+    typeParamBounds: classElement.typeParameters
+        .where((parameter) => (parameter.name ?? '').isNotEmpty)
+        .map(_boundName)
         .toList(),
   );
 }
@@ -171,6 +181,148 @@ List<FieldModel> _mapStaticGetters(ClassElement classElement) =>
         )
         .toList()
       ..sort((first, second) => first.name.compareTo(second.name));
+
+/// The members `ChangeNotifier` answers to, so an app never writes them.
+///
+/// A `RouterDelegate` is a `Listenable`, and `addListener` with
+/// `removeListener` are abstract on it. Dart's own answer to that pair is to
+/// mix in `ChangeNotifier`, which is exactly what Flutter's own delegates do
+/// — so the pair is covered by the mixin rather than left to an app.
+const _listenableMembers = {'addListener', 'removeListener'};
+
+/// The mixin that answers `Listenable`, when this class needs one.
+const _changeNotifier = 'ChangeNotifier';
+
+/// Every class in the hierarchy, nearest first, `Object` excluded.
+List<InterfaceElement> _hierarchy(ClassElement classElement) => [
+  classElement,
+  ...classElement.allSupertypes
+      .map((supertype) => supertype.element)
+      .where((element) => (element.name ?? 'Object') != 'Object'),
+];
+
+/// Whether a member of this name is answered somewhere in the hierarchy.
+///
+/// An abstract method on a base is not an app's to write when a subclass
+/// already answers it: `RouterDelegate.popRoute` is abstract on nothing and
+/// concrete here, and the nearest concrete declaration is what Dart uses.
+bool _isAnswered(ClassElement classElement, String name) =>
+    _hierarchy(classElement).any(
+      (owner) =>
+          owner.methods.any(
+            (method) => method.name == name && !method.isAbstract,
+          ) ||
+          owner.getters.any(
+            (getter) => getter.name == name && !getter.isAbstract,
+          ),
+    );
+
+/// Whether the class is written by an app rather than built by it.
+///
+/// Only an abstract class is: a concrete one is constructed, and its
+/// abstract-looking members are answered by itself.
+bool _isImplementable(ClassElement classElement) => classElement.isAbstract;
+
+/// The mixin this class needs to be written at all, if any.
+String? _mapMixin(ClassElement classElement, Set<String> supertypes) {
+  if (!_isImplementable(classElement) || !supertypes.contains('Listenable')) {
+    return null;
+  }
+  final unanswered = _listenableMembers.where(
+    (name) => !_isAnswered(classElement, name),
+  );
+  return unanswered.isEmpty ? null : _changeNotifier;
+}
+
+/// Whether this abstract member is one an app has to write.
+bool _mustImplement(ClassElement classElement, String? name, String? mixin) =>
+    name != null &&
+    name.isNotEmpty &&
+    !name.startsWith('_') &&
+    _callableName(name) &&
+    !_objectMemberNames.contains(name) &&
+    !name.startsWith('debug') &&
+    !(mixin == _changeNotifier && _listenableMembers.contains(name)) &&
+    !_isAnswered(classElement, name);
+
+/// The methods an app has to write to be this class.
+///
+/// A delegate is not built and not handed over: an app writes one, and what
+/// it must write is the abstract surface — the class's own and everything it
+/// inherits unanswered.
+List<MethodModel> _mapAbstractMethods(
+  ClassElement classElement,
+  String? mixin,
+) {
+  if (!_isImplementable(classElement)) {
+    return const [];
+  }
+  final seen = <String>{};
+  return _hierarchy(classElement)
+      .expand((owner) => owner.methods)
+      .where(
+        (method) =>
+            !method.isStatic &&
+            method.isAbstract &&
+            !method.metadata.hasVisibleForTesting &&
+            _mustImplement(classElement, method.name, mixin) &&
+            seen.add(method.name ?? ''),
+      )
+      .map(
+        (method) => MethodModel(
+          name: method.name ?? '',
+          doc: method.documentationComment ?? '',
+          isStatic: false,
+          returnType: encodeType(method.returnType),
+          params: method.formalParameters
+              .map((param) => _mapParam(classElement, param))
+              .toList(),
+        ),
+      )
+      .toList()
+    ..sort((first, second) => first.name.compareTo(second.name));
+}
+
+/// The getters an app has to write to be this class: a header delegate's
+/// `minExtent`, a table source's `rowCount`.
+List<FieldModel> _mapAbstractGetters(ClassElement classElement, String? mixin) {
+  if (!_isImplementable(classElement)) {
+    return const [];
+  }
+  final seen = <String>{};
+  return _hierarchy(classElement)
+      .expand((owner) => owner.getters)
+      .where(
+        (getter) =>
+            !getter.isStatic &&
+            getter.isAbstract &&
+            !getter.metadata.hasVisibleForTesting &&
+            _mustImplement(classElement, getter.name, mixin) &&
+            seen.add(getter.name ?? ''),
+      )
+      .map(
+        (getter) => FieldModel(
+          name: getter.name ?? '',
+          doc: getter.documentationComment ?? '',
+          type: encodeType(getter.returnType),
+        ),
+      )
+      .toList()
+    ..sort((first, second) => first.name.compareTo(second.name));
+}
+
+/// What a type parameter is bounded by, by name.
+///
+/// An unbounded parameter is bounded by `Object`, which is what Dart's own
+/// `dynamic`-free answer to it is: anything non-null satisfies it.
+String _boundName(TypeParameterElement parameter) {
+  final bound = parameter.bound;
+  if (bound == null) {
+    return 'Object';
+  }
+  final encoded = encodeType(bound);
+  return encoded is NamedTypeNode ? encoded.name : 'Object';
+}
 
 /// Whether the class, or anything it inherits from, offers `dispose()`.
 bool _hasPublicDispose(ClassElement classElement) {

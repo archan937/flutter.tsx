@@ -3,6 +3,7 @@ import { describe, expect, test } from 'bun:test';
 import {
   buildApiReferenceHtml,
   cleanDoc,
+  coreApiSection,
   enumSection,
   escapeHtml,
   navHtml,
@@ -177,6 +178,67 @@ describe('widgetSection without a verified example', () => {
         '<a class="badge badge-pkg" href="#verification">✓ typechecked</a>',
         '',
       ),
+    );
+  });
+});
+
+describe('coreApiSection', () => {
+  const entry = {
+    name: 'json',
+    kind: 'function' as const,
+    signature: '(body: string) => unknown',
+    doc: 'Decodes a body:\n\n```tsx\nconst album = json(body) as Album;\n```\n\nThe cast names the `Album` model.',
+    examples: [],
+    usage: null,
+  };
+
+  test('renders a fenced example as code, and the prose around it', () => {
+    const html = coreApiSection(entry);
+
+    expect(html).toContain('<p class="doc">Decodes a body:</p>');
+    expect(html).toContain('<pre><code class="language-tsx">');
+    expect(html).toContain('names the <code>Album</code> model.</p>');
+    // The fence itself is markup, not content: it never reaches the page.
+    expect(html).not.toContain('```');
+  });
+
+  test('a doc that is only an example is only a code block', () => {
+    const html = coreApiSection({
+      ...entry,
+      doc: '```tsx\nconst album = json(body) as Album;\n```',
+    });
+
+    expect(html).toContain('<pre><code class="language-tsx">');
+    expect(html).not.toContain('<p class="doc">');
+  });
+
+  test('a declaration with no doc renders none', () => {
+    expect(coreApiSection({ ...entry, doc: '' })).not.toContain('class="doc"');
+  });
+});
+
+describe('widgetSection with a value it could not write', () => {
+  test('says which prop it is, its type, and why', () => {
+    // Nothing on this page needs it today — the boundary test proves the
+    // reference has no such widget — and the note stays here because a
+    // future SDK shape has to be reported, never left as a placeholder.
+    const unwritten = {
+      ...frame,
+      example: {
+        ...frame.example,
+        complete: false,
+        unwritable: [
+          {
+            prop: 'view',
+            type: 'FlutterView',
+            reason: 'supplied-by-flutter' as const,
+          },
+        ],
+      },
+    };
+
+    expect(widgetSection(unwritten)).toContain(
+      '<p class="note"><code>view</code> (FlutterView) — ',
     );
   });
 });

@@ -123,6 +123,46 @@ Components in other files are imported the way you would expect, and the compile
 the Dart import for you — including hiding a Flutter widget of the same name, so a
 component called `Card` or `Banner` is yours, not the SDK's.
 
+### Writing a class Flutter leaves to you
+
+A handful of Flutter's parameters take a class you write rather than a value you build: a
+`SliverPersistentHeader` wants a delegate, a `PaginatedDataTable` wants a source, a `Flow`
+wants a `FlowDelegate`. `defineDelegate` writes one, with the members typed from the SDK:
+
+```tsx
+import {
+  Center,
+  CustomScrollView,
+  defineDelegate,
+  SliverPersistentHeader,
+  Text,
+} from 'flutter-tsx';
+
+const sticky = defineDelegate('SliverPersistentHeaderDelegate', {
+  minExtent: () => 48,
+  maxExtent: () => 96,
+  shouldRebuild: () => false,
+  build: (self, context, shrinkOffset) => (
+    <Center>
+      <Text>{`Scrolled ${shrinkOffset}`}</Text>
+    </Center>
+  ),
+});
+
+export const Feed = () => (
+  <CustomScrollView
+    slivers={[<SliverPersistentHeader delegate={sticky} pinned />]}
+  />
+);
+```
+
+That emits a private Dart class extending `SliverPersistentHeaderDelegate`, with each
+member `@override`-annotated and the single instance every widget in the file is handed.
+Every member is given the value itself first — `self` — so what the class inherits stays
+in reach: `self.layoutChild(…)` inside a `MultiChildLayoutDelegate` is the superclass
+method of that name. A class that is a `Listenable`, such as a `RouterDelegate`, mixes in
+`ChangeNotifier` the way Flutter's own delegates do.
+
 ## 6. Use a plugin
 
 Plugins are declared like npm dependencies, in `package.json`:

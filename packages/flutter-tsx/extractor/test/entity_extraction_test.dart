@@ -33,14 +33,19 @@ void main() {
         // delegate — but never a component: nothing can build one.
         'class AbstractWidget',
         'class GuardedList',
+        'class Listenable',
         'class NotAWidget',
         'class PreferredSizeLike',
         'class StatelessWidget',
         'enum TestAlignment',
+        'class TestBoundedDelegate',
         'class TestBox',
         'class TestController',
+        'class TestDelegate',
+        'class TestDelegateBase',
         'class TestHolder',
         'class TestLink',
+        'class TestNotifyingDelegate',
         'class TestPalette',
         'class TestScope',
         'class TestSorter',
@@ -61,6 +66,7 @@ void main() {
         );
 
         expect(box.typeParams, ['T']);
+        expect(box.typeParamBounds, ['Object']);
         expect(box.constructors.first.params.first.type.toJson(), {
           'kind': 'typeVar',
           'name': 'T',
@@ -100,6 +106,64 @@ void main() {
       expect(abstractWidget.toJson()['abstract'], isTrue);
       expect(concrete.isAbstract, isFalse);
       expect(concrete.toJson().containsKey('abstract'), isFalse);
+    });
+
+    test('records what an app has to write to be a delegate', () {
+      // A `MultiChildLayoutDelegate` is written by an app, not built by it:
+      // what it must implement is the abstract surface, its own and the one
+      // it inherits, and never a member the class already answers to.
+      final delegate = entities.whereType<ClassEntity>().singleWhere(
+        (entity) => entity.name == 'TestDelegate',
+      );
+
+      expect(delegate.abstractMethods.map((method) => method.name), [
+        'describe',
+        'performLayout',
+      ]);
+      expect(delegate.abstractMethods.last.params.single.type.toJson(), {
+        'kind': 'scalar',
+        'name': 'double',
+      });
+      expect(delegate.abstractGetters.map((getter) => getter.name), ['extent']);
+      expect(delegate.toJson()['abstractMethods'], hasLength(2));
+      expect(delegate.mixin, isNull);
+    });
+
+    test('a delegate that notifies is written with a ChangeNotifier', () {
+      // `RouterDelegate` is a `Listenable`, and Dart's own way to be one is
+      // to mix in `ChangeNotifier` — so the listener pair is not left for an
+      // app to write by hand.
+      final delegate = entities.whereType<ClassEntity>().singleWhere(
+        (entity) => entity.name == 'TestNotifyingDelegate',
+      );
+
+      expect(delegate.mixin, 'ChangeNotifier');
+      expect(delegate.abstractMethods.map((method) => method.name), ['build']);
+      expect(delegate.toJson()['mixin'], 'ChangeNotifier');
+    });
+
+    test('a written class says what its parameters are bounded by', () {
+      // `class _X extends SlottedMultiChildRenderObjectWidget<Object, …>` is
+      // only valid Dart when what fills each parameter satisfies its bound,
+      // so the bound travels with the name.
+      final delegate = entities.whereType<ClassEntity>().singleWhere(
+        (entity) => entity.name == 'TestBoundedDelegate',
+      );
+
+      expect(delegate.typeParams, ['TValue', 'TFree']);
+      expect(delegate.typeParamBounds, ['NotAWidget', 'Object']);
+      expect(delegate.toJson()['typeParamBounds'], ['NotAWidget', 'Object']);
+    });
+
+    test('a class nothing implements has no abstract surface', () {
+      final concrete = entities.whereType<ClassEntity>().singleWhere(
+        (entity) => entity.name == 'TestController',
+      );
+
+      expect(concrete.abstractMethods, isEmpty);
+      expect(concrete.abstractGetters, isEmpty);
+      expect(concrete.toJson().containsKey('abstractMethods'), isFalse);
+      expect(concrete.toJson().containsKey('mixin'), isFalse);
     });
 
     test('records the methods a value answers to', () {
@@ -290,14 +354,19 @@ void main() {
       expect(hierarchy, {
         'AbstractWidget': ['StatelessWidget', 'Widget'],
         'GuardedList': <String>[],
+        'Listenable': <String>[],
         'NotAWidget': <String>[],
         'PreferredSizeLike': ['Widget'],
         'StatelessWidget': ['Widget'],
         'Tappable': ['Widget'],
+        'TestBoundedDelegate': <String>[],
         'TestBox': <String>[],
         'TestController': <String>[],
+        'TestDelegate': ['TestDelegateBase'],
+        'TestDelegateBase': <String>[],
         'TestHolder': <String>[],
         'TestLink': <String>[],
+        'TestNotifyingDelegate': ['Listenable'],
         'TestPalette': <String>[],
         'TestScope': <String>[],
         'TestSorter': ['Comparable'],

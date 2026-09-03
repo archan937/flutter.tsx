@@ -9,8 +9,12 @@ import type {
   StaticMethod,
   TypeNode,
 } from '../api/model';
-import { dartTypeOf as bareDartTypeOf } from '../derive/dart-types';
+import {
+  dartTypeOf as bareDartTypeOf,
+  returnDartTypeOf,
+} from '../derive/dart-types';
 import { DATE_FORMS, dateFormDart } from '../derive/date-forms';
+import { type DelegateDefinition, deriveDelegates } from '../derive/delegates';
 import type { SlotMap, WidgetSlots } from '../derive/slots';
 import {
   ANY_VALUE_TYPE,
@@ -28,6 +32,7 @@ import type {
   AsyncBinding,
   ComponentAnalysis,
   ConstantBinding,
+  DelegateBinding,
   HelperBinding,
   LocalBinding,
   ModelBinding,
@@ -50,6 +55,8 @@ import type {
   IrChild,
   IrComponent,
   IrConstant,
+  IrDelegate,
+  IrDelegateMember,
   IrField,
   IrHelper,
   IrMethod,
@@ -106,6 +113,16 @@ export interface CompileContext {
   gestures: GestureWrap | null;
   // Stores declared at module level, by TSX name.
   stores: Map<string, IrStore>;
+  /**
+   * The classes an app writes itself, by SDK name.
+   *
+   * `defineDelegate('FlowDelegate', { … })` is checked against this: what
+   * the class must implement, what it extends and what it mixes in all come
+   * from the SDK, so a written class is a class Flutter accepts.
+   */
+  delegates: Map<string, DelegateDefinition>;
+  /** Delegates this file writes, by the TSX const each is bound to. */
+  writtenDelegates: Map<string, IrDelegate>;
   // Fields of every class an imported plugin exposes, so a value of that type
   // can be read even when it did not come from a hook.
   pluginClassFields: Map<string, Map<string, TypeNode>>;
@@ -346,6 +363,10 @@ export const buildCompileContext = (
     pluginConstructors: new Map(),
     pluginStatics: new Map(),
     stores: new Map(),
+    delegates: new Map(
+      deriveDelegates(snapshot).map((delegate) => [delegate.name, delegate]),
+    ),
+    writtenDelegates: new Map(),
     pluginClassFields: new Map(),
     sdkClassFields,
     prefixedTypes: new Map(),
@@ -551,6 +572,44 @@ const constantContext = (
   return helperContext(compile, translate);
 };
 
+/**
+ * What a function written beside the components can see.
+ *
+ * A helper and a written class's member are both module-scope code: no
+ * state around them, no plugins, no widget — only their own parameters and
+ * whatever this file declares. One context for both is what keeps them
+ * lowering the same way.
+ */
+const moduleTranslateContext = (scope: {
+  compile: CompileContext;
+  sourceFile: ts.SourceFile;
+  localDartTypes: Map<string, string>;
+  memberReads: Map<string, MemberReadInfo>;
+  useDartImport: (uri: string, prefix?: string) => void;
+}): TranslateContext => ({
+  sourceFile: scope.sourceFile,
+  nullableHandles: new Map(),
+  narrowed: new Set(),
+  renames: new Map(),
+  pluginValueCall: noPluginValues,
+  sdkStaticCall: noPluginValues,
+  controllerNames: new Set<string>(),
+  pluginConstructibles: scope.compile.pluginConstructibles,
+  pluginConstructors: scope.compile.pluginConstructors,
+  stateNames: new Set(),
+  handlerNames: new Set(),
+  widgetProps: new Set(),
+  localDartTypes: scope.localDartTypes,
+  helperReturns: new Map(),
+  privateHelpers: new Set(),
+  enumMembers: new Map(),
+  privateMembers: false,
+  memberReads: scope.memberReads,
+  classFields: modelClassFields(scope.compile),
+  jsonModels: new Set(scope.compile.models.keys()),
+  useDartImport: scope.useDartImport,
+});
+
 export const lowerHelper = (
   helper: HelperBinding,
   compile: CompileContext,
@@ -562,24 +621,11 @@ export const lowerHelper = (
       param.dartType,
     ]),
   );
-  const translate: TranslateContext = {
+  const translate = moduleTranslateContext({
+    compile,
     sourceFile: helper.body.getSourceFile(),
-    nullableHandles: new Map(),
-    narrowed: new Set(),
-    renames: new Map(),
-    pluginValueCall: noPluginValues,
-    sdkStaticCall: noPluginValues,
-    controllerNames: new Set<string>(),
-    pluginConstructibles: compile.pluginConstructibles,
-    pluginConstructors: compile.pluginConstructors,
-    stateNames: new Set(),
-    handlerNames: new Set(),
-    widgetProps: new Set(),
     localDartTypes,
-    helperReturns: new Map(),
-    privateHelpers: new Set(),
-    enumMembers: new Map(),
-    privateMembers: false,
+    useDartImport,
     // A helper reads its own parameters, and the models this file declares:
     // decoding or reading one is as ordinary there as in a component.
     memberReads: new Map(
@@ -590,10 +636,7 @@ export const lowerHelper = (
           : [[param.name, memberReadOf(param.name, model)]];
       }),
     ),
-    classFields: modelClassFields(compile),
-    jsonModels: new Set(compile.models.keys()),
-    useDartImport,
-  };
+  });
   return {
     name: helper.name,
     typeParams: helper.typeParams,
@@ -808,7 +851,12 @@ const lowerIdentifier = (
     return pluginHandleValue(identifier.text, plugin);
   }
   // Module data took a Dart name of its own, and a read of it uses that name.
-  const constant = dartConstantName(identifier.text);
+  // A class this file writes is named by the private instance beside it,
+  // which the translation knows; a module constant took a Dart name of its
+  // own, and a read of it uses that name.
+  const constant = context.translate.renames.has(identifier.text)
+    ? identifier.text
+    : dartConstantName(identifier.text);
   if (constant !== identifier.text) {
     return { kind: 'dartExpr', dart: constant };
   }
@@ -1233,14 +1281,13 @@ const lowerPropertyAccess = (
       member: expression.name.text,
     };
   }
-  // Emitting the TSX text verbatim would produce Dart naming something that
-  // does not exist there, so an unresolvable read is refused instead.
-  throw tsxErrorAt(
-    'TSX0305',
-    `\`${expression.getText()}\` reads a member the compiler cannot resolve ` +
-      'to a Dart one.',
-    { sourceFile: context.sourceFile, node: expression },
-  );
+  // Anything a statement can write, a value can write too: `titles.length`
+  // is the same read wherever it stands. The translation refuses what
+  // neither can express, rather than emitting TSX text as Dart.
+  return {
+    kind: 'dartExpr',
+    dart: translateExpression(expression, context.translate),
+  };
 };
 
 /**
@@ -1412,46 +1459,80 @@ const lowerArrowFunction = (
     { declared: type.params, names: written, renames },
     context,
   );
-  // A builder prop — `builder={() => <Text>…</Text>}` — is a callback whose
-  // body is a widget rather than a block, so it becomes an expression-bodied
-  // Dart closure. Lowering it against the declared return type means a
-  // conditional builder reads the same as a conditional child does.
-  const { body } = arrow;
-  if (!ts.isBlock(body) && type.returnType.kind === 'widget') {
-    // Lowered as a child, not as a prop value: a builder body is the same
-    // expression a child is, so a conditional one lowers the same way rather
-    // than falling through to a path that would emit the TSX verbatim.
+  const lowered = lowerFunctionBody(arrow, type.returnType, scoped);
+  if (lowered.body.kind === 'block') {
     return {
-      kind: 'closureValue',
+      kind: 'closure',
       params,
-      value: lowerChildValue(unwrapParenthesized(body), scoped),
+      isAsync: lowered.isAsync,
+      statements: lowered.body.statements,
     };
   }
-  // `itemExtentBuilder={(index) => 48}` — a callback that answers with a
-  // value is that value, lowered against the type the callback declares. An
-  // async one answers with what its Future carries, which is what the body
-  // is written as.
+  return {
+    kind: 'closureValue',
+    params,
+    ...(lowered.isWidget ? {} : { isAsync: lowered.isAsync }),
+    value: lowered.body.value,
+  };
+};
+
+/**
+ * A written function's body, whatever it is written as.
+ *
+ * A callback and a delegate's member are the same thing twice: an arrow
+ * function with a declared return type. The body is the widget it builds,
+ * the value it answers with, or the statements it runs — and which of the
+ * three it is follows from the return type rather than from where it was
+ * written, so both read the same in the Dart.
+ */
+const lowerFunctionBody = (
+  arrow: ts.ArrowFunction,
+  returnType: TypeNode,
+  scoped: LowerContext,
+): {
+  isAsync: boolean;
+  isWidget: boolean;
+  body: IrDelegateMember['body'];
+} => {
   const isAsync =
     arrow.modifiers?.some(
       (modifier) => modifier.kind === ts.SyntaxKind.AsyncKeyword,
     ) ?? false;
+  const { body } = arrow;
+  // A body that is a widget is lowered as a child, not as a prop value: a
+  // conditional one then reads the same as a conditional child does, rather
+  // than falling through to a path that would emit the TSX verbatim.
+  if (!ts.isBlock(body) && returnType.kind === 'widget') {
+    return {
+      isAsync,
+      isWidget: true,
+      body: {
+        kind: 'expression',
+        value: lowerChildValue(unwrapParenthesized(body), scoped),
+      },
+    };
+  }
+  // An async body answers with what its Future carries, which is what the
+  // body is written as.
   const answers =
-    isAsync && type.returnType.kind === 'future'
-      ? type.returnType.item
-      : type.returnType;
+    isAsync && returnType.kind === 'future' ? returnType.item : returnType;
   if (!ts.isBlock(body) && answers.kind !== 'void') {
     return {
-      kind: 'closureValue',
-      params,
       isAsync,
-      value: lowerExpression(unwrapParenthesized(body), answers, scoped),
+      isWidget: false,
+      body: {
+        kind: 'expression',
+        value: lowerExpression(unwrapParenthesized(body), answers, scoped),
+      },
     };
   }
   return {
-    kind: 'closure',
-    params,
     isAsync,
-    statements: lowerBodyStatements(body, scoped, true),
+    isWidget: false,
+    body: {
+      kind: 'block',
+      statements: lowerBodyStatements(body, scoped, true),
+    },
   };
 };
 
@@ -1511,6 +1592,44 @@ const irArgumentText = (value: IrValue): string =>
   });
 
 /**
+ * `new LinearGradient(…).createShader(rect)` — a method on a value written
+ * where it is used.
+ *
+ * The receiver is lowered as a value and the method is looked up on the
+ * class that value is: what it answers with is what Dart says it does.
+ */
+const lowerCallOnValue = (
+  call: ts.CallExpression,
+  callee: ts.PropertyAccessExpression,
+  context: LowerContext,
+): { value: IrValue; returns: TypeNode } | null => {
+  const target = unwrapParenthesized(callee.expression);
+  const className =
+    ts.isNewExpression(target) && ts.isIdentifier(target.expression)
+      ? target.expression.text
+      : null;
+  const method = context.compile.sdkMethods
+    .get(className ?? '')
+    ?.get(callee.name.text);
+  if (className === null || method === undefined) {
+    return null;
+  }
+  const receiver = lowerSdkConstruction(target, { kind: 'unknown' }, context);
+  if (receiver === null) {
+    return null;
+  }
+  return {
+    value: {
+      kind: 'invoke',
+      receiver: irArgumentText(receiver),
+      method: method.name,
+      args: methodArguments(method, [...call.arguments], context),
+    },
+    returns: method.returnType,
+  };
+};
+
+/**
  * `scroll.jumpTo(0)` — a method on a value the component holds.
  *
  * Owning a controller is pointless without calling it, and what it answers
@@ -1522,10 +1641,14 @@ const lowerMethodCall = (
 ): { value: IrValue; returns: TypeNode } | null => {
   if (
     !ts.isCallExpression(expression) ||
-    !ts.isPropertyAccessExpression(expression.expression) ||
-    !ts.isIdentifier(expression.expression.expression)
+    !ts.isPropertyAccessExpression(expression.expression)
   ) {
     return null;
+  }
+  // `new LinearGradient(…).createShader(rect)` — the receiver is a value,
+  // and a value has methods whether or not it has a name.
+  if (!ts.isIdentifier(expression.expression.expression)) {
+    return lowerCallOnValue(expression, expression.expression, context);
   }
   const receiver = expression.expression.expression.text;
   const held = context.translate.memberReads.get(receiver);
@@ -1535,22 +1658,50 @@ const lowerMethodCall = (
   if (held === undefined || method === undefined) {
     return null;
   }
-  const positional = method.params.filter((param) => !param.named);
-  const named = method.params.filter((param) => param.named);
-  const args = [...expression.arguments];
-  const options = named.length > 0 ? args[positional.length] : undefined;
-  const written = constructionValue(
+
+  // A method of the class being written is called without a receiver, which
+  // is what an empty one stands for: inside a delegate, `layoutChild(…)`.
+  if (held.receiver === '') {
+    return {
+      value: {
+        kind: 'invoke',
+        receiver: '',
+        method: method.name,
+        args: methodArguments(method, [...expression.arguments], context),
+      },
+      returns: method.returnType,
+    };
+  }
+  return {
+    value: constructionValue(
+      {
+        className: held.receiver,
+        constructorName: method.name,
+        constructor: { params: method.params },
+      },
+      [...expression.arguments],
+      context,
+    ),
+    returns: method.returnType,
+  };
+};
+
+/** A method's arguments, mapped the way every other call's are. */
+const methodArguments = (
+  method: StaticMethod,
+  args: ts.Expression[],
+  context: LowerContext,
+): IrArgument[] => {
+  const built = constructionValue(
     {
-      className: held.receiver,
-      constructorName: method.name,
+      className: '',
+      constructorName: '',
       constructor: { params: method.params },
     },
     args,
     context,
   );
-  return options !== undefined && !ts.isObjectLiteralExpression(options)
-    ? null
-    : { value: written, returns: method.returnType };
+  return built.kind === 'construct' ? built.args : [];
 };
 
 /**
@@ -3369,8 +3520,11 @@ const lowerLocalDeclaration = (
     // A value the SDK builds or hands over is printed through the printer,
     // so a long one wraps exactly where `dart format` wraps it.
     const fromStatic = lowerStaticCall(initializer, context);
+    // `const label = self.layoutChild(…)` — a method on a value the code
+    // holds answers with something, and what it answers with is the local.
+    const fromCall = fromStatic ?? lowerMethodCall(initializer, context);
     const structured =
-      fromStatic?.value ??
+      fromCall?.value ??
       lowerNamedConstruction(initializer, context) ??
       lowerSdkConstruction(initializer, { kind: 'unknown' }, context);
     // The fallback is only written when nothing structured was found: it
@@ -3383,16 +3537,16 @@ const lowerLocalDeclaration = (
             line: `final ${name} = ${translateExpression(initializer, context.translate)};`,
           }
         : { kind: 'local', name, value: structured };
-    // `const data = MediaQuery.of(ctx)` — what a static hands over is read,
+    // `const data = MediaQuery.of(ctx)` — what a call hands over is read,
     // so the name it is bound to is readable for that type's members.
-    if (fromStatic !== null) {
+    if (fromCall !== null) {
       return {
         statement,
         context: withScopedParams(
           [
             {
               name,
-              type: fromStatic.returns,
+              type: fromCall.returns,
               fieldsOf: (
                 className: string,
               ): Map<string, TypeNode> | undefined =>
@@ -3857,6 +4011,268 @@ const pluginCallArguments = (
 
 const pascalCase = (name: string): string =>
   `${name[0]?.toUpperCase() ?? ''}${name.slice(1)}`;
+
+/** One member of the class being written, as the SDK declares it. */
+interface DelegateSurfaceMember {
+  params: ParamModel[];
+  returnType: TypeNode;
+  isGetter: boolean;
+}
+
+/** Every member being this class means writing, by name. */
+const delegateSurface = (
+  definition: DelegateDefinition,
+): Map<string, DelegateSurfaceMember> =>
+  new Map([
+    ...definition.getters.map((getter): [string, DelegateSurfaceMember] => [
+      getter.name,
+      { params: [], returnType: getter.type, isGetter: true },
+    ]),
+    ...definition.methods.map((method): [string, DelegateSurfaceMember] => [
+      method.name,
+      { params: method.params, returnType: method.returnType, isGetter: false },
+    ]),
+  ]);
+
+/**
+ * One written member, lowered against the signature it overrides.
+ *
+ * Dart's signature is the superclass's: every parameter it declares is
+ * declared here too, whether or not the TSX named it. What the author did
+ * name it is what the body reads, so the two stay in step without the
+ * author having to write a signature at all.
+ */
+/**
+ * A member's type, with the class's own parameters filled in.
+ *
+ * `RouterDelegate<T>.setNewRoutePath(T configuration)` is written by a class
+ * that says what it is generic over, so `T` there is whatever fills it —
+ * `Object` for an unbounded parameter, the bound for a bounded one.
+ */
+const withTypeArguments = (
+  type: TypeNode,
+  definition: DelegateDefinition,
+): TypeNode => {
+  const filled = (inner: TypeNode): TypeNode =>
+    withTypeArguments(inner, definition);
+  switch (type.kind) {
+    case 'typeVar': {
+      const index = definition.typeParams.indexOf(type.name);
+      const argument = definition.typeArguments[index];
+      return argument === undefined ? type : { kind: 'named', name: argument };
+    }
+    case 'nullable':
+      return { kind: 'nullable', inner: filled(type.inner) };
+    case 'named':
+      return type.args === undefined
+        ? type
+        : { ...type, args: type.args.map(filled) };
+    case 'list':
+    case 'set':
+    case 'future':
+    case 'stream':
+      return { kind: type.kind, item: filled(type.item) };
+    case 'map':
+      return { kind: 'map', key: filled(type.key), value: filled(type.value) };
+    case 'function':
+      return {
+        kind: 'function',
+        returnType: filled(type.returnType),
+        params: type.params.map((param) => ({
+          ...param,
+          type: filled(param.type),
+        })),
+      };
+    // A scalar, an enum, a widget, a void: nothing generic to fill in.
+    default:
+      return type;
+  }
+};
+
+/** The Dart a member's type is written as, refused rather than guessed. */
+const memberDartType = (
+  type: TypeNode,
+  scope: { definition: DelegateDefinition; member: string; node: ts.Node },
+  context: LowerContext,
+): string => {
+  // `void` is a type in return position and nowhere else, and no parameter
+  // is ever typed with it, so one printer answers for both.
+  const dart = returnDartTypeOf(withTypeArguments(type, scope.definition));
+  if (dart === null) {
+    throw tsxErrorAt(
+      'TSX0368',
+      `\`${scope.definition.name}.${scope.member}\` is typed with something ` +
+        'the compiler cannot write in Dart yet, so the class cannot be ' +
+        'written either.',
+      { sourceFile: context.sourceFile, node: scope.node },
+    );
+  }
+  return dart;
+};
+
+const lowerDelegateMember = (
+  member: { name: string; body: ts.ArrowFunction },
+  declared: DelegateSurfaceMember,
+  scope: {
+    self: string;
+    definition: DelegateDefinition;
+    context: LowerContext;
+  },
+): IrDelegateMember => {
+  const { context, definition } = scope;
+  // The first parameter is the value being written; the rest are the
+  // superclass's, in its order.
+  const authored = [...member.body.parameters].slice(1);
+  const names = declared.params.map(
+    (param, index) =>
+      authored[index]?.name.getText(context.sourceFile) ?? param.name,
+  );
+  const functionParams = declared.params.map((param): FunctionParam => ({
+    name: param.name,
+    type: param.type,
+    named: false,
+    required: param.required,
+  }));
+  const selfRead: MemberReadInfo = {
+    className: definition.name,
+    // A member of the class being written needs no receiver in Dart.
+    receiver: '',
+    nullable: false,
+    fields:
+      context.compile.sdkClassFields.get(definition.name) ??
+      new Map<string, TypeNode>(),
+  };
+  const withSelf: LowerContext = {
+    ...context,
+    translate: {
+      ...context.translate,
+      memberReads: new Map([
+        ...context.translate.memberReads,
+        [scope.self, selfRead],
+      ]),
+    },
+  };
+  const scoped = withClosureParams(
+    { declared: functionParams, names },
+    withSelf,
+  );
+  const lowered = lowerFunctionBody(member.body, declared.returnType, scoped);
+  const written = (type: TypeNode): string =>
+    memberDartType(
+      type,
+      { definition, member: member.name, node: member.body },
+      context,
+    );
+  return {
+    name: member.name,
+    returnDartType: written(declared.returnType),
+    params: declared.params.map((param, index) => ({
+      name: names[index] ?? param.name,
+      dartType: written(param.type),
+    })),
+    isGetter: declared.isGetter,
+    isAsync: lowered.isAsync,
+    body: lowered.body,
+  };
+};
+
+/**
+ * `defineDelegate('FlowDelegate', { … })` — a class this file writes.
+ *
+ * What it extends, what it mixes in and what it must implement all come
+ * from the SDK, so the written class is one Flutter accepts; the single
+ * instance beside it is what every widget asking for one is handed.
+ */
+export const lowerDelegate = (
+  binding: DelegateBinding,
+  compile: CompileContext,
+  useDartImport: (uri: string, prefix?: string) => void,
+): IrDelegate => {
+  const sourceFile = binding.delegateNode.getSourceFile();
+  // Dart names the class and the instance its own way: an UPPER_SNAKE const
+  // is `_tableSource` holding a `_TableSource`, which is what
+  // `camel_case_types` and `non_constant_identifier_names` ask for. Two
+  // names that differ only in case are one Dart class — `layout` and
+  // `Layout` would both be `_Layout` — and Dart would refuse the whole file
+  // rather than the line that caused it.
+  const dartName = dartConstantName(binding.name);
+  const className = `_${pascalCase(dartName)}`;
+  const clash = [...compile.writtenDelegates.values()].find(
+    (written) => written.className === className,
+  );
+  if (clash !== undefined) {
+    throw tsxErrorAt(
+      'TSX0367',
+      `\`${binding.name}\` and \`${clash.instanceName.slice(1)}\` both ` +
+        `become the Dart class \`${className}\` — name one of them ` +
+        'something else.',
+      { sourceFile, node: binding.delegateNode },
+    );
+  }
+  const definition = compile.delegates.get(binding.delegate);
+  if (definition === undefined) {
+    throw tsxErrorAt(
+      'TSX0363',
+      `\`${binding.delegate}\` is not a class an app writes: Flutter ` +
+        'builds one, hands one over, or answers with one. Check the API ' +
+        'reference for the classes `defineDelegate` writes.',
+      { sourceFile, node: binding.delegateNode },
+    );
+  }
+  const surface = delegateSurface(definition);
+  const written = new Set(binding.members.map((member) => member.name));
+  const missing = [...surface.keys()].filter((name) => !written.has(name));
+  if (missing.length > 0) {
+    throw tsxErrorAt(
+      'TSX0364',
+      `writing a \`${definition.name}\` means writing ` +
+        `${missing.map((name) => `\`${name}\``).join(', ')} too.`,
+      { sourceFile, node: binding.delegateNode },
+    );
+  }
+  const context = helperContext(
+    compile,
+    moduleTranslateContext({
+      compile,
+      sourceFile,
+      localDartTypes: new Map(),
+      memberReads: new Map(),
+      useDartImport,
+    }),
+  );
+  const members = binding.members.map((member) => {
+    const declared = surface.get(member.name);
+    if (declared === undefined) {
+      throw tsxErrorAt(
+        'TSX0365',
+        `a \`${definition.name}\` does not write \`${member.name}\`: it ` +
+          `writes ${[...surface.keys()].map((name) => `\`${name}\``).join(', ')}.`,
+        { sourceFile, node: member.body },
+      );
+    }
+    const [self] = member.body.parameters;
+    return lowerDelegateMember(member, declared, {
+      self: self?.name.getText(sourceFile) ?? '',
+      definition,
+      context,
+    });
+  });
+  const typeArguments =
+    definition.typeArguments.length === 0
+      ? ''
+      : `<${definition.typeArguments.join(', ')}>`;
+  return {
+    // Both are private to the file: a public class could collide with the
+    // very name it extends — `defineDelegate('FlowDelegate')` bound to
+    // `flowDelegate` would — and a public instance of a private type is
+    // exactly what `library_private_types_in_public_api` refuses.
+    className,
+    instanceName: `_${dartName}`,
+    superclass: `${definition.name}${typeArguments}`,
+    mixin: definition.mixin,
+    members,
+  };
+};
 
 export const lowerRouter = (router: RouterBinding): IrRouter => ({
   name: router.name,
@@ -4708,10 +5124,18 @@ export const lowerComponent = (
         ...component.controllers.map((controller) => controller.name),
         ...component.animations.map((animation) => animation.name),
       ]),
-      // `const ctx = useBuildContext()` names the context the build has.
-      renames: new Map(
-        component.contexts.map((name): [string, string] => [name, 'context']),
-      ),
+      // `const ctx = useBuildContext()` names the context the build has,
+      // and a class this file writes is named by the private instance
+      // declared beside it.
+      renames: new Map([
+        ...component.contexts.map((name): [string, string] => [
+          name,
+          'context',
+        ]),
+        ...[...compile.writtenDelegates].map(
+          ([name, delegate]): [string, string] => [name, delegate.instanceName],
+        ),
+      ]),
       pluginConstructibles: compile.pluginConstructibles,
       pluginConstructors: compile.pluginConstructors,
       // A call that answers immediately is a value like any other, so it may

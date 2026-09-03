@@ -735,8 +735,8 @@ describe('transpileComponent — json models', () => {
       }),
     ).rejects.toThrow(
       new Error(
-        'TSX0305 probe.tsx:2:35 — `lookup().name` is an expression form the ' +
-          'compiler does not translate to Dart.',
+        'TSX0305 probe.tsx:2:35 — `lookup().name` reads a member the ' +
+          'compiler cannot resolve to a Dart one.',
       ),
     );
 

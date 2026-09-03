@@ -1,5 +1,6 @@
 import type { ParamModel, TypeNode } from '../api/model';
 import { DATE_FORMS } from '../derive/date-forms';
+import type { DelegateDefinition } from '../derive/delegates';
 import type { NamedSlot, WidgetSlots } from '../derive/slots';
 import { EDGE_INSETS_TYPES, type ValueForms } from '../derive/value-forms';
 import { jsxPropName } from '../generate/renames';
@@ -60,6 +61,18 @@ export interface SynthesisContext {
    * by `PlatformViewsService.initAndroidView(…)`.
    */
   suppliers: ReadonlyMap<string, readonly Supplier[]>;
+  /**
+   * Types something else answers with, and the method that answers: a
+   * `Shader` by a gradient's `createShader(rect)`.
+   */
+  answers: ReadonlyMap<string, readonly Supplier[]>;
+  /** Types being written right now, so a cycle stops rather than recurs. */
+  visiting: ReadonlySet<string>;
+  /**
+   * The classes an app writes itself, by name: a `FlowDelegate`, a
+   * `DataTableSource`. Nothing builds one, so an example writes one.
+   */
+  delegates: ReadonlyMap<string, DelegateDefinition>;
 }
 
 /**
@@ -72,6 +85,15 @@ export interface SynthesisContext {
 export interface ExampleBinding {
   line: string;
   imports: string[];
+  /**
+   * Where the line belongs.
+   *
+   * A value a component holds is bound inside it; a class the app writes is
+   * declared beside it, module-level, because that is the only place
+   * `defineDelegate` may be written — one class, one instance, shared by
+   * every component in the file.
+   */
+  scope?: 'module';
 }
 
 export interface SynthesizedExample {
@@ -266,8 +288,18 @@ const satisfies = (
  */
 const suppliedValue = (
   typeName: string,
-  context: SynthesisContext,
+  outer: SynthesisContext,
 ): SynthesizedValue | null => {
+  // A static that hands over one type may ask for another that is handed
+  // over by a static asking for the first. A type already being handed over
+  // is not handed over again.
+  if (outer.visiting.has(typeName)) {
+    return null;
+  }
+  const context: SynthesisContext = {
+    ...outer,
+    visiting: new Set([...outer.visiting, typeName]),
+  };
   for (const supplier of context.suppliers.get(typeName) ?? []) {
     // Only what the static insists on: an optional argument left out is the
     // shortest true way to call it.
@@ -315,6 +347,163 @@ const suppliedValue = (
     };
   }
   return null;
+};
+
+/**
+ * The plainest way to write a value of this type.
+ *
+ * A component may own one, the SDK may build one, the framework may hand one
+ * over, or something else may answer with one. They are tried in that order:
+ * owning a value is the plainest thing to read, building one is next, and
+ * reaching through the framework or through another value is what is left
+ * when nothing else writes it.
+ */
+const plainestValue = (
+  type: TypeNode & { kind: 'named' },
+  context: SynthesisContext,
+): SynthesizedValue | null =>
+  ownedValue(type.name, context) ??
+  builtValue(type, context) ??
+  suppliedValue(type.name, context) ??
+  answeredValue(type.name, context) ??
+  writtenValue(type.name, context);
+
+/**
+ * `gradient.createShader(rect)` — a value something else answers with.
+ *
+ * A `Shader` is not built and not handed over: a gradient makes one. So the
+ * example writes the value that answers, and calls the method on it.
+ */
+const answeredValue = (
+  typeName: string,
+  outer: SynthesisContext,
+): SynthesizedValue | null => {
+  // What answers with a type may itself ask for that type, and the SDK is
+  // big enough that some pair does. A type already being answered is not
+  // answered again.
+  if (outer.visiting.has(typeName)) {
+    return null;
+  }
+  const context: SynthesisContext = {
+    ...outer,
+    visiting: new Set([...outer.visiting, typeName]),
+  };
+  for (const answer of context.answers.get(typeName) ?? []) {
+    const receiver = builtValue({ kind: 'named', name: answer.owner }, context);
+    const args = answer.params
+      .filter((param) => param.required)
+      .map((param) => attrValue(param.type, context, 'argument'));
+    if (receiver === null || args.some((value) => value === null)) {
+      continue;
+    }
+    const written = args.map((value) => braced(value?.value ?? ''));
+    return {
+      value: `{${braced(receiver.value)}.${answer.method}(${written.join(', ')})}`,
+      ...(receiver.binding === undefined ? {} : { binding: receiver.binding }),
+    };
+  }
+  return null;
+};
+
+/**
+ * `defineDelegate('FlowDelegate', { … })` — a class the app writes.
+ *
+ * Nothing builds one of these and nothing hands one over: being one is
+ * writing one, which is what an example of a prop asking for one shows.
+ * Every member the class leaves abstract is written, answering with a value
+ * of its own type — and a class whose members cannot all be answered is not
+ * offered at all.
+ */
+const writtenValue = (
+  typeName: string,
+  context: SynthesisContext,
+): SynthesizedValue | null => {
+  const definition = context.delegates.get(typeName);
+  if (definition === undefined) {
+    return null;
+  }
+  const members = [
+    ...definition.getters.map((getter) => ({
+      name: getter.name,
+      returnType: getter.type,
+    })),
+    ...definition.methods.map((method) => ({
+      name: method.name,
+      returnType: method.returnType,
+    })),
+  ].sort((first, second) => first.name.localeCompare(second.name));
+  const written: string[] = [];
+  const imports = new Set<string>([DEFINE_DELEGATE]);
+  for (const member of members) {
+    const body = memberBody(member.returnType, context);
+    if (body === null) {
+      return null;
+    }
+    written.push(`${member.name}: ${body.value}`);
+    for (const name of body.imports) {
+      imports.add(name);
+    }
+  }
+  const name = `${typeName[0]?.toLowerCase() ?? ''}${typeName.slice(1)}`;
+  return {
+    value: `{${name}}`,
+    binding: {
+      line:
+        `const ${name} = ${DEFINE_DELEGATE}('${typeName}', ` +
+        `{ ${written.join(', ')} });`,
+      imports: [...imports],
+      scope: 'module',
+    },
+  };
+};
+
+/** The name of the primitive that writes a class an app writes itself. */
+const DEFINE_DELEGATE = 'defineDelegate';
+
+/**
+ * How a Future and a Stream are keyed among the things something answers
+ * with.
+ *
+ * `FutureBuilder.future` takes any Future, whatever it carries, so what
+ * answers with one is looked up by that alone — the same for a Stream. Both
+ * names are the answer map's keys, and no Dart type is called either.
+ */
+export const FUTURE_ANSWER = 'Future';
+export const STREAM_ANSWER = 'Stream';
+
+/**
+ * What one written member answers with.
+ *
+ * A member answering with nothing has nothing to write, an async one is
+ * written `async`, and every other one answers with a value of its declared
+ * type — which is the same value a prop of that type is written with.
+ */
+const memberBody = (
+  returnType: TypeNode,
+  context: SynthesisContext,
+): { value: string; imports: readonly string[] } | null => {
+  const isAsync = returnType.kind === 'future';
+  const answers = isAsync ? returnType.item : returnType;
+  const head = isAsync ? 'async () => ' : '() => ';
+  if (answers.kind === 'void') {
+    return { value: `${head}{}`, imports: [] };
+  }
+  const answer = attrValue(answers, context, 'expression');
+  if (answer === null) {
+    return null;
+  }
+  // A member whose value has to be bound to a name of its own cannot be
+  // written inside the one line the delegate is: nothing here can declare
+  // it.
+  if (answer.binding !== undefined) {
+    return null;
+  }
+  const value = braced(answer.value);
+  // An object is the value the member answers with, not a body: `() => ({})`.
+  return {
+    value: `${head}${value.startsWith('{') ? `(${value})` : value}`,
+    imports: namesWritten(value),
+  };
 };
 
 /** `const focusNode = new FocusNode();` — a value the component makes. */
@@ -453,11 +642,7 @@ const attrValue = (
         // A bare expression is typed as the type itself, so there is no
         // union to shorten — but a value the component makes, and one the
         // SDK builds, are the values themselves.
-        return (
-          ownedValue(type.name, context) ??
-          builtValue(type, context) ??
-          suppliedValue(type.name, context)
-        );
+        return plainestValue(type, context);
       }
       const dateForm = DATE_FORMS.get(type.name);
       if (dateForm !== undefined) {
@@ -474,13 +659,7 @@ const attrValue = (
       if (context.forms.constructibles.has(type.name)) {
         return literal('{{}}');
       }
-      // A value the component makes and keeps, one the SDK builds, or one
-      // the framework hands over — in that order of directness.
-      return (
-        ownedValue(type.name, context) ??
-        builtValue(type, context) ??
-        suppliedValue(type.name, context)
-      );
+      return plainestValue(type, context);
     }
     case 'function': {
       // What a callback answers with is the same whether or not it may be
@@ -517,6 +696,14 @@ const attrValue = (
     }
     // A generic value is whatever the example makes it: the widget's own
     // type parameter follows what it is given, and so does `Object`.
+    // A Future or a Stream is not written as a literal: something answers
+    // with one — an asset load, a platform event channel — and calling that
+    // is how an example writes it. What a hook would write instead is a
+    // second way, not the only one.
+    case 'future':
+      return answeredValue(FUTURE_ANSWER, context);
+    case 'stream':
+      return answeredValue(STREAM_ANSWER, context);
     case 'unknown':
     case 'typeVar':
       return literal('"example"');
@@ -553,7 +740,9 @@ const attrValue = (
         ...(value.binding === undefined ? {} : { binding: value.binding }),
       };
     }
-    default:
+    // Nothing is written where nothing is carried: a prop of no type at all
+    // has no example value, and saying so is the whole answer.
+    case 'void':
       return null;
   }
 };
@@ -725,12 +914,19 @@ export const exampleSource = (
   }
   const indented = (spaces: number): string =>
     example.tsx.replaceAll('\n', `\n${' '.repeat(spaces)}`);
-  if (example.bindings.length === 0) {
-    return `export const ${widgetName}Example = () => (\n  ${indented(2)}\n);`;
+  // A class the app writes is declared above the component, which is where
+  // it is written; everything else is bound inside it.
+  const beside = example.bindings
+    .filter((binding) => binding.scope === 'module')
+    .map((binding) => `${binding.line}\n\n`)
+    .join('');
+  const held = example.bindings.filter((binding) => binding.scope !== 'module');
+  if (held.length === 0) {
+    return `${beside}export const ${widgetName}Example = () => (\n  ${indented(2)}\n);`;
   }
-  const lines = example.bindings.map((binding) => `  ${binding.line}`);
+  const lines = held.map((binding) => `  ${binding.line}`);
   return (
-    `export const ${widgetName}Example = () => {\n` +
+    `${beside}export const ${widgetName}Example = () => {\n` +
     `${lines.join('\n')}\n\n` +
     `  return (\n    ${indented(4)}\n  );\n` +
     '};'
@@ -743,18 +939,25 @@ export const exampleSource = (
  * A name written as a type — the key of a `Map<ShortcutActivator, …>` — is
  * imported as one, which is what `verbatimModuleSyntax` asks for.
  */
+/** Every SDK name a written expression refers to, whatever it is written in. */
+const namesWritten = (source: string): string[] => {
+  const named = (pattern: RegExp): string[] =>
+    [...source.matchAll(pattern)].map((match) => match[1] ?? '');
+  return [
+    ...named(NAMESPACE_REFERENCE),
+    ...named(CONSTRUCTED_CLASS).filter((name) => !BUILT_IN_CLASSES.has(name)),
+  ].filter((name) => name !== '');
+};
+
 export const exampleImports = (
   widgetName: string,
   example: SynthesizedExample,
 ): string[] => {
-  const named = (pattern: RegExp): string[] =>
-    [...example.tsx.matchAll(pattern)].map((match) => match[1] ?? '');
   const values = new Set([
     widgetName,
     'Text',
     ...example.bindings.flatMap((binding) => binding.imports),
-    ...named(NAMESPACE_REFERENCE),
-    ...named(CONSTRUCTED_CLASS).filter((name) => !BUILT_IN_CLASSES.has(name)),
+    ...namesWritten(example.tsx),
   ]);
   return [...values].filter((name) => name !== '').sort();
 };

@@ -200,8 +200,8 @@ describe('translateExpression', () => {
   test('an unsupported property access is a numbered error', () => {
     expect(() => translate('label.size')).toThrow(
       new Error(
-        'TSX0305 probe.tsx:6:17 — `label.size` is an expression form the ' +
-          'compiler does not translate to Dart.',
+        'TSX0305 probe.tsx:6:17 — `label.size` reads a member the compiler ' +
+          'cannot resolve to a Dart one.',
       ),
     );
   });

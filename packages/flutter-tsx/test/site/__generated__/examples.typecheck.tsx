@@ -42,6 +42,7 @@ import {
   AppBar,
   AppBarTheme,
   AppKitView,
+  AppLifecycleListener,
   AspectRatio,
   AssetImage,
   Autocomplete,
@@ -161,9 +162,11 @@ import {
   CupertinoTheme,
   CupertinoTimerPicker,
   CupertinoUserInterfaceLevel,
+  CustomMultiChildLayout,
   CustomPaint,
   CustomScrollView,
   CustomSingleChildLayout,
+  DataRow,
   DataTable,
   DataTableTheme,
   DatePickerDialog,
@@ -218,6 +221,7 @@ import {
   EndDrawerButton,
   EndDrawerButtonIcon,
   ErrorWidget,
+  EventChannel,
   ExcludeFocus,
   ExcludeFocusTraversal,
   ExcludeSemantics,
@@ -240,6 +244,7 @@ import {
   FlexibleSpaceBarSettings,
   FloatingActionButton,
   FloatingActionButtonTheme,
+  Flow,
   FlutterLogo,
   Focus,
   FocusNode,
@@ -251,6 +256,7 @@ import {
   FormField,
   FractionalTranslation,
   FractionallySizedBox,
+  FutureBuilder,
   GestureDetector,
   GlowingOverscrollIndicator,
   GridPaper,
@@ -271,6 +277,7 @@ import {
   Image,
   ImageFiltered,
   ImageIcon,
+  ImageShader,
   IndexedSemantics,
   IndexedStack,
   InheritedCupertinoTheme,
@@ -360,6 +367,7 @@ import {
   PageStorage,
   PageStorageBucket,
   PageView,
+  PaginatedDataTable,
   PerformanceOverlay,
   PhysicalModel,
   PhysicalShape,
@@ -402,11 +410,13 @@ import {
   RawScrollbar,
   RawTooltip,
   RawView,
+  ReadBuffer,
   RefreshIndicator,
   RefreshProgressIndicator,
   RelativePositionedTransition,
   RenderAbsorbPointer,
   RenderObjectToWidgetAdapter,
+  RenderRepaintBoundary,
   ReorderableDelayedDragStartListener,
   ReorderableDragStartListener,
   ReorderableList,
@@ -419,6 +429,7 @@ import {
   RootWidget,
   RotatedBox,
   RotationTransition,
+  Router,
   Row,
   SafeArea,
   Scaffold,
@@ -451,6 +462,7 @@ import {
   Semantics,
   SemanticsDebugger,
   SensitiveContent,
+  ShaderMask,
   ShapeBorderClipper,
   SharedAppData,
   ShortcutRegistrar,
@@ -492,6 +504,7 @@ import {
   SliverOverlapAbsorberHandle,
   SliverOverlapInjector,
   SliverPadding,
+  SliverPersistentHeader,
   SliverPrototypeExtentList,
   SliverReorderableList,
   SliverResizingHeader,
@@ -511,6 +524,7 @@ import {
   StatefulBuilder,
   StaticSelectionContainerDelegate,
   Stepper,
+  StreamBuilder,
   StretchEffect,
   StretchingOverscrollIndicator,
   SubmenuButton,
@@ -577,7 +591,9 @@ import {
   WidgetsApp,
   WillPopScope,
   Wrap,
+  WriteBuffer,
   YearPicker,
+  defineDelegate,
   tween,
   useAnimation,
   useBuildContext,
@@ -1463,6 +1479,18 @@ export const CupertinoUserInterfaceLevelExample = () => (
   </CupertinoUserInterfaceLevel>
 );
 
+const multiChildLayoutDelegate = defineDelegate('MultiChildLayoutDelegate', {
+  performLayout: () => {},
+  shouldRelayout: () => true,
+});
+
+export const CustomMultiChildLayoutExample = () => (
+  <CustomMultiChildLayout delegate={multiChildLayoutDelegate}>
+    <Text>Item 1</Text>
+    <Text>Item 2</Text>
+  </CustomMultiChildLayout>
+);
+
 export const CustomPaintExample = () => (
   <CustomPaint>
     <Text>Content</Text>
@@ -1911,6 +1939,18 @@ export const FloatingActionButtonThemeExample = () => (
   </FloatingActionButtonTheme>
 );
 
+const flowDelegate = defineDelegate('FlowDelegate', {
+  paintChildren: () => {},
+  shouldRepaint: () => true,
+});
+
+export const FlowExample = () => (
+  <Flow delegate={flowDelegate}>
+    <Text>Item 1</Text>
+    <Text>Item 2</Text>
+  </Flow>
+);
+
 export const FlutterLogoExample = () => <FlutterLogo />;
 
 export const FocusExample = () => (
@@ -1963,6 +2003,13 @@ export const FractionallySizedBoxExample = () => (
   <FractionallySizedBox>
     <Text>Content</Text>
   </FractionallySizedBox>
+);
+
+export const FutureBuilderExample = () => (
+  <FutureBuilder
+    future={new AppLifecycleListener().didPopRoute()}
+    builder={() => <Text>Content</Text>}
+  />
 );
 
 export const GestureDetectorExample = () => (
@@ -2556,6 +2603,17 @@ export const PageViewExample = () => (
   </PageView>
 );
 
+const dataTableSource = defineDelegate('DataTableSource', {
+  getRow: () => new DataRow({ cells: [] }),
+  isRowCountApproximate: () => true,
+  rowCount: () => 8,
+  selectedRowCount: () => 8,
+});
+
+export const PaginatedDataTableExample = () => (
+  <PaginatedDataTable columns={[]} source={dataTableSource} />
+);
+
 export const PerformanceOverlayExample = () => <PerformanceOverlay />;
 
 export const PhysicalModelExample = () => (
@@ -2928,6 +2986,14 @@ export const RotationTransitionExample = () => {
   );
 };
 
+const routerDelegate = defineDelegate('RouterDelegate', {
+  build: () => <Text>Content</Text>,
+  popRoute: async () => true,
+  setNewRoutePath: async () => {},
+});
+
+export const RouterExample = () => <Router routerDelegate={routerDelegate} />;
+
 export const RowExample = () => (
   <Row>
     <Text>Item 1</Text>
@@ -3078,6 +3144,21 @@ export const SensitiveContentExample = () => (
   <SensitiveContent sensitivity="autoSensitive">
     <Text>Content</Text>
   </SensitiveContent>
+);
+
+export const ShaderMaskExample = () => (
+  <ShaderMask
+    shaderCallback={() =>
+      new ImageShader(
+        new RenderRepaintBoundary().toImageSync(),
+        'clamp',
+        'clamp',
+        new ReadBuffer(new WriteBuffer().done()).getFloat64List(8),
+      )
+    }
+  >
+    <Text>Content</Text>
+  </ShaderMask>
 );
 
 export const SharedAppDataExample = () => (
@@ -3289,6 +3370,20 @@ export const SliverOverlapInjectorExample = () => {
 
 export const SliverPaddingExample = () => <SliverPadding padding="infinity" />;
 
+const sliverPersistentHeaderDelegate = defineDelegate(
+  'SliverPersistentHeaderDelegate',
+  {
+    build: () => <Text>Content</Text>,
+    maxExtent: () => 1,
+    minExtent: () => 1,
+    shouldRebuild: () => true,
+  },
+);
+
+export const SliverPersistentHeaderExample = () => (
+  <SliverPersistentHeader delegate={sliverPersistentHeaderDelegate} />
+);
+
 export const SliverPrototypeExtentListExample = () => (
   <SliverPrototypeExtentList
     delegate={new SliverChildBuilderDelegate(() => <Text>Content</Text>)}
@@ -3376,6 +3471,13 @@ export const StatefulBuilderExample = () => (
 );
 
 export const StepperExample = () => <Stepper steps={[]} />;
+
+export const StreamBuilderExample = () => (
+  <StreamBuilder
+    stream={new EventChannel('example').receiveBroadcastStream()}
+    builder={() => <Text>Content</Text>}
+  />
+);
 
 export const StretchEffectExample = () => (
   <StretchEffect axis="horizontal">

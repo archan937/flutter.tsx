@@ -80,6 +80,10 @@ describe('committed golden expected.dart files', () => {
       '60-button-style',
       '61-static-in-handler',
       '62-controller-methods',
+      '63-layout-delegate',
+      '64-table-source',
+      '65-header-delegate',
+      '66-router-delegate',
     ]);
   });
 

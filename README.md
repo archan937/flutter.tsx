@@ -174,6 +174,10 @@ Rewrite progress:
 - [x] `fsx` CLI (`install` · `init` · `dev` · `build` · `doctor`) and the scaffolder,
       building for web, iOS, Android, macOS, Windows and Linux — web and macOS are
       built end to end on every CI run
+- [x] `defineDelegate`: the classes Flutter leaves to an app — a layout delegate, a
+      table source, a sliver header, a router delegate — written in TSX and emitted as
+      the Dart subclass, so **every one of the 539 widget examples in the reference
+      compiles and analyzes clean**, with nothing left unwritten
 - [x] CI pipeline (three jobs; the macOS one builds real Flutter apps) and the docs site
 - [ ] 1.0 on npm
 

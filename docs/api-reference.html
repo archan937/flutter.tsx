@@ -223,7 +223,7 @@ details details > ul { padding-left: 24px; }
 </ul>
 </details>
 <details>
-<summary>Hooks &amp; core APIs<span class="nav-count">28</span></summary>
+<summary>Hooks &amp; core APIs<span class="nav-count">30</span></summary>
 <ul>
 <li data-name="StateSetter"><a href="#core-StateSetter">StateSetter</a></li>
 <li data-name="useState"><a href="#core-useState">useState</a></li>
@@ -253,6 +253,8 @@ details details > ul { padding-left: 24px; }
 <li data-name="TabView"><a href="#core-TabView">TabView</a></li>
 <li data-name="AnimatedProps"><a href="#core-AnimatedProps">AnimatedProps</a></li>
 <li data-name="Animated"><a href="#core-Animated">Animated</a></li>
+<li data-name="DelegateName"><a href="#core-DelegateName">DelegateName</a></li>
+<li data-name="defineDelegate"><a href="#core-defineDelegate">defineDelegate</a></li>
 </ul>
 </details>
 <details open>
@@ -2099,10 +2101,10 @@ export const Shell = () =&gt; (
 <h3>useBuildContext<span class="badge badge-lib">hook</span></h3>
 <p class="doc">The context a widget is built in.
 
-Flutter hands values over through it — `MediaQuery.of(context)`,
-`View.of(context)` — and this is how a component names it. Compile
+Flutter hands values over through it — <code>MediaQuery.of(context)</code>,
+<code>View.of(context)</code> — and this is how a component names it. Compile
 target: the transpiler reads the call from the AST and uses the
-`BuildContext` the build already has.</p>
+<code>BuildContext</code> the build already has.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="Signature" role="tab" aria-selected="true">Signature</button>
@@ -2147,8 +2149,8 @@ target: the transpiler reads the call from the AST and uses the
 </article>
 <article class="widget" id="core-AnimationHandle" data-name="AnimationHandle">
 <h3>AnimationHandle<span class="badge badge-lib">type</span></h3>
-<p class="doc">The controller the animation is: `forward`, `reverse`, `stop`, `repeat`
-and `reset` are Flutter's own, declared by the SDK itself.</p>
+<p class="doc">The controller the animation is: <code>forward</code>, <code>reverse</code>, <code>stop</code>, <code>repeat</code>
+and <code>reset</code> are Flutter's own, declared by the SDK itself.</p>
 <pre><code class="language-typescript"><span class="tok-kw">export</span> <span class="tok-kw">type</span> <span class="tok-typ">AnimationHandle</span> = <span class="tok-typ">AnimationController</span>;</code></pre>
 
 </article>
@@ -2168,7 +2170,7 @@ and `reset` are Flutter's own, declared by the SDK itself.</p>
 <article class="widget" id="core-useAnimation" data-name="useAnimation">
 <h3>useAnimation<span class="badge badge-lib">hook</span></h3>
 <p class="doc">Compile target: the transpiler reads the call from the AST and generates an
-`AnimationController` the State owns — ticker, disposal and all.</p>
+<code>AnimationController</code> the State owns — ticker, disposal and all.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="Signature" role="tab" aria-selected="true">Signature</button>
@@ -2259,9 +2261,9 @@ and `reset` are Flutter's own, declared by the SDK itself.</p>
 <h3>tween<span class="badge badge-lib">function</span></h3>
 <p class="doc">An animation over values that are not numbers.
 
-`useAnimation` runs from 0 to 1; a transition over colours, alignments or
-offsets runs between two of those. `tween` is that range, driven by the
-same handle — Flutter's own `Tween(...).animate(controller)`.</p>
+<code>useAnimation</code> runs from 0 to 1; a transition over colours, alignments or
+offsets runs between two of those. <code>tween</code> is that range, driven by the
+same handle — Flutter's own <code>Tween(...).animate(controller)</code>.</p>
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="Signature" role="tab" aria-selected="true">Signature</button>
@@ -2765,16 +2767,12 @@ export const router = createRouter({
 </article>
 <article class="widget" id="core-json" data-name="json">
 <h3>json<span class="badge badge-lib">function</span></h3>
-<p class="doc">Decodes a JSON body into an interface declared in the same file:
-
-```tsx
-const album = json(res.body) as Album;
-```
-
-The transpiler generates a Dart data class with a `fromJson` factory and
+<p class="doc">Decodes a JSON body into an interface declared in the same file:</p>
+<pre><code class="language-tsx"><span class="tok-kw">const</span> album = <span class="tok-fn">json</span>(res.body) <span class="tok-kw">as</span> <span class="tok-typ">Album</span>;</code></pre>
+<p class="doc">The transpiler generates a Dart data class with a <code>fromJson</code> factory and
 rewrites the call to
-`Album.fromJson(jsonDecode(res.body) as Map&lt;String, dynamic&gt;)`; at
-TypeScript runtime it only needs to parse. `unknown` is deliberate: the
+<code>Album.fromJson(jsonDecode(res.body) as Map&lt;String, dynamic&gt;)</code>; at
+TypeScript runtime it only needs to parse. <code>unknown</code> is deliberate: the
 cast is where the model is named, which is how TypeScript code normally
 types a parsed body, and it means the value cannot be used untyped.</p>
 <div class="tabs">
@@ -2850,8 +2848,8 @@ types a parsed body, and it means the value cannot be used untyped.</p>
 </article>
 <article class="widget" id="core-TabItemProps" data-name="TabItemProps">
 <h3>TabItemProps<span class="badge badge-lib">type</span></h3>
-<p class="doc">One bottom-tab destination. Named `TabItem` rather than `Tab` because
-Flutter's own `Tab` widget (used with `TabBar`) must stay available.</p>
+<p class="doc">One bottom-tab destination. Named <code>TabItem</code> rather than <code>Tab</code> because
+Flutter's own <code>Tab</code> widget (used with <code>TabBar</code>) must stay available.</p>
 <pre><code class="language-typescript"><span class="tok-kw">export</span> <span class="tok-kw">interface</span> <span class="tok-typ">TabItemProps</span> {
   <span class="tok-com">/** Text under the icon in the bar. */</span>
   label: string;
@@ -2951,8 +2949,8 @@ export const Shell = () =&gt; (
 </article>
 <article class="widget" id="core-TabViewProps" data-name="TabViewProps">
 <h3>TabViewProps<span class="badge badge-lib">type</span></h3>
-<p class="doc">A bottom-tab shell: every page stays alive in an `IndexedStack` while the
-`BottomNavigationBar` switches between them.</p>
+<p class="doc">A bottom-tab shell: every page stays alive in an <code>IndexedStack</code> while the
+<code>BottomNavigationBar</code> switches between them.</p>
 <pre><code class="language-typescript"><span class="tok-kw">export</span> <span class="tok-kw">interface</span> <span class="tok-typ">TabViewProps</span> {
   children: <span class="tok-typ">FlutterChildren</span>;
 }</code></pre>
@@ -3044,7 +3042,7 @@ export const Shell = () =&gt; (
 <article class="widget" id="core-AnimatedProps" data-name="AnimatedProps">
 <h3>AnimatedProps<span class="badge badge-lib">type</span></h3>
 <p class="doc">An implicit animation. The driving value is part of the API on purpose: an
-`&lt;Animated&gt;` with nothing changing would compile to a widget that never
+<code>&lt;Animated&gt;</code> with nothing changing would compile to a widget that never
 animates.</p>
 <pre><code class="language-typescript"><span class="tok-kw">export</span> <span class="tok-kw">type</span> <span class="tok-typ">AnimatedProps</span> =
   | {
@@ -3132,6 +3130,83 @@ animates.</p>
 </div>
 </div>
 <p class="note">Used by <a href="./cookbook.html#24-animated"><code>24-animated</code></a></p>
+</article>
+<article class="widget" id="core-DelegateName" data-name="DelegateName">
+<h3>DelegateName<span class="badge badge-lib">type</span></h3>
+<p class="doc">The classes an app writes itself, by name.</p>
+<pre><code class="language-typescript"><span class="tok-kw">export</span> <span class="tok-kw">type</span> <span class="tok-typ">DelegateName</span> = keyof <span class="tok-typ">DelegateImplementations</span>;</code></pre>
+
+</article>
+<article class="widget" id="core-defineDelegate" data-name="defineDelegate">
+<h3>defineDelegate<span class="badge badge-lib">function</span></h3>
+<p class="doc">Writes one of the classes Flutter leaves to an app.
+
+Most of Flutter is built or handed over. A <code>MultiChildLayoutDelegate</code>, a
+<code>DataTableSource</code>, a <code>SliverPersistentHeaderDelegate</code> is neither: it
+exists only as the subclass an app writes, which is what this writes.</p>
+<pre><code class="language-tsx"><span class="tok-kw">const</span> rows = <span class="tok-fn">defineDelegate</span>(<span class="tok-str">'DataTableSource'</span>, {
+  rowCount: () =&gt; titles.length,
+  isRowCountApproximate: () =&gt; <span class="tok-kw">false</span>,
+  selectedRowCount: () =&gt; <span class="tok-num">0</span>,
+  getRow: (self, index) =&gt;
+    <span class="tok-kw">new</span> <span class="tok-typ">DataRow</span>({
+      cells: [<span class="tok-kw">new</span> <span class="tok-typ">DataCell</span>(&lt;<span class="tok-typ">Text</span>&gt;{<span class="tok-str">`Step ${index + 1}`</span>}&lt;/<span class="tok-typ">Text</span>&gt;)],
+    }),
+});</code></pre>
+<p class="doc">Every member is handed the value itself first, so what the class inherits
+is in reach: <code>self.layoutChild(…)</code> inside a layout delegate is the
+superclass method of that name.</p>
+<div class="tabs">
+<div class="tab-btns" role="tablist">
+<button class="tab-btn active" data-tab="Signature" role="tab" aria-selected="true">Signature</button>
+<button class="tab-btn" data-tab="TSX" role="tab" aria-selected="false">TSX</button>
+<button class="tab-btn" data-tab="Dart" role="tab" aria-selected="false">Dart</button>
+</div>
+<div class="tab-panel active" data-panel="Signature" role="tabpanel">
+<pre><code class="language-typescript">&lt;<span class="tok-typ">TName</span> <span class="tok-kw">extends</span> <span class="tok-typ">DelegateName</span>&gt;(delegate: TName, implementation: DelegateImplementations[TName]) =&gt; Delegates[TName]</code></pre>
+</div>
+<div class="tab-panel" data-panel="TSX" role="tabpanel">
+<pre><code class="language-tsx"><span class="tok-kw">import</span> { <span class="tok-typ">Center</span>, defineDelegate, <span class="tok-typ">Router</span>, <span class="tok-typ">Text</span> } <span class="tok-kw">from</span> <span class="tok-str">'flutter-tsx'</span>;
+
+<span class="tok-kw">const</span> routes = <span class="tok-fn">defineDelegate</span>(<span class="tok-str">'RouterDelegate'</span>, {
+  build: () =&gt; (
+    &lt;<span class="tok-typ">Center</span>&gt;
+      &lt;<span class="tok-typ">Text</span>&gt;Home&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;/<span class="tok-typ">Center</span>&gt;
+  ),
+  popRoute: async () =&gt; false,
+  setNewRoutePath: async () =&gt; {},
+});
+
+export const AppRouter = () =&gt; &lt;<span class="tok-typ">Router</span> routerDelegate={routes} /&gt;;</code></pre>
+</div>
+<div class="tab-panel" data-panel="Dart" role="tabpanel">
+<pre><code class="language-dart"><span class="tok-kw">import</span> <span class="tok-str">'package:flutter/material.dart'</span>;
+
+<span class="tok-kw">class</span> _Routes <span class="tok-kw">extends</span> <span class="tok-typ">RouterDelegate</span>&lt;<span class="tok-typ">Object</span>&gt; <span class="tok-kw">with</span> <span class="tok-typ">ChangeNotifier</span> {
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) =&gt; <span class="tok-kw">const</span> <span class="tok-typ">Center</span>(child: <span class="tok-typ">Text</span>(<span class="tok-str">'Home'</span>));
+
+  @override
+  <span class="tok-typ">Future</span>&lt;bool&gt; <span class="tok-fn">popRoute</span>() <span class="tok-kw">async</span> =&gt; <span class="tok-kw">false</span>;
+
+  @override
+  <span class="tok-typ">Future</span>&lt;<span class="tok-kw">void</span>&gt; <span class="tok-fn">setNewRoutePath</span>(<span class="tok-typ">Object</span> configuration) <span class="tok-kw">async</span> {}
+}
+
+<span class="tok-kw">final</span> _Routes _routes = <span class="tok-fn">_Routes</span>();
+
+<span class="tok-kw">class</span> <span class="tok-typ">AppRouter</span> <span class="tok-kw">extends</span> <span class="tok-typ">StatelessWidget</span> {
+  <span class="tok-kw">const</span> <span class="tok-typ">AppRouter</span>({<span class="tok-kw">super</span>.key});
+
+  @override
+  <span class="tok-typ">Widget</span> <span class="tok-fn">build</span>(<span class="tok-typ">BuildContext</span> context) {
+    <span class="tok-kw">return</span> <span class="tok-typ">Router</span>(routerDelegate: _routes);
+  }
+}</code></pre>
+</div>
+</div>
+<p class="note">Used by <a href="./cookbook.html#63-layout-delegate"><code>63-layout-delegate</code></a>, <a href="./cookbook.html#64-table-source"><code>64-table-source</code></a>, <a href="./cookbook.html#65-header-delegate"><code>65-header-delegate</code></a>, <a href="./cookbook.html#66-router-delegate"><code>66-router-delegate</code></a></p>
 </article>
 <h2 id="lib-widgets">Widgets — widgets</h2>
 <article class="widget" id="AbsorbPointer" data-name="AbsorbPointer">
@@ -5206,7 +5281,7 @@ widgets.</p>
 </div>
 </article>
 <article class="widget" id="CustomMultiChildLayout" data-name="CustomMultiChildLayout">
-<h3>CustomMultiChildLayout<span class="badge badge-lib">widgets</span></h3>
+<h3>CustomMultiChildLayout<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that uses a delegate to size and position multiple children.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -5215,17 +5290,21 @@ widgets.</p>
 <tr><td>delegate</td><td>MultiChildLayoutDelegate</td><td>MultiChildLayoutDelegate</td><td class="req">✓</td></tr>
 </tbody>
 </table>
-<p class="note"><code>delegate</code> (MultiChildLayoutDelegate) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">CustomMultiChildLayout</span> delegate={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Item <span class="tok-num">1</span>&lt;/<span class="tok-typ">Text</span>&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Item <span class="tok-num">2</span>&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">CustomMultiChildLayout</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">const</span> multiChildLayoutDelegate = <span class="tok-fn">defineDelegate</span>(<span class="tok-str">'MultiChildLayoutDelegate'</span>, { performLayout: () =&gt; {}, shouldRelayout: () =&gt; <span class="tok-kw">true</span> });
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">CustomMultiChildLayoutExample</span> = () =&gt; (
+  &lt;<span class="tok-typ">CustomMultiChildLayout</span> delegate={multiChildLayoutDelegate}&gt;
+    &lt;<span class="tok-typ">Text</span>&gt;Item <span class="tok-num">1</span>&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;<span class="tok-typ">Text</span>&gt;Item <span class="tok-num">2</span>&lt;/<span class="tok-typ">Text</span>&gt;
+  &lt;/<span class="tok-typ">CustomMultiChildLayout</span>&gt;
+);</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">CustomMultiChildLayout</span>({
@@ -6727,7 +6806,7 @@ loading, then fades in the new image when it loads.</p>
 </div>
 </article>
 <article class="widget" id="Flow" data-name="Flow">
-<h3>Flow<span class="badge badge-lib">widgets</span></h3>
+<h3>Flow<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that sizes and positions children efficiently, according to the
 logic in a [FlowDelegate].</p>
 <table class="props">
@@ -6738,17 +6817,21 @@ logic in a [FlowDelegate].</p>
 <tr><td>clipBehavior</td><td>Clip</td><td>Clip</td><td class="req"></td></tr>
 </tbody>
 </table>
-<p class="note"><code>delegate</code> (FlowDelegate) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">Flow</span> delegate={…}&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Item <span class="tok-num">1</span>&lt;/<span class="tok-typ">Text</span>&gt;
-  &lt;<span class="tok-typ">Text</span>&gt;Item <span class="tok-num">2</span>&lt;/<span class="tok-typ">Text</span>&gt;
-&lt;/<span class="tok-typ">Flow</span>&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">const</span> flowDelegate = <span class="tok-fn">defineDelegate</span>(<span class="tok-str">'FlowDelegate'</span>, { paintChildren: () =&gt; {}, shouldRepaint: () =&gt; <span class="tok-kw">true</span> });
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">FlowExample</span> = () =&gt; (
+  &lt;<span class="tok-typ">Flow</span> delegate={flowDelegate}&gt;
+    &lt;<span class="tok-typ">Text</span>&gt;Item <span class="tok-num">1</span>&lt;/<span class="tok-typ">Text</span>&gt;
+    &lt;<span class="tok-typ">Text</span>&gt;Item <span class="tok-num">2</span>&lt;/<span class="tok-typ">Text</span>&gt;
+  &lt;/<span class="tok-typ">Flow</span>&gt;
+);</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">Flow</span>({
@@ -7180,7 +7263,7 @@ For more details about the layout algorithm, see
 </div>
 </article>
 <article class="widget" id="FutureBuilder" data-name="FutureBuilder">
-<h3>FutureBuilder<span class="badge badge-lib">widgets</span></h3>
+<h3>FutureBuilder<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that builds itself based on the latest snapshot of interaction with
 a [Future].</p>
 <table class="props">
@@ -7191,14 +7274,14 @@ a [Future].</p>
 <tr><td>builder</td><td>(context: BuildContext, snapshot: AsyncSnapshot) =&gt; FlutterElement</td><td>Widget Function(BuildContext, AsyncSnapshot&lt;T&gt;)</td><td class="req">✓</td></tr>
 </tbody>
 </table>
-<p class="note"><code>future</code> (Future&lt;T&gt;?) — a value `useAsync` or `useStream` supplies: they generate this widget.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">FutureBuilder</span> future={…} builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">FutureBuilder</span> future={<span class="tok-kw">new</span> <span class="tok-typ">AppLifecycleListener</span>().<span class="tok-fn">didPopRoute</span>()} builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">FutureBuilder</span>({
@@ -11124,7 +11207,7 @@ tree and makes it available to descendants via [RestorationScope.of].</p>
 </div>
 </article>
 <article class="widget" id="Router" data-name="Router">
-<h3>Router<span class="badge badge-lib">widgets</span></h3>
+<h3>Router<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">The dispatcher for opening and closing pages of an application.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -11136,14 +11219,18 @@ tree and makes it available to descendants via [RestorationScope.of].</p>
 <tr><td>restorationScopeId</td><td>string</td><td>String?</td><td class="req"></td></tr>
 </tbody>
 </table>
-<p class="note"><code>routerDelegate</code> (RouterDelegate&lt;T&gt;) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">Router</span> routerDelegate={…} /&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">const</span> routerDelegate = <span class="tok-fn">defineDelegate</span>(<span class="tok-str">'RouterDelegate'</span>, { build: () =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;, popRoute: async () =&gt; true, setNewRoutePath: async () =&gt; {} });
+
+export const RouterExample = () =&gt; (
+  &lt;<span class="tok-typ">Router</span> routerDelegate={routerDelegate} /&gt;
+);</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">Router</span>({
@@ -11782,7 +11869,7 @@ tree.</p>
 </div>
 </article>
 <article class="widget" id="ShaderMask" data-name="ShaderMask">
-<h3>ShaderMask<span class="badge badge-lib">widgets</span></h3>
+<h3>ShaderMask<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A widget that applies a mask generated by a [Shader] to its child.</p>
 <table class="props">
 <thead><tr><th>Prop</th><th>TSX type</th><th>Dart type</th><th>Required</th></tr></thead>
@@ -11792,14 +11879,14 @@ tree.</p>
 <tr><td>blendMode</td><td>BlendMode</td><td>BlendMode</td><td class="req"></td></tr>
 </tbody>
 </table>
-<p class="note"><code>shaderCallback</code> (Shader Function(Rect)) — a shape the compiler does not write yet.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">ShaderMask</span> shaderCallback={…}&gt;
+<pre><code class="language-tsx">&lt;<span class="tok-typ">ShaderMask</span> shaderCallback={() =&gt; new ImageShader(new RenderRepaintBoundary().toImageSync(), <span class="tok-str">&quot;clamp&quot;</span>, <span class="tok-str">&quot;clamp&quot;</span>, new ReadBuffer(new WriteBuffer().done()).getFloat64List(<span class="tok-num">8</span>))}&gt;
   &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;
 &lt;/<span class="tok-typ">ShaderMask</span>&gt;</code></pre>
 </div>
@@ -12846,7 +12933,7 @@ overlap.</p>
 </div>
 </article>
 <article class="widget" id="SliverPersistentHeader" data-name="SliverPersistentHeader">
-<h3>SliverPersistentHeader<span class="badge badge-lib">widgets</span></h3>
+<h3>SliverPersistentHeader<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A sliver whose size varies when the sliver is scrolled to the edge
 of the viewport opposite the sliver's [GrowthDirection].</p>
 <table class="props">
@@ -12857,14 +12944,18 @@ of the viewport opposite the sliver's [GrowthDirection].</p>
 <tr><td>floating</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
-<p class="note"><code>delegate</code> (SliverPersistentHeaderDelegate) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">SliverPersistentHeader</span> delegate={…} /&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">const</span> sliverPersistentHeaderDelegate = <span class="tok-fn">defineDelegate</span>(<span class="tok-str">'SliverPersistentHeaderDelegate'</span>, { build: () =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;, maxExtent: () =&gt; <span class="tok-num">1</span>, minExtent: () =&gt; <span class="tok-num">1</span>, shouldRebuild: () =&gt; true });
+
+export const SliverPersistentHeaderExample = () =&gt; (
+  &lt;<span class="tok-typ">SliverPersistentHeader</span> delegate={sliverPersistentHeaderDelegate} /&gt;
+);</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">SliverPersistentHeader</span>({
@@ -13447,7 +13538,7 @@ spacing between widgets in a [Flex] container, like [Row] or [Column].</p>
 </div>
 </article>
 <article class="widget" id="StreamBuilder" data-name="StreamBuilder">
-<h3>StreamBuilder<span class="badge badge-lib">widgets</span></h3>
+<h3>StreamBuilder<span class="badge badge-lib">widgets</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">Widget that builds itself based on the latest snapshot of interaction with
 a [Stream].</p>
 <table class="props">
@@ -13458,14 +13549,14 @@ a [Stream].</p>
 <tr><td>builder</td><td>(context: BuildContext, snapshot: AsyncSnapshot) =&gt; FlutterElement</td><td>Widget Function(BuildContext, AsyncSnapshot&lt;T&gt;)</td><td class="req">✓</td></tr>
 </tbody>
 </table>
-<p class="note"><code>stream</code> (Stream&lt;T&gt;?) — a value `useAsync` or `useStream` supplies: they generate this widget.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">StreamBuilder</span> stream={…} builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
+<pre><code class="language-tsx">&lt;<span class="tok-typ">StreamBuilder</span> stream={<span class="tok-kw">new</span> <span class="tok-typ">EventChannel</span>(<span class="tok-str">&quot;example&quot;</span>).<span class="tok-fn">receiveBroadcastStream</span>()} builder={() =&gt; &lt;<span class="tok-typ">Text</span>&gt;Content&lt;/<span class="tok-typ">Text</span>&gt;} /&gt;</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">StreamBuilder</span>({
@@ -20737,7 +20828,7 @@ with an outlined border.</p>
 </div>
 </article>
 <article class="widget" id="PaginatedDataTable" data-name="PaginatedDataTable">
-<h3>PaginatedDataTable<span class="badge badge-lib">material</span></h3>
+<h3>PaginatedDataTable<span class="badge badge-lib">material</span><a class="badge badge-pkg" href="#verification">✓ typechecked</a></h3>
 <p class="doc">A table that follows the
 [Material 2](https://material.io/go/design-data-tables)
 design specification, using multiple pages to display data.</p>
@@ -20774,14 +20865,18 @@ design specification, using multiple pages to display data.</p>
 <tr><td>showEmptyRows</td><td>boolean</td><td>bool</td><td class="req"></td></tr>
 </tbody>
 </table>
-<p class="note"><code>source</code> (DataTableSource) — a value Flutter supplies to the widget; nothing in the SDK builds one.</p>
+
 <div class="tabs">
 <div class="tab-btns" role="tablist">
 <button class="tab-btn active" data-tab="tsx" role="tab" aria-selected="true">TSX</button>
 <button class="tab-btn" data-tab="dart" role="tab" aria-selected="false">Dart constructor</button>
 </div>
 <div class="tab-panel active" data-panel="tsx" role="tabpanel">
-<pre><code class="language-tsx">&lt;<span class="tok-typ">PaginatedDataTable</span> columns={[]} source={…} /&gt;</code></pre>
+<pre><code class="language-tsx"><span class="tok-kw">const</span> dataTableSource = <span class="tok-fn">defineDelegate</span>(<span class="tok-str">'DataTableSource'</span>, { getRow: () =&gt; <span class="tok-kw">new</span> <span class="tok-typ">DataRow</span>({ cells: [] }), isRowCountApproximate: () =&gt; <span class="tok-kw">true</span>, rowCount: () =&gt; <span class="tok-num">8</span>, selectedRowCount: () =&gt; <span class="tok-num">8</span> });
+
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> <span class="tok-typ">PaginatedDataTableExample</span> = () =&gt; (
+  &lt;<span class="tok-typ">PaginatedDataTable</span> columns={[]} source={dataTableSource} /&gt;
+);</code></pre>
 </div>
 <div class="tab-panel" data-panel="dart" role="tabpanel">
 <pre><code class="language-dart"><span class="tok-typ">PaginatedDataTable</span>({

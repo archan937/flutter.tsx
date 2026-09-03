@@ -4,6 +4,8 @@ import { importsForComponents } from './imports';
 import type {
   IrComponent,
   IrConstant,
+  IrDelegate,
+  IrDelegateMember,
   IrEnum,
   IrHelper,
   IrImport,
@@ -13,6 +15,7 @@ import type {
   IrOverride,
   IrRouter,
   IrStore,
+  IrValue,
 } from './ir';
 import { irValueToDart, irWidgetToDart, isConstable } from './ir-to-dart';
 import type { CompileContext } from './lower';
@@ -368,6 +371,8 @@ const emitRouter = (router: IrRouter): string => {
 export interface DartFileParts {
   constants?: IrConstant[];
   stores?: IrStore[];
+  /** Classes this file writes: `defineDelegate('FlowDelegate', { … })`. */
+  delegates?: IrDelegate[];
   router?: IrRouter | null;
   models?: IrModel[];
   helpers?: IrHelper[];
@@ -403,6 +408,76 @@ const emitConstant = (constant: IrConstant): string => {
   return `${head} ${body};`;
 };
 
+/**
+ * One member of a written class, as Dart declares it.
+ *
+ * Every member overrides something the superclass left abstract, so every
+ * one carries `@override` — and a getter is written without parentheses,
+ * which is what Dart calls it.
+ */
+const emitDelegateMember = (member: IrDelegateMember): string => {
+  const written = member.params.map(
+    (param) => `${param.dartType} ${param.name}`,
+  );
+  const asynchronous = member.isAsync ? ' async' : '';
+  const inlineSignature = member.isGetter
+    ? `  ${member.returnDartType} get ${member.name}`
+    : `  ${member.returnDartType} ${member.name}(${written.join(', ')})`;
+  // A signature too wide for a line splits one parameter per line, and the
+  // body then follows the closing bracket — which is what dart format does.
+  // A getter has no parameters to split, however long its type is.
+  const signature =
+    member.isGetter ||
+    lastLineWidth(inlineSignature) + asynchronous.length + ' =>'.length <=
+      MAX_WIDTH
+      ? inlineSignature
+      : [
+          `  ${member.returnDartType} ${member.name}(`,
+          ...written.map((param) => `    ${param},`),
+          '  )',
+        ].join('\n');
+  if (member.body.kind === 'block') {
+    const lines = methodStatementLines(member.body.statements, {
+      privateMembers: false,
+    }).map((line) => `    ${line}`);
+    return [
+      '  @override',
+      // An empty body is a pair of brackets: there is nothing to indent.
+      ...(lines.length === 0
+        ? [`${signature}${asynchronous} {}`]
+        : [`${signature}${asynchronous} {`, ...lines, '  }']),
+    ].join('\n');
+  }
+  return [
+    '  @override',
+    arrowBody(
+      `${signature}${asynchronous} =>`,
+      member.body.value,
+      DELEGATE_BODY_INDENT,
+    ),
+  ].join('\n');
+};
+
+/**
+ * A class the app writes, and the one instance of it this file shares.
+ *
+ * A delegate is made once and handed to every widget that asks for one —
+ * the same shape a store has, and for the same reason.
+ */
+const emitDelegate = (delegate: IrDelegate): string => {
+  const mixin = delegate.mixin === null ? '' : ` with ${delegate.mixin}`;
+  const lines = [
+    `class ${delegate.className} extends ${delegate.superclass}${mixin} {`,
+    delegate.members.map(emitDelegateMember).join('\n\n'),
+    '}',
+  ];
+  return (
+    `${lines.join('\n')}\n\n` +
+    `final ${delegate.className} ${delegate.instanceName} = ` +
+    `${delegate.className}();`
+  );
+};
+
 /** A helper the component owns: a private method, indented into the class. */
 const emitComponentHelper = (helper: IrHelper): string =>
   emitHelper({ ...helper, name: `_${helper.name}` })
@@ -422,6 +497,32 @@ const emitEnum = (entity: IrEnum): string =>
   ].join('\n');
 
 const HELPER_BODY_INDENT = 4;
+
+/** A member's body sits one class level deeper than a helper's. */
+const DELEGATE_BODY_INDENT = 6;
+
+/** How wide the last line of something already written is. */
+const lastLineWidth = (text: string): number =>
+  (text.split('\n').at(-1) ?? '').length;
+
+/**
+ * A `=>` body, wrapped the way `dart format` wraps one.
+ *
+ * The body stays on the head's line when the whole of it fits. Otherwise
+ * the arrow ends the line and the body is printed again from the
+ * continuation indent — measured from there, not from the head, which is
+ * what makes a body that fits on its own line stay on one.
+ */
+const arrowBody = (head: string, value: IrValue, indent: number): string => {
+  const expr = irValueToDart(value, { privateMembers: false });
+  const used = lastLineWidth(head) + 1;
+  const inline = printExpr(expr, { indent, used, trailing: 1 });
+  if (used + inline.length + 1 <= MAX_WIDTH && !inline.includes('\n')) {
+    return `${head} ${inline};`;
+  }
+  const wrapped = printExpr(expr, { indent, used: indent, trailing: 1 });
+  return `${head}\n${' '.repeat(indent)}${wrapped};`;
+};
 
 /** `String shout(String value) => value.toUpperCase();` */
 const emitHelper = (helper: IrHelper): string => {
@@ -450,19 +551,7 @@ const emitHelper = (helper: IrHelper): string => {
     }).map((line) => `  ${line}`);
     return `${signature} {\n${lines.join('\n')}\n}`;
   }
-  const head = `${signature} =>`;
-  const body = printExpr(
-    irValueToDart(helper.body.value, { privateMembers: false }),
-    {
-      indent: HELPER_BODY_INDENT,
-      used: head.length + 1,
-      trailing: 1,
-    },
-  );
-  const oneLine = `${head} ${body};`;
-  return oneLine.length <= MAX_WIDTH && !body.includes('\n')
-    ? oneLine
-    : `${head}\n    ${body};`;
+  return arrowBody(`${signature} =>`, helper.body.value, HELPER_BODY_INDENT);
 };
 
 export const emitDartFile = (
@@ -473,6 +562,7 @@ export const emitDartFile = (
   const {
     constants = [],
     stores = [],
+    delegates = [],
     router = null,
     models = [],
     helpers = [],
@@ -487,6 +577,9 @@ export const emitDartFile = (
     // the order it is understood.
     ...constants.map(emitConstant),
     ...stores.map(emitStore),
+    // A delegate is written before the components handed it, so the file
+    // reads in the order it is understood.
+    ...delegates.map(emitDelegate),
     ...components.map(emitComponentClass),
     ...(router === null ? [] : [emitRouter(router)]),
   ];
@@ -504,8 +597,10 @@ export const emitDartFile = (
         // A store extends ChangeNotifier and a component extends
         // StatelessWidget. A file holding only a route table names neither:
         // GoRouter comes from go_router and each page from its own file.
-        needsFlutter: components.length > 0 || stores.length > 0,
+        needsFlutter:
+          components.length > 0 || stores.length > 0 || delegates.length > 0,
         alsoNamed: router?.routes.map((route) => route.component) ?? [],
+        delegates,
       }),
       ...pluginImports,
       ...dartImports.map(({ uri, prefix }) =>

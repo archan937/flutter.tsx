@@ -10,6 +10,24 @@ const DART_SCALARS: Record<string, string> = {
 
 // TypeNode -> Dart source type, for the generic argument of a FutureBuilder
 // and the type of the value it resolves to.
+/**
+ * A Dart type as a return position writes it.
+ *
+ * `void` is a type there and nowhere else, and a `Future<void>` carries it,
+ * so both are named here rather than in the type printer every other
+ * position shares.
+ */
+export const returnDartTypeOf = (type: TypeNode): string | null => {
+  if (type.kind === 'void') {
+    return 'void';
+  }
+  if (type.kind === 'future') {
+    const item = returnDartTypeOf(type.item);
+    return item === null ? null : `Future<${item}>`;
+  }
+  return dartTypeOf(type);
+};
+
 export const dartTypeOf = (type: TypeNode): string | null => {
   switch (type.kind) {
     case 'scalar':
@@ -54,7 +72,21 @@ export const dartTypeOf = (type: TypeNode): string | null => {
       const value = dartTypeOf(type.value);
       return key === null || value === null ? null : `Map<${key}, ${value}>`;
     }
-    default:
+    // A callback is a type in Dart as much as in TypeScript:
+    // `void Function(PaintingContext, Offset)` is what a painter is handed,
+    // and a member declaring one has to say so.
+    case 'function': {
+      const returned = returnDartTypeOf(type.returnType);
+      const params = type.params.map((param) => dartTypeOf(param.type));
+      return returned === null || params.some((param) => param === null)
+        ? null
+        : `${returned} Function(${params.join(', ')})`;
+    }
+    // A void, an unknown and a type variable are not types a value is
+    // written with: each is named where it does mean something.
+    case 'void':
+    case 'unknown':
+    case 'typeVar':
       return null;
   }
 };

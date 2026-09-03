@@ -14,7 +14,11 @@ const REFERENCE_DIR = '../../ref/plugins';
 const FIXTURES_DIR = '../../test/fixtures';
 
 /** The runtime surface the compiler understands, declared rather than generated. */
-const CORE_SOURCES = ['../runtime/hooks.ts', '../runtime/shell.ts'];
+const CORE_SOURCES = [
+  '../runtime/hooks.ts',
+  '../runtime/shell.ts',
+  '../runtime/delegate.ts',
+];
 
 /** The generated declarations that ship: where the value types are read from. */
 const GENERATED_SOURCES = ['../generated/widgets.ts'];

@@ -910,13 +910,11 @@ describe('analyzeSource — callbacks and module data', () => {
         'export const SIZE = 12;\n' +
         'export const LIVE = true;\n' +
         'export const OFF = false;\n' +
-        'export const MADE = new Date();\n' +
+        "export const STEPS = ['one', 'two'];\n" +
         'export const Probe = () => <Text>{LABEL}</Text>;\n',
       'probe.tsx',
     );
 
-    // `new Date()` has no Dart type without an annotation, so it is not data
-    // the compiler claims — the file reads as if it were not there.
     expect(
       analysis.constants.map((constant) => [constant.name, constant.dartType]),
     ).toEqual([
@@ -924,10 +922,27 @@ describe('analyzeSource — callbacks and module data', () => {
       ['SIZE', 'num'],
       ['LIVE', 'bool'],
       ['OFF', 'bool'],
+      ['STEPS', 'List<String>'],
     ]);
   });
 
-  test('only exported, initialised, non-arrow declarations are data', () => {
+  test('data with no Dart type of its own is a numbered error', () => {
+    // Ignoring it would leave whatever reads it naming something Dart does
+    // not have, which is a broken file rather than a missing one.
+    expect(() =>
+      analyzeSource(
+        "import { Text } from 'flutter-tsx';\n" +
+          'export const MADE = new Date();\n' +
+          'export const Probe = () => <Text>hi</Text>;\n',
+        'probe.tsx',
+      ),
+    ).toThrow(/TSX0366/);
+  });
+
+  test('data a file keeps to itself is data, and says it is not exported', () => {
+    // A list a delegate pages through is declared in the Dart whether or not
+    // another file may name it; `let` without a value declares nothing, and
+    // an arrow is a helper rather than data.
     const analysis = analyzeSource(
       "import { Text } from 'flutter-tsx';\n" +
         "const PRIVATE = 'not exported';\n" +
@@ -937,7 +952,13 @@ describe('analyzeSource — callbacks and module data', () => {
       'probe.tsx',
     );
 
-    expect(analysis.constants.map((constant) => constant.name)).toEqual([]);
+    expect(
+      analysis.constants.map((constant) => [
+        constant.name,
+        constant.dartType,
+        constant.exported,
+      ]),
+    ).toEqual([['PRIVATE', 'String', false]]);
   });
 });
 

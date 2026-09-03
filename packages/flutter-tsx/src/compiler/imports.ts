@@ -1,4 +1,10 @@
-import type { IrComponent, IrStatement, IrValue, IrWidget } from './ir';
+import type {
+  IrComponent,
+  IrDelegate,
+  IrStatement,
+  IrValue,
+  IrWidget,
+} from './ir';
 import type { CompileContext } from './lower';
 
 /**
@@ -111,9 +117,13 @@ const collectValue = (
       }
       collectValue(value.value, context, names);
       break;
-    // The receiver is a member of this file; what it is called with may not
-    // be — a Cupertino constant inside one needs Cupertino imported.
+    // A receiver is either a member of this file or a value written inline —
+    // `new EventChannel('…').receiveBroadcastStream()` — and a value names
+    // its class, which needs its import as much as an argument's does.
     case 'invoke':
+      for (const named of value.receiver.matchAll(TYPE_NAME)) {
+        names.add(named[0]);
+      }
       for (const argument of value.args) {
         collectValue(argument.value, context, names);
       }
@@ -249,14 +259,44 @@ export const importsForComponents = (
     /** Whether the file declares something that needs the Flutter barrel. */
     needsFlutter?: boolean;
     /**
+     * Classes this file writes: each names what it extends, what it mixes
+     * in and whatever its members name — a `Size`, an `Offset`, a
+     * `BoxConstraints` — and every one of those needs its import.
+     */
+    delegates?: readonly IrDelegate[];
+    /**
      * Components the file names outside a widget tree — a route table points
      * at pages it never renders here, and each still needs its file imported.
      */
     alsoNamed?: readonly string[];
   } = {},
 ): string[] => {
-  const { needsFlutter = true, alsoNamed = [] } = options;
+  const { needsFlutter = true, alsoNamed = [], delegates = [] } = options;
   const names = new Set<string>(alsoNamed);
+  for (const delegate of delegates) {
+    names.add(delegate.superclass.replace(/<.*$/, ''));
+    for (const argument of delegate.superclass.match(TYPE_NAME) ?? []) {
+      names.add(argument);
+    }
+    if (delegate.mixin !== null) {
+      names.add(delegate.mixin);
+    }
+    for (const member of delegate.members) {
+      for (const name of member.returnDartType.match(TYPE_NAME) ?? []) {
+        names.add(name);
+      }
+      for (const param of member.params) {
+        for (const name of param.dartType.match(TYPE_NAME) ?? []) {
+          names.add(name);
+        }
+      }
+      if (member.body.kind === 'block') {
+        collectStatements(member.body.statements, context, names);
+      } else {
+        collectValue(member.body.value, context, names);
+      }
+    }
+  }
   for (const component of components) {
     collectWidget(component.body, context, names);
     // A class may be named outside the tree — a static called in a handler,

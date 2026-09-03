@@ -9,6 +9,7 @@ import type {
   WidgetEntity,
 } from '../api/model';
 import { DATE_FORMS } from '../derive/date-forms';
+import { deriveDelegates } from '../derive/delegates';
 import type { ChildrenSlot, SlotMap, WidgetSlots } from '../derive/slots';
 import {
   ANY_VALUE_TYPE,
@@ -661,10 +662,25 @@ const constantMember = (
   return jsdoc === '' ? declaration : `${jsdoc}\n${declaration}`;
 };
 
-export const emitWidgetsFile = (
-  snapshot: ApiSnapshot,
-  slots: SlotMap,
-): string => {
+/**
+ * Every name the generated surface declares, and what each name is for.
+ *
+ * One derivation, two modules: the widgets module declares these types and
+ * the delegates module names them, so a name either module writes is a name
+ * this set holds. Deriving it twice is how the two would drift apart.
+ */
+export interface DeclaredSurface {
+  /** Every named type the surface declares. */
+  named: ReadonlySet<string>;
+  enums: ReadonlySet<string>;
+  /** Types something hands over, whose members are therefore readable. */
+  handed: ReadonlySet<string>;
+  /** Types with a shorthand form, for what a developer writes. */
+  formNames: ReadonlySet<string>;
+  forms: ValueForms;
+}
+
+export const declaredSurface = (snapshot: ApiSnapshot): DeclaredSurface => {
   const widgets = snapshot.entities.filter(
     (entity): entity is WidgetEntity => entity.kind === 'widget',
   );
@@ -733,6 +749,45 @@ export const emitWidgetsFile = (
       namedRefs.add(entity.name);
     }
   }
+  // A class that answers with a Future or a Stream is a class an app
+  // writes: `new EventChannel('…').receiveBroadcastStream()` is how a
+  // StreamBuilder is given something to listen to, and `MethodChannel` next
+  // to it is already declared for the same reason. What it carries has to
+  // have a name; what it is generic over does not.
+  for (const entity of snapshot.entities) {
+    if (entity.kind === 'enum') {
+      continue;
+    }
+    const answersAsync = entity.methods.some((method) => {
+      const { returnType } = method;
+      return (
+        (returnType.kind === 'future' || returnType.kind === 'stream') &&
+        returnType.item.kind !== 'typeVar'
+      );
+    });
+    if (answersAsync) {
+      namedRefs.add(entity.name);
+    }
+  }
+  // A class an app writes itself is part of the surface twice over: the
+  // members it must write are named, and every value Flutter hands those
+  // members is read inside them — a `Size` to lay out at, a
+  // `FlowPaintingContext` to paint children with.
+  for (const delegate of deriveDelegates(snapshot)) {
+    namedRefs.add(delegate.name);
+    handed.add(delegate.name);
+    for (const method of delegate.methods) {
+      collectRefs(method.returnType, namedRefs, enumRefs);
+      for (const param of method.params) {
+        collectRefs(param.type, namedRefs, enumRefs);
+        collectHandedTypes(param.type, handed);
+        handedValue(param.type, handed);
+      }
+    }
+    for (const getter of delegate.getters) {
+      collectRefs(getter.type, namedRefs, enumRefs);
+    }
+  }
   // A type a prop asks for is often abstract — `ImageProvider`, a sliver
   // delegate — and the way to satisfy it is one of its concrete subclasses.
   // Those are values a developer writes, so they are declared too; so is
@@ -794,6 +849,21 @@ export const emitWidgetsFile = (
       );
     }
   }
+
+  return { named: namedRefs, enums: enumRefs, handed, formNames, forms };
+};
+
+export const emitWidgetsFile = (
+  snapshot: ApiSnapshot,
+  slots: SlotMap,
+): string => {
+  const widgets = snapshot.entities.filter(
+    (entity): entity is WidgetEntity => entity.kind === 'widget',
+  );
+  const surface = declaredSurface(snapshot);
+  const { forms, formNames, handed } = surface;
+  const namedRefs = surface.named;
+  const enumRefs = surface.enums;
 
   const blocks: string[] = [
     header(snapshot.meta.frameworkVersion),
@@ -879,6 +949,10 @@ export const emitGeneratedIndex = (snapshot: ApiSnapshot): string => {
   return `${[
     header(snapshot.meta.frameworkVersion),
     "export * from './widgets';",
+    // What writing a delegate means is part of the surface too: an app
+    // names `DelegateImplementations` only through `defineDelegate`, but
+    // the types it is checked against have to be reachable.
+    "export * from './delegates';",
     // A class the constants module exports is a value; the interface of the
     // same name is a type, and both are part of the surface — `Intent` is
     // written as a value and named as a type.

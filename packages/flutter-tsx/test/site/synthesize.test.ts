@@ -27,6 +27,38 @@ const context: SynthesisContext = {
   valueOnlyNames: new Set(['Icons']),
   formNames: new Set(['IconData', 'Ornament']),
   declaredTypes: new Set(['IconData', 'Ornament', 'Intent']),
+  answers: new Map(),
+  visiting: new Set(),
+  delegates: new Map([
+    [
+      'TestDelegate',
+      {
+        name: 'TestDelegate',
+        library: 'rendering',
+        doc: '',
+        mixin: null,
+        typeParams: [],
+        typeArguments: [],
+        methods: [
+          {
+            name: 'layout',
+            doc: '',
+            returnType: { kind: 'void' },
+            params: [param('size', { kind: 'named', name: 'Size' })],
+          },
+          {
+            name: 'load',
+            doc: '',
+            returnType: { kind: 'future', item: { kind: 'void' } },
+            params: [],
+          },
+        ],
+        getters: [
+          { name: 'extent', type: { kind: 'scalar', name: 'double' }, doc: '' },
+        ],
+      },
+    ],
+  ]),
   suppliers: new Map([
     [
       'TestScope',
@@ -118,6 +150,207 @@ describe('synthesizeTsx', () => {
       complete: true,
       unwritable: [],
     });
+  });
+
+  test('a class an app writes is written with defineDelegate', () => {
+    // Nothing builds a `TestDelegate` and nothing hands one over: being one
+    // is writing one, so that is what the example shows — every member the
+    // class leaves abstract, answering with a value of its own type.
+    expect(
+      synthesizeTsx({
+        widgetName: 'Sliver',
+        params: [param('delegate', { kind: 'named', name: 'TestDelegate' })],
+        slots: noSlots,
+        context,
+      }),
+    ).toEqual({
+      tsx: '<Sliver delegate={testDelegate} />',
+      bindings: [
+        {
+          line:
+            "const testDelegate = defineDelegate('TestDelegate', { " +
+            'extent: () => 1, layout: () => {}, load: async () => {} });',
+          imports: ['defineDelegate'],
+          // Written beside the component: `defineDelegate` declares a class,
+          // and a class is not declared inside a function.
+          scope: 'module',
+        },
+      ],
+      complete: true,
+      unwritable: [],
+    });
+  });
+
+  test('a member with no writable value leaves the example incomplete', () => {
+    // A `TestVault` is neither built nor handed over here, so nothing can
+    // be written for the member that answers with one — and the example
+    // says so rather than showing a delegate that would not compile.
+    const withUnwritable: SynthesisContext = {
+      ...context,
+      delegates: new Map([
+        [
+          'VaultDelegate',
+          {
+            name: 'VaultDelegate',
+            library: 'widgets',
+            doc: '',
+            mixin: null,
+            typeParams: [],
+            typeArguments: [],
+            methods: [
+              {
+                name: 'open',
+                doc: '',
+                returnType: { kind: 'named', name: 'TestVault' },
+                params: [],
+              },
+            ],
+            getters: [],
+          },
+        ],
+      ]),
+    };
+
+    const example = synthesizeTsx({
+      widgetName: 'Safe',
+      params: [param('delegate', { kind: 'named', name: 'VaultDelegate' })],
+      slots: noSlots,
+      context: withUnwritable,
+    });
+
+    expect(example.complete).toBe(false);
+    expect(example.unwritable).toEqual([
+      { prop: 'delegate', type: 'x', reason: 'supplied-by-flutter' },
+    ]);
+  });
+
+  test('a member answering with a value that has to be bound is refused', () => {
+    // A controller is made by the component that owns it; a delegate is one
+    // line, and one line cannot declare a name of its own.
+    const withOwned: SynthesisContext = {
+      ...context,
+      delegates: new Map([
+        [
+          'ControllerDelegate',
+          {
+            name: 'ControllerDelegate',
+            library: 'widgets',
+            doc: '',
+            mixin: null,
+            typeParams: [],
+            typeArguments: [],
+            methods: [],
+            getters: [
+              {
+                name: 'controller',
+                doc: '',
+                type: { kind: 'named', name: 'TestController' },
+              },
+            ],
+          },
+        ],
+      ]),
+    };
+
+    expect(
+      synthesizeTsx({
+        widgetName: 'Wheel',
+        params: [
+          param('delegate', { kind: 'named', name: 'ControllerDelegate' }),
+        ],
+        slots: noSlots,
+        context: withOwned,
+      }).complete,
+    ).toBe(false);
+  });
+
+  test('a value reached through itself is not written twice', () => {
+    // A static that hands over one type, asking for another handed over by a
+    // static asking for the first, is a circle: it stops rather than recurs.
+    const circular: SynthesisContext = {
+      ...context,
+      suppliers: new Map([
+        [
+          'Ring',
+          [
+            {
+              owner: 'Ring',
+              method: 'of',
+              params: [param('other', { kind: 'named', name: 'Loop' })],
+            },
+          ],
+        ],
+        [
+          'Loop',
+          [
+            {
+              owner: 'Loop',
+              method: 'of',
+              params: [param('other', { kind: 'named', name: 'Ring' })],
+            },
+          ],
+        ],
+      ]),
+      answers: new Map([
+        [
+          'Echo',
+          [
+            {
+              owner: 'Answerer',
+              method: 'echo',
+              params: [param('other', { kind: 'named', name: 'Echo' })],
+            },
+          ],
+        ],
+      ]),
+      construction: new Map([
+        ['Answerer', [{ name: 'Answerer', typeParams: [], params: [] }]],
+      ]),
+    };
+
+    const supplied = synthesizeTsx({
+      widgetName: 'Round',
+      params: [param('ring', { kind: 'named', name: 'Ring' })],
+      slots: noSlots,
+      context: circular,
+    });
+    const answered = synthesizeTsx({
+      widgetName: 'Sound',
+      params: [param('echo', { kind: 'named', name: 'Echo' })],
+      slots: noSlots,
+      context: circular,
+    });
+
+    expect(supplied.complete).toBe(false);
+    expect(answered.complete).toBe(false);
+  });
+
+  test('a prop that carries nothing has no value to write', () => {
+    expect(
+      synthesizeTsx({
+        widgetName: 'Empty',
+        params: [param('nothing', { kind: 'void' })],
+        slots: noSlots,
+        context,
+      }).complete,
+    ).toBe(false);
+  });
+
+  test('a callback answering with something unwritable is refused', () => {
+    expect(
+      synthesizeTsx({
+        widgetName: 'Loader',
+        params: [
+          param('load', {
+            kind: 'function',
+            params: [],
+            returnType: { kind: 'named', name: 'TestVault' },
+          }),
+        ],
+        slots: noSlots,
+        context,
+      }).complete,
+    ).toBe(false);
   });
 
   test('an abstract type is written as the class that makes one', () => {

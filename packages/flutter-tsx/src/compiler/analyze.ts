@@ -45,6 +45,17 @@ export interface StoreUse {
   setterName: string;
 }
 
+/// A module-level `defineDelegate('Name', { … })`: one written Dart class.
+export interface DelegateBinding {
+  /// The const it is bound to, which is what the instance is called in Dart.
+  name: string;
+  /// The SDK class being written: `MultiChildLayoutDelegate`.
+  delegate: string;
+  /// Where the name was written, for anything the SDK disagrees with.
+  delegateNode: ts.Node;
+  members: { name: string; body: ts.ArrowFunction }[];
+}
+
 /// `createRouter({ '/': Home })` — one route table per file.
 export interface RouterBinding {
   name: string;
@@ -188,12 +199,21 @@ export interface ConstantBinding {
   name: string;
   dartType: string;
   expression: ts.Expression;
+  /**
+   * Whether other files may name it.
+   *
+   * Data a file keeps to itself is still declared in the Dart — a list a
+   * delegate pages through has to exist — but it is not what makes the file
+   * worth compiling, and nothing outside can reach it.
+   */
+  exported: boolean;
 }
 
 export interface SourceAnalysis {
   components: ComponentAnalysis[];
   constants: ConstantBinding[];
   stores: StoreBinding[];
+  delegates: DelegateBinding[];
   router: RouterBinding | null;
   models: ModelBinding[];
   helpers: HelperBinding[];
@@ -1441,6 +1461,74 @@ const analyzeModels = (
     }));
 };
 
+/**
+ * The classes this file writes: `defineDelegate('FlowDelegate', { … })`.
+ *
+ * A delegate is written once, at module level, and handed to every widget
+ * that asks for one — the same shape a store has, and for the same reason:
+ * one instance, named, shared.
+ */
+const analyzeDelegates = (sourceFile: ts.SourceFile): DelegateBinding[] => {
+  const delegates: DelegateBinding[] = [];
+  for (const statement of sourceFile.statements) {
+    if (!ts.isVariableStatement(statement)) {
+      continue;
+    }
+    for (const declaration of statement.declarationList.declarations) {
+      const { initializer } = declaration;
+      if (
+        initializer === undefined ||
+        !ts.isCallExpression(initializer) ||
+        !ts.isIdentifier(initializer.expression) ||
+        initializer.expression.text !== 'defineDelegate'
+      ) {
+        continue;
+      }
+      const [name, implementation] = initializer.arguments;
+      if (name === undefined || !ts.isStringLiteralLike(name)) {
+        throw tsxErrorAt(
+          'TSX0360',
+          'the class being written is named as a string: ' +
+            "`defineDelegate('FlowDelegate', { … })`.",
+          { sourceFile, node: initializer },
+        );
+      }
+      if (
+        implementation === undefined ||
+        !ts.isObjectLiteralExpression(implementation)
+      ) {
+        throw tsxErrorAt(
+          'TSX0361',
+          `\`defineDelegate('${name.text}', { … })\` takes the members to ` +
+            'write as one object.',
+          { sourceFile, node: implementation ?? initializer },
+        );
+      }
+      delegates.push({
+        name: declaration.name.getText(sourceFile),
+        delegate: name.text,
+        delegateNode: name,
+        members: implementation.properties.map((property) => {
+          if (
+            !ts.isPropertyAssignment(property) ||
+            !ts.isIdentifier(property.name) ||
+            !ts.isArrowFunction(property.initializer)
+          ) {
+            throw tsxErrorAt(
+              'TSX0362',
+              'a written member is an arrow function: ' +
+                '`shouldRepaint: () => false`.',
+              { sourceFile, node: property },
+            );
+          }
+          return { name: property.name.text, body: property.initializer };
+        }),
+      });
+    }
+  }
+  return delegates;
+};
+
 const analyzeStores = (sourceFile: ts.SourceFile): StoreBinding[] => {
   const stores: StoreBinding[] = [];
   for (const statement of sourceFile.statements) {
@@ -1596,6 +1684,7 @@ export const analyzeSource = (
   const { modules: hookModules, originals: importedOriginals } =
     importedHookModules(sourceFile);
   const stores = analyzeStores(sourceFile);
+  const delegates = analyzeDelegates(sourceFile);
   // A store is as often declared in its own file as in this one; the file it
   // came from is resolved when the imports are, and refused there if it holds
   // no such store.
@@ -1696,6 +1785,7 @@ export const analyzeSource = (
     components,
     constants,
     stores,
+    delegates,
     router,
     models,
     helpers,
@@ -1745,6 +1835,16 @@ const literalDartType = (initializer: ts.Expression): string | null => {
   ) {
     return 'bool';
   }
+  // A list of literals says what it holds, as long as it holds one kind of
+  // thing: `['a', 'b']` is a `List<String>`, and a mixed list is refused
+  // rather than widened to something Dart would have to guess at.
+  if (ts.isArrayLiteralExpression(initializer)) {
+    const items = [...initializer.elements].map(literalDartType);
+    const [first] = items;
+    return first === undefined || items.some((item) => item !== first)
+      ? null
+      : `List<${first}>`;
+  }
   return null;
 };
 
@@ -1754,23 +1854,40 @@ const literalDartType = (initializer: ts.Expression): string | null => {
  * A store, a router and a component are consts too, so this claims only what
  * they are not — a value with a Dart type and no function in it.
  */
+/** The module-level calls that declare something of their own. */
+const FACTORY_CALLS: ReadonlySet<string> = new Set([
+  'createStore',
+  'createRouter',
+  'defineDelegate',
+]);
+
+const isFactoryCall = (initializer: ts.Expression): boolean =>
+  ts.isCallExpression(initializer) &&
+  ts.isIdentifier(initializer.expression) &&
+  FACTORY_CALLS.has(initializer.expression.text);
+
 const analyzeConstants = (sourceFile: ts.SourceFile): ConstantBinding[] => {
   const constants: ConstantBinding[] = [];
   for (const statement of sourceFile.statements) {
-    if (
-      !ts.isVariableStatement(statement) ||
-      statement.modifiers?.some(
-        (modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword,
-      ) !== true
-    ) {
+    // Data a file keeps to itself is data all the same: a list a delegate
+    // pages through is declared beside it, exported or not, and Dart needs
+    // the declaration either way.
+    if (!ts.isVariableStatement(statement)) {
       continue;
     }
+    const exported =
+      statement.modifiers?.some(
+        (modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword,
+      ) === true;
     for (const declaration of statement.declarationList.declarations) {
       const { initializer, type } = declaration;
       if (
         initializer === undefined ||
         ts.isArrowFunction(initializer) ||
-        !ts.isIdentifier(declaration.name)
+        !ts.isIdentifier(declaration.name) ||
+        // A store, a router and a written class each declare their own Dart
+        // name; they are not data.
+        isFactoryCall(initializer)
       ) {
         continue;
       }
@@ -1781,12 +1898,19 @@ const analyzeConstants = (sourceFile: ts.SourceFile): ConstantBinding[] => {
           ? literalDartType(initializer)
           : dartPropType(type, sourceFile);
       if (dartType === null) {
-        continue;
+        throw tsxErrorAt(
+          'TSX0366',
+          `\`${declaration.name.text}\` needs a type the compiler can ` +
+            'write in Dart: annotate it, or hold a literal — otherwise the ' +
+            'code that reads it would name something Dart does not have.',
+          { sourceFile, node: declaration },
+        );
       }
       constants.push({
         name: declaration.name.text,
         dartType,
         expression: initializer,
+        exported,
       });
     }
   }

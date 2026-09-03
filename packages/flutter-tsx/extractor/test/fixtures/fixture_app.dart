@@ -124,6 +124,59 @@ abstract class PreferredSizeLike implements Widget {
   const PreferredSizeLike();
 }
 
+/// A base an app implements, so what it must write is abstract.
+abstract class TestDelegateBase {
+  const TestDelegateBase();
+
+  /// What to call the delegate.
+  String describe();
+}
+
+/// A delegate an app writes itself: layout is abstract, repaint is not.
+abstract class TestDelegate extends TestDelegateBase {
+  const TestDelegate();
+
+  /// How far the delegate reaches.
+  double get extent;
+
+  /// Whether the delegate is worth reading twice.
+  bool get isCached => true;
+
+  /// Lays the children out.
+  void performLayout(double size);
+
+  /// Whether a new delegate has to lay out again.
+  bool shouldRelayout(TestDelegate oldDelegate) => true;
+}
+
+/// The stub of Flutter's own Listenable, which ChangeNotifier implements.
+abstract class Listenable {
+  const Listenable();
+
+  void addListener(VoidCallback listener);
+
+  void removeListener(VoidCallback listener);
+}
+
+/// A delegate whose parameter is bounded, so writing one has to say so.
+abstract class TestBoundedDelegate<TValue extends NotAWidget, TFree> {
+  const TestBoundedDelegate();
+
+  /// Reads the bounded value.
+  TValue read();
+
+  /// Reads the free one.
+  TFree readFree();
+}
+
+/// A delegate that notifies, which is what ChangeNotifier is for.
+abstract class TestNotifyingDelegate extends Listenable {
+  const TestNotifyingDelegate();
+
+  /// Builds what the delegate stands for.
+  Widget build();
+}
+
 mixin Tappable on Widget {}
 
 class _PrivateWidget extends StatelessWidget {

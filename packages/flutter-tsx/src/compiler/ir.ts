@@ -134,6 +134,34 @@ export interface IrStore {
   fields: { name: string; dartType: string; initializer: string }[];
 }
 
+/// One member of a written class: `void performLayout(Size size) { … }`.
+export interface IrDelegateMember {
+  name: string;
+  returnDartType: string;
+  /// Every parameter the override declares, whether the TSX named it or not:
+  /// Dart's signature is the superclass's, not the author's.
+  params: { name: string; dartType: string }[];
+  /// A getter is written without parentheses, which is what Dart calls it.
+  isGetter: boolean;
+  isAsync: boolean;
+  body:
+    | { kind: 'expression'; value: IrValue }
+    | { kind: 'block'; statements: IrStatement[] };
+}
+
+/// A class an app writes itself, from `defineDelegate('Name', { … })`, plus
+/// the single instance every component in the file is handed.
+export interface IrDelegate {
+  className: string;
+  instanceName: string;
+  /// What it extends, type arguments and all: `RouterDelegate<Object>`.
+  superclass: string;
+  /// What it mixes in to be what it extends: `ChangeNotifier` for a
+  /// `Listenable`.
+  mixin: string | null;
+  members: IrDelegateMember[];
+}
+
 /// A GoRouter built from `createRouter({ … })`.
 export interface IrRouter {
   name: string;

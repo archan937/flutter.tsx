@@ -281,11 +281,36 @@ const parseEntity = (value: unknown, path: string): Entity => {
         ...constructed(),
         disposable: asBoolean(record.disposable, `${path}.disposable`),
         isAbstract: record.abstract === true,
+        abstractMethods:
+          record.abstractMethods === undefined
+            ? []
+            : asArray(record.abstractMethods, `${path}.abstractMethods`).map(
+                (method, index) =>
+                  parseStatic(method, `${path}.abstractMethods[${index}]`),
+              ),
+        abstractGetters:
+          record.abstractGetters === undefined
+            ? []
+            : asArray(record.abstractGetters, `${path}.abstractGetters`).map(
+                (getter, index) =>
+                  parseField(getter, `${path}.abstractGetters[${index}]`),
+              ),
+        mixin:
+          record.mixin === undefined
+            ? null
+            : asString(record.mixin, `${path}.mixin`),
         typeParams:
           record.typeParams === undefined
             ? []
             : asArray(record.typeParams, `${path}.typeParams`).map(
                 (name, index) => asString(name, `${path}.typeParams[${index}]`),
+              ),
+        typeParamBounds:
+          record.typeParamBounds === undefined
+            ? []
+            : asArray(record.typeParamBounds, `${path}.typeParamBounds`).map(
+                (name, index) =>
+                  asString(name, `${path}.typeParamBounds[${index}]`),
               ),
         supertypeBindings: parseSupertypeBindings(
           record.supertypeBindings,

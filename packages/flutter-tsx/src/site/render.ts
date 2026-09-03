@@ -191,6 +191,36 @@ const CORE_KIND_LABEL: Record<SiteCoreEntry['kind'], string> = {
   type: 'type',
 };
 
+// A doc may show what it is talking about: a ```tsx block in the
+// declaration itself, the way `json` and `defineDelegate` do.
+const FENCED_CODE = /```(\w*)\n([\s\S]*?)```/g;
+
+/**
+ * A declaration's own documentation, as HTML.
+ *
+ * The prose keeps its inline code, and a fenced block is rendered as the
+ * highlighted code it is: showing the fence itself would be showing the
+ * markup instead of the example.
+ */
+const docHtml = (doc: string): string => {
+  const parts: string[] = [];
+  const prose = (text: string): void => {
+    const trimmed = text.trim();
+    if (trimmed !== '') {
+      parts.push(`<p class="doc">${inlineDoc(trimmed)}</p>`);
+    }
+  };
+  let read = 0;
+  for (const fence of doc.matchAll(FENCED_CODE)) {
+    prose(doc.slice(read, fence.index));
+    const language = (fence[1] === '' ? 'tsx' : fence[1]) as Language;
+    parts.push(codeBlock(fence[2] ?? '', language));
+    read = fence.index + fence[0].length;
+  }
+  prose(doc.slice(read));
+  return parts.join('\n');
+};
+
 export const coreApiSection = (entry: SiteCoreEntry): string => {
   const proof =
     entry.examples.length === 0
@@ -208,7 +238,7 @@ export const coreApiSection = (entry: SiteCoreEntry): string => {
         ]);
   return `<article class="widget" id="core-${entry.name}" data-name="${entry.name}">
 <h3>${escapeHtml(entry.name)}<span class="badge badge-lib">${CORE_KIND_LABEL[entry.kind]}</span></h3>
-${entry.doc === '' ? '' : `<p class="doc">${escapeHtml(entry.doc)}</p>`}
+${docHtml(entry.doc)}
 ${entry.usage === null ? codeBlock(entry.signature, 'typescript') : usage}
 ${proof}
 </article>`;
