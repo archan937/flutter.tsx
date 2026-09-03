@@ -321,6 +321,15 @@ never touches the file again — which is how an app that needs its own `main` (
 app setting up a tray and window, say) takes over, while every component still compiles
 from TSX.
 
+## What the reference guarantees
+
+Every widget in the API reference is documented with an example that really compiles:
+**539 of 539** are generated into a probe module, typechecked against the published
+package surface, transpiled to Dart and run through `flutter analyze` on every CI run.
+Nothing
+is left as a placeholder — and if a future SDK shape arrives that TSX cannot write, that
+example says under its prop table which value it is and why, or the build fails.
+
 ## When something is not expressible
 
 Dart cannot express everything TypeScript can. Rather than emit something subtly

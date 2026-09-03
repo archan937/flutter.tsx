@@ -604,6 +604,14 @@
           grid-template-columns: repeat(2, 1fr);
         }
       }
+      .stats-proof {
+        max-width: 760px;
+        margin: 18px auto 0;
+        text-align: center;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.6;
+      }
       .stat {
         background: var(--panel);
         backdrop-filter: blur(8px);
@@ -1768,6 +1776,10 @@ export const Shell = () =&gt; (
         </div>
         <!-- /showcase:stats -->
       </section>
+
+      <p class="stats-proof reveal">
+        <!-- showcase:proof -->Every widget above is documented with an example that really compiles — <strong>539 of 539</strong>, each typechecked against the published package, transpiled to Dart and run through <code>flutter analyze</code> on every CI run.<!-- /showcase:proof -->
+      </p>
 
 
       <section class="why" id="why">

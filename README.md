@@ -9,10 +9,15 @@ written by hand.
 
 > 🚧 **Not on npm yet.** Flutter.tsx is being rewritten from the ground up (see
 > [Status](#status)); the `0.x` releases on npm are the legacy implementation. The
-> compiler and the whole `fsx` CLI work today from a clone — what remains before 1.0
-> is CI, the docs site, and the publish itself. The snippet below **compiles today**:
-> the test suite transpiles this exact file, verifies the emitted Dart byte-for-byte
+> compiler, the whole `fsx` CLI, CI and the docs site work today from a clone — what
+> remains before 1.0 is the publish itself. The snippet below **compiles today**: the
+> test suite transpiles this exact file, verifies the emitted Dart byte-for-byte
 > against a hand-certified golden, and builds it as a real Flutter web app on every run.
+>
+> Every widget in the generated API reference (`docs/api-reference.html`) is documented
+> with an example that compiles: **539 of 539** are typechecked against the package
+> surface, transpiled to Dart and run through `flutter analyze` on every run — nothing
+> is left as a placeholder.
 
 ```tsx
 import { Column, ElevatedButton, Text, useState } from 'flutter-tsx';
@@ -174,6 +179,10 @@ Rewrite progress:
 - [x] `fsx` CLI (`install` · `init` · `dev` · `build` · `doctor`) and the scaffolder,
       building for web, iOS, Android, macOS, Windows and Linux — web and macOS are
       built end to end on every CI run
+- [x] `defineDelegate`: the classes Flutter leaves to an app — a layout delegate, a
+      table source, a sliver header, a router delegate — written in TSX and emitted as
+      the Dart subclass, so **every one of the 539 widget examples in the reference
+      compiles and analyzes clean**, with nothing left unwritten
 - [x] `defineDelegate`: the classes Flutter leaves to an app — a layout delegate, a
       table source, a sliver header, a router delegate — written in TSX and emitted as
       the Dart subclass, so **every one of the 539 widget examples in the reference

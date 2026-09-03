@@ -165,7 +165,7 @@ main pre { border: 1px solid var(--line); border-radius: 10px; background: rgba(
   <div class="meta-info">Guide · Flutter.tsx</div>
   <nav id="sidebar-nav">
 <details open>
-<summary>Guide<span class="nav-count">11</span></summary>
+<summary>Guide<span class="nav-count">12</span></summary>
 <ul>
 <li data-name="1. Create a project"><a href="#1-create-a-project">1. Create a project</a></li>
 <li data-name="2. Start from a complete app"><a href="#2-start-from-a-complete-app">2. Start from a complete app</a></li>
@@ -177,6 +177,7 @@ main pre { border: 1px solid var(--line); border-radius: 10px; background: rgba(
 <li data-name="8. Build"><a href="#8-build">8. Build</a></li>
 <li data-name="9. Check the project"><a href="#9-check-the-project">9. Check the project</a></li>
 <li data-name="Project layout"><a href="#project-layout">Project layout</a></li>
+<li data-name="What the reference guarantees"><a href="#what-the-reference-guarantees">What the reference guarantees</a></li>
 <li data-name="When something is not expressible"><a href="#when-something-is-not-expressible">When something is not expressible</a></li>
 </ul>
 </details>
@@ -358,6 +359,8 @@ fsx build --target=macos     # or pick one</code></pre>
 <p><code>lib/</code> and <code>.fsx/</code> are generated and gitignored: a fresh clone is <code>bun install &amp;&amp; fsx install</code>, and everything is rebuilt.</p>
 <h3 id="owning-the-entry-point">Owning the entry point</h3>
 <p><code>fsx</code> generates <code>lib/main.dart</code>, marked with a line saying so. Delete that line and fsx never touches the file again — which is how an app that needs its own <code>main</code> (a menu-bar app setting up a tray and window, say) takes over, while every component still compiles from TSX.</p>
+<h2 id="what-the-reference-guarantees">What the reference guarantees</h2>
+<p>Every widget in the API reference is documented with an example that really compiles: <strong>539 of 539</strong> are generated into a probe module, typechecked against the published package surface, transpiled to Dart and run through <code>flutter analyze</code> on every CI run. Nothing is left as a placeholder — and if a future SDK shape arrives that TSX cannot write, that example says under its prop table which value it is and why, or the build fails.</p>
 <h2 id="when-something-is-not-expressible">When something is not expressible</h2>
 <p>Dart cannot express everything TypeScript can. Rather than emit something subtly different, the compiler refuses with a numbered error naming the reason and the way round: <code>any</code> (TSX1001), <code>eval</code> (TSX1002), mapped and conditional types (TSX2002, TSX2003), generators (TSX2006), dynamic <code>import()</code> (TSX3001), and the rest of the inventory. The same applies inside a component: a method whose Dart counterpart behaves differently (<code>slice</code>, <code>find</code>, <code>sort</code>) is refused rather than mapped to something that looks right and is not.</p>
 </main>

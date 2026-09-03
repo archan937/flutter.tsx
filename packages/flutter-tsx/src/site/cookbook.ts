@@ -309,6 +309,7 @@ const WINDOW_NAME = /(<span class="fname" id="fname">)[^<]*(<\/span>)/;
 const COMPILE_NAME = /(<span id="compile-name">)[^<]*(<\/span>)/;
 const EXAMPLE_MAP = /const EXAMPLES = \{[\s\S]*?\};/;
 const STATS = /<!-- showcase:stats -->[\s\S]*?<!-- \/showcase:stats -->/;
+const PROOF = /<!-- showcase:proof -->[\s\S]*?<!-- \/showcase:proof -->/;
 const TEMPLATES_REGION =
   /<!-- showcase:templates -->[\s\S]*?<!-- \/showcase:templates -->/;
 const WIDGET_COUNT = /every one of the [\d,]+\n?\s*widgets/;
@@ -322,6 +323,24 @@ const statCounts = (page: SitePage): { count: number; label: string }[] => [
   { count: page.enums.length, label: 'Enums' },
   { count: page.types.length, label: 'Types' },
 ];
+
+/**
+ * What the numbers above are worth, in one sentence the page cannot overstate.
+ *
+ * Both figures come from the page model: the second is every widget the
+ * reference documents, and the first is how many of them show an example
+ * that really compiles. They are equal today, and if a future SDK shape
+ * makes them differ the sentence says so rather than rounding up.
+ */
+const proofLine = (page: SitePage): string => {
+  const complete = page.widgets.length - page.incompleteExamples.length;
+  return (
+    `Every widget above is documented with an example that really compiles — ` +
+    `<strong>${complete} of ${page.widgets.length}</strong>, each typechecked ` +
+    `against the published package, transpiled to Dart and run through ` +
+    `<code>flutter analyze</code> on every CI run.`
+  );
+};
 
 const statBlock = (stat: { count: number; label: string }): string =>
   `        <div class="stat">
@@ -441,6 +460,10 @@ export const withShowcase = (
     .replace(
       STATS,
       `<!-- showcase:stats -->\n${statCounts(page).map(statBlock).join('\n')}\n        <!-- /showcase:stats -->`,
+    )
+    .replace(
+      PROOF,
+      `<!-- showcase:proof -->${proofLine(page)}<!-- /showcase:proof -->`,
     )
     .replace(
       WIDGET_COUNT,

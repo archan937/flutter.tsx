@@ -134,6 +134,35 @@ describe('committed generated docs', () => {
     }
   }, 60000);
 
+  // The strongest claim the project makes is a number, so it is checked
+  // against the page rather than trusted: a widget added to Flutter, or an
+  // example that stops compiling, has to move the prose too.
+  test('every page naming the example count names the real one', async () => {
+    const snapshot = await loadApiSnapshot();
+    const page = buildSitePage(
+      snapshot,
+      deriveSlots(snapshot),
+      await loadSiteSections(),
+    );
+    const complete = page.widgets.length - page.incompleteExamples.length;
+
+    for (const source of [
+      '../../../../README.md',
+      '../../README.md',
+      '../../../../docs/guide.md',
+    ]) {
+      const text = await Bun.file(new URL(source, import.meta.url)).text();
+      const claims = [...text.matchAll(/\*\*(\d+) of (\d+)\*\*/g)];
+
+      expect([source, claims.length]).toEqual([source, 1]);
+      expect([source, claims[0]?.[1], claims[0]?.[2]]).toEqual([
+        source,
+        String(complete),
+        String(page.widgets.length),
+      ]);
+    }
+  }, 60000);
+
   test('the committed markdown carries the derived requirements table', async () => {
     const snapshot = await loadApiSnapshot();
     const page = buildSitePage(

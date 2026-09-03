@@ -182,6 +182,25 @@ describe('widgetSection without a verified example', () => {
   });
 });
 
+describe('the verification section', () => {
+  test('names how many examples carry the badge, from the page', () => {
+    const html = buildApiReferenceHtml(page);
+
+    expect(html).toContain(
+      `<strong>${page.widgets.length} of the ${page.widgets.length} widgets documented here carry it</strong>`,
+    );
+  });
+
+  test('counts an example that could not be written as not carrying it', () => {
+    const html = buildApiReferenceHtml({
+      ...page,
+      incompleteExamples: [frame.name],
+    });
+
+    expect(html).toContain('<strong>0 of the 1 widgets documented here');
+  });
+});
+
 describe('coreApiSection', () => {
   const entry = {
     name: 'json',

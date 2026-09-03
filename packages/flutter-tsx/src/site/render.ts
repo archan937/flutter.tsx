@@ -496,10 +496,21 @@ ${navList(page.enums.map((entry) => entry.name))}
 </details>`;
 };
 
-const verificationSection = `<article class="widget" id="verification" data-name="verification">
+/**
+ * What the badge means, and how many carry it.
+ *
+ * Both numbers come from the page: every widget documented, and every one
+ * whose example really compiles. They are equal — nothing is left unwritten
+ * — and the sentence is generated so it cannot claim that after it stops
+ * being true.
+ */
+const verificationSection = (page: SitePage): string => {
+  const complete = page.widgets.length - page.incompleteExamples.length;
+  return `<article class="widget" id="verification" data-name="verification">
 <h3>✓ typechecked — what the badge means</h3>
-<p class="doc">Every example carrying the badge is generated into a probe module, compiled by the TypeScript compiler against the published <code>flutter-tsx</code> package surface, transpiled to Dart and run through <code>flutter analyze</code> — on every CI run. An example without the badge says, under its prop table, exactly which values it could not write and why: either a value Flutter supplies to the widget, which nothing in the SDK builds, or a shape the compiler does not write yet. There is no third case, and a placeholder without a reason fails the build.</p>
+<p class="doc">Every example carrying the badge is generated into a probe module, compiled by the TypeScript compiler against the published <code>flutter-tsx</code> package surface, transpiled to Dart and run through <code>flutter analyze</code> — on every CI run. <strong>${complete} of the ${page.widgets.length} widgets documented here carry it</strong>: every value each example needs is written, and none is left as a placeholder. Should a future SDK shape arrive that TSX cannot write, that example loses the badge and says under its prop table exactly which value it is and why — either a value Flutter supplies to the widget, which nothing in the SDK builds, or a shape the compiler does not write yet. There is no third case: a placeholder without a reason fails the build, and so does a widget quietly left out.</p>
 </article>`;
+};
 
 export const pageContent = (page: SitePage): string => {
   const widgetSections = [...byLibrary(page.widgets).entries()]
@@ -517,7 +528,7 @@ export const pageContent = (page: SitePage): string => {
     EXAMPLES_INTRO,
     page.examples.map(exampleSection).join('\n'),
     `<h2 id="about-verification">Verification</h2>`,
-    verificationSection,
+    verificationSection(page),
     `<h2 id="core">Hooks &amp; core APIs</h2>`,
     page.coreApi.map(coreApiSection).join('\n'),
     widgetSections,

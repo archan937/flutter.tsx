@@ -77,7 +77,9 @@ The site is published once 1.0 ships; until then the pages live in the repositor
 
 - [Guide](../../docs/guide.md) — from scaffold to release build
 - [Cookbook](../../docs/cookbook.html) — every fixture, TSX beside Dart
-- [API reference](../../docs/api-reference.html) — every widget, prop and enum, generated from the SDK
+- [API reference](../../docs/api-reference.html) — every widget, prop and enum,
+  generated from the SDK, each widget with an example that compiles: **539 of 539** are
+  typechecked against this package, transpiled to Dart and `flutter analyze`d on every run
 - [Config mapping](../../docs/config-mapping.md) — what fsx writes, and what it does not
 
 ## License

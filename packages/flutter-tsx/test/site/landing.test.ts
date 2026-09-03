@@ -76,6 +76,25 @@ describe('the landing page showcase', () => {
     expect(html).toContain(`every one of the ${page.widgets.length}`);
   }, 60000);
 
+  test('says what the numbers are worth, without overstating it', async () => {
+    // The claim under the counters is the strongest one the site makes, so
+    // it is generated from the page: both figures, and equal only while
+    // every example really does compile.
+    const snapshot = await loadApiSnapshot();
+    const page = buildSitePage(
+      snapshot,
+      deriveSlots(snapshot),
+      await loadSiteSections(),
+    );
+    const complete = page.widgets.length - page.incompleteExamples.length;
+    const html = await landingPage();
+
+    expect(html).toContain(
+      `<strong>${complete} of ${page.widgets.length}</strong>`,
+    );
+    expect(complete).toBe(page.widgets.length);
+  }, 60000);
+
   test('points at the repository it is published from', async () => {
     const html = await landingPage();
 
