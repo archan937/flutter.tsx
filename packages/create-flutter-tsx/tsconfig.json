@@ -15,6 +15,11 @@
     "isolatedModules": true,
     "moduleDetection": "force",
     "resolveJsonModule": true,
+    // The published launcher is JavaScript, because npm starts it with Node;
+    // it is shipped code all the same, so it is typechecked with everything
+    // else rather than trusted.
+    "allowJs": true,
+    "checkJs": true,
     "skipLibCheck": true,
     "noEmit": true,
     "paths": {

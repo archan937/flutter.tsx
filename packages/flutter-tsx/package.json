@@ -1,7 +1,6 @@
 {
   "name": "flutter-tsx",
   "version": "1.0.0-alpha.0",
-  "private": true,
   "description": "Write Flutter apps in TypeScript + JSX with full IDE autocomplete \u2014 idiomatic TSX transpiles to idiomatic Dart.",
   "keywords": [
     "flutter",
@@ -25,6 +24,18 @@
   },
   "license": "MIT",
   "author": "Paul Engel",
+  "engines": {
+    "bun": ">=1.4.0"
+  },
+  "files": [
+    "bin",
+    "src",
+    "templates",
+    "ref/api.json",
+    "ref/derived",
+    "ref/plugins",
+    "LICENSE"
+  ],
   "type": "module",
   "bin": {
     "fsx": "./bin/fsx.ts"

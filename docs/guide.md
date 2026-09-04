@@ -22,7 +22,8 @@ bun packages/flutter-tsx/bin/fsx.ts init ~/my-app
 cd ~/my-app && bun install
 ```
 
-Once 1.0 ships, the same project comes from:
+Once 1.0 ships, the same project comes from — npm starts it, [Bun](https://bun.sh)
+finishes it, and Bun is what the project itself runs on:
 
 ```sh
 npm create flutter-tsx@latest my-app   # or: bun create flutter-tsx my-app

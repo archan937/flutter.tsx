@@ -1,7 +1,6 @@
 {
   "name": "create-flutter-tsx",
   "version": "1.0.0-alpha.0",
-  "private": true,
   "description": "Scaffold a new Flutter.tsx project \u2014 write Flutter apps in TypeScript + JSX.",
   "keywords": [
     "flutter",
@@ -25,6 +24,14 @@
   },
   "license": "MIT",
   "author": "Paul Engel",
+  "engines": {
+    "bun": ">=1.4.0"
+  },
+  "files": [
+    "bin",
+    "src",
+    "LICENSE"
+  ],
   "type": "module",
   "exports": {
     ".": "./src/index.ts"
@@ -50,9 +57,9 @@
     "typescript-eslint": "^8.67.0"
   },
   "bin": {
-    "create-flutter-tsx": "./bin/create.ts"
+    "create-flutter-tsx": "./bin/create.mjs"
   },
   "dependencies": {
-    "flutter-tsx": "workspace:*"
+    "flutter-tsx": "1.0.0-alpha.0"
   }
 }

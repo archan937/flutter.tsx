@@ -69,4 +69,12 @@ export default defineConfig(
       'prefer-promise-reject-errors': 'off',
     },
   },
+  {
+    // The published launcher is JavaScript — npm starts it with Node — and
+    // JavaScript has no return-type syntax to annotate.
+    files: ['**/*.mjs'],
+    rules: {
+      '@typescript-eslint/explicit-function-return-type': 'off',
+    },
+  },
 );

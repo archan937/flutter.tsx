@@ -35,6 +35,9 @@ suite builds it as a real Flutter app on every run. See the
 
 > **Not on npm yet.** The `0.x` releases under this name are the previous
 > implementation and should not be used. Until 1.0, run it from a clone.
+>
+> **[Bun](https://bun.sh) is required** — this package ships TypeScript and runs on
+> Bun, which is also what `fsx` drives your project with.
 
 ```sh
 git clone https://github.com/archan937/flutter.tsx
